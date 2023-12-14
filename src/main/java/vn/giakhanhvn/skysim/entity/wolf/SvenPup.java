@@ -1,0 +1,67 @@
+package vn.giakhanhvn.skysim.entity.wolf;
+
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Wolf;
+import vn.giakhanhvn.skysim.entity.SEntity;
+import org.bukkit.entity.LivingEntity;
+import vn.giakhanhvn.skysim.entity.nms.SvenPackmaster;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+
+public class SvenPup extends BaseWolf
+{
+    private final double health;
+    private final double damage;
+    private final CraftPlayer target;
+    private final SvenPackmaster parent;
+    
+    public SvenPup(final Double health, final Double damage, final CraftPlayer target, final SvenPackmaster parent) {
+        this.health = health;
+        this.damage = damage;
+        this.target = target;
+        this.parent = parent;
+    }
+    
+    @Override
+    public String getEntityName() {
+        return "Sven Pup";
+    }
+    
+    @Override
+    public double getEntityMaxHealth() {
+        return this.health;
+    }
+    
+    @Override
+    public double getDamageDealt() {
+        return this.damage;
+    }
+    
+    @Override
+    public double getXPDropped() {
+        return 0.0;
+    }
+    
+    @Override
+    public boolean isAngry() {
+        return true;
+    }
+    
+    @Override
+    public boolean isBaby() {
+        return true;
+    }
+    
+    @Override
+    public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
+        ((Wolf)entity).setTarget((LivingEntity)this.target);
+    }
+    
+    @Override
+    public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
+        this.parent.getPups().remove(sEntity);
+    }
+    
+    public SvenPackmaster getParent() {
+        return this.parent;
+    }
+}
