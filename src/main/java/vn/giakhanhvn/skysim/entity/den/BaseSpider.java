@@ -37,17 +37,17 @@ public abstract class BaseSpider implements EntityStatistics, EntityFunction
             final Location k = killed.getLocation().clone();
             if (SUtil.random(0, 10) == 0 && quest.getType().getTier() >= 3 && quest.getType().getTier() < 4) {
                 SlayerQuest.playMinibossSpawn(k, (Entity)player);
-                SUtil.delay(() -> new SEntity(k, SEntityType.TARANTULA_VERMIN, new Object[0]).setTarget((LivingEntity)player), 12L);
+                SUtil.delay(() -> new SEntity(k, SEntityType.TARANTULA_VERMIN).setTarget((LivingEntity)player), 12L);
                 return;
             }
             if (SUtil.random(0, 18) == 0 && quest.getType().getTier() >= 4) {
                 SlayerQuest.playMinibossSpawn(k, (Entity)player);
-                SUtil.delay(() -> new SEntity(k, SEntityType.TARANTULA_BEAST, new Object[0]).setTarget((LivingEntity)player), 12L);
+                SUtil.delay(() -> new SEntity(k, SEntityType.TARANTULA_BEAST).setTarget((LivingEntity)player), 12L);
                 return;
             }
             if (SUtil.random(0, 50) == 0 && quest.getType().getTier() >= 4) {
                 SlayerQuest.playMinibossSpawn(k, (Entity)player);
-                SUtil.delay(() -> new SEntity(k, SEntityType.MUTANT_TARANTULA, new Object[0]).setTarget((LivingEntity)player), 12L);
+                SUtil.delay(() -> new SEntity(k, SEntityType.MUTANT_TARANTULA).setTarget((LivingEntity)player), 12L);
             }
         }
     }

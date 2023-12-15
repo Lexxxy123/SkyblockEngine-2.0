@@ -106,7 +106,7 @@ public class SEntity
             ((Zombie)this.entity).setVillager(((ZombieStatistics)statistics).isVillager());
         }
         if (statistics instanceof JockeyStatistics) {
-            this.entity.setPassenger((Entity)new SEntity(location, ((JockeyStatistics)statistics).getPassenger(), new Object[0]).getEntity());
+            this.entity.setPassenger((Entity)new SEntity(location, ((JockeyStatistics)statistics).getPassenger()).getEntity());
         }
         if (statistics instanceof WolfStatistics && this.entity instanceof Wolf) {
             ((Wolf)this.entity).setAngry(((WolfStatistics)statistics).isAngry());

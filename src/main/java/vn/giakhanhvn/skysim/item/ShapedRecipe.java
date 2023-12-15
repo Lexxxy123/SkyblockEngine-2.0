@@ -14,6 +14,7 @@ public class ShapedRecipe extends Recipe<ShapedRecipe>
 {
     public static final List<ShapedRecipe> CACHED_RECIPES;
     protected String[] shape;
+    private boolean isVanilla;
     private final Map<Character, MaterialQuantifiable> ingredientMap;
     
     public ShapedRecipe(final SItem result, final boolean usesExchangeables) {
@@ -50,17 +51,25 @@ public class ShapedRecipe extends Recipe<ShapedRecipe>
         return new ArrayList<MaterialQuantifiable>(this.ingredientMap.values());
     }
     
-    public ShapedRecipe set(final char k, final MaterialQuantifiable material) {
+    public ShapedRecipe set(final char k, final MaterialQuantifiable material , boolean isVanilla) {
         this.ingredientMap.put(k, material.clone());
+        this.isVanilla = isVanilla;
         return this;
     }
     
     public ShapedRecipe set(final char k, final SMaterial material, final int amount) {
-        return this.set(k, new MaterialQuantifiable(material, amount));
+        return this.set(k, new MaterialQuantifiable(material, amount) , false);
     }
-    
+    public ShapedRecipe set(final char k, final SMaterial material, final int amount , boolean isVanilla) {
+        return this.set(k, new MaterialQuantifiable(material, amount) , isVanilla);
+    }
+
+    public boolean isVanilla() {
+        return isVanilla;
+    }
+
     public ShapedRecipe set(final char k, final SMaterial material) {
-        return this.set(k, new MaterialQuantifiable(material));
+        return this.set(k, new MaterialQuantifiable(material) , false);
     }
     
     public MaterialQuantifiable[][] toMQ2DArray() {

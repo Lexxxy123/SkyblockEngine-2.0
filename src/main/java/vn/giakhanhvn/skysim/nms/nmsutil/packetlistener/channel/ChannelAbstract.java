@@ -55,7 +55,7 @@ public abstract class ChannelAbstract
     
     public void addServerChannel() {
         try {
-            final Object dedicatedServer = ChannelAbstract.getServer.invoke(Bukkit.getServer(), new Object[0]);
+            final Object dedicatedServer = ChannelAbstract.getServer.invoke(Bukkit.getServer());
             if (dedicatedServer == null) {
                 return;
             }

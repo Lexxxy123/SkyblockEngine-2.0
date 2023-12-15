@@ -31,7 +31,7 @@ public class SadanBossManager
         SUtil.delay(() -> r(plist, world), 1L);
         SUtil.delay(() -> Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), "rg flag __global__ -w " + world.getName() + " build deny"), 1L);
         SUtil.delay(() -> Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), "rg flag __global__ -w " + world.getName() + " pvp deny"), 2L);
-        SUtil.delay(() -> new SEntity(new Location(world, 183.0, 100.0, 251.0), SEntityType.SADAN, new Object[0]), 1L);
+        SUtil.delay(() -> new SEntity(new Location(world, 183.0, 100.0, 251.0), SEntityType.SADAN), 1L);
     }
     
     public static void r(final ArrayList<Player> plist, final World world) {

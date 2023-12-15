@@ -256,7 +256,7 @@ public class Blessings
     
     public static void openBlessingChest(final Block chest, final Blessings bless, final Player e) {
         final Location loc = chest.getLocation().add(0.5, 0.0, 0.5);
-        final SEntity sEntity = new SEntity(loc.clone().add(0.0, -1.0, 0.0), SEntityType.VELOCITY_ARMOR_STAND, new Object[0]);
+        final SEntity sEntity = new SEntity(loc.clone().add(0.0, -1.0, 0.0), SEntityType.VELOCITY_ARMOR_STAND);
         final ArmorStand drop = (ArmorStand)sEntity.getEntity();
         drop.setVisible(false);
         drop.setCustomNameVisible(false);
@@ -316,7 +316,7 @@ public class Blessings
     }
     
     public static void dropBlessingPickable(final Location loc, final Blessings bless) {
-        final SEntity sEntity = new SEntity(loc.clone().add(0.0, -0.8, 0.0), SEntityType.VELOCITY_ARMOR_STAND, new Object[0]);
+        final SEntity sEntity = new SEntity(loc.clone().add(0.0, -0.8, 0.0), SEntityType.VELOCITY_ARMOR_STAND);
         final ArmorStand drop = (ArmorStand)sEntity.getEntity();
         drop.setVisible(false);
         drop.setCustomNameVisible(false);

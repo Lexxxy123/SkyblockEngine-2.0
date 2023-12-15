@@ -116,7 +116,7 @@ public class AspectOfTheDragons implements ToolStatistics, MaterialFunction, Abi
                 }
             }
             final double baseDamage = baseMagicDmg * (manaPool / 100 * 0.1 + 1.0);
-            final ArmorStand stands = (ArmorStand)new SEntity(entity.getLocation().clone().add(SUtil.random(-1.5, 1.5), 1.0, SUtil.random(-1.5, 1.5)), SEntityType.UNCOLLIDABLE_ARMOR_STAND, new Object[0]).getEntity();
+            final ArmorStand stands = (ArmorStand)new SEntity(entity.getLocation().clone().add(SUtil.random(-1.5, 1.5), 1.0, SUtil.random(-1.5, 1.5)), SEntityType.UNCOLLIDABLE_ARMOR_STAND).getEntity();
             stands.setCustomName("" + ChatColor.GRAY + (int)baseDamage);
             stands.setCustomNameVisible(true);
             stands.setGravity(false);

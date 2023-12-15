@@ -197,7 +197,7 @@ public class PacketInvoker
                         SUtil.delay(() -> {
                             final Object val$drop = drop;
                             final Object val$owner = owner;
-                            final SEntity e2 = new SEntity(drop.getLocation().clone().add(0.0, 1.5, 0.0), SEntityType.VOIDLINGS_WARDEN, new Object[0]);
+                            final SEntity e2 = new SEntity(drop.getLocation().clone().add(0.0, 1.5, 0.0), SEntityType.VOIDLINGS_WARDEN);
                             e2.getEntity().setMetadata("owner", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)owner.getUniqueId()));
                             ((CraftZombie)e2.getEntity()).setTarget((LivingEntity)owner);
                             return;

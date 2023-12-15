@@ -111,7 +111,7 @@ public class EntitySpawner
                     }
                 }
                 else if (spawner.active == null || spawner.active.getEntity().isDead()) {
-                    spawner.active = new SEntity(spawner.location, spawner.type, new Object[0]);
+                    spawner.active = new SEntity(spawner.location, spawner.type);
                     spawner.active.getEntity().setRemoveWhenFarAway(true);
                 }
                 else {

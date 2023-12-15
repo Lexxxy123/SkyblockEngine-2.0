@@ -1,5 +1,6 @@
 package vn.giakhanhvn.skysim.user;
 
+import lombok.Getter;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -144,11 +145,14 @@ public class User
     private final int[] slayerXP;
     private final int[] crystalLVL;
     private boolean saveable;
+
     private int bonusFerocity;
     private boolean fatalActive;
     private boolean permanentCoins;
     private SlayerQuest slayerQuest;
     private List<Pet.PetItem> pets;
+    @Getter
+    private List<String> unlockedRecipes;
     private AuctionSettings auctionSettings;
     private boolean auctionCreationBIN;
     private AuctionEscrow auctionEscrow;
@@ -180,6 +184,7 @@ public class User
         this.lastRegion = null;
         this.quiver = new HashMap<SMaterial, Integer>();
         this.effects = new ArrayList<ActivePotionEffect>();
+        this.unlockedRecipes = new ArrayList<>();
         this.farmingXP = 0.0;
         this.miningXP = 0.0;
         this.combatXP = 0.0;
@@ -275,6 +280,9 @@ public class User
         this.slayerQuest = (SlayerQuest)this.config.get("slayer.quest");
         if (this.config.contains("pets")) {
             this.pets = (List<Pet.PetItem>) this.config.getList("pets");
+        }
+        if (config.contains("unlockedRecipes")) {
+            this.unlockedRecipes = (List<String>) this.config.getList("unlockedRecipes");
         }
         this.auctionSettings = (AuctionSettings)this.config.get("auction.settings");
         if (this.auctionSettings == null) {
@@ -395,11 +403,12 @@ public class User
         this.config.set("xp.slayer.svenPackmaster", (Object)this.slayerXP[2]);
         this.config.set("xp.slayer.voidgloomSeraph", (Object)this.slayerXP[3]);
         this.config.set("permanentCoins", (Object)this.permanentCoins);
-        this.config.set("slayer.quest", (Object)this.slayerQuest);
-        this.config.set("pets", (Object)this.pets);
-        this.config.set("auction.settings", (Object)this.auctionSettings);
-        this.config.set("auction.creationBIN", (Object)this.auctionCreationBIN);
-        this.config.set("auction.escrow", (Object)this.auctionEscrow);
+        this.config.set("slayer.quest", this.slayerQuest);
+        this.config.set("unlockedRecipes" , this.unlockedRecipes);
+        this.config.set("pets", this.pets);
+        this.config.set("auction.settings", this.auctionSettings);
+        this.config.set("auction.creationBIN", this.auctionCreationBIN);
+        this.config.set("auction.escrow", this.auctionEscrow);
         if (Bukkit.getPlayer(this.uuid) != null && Bukkit.getPlayer(this.uuid).isOnline()) {
             this.config.set("configures.showPets", (Object)PetsGUI.getShowPet(Bukkit.getPlayer(this.uuid)));
             this.config.set("configures.autoSlayer", (Object)PlayerUtils.isAutoSlayer(Bukkit.getPlayer(this.uuid)));

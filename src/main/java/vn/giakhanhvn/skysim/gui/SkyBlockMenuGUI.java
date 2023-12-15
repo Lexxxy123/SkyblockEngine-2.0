@@ -207,7 +207,7 @@ public class SkyBlockMenuGUI extends GUI
         this.set(new GUIClickableItem() {
             @Override
             public void run(final InventoryClickEvent e) {
-                new RecipeBookListGUI().open(player);
+                new RecipeBookListGUI(player).open(player);
             }
             
             @Override

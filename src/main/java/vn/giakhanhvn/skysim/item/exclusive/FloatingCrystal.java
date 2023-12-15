@@ -28,7 +28,7 @@ public abstract class FloatingCrystal implements SkullStatistics, MaterialFuncti
             return;
         }
         final Player player = e.getPlayer();
-        final SEntity sEntity = new SEntity(player.getLocation().clone().add(player.getLocation().getDirection().multiply(1.5)), this.getCrystalType(), new Object[0]);
+        final SEntity sEntity = new SEntity(player.getLocation().clone().add(player.getLocation().getDirection().multiply(1.5)), this.getCrystalType());
     }
     
     protected abstract SEntityType getCrystalType();

@@ -1,10 +1,12 @@
 package vn.giakhanhvn.skysim.nms.nmsutil.reflection.minecraft;
 
 import java.util.regex.Matcher;
+
+import jdk.internal.reflect.ConstructorAccessor;
 import org.bukkit.Bukkit;
 import java.lang.reflect.Field;
 
-import sun.reflect.ConstructorAccessor;
+
 import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.MethodResolver;
 import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.FieldResolver;
 import java.lang.reflect.Constructor;
@@ -37,7 +39,7 @@ public class Minecraft
         catch (final ReflectiveOperationException e) {
             method = AccessUtil.setAccessible(Minecraft.CraftEntity.getDeclaredMethod("getHandle", (Class<?>[])new Class[0]));
         }
-        return method.invoke(object, new Object[0]);
+        return method.invoke(object);
     }
     
     public static Entity getBukkitEntity(final Object object) throws ReflectiveOperationException {
@@ -48,7 +50,7 @@ public class Minecraft
         catch (final ReflectiveOperationException e) {
             method = AccessUtil.setAccessible(Minecraft.CraftEntity.getDeclaredMethod("getHandle", (Class<?>[])new Class[0]));
         }
-        return (Entity)method.invoke(object, new Object[0]);
+        return (Entity)method.invoke(object);
     }
     
     public static Object getHandleSilent(final Object object) {
@@ -65,7 +67,7 @@ public class Minecraft
         final Field accessorField = new FieldResolver(Constructor.class).resolve("constructorAccessor");
         ConstructorAccessor constructorAccessor = (ConstructorAccessor)accessorField.get(constructor);
         if (constructorAccessor == null) {
-            new MethodResolver(Constructor.class).resolve("acquireConstructorAccessor").invoke(constructor, new Object[0]);
+            new MethodResolver(Constructor.class).resolve("acquireConstructorAccessor").invoke(constructor);
             constructorAccessor = (ConstructorAccessor)accessorField.get(constructor);
         }
         return constructorAccessor.newInstance(values);

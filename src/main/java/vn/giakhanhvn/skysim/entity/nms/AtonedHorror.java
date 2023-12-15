@@ -193,14 +193,14 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
         EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 70);
         entity.setMetadata("BOSS_OWNER_" + Bukkit.getPlayer(this.getSpawnerUUID()).getUniqueId().toString(), (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
         SUtil.delay(() -> this.Cooldown = false, 350L);
-        this.hologram = new SEntity(entity.getLocation().add(0.0, 2.3, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND, new Object[0]);
+        this.hologram = new SEntity(entity.getLocation().add(0.0, 2.3, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND);
         entity.setMetadata("NoAffect", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
         entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
         ((ArmorStand)this.hologram.getEntity()).setVisible(false);
         ((ArmorStand)this.hologram.getEntity()).setGravity(false);
         this.hologram.getEntity().setCustomNameVisible(true);
         entity.setMetadata("notDisplay", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        this.hologram_name = new SEntity(entity.getLocation().add(0.0, 2.0, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND, new Object[0]);
+        this.hologram_name = new SEntity(entity.getLocation().add(0.0, 2.0, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND);
         ((ArmorStand)this.hologram_name.getEntity()).setVisible(false);
         final net.minecraft.server.v1_8_R3.Entity e = this.getBukkitEntity().getHandle();
         final double height = e.getBoundingBox().e - e.getBoundingBox().b;

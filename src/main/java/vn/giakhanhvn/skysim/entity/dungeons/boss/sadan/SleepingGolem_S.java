@@ -45,7 +45,7 @@ public class SleepingGolem_S extends BaseZombie
     
     @Override
     public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
-        new SEntity(killed.getLocation(), SEntityType.WOKE_GOLEM, new Object[0]);
+        new SEntity(killed.getLocation(), SEntityType.WOKE_GOLEM);
         killed.remove();
     }
     

@@ -344,6 +344,9 @@ public class SItem implements Cloneable, ConfigurationSerializable
     public String getFullName() {
         return this.rarity.getColor() + (this.data.hasKey("reforge") ? (ReforgeType.getReforgeType(this.data.getString("reforge")).getReforge().getName() + " ") : "") + this.getType().getDisplayName(this.variant);
     }
+    public String getDisplayName(){
+        return this.getType().getDisplayName(this.variant);
+    }
     
     public boolean isReforged() {
         return this.data.hasKey("reforge");

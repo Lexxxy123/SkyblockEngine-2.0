@@ -135,8 +135,8 @@ public class ReflectionAnnotations
      <A extends Annotation> List<String> parseAnnotationVersions(final java.lang.Class<A> clazz, final A annotation) {
         final List<String> list = new ArrayList<String>();
         try {
-            final String[] names = (String[])clazz.getMethod("value", (java.lang.Class<?>[])new java.lang.Class[0]).invoke(annotation, new Object[0]);
-            final Minecraft.Version[] versions = (Minecraft.Version[])clazz.getMethod("versions", (java.lang.Class<?>[])new java.lang.Class[0]).invoke(annotation, new Object[0]);
+            final String[] names = (String[])clazz.getMethod("value", (java.lang.Class<?>[])new java.lang.Class[0]).invoke(annotation);
+            final Minecraft.Version[] versions = (Minecraft.Version[])clazz.getMethod("versions", (java.lang.Class<?>[])new java.lang.Class[0]).invoke(annotation);
             if (versions.length == 0) {
                 for (final String name : names) {
                     list.add(name);
@@ -167,7 +167,7 @@ public class ReflectionAnnotations
     
      <A extends Annotation> String parseClass(final java.lang.Class<A> clazz, final A annotation, final Object toLoad) {
         try {
-            final String className = (String)clazz.getMethod("className", (java.lang.Class<?>[])new java.lang.Class[0]).invoke(annotation, new Object[0]);
+            final String className = (String)clazz.getMethod("className", (java.lang.Class<?>[])new java.lang.Class[0]).invoke(annotation);
             final Matcher matcher = ReflectionAnnotations.classRefPattern.matcher(className);
             while (matcher.find()) {
                 if (matcher.groupCount() != 1) {

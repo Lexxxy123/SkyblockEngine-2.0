@@ -49,7 +49,7 @@ public class Dungeons
     }
     
     public void spawnMobAt(final Location loc, final SEntityType type, final boolean starred, final UUID roomUUID) {
-        final SEntity sentity = new SEntity(loc, type, new Object[0]);
+        final SEntity sentity = new SEntity(loc, type);
         sentity.setStarred(starred);
     }
     

@@ -65,7 +65,7 @@ public class Zealot extends BaseEnderman
         player.playSound(player.getLocation(), Sound.WITHER_SPAWN, 1.0f, 1.0f);
         SUtil.sendTitle(player, ChatColor.RED + "SPECIAL ZEALOT");
         player.sendMessage(ChatColor.GREEN + "A special " + ChatColor.LIGHT_PURPLE + "Zealot" + ChatColor.GREEN + " has spawned nearby!");
-        new SEntity(killed, SEntityType.SPECIAL_ZEALOT, new Object[0]);
+        new SEntity(killed, SEntityType.SPECIAL_ZEALOT);
     }
     
     @Override
@@ -158,7 +158,7 @@ public class Zealot extends BaseEnderman
             player.playSound(player.getLocation(), Sound.WITHER_SPAWN, 1.0f, 1.0f);
             SUtil.sendTitle(player, ChatColor.RED + "SPECIAL ZEALOT");
             player.sendMessage(ChatColor.GREEN + "A special " + ChatColor.LIGHT_PURPLE + "Zealot" + ChatColor.GREEN + " has spawned nearby!");
-            new SEntity(killed, SEntityType.SPECIAL_ZEALOT, new Object[0]);
+            new SEntity(killed, SEntityType.SPECIAL_ZEALOT);
         }
         
         @Override

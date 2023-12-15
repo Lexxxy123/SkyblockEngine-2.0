@@ -74,7 +74,7 @@ public class EntityPopulator
                         ++attempts;
                     } while (available == null && attempts <= 150);
                     if (available != null) {
-                        EntityPopulator.this.spawned.add(new SEntity(available.clone().add(0.5, 0.0, 0.5), EntityPopulator.this.type, new Object[0]));
+                        EntityPopulator.this.spawned.add(new SEntity(available.clone().add(0.5, 0.0, 0.5), EntityPopulator.this.type));
                     }
                 }
             }

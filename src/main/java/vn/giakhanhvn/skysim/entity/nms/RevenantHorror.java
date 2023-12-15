@@ -138,12 +138,12 @@ public class RevenantHorror extends EntityZombie implements SNMSEntity, EntityFu
         SUtil.delay(() -> this.Cooldown = false, 400L);
         entity.setMetadata("BOSS_OWNER_" + Bukkit.getPlayer(this.getSpawnerUUID()).getUniqueId().toString(), (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
         entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        this.hologram = new SEntity(entity.getLocation().add(0.0, 2.3, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND, new Object[0]);
+        this.hologram = new SEntity(entity.getLocation().add(0.0, 2.3, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND);
         ((ArmorStand)this.hologram.getEntity()).setVisible(false);
         ((ArmorStand)this.hologram.getEntity()).setGravity(false);
         this.hologram.getEntity().setCustomNameVisible(true);
         entity.setMetadata("notDisplay", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        this.hologram_name = new SEntity(entity.getLocation().add(0.0, 2.0, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND, new Object[0]);
+        this.hologram_name = new SEntity(entity.getLocation().add(0.0, 2.0, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND);
         ((ArmorStand)this.hologram_name.getEntity()).setVisible(false);
         final Entity e = this.getBukkitEntity().getHandle();
         final double height = e.getBoundingBox().e - e.getBoundingBox().b;

@@ -94,14 +94,14 @@ public class TarantulaBroodfather extends EntitySpider implements SNMSEntity, En
         entity.setMetadata("BOSS_OWNER_" + Bukkit.getPlayer(this.getSpawnerUUID()).getUniqueId().toString(), (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
         entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
         this.top = new SEntity((org.bukkit.entity.Entity)entity, SEntityType.TOP_CAVE_SPIDER, new Object[] { this });
-        this.hologram = new SEntity(entity.getLocation().add(0.0, 1.3, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND, new Object[0]);
+        this.hologram = new SEntity(entity.getLocation().add(0.0, 1.3, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND);
         ((ArmorStand)this.hologram.getEntity()).setVisible(false);
         ((ArmorStand)this.hologram.getEntity()).setGravity(false);
         this.hologram.getEntity().setCustomNameVisible(true);
         final Entity e = this.getBukkitEntity().getHandle();
         final double height = e.getBoundingBox().e - e.getBoundingBox().b;
         entity.setMetadata("notDisplay", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        this.hologram_name = new SEntity(entity.getLocation().add(0.0, height, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND, new Object[0]);
+        this.hologram_name = new SEntity(entity.getLocation().add(0.0, height, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND);
         ((ArmorStand)this.hologram_name.getEntity()).setVisible(false);
         ((ArmorStand)this.hologram_name.getEntity()).setGravity(false);
         this.hologram_name.getEntity().setCustomNameVisible(true);

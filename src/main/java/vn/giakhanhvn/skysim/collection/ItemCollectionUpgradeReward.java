@@ -21,5 +21,6 @@ public class ItemCollectionUpgradeReward extends ItemCollectionReward
     
     @Override
     public void onAchieve(final Player player) {
+
     }
 }

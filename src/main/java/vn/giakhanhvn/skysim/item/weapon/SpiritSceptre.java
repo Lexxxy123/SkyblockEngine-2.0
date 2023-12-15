@@ -208,7 +208,7 @@ public class SpiritSceptre implements ToolStatistics, MaterialFunction, Ability
                                     continue;
                                 }
                                 final User user = User.getUser(player1.getUniqueId());
-                                final ArmorStand stand3 = (ArmorStand)new SEntity(entity2.getLocation().clone().add(SUtil.random(-1.5, 1.5), 1.0, SUtil.random(-1.5, 1.5)), SEntityType.UNCOLLIDABLE_ARMOR_STAND, new Object[0]).getEntity();
+                                final ArmorStand stand3 = (ArmorStand)new SEntity(entity2.getLocation().clone().add(SUtil.random(-1.5, 1.5), 1.0, SUtil.random(-1.5, 1.5)), SEntityType.UNCOLLIDABLE_ARMOR_STAND).getEntity();
                                 stand3.setCustomName("" + ChatColor.GRAY + (int)finalDamage);
                                 stand3.setCustomNameVisible(true);
                                 stand3.setGravity(false);

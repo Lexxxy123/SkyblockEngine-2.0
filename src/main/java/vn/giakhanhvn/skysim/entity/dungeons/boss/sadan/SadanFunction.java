@@ -40,7 +40,7 @@ public class SadanFunction
     }
     
     public static void jlp(final World w) {
-        final SEntity se_jollypink = new SEntity(new Location(w, 183.5, 84.0, 253.5, -45.0f, 0.0f), SEntityType.GIANT_DUMMY, new Object[0]);
+        final SEntity se_jollypink = new SEntity(new Location(w, 183.5, 84.0, 253.5, -45.0f, 0.0f), SEntityType.GIANT_DUMMY);
         final LivingEntity e = se_jollypink.getEntity();
         final EntityEquipment eq = e.getEquipment();
         eq.setItemInHand((ItemStack)null);
@@ -52,7 +52,7 @@ public class SadanFunction
     }
     
     public static void lasrg(final World w) {
-        final SEntity se_jollypink = new SEntity(new Location(w, 199.5, 84.0, 253.5, 45.0f, 0.0f), SEntityType.GIANT_DUMMY, new Object[0]);
+        final SEntity se_jollypink = new SEntity(new Location(w, 199.5, 84.0, 253.5, 45.0f, 0.0f), SEntityType.GIANT_DUMMY);
         final LivingEntity e = se_jollypink.getEntity();
         final EntityEquipment eq = e.getEquipment();
         eq.setItemInHand((ItemStack)null);
@@ -64,7 +64,7 @@ public class SadanFunction
     }
     
     public static void diag(final World w) {
-        final SEntity se_jollypink = new SEntity(new Location(w, 183.5, 84.0, 279.5, -135.0f, 0.0f), SEntityType.GIANT_DUMMY, new Object[0]);
+        final SEntity se_jollypink = new SEntity(new Location(w, 183.5, 84.0, 279.5, -135.0f, 0.0f), SEntityType.GIANT_DUMMY);
         final LivingEntity e = se_jollypink.getEntity();
         final EntityEquipment eq = e.getEquipment();
         eq.setItemInHand(SUtil.enchant(c(Material.DIAMOND_SWORD)));
@@ -76,7 +76,7 @@ public class SadanFunction
     }
     
     public static void bfg(final World w) {
-        final SEntity se_jollypink = new SEntity(new Location(w, 199.5, 84.0, 279.5, 135.0f, 0.0f), SEntityType.GIANT_DUMMY, new Object[0]);
+        final SEntity se_jollypink = new SEntity(new Location(w, 199.5, 84.0, 279.5, 135.0f, 0.0f), SEntityType.GIANT_DUMMY);
         final LivingEntity e = se_jollypink.getEntity();
         final EntityEquipment eq = e.getEquipment();
         eq.setItemInHand((ItemStack)null);
@@ -144,7 +144,7 @@ public class SadanFunction
         for (final Entity e : w.getEntities()) {
             if (e.hasMetadata("JollyPink")) {
                 e.remove();
-                new SEntity(new Location(e.getWorld(), e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), e.getLocation().getYaw(), 0.0f), SEntityType.JOLLY_PINK_SADAN, new Object[0]);
+                new SEntity(new Location(e.getWorld(), e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), e.getLocation().getYaw(), 0.0f), SEntityType.JOLLY_PINK_SADAN);
                 w.strikeLightningEffect(e.getLocation());
                 break;
             }
@@ -156,7 +156,7 @@ public class SadanFunction
         for (final Entity e : w.getEntities()) {
             if (e.hasMetadata("Diamond")) {
                 e.remove();
-                new SEntity(new Location(e.getWorld(), e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), e.getLocation().getYaw(), 0.0f), SEntityType.DIAMOND_SADAN, new Object[0]);
+                new SEntity(new Location(e.getWorld(), e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), e.getLocation().getYaw(), 0.0f), SEntityType.DIAMOND_SADAN);
                 w.strikeLightningEffect(e.getLocation());
                 break;
             }
@@ -168,7 +168,7 @@ public class SadanFunction
         for (final Entity e : w.getEntities()) {
             if (e.hasMetadata("Bigfoot")) {
                 e.remove();
-                new SEntity(new Location(e.getWorld(), e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), e.getLocation().getYaw(), 0.0f), SEntityType.BIGFOOT_SADAN, new Object[0]);
+                new SEntity(new Location(e.getWorld(), e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), e.getLocation().getYaw(), 0.0f), SEntityType.BIGFOOT_SADAN);
                 w.strikeLightningEffect(e.getLocation());
                 break;
             }
@@ -180,7 +180,7 @@ public class SadanFunction
         for (final Entity e : w.getEntities()) {
             if (e.hasMetadata("LASR")) {
                 e.remove();
-                new SEntity(new Location(e.getWorld(), e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), e.getLocation().getYaw(), 0.0f), SEntityType.LASR_SADAN, new Object[0]);
+                new SEntity(new Location(e.getWorld(), e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), e.getLocation().getYaw(), 0.0f), SEntityType.LASR_SADAN);
                 w.strikeLightningEffect(e.getLocation());
                 break;
             }
@@ -191,17 +191,17 @@ public class SadanFunction
     public static void a(final World w, double x, double z, final float yaw) {
         x += 0.5;
         z += 0.5;
-        new SEntity(new Location(w, x, 69.0, z, yaw, 0.0f), SEntityType.TERRACOTTA_DUMMY, new Object[0]);
+        new SEntity(new Location(w, x, 69.0, z, yaw, 0.0f), SEntityType.TERRACOTTA_DUMMY);
     }
     
     public static void aA(final World w, double x, double z, final float yaw) {
         x += 0.5;
         z += 0.5;
-        new SEntity(new Location(w, x, 69.0, z, yaw, 0.0f), SEntityType.SLEEPING_GOLEM, new Object[0]);
+        new SEntity(new Location(w, x, 69.0, z, yaw, 0.0f), SEntityType.SLEEPING_GOLEM);
     }
     
     public static void b(final World w) {
-        new SEntity(new Location(w, 191.5, 54.0, 266.5, 180.0f, 0.0f), SEntityType.DUMMY_SADAN_1, new Object[0]);
+        new SEntity(new Location(w, 191.5, 54.0, 266.5, 180.0f, 0.0f), SEntityType.DUMMY_SADAN_1);
     }
     
     public static void s_(final Entity e) {

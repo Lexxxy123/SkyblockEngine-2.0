@@ -1,5 +1,6 @@
 package vn.giakhanhvn.skysim.command;
 
+import vn.giakhanhvn.skysim.collection.ItemCollection;
 import vn.giakhanhvn.skysim.dimoon.DimoonLootItem;
 import java.util.List;
 import java.util.Iterator;
@@ -59,8 +60,8 @@ public class SSTest extends SCommand
                     sitem.setStarAmount(5);
                 }
             }
-            else if (args[0].contains("gtp")) {
-                new SEntity((Entity)player, SEntityType.TEST_CHIMMY_OBJECT_T34, new Object[0]);
+            else if (args[0].contains("collectionup")) {
+                User.getUser(player.getUniqueId()).addToCollection(ItemCollection.WHEAT , 50);
             }
             else if (!args[0].contains("wipe")) {
                 if (args[0].contains("vlw")) {

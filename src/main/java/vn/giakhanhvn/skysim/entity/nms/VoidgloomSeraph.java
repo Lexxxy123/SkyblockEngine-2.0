@@ -588,7 +588,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
         SUtil.delay(() -> this.CooldownSkill3 = false, 100L);
         SUtil.delay(() -> this.CooldownSkill4 = false, 300L);
         final net.minecraft.server.v1_8_R3.Entity entity_ = this.getBukkitEntity().getHandle();
-        this.hologram = new SEntity(entity.getLocation().add(0.0, 3.2, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND, new Object[0]);
+        this.hologram = new SEntity(entity.getLocation().add(0.0, 3.2, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND);
         VoidgloomSeraph.BEACON_THROW.put((Entity)entity, Bukkit.getPlayer(this.spawnerUUID));
         ((ArmorStand)this.hologram.getEntity()).setVisible(false);
         ((ArmorStand)this.hologram.getEntity()).setGravity(false);
@@ -596,7 +596,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
         entity.setMetadata("notDisplay", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
         final net.minecraft.server.v1_8_R3.Entity e = this.getBukkitEntity().getHandle();
         final double height_ = e.getBoundingBox().e - e.getBoundingBox().b;
-        this.hologram_name = new SEntity(entity.getLocation().add(0.0, height_, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND, new Object[0]);
+        this.hologram_name = new SEntity(entity.getLocation().add(0.0, height_, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND);
         ((ArmorStand)this.hologram_name.getEntity()).setVisible(false);
         ((ArmorStand)this.hologram_name.getEntity()).setGravity(false);
         this.hologram_name.getEntity().setCustomNameVisible(true);

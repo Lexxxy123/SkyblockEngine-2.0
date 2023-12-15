@@ -99,7 +99,7 @@ public class Enchantment implements ConfigurationSerializable
         if (this.type == EnchantmentType.LIFE_STEAL) {
             return this.type.getDescription(Math.round(0.5 * this.level * 100.0) / 100.0);
         }
-        return this.type.getDescription(new Object[0]);
+        return this.type.getDescription();
     }
     
     public static Enchantment getByIdentifiable(final String identifiable) {

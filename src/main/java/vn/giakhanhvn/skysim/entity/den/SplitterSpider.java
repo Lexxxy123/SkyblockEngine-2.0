@@ -30,7 +30,7 @@ public class SplitterSpider extends BaseSpider
     public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
         super.onDeath(sEntity, killed, damager);
         for (int i = 0; i < 2; ++i) {
-            new SEntity((Entity)sEntity.getEntity(), SEntityType.SILVERFISH, new Object[0]);
+            new SEntity((Entity)sEntity.getEntity(), SEntityType.SILVERFISH);
         }
     }
 }

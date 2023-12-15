@@ -63,7 +63,7 @@ public class PotionEffect
         if (this.type == PotionEffectType.SPIRIT) {
             return this.type.getDescription(this.level * 10, this.level * 10);
         }
-        return this.type.getDescription(new Object[0]);
+        return this.type.getDescription();
     }
     
     public String getDurationDisplay() {

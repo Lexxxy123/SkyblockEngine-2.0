@@ -45,7 +45,7 @@ public class SpawnSpecCommand extends SCommand
                 break;
             }
             default:
-                entity = new SEntity((Entity)player, type, new Object[0]);
+                entity = new SEntity((Entity)player, type);
                 break;
         }
         this.send(ChatColor.GREEN + "Success! You have spawned a(n) " + ChatColor.GOLD + entity.getStatistics().getEntityName());

@@ -292,7 +292,7 @@ public class TerracottaSadan extends BaseZombie
                     this.cancel();
                     return;
                 }
-                new SEntity(respawnAnchor.getLocation().clone(), SEntityType.TERRACOTTA_SADAN, new Object[0]);
+                new SEntity(respawnAnchor.getLocation().clone(), SEntityType.TERRACOTTA_SADAN);
             }
         }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 201L);
     }

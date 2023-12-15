@@ -145,7 +145,7 @@ public class AnimationSequence
         pasteGlass(w, 300, 2);
         pasteBase(w, 301);
         SUtil.delay(() -> r(w), 301L);
-        SUtil.delay(() -> new SEntity(new Location(w, 191.5, 54.0, 266.5, 180.0f, 0.0f), SEntityType.DUMMY_FUNCTION_2, new Object[0]), 300L);
+        SUtil.delay(() -> new SEntity(new Location(w, 191.5, 54.0, 266.5, 180.0f, 0.0f), SEntityType.DUMMY_FUNCTION_2), 300L);
     }
     
     public static void r(final World w) {

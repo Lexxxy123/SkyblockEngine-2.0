@@ -9,8 +9,9 @@ import java.util.List;
 
 public class ShapelessRecipe extends Recipe<ShapelessRecipe>
 {
-    private static final List<ShapelessRecipe> CACHED_RECIPES;
+    public static final List<ShapelessRecipe> CACHED_RECIPES;
     private final List<MaterialQuantifiable> ingredientList;
+    private boolean isVanilla;
     
     public ShapelessRecipe(final SItem result, final boolean usesExchangeables) {
         super(result, usesExchangeables);
@@ -36,13 +37,21 @@ public class ShapelessRecipe extends Recipe<ShapelessRecipe>
         return this;
     }
     
+    public ShapelessRecipe add(final MaterialQuantifiable material , boolean isVanilla) {
+        this.ingredientList.add(material.clone());
+        this.isVanilla = isVanilla;
+        return this;
+    }
     public ShapelessRecipe add(final MaterialQuantifiable material) {
         this.ingredientList.add(material.clone());
         return this;
     }
     
     public ShapelessRecipe add(final SMaterial material, final int amount) {
-        return this.add(new MaterialQuantifiable(material, amount));
+        return this.add(new MaterialQuantifiable(material, amount) , false);
+    }
+    public ShapelessRecipe add(final SMaterial material, final int amount , boolean isVanilla) {
+        return this.add(new MaterialQuantifiable(material, amount) , isVanilla);
     }
     
     @Override
@@ -98,7 +107,11 @@ public class ShapelessRecipe extends Recipe<ShapelessRecipe>
         }
         return false;
     }
-    
+
+    public boolean isVanilla() {
+        return isVanilla;
+    }
+
     public List<MaterialQuantifiable> getIngredientList() {
         return this.ingredientList;
     }

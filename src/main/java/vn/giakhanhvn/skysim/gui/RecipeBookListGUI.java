@@ -2,6 +2,8 @@ package vn.giakhanhvn.skysim.gui;
 
 import java.util.List;
 import java.util.Iterator;
+
+import vn.giakhanhvn.skysim.user.User;
 import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -17,17 +19,18 @@ public class RecipeBookListGUI extends GUI
 {
     private static final int[] INTERIOR;
     
-    public RecipeBookListGUI(final String query, int page) {
+    public RecipeBookListGUI(String query, int page , Player player) {
         super("Recipe Book", 54);
         this.border(RecipeBookListGUI.BLACK_STAINED_GLASS_PANE);
+        if (player == null) return;
         final PaginationList<SItem> pagedMaterials = new PaginationList<SItem>(28);
         for (final ShapedRecipe sr : ShapedRecipe.CACHED_RECIPES) {
             final String lc = sr.getResult().getType().toString().toLowerCase();
-            if (lc.contains("hidden") || lc.contains("enchanted_book")) {
+            if (sr.isUnlockedForPlayer(User.getUser(player.getUniqueId())) && !sr.isVanilla()) {
                 pagedMaterials.add(sr.getResult());
             }
         }
-        if (pagedMaterials.size() == 0) {
+        if (pagedMaterials.isEmpty()) {
             page = 0;
         }
         this.title = "Recipe Book (" + page + "/" + pagedMaterials.getPageCount() + ")";
@@ -44,7 +47,7 @@ public class RecipeBookListGUI extends GUI
                 public int getSlot() {
                     return 45;
                 }
-                
+
                 @Override
                 public ItemStack getItem() {
                     return SUtil.createNamedItemStack(Material.ARROW, ChatColor.GRAY + "Pervious Page");
@@ -102,19 +105,23 @@ public class RecipeBookListGUI extends GUI
     @Override
     public void onOpen(final GUIOpenEvent e) {
         final Player player = e.getPlayer();
+
         this.set(GUIClickableItem.createGUIOpenerItem(GUIType.SKYBLOCK_MENU, player, ChatColor.GREEN + "Go Back", 48, Material.ARROW, ChatColor.GRAY + "To SkySim Menu"));
     }
     
-    public RecipeBookListGUI(final String query) {
-        this(query, 1);
+    public RecipeBookListGUI(final String query , Player player) {
+        this(query, 1 , player);
     }
     
     public RecipeBookListGUI(final int page) {
-        this("", page);
+        this("", page , null);
     }
     
     public RecipeBookListGUI() {
-        this(1);
+        this("" , 1 , null);
+    }
+    public RecipeBookListGUI(Player player) {
+        this("" , 1 , player);
     }
     
     static {

@@ -25,7 +25,7 @@ public class BroodMother extends BaseSpider
     @Override
     public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
         for (int am = SUtil.random(4, 5), i = 0; i < am; ++i) {
-            new SEntity((Entity)sEntity.getEntity(), SEntityType.CAVE_SPIDER, new Object[0]);
+            new SEntity((Entity)sEntity.getEntity(), SEntityType.CAVE_SPIDER);
         }
     }
     

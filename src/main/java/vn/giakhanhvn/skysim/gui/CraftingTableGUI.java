@@ -1,6 +1,6 @@
 package vn.giakhanhvn.skysim.gui;
 
-import vn.giakhanhvn.skysim.item.SMaterial;
+import vn.giakhanhvn.skysim.item.*;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.plugin.Plugin;
 import vn.giakhanhvn.skysim.SkySimEngine;
@@ -9,12 +9,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.Map;
 import java.util.Iterator;
 import org.bukkit.inventory.Inventory;
+import vn.giakhanhvn.skysim.user.User;
 import vn.giakhanhvn.skysim.util.SUtil;
 import java.util.List;
-import vn.giakhanhvn.skysim.item.MaterialQuantifiable;
 import java.util.ArrayList;
-import vn.giakhanhvn.skysim.item.Recipe;
-import vn.giakhanhvn.skysim.item.SItem;
+
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -23,6 +22,8 @@ public class CraftingTableGUI extends GUI implements BlockBasedGUI
 {
     private static final ItemStack RECIPE_REQUIRED;
     private static final int[] CRAFT_SLOTS;
+
+    private static final ItemStack LOCKED_RECIPE_ITEM;
     private static final int RESULT_SLOT = 24;
     
     public CraftingTableGUI() {
@@ -151,6 +152,10 @@ public class CraftingTableGUI extends GUI implements BlockBasedGUI
                             SUtil.border(inventory, gui, SUtil.createColoredStainedGlassPane((short)14, ChatColor.RESET + " "), 50, 53, true, false);
                             return;
                         }
+                        if (!recipe.isUnlockedForPlayer(User.getUser(e.getPlayer().getUniqueId())) && !isVanilla(recipe)){
+                            inventory.setItem(24, CraftingTableGUI.LOCKED_RECIPE_ITEM);
+                            return;
+                        }
                         final SItem sItem = recipe.getResult();
                         inventory.setItem(24, sItem.getStack());
                         SUtil.border(inventory, gui, SUtil.createColoredStainedGlassPane((short)5, ChatColor.RESET + " "), 45, 48, true, false);
@@ -187,9 +192,18 @@ public class CraftingTableGUI extends GUI implements BlockBasedGUI
         }
         return -1;
     }
+    private boolean isVanilla(Recipe<?> recipe) {
+        if (recipe instanceof ShapedRecipe) {
+            return ((ShapedRecipe) recipe).isVanilla();
+        } else if (recipe instanceof ShapelessRecipe) {
+            return ((ShapelessRecipe) recipe).isVanilla();
+        }
+        return false;
+    }
     
     static {
         RECIPE_REQUIRED = SUtil.createNamedItemStack(Material.BARRIER, ChatColor.RED + "Recipe Required");
+        LOCKED_RECIPE_ITEM = SUtil.createNamedItemStack(Material.BARRIER, ChatColor.RED + "Locked Recipe");
         CRAFT_SLOTS = new int[] { 10, 11, 12, 19, 20, 21, 28, 29, 30 };
     }
 }

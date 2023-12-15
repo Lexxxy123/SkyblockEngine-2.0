@@ -5,7 +5,11 @@ import java.util.Iterator;
 import java.util.Collections;
 import java.util.Arrays;
 import java.util.ArrayList;
+
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import vn.giakhanhvn.skysim.user.User;
+
 import java.util.List;
 
 public abstract class Recipe<T>
@@ -33,6 +37,9 @@ public abstract class Recipe<T>
             return shaped;
         }
         return ShapelessRecipe.parseShapelessRecipe(stacks);
+    }
+    public boolean isUnlockedForPlayer(User user){
+        return user.getUnlockedRecipes().contains(result.getDisplayName());
     }
     
     protected static MaterialQuantifiable[][] airless(final MaterialQuantifiable[][] grid) {

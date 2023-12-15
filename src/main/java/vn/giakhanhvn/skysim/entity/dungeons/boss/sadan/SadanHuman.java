@@ -390,7 +390,7 @@ public class SadanHuman extends BaseZombie
         for (final Entity e2 : e.getWorld().getEntities()) {
             if (e2.hasMetadata("t_sadan_p1_1")) {
                 e2.remove();
-                new SEntity(new Location(e2.getWorld(), e2.getLocation().getX(), e2.getLocation().getY(), e2.getLocation().getZ(), e2.getLocation().getYaw(), 0.0f), SEntityType.TERRACOTTA_SADAN, new Object[0]);
+                new SEntity(new Location(e2.getWorld(), e2.getLocation().getX(), e2.getLocation().getY(), e2.getLocation().getZ(), e2.getLocation().getYaw(), 0.0f), SEntityType.TERRACOTTA_SADAN);
             }
         }
     }
@@ -455,7 +455,7 @@ public class SadanHuman extends BaseZombie
                 if (String.valueOf(e.getLocation().getY()).contains("79")) {
                     new BukkitRunnable() {
                         public void run() {
-                            new SEntity(new Location(e.getWorld(), e.getLocation().getX(), 69.0, e.getLocation().getZ(), 0.0f, 0.0f), SEntityType.GIANT_SADAN, new Object[0]);
+                            new SEntity(new Location(e.getWorld(), e.getLocation().getX(), 69.0, e.getLocation().getZ(), 0.0f, 0.0f), SEntityType.GIANT_SADAN);
                             e.getWorld().playSound(e.getLocation(), Sound.ENDERDRAGON_GROWL, 100.0f, 0.85f);
                             for (final Entity e1 : e.getWorld().getEntities()) {
                                 if (e1.hasMetadata("dummyforphase3")) {

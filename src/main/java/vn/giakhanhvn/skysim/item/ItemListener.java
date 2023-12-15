@@ -388,7 +388,7 @@ public class ItemListener extends PListener
                             finalDamage *= 2.0;
                             EdibleMace.edibleMace.put(player.getUniqueId(), false);
                         }
-                        final ArmorStand stand3 = (ArmorStand)new SEntity(entity.getLocation().clone().add(SUtil.random(-1.5, 1.5), 1.0, SUtil.random(-1.5, 1.5)), SEntityType.UNCOLLIDABLE_ARMOR_STAND, new Object[0]).getEntity();
+                        final ArmorStand stand3 = (ArmorStand)new SEntity(entity.getLocation().clone().add(SUtil.random(-1.5, 1.5), 1.0, SUtil.random(-1.5, 1.5)), SEntityType.UNCOLLIDABLE_ARMOR_STAND).getEntity();
                         if (finalCritDamage == 0.0) {
                             stand3.setCustomName("" + ChatColor.GRAY + (int)finalDamage);
                         }
@@ -726,7 +726,7 @@ public class ItemListener extends PListener
                     if (chance >= 96) {
                         dragonType = SEntityType.SUPERIOR_DRAGON;
                     }
-                    final SEntity entity = new SEntity(block.getLocation().clone().add(0.0, 53.0, 0.0), dragonType, new Object[0]);
+                    final SEntity entity = new SEntity(block.getLocation().clone().add(0.0, 53.0, 0.0), dragonType);
                     block.getWorld().spawnEntity(block.getWorld().getBlockAt(-642, 36, -246).getLocation().add(-0.5, 0.7, -0.5), EntityType.ENDER_CRYSTAL);
                     block.getWorld().spawnEntity(block.getWorld().getBlockAt(-635, 51, -233).getLocation().add(-0.5, 0.7, -0.5), EntityType.ENDER_CRYSTAL);
                     block.getWorld().spawnEntity(block.getWorld().getBlockAt(-717, 39, -255).getLocation().add(-0.5, 0.7, -0.5), EntityType.ENDER_CRYSTAL);

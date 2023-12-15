@@ -31,17 +31,17 @@ public abstract class BaseEnderman implements EndermanStatistics, EntityFunction
             final Location k = killed.getLocation().clone();
             if (SUtil.random(0, 8) == 0 && quest.getType().getTier() == 3) {
                 SlayerQuest.playMinibossSpawn(k, (Entity)player);
-                SUtil.delay(() -> new SEntity(k, SEntityType.VOIDLING_DEVOTEE, new Object[0]).setTarget((LivingEntity)player), 12L);
+                SUtil.delay(() -> new SEntity(k, SEntityType.VOIDLING_DEVOTEE).setTarget((LivingEntity)player), 12L);
                 return;
             }
             if (SUtil.random(0, 16) == 0 && quest.getType().getTier() == 4) {
                 SlayerQuest.playMinibossSpawn(k, (Entity)player);
-                SUtil.delay(() -> new SEntity(k, SEntityType.VOIDLING_RADICAL, new Object[0]).setTarget((LivingEntity)player), 12L);
+                SUtil.delay(() -> new SEntity(k, SEntityType.VOIDLING_RADICAL).setTarget((LivingEntity)player), 12L);
                 return;
             }
             if (SUtil.random(0, 45) == 0 && quest.getType().getTier() == 4) {
                 SlayerQuest.playMinibossSpawn(k, (Entity)player);
-                SUtil.delay(() -> new SEntity(k, SEntityType.VOIDCRAZED_MANIAC, new Object[0]).setTarget((LivingEntity)player), 12L);
+                SUtil.delay(() -> new SEntity(k, SEntityType.VOIDCRAZED_MANIAC).setTarget((LivingEntity)player), 12L);
             }
         }
     }

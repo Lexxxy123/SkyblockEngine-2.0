@@ -63,17 +63,17 @@ public abstract class BaseWolf implements WolfStatistics, EntityFunction
             final Location k = killed.getLocation().clone();
             if (SUtil.random(0, 8) == 0 && quest.getType().getTier() >= 3 && quest.getType().getTier() < 4) {
                 SlayerQuest.playMinibossSpawn(k, (Entity)player);
-                SUtil.delay(() -> new SEntity(k, SEntityType.SVEN_FOLLOWER, new Object[0]).setTarget((LivingEntity)player), 12L);
+                SUtil.delay(() -> new SEntity(k, SEntityType.SVEN_FOLLOWER).setTarget((LivingEntity)player), 12L);
                 return;
             }
             if (SUtil.random(0, 12) == 0 && quest.getType().getTier() >= 4) {
                 SlayerQuest.playMinibossSpawn(k, (Entity)player);
-                SUtil.delay(() -> new SEntity(k, SEntityType.PACK_ENFORCER, new Object[0]).setTarget((LivingEntity)player), 12L);
+                SUtil.delay(() -> new SEntity(k, SEntityType.PACK_ENFORCER).setTarget((LivingEntity)player), 12L);
                 return;
             }
             if (SUtil.random(0, 25) == 0 && quest.getType().getTier() >= 4) {
                 SlayerQuest.playMinibossSpawn(k, (Entity)player);
-                SUtil.delay(() -> new SEntity(k, SEntityType.SVEN_ALPHA, new Object[0]).setTarget((LivingEntity)player), 12L);
+                SUtil.delay(() -> new SEntity(k, SEntityType.SVEN_ALPHA).setTarget((LivingEntity)player), 12L);
             }
         }
     }

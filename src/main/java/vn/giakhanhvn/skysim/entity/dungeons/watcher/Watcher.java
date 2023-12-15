@@ -726,7 +726,7 @@ public class Watcher implements Listener
                         stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 0.25, 0.0), Effect.EXPLOSION, 0, 1, (float)Watcher.random(-0.5, 0.5), (float)Watcher.random(-1, 1), (float)Watcher.random(-0.5, 0.5), 0.0f, 1, 20);
                     }
                     stand.getWorld().playSound(stand.getLocation(), Sound.ZOMBIE_REMEDY, 0.2f, 1.8f);
-                    new SEntity(stand.getLocation(), SEntityType.valueOf(h.stype), new Object[0]);
+                    new SEntity(stand.getLocation(), SEntityType.valueOf(h.stype));
                     this.cancel();
                     return;
                 }

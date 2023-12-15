@@ -129,7 +129,7 @@ public class WatcherParasite extends BaseZombie
     @Override
     public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
         for (int i = 0; i < 3; ++i) {
-            new SEntity(killed.getLocation(), SEntityType.WATCHER_PARASITE_SILVERFISH, new Object[0]);
+            new SEntity(killed.getLocation(), SEntityType.WATCHER_PARASITE_SILVERFISH);
         }
     }
     

@@ -74,7 +74,7 @@ public abstract class PowerOrb implements SkullStatistics, MaterialFunction, Abi
             s.remove();
             player.sendMessage(ChatColor.YELLOW + "Your previous " + instance.getColoredName() + ChatColor.YELLOW + " was removed!");
         }
-        final SEntity sEntity = new SEntity(sloc, SEntityType.VELOCITY_ARMOR_STAND, new Object[0]);
+        final SEntity sEntity = new SEntity(sloc, SEntityType.VELOCITY_ARMOR_STAND);
         final ArmorStand stand = (ArmorStand)sEntity.getEntity();
         PowerOrb.POWER_ORB_MAP.put(player.getUniqueId(), new PowerOrbInstance() {
             @Override

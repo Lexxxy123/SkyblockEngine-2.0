@@ -126,14 +126,14 @@ public class SvenPackmaster extends EntityWolf implements SNMSEntity, EntityFunc
         if (player != null) {
             player.playSound(player.getLocation(), Sound.WOLF_HOWL, 1.0f, 5.0f);
         }
-        this.hologram = new SEntity(entity.getLocation().add(0.0, 1.1, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND, new Object[0]);
+        this.hologram = new SEntity(entity.getLocation().add(0.0, 1.1, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND);
         ((ArmorStand)this.hologram.getEntity()).setVisible(false);
         ((ArmorStand)this.hologram.getEntity()).setGravity(false);
         this.hologram.getEntity().setCustomNameVisible(true);
         entity.setMetadata("notDisplay", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
         final Entity e = this.getBukkitEntity().getHandle();
         final double height = e.getBoundingBox().e - e.getBoundingBox().b;
-        this.hologram_name = new SEntity(entity.getLocation().add(0.0, height, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND, new Object[0]);
+        this.hologram_name = new SEntity(entity.getLocation().add(0.0, height, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND);
         ((ArmorStand)this.hologram_name.getEntity()).setVisible(false);
         ((ArmorStand)this.hologram_name.getEntity()).setGravity(false);
         this.hologram_name.getEntity().setCustomNameVisible(true);

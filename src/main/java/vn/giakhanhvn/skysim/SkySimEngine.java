@@ -324,7 +324,7 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
                                 continue;
                             }
                             final ItemStack stack = entry.getValue();
-                            specShaped.set(entry.getKey(), SMaterial.getSpecEquivalent(stack.getType(), stack.getDurability()), stack.getAmount());
+                            specShaped.set(entry.getKey(), SMaterial.getSpecEquivalent(stack.getType(), stack.getDurability()), stack.getAmount() , true);
                         }
                     }
                     if (!(recipe instanceof ShapelessRecipe)) {
@@ -333,7 +333,7 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
                     final ShapelessRecipe shapeless = (ShapelessRecipe)recipe;
                     final vn.giakhanhvn.skysim.item.ShapelessRecipe specShapeless = new vn.giakhanhvn.skysim.item.ShapelessRecipe(SItem.convert(shapeless.getResult()), Groups.EXCHANGEABLE_RECIPE_RESULTS.contains(result));
                     for (final ItemStack stack2 : shapeless.getIngredientList()) {
-                        specShapeless.add(SMaterial.getSpecEquivalent(stack2.getType(), stack2.getDurability()), stack2.getAmount());
+                        specShapeless.add(SMaterial.getSpecEquivalent(stack2.getType(), stack2.getDurability()), stack2.getAmount() , true);
                     }
                 }
                 SLog.info("Hooking SkySimEngine to PlaceholderAPI and registering...");

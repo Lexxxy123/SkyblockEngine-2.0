@@ -263,7 +263,7 @@ public class PrecursorEye implements MaterialFunction, SkullStatistics, ToolStat
                     if (PlayerUtils.Debugmsg.debugmsg) {
                         SLog.info("[DEBUG] " + player.getName() + " have dealt " + (float)damage2 * damageMultiplier + " damage! (Eye Beam Ability)");
                     }
-                    final ArmorStand stands = (ArmorStand)new SEntity(entity.getLocation().clone().add(SUtil.random(-1.5, 1.5), 1.0, SUtil.random(-1.5, 1.5)), SEntityType.UNCOLLIDABLE_ARMOR_STAND, new Object[0]).getEntity();
+                    final ArmorStand stands = (ArmorStand)new SEntity(entity.getLocation().clone().add(SUtil.random(-1.5, 1.5), 1.0, SUtil.random(-1.5, 1.5)), SEntityType.UNCOLLIDABLE_ARMOR_STAND).getEntity();
                     int finaldmg = (int)((int)damage2 * damageMultiplier);
                     if (EntityManager.DEFENSE_PERCENTAGE.containsKey(entity)) {
                         int defensepercent = EntityManager.DEFENSE_PERCENTAGE.get(entity);

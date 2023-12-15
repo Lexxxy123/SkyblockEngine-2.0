@@ -234,7 +234,7 @@ public class Arena
                             loc.getWorld().playEffect(loc.clone().add(0.0, -1.0, 0.0), Effect.EXPLOSION_HUGE, 0);
                             loc.getWorld().playSound(loc.clone().add(0.0, -1.0, 0.0), Sound.EXPLODE, 1.0f, 1.0f);
                             loc.getWorld().strikeLightningEffect(loc.clone().add(0.0, -1.0, 0.0));
-                            new SEntity(loc.clone().add(0.0, -1.0, 0.0), SEntityType.DIMOON_MINIBOSS, new Object[0]);
+                            new SEntity(loc.clone().add(0.0, -1.0, 0.0), SEntityType.DIMOON_MINIBOSS);
                             this.cancel();
                         }
                     }
