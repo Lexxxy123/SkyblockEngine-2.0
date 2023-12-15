@@ -4,11 +4,15 @@ import org.bukkit.Sound;
 import com.google.common.util.concurrent.AtomicDouble;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.entity.FallingBlock;
+
 import java.util.List;
+
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.Location;
+
 import java.util.ArrayList;
+
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -17,7 +21,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.Material;
 import vn.giakhanhvn.skysim.entity.SEntityEquipment;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
+
 import java.util.Iterator;
+
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
@@ -41,54 +47,53 @@ import vn.giakhanhvn.skysim.util.Sputnik;
 import org.bukkit.entity.LivingEntity;
 import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
 
-public class JollyPinkGiant extends BaseZombie
-{
+public class JollyPinkGiant extends BaseZombie {
     private static LivingEntity e;
     private boolean terToss;
     private boolean terTossCD;
-    
+
     public JollyPinkGiant() {
         this.terToss = false;
         this.terTossCD = true;
     }
-    
+
     @Override
     public String getEntityName() {
         return Sputnik.trans("&d&lJolly Pink Giant");
     }
-    
+
     @Override
     public double getEntityMaxHealth() {
         return 2.5E7;
     }
-    
+
     @Override
     public double getDamageDealt() {
         return 25000.0;
     }
-    
+
     @Override
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
         if (entity.getWorld().getPlayers().size() == 0) {
             return;
         }
         JollyPinkGiant.e = entity;
-        final AttributeInstance followRange = ((CraftLivingEntity)entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
+        final AttributeInstance followRange = ((CraftLivingEntity) entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
         followRange.setValue(500.0);
-        ((CraftZombie)entity).setBaby(false);
+        ((CraftZombie) entity).setBaby(false);
         final Player p = entity.getWorld().getPlayers().get(SUtil.random(0, entity.getWorld().getPlayers().size() - 1));
         if (p != null && p.getGameMode() != GameMode.SPECTATOR && p.getGameMode() != GameMode.CREATIVE) {
-            ((CraftZombie)entity).setTarget((LivingEntity)p);
+            ((CraftZombie) entity).setTarget(p);
         }
         SUtil.delay(() -> this.terTossCD = false, 60L);
-        Sputnik.applyPacketGiant((Entity)entity);
-        EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 30);
-        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("highername", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("Giant_", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+        Sputnik.applyPacketGiant(entity);
+        EntityManager.DEFENSE_PERCENTAGE.put(entity, 30);
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("highername", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("Giant_", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
-                final LivingEntity target = (LivingEntity)((CraftZombie)entity).getTarget();
+                final LivingEntity target = ((CraftZombie) entity).getTarget();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
@@ -100,10 +105,10 @@ public class JollyPinkGiant extends BaseZombie
                     JollyPinkGiant.this.launchTerrain(entity);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
-                final EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
+                final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
@@ -112,7 +117,7 @@ public class JollyPinkGiant extends BaseZombie
                     if (!(entities instanceof Player)) {
                         continue;
                     }
-                    final Player target = (Player)entities;
+                    final Player target = (Player) entities;
                     if (target.getGameMode() == GameMode.CREATIVE) {
                         continue;
                     }
@@ -124,20 +129,20 @@ public class JollyPinkGiant extends BaseZombie
                     }
                     entity.teleport(entity.getLocation().setDirection(target.getLocation().toVector().subtract(target.getLocation().toVector())));
                     for (final Player players : Bukkit.getOnlinePlayers()) {
-                        ((CraftPlayer)players).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)entity).getHandle(), 0));
+                        ((CraftPlayer) players).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) entity).getHandle(), 0));
                     }
-                    nms.r((net.minecraft.server.v1_8_R3.Entity)((CraftPlayer)target).getHandle());
+                    nms.r(((CraftPlayer) target).getHandle());
                     break;
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 5L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 5L);
     }
-    
+
     @Override
     public SEntityEquipment getEntityEquipment() {
         return new SEntityEquipment(null, b(14751108, Material.LEATHER_HELMET), b(14751108, Material.LEATHER_CHESTPLATE), b(14751108, Material.LEATHER_LEGGINGS), b(14751108, Material.LEATHER_BOOTS));
     }
-    
+
     @Override
     public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
         Sputnik.zero(killed);
@@ -145,32 +150,32 @@ public class JollyPinkGiant extends BaseZombie
             SadanHuman.SadanGiantsCount.put(killed.getWorld().getUID(), SadanHuman.SadanGiantsCount.get(killed.getWorld().getUID()) - 1);
         }
     }
-    
+
     @Override
     public boolean hasNameTag() {
         return false;
     }
-    
+
     @Override
     public boolean isVillager() {
         return false;
     }
-    
+
     @Override
     public boolean isBaby() {
         return false;
     }
-    
+
     @Override
     public double getXPDropped() {
         return 0.0;
     }
-    
+
     @Override
     public double getMovementSpeed() {
         return 0.3;
     }
-    
+
     public void launchTerrain(final LivingEntity e) {
         new BukkitRunnable() {
             public void run() {
@@ -183,14 +188,14 @@ public class JollyPinkGiant extends BaseZombie
                     this.cancel();
                     return;
                 }
-                final LivingEntity t = (LivingEntity)((CraftZombie)e).getTarget();
+                final LivingEntity t = ((CraftZombie) e).getTarget();
                 if (t != null) {
-                    JollyPinkGiant.this.throwTerrain(e, (Entity)t);
+                    JollyPinkGiant.this.throwTerrain(e, t);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 30L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 30L);
     }
-    
+
     public static ItemStack buildColorStack(final int hexcolor) {
         final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB(hexcolor));
         final ItemMeta itemMeta = stack.getItemMeta();
@@ -198,7 +203,7 @@ public class JollyPinkGiant extends BaseZombie
         stack.setItemMeta(itemMeta);
         return stack;
     }
-    
+
     public static ItemStack b(final int hexcolor, final Material m) {
         final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
         final ItemMeta itemMeta = stack.getItemMeta();
@@ -206,7 +211,7 @@ public class JollyPinkGiant extends BaseZombie
         stack.setItemMeta(itemMeta);
         return stack;
     }
-    
+
     public static ItemStack c(final Material m) {
         final ItemStack stack = new ItemStack(m);
         final ItemMeta itemMeta = stack.getItemMeta();
@@ -214,15 +219,15 @@ public class JollyPinkGiant extends BaseZombie
         stack.setItemMeta(itemMeta);
         return stack;
     }
-    
+
     public static void applyEffect(final PotionEffectType e, final Entity en, final int ticks, final int amp) {
-        ((LivingEntity)en).addPotionEffect(new PotionEffect(e, ticks, amp));
+        ((LivingEntity) en).addPotionEffect(new PotionEffect(e, ticks, amp));
     }
-    
+
     public static void damagePlayer(final Player p) {
-        p.sendMessage(Sputnik.trans("&d&lJolly Pink Giant &chit you with &eBoulder Toss &cfor " + SUtil.commaify(SadanFunction.dmgc(30000, p, (Entity)JollyPinkGiant.e)) + " &cdamage."));
+        p.sendMessage(Sputnik.trans("&d&lJolly Pink Giant &chit you with &eBoulder Toss &cfor " + SUtil.commaify(SadanFunction.dmgc(30000, p, JollyPinkGiant.e)) + " &cdamage."));
     }
-    
+
     public void throwTerrain(final LivingEntity e, final Entity target) {
         final Block b = target.getLocation().getBlock();
         final World world = e.getWorld();
@@ -233,8 +238,8 @@ public class JollyPinkGiant extends BaseZombie
         final List<Material> launchTypes = new ArrayList<Material>();
         for (int length = -1; length < 2; ++length) {
             for (int height = -1; height < 2; ++height) {
-                final Location loc = startBlock.clone().add((double)length, 0.0, (double)height);
-                final Location end = b.getLocation().clone().add((double)length, 0.0, (double)height);
+                final Location loc = startBlock.clone().add(length, 0.0, height);
+                final Location end = b.getLocation().clone().add(length, 0.0, height);
                 locationList.add(loc);
                 endList.add(end);
             }
@@ -266,20 +271,19 @@ public class JollyPinkGiant extends BaseZombie
             }
             launchTypes.add(mat);
             blockTypes.add(block.getBlock().getType());
-            return;
         });
         locationList.forEach(location -> {
             final Material material = launchTypes.get(locationList.indexOf(location));
             final Location origin = location.clone().add(0.0, 7.0, 0.0);
             final int pos = locationList.indexOf(location);
             final Location endPos = endList.get(pos);
-            final FallingBlock block2 = world.spawnFallingBlock(origin, material, (byte)blockData);
+            final FallingBlock block2 = world.spawnFallingBlock(origin, material, blockData);
             block2.setDropItem(false);
-            block2.setMetadata("t", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+            block2.setMetadata("t", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
             block2.setVelocity(Sputnik.calculateVelocityBlock(origin.toVector(), endPos.toVector(), 3));
         });
     }
-    
+
     @Override
     public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
         e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ZOMBIE_HURT, 1.0f, 0.0f);

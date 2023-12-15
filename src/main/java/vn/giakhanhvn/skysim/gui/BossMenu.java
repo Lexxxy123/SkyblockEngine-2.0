@@ -1,6 +1,7 @@
 package vn.giakhanhvn.skysim.gui;
 
 import java.util.HashMap;
+
 import vn.giakhanhvn.skysim.skill.Skill;
 import vn.giakhanhvn.skysim.skill.CombatSkill;
 import org.bukkit.Bukkit;
@@ -16,17 +17,17 @@ import vn.giakhanhvn.skysim.user.PlayerUtils;
 import vn.giakhanhvn.skysim.user.PlayerStatistics;
 import vn.giakhanhvn.skysim.user.User;
 import org.bukkit.entity.Player;
+
 import java.util.Map;
 
-public class BossMenu extends GUI
-{
+public class BossMenu extends GUI {
     public static final Map<Player, Boolean> ableToJoin;
     public static final Map<Player, Boolean> cooldownCata;
-    
+
     public BossMenu() {
         super("The Catacombs Demo", 36);
     }
-    
+
     @Override
     public void onOpen(final GUIOpenEvent e) {
         this.fill(BossMenu.BLACK_STAINED_GLASS_PANE);
@@ -40,42 +41,41 @@ public class BossMenu extends GUI
             @Override
             public void run(final InventoryClickEvent e) {
                 player.playSound(player.getLocation(), Sound.NOTE_STICKS, 1.0f, 1.0f);
-                GUIType.CATACOMBS_BOSS.getGUI().open((Player)e.getWhoClicked());
+                GUIType.CATACOMBS_BOSS.getGUI().open((Player) e.getWhoClicked());
             }
-            
+
             @Override
             public int getSlot() {
                 return 30;
             }
-            
+
             @Override
             public ItemStack getItem() {
                 String color = "&a";
                 if (Sputnik.runningFloors() >= 2) {
                     color = "&e";
-                }
-                else if (Sputnik.runningFloors() > 4) {
+                } else if (Sputnik.runningFloors() > 4) {
                     color = "&c";
                 }
-                return SUtil.getStack(ChatColor.GREEN + "Current Server Status", Material.WATCH, (short)0, 1, Sputnik.trans("&7Active Runs: " + color + SUtil.commaify(Sputnik.runningFloors()) + "&7/&a5"), Sputnik.trans("&7This Session total runs: &e" + SUtil.commaify(Sputnik.rf_())), Sputnik.trans("&7Server lifetime total runs: &e" + SUtil.commaify(runMade)), Sputnik.trans("&7Is rate limited: &cNo"), " ", ChatColor.YELLOW + "Click to refresh");
+                return SUtil.getStack(ChatColor.GREEN + "Current Server Status", Material.WATCH, (short) 0, 1, Sputnik.trans("&7Active Runs: " + color + SUtil.commaify(Sputnik.runningFloors()) + "&7/&a5"), Sputnik.trans("&7This Session total runs: &e" + SUtil.commaify(Sputnik.rf_())), Sputnik.trans("&7Server lifetime total runs: &e" + SUtil.commaify(runMade)), Sputnik.trans("&7Is rate limited: &cNo"), " ", ChatColor.YELLOW + "Click to refresh");
             }
         });
         this.set(new GUIClickableItem() {
             @Override
             public void run(final InventoryClickEvent e) {
                 player.playSound(player.getLocation(), Sound.NOTE_STICKS, 1.0f, 1.0f);
-                GUIType.BOSS_COLLECTION.getGUI().open((Player)e.getWhoClicked());
+                GUIType.BOSS_COLLECTION.getGUI().open((Player) e.getWhoClicked());
             }
-            
+
             @Override
             public int getSlot() {
                 return 32;
             }
-            
+
             @Override
             public ItemStack getItem() {
                 Bukkit.getServer();
-                return SUtil.getStack(ChatColor.GREEN + "Boss Collections", Material.BOOK_AND_QUILL, (short)0, 1, Sputnik.trans("&7Kill demo bosses and"), Sputnik.trans("&7earn special rewards."), " ", ChatColor.YELLOW + "Click to view");
+                return SUtil.getStack(ChatColor.GREEN + "Boss Collections", Material.BOOK_AND_QUILL, (short) 0, 1, Sputnik.trans("&7Kill demo bosses and"), Sputnik.trans("&7earn special rewards."), " ", ChatColor.YELLOW + "Click to view");
             }
         });
         this.set(new GUIClickableItem() {
@@ -105,23 +105,20 @@ public class BossMenu extends GUI
                         final Object val$player = player;
                         BossMenu.cooldownCata.put(player, false);
                     }, 1200L);
-                }
-                else if (!BossMenu.ableToJoin.get(player)) {
+                } else if (!BossMenu.ableToJoin.get(player)) {
                     player.sendMessage(ChatColor.RED + "Cannot send request! Already requesting?");
-                }
-                else if (BossMenu.cooldownCata.get(player)) {
+                } else if (BossMenu.cooldownCata.get(player)) {
                     player.sendMessage(ChatColor.RED + "You are on cooldown! Please try again!");
-                }
-                else {
+                } else {
                     player.sendMessage(ChatColor.RED + "You're already playing!");
                 }
             }
-            
+
             @Override
             public int getSlot() {
                 return 13;
             }
-            
+
             @Override
             public ItemStack getItem() {
                 ItemStack itemstack = null;
@@ -144,7 +141,7 @@ public class BossMenu extends GUI
             }
         });
     }
-    
+
     static {
         ableToJoin = new HashMap<Player, Boolean>();
         cooldownCata = new HashMap<Player, Boolean>();

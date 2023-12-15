@@ -1,9 +1,12 @@
 package vn.giakhanhvn.skysim.item.bow;
 
 import java.util.HashMap;
+
 import com.google.common.util.concurrent.AtomicDouble;
 import org.bukkit.inventory.PlayerInventory;
+
 import java.util.Iterator;
+
 import org.bukkit.util.Vector;
 import org.bukkit.Effect;
 import vn.giakhanhvn.skysim.listener.PlayerListener;
@@ -28,7 +31,9 @@ import org.bukkit.entity.Entity;
 import net.md_5.bungee.api.ChatColor;
 import vn.giakhanhvn.skysim.util.ManaReplacement;
 import vn.giakhanhvn.skysim.Repeater;
+
 import java.util.Set;
+
 import vn.giakhanhvn.skysim.util.Sputnik;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import vn.giakhanhvn.skysim.item.SItem;
@@ -48,61 +53,62 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import vn.giakhanhvn.skysim.item.SpecificItemType;
 import vn.giakhanhvn.skysim.item.GenericItemType;
 import vn.giakhanhvn.skysim.item.Rarity;
+
 import java.util.UUID;
 import java.util.Map;
+
 import vn.giakhanhvn.skysim.item.Ability;
 import vn.giakhanhvn.skysim.item.ToolStatistics;
 
-public class Terminator implements ToolStatistics, BowFunction, Ability
-{
+public class Terminator implements ToolStatistics, BowFunction, Ability {
     public static final Map<UUID, Integer> CountTerm;
     public static final Map<UUID, Boolean> USABLE_TERM;
-    
+
     @Override
     public String getDisplayName() {
         return "Terminator";
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.LEGENDARY;
     }
-    
+
     @Override
     public GenericItemType getType() {
         return GenericItemType.RANGED_WEAPON;
     }
-    
+
     @Override
     public SpecificItemType getSpecificType() {
         return SpecificItemType.BOW;
     }
-    
+
     @Override
     public int getBaseDamage() {
         return 310;
     }
-    
+
     @Override
     public double getBaseCritDamage() {
         return 2.5;
     }
-    
+
     @Override
     public double getBaseStrength() {
         return 50.0;
     }
-    
+
     @Override
     public double getBaseAttackSpeed() {
         return 40.0;
     }
-    
+
     @Override
     public boolean displayKills() {
         return false;
     }
-    
+
     @Override
     public void onInteraction(final PlayerInteractEvent e) {
         final Player shooter = e.getPlayer();
@@ -123,17 +129,16 @@ public class Terminator implements ToolStatistics, BowFunction, Ability
                 final Location l = location.clone();
                 l.setYaw(location.getYaw());
                 final Arrow a = shooter.getWorld().spawnArrow(l, l.getDirection(), 2.1f, 1.6f);
-                a.setShooter((ProjectileSource)shooter);
+                a.setShooter(shooter);
                 l.setYaw(location.getYaw() - 13.5f);
-                shooter.getWorld().spawnArrow(l, l.getDirection(), 2.1f, 1.6f).setShooter((ProjectileSource)shooter);
+                shooter.getWorld().spawnArrow(l, l.getDirection(), 2.1f, 1.6f).setShooter(shooter);
                 l.setYaw(location.getYaw() + 13.5f);
-                shooter.getWorld().spawnArrow(l, l.getDirection(), 2.1f, 1.6f).setShooter((ProjectileSource)shooter);
+                shooter.getWorld().spawnArrow(l, l.getDirection(), 2.1f, 1.6f).setShooter(shooter);
                 Terminator.USABLE_TERM.put(shooter.getUniqueId(), false);
                 final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(shooter.getUniqueId());
-                final double atkSpeed = (double)Math.min(100L, Math.round(statistics.getAttackSpeed().addAll()));
-                SUtil.delay(() -> Terminator.USABLE_TERM.put(shooter.getUniqueId(), true), (long)(14.0 / (1.0 + atkSpeed / 100.0)));
-            }
-            else if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
+                final double atkSpeed = (double) Math.min(100L, Math.round(statistics.getAttackSpeed().addAll()));
+                SUtil.delay(() -> Terminator.USABLE_TERM.put(shooter.getUniqueId(), true), (long) (14.0 / (1.0 + atkSpeed / 100.0)));
+            } else if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
                 shooter.updateInventory();
                 if (Terminator.USABLE_TERM.containsKey(shooter.getUniqueId()) && !Terminator.USABLE_TERM.get(shooter.getUniqueId())) {
                     return;
@@ -146,41 +151,41 @@ public class Terminator implements ToolStatistics, BowFunction, Ability
                 final Location l = location.clone();
                 l.setYaw(location.getYaw());
                 final Arrow a2 = shooter.getWorld().spawnArrow(l, l.getDirection(), 2.2f, 1.7f);
-                a2.setShooter((ProjectileSource)shooter);
+                a2.setShooter(shooter);
                 l.setYaw(location.getYaw() - 13.5f);
-                shooter.getWorld().spawnArrow(l, l.getDirection(), 2.2f, 1.7f).setShooter((ProjectileSource)shooter);
+                shooter.getWorld().spawnArrow(l, l.getDirection(), 2.2f, 1.7f).setShooter(shooter);
                 l.setYaw(location.getYaw() + 13.5f);
-                shooter.getWorld().spawnArrow(l, l.getDirection(), 2.2f, 1.7f).setShooter((ProjectileSource)shooter);
+                shooter.getWorld().spawnArrow(l, l.getDirection(), 2.2f, 1.7f).setShooter(shooter);
                 Terminator.USABLE_TERM.put(shooter.getUniqueId(), false);
                 final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(shooter.getUniqueId());
-                final double atkSpeed = (double)Math.min(100L, Math.round(statistics.getAttackSpeed().addAll()));
-                SUtil.delay(() -> Terminator.USABLE_TERM.put(shooter.getUniqueId(), true), (long)(14.0 / (1.0 + atkSpeed / 100.0)));
+                final double atkSpeed = (double) Math.min(100L, Math.round(statistics.getAttackSpeed().addAll()));
+                SUtil.delay(() -> Terminator.USABLE_TERM.put(shooter.getUniqueId(), true), (long) (14.0 / (1.0 + atkSpeed / 100.0)));
             }
         }
     }
-    
+
     @Override
     public void onBowShoot(final SItem bow, final EntityShootBowEvent e) {
-        final Player player = (Player)e.getEntity();
+        final Player player = (Player) e.getEntity();
         e.setCancelled(true);
         player.updateInventory();
     }
-    
+
     @Override
     public String getAbilityName() {
         return "Salvation";
     }
-    
+
     @Override
     public String getAbilityDescription() {
         return Sputnik.trans("Can be casted after landing &63 &7hits. &7Shoot a beam, penetrating up to &e5 &7foes and dealing &c2x &7the damage an arrow would. &7The beam always crits.");
     }
-    
+
     @Override
     public int getAbilityCooldownTicks() {
         return 0;
     }
-    
+
     @Override
     public void onAbilityUse(final Player player, final SItem sItem) {
         if (!Terminator.CountTerm.containsKey(player.getUniqueId())) {
@@ -188,7 +193,7 @@ public class Terminator implements ToolStatistics, BowFunction, Ability
         }
         String ACT = "true";
         if (Terminator.CountTerm.get(player.getUniqueId()) >= 3) {
-            final Location blockLocation = player.getTargetBlock((Set)null, 30).getLocation();
+            final Location blockLocation = player.getTargetBlock((Set) null, 30).getLocation();
             final Location crystalLocation = player.getEyeLocation().add(0.0, -0.1, 0.0);
             final Vector vector = blockLocation.clone().add(0.1, 0.0, 0.1).toVector().subtract(crystalLocation.clone().toVector());
             final double count = 40.0;
@@ -203,7 +208,7 @@ public class Terminator implements ToolStatistics, BowFunction, Ability
                     public String getReplacement() {
                         return "" + ChatColor.RED + ChatColor.BOLD + "NOT ENOUGH MANA";
                     }
-                    
+
                     @Override
                     public long getEnd() {
                         return c + 1500L;
@@ -213,7 +218,7 @@ public class Terminator implements ToolStatistics, BowFunction, Ability
             }
             Terminator.CountTerm.put(player.getUniqueId(), 0);
             player.getWorld().playSound(player.getLocation(), Sound.GHAST_FIREBALL, 1.0f, 1.0f);
-            for (int i = 1; i <= (int)count; ++i) {
+            for (int i = 1; i <= (int) count; ++i) {
                 for (final Entity entity : player.getWorld().getNearbyEntities(crystalLocation.clone().add(vector.clone().multiply(i / count)), 0.7, 1.0, 0.7)) {
                     if (ACT == "false") {
                         return;
@@ -248,8 +253,7 @@ public class Terminator implements ToolStatistics, BowFunction, Ability
                     if (helmet != null) {
                         if (helmet.getType() == SMaterial.WARDEN_HELMET) {
                             enchantBonus += (100.0 + 20.0 * realSpeedDIVC) / 100.0;
-                        }
-                        else if (helmet.getType() == SMaterial.HIDDEN_VOIDLINGS_WARDEN_HELMET) {
+                        } else if (helmet.getType() == SMaterial.HIDDEN_VOIDLINGS_WARDEN_HELMET) {
                             enchantBonus += (100.0 + 30.0 * realSpeedDIVC) / 100.0;
                         }
                     }
@@ -284,7 +288,7 @@ public class Terminator implements ToolStatistics, BowFunction, Ability
                     if (sItem.getDataInt("hpb") > 0) {
                         hpbwea = sItem.getDataInt("hpb") * 2;
                     }
-                    final PlayerBoostStatistics playerBoostStatistics = (PlayerBoostStatistics)material.getStatistics();
+                    final PlayerBoostStatistics playerBoostStatistics = (PlayerBoostStatistics) material.getStatistics();
                     final double baseDamage = (5.0 + (playerBoostStatistics.getBaseDamage() + hpbwea)) * (1.0 + statistics1.getStrength().addAll() / 100.0);
                     final int combatLevel = Skill.getLevel(User.getUser(player.getUniqueId()).getCombatXP(), false);
                     final double weaponBonus = 0.0;
@@ -321,7 +325,7 @@ public class Terminator implements ToolStatistics, BowFunction, Ability
                         }
                         finalDamage -= finalDamage * defensepercent / 100.0;
                     }
-                    user.damageEntity((Damageable)entity, finalDamage * 1.2);
+                    user.damageEntity((Damageable) entity, finalDamage * 1.2);
                     player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1.0f, 0.0f);
                     PlayerListener.spawnDamageInd(entity, finalDamage * 1.2, true);
                     ACT = "false";
@@ -331,17 +335,17 @@ public class Terminator implements ToolStatistics, BowFunction, Ability
             }
         }
     }
-    
+
     @Override
     public int getManaCost() {
         return 0;
     }
-    
+
     @Override
     public boolean displayUsage() {
         return false;
     }
-    
+
     @Override
     public void onBowHit(final Entity hit, final Player shooter, final Arrow arrow, final SItem weapon, final AtomicDouble finalDamage) {
         if (hit.isDead()) {
@@ -358,12 +362,12 @@ public class Terminator implements ToolStatistics, BowFunction, Ability
         }
         Terminator.CountTerm.put(shooter.getUniqueId(), Terminator.CountTerm.get(shooter.getUniqueId()) + 1);
     }
-    
+
     @Override
     public boolean isEnchanted() {
         return true;
     }
-    
+
     static {
         CountTerm = new HashMap<UUID, Integer>();
         USABLE_TERM = new HashMap<UUID, Boolean>();

@@ -1,6 +1,7 @@
 package vn.giakhanhvn.skysim.listener;
 
 import java.util.Collection;
+
 import org.bukkit.event.block.BlockPlaceEvent;
 import vn.giakhanhvn.skysim.extra.beam.Beam;
 import vn.giakhanhvn.skysim.entity.dungeons.watcher.Watcher;
@@ -26,7 +27,9 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutBlockAction;
 import net.minecraft.server.v1_8_R3.Blocks;
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import vn.giakhanhvn.skysim.dungeons.BlessingChest;
+
 import java.util.Set;
+
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import vn.giakhanhvn.skysim.enchantment.Enchantment;
@@ -72,17 +75,23 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import vn.giakhanhvn.skysim.item.pet.Pet;
 import vn.giakhanhvn.skysim.slayer.SlayerQuest;
+
 import java.util.Iterator;
+
 import org.bukkit.Location;
 import org.bukkit.Bukkit;
 import vn.giakhanhvn.skysim.user.TemporaryStats;
+
 import java.util.List;
 import java.lang.reflect.Field;
+
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import com.mojang.authlib.properties.Property;
 import vn.giakhanhvn.skysim.item.armor.VoidlingsWardenHelmet;
+
 import java.util.Base64;
+
 import com.mojang.authlib.GameProfile;
 import org.bukkit.inventory.meta.SkullMeta;
 import vn.giakhanhvn.skysim.item.SMaterial;
@@ -90,11 +99,15 @@ import vn.giakhanhvn.skysim.item.SItem;
 import org.bukkit.plugin.Plugin;
 import vn.giakhanhvn.skysim.user.UserStash;
 import org.bukkit.scheduler.BukkitRunnable;
+
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.ArrayList;
+
 import vn.giakhanhvn.skysim.entity.SEntityType;
 import vn.giakhanhvn.skysim.util.SputnikPlayer;
+
 import java.io.IOException;
+
 import vn.giakhanhvn.skysim.util.SLog;
 import vn.giakhanhvn.skysim.skill.Skill;
 import vn.giakhanhvn.skysim.item.armor.PrecursorEye;
@@ -114,22 +127,24 @@ import vn.giakhanhvn.skysim.item.SBlock;
 import vn.giakhanhvn.skysim.user.PlayerUtils;
 import vn.giakhanhvn.skysim.user.PlayerStatistics;
 import org.bukkit.event.player.PlayerMoveEvent;
+
 import java.util.HashMap;
+
 import org.bukkit.entity.Player;
+
 import java.util.UUID;
 import java.util.Map;
 
-public class PlayerListener extends PListener
-{
+public class PlayerListener extends PListener {
     private static final Map<UUID, BowShooting> BOW_MAP;
     private static final Map<UUID, CombatAction> COMBAT_MAP;
-    private Map<UUID, Boolean> isNotLoaded;
+    private final Map<UUID, Boolean> isNotLoaded;
     public static final Map<Player, Double> LAST_DAMAGE_DEALT;
-    
+
     public PlayerListener() {
         this.isNotLoaded = new HashMap<UUID, Boolean>();
     }
-    
+
     @EventHandler
     public void onPlayerMove(final PlayerMoveEvent e) {
         final Player player = e.getPlayer();
@@ -140,10 +155,9 @@ public class PlayerListener extends PListener
             User.getUser(player.getUniqueId()).kill(EntityDamageEvent.DamageCause.VOID, null);
         }
         if (block == null) {
-            return;
         }
     }
-    
+
     @EventHandler
     public void onPlayerJoin(final PlayerJoinEvent e) {
         final Player player = e.getPlayer();
@@ -152,7 +166,6 @@ public class PlayerListener extends PListener
             if (player.isOnline()) {
                 SkySimEngine.getPlugin().updateServerName(player);
             }
-            return;
         }, 10L);
         SUtil.delay(() -> {
             PlayerUtils.USER_SESSION_ID.put(player.getUniqueId(), UUID.randomUUID());
@@ -160,9 +173,7 @@ public class PlayerListener extends PListener
             PlayerUtils.AUTO_SLAYER.remove(player.getUniqueId());
             Repeater.SBA_MAP.remove(player.getUniqueId());
             PetsGUI.PET_SHOWN.remove(player.getUniqueId());
-            if (User.getHash().containsKey(player.getUniqueId())) {
-                User.getHash().remove(player.getUniqueId());
-            }
+            User.getHash().remove(player.getUniqueId());
             player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 1000000, 255));
             PrecursorEye.PrecursorLaser.put(player.getUniqueId(), false);
             final User user = User.getUser(player.getUniqueId());
@@ -176,8 +187,7 @@ public class PlayerListener extends PListener
             user.loadStatic();
             try {
                 user.loadPlayerData();
-            }
-            catch (final IllegalArgumentException | IOException e2) {
+            } catch (final IllegalArgumentException | IOException e2) {
                 SLog.severe("============ SKYSIM DATA LOAD ERROR ============");
                 SLog.severe("Ah shit, here we go again.");
                 SLog.severe(" ");
@@ -195,10 +205,10 @@ public class PlayerListener extends PListener
             if (quest != null) {
                 quest.setLastKilled(null);
             }
-            final int[] counters = { 0, 0 };
+            final int[] counters = {0, 0};
             final ArrayList<AtomicInteger> counters2 = new ArrayList<AtomicInteger>(5);
             counters2.add(new AtomicInteger());
-            new BukkitRunnable(){
+            new BukkitRunnable() {
 
                 public void run() {
                     if (!player.isOnline()) {
@@ -207,8 +217,8 @@ public class PlayerListener extends PListener
                     }
                     UserStash.getStash(player.getUniqueId()).sendNotificationMessage();
                 }
-            }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 600L, 550L);
-            new BukkitRunnable(){
+            }.runTaskTimer(SkySimEngine.getPlugin(), 600L, 550L);
+            new BukkitRunnable() {
 
                 public void run() {
                     ItemStack helm_vanilla;
@@ -225,7 +235,7 @@ public class PlayerListener extends PListener
                     final SItem helm = SItem.find(helm_vanilla);
                     if (helm != null && helm.getType() == SMaterial.HIDDEN_VOIDLINGS_WARDEN_HELMET) {
                         ItemStack smStack = helm.getStack();
-                        SkullMeta meta = (SkullMeta)smStack.getItemMeta();
+                        SkullMeta meta = (SkullMeta) smStack.getItemMeta();
                         GameProfile profile = new GameProfile(UUID.randomUUID(), null);
                         byte[] ed = Base64.getEncoder().encode(String.format("{textures:{SKIN:{url:\"http://textures.minecraft.net/texture/%s\"}}}", VoidlingsWardenHelmet.getTexture()).getBytes());
                         profile.getProperties().put("textures", new Property("textures", new String(ed)));
@@ -233,16 +243,15 @@ public class PlayerListener extends PListener
                             Field f = meta.getClass().getDeclaredField("profile");
                             f.setAccessible(true);
                             f.set(meta, profile);
-                        }
-                        catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException exception) {
+                        } catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException exception) {
                             // empty catch block
                         }
-                        smStack.setItemMeta((ItemMeta)meta);
+                        smStack.setItemMeta(meta);
                         player.getInventory().setHelmet(smStack);
                     }
                 }
-            }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
-            new BukkitRunnable(){
+            }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+            new BukkitRunnable() {
 
                 public void run() {
                     User u;
@@ -277,7 +286,7 @@ public class PlayerListener extends PListener
                         counters[1] = 1;
                     }
                 }
-            }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 20L);
+            }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 20L);
             final Pet.PetItem pet = User.getUser(player.getUniqueId()).getActivePet();
             final Pet petclass = User.getUser(player.getUniqueId()).getActivePetClass();
             if (pet != null && petclass != null) {
@@ -286,14 +295,13 @@ public class PlayerListener extends PListener
             SUtil.delay(() -> player.setHealth(player.getMaxHealth()), 1L);
             SUtil.delay(() -> this.getIsNotLoaded().remove(player.getUniqueId()), 20L);
             SUtil.delay(() -> UserStash.getStash(player.getUniqueId()).sendNotificationMessage(), 30L);
-            return;
         }, 3L);
         SUtil.delay(() -> {
             final Location l = new Location(Bukkit.getWorld("world"), -2.5, 70.0, -68.5, 180.0f, 0.0f);
             player.teleport(l);
         }, 1L);
     }
-    
+
     @EventHandler
     public void chunkLoad(final ChunkLoadEvent e) {
         for (final Entity enn : e.getChunk().getEntities()) {
@@ -302,7 +310,7 @@ public class PlayerListener extends PListener
             }
         }
     }
-    
+
     @EventHandler
     public void onPlayerQuit(final PlayerQuitEvent e) {
         final Player player = e.getPlayer();
@@ -330,14 +338,14 @@ public class PlayerListener extends PListener
         PlayerUtils.STATISTICS_CACHE.remove(user.getUuid());
         user.unload();
     }
-    
+
     @EventHandler
     public void onPlayerQuit2(final PlayerQuitEvent e) {
         final Player player = e.getPlayer();
         SputnikPlayer.BonemerangFix(player);
         SputnikPlayer.KatanasFix(player);
     }
-    
+
     @EventHandler
     public void onMoveWorld(final PlayerChangedWorldEvent e) {
         final Player player = e.getPlayer();
@@ -351,7 +359,7 @@ public class PlayerListener extends PListener
             PetsGUI.spawnFlyingHeads(player, petclass, pet.toItem().getStack());
         }
     }
-    
+
     @EventHandler
     public void onEndermanMove(final EntityTeleportEvent e) {
         if (e.getEntityType() == EntityType.ENDERMAN) {
@@ -360,7 +368,7 @@ public class PlayerListener extends PListener
             e.getEntity().teleport(locbf);
         }
     }
-    
+
     @EventHandler
     public void onPlayerDeath(final EntityDamageEvent e) {
         if (!(e.getEntity() instanceof Player)) {
@@ -369,7 +377,7 @@ public class PlayerListener extends PListener
         if (e instanceof EntityDamageByEntityEvent) {
             return;
         }
-        final Player player = (Player)e.getEntity();
+        final Player player = (Player) e.getEntity();
         final User user = User.getUser(player.getUniqueId());
         if (player.getHealth() + SputnikPlayer.getCustomAbsorptionHP(player) - e.getDamage() <= 0.0) {
             e.setCancelled(true);
@@ -379,7 +387,7 @@ public class PlayerListener extends PListener
         user.damage(e.getDamage(), e.getCause(), null);
         e.setDamage(0.0);
     }
-    
+
     @EventHandler
     public void listen(final PlayerInteractEntityEvent e) {
         if (e.getRightClicked().hasMetadata("NPC")) {
@@ -387,16 +395,15 @@ public class PlayerListener extends PListener
         }
         final Player performer = e.getPlayer();
         if (e.getRightClicked() instanceof Player) {
-            final Player clicked = (Player)e.getRightClicked();
+            final Player clicked = (Player) e.getRightClicked();
             if (performer.isSneaking()) {
                 Sputnik.tradeIntitize(clicked, performer);
-            }
-            else if (!performer.getWorld().getName().contains("f6")) {
+            } else if (!performer.getWorld().getName().contains("f6")) {
                 new ProfileViewerGUI(clicked).open(performer);
             }
         }
     }
-    
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onEntityDamage_(final EntityDamageEvent e) {
         if (!(e.getEntity() instanceof LivingEntity)) {
@@ -409,40 +416,34 @@ public class PlayerListener extends PListener
             e.setCancelled(true);
             return;
         }
-        final LivingEntity en = (LivingEntity)e.getEntity();
+        final LivingEntity en = (LivingEntity) e.getEntity();
         if ((e.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK || e.getCause() == EntityDamageEvent.DamageCause.FIRE) && !en.hasMetadata("SlayerBoss")) {
             e.setCancelled(true);
             return;
         }
         if (e.getCause() == EntityDamageEvent.DamageCause.DROWNING && !en.hasMetadata("SlayerBoss")) {
             e.setDamage(en.getMaxHealth() * 5.0 / 100.0);
-            spawnSpecialDamageInd((Entity)en, e.getDamage(), ChatColor.DARK_AQUA);
-        }
-        else if ((e.getCause() == EntityDamageEvent.DamageCause.FIRE || e.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK) && !en.hasMetadata("SlayerBoss")) {
+            spawnSpecialDamageInd(en, e.getDamage(), ChatColor.DARK_AQUA);
+        } else if ((e.getCause() == EntityDamageEvent.DamageCause.FIRE || e.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK) && !en.hasMetadata("SlayerBoss")) {
             e.setDamage(5.0);
-            spawnSpecialDamageInd((Entity)en, e.getDamage(), ChatColor.GOLD);
-        }
-        else if (e.getCause() == EntityDamageEvent.DamageCause.LAVA && !en.hasMetadata("SlayerBoss")) {
+            spawnSpecialDamageInd(en, e.getDamage(), ChatColor.GOLD);
+        } else if (e.getCause() == EntityDamageEvent.DamageCause.LAVA && !en.hasMetadata("SlayerBoss")) {
             e.setDamage(20.0);
-            spawnSpecialDamageInd((Entity)en, e.getDamage(), ChatColor.GOLD);
-        }
-        else if (e.getCause() == EntityDamageEvent.DamageCause.CONTACT && !en.hasMetadata("SlayerBoss")) {
+            spawnSpecialDamageInd(en, e.getDamage(), ChatColor.GOLD);
+        } else if (e.getCause() == EntityDamageEvent.DamageCause.CONTACT && !en.hasMetadata("SlayerBoss")) {
             e.setDamage(5.0);
-            spawnSpecialDamageInd((Entity)en, e.getDamage(), ChatColor.GRAY);
-        }
-        else if (e.getCause() == EntityDamageEvent.DamageCause.POISON) {
+            spawnSpecialDamageInd(en, e.getDamage(), ChatColor.GRAY);
+        } else if (e.getCause() == EntityDamageEvent.DamageCause.POISON) {
             e.setDamage(5.0);
-            spawnSpecialDamageInd((Entity)en, e.getDamage(), ChatColor.DARK_GREEN);
-        }
-        else if (e.getCause() == EntityDamageEvent.DamageCause.WITHER) {
+            spawnSpecialDamageInd(en, e.getDamage(), ChatColor.DARK_GREEN);
+        } else if (e.getCause() == EntityDamageEvent.DamageCause.WITHER) {
             e.setDamage(5.0);
-            spawnSpecialDamageInd((Entity)en, e.getDamage(), ChatColor.BLACK);
-        }
-        else if (e.getCause() == EntityDamageEvent.DamageCause.FALL) {
-            spawnSpecialDamageInd((Entity)en, e.getDamage(), ChatColor.GRAY);
+            spawnSpecialDamageInd(en, e.getDamage(), ChatColor.BLACK);
+        } else if (e.getCause() == EntityDamageEvent.DamageCause.FALL) {
+            spawnSpecialDamageInd(en, e.getDamage(), ChatColor.GRAY);
         }
     }
-    
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onEntityDamage_2(final EntityDamageByEntityEvent e) {
         if (!(e.getEntity() instanceof LivingEntity)) {
@@ -451,27 +452,27 @@ public class PlayerListener extends PListener
         if (e.getEntity() instanceof Player) {
             return;
         }
-        final LivingEntity en = (LivingEntity)e.getEntity();
+        final LivingEntity en = (LivingEntity) e.getEntity();
         if (e.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
             if (e.getDamager() instanceof Player) {
                 return;
             }
-            if (e.getDamager() instanceof Arrow && ((Arrow)e.getDamager()).getShooter() instanceof Player) {
+            if (e.getDamager() instanceof Arrow && ((Arrow) e.getDamager()).getShooter() instanceof Player) {
                 return;
             }
-            spawnSpecialDamageInd((Entity)en, e.getDamage(), ChatColor.GRAY);
+            spawnSpecialDamageInd(en, e.getDamage(), ChatColor.GRAY);
         }
     }
-    
+
     public boolean checkArrowSource(final Entity damager) {
-        return !(damager instanceof Arrow) || !(((Arrow)damager).getShooter() instanceof Player);
+        return !(damager instanceof Arrow) || !(((Arrow) damager).getShooter() instanceof Player);
     }
-    
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onTeleport(final PlayerTeleportEvent event) {
     }
 
-    @EventHandler(priority=EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onEntityDamage(EntityDamageByEntityEvent e) {
         SItem sItem;
         ItemStack weapon;
@@ -481,14 +482,14 @@ public class PlayerListener extends PListener
             Ability ability2;
             SItem sitem;
             ItemStack st;
-            PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(((Player)e.getDamager()).getUniqueId());
+            PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(e.getDamager().getUniqueId());
             double atkSpeed = Math.min(100L, Math.round(statistics.getAttackSpeed().addAll()));
             if (damaged instanceof LivingEntity) {
-                ((LivingEntity)damaged).setNoDamageTicks((int) Math.round(15.0 / (1.0 + atkSpeed / 100.0)));
-                ((LivingEntity)damaged).setMaximumNoDamageTicks((int) Math.round(15.0 / (1.0 + atkSpeed / 100.0)));
+                ((LivingEntity) damaged).setNoDamageTicks((int) Math.round(15.0 / (1.0 + atkSpeed / 100.0)));
+                ((LivingEntity) damaged).setMaximumNoDamageTicks((int) Math.round(15.0 / (1.0 + atkSpeed / 100.0)));
             }
-            if ((st = ((Player)e.getDamager()).getItemInHand()) != null && (sitem = SItem.find(st)) != null && (ability2 = sitem.getType().getAbility()) != null && ability2.requirementsUse((Player)e.getDamager(), sitem)) {
-                ((Player)e.getDamager()).sendMessage(Sputnik.trans(ability2.getAbilityReq()));
+            if ((st = ((Player) e.getDamager()).getItemInHand()) != null && (sitem = SItem.find(st)) != null && (ability2 = sitem.getType().getAbility()) != null && ability2.requirementsUse((Player) e.getDamager(), sitem)) {
+                e.getDamager().sendMessage(Sputnik.trans(ability2.getAbilityReq()));
                 e.getEntity().getWorld().spigot().playEffect(e.getEntity().getLocation().clone().add(0.0, 1.5, 0.0).add(e.getEntity().getLocation().getDirection().normalize().multiply(0.2)), Effect.CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                 e.getEntity().getWorld().spigot().playEffect(e.getEntity().getLocation().clone().add(0.0, 1.5, 0.0).add(e.getEntity().getLocation().getDirection().normalize().multiply(0.2)), Effect.CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                 e.getEntity().getWorld().spigot().playEffect(e.getEntity().getLocation().clone().add(0.0, 1.5, 0.0).add(e.getEntity().getLocation().getDirection().normalize().multiply(0.2)), Effect.CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
@@ -506,24 +507,24 @@ public class PlayerListener extends PListener
         }
         Entity damager = e.getDamager();
         if (damaged instanceof LivingEntity && damager instanceof FishHook && damager.hasMetadata("owner")) {
-            User.getUser(((Player)damager.getMetadata("owner").get(0).value()).getUniqueId()).damageEntity((LivingEntity)damaged);
+            User.getUser(((Player) damager.getMetadata("owner").get(0).value()).getUniqueId()).damageEntity((LivingEntity) damaged);
             return;
         }
         SEntity sEntity = null;
         if (!(damager instanceof Player)) {
             Entity in = damager;
             if (in instanceof Arrow) {
-                final Arrow arrow = (Arrow)in;
+                final Arrow arrow = (Arrow) in;
                 final ProjectileSource shooter = arrow.getShooter();
                 if (shooter instanceof Entity) {
-                    in = (Entity)shooter;
+                    in = (Entity) shooter;
                 }
             }
             if (in instanceof WitherSkull) {
-                final WitherSkull arrow2 = (WitherSkull)in;
+                final WitherSkull arrow2 = (WitherSkull) in;
                 final ProjectileSource shooter = arrow2.getShooter();
                 if (shooter instanceof Entity) {
-                    in = (Entity)shooter;
+                    in = (Entity) shooter;
                 }
             }
             sEntity = SEntity.findSEntity(in);
@@ -532,23 +533,22 @@ public class PlayerListener extends PListener
                 e.setDamage(sEntity.getStatistics().getDamageDealt());
                 try {
                     e.setDamage(EntityDamageEvent.DamageModifier.ARMOR, 0.0);
+                } catch (final UnsupportedOperationException ex) {
                 }
-                catch (final UnsupportedOperationException ex) {}
             }
         }
         if (damaged instanceof Player) {
             if (damaged.hasMetadata("NPC")) {
                 return;
             }
-            final Player damagedPlayer = (Player)damaged;
+            final Player damagedPlayer = (Player) damaged;
             if (VoidlingsWardenHelmet.VOIDLING_SHIELD.containsKey(damagedPlayer.getUniqueId()) && User.getUser(damagedPlayer.getUniqueId()).isVoidlingWardenActive() && !(damager instanceof Player) && this.checkArrowSource(damager)) {
                 if (VoidlingsWardenHelmet.VOIDLING_SHIELD.get(damagedPlayer.getUniqueId()) - 1 > 0) {
                     e.setDamage(0.0);
                     e.setCancelled(true);
                     damaged.getWorld().playSound(damaged.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 2.0f);
                     VoidlingsWardenHelmet.VOIDLING_SHIELD.put(damagedPlayer.getUniqueId(), VoidlingsWardenHelmet.VOIDLING_SHIELD.get(damagedPlayer.getUniqueId()) - 1);
-                }
-                else {
+                } else {
                     User.getUser(damagedPlayer.getUniqueId()).setVoidlingWardenActive(false);
                 }
             }
@@ -556,7 +556,7 @@ public class PlayerListener extends PListener
                 Sputnik.HaveDMGReduction.put(damagedPlayer.getUniqueId(), false);
             }
             if (damagedPlayer.hasMetadata("frozen")) {
-                final Entity en = (Entity)damagedPlayer;
+                final Entity en = damagedPlayer;
                 final Vector v = new Vector(0, 0, 0);
                 SUtil.delay(() -> en.setVelocity(v), 0L);
             }
@@ -572,8 +572,7 @@ public class PlayerListener extends PListener
             final double trueDefense = statistics2.getTrueDefense().addAll();
             if (sEntity != null && sEntity.getStatistics().dealsTrueDamage()) {
                 e.setDamage(e.getDamage() - e.getDamage() * (trueDefense / (trueDefense + 100.0)));
-            }
-            else {
+            } else {
                 e.setDamage(e.getDamage() - e.getDamage() * (defense / (defense + 100.0)));
             }
             if (Sputnik.HaveDMGReduction.get(damagedPlayer.getUniqueId())) {
@@ -585,16 +584,15 @@ public class PlayerListener extends PListener
                     if (e.getDamage() > SputnikPlayer.getCustomAbsorptionHP(damagedPlayer)) {
                         e.setDamage(e.getDamage() - SputnikPlayer.getCustomAbsorptionHP(damagedPlayer));
                         SputnikPlayer.setCustomAbsorptionHP(damagedPlayer, 0.0f);
-                    }
-                    else {
-                        SputnikPlayer.minusCustomAbsorptionHP(damagedPlayer, (float)e.getDamage());
+                    } else {
+                        SputnikPlayer.minusCustomAbsorptionHP(damagedPlayer, (float) e.getDamage());
                         e.setDamage(0.0);
                     }
                 }
             }
             EntityDamageEvent.DamageCause cause = e.getCause();
-            if (damager instanceof Projectile && ((Projectile)damager).getShooter() instanceof Entity) {
-                damager = (Entity)((Projectile)damager).getShooter();
+            if (damager instanceof Projectile && ((Projectile) damager).getShooter() instanceof Entity) {
+                damager = (Entity) ((Projectile) damager).getShooter();
                 cause = EntityDamageEvent.DamageCause.ENTITY_ATTACK;
             }
             final Pet.PetItem item = user.getActivePet();
@@ -606,8 +604,8 @@ public class PlayerListener extends PListener
             }
             try {
                 e.setDamage(EntityDamageEvent.DamageModifier.ARMOR, 0.0);
+            } catch (final UnsupportedOperationException ex2) {
             }
-            catch (final UnsupportedOperationException ex2) {}
             if (damagedPlayer.getHealth() - e.getDamage() <= 0.0) {
                 e.setCancelled(true);
                 User.getUser(damagedPlayer.getUniqueId()).kill(cause, damager);
@@ -619,12 +617,12 @@ public class PlayerListener extends PListener
         }
         float bowForceReducer = 1.0f;
         if (damager instanceof Arrow) {
-            Arrow arrow = (Arrow)damager;
+            Arrow arrow = (Arrow) damager;
             ProjectileSource shooter = arrow.getShooter();
             if (!(shooter instanceof Player)) {
                 return;
             }
-            player = (Player)shooter;
+            player = (Player) shooter;
             if (!BOW_MAP.containsKey(player.getUniqueId())) {
                 return;
             }
@@ -633,20 +631,20 @@ public class PlayerListener extends PListener
             bowForceReducer = shooting.getForce();
             player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1.0f, 1.0f);
         } else {
-            player = (Player)e.getDamager();
+            player = (Player) e.getDamager();
             weapon = player.getInventory().getItemInHand();
         }
         PlayerUtils.DamageResult result = PlayerUtils.getDamageDealt(weapon, player, damaged, damager instanceof Arrow);
-        AtomicDouble finalDamage = new AtomicDouble(result.getFinalDamage() * (double)bowForceReducer);
+        AtomicDouble finalDamage = new AtomicDouble(result.getFinalDamage() * (double) bowForceReducer);
         e.setDamage(finalDamage.get());
         if (e.getEntity().getType() == EntityType.ENDER_DRAGON) {
-            double formula = finalDamage.get() / ((EnderDragon)e.getEntity()).getMaxHealth() * 100.0;
+            double formula = finalDamage.get() / ((EnderDragon) e.getEntity()).getMaxHealth() * 100.0;
             if (formula < 10.0) {
                 e.setDamage(finalDamage.get());
             } else if (formula > 10.0 && formula < 15.0) {
                 e.setDamage(finalDamage.get() * 10.0 / 100.0);
             } else if (formula > 15.0 && formula < 20.0) {
-                e.setDamage(finalDamage.get() * 1.0 / 100.0);
+                e.setDamage(finalDamage.get() / 100.0);
             } else if (formula > 20.0 && formula <= 25.0) {
                 e.setDamage(finalDamage.get() * 0.01 / 100.0);
             } else if (formula > 25.0) {
@@ -660,7 +658,7 @@ public class PlayerListener extends PListener
             if (defensepercent > 100) {
                 defensepercent = 100;
             }
-            e.setDamage(finalDamage.get() - finalDamage.get() * (double)defensepercent / 100.0);
+            e.setDamage(finalDamage.get() - finalDamage.get() * (double) defensepercent / 100.0);
         }
         if (e.getEntity().hasMetadata("frozen")) {
             e.setDamage(e.getDamage() + e.getDamage() * 10.0 / 100.0);
@@ -670,12 +668,12 @@ public class PlayerListener extends PListener
                 sItem.getType().getFunction().onDamage(damaged, player, finalDamage, sItem);
             }
             if (sItem.getType().getFunction() instanceof BowFunction && e.getDamager() instanceof Arrow) {
-                ((BowFunction)sItem.getType().getFunction()).onBowHit(damaged, player, (Arrow)e.getDamager(), sItem, finalDamage);
+                ((BowFunction) sItem.getType().getFunction()).onBowHit(damaged, player, (Arrow) e.getDamager(), sItem, finalDamage);
             }
         }
         for (SItem accessory : PlayerUtils.getAccessories(player)) {
             if (!(accessory.getType().getFunction() instanceof AccessoryFunction)) continue;
-            ((AccessoryFunction)accessory.getType().getFunction()).onDamageInInventory(sItem, player, damaged, accessory, finalDamage);
+            ((AccessoryFunction) accessory.getType().getFunction()).onDamageInInventory(sItem, player, damaged, accessory, finalDamage);
         }
         User user = User.getUser(player.getUniqueId());
         Pet pet = user.getActivePetClass();
@@ -684,8 +682,7 @@ public class PlayerListener extends PListener
         }
         try {
             e.setDamage(EntityDamageEvent.DamageModifier.ARMOR, 0.0);
-        }
-        catch (UnsupportedOperationException item) {
+        } catch (UnsupportedOperationException item) {
             // empty catch block
         }
         SEntity s = SEntity.findSEntity(damaged);
@@ -696,13 +693,13 @@ public class PlayerListener extends PListener
             return;
         }
         LAST_DAMAGE_DEALT.put(player, e.getDamage());
-        FerocityCalculation.activeFerocityTimes(player, (LivingEntity)damaged, (int) e.getDamage(), result.didCritDamage());
+        FerocityCalculation.activeFerocityTimes(player, (LivingEntity) damaged, (int) e.getDamage(), result.didCritDamage());
         PlayerUtils.handleSpecEntity(damaged, player, new AtomicDouble(e.getDamage()));
         COMBAT_MAP.put(player.getUniqueId(), PlayerListener.createCombatAction(true, e.getDamage(), e.getDamager() instanceof Arrow, System.currentTimeMillis()));
         Location l_ = damaged.getLocation().clone();
         PlayerListener.spawnDamageInd(damaged, e.getDamage(), result.didCritDamage());
     }
-    
+
     public static void eshortBowActive(final Player p, final Entity damaged, final Arrow a) {
         if (p == null) {
             return;
@@ -712,7 +709,7 @@ public class PlayerListener extends PListener
         final AtomicDouble finalDamage_ = new AtomicDouble(result.getFinalDamage());
         double finalDamage = finalDamage_.get();
         final Boolean crit = result.didCritDamage();
-        final LivingEntity le = (LivingEntity)damaged;
+        final LivingEntity le = (LivingEntity) damaged;
         if (EntityManager.DEFENSE_PERCENTAGE.containsKey(damaged)) {
             int defensepercent = EntityManager.DEFENSE_PERCENTAGE.get(damaged);
             if (defensepercent > 100) {
@@ -726,26 +723,26 @@ public class PlayerListener extends PListener
                 sItem.getType().getFunction().onDamage(damaged, p, finalDamage_, sItem);
             }
             if (sItem.getType().getFunction() instanceof BowFunction && a instanceof Arrow) {
-                ((BowFunction)sItem.getType().getFunction()).onBowHit(damaged, p, a, sItem, finalDamage_);
+                ((BowFunction) sItem.getType().getFunction()).onBowHit(damaged, p, a, sItem, finalDamage_);
             }
         }
         for (final SItem accessory : PlayerUtils.getAccessories(p)) {
             if (accessory.getType().getFunction() instanceof AccessoryFunction) {
-                ((AccessoryFunction)accessory.getType().getFunction()).onDamageInInventory(sItem, p, damaged, accessory, finalDamage_);
+                ((AccessoryFunction) accessory.getType().getFunction()).onDamageInInventory(sItem, p, damaged, accessory, finalDamage_);
             }
         }
-        FerocityCalculation.activeFerocityTimes(p, (LivingEntity)damaged, (int)finalDamage, result.didCritDamage());
+        FerocityCalculation.activeFerocityTimes(p, (LivingEntity) damaged, (int) finalDamage, result.didCritDamage());
         final User user = User.getUser(p.getUniqueId());
-        user.damageEntityBowEman((Damageable)le, finalDamage, p, a);
+        user.damageEntityBowEman(le, finalDamage, p, a);
         spawnDamageInd(damaged, finalDamage, crit);
     }
-    
+
     public static void ferocityActive(final int times, final Player p, final double finalDMG, final Entity damaged, final Boolean crit) {
         if (times > 0) {
             p.playSound(p.getLocation(), Sound.FIRE_IGNITE, 0.4f, 0.0f);
         }
         for (int i = 0; i < times; ++i) {
-            final LivingEntity le = (LivingEntity)damaged;
+            final LivingEntity le = (LivingEntity) damaged;
             if (le.isDead()) {
                 break;
             }
@@ -778,18 +775,18 @@ public class PlayerListener extends PListener
                                 VoidgloomSeraph.HIT_SHIELD.put(damaged, VoidgloomSeraph.HIT_SHIELD.get(damaged) - 1);
                                 damaged.getWorld().playSound(damaged.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 2.0f);
                             }
-                            User.dmgDimon((LivingEntity)damaged, p);
-                            Sputnik.ferocityParticle((LivingEntity)damaged);
+                            User.dmgDimon((LivingEntity) damaged, p);
+                            Sputnik.ferocityParticle((LivingEntity) damaged);
                             PlayerListener.spawnDamageInd(damaged, finalDamage, crit);
                             p.playSound(p.getLocation(), Sound.IRONGOLEM_THROW, 1.0f, 1.35f);
-                            user.damageEntityIgnoreShield((Damageable)damaged, finalDamage);
+                            user.damageEntityIgnoreShield((Damageable) damaged, finalDamage);
                         }
                     }, 10L);
                 }
-            }.runTaskLater((Plugin)SkySimEngine.getPlugin(), (long)(4 * i));
+            }.runTaskLater(SkySimEngine.getPlugin(), 4L * i);
         }
     }
-    
+
     @EventHandler
     public void onBoatPlace(final PlayerInteractEvent event) {
         if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
@@ -799,7 +796,7 @@ public class PlayerListener extends PListener
             }
         }
     }
-    
+
     @EventHandler
     public void onBowLaunch(final PlayerInteractEvent e) {
         final SItem id = SItem.find(e.getPlayer().getItemInHand());
@@ -809,7 +806,7 @@ public class PlayerListener extends PListener
                 public ItemStack getBow() {
                     return id.getStack();
                 }
-                
+
                 @Override
                 public float getForce() {
                     return 1.0f;
@@ -834,11 +831,11 @@ public class PlayerListener extends PListener
                         user.subFromQuiver(SMaterial.ARROW);
                         player.getInventory().setItem(8, SUtil.setStackAmount(SItem.of(SMaterial.QUIVER_ARROW).getStack(), Math.min(64, user.getQuiver(SMaterial.ARROW))));
                     }
-                }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 1L);
+                }.runTaskLater(SkySimEngine.getPlugin(), 1L);
             }
         }
     }
-    
+
     @EventHandler
     public void onBowShoot(final EntityShootBowEvent e) {
         if (!(e.getEntity() instanceof Player)) {
@@ -849,14 +846,14 @@ public class PlayerListener extends PListener
             public ItemStack getBow() {
                 return e.getBow();
             }
-            
+
             @Override
             public float getForce() {
                 return e.getForce();
             }
         });
         final User user = User.getUser(e.getEntity().getUniqueId());
-        final Player player = (Player)e.getEntity();
+        final Player player = (Player) e.getEntity();
         final SItem arrows = SItem.find(player.getInventory().getItem(8));
         if (arrows != null && arrows.getType() == SMaterial.QUIVER_ARROW) {
             final int save = arrows.getStack().getAmount();
@@ -874,23 +871,23 @@ public class PlayerListener extends PListener
                     user.subFromQuiver(SMaterial.ARROW);
                     player.getInventory().setItem(8, SUtil.setStackAmount(SItem.of(SMaterial.QUIVER_ARROW).getStack(), Math.min(64, user.getQuiver(SMaterial.ARROW))));
                 }
-            }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 1L);
+            }.runTaskLater(SkySimEngine.getPlugin(), 1L);
         }
         final SItem sItem = SItem.find(e.getBow());
         if (sItem != null) {
             final Enchantment aiming = sItem.getEnchantment(EnchantmentType.AIMING);
-            SUtil.markAimingArrow((Projectile)e.getProjectile(), aiming);
+            SUtil.markAimingArrow((Projectile) e.getProjectile(), aiming);
             if (sItem.getType().getFunction() instanceof BowFunction) {
-                ((BowFunction)sItem.getType().getFunction()).onBowShoot(sItem, e);
+                ((BowFunction) sItem.getType().getFunction()).onBowShoot(sItem, e);
             }
         }
     }
-    
+
     @EventHandler
     public void onArmorStandChange(final PlayerArmorStandManipulateEvent e) {
         e.setCancelled(true);
     }
-    
+
     @EventHandler
     public void onTeleport(final PlayerChangedWorldEvent e) {
         final User user = User.getUser(e.getPlayer().getUniqueId());
@@ -900,8 +897,7 @@ public class PlayerListener extends PListener
         TemporaryStats ts = null;
         if (TemporaryStats.getFromPlayer(user.toBukkitPlayer()) != null) {
             ts = TemporaryStats.getFromPlayer(user.toBukkitPlayer());
-        }
-        else {
+        } else {
             ts = new TemporaryStats(User.getUser(user.toBukkitPlayer().getUniqueId()));
         }
         if (TemporaryStats.getFromPlayer(user.toBukkitPlayer()) != null) {
@@ -913,7 +909,7 @@ public class PlayerListener extends PListener
             User.getUser(e.getPlayer().getUniqueId()).failSlayerQuest();
         }
     }
-    
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerChat(final AsyncPlayerChatEvent e) {
         final Player plr = e.getPlayer();
@@ -930,7 +926,7 @@ public class PlayerListener extends PListener
             e.getPlayer().sendMessage(ChatColor.RED + "Listen kiddo, it wont work anymore.");
         }
     }
-    
+
     @EventHandler
     public void placeBlockEvent(final PlayerInteractEvent e) {
         final Player player = e.getPlayer();
@@ -960,15 +956,15 @@ public class PlayerListener extends PListener
         if (!be.isOpened() && !be.isLocked()) {
             final Location chestLocation = b.getLocation();
             final BlockPosition pos = new BlockPosition(chestLocation.getBlockX(), chestLocation.getBlockY(), chestLocation.getBlockZ());
-            final PacketPlayOutBlockAction packet = new PacketPlayOutBlockAction(pos, (Block)Blocks.CHEST, 1, 1);
+            final PacketPlayOutBlockAction packet = new PacketPlayOutBlockAction(pos, Blocks.CHEST, 1, 1);
             chestLocation.getWorld().playSound(chestLocation, Sound.CHEST_OPEN, 1.0f, 1.0f);
             for (final Player p : chestLocation.getWorld().getPlayers()) {
-                ((CraftPlayer)p).getHandle().playerConnection.sendPacket((Packet)packet);
+                ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
             }
         }
         be.open(player);
     }
-    
+
     @EventHandler
     public void placeBlockEventTwo(final PlayerInteractEvent e) {
         final Player player = e.getPlayer();
@@ -998,15 +994,15 @@ public class PlayerListener extends PListener
         if (!be.isOpened() && !be.isLocked()) {
             final Location chestLocation = b.getLocation();
             final BlockPosition pos = new BlockPosition(chestLocation.getBlockX(), chestLocation.getBlockY(), chestLocation.getBlockZ());
-            final PacketPlayOutBlockAction packet = new PacketPlayOutBlockAction(pos, (Block)Blocks.CHEST, 1, 1);
+            final PacketPlayOutBlockAction packet = new PacketPlayOutBlockAction(pos, Blocks.CHEST, 1, 1);
             chestLocation.getWorld().playSound(chestLocation, Sound.CHEST_OPEN, 1.0f, 1.0f);
             for (final Player p : chestLocation.getWorld().getPlayers()) {
-                ((CraftPlayer)p).getHandle().playerConnection.sendPacket((Packet)packet);
+                ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
             }
         }
         be.open(player);
     }
-    
+
     @EventHandler
     public void onPlayerAsyncCommand(final PlayerCommandPreprocessEvent e) {
         if (this.isNotLoaded.containsKey(e.getPlayer().getUniqueId())) {
@@ -1018,14 +1014,14 @@ public class PlayerListener extends PListener
             e.getPlayer().sendMessage(ChatColor.RED + "The server is restarting! You cannot do this!");
         }
     }
-    
+
     public static String replaceChatColors(String s) {
         for (final ChatColor c : ChatColor.values()) {
-            s = s.replaceAll("&" + c.getChar(), String.valueOf(String.valueOf(s)) + ChatColor.getByChar(c.getChar()));
+            s = s.replaceAll("&" + c.getChar(), String.valueOf(s) + ChatColor.getByChar(c.getChar()));
         }
         return s;
     }
-    
+
     @EventHandler(priority = EventPriority.MONITOR)
     public void onJoin(final PlayerLoginEvent event) {
         if (!event.getPlayer().isWhitelisted() && Bukkit.hasWhitelist()) {
@@ -1035,7 +1031,7 @@ public class PlayerListener extends PListener
             event.disallow(PlayerLoginEvent.Result.KICK_WHITELIST, message);
         }
     }
-    
+
     @EventHandler
     public void onPotionDrink(final PlayerItemConsumeEvent e) {
         final SItem sItem = SItem.find(e.getItem());
@@ -1061,7 +1057,7 @@ public class PlayerListener extends PListener
             e.getPlayer().setItemInHand(SItem.of(SMaterial.GLASS_BOTTLE).getStack());
         }
     }
-    
+
     @EventHandler
     public void onMilkDrink(final PlayerItemConsumeEvent e) {
         final SItem sItem = SItem.find(e.getItem());
@@ -1079,7 +1075,7 @@ public class PlayerListener extends PListener
             e.getPlayer().setItemInHand(SItem.of(SMaterial.BUCKET).getStack());
         }
     }
-    
+
     @EventHandler
     public void onProjectileHit(final ProjectileHitEvent e) {
         if (e.getEntity() instanceof Arrow) {
@@ -1087,13 +1083,13 @@ public class PlayerListener extends PListener
                 public void run() {
                     e.getEntity().remove();
                 }
-            }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 10L);
+            }.runTaskLater(SkySimEngine.getPlugin(), 10L);
             return;
         }
         if (e.getEntity() instanceof Fireball && (e.getEntity().hasMetadata("dragon") || e.getEntity().hasMetadata("magma"))) {
             final String type = e.getEntity().hasMetadata("dragon") ? "dragon" : "magma";
-            final SEntity sEntity = (SEntity)e.getEntity().getMetadata(type).get(0).value();
-            e.getEntity().getWorld().playEffect(e.getEntity().getLocation(), Effect.EXPLOSION_HUGE, (Object)Effect.EXPLOSION_HUGE.getData());
+            final SEntity sEntity = (SEntity) e.getEntity().getMetadata(type).get(0).value();
+            e.getEntity().getWorld().playEffect(e.getEntity().getLocation(), Effect.EXPLOSION_HUGE, (Object) Effect.EXPLOSION_HUGE.getData());
             e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.EXPLODE, 5.0f, 0.0f);
             for (final Entity entity : e.getEntity().getNearbyEntities(2.0, 2.0, 2.0)) {
                 if (!(entity instanceof LivingEntity)) {
@@ -1101,10 +1097,9 @@ public class PlayerListener extends PListener
                 }
                 final int d = type.equals("dragon") ? SUtil.random(292, 713) : 125;
                 if (entity instanceof Player) {
-                    User.getUser(entity.getUniqueId()).damage(d, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)sEntity.getEntity());
-                }
-                else {
-                    ((LivingEntity)entity).damage((double)d);
+                    User.getUser(entity.getUniqueId()).damage(d, EntityDamageEvent.DamageCause.ENTITY_ATTACK, sEntity.getEntity());
+                } else {
+                    ((LivingEntity) entity).damage(d);
                 }
                 if (!type.equals("dragon")) {
                     continue;
@@ -1113,42 +1108,42 @@ public class PlayerListener extends PListener
             }
         }
     }
-    
+
     public static CombatAction getLastCombatAction(final Player player) {
         return PlayerListener.COMBAT_MAP.get(player.getUniqueId());
     }
-    
+
     private static CombatAction createCombatAction(final boolean attacked, final double damage, final boolean bowShot, final long timestamp) {
         return new CombatAction() {
             @Override
             public boolean attacked() {
                 return attacked;
             }
-            
+
             @Override
             public double getDamageDealt() {
                 return damage;
             }
-            
+
             @Override
             public boolean isBowShot() {
                 return bowShot;
             }
-            
+
             @Override
             public long getTimeStamp() {
                 return timestamp;
             }
         };
     }
-    
+
     @EventHandler
     public void onEntityDamage1(final EntityDamageByEntityEvent event) {
         if (event.getEntity().hasMetadata("GiantSword")) {
             event.setCancelled(true);
         }
     }
-    
+
     public static Double COGCalculation(final Integer baseDmg, final Player player) {
         final User user = User.getUser(player.getUniqueId());
         final long coin = user.getCoins();
@@ -1162,49 +1157,48 @@ public class PlayerListener extends PListener
         }
         return 0.0;
     }
-    
+
     @EventHandler
     public void onHeal(final EntityRegainHealthEvent event) {
         if (!(event.getEntity() instanceof EnderDragon)) {
             return;
         }
         event.setCancelled(true);
-        final EnderDragon drag = (EnderDragon)event.getEntity();
+        final EnderDragon drag = (EnderDragon) event.getEntity();
         final int addamount = SUtil.random(15000, 35000);
         if (drag.getHealth() + addamount < drag.getMaxHealth()) {
             drag.setHealth(drag.getHealth() + addamount);
-        }
-        else {
+        } else {
             drag.setHealth(drag.getHealth() + (drag.getMaxHealth() - drag.getHealth()));
         }
     }
-    
+
     @EventHandler
     void onInteract(final PlayerInteractEntityEvent e) {
         if (e.getRightClicked().getType() == EntityType.ENDER_CRYSTAL) {
             e.setCancelled(true);
         }
     }
-    
+
     public void onCrystalDMG(final World world, final Player player) {
         for (final Entity e : world.getEntities()) {
             if (e.getType() == EntityType.ENDER_DRAGON) {
                 final User user = User.getUser(player.getUniqueId());
-                user.damageEntity((Damageable)e, 2000.0);
+                user.damageEntity((Damageable) e, 2000.0);
             }
         }
     }
-    
+
     @EventHandler
     void onHit(final EntityShootBowEvent e) {
         if (e.getEntity() instanceof Skeleton && e.getEntity().hasMetadata("SkeletonMaster")) {
             e.setCancelled(true);
-            final WitherSkull skull = (WitherSkull)((ProjectileSource)e.getEntity()).launchProjectile((Class)WitherSkull.class);
-            skull.setShooter((ProjectileSource)e.getEntity());
+            final WitherSkull skull = (WitherSkull) e.getEntity().launchProjectile((Class) WitherSkull.class);
+            skull.setShooter(e.getEntity());
             e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.WITHER_SHOOT, 1.0f, 1.0f);
         }
     }
-    
+
     @EventHandler
     void onHit(final EntityDamageByEntityEvent e) {
         if (e.getDamager() instanceof Player && e.getEntity().getType() == EntityType.ENDER_CRYSTAL) {
@@ -1216,26 +1210,23 @@ public class PlayerListener extends PListener
             final Location loc = e.getEntity().getLocation();
             e.getEntity().getWorld().playEffect(e.getEntity().getLocation(), Effect.EXPLOSION_HUGE, 3);
             e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.EXPLODE, 3.0f, 1.0f);
-            SUtil.broadcastExcept(ChatColor.translateAlternateColorCodes('&', "&5☬ &a" + ((Player)e.getDamager()).getName() + " &dhas destroyed an &5Ender Crystal&d!"), (Player)e.getDamager());
-            ((Player)e.getDamager()).sendMessage(ChatColor.translateAlternateColorCodes('&', "&5☬ &dYou destroyed an &5Ender Crystal&d!"));
+            SUtil.broadcastExcept(ChatColor.translateAlternateColorCodes('&', "&5☬ &a" + e.getDamager().getName() + " &dhas destroyed an &5Ender Crystal&d!"), (Player) e.getDamager());
+            e.getDamager().sendMessage(ChatColor.translateAlternateColorCodes('&', "&5☬ &dYou destroyed an &5Ender Crystal&d!"));
             e.getEntity().remove();
             final ItemStack cf = SItem.of(SMaterial.CRYSTAL_FRAGMENT).getStack();
-            this.onCrystalDMG(e.getDamager().getWorld(), (Player)e.getDamager());
-            final SItem sitem = SItem.find(((Player)e.getDamager()).getItemInHand());
+            this.onCrystalDMG(e.getDamager().getWorld(), (Player) e.getDamager());
+            final SItem sitem = SItem.find(((Player) e.getDamager()).getItemInHand());
             if (sitem != null) {
-                if (sitem.getEnchantment(EnchantmentType.TELEKINESIS) != null && !Sputnik.isFullInv((Player)e.getDamager()) && sitem.getType() != SMaterial.ENCHANTED_BOOK) {
-                    Sputnik.GiveItem(cf, (Player)e.getDamager());
-                }
-                else {
+                if (sitem.getEnchantment(EnchantmentType.TELEKINESIS) != null && !Sputnik.isFullInv((Player) e.getDamager()) && sitem.getType() != SMaterial.ENCHANTED_BOOK) {
+                    Sputnik.GiveItem(cf, (Player) e.getDamager());
+                } else {
                     e.getEntity().getWorld().dropItem(loc, cf);
                 }
-            }
-            else {
+            } else {
                 e.getEntity().getWorld().dropItem(loc, cf);
             }
-        }
-        else if (e.getDamager() instanceof Arrow && e.getEntity().getType() == EntityType.ENDER_CRYSTAL) {
-            final Projectile p = (Projectile)e.getDamager();
+        } else if (e.getDamager() instanceof Arrow && e.getEntity().getType() == EntityType.ENDER_CRYSTAL) {
+            final Projectile p = (Projectile) e.getDamager();
             if (!(p.getShooter() instanceof Player)) {
                 return;
             }
@@ -1243,101 +1234,99 @@ public class PlayerListener extends PListener
             final Location loc2 = e.getEntity().getLocation();
             e.getEntity().getWorld().playEffect(e.getEntity().getLocation(), Effect.EXPLOSION_HUGE, 3);
             e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.EXPLODE, 3.0f, 1.0f);
-            SUtil.broadcastExcept(ChatColor.translateAlternateColorCodes('&', "&5☬ &a" + ((Player)p.getShooter()).getName() + " &dhas destroyed an &5Ender Crystal&d!"), (Player)p.getShooter());
-            ((Player)p.getShooter()).sendMessage(ChatColor.translateAlternateColorCodes('&', "&5☬ &dYou destroyed an &5Ender Crystal&d!"));
+            SUtil.broadcastExcept(ChatColor.translateAlternateColorCodes('&', "&5☬ &a" + ((Player) p.getShooter()).getName() + " &dhas destroyed an &5Ender Crystal&d!"), (Player) p.getShooter());
+            ((Player) p.getShooter()).sendMessage(ChatColor.translateAlternateColorCodes('&', "&5☬ &dYou destroyed an &5Ender Crystal&d!"));
             e.getEntity().remove();
             final ItemStack cf2 = SItem.of(SMaterial.CRYSTAL_FRAGMENT).getStack();
-            this.onCrystalDMG(e.getEntity().getWorld(), (Player)p.getShooter());
-            final SItem sitem2 = SItem.find(((Player)p.getShooter()).getItemInHand());
+            this.onCrystalDMG(e.getEntity().getWorld(), (Player) p.getShooter());
+            final SItem sitem2 = SItem.find(((Player) p.getShooter()).getItemInHand());
             if (sitem2 != null) {
-                if (sitem2.getEnchantment(EnchantmentType.TELEKINESIS) != null && !Sputnik.isFullInv((Player)p.getShooter()) && sitem2.getType() != SMaterial.ENCHANTED_BOOK) {
-                    Sputnik.GiveItem(cf2, (Player)p.getShooter());
-                }
-                else {
+                if (sitem2.getEnchantment(EnchantmentType.TELEKINESIS) != null && !Sputnik.isFullInv((Player) p.getShooter()) && sitem2.getType() != SMaterial.ENCHANTED_BOOK) {
+                    Sputnik.GiveItem(cf2, (Player) p.getShooter());
+                } else {
                     e.getEntity().getWorld().dropItem(loc2, cf2);
                 }
-            }
-            else {
+            } else {
                 e.getEntity().getWorld().dropItem(loc2, cf2);
             }
         }
     }
-    
+
     public static void spawnDamageInd(final Entity damaged, final double damage, final boolean isCrit) {
         if (damaged.hasMetadata("Dimoon")) {
             return;
         }
         final Location l_ = damaged.getLocation().clone();
         l_.add(SUtil.random(-1.5, 1.5), 2.0, SUtil.random(-1.5, 1.5));
-        final EntityArmorStand stand = new EntityArmorStand((net.minecraft.server.v1_8_R3.World)((CraftWorld)damaged.getWorld()).getHandle());
+        final EntityArmorStand stand = new EntityArmorStand(((CraftWorld) damaged.getWorld()).getHandle());
         stand.setLocation(l_.getX(), l_.getY(), l_.getZ(), 0.0f, 0.0f);
-        ((ArmorStand)stand.getBukkitEntity()).setMarker(true);
-        stand.setCustomName(isCrit ? SUtil.rainbowize("✧" + (int)damage + "✧") : ("" + ChatColor.GRAY + (int)damage));
+        ((ArmorStand) stand.getBukkitEntity()).setMarker(true);
+        stand.setCustomName(isCrit ? SUtil.rainbowize("✧" + (int) damage + "✧") : ("" + ChatColor.GRAY + (int) damage));
         stand.setCustomNameVisible(true);
         stand.setGravity(false);
         stand.setInvisible(true);
         final List<Player> prp = new ArrayList<Player>();
         new BukkitRunnable() {
             public void run() {
-                PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving((EntityLiving)stand);
+                PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving(stand);
                 for (Entity e : damaged.getNearbyEntities(12.0, 12.0, 12.0)) {
                     if (!(e instanceof Player)) continue;
-                    ((CraftPlayer)((Player)e)).getHandle().playerConnection.sendPacket((Packet)packet);
-                    prp.add((Player)e);
+                    ((CraftPlayer) e).getHandle().playerConnection.sendPacket(packet);
+                    prp.add((Player) e);
                 }
             }
-        }.runTaskAsynchronously((Plugin)SkySimEngine.getPlugin());
-        new BukkitRunnable(){
+        }.runTaskAsynchronously(SkySimEngine.getPlugin());
+        new BukkitRunnable() {
 
             public void run() {
-                PacketPlayOutEntityDestroy pa = new PacketPlayOutEntityDestroy(new int[]{stand.getId()});
+                PacketPlayOutEntityDestroy pa = new PacketPlayOutEntityDestroy(stand.getId());
                 for (Player e : prp) {
                     if (!(e instanceof Player)) continue;
-                    ((CraftPlayer)e).getHandle().playerConnection.sendPacket((Packet)pa);
+                    ((CraftPlayer) e).getHandle().playerConnection.sendPacket(pa);
                 }
             }
-        }.runTaskLaterAsynchronously((Plugin)SkySimEngine.getPlugin(), 30L);
+        }.runTaskLaterAsynchronously(SkySimEngine.getPlugin(), 30L);
     }
-    
+
     public static void spawnSpecialDamageInd(final Entity damaged, final double damage, final ChatColor c) {
         final Location l_ = damaged.getLocation().clone();
         l_.add(SUtil.random(-1.5, 1.5), 1.0, SUtil.random(-1.5, 1.5));
-        final EntityArmorStand stand = new EntityArmorStand((net.minecraft.server.v1_8_R3.World)((CraftWorld)damaged.getWorld()).getHandle());
+        final EntityArmorStand stand = new EntityArmorStand(((CraftWorld) damaged.getWorld()).getHandle());
         stand.setLocation(l_.getX(), l_.getY(), l_.getZ(), 0.0f, 0.0f);
-        ((ArmorStand)stand.getBukkitEntity()).setMarker(true);
-        stand.setCustomName(c + String.valueOf((int)Math.round(damage)));
+        ((ArmorStand) stand.getBukkitEntity()).setMarker(true);
+        stand.setCustomName(c + String.valueOf((int) Math.round(damage)));
         stand.setCustomNameVisible(true);
         stand.setGravity(false);
         stand.setInvisible(true);
         final List<Player> prp = new ArrayList<Player>();
         new BukkitRunnable() {
             public void run() {
-                PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving((EntityLiving)stand);
+                PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving(stand);
                 for (Entity e : damaged.getNearbyEntities(12.0, 12.0, 12.0)) {
                     if (!(e instanceof Player)) continue;
-                    ((CraftPlayer)((Player)e)).getHandle().playerConnection.sendPacket((Packet)packet);
-                    prp.add((Player)e);
+                    ((CraftPlayer) e).getHandle().playerConnection.sendPacket(packet);
+                    prp.add((Player) e);
                 }
             }
-        }.runTaskAsynchronously((Plugin)SkySimEngine.getPlugin());
+        }.runTaskAsynchronously(SkySimEngine.getPlugin());
         new BukkitRunnable() {
             public void run() {
-                final PacketPlayOutEntityDestroy pa = new PacketPlayOutEntityDestroy(new int[] { stand.getId() });
+                final PacketPlayOutEntityDestroy pa = new PacketPlayOutEntityDestroy(stand.getId());
                 for (final Player e : prp) {
                     if (e instanceof Player) {
-                        ((CraftPlayer)e).getHandle().playerConnection.sendPacket((Packet)pa);
+                        ((CraftPlayer) e).getHandle().playerConnection.sendPacket(pa);
                     }
                 }
             }
-        }.runTaskLaterAsynchronously((Plugin)SkySimEngine.getPlugin(), 30L);
+        }.runTaskLaterAsynchronously(SkySimEngine.getPlugin(), 30L);
     }
-    
+
     public static void customDMGIND(final Entity damaged, final String text) {
         final Location l_ = damaged.getLocation().clone();
         l_.add(SUtil.random(-1.5, 1.5), 1.0, SUtil.random(-1.5, 1.5));
-        final EntityArmorStand stand = new EntityArmorStand((net.minecraft.server.v1_8_R3.World)((CraftWorld)damaged.getWorld()).getHandle());
+        final EntityArmorStand stand = new EntityArmorStand(((CraftWorld) damaged.getWorld()).getHandle());
         stand.setLocation(l_.getX(), l_.getY(), l_.getZ(), 0.0f, 0.0f);
-        ((ArmorStand)stand.getBukkitEntity()).setMarker(true);
+        ((ArmorStand) stand.getBukkitEntity()).setMarker(true);
         stand.setCustomName(text);
         stand.setCustomNameVisible(true);
         stand.setGravity(false);
@@ -1345,26 +1334,26 @@ public class PlayerListener extends PListener
         final List<Player> prp = new ArrayList<Player>();
         new BukkitRunnable() {
             public void run() {
-                PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving((EntityLiving)stand);
+                PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving(stand);
                 for (Entity e : damaged.getNearbyEntities(12.0, 12.0, 12.0)) {
                     if (!(e instanceof Player)) continue;
-                    ((CraftPlayer)((Player)e)).getHandle().playerConnection.sendPacket((Packet)packet);
-                    prp.add((Player)e);
+                    ((CraftPlayer) e).getHandle().playerConnection.sendPacket(packet);
+                    prp.add((Player) e);
                 }
             }
-        }.runTaskAsynchronously((Plugin)SkySimEngine.getPlugin());
+        }.runTaskAsynchronously(SkySimEngine.getPlugin());
         new BukkitRunnable() {
             public void run() {
-                final PacketPlayOutEntityDestroy pa = new PacketPlayOutEntityDestroy(new int[] { stand.getId() });
+                final PacketPlayOutEntityDestroy pa = new PacketPlayOutEntityDestroy(stand.getId());
                 for (final Player e : prp) {
                     if (e instanceof Player) {
-                        ((CraftPlayer)e).getHandle().playerConnection.sendPacket((Packet)pa);
+                        ((CraftPlayer) e).getHandle().playerConnection.sendPacket(pa);
                     }
                 }
             }
-        }.runTaskLaterAsynchronously((Plugin)SkySimEngine.getPlugin(), 30L);
+        }.runTaskLaterAsynchronously(SkySimEngine.getPlugin(), 30L);
     }
-    
+
     @EventHandler
     public void onChunkLoad(final ChunkLoadEvent e) {
         for (final Entity en : e.getChunk().getEntities()) {
@@ -1373,13 +1362,13 @@ public class PlayerListener extends PListener
             }
         }
     }
-    
+
     @EventHandler
     public void watcherMobsDamage(final EntityDamageEvent ev) {
         if (!ev.getEntity().hasMetadata("WATCHER_E")) {
             return;
         }
-        if (((LivingEntity)ev.getEntity()).getHealth() - ev.getFinalDamage() <= 0.0) {
+        if (((LivingEntity) ev.getEntity()).getHealth() - ev.getFinalDamage() <= 0.0) {
             final Watcher watcher = Watcher.getWatcher(ev.getEntity().getWorld());
             if (watcher == null) {
                 return;
@@ -1391,7 +1380,7 @@ public class PlayerListener extends PListener
             }
         }
     }
-    
+
     @EventHandler
     public void watcherDamage(final EntityDamageByEntityEvent ev) {
         final Watcher watcher = Watcher.getWatcher(ev.getEntity().getWorld());
@@ -1412,19 +1401,18 @@ public class PlayerListener extends PListener
         if (Watcher.random(0, 2) == 1 && (ev.getDamager() instanceof Player || ev.getDamager() instanceof Arrow)) {
             Player p = null;
             if (ev.getDamager() instanceof Player) {
-                p = (Player)ev.getDamager();
+                p = (Player) ev.getDamager();
+            } else {
+                p = (Player) ((Arrow) ev.getDamager()).getShooter();
             }
-            else {
-                p = (Player)((Arrow)ev.getDamager()).getShooter();
-            }
-            User.getUser(p.getUniqueId()).damage(p.getMaxHealth() * 1.0 / 10.0, EntityDamageEvent.DamageCause.CUSTOM, ev.getEntity());
+            User.getUser(p.getUniqueId()).damage(p.getMaxHealth() / 10.0, EntityDamageEvent.DamageCause.CUSTOM, ev.getEntity());
             final Beam beam = new Beam(ev.getEntity().getLocation().clone().add(0.0, 1.3, 0.0), p.getLocation().clone().add(0.0, 1.0, 0.0));
             p.damage(1.0E-5);
             beam.start();
             final Player p2 = p;
             new BukkitRunnable() {
                 int i = 0;
-                
+
                 public void run() {
                     if (this.i >= 20 || !Watcher.getWatcher(ev.getEntity().getWorld()).isResting) {
                         beam.stop();
@@ -1436,17 +1424,17 @@ public class PlayerListener extends PListener
                     beam.setEndingPosition(p2.getLocation().clone().add(0.0, 1.0, 0.0));
                     beam.update();
                 }
-            }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+            }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
         }
     }
-    
+
     @EventHandler
     public void ans(final BlockPlaceEvent e) {
         if (e.getPlayer().getWorld().getName().contains("arena") && e.getPlayer().getGameMode() != GameMode.CREATIVE) {
             e.setCancelled(true);
         }
     }
-    
+
     @EventHandler
     public void swingSword(final PlayerInteractEvent e) {
         final Player p = e.getPlayer();
@@ -1464,9 +1452,9 @@ public class PlayerListener extends PListener
             final Location entityTargetLocation = e.getPlayer().getEyeLocation().clone().add(playerLocation.getDirection().normalize().multiply(7));
             final Vector vector = playerLocation.clone().toVector().subtract(entityTargetLocation.clone().toVector());
             for (int count = 60, i = 1; i <= count; ++i) {
-                final Location nl = entityTargetLocation.clone().add(vector.clone().multiply(i / (double)count));
+                final Location nl = entityTargetLocation.clone().add(vector.clone().multiply(i / (double) count));
                 final Collection<Entity> el = nl.getWorld().getNearbyEntities(nl, 0.15, 0.15, 0.15);
-                final Entity[] clt = el.<Entity>toArray(new Entity[el.size()]);
+                final Entity[] clt = el.toArray(new Entity[el.size()]);
                 for (int j = 0; j < clt.length; ++j) {
                     final Entity en = clt[j];
                     if (!(en instanceof Player)) {
@@ -1474,11 +1462,11 @@ public class PlayerListener extends PListener
                             if (!en.isDead() && !en.hasMetadata("GiantSword") && !en.hasMetadata("NPC")) {
                                 if (!(en instanceof ArmorStand)) {
                                     if (en.getLocation().distance(e.getPlayer().getLocation()) > 3.0) {
-                                        final Object[] atp = Sputnik.calculateDamage(p, p, p.getItemInHand(), (LivingEntity)en, false);
-                                        final double finalDamage1 = (float)atp[0];
-                                        spawnDamageInd(en, (float)atp[2], (boolean)atp[1]);
-                                        FerocityCalculation.activeFerocityTimes(p, (LivingEntity)en, (int)finalDamage1, (boolean)atp[1]);
-                                        User.getUser(p.getUniqueId()).damageEntity((Damageable)en, finalDamage1);
+                                        final Object[] atp = Sputnik.calculateDamage(p, p, p.getItemInHand(), (LivingEntity) en, false);
+                                        final double finalDamage1 = (float) atp[0];
+                                        spawnDamageInd(en, (float) atp[2], (boolean) atp[1]);
+                                        FerocityCalculation.activeFerocityTimes(p, (LivingEntity) en, (int) finalDamage1, (boolean) atp[1]);
+                                        User.getUser(p.getUniqueId()).damageEntity((Damageable) en, finalDamage1);
                                         return;
                                     }
                                 }
@@ -1489,32 +1477,30 @@ public class PlayerListener extends PListener
             }
         }
     }
-    
+
     public Map<UUID, Boolean> getIsNotLoaded() {
         return this.isNotLoaded;
     }
-    
+
     static {
         BOW_MAP = new HashMap<UUID, BowShooting>();
         COMBAT_MAP = new HashMap<UUID, CombatAction>();
         LAST_DAMAGE_DEALT = new HashMap<Player, Double>();
     }
-    
-    public interface CombatAction
-    {
+
+    public interface CombatAction {
         boolean attacked();
-        
+
         double getDamageDealt();
-        
+
         boolean isBowShot();
-        
+
         long getTimeStamp();
     }
-    
-    private interface BowShooting
-    {
+
+    private interface BowShooting {
         ItemStack getBow();
-        
+
         float getForce();
     }
 }

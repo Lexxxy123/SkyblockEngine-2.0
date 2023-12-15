@@ -15,7 +15,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.Material;
 import vn.giakhanhvn.skysim.entity.SEntityEquipment;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
+
 import java.util.Iterator;
+
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
@@ -40,51 +42,50 @@ import vn.giakhanhvn.skysim.util.Sputnik;
 import org.bukkit.entity.LivingEntity;
 import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
 
-public class BigfootGiant extends BaseZombie
-{
+public class BigfootGiant extends BaseZombie {
     private static LivingEntity e;
     private boolean shockWave;
     private boolean shockWaveCD;
-    
+
     public BigfootGiant() {
         this.shockWave = false;
         this.shockWaveCD = true;
     }
-    
+
     @Override
     public String getEntityName() {
         return Sputnik.trans("&c&lBigfoot");
     }
-    
+
     @Override
     public double getEntityMaxHealth() {
         return 2.5E7;
     }
-    
+
     @Override
     public double getDamageDealt() {
         return 30000.0;
     }
-    
+
     @Override
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
         if (entity.getWorld().getPlayers().size() == 0) {
             return;
         }
         BigfootGiant.e = entity;
-        ((CraftZombie)entity).setBaby(false);
+        ((CraftZombie) entity).setBaby(false);
         final Player p = entity.getWorld().getPlayers().get(SUtil.random(0, entity.getWorld().getPlayers().size() - 1));
         if (p != null && p.getGameMode() != GameMode.SPECTATOR && p.getGameMode() != GameMode.CREATIVE) {
-            ((CraftZombie)entity).setTarget((LivingEntity)p);
+            ((CraftZombie) entity).setTarget(p);
         }
-        final AttributeInstance followRange = ((CraftLivingEntity)entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
+        final AttributeInstance followRange = ((CraftLivingEntity) entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
         followRange.setValue(500.0);
         SUtil.delay(() -> this.shockWaveCD = false, 150L);
-        Sputnik.applyPacketGiant((Entity)entity);
-        EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 25);
-        entity.setMetadata("Giant_", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("highername", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+        Sputnik.applyPacketGiant(entity);
+        EntityManager.DEFENSE_PERCENTAGE.put(entity, 25);
+        entity.setMetadata("Giant_", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("highername", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -103,10 +104,10 @@ public class BigfootGiant extends BaseZombie
                     }, 10L);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
-                final EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
+                final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
@@ -115,7 +116,7 @@ public class BigfootGiant extends BaseZombie
                     if (!(entities instanceof Player)) {
                         continue;
                     }
-                    final Player target = (Player)entities;
+                    final Player target = (Player) entities;
                     if (target.getGameMode() == GameMode.CREATIVE) {
                         continue;
                     }
@@ -127,20 +128,20 @@ public class BigfootGiant extends BaseZombie
                     }
                     entity.teleport(entity.getLocation().setDirection(target.getLocation().toVector().subtract(target.getLocation().toVector())));
                     for (final Player players : Bukkit.getOnlinePlayers()) {
-                        ((CraftPlayer)players).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)entity).getHandle(), 0));
+                        ((CraftPlayer) players).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) entity).getHandle(), 0));
                     }
-                    nms.r((net.minecraft.server.v1_8_R3.Entity)((CraftPlayer)target).getHandle());
+                    nms.r(((CraftPlayer) target).getHandle());
                     break;
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 8L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 8L);
     }
-    
+
     @Override
     public SEntityEquipment getEntityEquipment() {
         return new SEntityEquipment(null, null, null, null, b(8991025, Material.LEATHER_BOOTS));
     }
-    
+
     @Override
     public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
         Sputnik.zero(killed);
@@ -148,32 +149,32 @@ public class BigfootGiant extends BaseZombie
             SadanHuman.SadanGiantsCount.put(killed.getWorld().getUID(), SadanHuman.SadanGiantsCount.get(killed.getWorld().getUID()) - 1);
         }
     }
-    
+
     @Override
     public boolean hasNameTag() {
         return false;
     }
-    
+
     @Override
     public boolean isVillager() {
         return false;
     }
-    
+
     @Override
     public boolean isBaby() {
         return false;
     }
-    
+
     @Override
     public double getXPDropped() {
         return 0.0;
     }
-    
+
     @Override
     public double getMovementSpeed() {
         return 0.35;
     }
-    
+
     public void jumpAni(final LivingEntity e) {
         new BukkitRunnable() {
             public void run() {
@@ -194,7 +195,6 @@ public class BigfootGiant extends BaseZombie
                     SUtil.delay(() -> {
                         final Object val$e = e;
                         e.getWorld().playSound(e.getLocation(), Sound.EXPLODE, 10.0f, 0.0f);
-                        return;
                     }, 5L);
                     for (final Entity entities : e.getNearbyEntities(15.0, 10.0, 15.0)) {
                         final Vector vec = new Vector(0, 0, 0);
@@ -211,19 +211,18 @@ public class BigfootGiant extends BaseZombie
                             continue;
                         }
                         if (entities.getLocation().distance(e.getLocation()) <= 5.0) {
-                            final Player p = (Player)entities;
-                            p.sendMessage(Sputnik.trans("&c&lBigfoot &chit you with &eStomp &cfor " + SUtil.commaify(Math.round(SadanFunction.dmgc(40000, p, (Entity)e))) + " &cdamage."));
-                        }
-                        else {
-                            final Player p = (Player)entities;
-                            p.sendMessage(Sputnik.trans("&c&lBigfoot &chit you with &eStomp &cfor " + SUtil.commaify(Math.round(SadanFunction.dmgc(35000, p, (Entity)e))) + " &cdamage."));
+                            final Player p = (Player) entities;
+                            p.sendMessage(Sputnik.trans("&c&lBigfoot &chit you with &eStomp &cfor " + SUtil.commaify(Math.round(SadanFunction.dmgc(40000, p, e))) + " &cdamage."));
+                        } else {
+                            final Player p = (Player) entities;
+                            p.sendMessage(Sputnik.trans("&c&lBigfoot &chit you with &eStomp &cfor " + SUtil.commaify(Math.round(SadanFunction.dmgc(35000, p, e))) + " &cdamage."));
                         }
                     }
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
     }
-    
+
     public static ItemStack buildColorStack(final int hexcolor) {
         final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB(hexcolor));
         final ItemMeta itemMeta = stack.getItemMeta();
@@ -231,7 +230,7 @@ public class BigfootGiant extends BaseZombie
         stack.setItemMeta(itemMeta);
         return stack;
     }
-    
+
     public static ItemStack b(final int hexcolor, final Material m) {
         final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
         final ItemMeta itemMeta = stack.getItemMeta();
@@ -239,7 +238,7 @@ public class BigfootGiant extends BaseZombie
         stack.setItemMeta(itemMeta);
         return stack;
     }
-    
+
     public static ItemStack c(final Material m) {
         final ItemStack stack = new ItemStack(m);
         final ItemMeta itemMeta = stack.getItemMeta();
@@ -247,17 +246,17 @@ public class BigfootGiant extends BaseZombie
         stack.setItemMeta(itemMeta);
         return stack;
     }
-    
+
     public static void applyEffect(final PotionEffectType e, final Entity en, final int ticks, final int amp) {
-        ((LivingEntity)en).addPotionEffect(new PotionEffect(e, ticks, amp));
+        ((LivingEntity) en).addPotionEffect(new PotionEffect(e, ticks, amp));
     }
-    
+
     public static void createBlockTornado(final Entity e, final Material mat, final byte id) {
         for (int i = 0; i <= 30; ++i) {
             final int random = SUtil.random(0, 3);
             double range = 0.0;
             final Location loc = e.getLocation().clone();
-            loc.setYaw((float)SUtil.random(0, 360));
+            loc.setYaw((float) SUtil.random(0, 360));
             if (random == 1) {
                 range = 0.6;
             }
@@ -272,7 +271,7 @@ public class BigfootGiant extends BaseZombie
             BlockFallAPI.sendVelocityBlock(e.getLocation(), mat, id, e.getWorld(), 70, vec);
         }
     }
-    
+
     @Override
     public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
         e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ZOMBIE_HURT, 1.0f, 0.0f);

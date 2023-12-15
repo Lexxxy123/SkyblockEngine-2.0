@@ -1,11 +1,11 @@
 package vn.giakhanhvn.skysim.dungeons;
 
 import vn.giakhanhvn.skysim.item.SItem;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemSerial
-{
+public class ItemSerial {
     private double damage;
     private double strength;
     private double critchance;
@@ -17,8 +17,8 @@ public class ItemSerial
     private double health;
     private double defense;
     private double magicFind;
-    private List<Double> intarr;
-    
+    private final List<Double> intarr;
+
     public ItemSerial(final double damage, final double strength, final double critdamage, final double critchance, final double ferocity, final double intelligence, final double speed, final double atkSpeed, final double health, final double defense, final double magicFind) {
         this.damage = 0.0;
         this.strength = 0.0;
@@ -44,7 +44,7 @@ public class ItemSerial
         this.defense = defense;
         this.magicFind = magicFind;
     }
-    
+
     public void saveTo(final SItem sitem) {
         this.intarr.add(this.damage);
         this.intarr.add(this.strength);
@@ -62,8 +62,7 @@ public class ItemSerial
         for (int j = 0; j < this.intarr.size(); ++j) {
             if (j == this.intarr.size() - 1) {
                 sb.append(this.intarr.get(j));
-            }
-            else {
+            } else {
                 sb.append(this.intarr.get(j) + ",");
             }
         }
@@ -71,7 +70,7 @@ public class ItemSerial
         sitem.setDataString("boost", sb.toString());
         sitem.setDataBoolean("dungeons_item", true);
     }
-    
+
     public static ItemSerial getItemBoostStatistics(final SItem sitem) {
         String s = sitem.getDataString("boost");
         if (!s.contains("ItemBoost")) {
@@ -84,103 +83,102 @@ public class ItemSerial
         for (int i = 0; i < sta.length; ++i) {
             try {
                 f[i] = Float.parseFloat(sta[i]);
-            }
-            catch (final NumberFormatException e) {
+            } catch (final NumberFormatException e) {
                 e.printStackTrace();
             }
         }
         return new ItemSerial(f[0], f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], f[9], f[10]);
     }
-    
+
     public static ItemSerial createBlank() {
         final float[] f = new float[11];
         return new ItemSerial(f[0], f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], f[9], f[10]);
     }
-    
+
     public void setDamage(final double damage) {
         this.damage = damage;
     }
-    
+
     public double getDamage() {
         return this.damage;
     }
-    
+
     public void setStrength(final double strength) {
         this.strength = strength;
     }
-    
+
     public double getStrength() {
         return this.strength;
     }
-    
+
     public void setCritchance(final double critchance) {
         this.critchance = critchance;
     }
-    
+
     public double getCritchance() {
         return this.critchance;
     }
-    
+
     public void setCritdamage(final double critdamage) {
         this.critdamage = critdamage;
     }
-    
+
     public double getCritdamage() {
         return this.critdamage;
     }
-    
+
     public void setFerocity(final double ferocity) {
         this.ferocity = ferocity;
     }
-    
+
     public double getFerocity() {
         return this.ferocity;
     }
-    
+
     public void setIntelligence(final double intelligence) {
         this.intelligence = intelligence;
     }
-    
+
     public double getIntelligence() {
         return this.intelligence;
     }
-    
+
     public void setAtkSpeed(final double atkSpeed) {
         this.atkSpeed = atkSpeed;
     }
-    
+
     public double getAtkSpeed() {
         return this.atkSpeed;
     }
-    
+
     public void setSpeed(final double speed) {
         this.speed = speed;
     }
-    
+
     public double getSpeed() {
         return this.speed;
     }
-    
+
     public void setHealth(final double health) {
         this.health = health;
     }
-    
+
     public double getHealth() {
         return this.health;
     }
-    
+
     public void setDefense(final double defense) {
         this.defense = defense;
     }
-    
+
     public double getDefense() {
         return this.defense;
     }
-    
+
     public void setMagicFind(final double magicFind) {
         this.magicFind = magicFind;
     }
-    
+
     public double getMagicFind() {
         return this.magicFind;
     }

@@ -2,20 +2,23 @@ package vn.giakhanhvn.skysim.dimoon;
 
 import java.util.Iterator;
 import java.util.Arrays;
+
 import vn.giakhanhvn.skysim.util.SUtil;
+
 import java.util.ArrayList;
+
 import org.bukkit.entity.Player;
+
 import java.util.List;
 
-public class DimoonLootTable
-{
+public class DimoonLootTable {
     public static List<DimoonLootItem> lowQualitylootTable;
     public static List<DimoonLootItem> highQualitylootTable;
     private int weight;
     private Player p;
-    private int cp;
-    private int plm;
-    
+    private final int cp;
+    private final int plm;
+
     public DimoonLootTable(final Player p, final int placement, final int catalPlaced) {
         this.weight = 0;
         this.cp = catalPlaced;
@@ -26,7 +29,7 @@ public class DimoonLootTable
         this.p = p;
         this.weight = catalPlaced * 100 + this.calPlacementWeight(placement);
     }
-    
+
     int calPlacementWeight(final int i) {
         if (i == 1) {
             return 500;
@@ -48,26 +51,26 @@ public class DimoonLootTable
         }
         return 0;
     }
-    
+
     public List<List<DimoonLootItem>> roll() {
         if (this.cp < 0 || this.plm <= 0) {
             return null;
         }
-         List<DimoonLootItem> rolledHiItems = new ArrayList<DimoonLootItem>();
-         List<DimoonLootItem> rolledLoItems = new ArrayList<DimoonLootItem>();
-         List<DimoonLootItem> highQualityLootable = (List<DimoonLootItem>)((ArrayList)DimoonLootTable.highQualitylootTable).clone();
+        List<DimoonLootItem> rolledHiItems = new ArrayList<DimoonLootItem>();
+        List<DimoonLootItem> rolledLoItems = new ArrayList<DimoonLootItem>();
+        List<DimoonLootItem> highQualityLootable = (List<DimoonLootItem>) ((ArrayList) DimoonLootTable.highQualitylootTable).clone();
         highQualityLootable.removeIf(item -> item.getMinimumWeight() > this.weight);
-         List<DimoonLootItem> lowQualityLootable = (List<DimoonLootItem>)((ArrayList)DimoonLootTable.lowQualitylootTable).clone();
+        List<DimoonLootItem> lowQualityLootable = (List<DimoonLootItem>) ((ArrayList) DimoonLootTable.lowQualitylootTable).clone();
         lowQualityLootable.removeIf(item -> item.getMinimumWeight() > this.weight);
-        for ( DimoonLootItem item2 : highQualityLootable) {
-             int r = SUtil.random(1, item2.getChance());
+        for (DimoonLootItem item2 : highQualityLootable) {
+            int r = SUtil.random(1, item2.getChance());
             if (r == 1) {
                 rolledHiItems.add(item2);
                 break;
             }
         }
-        for ( DimoonLootItem item2 : lowQualityLootable) {
-             int r = SUtil.random(1, item2.getChance());
+        for (DimoonLootItem item2 : lowQualityLootable) {
+            int r = SUtil.random(1, item2.getChance());
             if (r == 1) {
                 rolledLoItems.add(item2);
                 break;
@@ -75,11 +78,11 @@ public class DimoonLootTable
         }
         return Arrays.asList(rolledHiItems, rolledLoItems);
     }
-    
+
     public int getWeight() {
         return this.weight;
     }
-    
+
     static {
         DimoonLootTable.lowQualitylootTable = null;
         DimoonLootTable.highQualitylootTable = null;

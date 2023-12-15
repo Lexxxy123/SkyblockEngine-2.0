@@ -1,6 +1,7 @@
 package vn.giakhanhvn.skysim.command;
 
 import java.util.Iterator;
+
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.EntityType;
@@ -8,8 +9,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.ChatColor;
 
 @CommandParameters(description = "Gets the NBT of your current item.", aliases = "kam", permission = "spt.item")
-public class KillAllMobs extends SCommand
-{
+public class KillAllMobs extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         final Player player = sender.getPlayer();
@@ -25,8 +25,7 @@ public class KillAllMobs extends SCommand
                 }
             }
             this.send(ChatColor.WHITE + "You removed" + ChatColor.YELLOW + " ALL" + ChatColor.RESET + " the mobs in this world.");
-        }
-        else {
+        } else {
             this.send(ChatColor.RED + "You can't use this, lol.");
         }
     }

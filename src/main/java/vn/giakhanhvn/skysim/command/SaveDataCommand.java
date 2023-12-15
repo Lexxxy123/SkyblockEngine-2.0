@@ -1,6 +1,7 @@
 package vn.giakhanhvn.skysim.command;
 
 import java.util.Iterator;
+
 import vn.giakhanhvn.skysim.util.Sputnik;
 import vn.giakhanhvn.skysim.user.User;
 import org.bukkit.entity.Player;
@@ -9,8 +10,7 @@ import vn.giakhanhvn.skysim.util.SLog;
 import org.bukkit.ChatColor;
 
 @CommandParameters(description = "Spec test command.", aliases = "fsd")
-public class SaveDataCommand extends SCommand
-{
+public class SaveDataCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         final Player player = sender.getPlayer();
@@ -28,8 +28,7 @@ public class SaveDataCommand extends SCommand
                 }
                 Bukkit.broadcastMessage(Sputnik.trans("&b[SKYSIM D.C] &aAll players data have been saved! Action performed by " + player.getDisplayName() + "&a!"));
             }
-        }
-        else {
+        } else {
             SLog.info("[SYSTEM] Saving players data, this action was performed by CONSOLE...");
             for (final Player p : Bukkit.getOnlinePlayers()) {
                 final User user = User.getUser(p.getUniqueId());

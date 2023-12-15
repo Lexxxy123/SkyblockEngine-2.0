@@ -2,6 +2,7 @@ package vn.giakhanhvn.skysim.item.oddities;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import net.md_5.bungee.api.chat.ClickEvent;
 import vn.giakhanhvn.skysim.command.BatphoneCommand;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -15,64 +16,65 @@ import vn.giakhanhvn.skysim.item.SItem;
 import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.item.GenericItemType;
 import vn.giakhanhvn.skysim.item.Rarity;
+
 import java.util.UUID;
 import java.util.List;
+
 import vn.giakhanhvn.skysim.item.Ability;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
 import vn.giakhanhvn.skysim.item.SkullStatistics;
 
-public class MaddoxBatphone implements SkullStatistics, MaterialFunction, Ability
-{
+public class MaddoxBatphone implements SkullStatistics, MaterialFunction, Ability {
     private static final List<String> SUCCESSFUL_RESPONSES;
     private static final List<String> FAILED_RESPONSES;
     public static final List<UUID> RING_COOLDOWN;
     public static final List<UUID> CALL_COOLDOWN;
-    
+
     @Override
     public String getURL() {
         return "9336d7cc95cbf6689f5e8c954294ec8d1efc494a4031325bb427bc81d56a484d";
     }
-    
+
     @Override
     public String getDisplayName() {
         return "Maddox Batphone";
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.UNCOMMON;
     }
-    
+
     @Override
     public GenericItemType getType() {
         return GenericItemType.ITEM;
     }
-    
+
     @Override
     public String getAbilityName() {
         return "Whassup?";
     }
-    
+
     @Override
     public String getAbilityDescription() {
         return "Lets you call Maddox, when he's not busy.";
     }
-    
+
     @Override
     public int getAbilityCooldownTicks() {
         return 0;
     }
-    
+
     @Override
     public int getManaCost() {
         return 0;
     }
-    
+
     @Override
     public boolean displayUsage() {
         return false;
     }
-    
+
     @Override
     public boolean isStackable() {
         return false;
@@ -104,13 +106,13 @@ public class MaddoxBatphone implements SkullStatistics, MaterialFunction, Abilit
         String key = UUID.randomUUID().toString();
         BatphoneCommand.KEYS.add(key);
         SUtil.delay(() -> BatphoneCommand.KEYS.remove(key), 460L);
-        message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/batphone " + BatphoneCommand.ACCESS_KEY.toString() + " " + key));
-        SUtil.delay(() -> player.spigot().sendMessage(new TextComponent(new BaseComponent[]{new TextComponent(ChatColor.GREEN + "\u2706 " + SUtil.getRandom(SUCCESSFUL_RESPONSES)), message})), 52L);
+        message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/batphone " + BatphoneCommand.ACCESS_KEY + " " + key));
+        SUtil.delay(() -> player.spigot().sendMessage(new TextComponent(new TextComponent(ChatColor.GREEN + "\u2706 " + SUtil.getRandom(SUCCESSFUL_RESPONSES)), message)), 52L);
     }
 
     static {
-        SUCCESSFUL_RESPONSES = Arrays.<String>asList("Hello?", "Someone answers!", "How does a lobster answer? Shello!", "Hey what do you need?", "You hear the line pick up...", "You again? What do you want this time?");
-        FAILED_RESPONSES = Arrays.<String>asList("Please leave your message after the beep.", "How can you tell if a bee is on the phone? You get a buzzy signal!", "The phone keeps ringing, is it broken?", "The phone picks up but it immediately hands up!", "What did the cat say on the phone? Can you hear meow?", "No answer.", "Seems like it's not picking up!", "\"Your call is important to us, please stay on the line\", so you hang up.");
+        SUCCESSFUL_RESPONSES = Arrays.asList("Hello?", "Someone answers!", "How does a lobster answer? Shello!", "Hey what do you need?", "You hear the line pick up...", "You again? What do you want this time?");
+        FAILED_RESPONSES = Arrays.asList("Please leave your message after the beep.", "How can you tell if a bee is on the phone? You get a buzzy signal!", "The phone keeps ringing, is it broken?", "The phone picks up but it immediately hands up!", "What did the cat say on the phone? Can you hear meow?", "No answer.", "Seems like it's not picking up!", "\"Your call is important to us, please stay on the line\", so you hang up.");
         RING_COOLDOWN = new ArrayList<UUID>();
         CALL_COOLDOWN = new ArrayList<UUID>();
     }

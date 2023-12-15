@@ -1,10 +1,9 @@
 package vn.giakhanhvn.skysim.entity;
 
-public final class StaticGiantManager
-{
+public final class StaticGiantManager {
     public static boolean ACTIVE;
     public static SEntity GIANT;
-    
+
     public static void endFight() {
         if (StaticGiantManager.GIANT == null) {
             return;
@@ -12,7 +11,7 @@ public final class StaticGiantManager
         StaticGiantManager.ACTIVE = false;
         StaticGiantManager.GIANT = null;
     }
-    
+
     static {
         StaticGiantManager.ACTIVE = false;
         StaticGiantManager.GIANT = null;

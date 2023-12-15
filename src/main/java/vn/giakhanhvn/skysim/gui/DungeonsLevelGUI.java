@@ -1,14 +1,17 @@
 package vn.giakhanhvn.skysim.gui;
 
 import java.util.List;
+
 import org.bukkit.potion.PotionType;
 import org.bukkit.potion.Potion;
 import vn.giakhanhvn.skysim.skill.DungeonsSkill;
 import vn.giakhanhvn.skysim.util.Sputnik;
 import vn.giakhanhvn.skysim.util.SUtil;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Collection;
+
 import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.skill.TankSkill;
 import vn.giakhanhvn.skysim.skill.ArcherSkill;
@@ -20,18 +23,19 @@ import vn.giakhanhvn.skysim.skill.CatacombsSkill;
 import org.bukkit.Material;
 import org.bukkit.ChatColor;
 import vn.giakhanhvn.skysim.collection.ItemCollection;
+
 import java.util.concurrent.atomic.AtomicInteger;
+
 import vn.giakhanhvn.skysim.user.User;
 import org.bukkit.inventory.ItemStack;
 
-public class DungeonsLevelGUI extends GUI
-{
+public class DungeonsLevelGUI extends GUI {
     public static final ItemStack CATA_HEAD;
-    
+
     public DungeonsLevelGUI() {
         super("Dungeoneering", 54);
     }
-    
+
     @Override
     public void onOpen(final GUIOpenEvent e) {
         this.fill(DungeonsLevelGUI.BLACK_STAINED_GLASS_PANE);
@@ -55,7 +59,7 @@ public class DungeonsLevelGUI extends GUI
         this.set(createCollectionClickableForClasses(null, ArcherSkill.INSTANCE, 32, player));
         this.set(createCollectionClickableForClasses(null, TankSkill.INSTANCE, 33, player));
     }
-    
+
     private static GUIClickableItem createCollectionClickableForClasses(final GUI gui, final Skill skill, final int slot, final Player player) {
         final User user = User.getUser(player.getUniqueId());
         ItemStack stack = null;
@@ -69,26 +73,22 @@ public class DungeonsLevelGUI extends GUI
             lore1 = "&7Arrow Damage: &c" + (120.0 + 0.8 * Skill.getLevel(user.getSkillXP(skill), false)) + "%";
             lore2 = "&7Melee Damage: &c-25%";
             lore3 = " ";
-        }
-        else if (skill instanceof BerserkSkill) {
+        } else if (skill instanceof BerserkSkill) {
             mat = Material.IRON_SWORD;
             lore1 = "&7Melee Damage: &c" + (40.0 + 0.4 * Skill.getLevel(user.getSkillXP(skill), false)) + "%";
             lore2 = " ";
             lore3 = "&7Walk Speed: &a" + (30.0 + 0.3 * Skill.getLevel(user.getSkillXP(skill), false)) + "%";
             lore4 = " ";
-        }
-        else if (skill instanceof TankSkill) {
+        } else if (skill instanceof TankSkill) {
             mat = Material.LEATHER_CHESTPLATE;
             lore1 = "&7Health: &a+100";
-            lore2 = "&7Defense: &a" + (50 + 1 * Skill.getLevel(user.getSkillXP(skill), false));
+            lore2 = "&7Defense: &a" + (50 + Skill.getLevel(user.getSkillXP(skill), false));
             lore3 = " ";
-        }
-        else if (skill instanceof MageSkill) {
+        } else if (skill instanceof MageSkill) {
             mat = Material.BLAZE_ROD;
             lore1 = "&7Intelligence: &a" + (250 + 5 * Skill.getLevel(user.getSkillXP(skill), false));
             lore2 = " ";
-        }
-        else if (skill instanceof HealerSkill) {
+        } else if (skill instanceof HealerSkill) {
             mat = Material.POTION;
         }
         final List<String> l = new ArrayList<String>();
@@ -113,17 +113,17 @@ public class DungeonsLevelGUI extends GUI
                 l.add(Sputnik.trans(lore4));
             }
             l.add(Sputnik.trans("&f&lClass Passives"));
-            for (final String str : ((DungeonsSkill)skill).getPassive()) {
+            for (final String str : ((DungeonsSkill) skill).getPassive()) {
                 l.add(Sputnik.trans(" &8• &a" + str));
             }
             l.add(" ");
             l.add(Sputnik.trans("&f&lDungeon Orb Abilties"));
-            for (final String str : ((DungeonsSkill)skill).getOrb()) {
+            for (final String str : ((DungeonsSkill) skill).getOrb()) {
                 l.add(Sputnik.trans(" &8• &6" + str));
             }
             l.add(" ");
             l.add(Sputnik.trans("&f&lGhost Abilties"));
-            for (final String str : ((DungeonsSkill)skill).getGhost()) {
+            for (final String str : ((DungeonsSkill) skill).getGhost()) {
                 l.add(Sputnik.trans(" &8• &f" + str));
             }
             l.add(" ");
@@ -133,14 +133,13 @@ public class DungeonsLevelGUI extends GUI
             l.add(Sputnik.trans("&8&oUse this class in dungeons"));
             l.add(Sputnik.trans("&8&oto level it up"));
             l.add(" ");
-        }
-        else if (skill != null) {
+        } else if (skill != null) {
             name = skill.getName();
         }
         if (skill != null) {
             l.add(ChatColor.RED + "Skill Tree Coming Soon!");
         }
-        stack = SUtil.getStack(ChatColor.GREEN + name + ((level != 0) ? (" " + SUtil.toRomanNumeral(level)) : ""), mat, (short)0, 1, l);
+        stack = SUtil.getStack(ChatColor.GREEN + name + ((level != 0) ? (" " + SUtil.toRomanNumeral(level)) : ""), mat, (short) 0, 1, l);
         if (skill instanceof HealerSkill) {
             final Potion pot = new Potion(1);
             pot.setType(PotionType.INSTANT_HEAL);
@@ -149,7 +148,7 @@ public class DungeonsLevelGUI extends GUI
         }
         return GUIClickableItem.createGUIOpenerItemStack(gui, player, slot, stack);
     }
-    
+
     private static GUIClickableItem createCollectionClickable(final GUI gui, final Skill skill, final int slot, final Player player) {
         final User user = User.getUser(player.getUniqueId());
         final List<String> l = new ArrayList<String>();
@@ -160,8 +159,7 @@ public class DungeonsLevelGUI extends GUI
         }
         if (l.size() == 0) {
             l.add(ChatColor.GRAY + "Coming at a later date!");
-        }
-        else {
+        } else {
             l.add(" ");
         }
         final double xp = (skill != null) ? user.getSkillXP(skill) : 0.0;
@@ -176,19 +174,18 @@ public class DungeonsLevelGUI extends GUI
             l.add(SUtil.createSLineProgressBar(20, ChatColor.DARK_GREEN, xp, nextXP));
             l.add(" ");
             for (final String line2 : skill.getRewardLore(nextLevel, nextLevel, false)) {
-                l.add("" + line2);
+                l.add(line2);
             }
             l.add(" ");
-        }
-        else if (skill != null) {
+        } else if (skill != null) {
             name = skill.getName();
         }
         if (skill != null) {
             l.add(ChatColor.YELLOW + "Click to view!");
         }
-        return GUIClickableItem.createGUIOpenerItemHead(gui, player, ChatColor.RED + name, slot, "964e1c3e315c8d8fffc37985b6681c5bd16a6f97ffd07199e8a05efbef103793", 1, (String[])SUtil.<String>toArray(l, String.class));
+        return GUIClickableItem.createGUIOpenerItemHead(gui, player, ChatColor.RED + name, slot, "964e1c3e315c8d8fffc37985b6681c5bd16a6f97ffd07199e8a05efbef103793", 1, SUtil.toArray(l, String.class));
     }
-    
+
     static {
         CATA_HEAD = SUtil.getSkullURL("964e1c3e315c8d8fffc37985b6681c5bd16a6f97ffd07199e8a05efbef103793");
     }

@@ -2,7 +2,9 @@ package vn.giakhanhvn.skysim.item.weapon;
 
 import org.bukkit.plugin.Plugin;
 import vn.giakhanhvn.skysim.SkySimEngine;
+
 import java.util.Iterator;
+
 import org.bukkit.Location;
 import vn.giakhanhvn.skysim.util.FerocityCalculation;
 import vn.giakhanhvn.skysim.listener.PlayerListener;
@@ -16,10 +18,14 @@ import org.bukkit.entity.EnderDragonPart;
 import org.bukkit.entity.Entity;
 import org.bukkit.Effect;
 import org.bukkit.Material;
+
 import java.util.List;
+
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.entity.LivingEntity;
+
 import java.util.ArrayList;
+
 import org.bukkit.util.EulerAngle;
 import vn.giakhanhvn.skysim.item.SMaterial;
 import org.bukkit.entity.EntityType;
@@ -42,60 +48,59 @@ import vn.giakhanhvn.skysim.item.Ability;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
 import vn.giakhanhvn.skysim.item.ToolStatistics;
 
-public class FlowerOfTruth implements ToolStatistics, MaterialFunction, Ability
-{
+public class FlowerOfTruth implements ToolStatistics, MaterialFunction, Ability {
     Vector teleportTo;
     String ACT3;
-    
+
     public FlowerOfTruth() {
         this.ACT3 = "true";
     }
-    
+
     @Override
     public int getBaseDamage() {
         return 100;
     }
-    
+
     @Override
     public double getBaseStrength() {
         return 360.0;
     }
-    
+
     @Override
     public String getDisplayName() {
         return "Flower of Truth";
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.LEGENDARY;
     }
-    
+
     @Override
     public GenericItemType getType() {
         return GenericItemType.WEAPON;
     }
-    
+
     @Override
     public SpecificItemType getSpecificType() {
         return SpecificItemType.SWORD;
     }
-    
+
     @Override
     public String getLore() {
         return null;
     }
-    
+
     @Override
     public String getAbilityName() {
         return "Heat-Seeking Rose";
     }
-    
+
     @Override
     public String getAbilityDescription() {
         return "Shoots a rose that ricochets between enemies, damaging up to " + ChatColor.GREEN + "3 " + ChatColor.GRAY + "of your foes! Damage multiplies as more enemies are hit. Cost " + ChatColor.GREEN + "10.0% " + ChatColor.GRAY + "of your maximum mana";
     }
-    
+
     @Override
     public void onAbilityUse(final Player player1, final SItem sItem) {
         final int manaPool = SUtil.blackMagic(PlayerUtils.STATISTICS_CACHE.get(player1.getUniqueId()).getIntelligence().addAll() + 100.0);
@@ -110,7 +115,7 @@ public class FlowerOfTruth implements ToolStatistics, MaterialFunction, Ability
                 public String getReplacement() {
                     return "" + ChatColor.RED + ChatColor.BOLD + "NOT ENOUGH MANA";
                 }
-                
+
                 @Override
                 public long getEnd() {
                     return c + 1500L;
@@ -124,7 +129,7 @@ public class FlowerOfTruth implements ToolStatistics, MaterialFunction, Ability
             public String getReplacement() {
                 return ChatColor.AQUA + "-" + cost + " Mana (" + ChatColor.GOLD + FlowerOfTruth.this.getAbilityName() + ChatColor.AQUA + ")";
             }
-            
+
             @Override
             public long getEnd() {
                 return c + 2000L;
@@ -132,7 +137,7 @@ public class FlowerOfTruth implements ToolStatistics, MaterialFunction, Ability
         });
         final Location throwLoc = player1.getLocation().add(0.0, 0.2, 0.0);
         player1.playSound(player1.getLocation(), Sound.EAT, 1.0f, 1.0f);
-        final ArmorStand armorStand1 = (ArmorStand)player1.getWorld().spawnEntity(throwLoc, EntityType.ARMOR_STAND);
+        final ArmorStand armorStand1 = (ArmorStand) player1.getWorld().spawnEntity(throwLoc, EntityType.ARMOR_STAND);
         armorStand1.getEquipment().setHelmet(SItem.of(SMaterial.RED_ROSE).getStack());
         armorStand1.setHeadPose(new EulerAngle(-92.55000305175781, 0.0, 0.0));
         armorStand1.setGravity(false);
@@ -143,7 +148,7 @@ public class FlowerOfTruth implements ToolStatistics, MaterialFunction, Ability
         new BukkitRunnable() {
             private int run = -1;
             int entityhit = 0;
-            
+
             public void run() {
                 final Vector teleportTo = armorStand1.getLocation().getDirection().normalize().multiply(1);
                 final int i;
@@ -207,13 +212,12 @@ public class FlowerOfTruth implements ToolStatistics, MaterialFunction, Ability
                 }
                 if (i % 2 == 0 && i < 13) {
                     armorStand1.teleport(armorStand1.getLocation().add(teleportTo).multiply(1.0));
-                }
-                else if (i % 2 == 0) {
+                } else if (i % 2 == 0) {
                     armorStand1.teleport(armorStand1.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                 }
                 for (final Entity e3 : armorStand1.getNearbyEntities(1.0, 1.0, 1.0)) {
                     if (e3 instanceof LivingEntity && e3 != player1.getPlayer()) {
-                        final Damageable entity = (Damageable)e3;
+                        final Damageable entity = (Damageable) e3;
                         if (le.contains(e3)) {
                             continue;
                         }
@@ -233,11 +237,11 @@ public class FlowerOfTruth implements ToolStatistics, MaterialFunction, Ability
                             continue;
                         }
                         final User user = User.getUser(player1.getUniqueId());
-                        final Object[] atp = Sputnik.calculateDamage(player1, player1, sItem.getStack(), (LivingEntity)entity, false);
-                        final double finalDamage1 = (float)atp[0];
+                        final Object[] atp = Sputnik.calculateDamage(player1, player1, sItem.getStack(), (LivingEntity) entity, false);
+                        final double finalDamage1 = (float) atp[0];
                         le.add((LivingEntity) e3);
-                        PlayerListener.spawnDamageInd((Entity)entity, (float)atp[2], (boolean)atp[1]);
-                        FerocityCalculation.activeFerocityTimes(player1, (LivingEntity)entity, (int)finalDamage1, (boolean)atp[1]);
+                        PlayerListener.spawnDamageInd(entity, (float) atp[2], (boolean) atp[1]);
+                        FerocityCalculation.activeFerocityTimes(player1, (LivingEntity) entity, (int) finalDamage1, (boolean) atp[1]);
                         user.damageEntity(entity, finalDamage1);
                         ++this.entityhit;
                         int k = 0;
@@ -273,7 +277,7 @@ public class FlowerOfTruth implements ToolStatistics, MaterialFunction, Ability
                     }
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 1L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 1L, 1L);
         new BukkitRunnable() {
             public void run() {
                 if (armorStand1.isDead()) {
@@ -286,19 +290,19 @@ public class FlowerOfTruth implements ToolStatistics, MaterialFunction, Ability
                 armorStand1.remove();
                 this.cancel();
             }
-        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 40L);
+        }.runTaskLater(SkySimEngine.getPlugin(), 40L);
     }
-    
+
     @Override
     public int getAbilityCooldownTicks() {
         return 20;
     }
-    
+
     @Override
     public int getManaCost() {
         return 0;
     }
-    
+
     @Override
     public boolean isEnchanted() {
         return true;

@@ -1,20 +1,22 @@
 package vn.giakhanhvn.skysim.command;
 
 import java.util.Iterator;
+
 import vn.giakhanhvn.skysim.user.User;
 import org.bukkit.entity.Player;
 import org.bukkit.Bukkit;
 import vn.giakhanhvn.skysim.util.SUtil;
 import vn.giakhanhvn.skysim.util.SLog;
 import vn.giakhanhvn.skysim.SkySimEngine;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.Map;
 
-@CommandParameters(description="Modify your coin amount.", usage="", aliases="ssend")
+@CommandParameters(description = "Modify your coin amount.", usage = "", aliases = "ssend")
 public class SSend
-extends SCommand {
+        extends SCommand {
     public Map<UUID, List<String>> servers = new HashMap<UUID, List<String>>();
     public Map<UUID, List<String>> players = new HashMap<UUID, List<String>>();
 
@@ -38,7 +40,7 @@ extends SCommand {
             this.send("&cCorrect Command Usage: /ssend <all/current/specific player> <server name>");
             return;
         }
-        SkySimEngine.getPlugin().getBc().getServers().whenComplete((result, error) -> this.servers.put(runUUID, (List<String>)result));
+        SkySimEngine.getPlugin().getBc().getServers().whenComplete((result, error) -> this.servers.put(runUUID, result));
         for (int i = 0; i < this.servers.get(runUUID).size(); ++i) {
             SLog.info(this.servers.get(runUUID).get(i));
         }
@@ -60,14 +62,14 @@ extends SCommand {
                 }
                 sb.append(server + ", ");
             }
-            this.send("&cThat server doesn't exist! &aYou may send players to these following servers: &f" + sb.toString());
+            this.send("&cThat server doesn't exist! &aYou may send players to these following servers: &f" + sb);
             this.servers.remove(runUUID);
             this.players.remove(runUUID);
             return;
         }
         String finalTarget = targetServer;
         if (args[0].equalsIgnoreCase("all")) {
-            SkySimEngine.getPlugin().getBc().getPlayerList("ALL").whenComplete((result, error) -> this.players.put(runUUID, (List<String>)result));
+            SkySimEngine.getPlugin().getBc().getPlayerList("ALL").whenComplete((result, error) -> this.players.put(runUUID, result));
             this.send("&7Hooking up request for all players you requested (All Servers)...");
             for (String player : this.players.get(runUUID)) {
                 SkySimEngine.getPlugin().getBc().forward("ALL", "savePlayerData", "ALL_PLAYERS".getBytes());
@@ -108,7 +110,6 @@ extends SCommand {
             this.send("&cUnable to find that player, maybe they've gone offline?");
             this.servers.remove(runUUID);
             this.players.remove(runUUID);
-            return;
         }
     }
 }

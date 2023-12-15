@@ -11,8 +11,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import vn.giakhanhvn.skysim.item.SItem;
 
 @CommandParameters(description = "bruhbu", aliases = "hpb")
-public class HotPotatoBookCommand extends SCommand
-{
+public class HotPotatoBookCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         final Player player = sender.getPlayer();

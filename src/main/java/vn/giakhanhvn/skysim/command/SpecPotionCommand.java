@@ -9,8 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 
 @CommandParameters(description = "Adds an potion from Spec to the specified item.", aliases = "spot", permission = "spt.item")
-public class SpecPotionCommand extends SCommand
-{
+public class SpecPotionCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (args.length != 3) {

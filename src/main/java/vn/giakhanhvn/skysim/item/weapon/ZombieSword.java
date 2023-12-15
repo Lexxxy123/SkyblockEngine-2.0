@@ -1,6 +1,7 @@
 package vn.giakhanhvn.skysim.item.weapon;
 
 import java.util.Iterator;
+
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Entity;
 import vn.giakhanhvn.skysim.util.DefenseReplacement;
@@ -22,63 +23,62 @@ import vn.giakhanhvn.skysim.item.Ability;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
 import vn.giakhanhvn.skysim.item.ToolStatistics;
 
-public class ZombieSword implements ToolStatistics, MaterialFunction, Ability
-{
+public class ZombieSword implements ToolStatistics, MaterialFunction, Ability {
     @Override
     public int getBaseDamage() {
         return 110;
     }
-    
+
     @Override
     public double getBaseStrength() {
         return 60.0;
     }
-    
+
     @Override
     public double getBaseIntelligence() {
         return 50.0;
     }
-    
+
     @Override
     public String getDisplayName() {
         return "Ornate Zombie Sword";
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.EPIC;
     }
-    
+
     @Override
     public GenericItemType getType() {
         return GenericItemType.WEAPON;
     }
-    
+
     @Override
     public SpecificItemType getSpecificType() {
         return SpecificItemType.SWORD;
     }
-    
+
     @Override
     public String getLore() {
         return null;
     }
-    
+
     @Override
     public String getAbilityName() {
         return "Instant Heal";
     }
-    
+
     @Override
     public String getAbilityDescription() {
         return Sputnik.trans("&7Heal yourself for &c144 &7+ &c5%❤ &7and players within &a7 &7blocks for &c48❤");
     }
-    
+
     @Override
     public boolean displayUsage() {
         return false;
     }
-    
+
     @Override
     public void onAbilityUse(final Player player1, final SItem sItem) {
         if (!ZSHash.Charges.containsKey(player1.getUniqueId())) {
@@ -97,7 +97,7 @@ public class ZombieSword implements ToolStatistics, MaterialFunction, Ability
                     public String getReplacement() {
                         return "" + ChatColor.RED + ChatColor.BOLD + "NOT ENOUGH MANA";
                     }
-                    
+
                     @Override
                     public long getEnd() {
                         return c + 1500L;
@@ -111,7 +111,7 @@ public class ZombieSword implements ToolStatistics, MaterialFunction, Ability
                 public String getReplacement() {
                     return ChatColor.AQUA + "-" + cost + " Mana (" + ChatColor.GOLD + ZombieSword.this.getAbilityName() + ChatColor.AQUA + ")";
                 }
-                
+
                 @Override
                 public long getEnd() {
                     return c + 2000L;
@@ -124,35 +124,32 @@ public class ZombieSword implements ToolStatistics, MaterialFunction, Ability
             player1.playSound(player1.getLocation(), Sound.ZOMBIE_REMEDY, 0.5f, 1.0f);
             player1.playSound(player1.getLocation(), Sound.SUCCESSFUL_HIT, 1.0f, 1.0f);
             final double healamount = 144.0 + player1.getMaxHealth() * 5.0 / 100.0;
-            player1.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a&lYou healed yourself for " + SUtil.commaify((int)healamount) + " health!"));
+            player1.sendMessage(ChatColor.translateAlternateColorCodes('&', "&a&lYou healed yourself for " + SUtil.commaify((int) healamount) + " health!"));
             if (player1.getMaxHealth() < player1.getHealth() + healamount) {
                 player1.setHealth(player1.getMaxHealth());
-            }
-            else {
+            } else {
                 player1.setHealth(player1.getHealth() + healamount);
             }
             for (final Entity e : player1.getNearbyEntities(7.0, 7.0, 7.0)) {
                 if (e instanceof LivingEntity && e instanceof Player) {
-                    if (((LivingEntity)e).getMaxHealth() < ((LivingEntity)e).getHealth() + 48.0) {
-                        ((LivingEntity)e).setHealth(((LivingEntity)e).getMaxHealth());
+                    if (((LivingEntity) e).getMaxHealth() < ((LivingEntity) e).getHealth() + 48.0) {
+                        ((LivingEntity) e).setHealth(((LivingEntity) e).getMaxHealth());
+                    } else {
+                        ((LivingEntity) e).setHealth(player1.getHealth() + 48.0);
                     }
-                    else {
-                        ((LivingEntity)e).setHealth(player1.getHealth() + 48.0);
-                    }
-                    ((LivingEntity)e).sendMessage("" + ChatColor.GREEN + ChatColor.BOLD + player1.getName() + " healed you for 48 health!");
+                    e.sendMessage("" + ChatColor.GREEN + ChatColor.BOLD + player1.getName() + " healed you for 48 health!");
                 }
             }
-        }
-        else {
+        } else {
             player1.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cNo more charges, next one in &e" + ZSHash.Cooldown.get(player1.getUniqueId()) + "s"));
         }
     }
-    
+
     @Override
     public int getAbilityCooldownTicks() {
         return 0;
     }
-    
+
     @Override
     public int getManaCost() {
         return 0;

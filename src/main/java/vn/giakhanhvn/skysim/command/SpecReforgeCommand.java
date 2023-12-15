@@ -9,8 +9,7 @@ import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 
 @CommandParameters(description = "Reforge an item from Spec.", aliases = "sref", permission = "spt.item")
-public class SpecReforgeCommand extends SCommand
-{
+public class SpecReforgeCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (args.length != 1) {

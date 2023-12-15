@@ -6,8 +6,7 @@ import org.bukkit.Sound;
 import org.bukkit.command.ConsoleCommandSender;
 
 @CommandParameters(description = "Play a Bukkit enum sound.", usage = "/playenumsound <sound>")
-public class PlayEnumSoundCommand extends SCommand
-{
+public class PlayEnumSoundCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (args.length < 1 || args.length > 4) {

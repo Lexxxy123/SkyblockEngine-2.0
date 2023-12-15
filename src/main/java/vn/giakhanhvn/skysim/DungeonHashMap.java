@@ -1,13 +1,14 @@
 package vn.giakhanhvn.skysim;
 
 import java.util.HashMap;
+
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+
 import java.util.Map;
 
-public class DungeonHashMap
-{
+public class DungeonHashMap {
     public static final Map<Player, Boolean> IsPlayingDungeon;
     public static final Map<World, Integer> DungeonScore;
     public static final Map<Player, Double> ExperienceEarned;
@@ -22,11 +23,11 @@ public class DungeonHashMap
     public static final Map<Player, Boolean> AutoRevived;
     public static final Map<Player, ItemStack[]> PlayerInventory;
     public static final Map<Player, ItemStack[]> PlayerArmorInventory;
-    
+
     public static boolean isDead(final Player player) {
         return DungeonHashMap.IsAGhost.containsKey(player) && DungeonHashMap.IsAGhost.get(player);
     }
-    
+
     public static String GetDungeonScore(final World world) {
         if (world == null) {
             return null;
@@ -40,8 +41,7 @@ public class DungeonHashMap
         final int dgs = DungeonHashMap.DungeonScore.get(world);
         if (dgs < 0) {
             DungeonHashMap.DungeonScore.put(world, 0);
-        }
-        else {
+        } else {
             if (dgs < 100 && dgs > 0) {
                 return "D";
             }
@@ -63,7 +63,7 @@ public class DungeonHashMap
         }
         return null;
     }
-    
+
     static {
         IsPlayingDungeon = new HashMap<Player, Boolean>();
         DungeonScore = new HashMap<World, Integer>();

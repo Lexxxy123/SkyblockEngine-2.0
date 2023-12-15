@@ -1,40 +1,41 @@
 package vn.giakhanhvn.skysim.entity.wolf;
 
 import java.util.Collections;
+
 import vn.giakhanhvn.skysim.entity.EntityDropType;
 import vn.giakhanhvn.skysim.util.SUtil;
 import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.item.SMaterial;
 import vn.giakhanhvn.skysim.entity.EntityDrop;
+
 import java.util.List;
 
-public class SvenFollower extends BaseWolf
-{
+public class SvenFollower extends BaseWolf {
     @Override
     public String getEntityName() {
         return "Pack Enforcer";
     }
-    
+
     @Override
     public double getEntityMaxHealth() {
         return 120000.0;
     }
-    
+
     @Override
     public double getDamageDealt() {
         return 1100.0;
     }
-    
+
     @Override
     public List<EntityDrop> drops() {
-        return Collections.<EntityDrop>singletonList(new EntityDrop(SUtil.setStackAmount(SItem.of(SMaterial.WOLF_TOOTH).getStack(), 2), EntityDropType.GUARANTEED, 1.0));
+        return Collections.singletonList(new EntityDrop(SUtil.setStackAmount(SItem.of(SMaterial.WOLF_TOOTH).getStack(), 2), EntityDropType.GUARANTEED, 1.0));
     }
-    
+
     @Override
     public double getXPDropped() {
         return 250.0;
     }
-    
+
     @Override
     public boolean isAngry() {
         return true;

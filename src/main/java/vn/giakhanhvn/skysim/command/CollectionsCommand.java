@@ -6,8 +6,7 @@ import vn.giakhanhvn.skysim.collection.ItemCollection;
 import org.bukkit.command.ConsoleCommandSender;
 
 @CommandParameters(description = "Modify your collections.", permission = "spt.collection")
-public class CollectionsCommand extends SCommand
-{
+public class CollectionsCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (args.length != 3) {

@@ -12,7 +12,9 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
+
 import java.util.Iterator;
+
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.event.entity.EntityDamageEvent;
 import vn.giakhanhvn.skysim.user.User;
@@ -47,43 +49,42 @@ import org.bukkit.entity.LivingEntity;
 import vn.giakhanhvn.skysim.util.Sputnik;
 import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
 
-public class SuperiorLostAdvNPC extends BaseZombie
-{
+public class SuperiorLostAdvNPC extends BaseZombie {
     private boolean isEating;
     private boolean isBowing;
     private boolean EatingCooldown;
     private boolean CDDR;
-    
+
     public SuperiorLostAdvNPC() {
         this.isEating = false;
         this.isBowing = false;
         this.EatingCooldown = false;
         this.CDDR = false;
     }
-    
+
     @Override
     public String getEntityName() {
         return Sputnik.trans("&d&lLost Adventurer");
     }
-    
+
     @Override
     public double getEntityMaxHealth() {
         return 3.0E8;
     }
-    
+
     @Override
     public double getDamageDealt() {
         return 60000.0;
     }
-    
+
     @Override
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
-        final PlayerDisguise pl = Sputnik.applyPacketNPC((Entity)entity, "adventuure", null, false);
+        final PlayerDisguise pl = Sputnik.applyPacketNPC(entity, "adventuure", null, false);
         final PlayerWatcher skywatch = pl.getWatcher();
-        final LivingEntity target = (LivingEntity)((CraftZombie)entity).getTarget();
-        EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 60);
-        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("LD", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+        final LivingEntity target = ((CraftZombie) entity).getTarget();
+        EntityManager.DEFENSE_PERCENTAGE.put(entity, 60);
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -94,7 +95,7 @@ public class SuperiorLostAdvNPC extends BaseZombie
                     entity.getWorld().playSound(entity.getLocation(), Sound.EAT, 1.0f, 1.0f);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 4L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 4L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -107,12 +108,12 @@ public class SuperiorLostAdvNPC extends BaseZombie
                     loc.add(0.0, 1.4, 0.0);
                     entity.getEquipment().setItemInHand(new ItemStack(Material.GOLDEN_APPLE));
                     loc.add(entity.getLocation().getDirection().multiply(0.5));
-                    new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData((ParticleData)new ItemTexture(new ItemStack(Material.CAULDRON_ITEM))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
-                    new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData((ParticleData)new ItemTexture(new ItemStack(Material.CAULDRON_ITEM))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
-                    new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData((ParticleData)new ItemTexture(new ItemStack(Material.CAULDRON_ITEM))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
+                    new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.CAULDRON_ITEM))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
+                    new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.CAULDRON_ITEM))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
+                    new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.CAULDRON_ITEM))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 3L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 3L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -137,26 +138,24 @@ public class SuperiorLostAdvNPC extends BaseZombie
                                 final Object val$entity = entity;
                                 if (!SuperiorLostAdvNPC.this.isBowing) {
                                     entity.getEquipment().setItemInHand(SUtil.enchant(SItem.of(SMaterial.ASPECT_OF_THE_DRAGONS).getStack()));
-                                }
-                                else {
+                                } else {
                                     entity.getEquipment().setItemInHand(SItem.of(SMaterial.BOW).getStack());
                                 }
-                                return;
                             }, 5L);
                             SUtil.delay(() -> SuperiorLostAdvNPC.this.EatingCooldown = false, SUtil.random(400, 500));
                         }
-                    }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 60L);
+                    }.runTaskLater(SkySimEngine.getPlugin(), 60L);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 10L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 10L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
-                    Sputnik.zero((Entity)entity);
+                    Sputnik.zero(entity);
                     this.cancel();
                     return;
                 }
-                final LivingEntity target1 = (LivingEntity)((CraftZombie)entity).getTarget();
+                final LivingEntity target1 = ((CraftZombie) entity).getTarget();
                 if (target1 != null) {
                     if (target1.getLocation().distance(entity.getLocation()) <= 5.0 && !SuperiorLostAdvNPC.this.isBowing && !SuperiorLostAdvNPC.this.isEating) {
                         if (SUtil.random(0, 100) > 30) {
@@ -171,7 +170,7 @@ public class SuperiorLostAdvNPC extends BaseZombie
                         entity.getLocation().getWorld().playSound(entity.getLocation(), Sound.ENDERDRAGON_GROWL, 1.0f, 1.0f);
                         for (final Entity e : target1.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(3.0)), 3.0, 3.0, 3.0)) {
                             if (e instanceof Player) {
-                                final Player player = (Player)e;
+                                final Player player = (Player) e;
                                 player.sendMessage(Sputnik.trans("&cLost Adventurer &aused &6Dragon's Breath &aon you!"));
                                 player.setVelocity(player.getLocation().toVector().subtract(player.getLocation().toVector()).normalize().multiply(-1.0).multiply(6.0));
                                 final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
@@ -179,9 +178,9 @@ public class SuperiorLostAdvNPC extends BaseZombie
                                     return;
                                 }
                                 final double defense = statistics.getDefense().addAll();
-                                final int dmglater = (int)Math.round(105000.0 - 105000.0 * (defense / (defense + 100.0)));
-                                User.getUser(player.getUniqueId()).damage(dmglater, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)entity);
-                                ((LivingEntity)e).damage(1.0E-6, (Entity)null);
+                                final int dmglater = (int) Math.round(105000.0 - 105000.0 * (defense / (defense + 100.0)));
+                                User.getUser(player.getUniqueId()).damage(dmglater, EntityDamageEvent.DamageCause.ENTITY_ATTACK, entity);
+                                ((LivingEntity) e).damage(1.0E-6, null);
                             }
                         }
                         SUtil.delay(() -> {
@@ -189,7 +188,6 @@ public class SuperiorLostAdvNPC extends BaseZombie
                             if (!SuperiorLostAdvNPC.this.isBowing) {
                                 skywatch.setRightClicking(false);
                             }
-                            return;
                         }, 10L);
                         SUtil.delay(() -> SuperiorLostAdvNPC.this.CDDR = false, 250L);
                     }
@@ -204,54 +202,45 @@ public class SuperiorLostAdvNPC extends BaseZombie
                         SUtil.delay(() -> {
                             final Object val$skywatch2 = skywatch;
                             if (!SuperiorLostAdvNPC.this.isBowing) {
-                                return;
-                            }
-                            else {
+                            } else {
                                 skywatch.setRightClicking(true);
-                                return;
                             }
                         }, 5L);
                         SUtil.delay(() -> {
                             final Object val$skywatch3 = skywatch;
                             if (!SuperiorLostAdvNPC.this.isBowing) {
-                                return;
-                            }
-                            else {
+                            } else {
                                 skywatch.setRightClicking(false);
-                                return;
                             }
                         }, 20L);
                         SUtil.delay(() -> {
                             final Object val$entity = entity;
                             final Object val$skywatch4 = skywatch;
-                            if (!(!SuperiorLostAdvNPC.this.isBowing)) {
+                            if (SuperiorLostAdvNPC.this.isBowing) {
                                 final Location location = entity.getEyeLocation().add(entity.getEyeLocation().getDirection().toLocation(entity.getWorld()));
                                 final Location l = location.clone();
                                 l.setYaw(location.getYaw());
-                                entity.getWorld().spawnArrow(l, l.getDirection(), 2.2f, 1.6f).setShooter((ProjectileSource)entity);
+                                entity.getWorld().spawnArrow(l, l.getDirection(), 2.2f, 1.6f).setShooter(entity);
                                 skywatch.setRightClicking(false);
                                 SuperiorLostAdvNPC.this.isBowing = false;
                             }
                         }, 21L);
-                    }
-                    else if ((target1.getLocation().distance(entity.getLocation()) < 7.0 || target1.getLocation().distance(entity.getLocation()) > 15.0) && !SuperiorLostAdvNPC.this.isEating) {
+                    } else if ((target1.getLocation().distance(entity.getLocation()) < 7.0 || target1.getLocation().distance(entity.getLocation()) > 15.0) && !SuperiorLostAdvNPC.this.isEating) {
                         SUtil.delay(() -> {
                             final Object val$entity2 = entity;
                             entity.getEquipment().setItemInHand(SUtil.enchant(SItem.of(SMaterial.ASPECT_OF_THE_DRAGONS).getStack()));
-                            return;
                         }, 0L);
                         SuperiorLostAdvNPC.this.isBowing = false;
                     }
-                }
-                else if (!SuperiorLostAdvNPC.this.isEating) {
+                } else if (!SuperiorLostAdvNPC.this.isEating) {
                     SuperiorLostAdvNPC.this.isBowing = false;
                     entity.getEquipment().setItemInHand(SUtil.enchant(SItem.of(SMaterial.ASPECT_OF_THE_DRAGONS).getStack()));
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
         new BukkitRunnable() {
             public void run() {
-                final EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
+                final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
@@ -266,7 +255,7 @@ public class SuperiorLostAdvNPC extends BaseZombie
                     if (!(entities instanceof Player)) {
                         continue;
                     }
-                    final Player target = (Player)entities;
+                    final Player target = (Player) entities;
                     if (target.getGameMode() == GameMode.CREATIVE) {
                         continue;
                     }
@@ -284,52 +273,52 @@ public class SuperiorLostAdvNPC extends BaseZombie
                     }
                     entity.teleport(entity.getLocation().setDirection(target.getLocation().subtract(entities.getLocation()).toVector()));
                     for (final Player players : Bukkit.getOnlinePlayers()) {
-                        ((CraftPlayer)players).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)entity).getHandle(), 0));
+                        ((CraftPlayer) players).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) entity).getHandle(), 0));
                     }
-                    nms.r((net.minecraft.server.v1_8_R3.Entity)((CraftPlayer)target).getHandle());
+                    nms.r(((CraftPlayer) target).getHandle());
                     break;
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
     }
-    
+
     @Override
     public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
-        final Entity en = (Entity)sEntity.getEntity();
+        final Entity en = sEntity.getEntity();
         final Vector v = new Vector(0, 0, 0);
         SUtil.delay(() -> en.setVelocity(v), 1L);
     }
-    
+
     @Override
     public SEntityEquipment getEntityEquipment() {
         return new SEntityEquipment(SUtil.enchant(SItem.of(SMaterial.ASPECT_OF_THE_DRAGONS).getStack()), SUtil.enchant(SItem.of(SMaterial.SUPERIOR_DRAGON_HELMET).getStack()), SUtil.enchant(SItem.of(SMaterial.SUPERIOR_DRAGON_CHESTPLATE).getStack()), SUtil.enchant(SItem.of(SMaterial.SUPERIOR_DRAGON_LEGGINGS).getStack()), SUtil.enchant(SItem.of(SMaterial.SUPERIOR_DRAGON_BOOTS).getStack()));
     }
-    
+
     @Override
     public boolean isBaby() {
         return false;
     }
-    
+
     @Override
     public boolean hasNameTag() {
         return false;
     }
-    
+
     @Override
     public boolean isVillager() {
         return false;
     }
-    
+
     @Override
     public double getXPDropped() {
         return 5570.0;
     }
-    
+
     @Override
     public double getMovementSpeed() {
         return 0.35;
     }
-    
+
     public void playPar(final Location l) {
         final ConeEffect Effect = new ConeEffect(SkySimEngine.effectManager);
         Effect.setLocation(l.clone().add(l.getDirection().normalize().multiply(-0.25)).add(0.0, -0.1, 0.0));

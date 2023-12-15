@@ -1,12 +1,17 @@
 package vn.giakhanhvn.skysim.dimoon;
 
 import java.util.UUID;
+
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.World;
+
 import java.io.IOException;
+
 import org.bukkit.inventory.ItemStack;
+
 import java.util.Set;
+
 import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import vn.giakhanhvn.skysim.dimoon.listeners.PlayerListener;
@@ -23,18 +28,24 @@ import vn.giakhanhvn.skysim.util.Sputnik;
 import org.bukkit.entity.EntityType;
 import org.bukkit.Location;
 import org.bukkit.Bukkit;
+
 import java.util.TreeMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Comparator;
+
 import com.google.common.collect.Ordering;
+
 import java.util.Arrays;
+
 import vn.giakhanhvn.skysim.dimoon.abilities.Healing;
 import vn.giakhanhvn.skysim.dimoon.abilities.Void;
 import vn.giakhanhvn.skysim.dimoon.abilities.FireRain;
 import vn.giakhanhvn.skysim.dimoon.abilities.WitherBullet;
 import vn.giakhanhvn.skysim.dimoon.abilities.WindForce;
+
 import java.util.Iterator;
+
 import org.bukkit.entity.Entity;
 import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.Sound;
@@ -45,31 +56,34 @@ import org.bukkit.scheduler.BukkitRunnable;
 import vn.giakhanhvn.skysim.SkySimEngine;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.scheduler.BukkitTask;
+
 import java.util.Map;
+
 import com.google.common.collect.TreeMultimap;
 import com.xxmicloxx.NoteBlockAPI.songplayer.PositionSongPlayer;
 import vn.giakhanhvn.skysim.dimoon.abilities.Ability;
+
 import java.util.List;
+
 import org.bukkit.entity.LivingEntity;
 
-public class Dimoon
-{
+public class Dimoon {
     public static final int MAX_HEALTH = 100000;
-    private LivingEntity entity;
+    private final LivingEntity entity;
     private int health;
-    private boolean diminiS;
+    private final boolean diminiS;
     private boolean failed;
-    private List<Ability> abilities;
+    private final List<Ability> abilities;
     public boolean stunned;
     private PositionSongPlayer pls;
-    private TreeMultimap<Integer, String> damages;
+    private final TreeMultimap<Integer, String> damages;
     private String lastBlow;
     private int parkoursCompleted;
-    private Map<Class<? extends Ability>, Integer> cooldowns;
-    private List<BukkitTask> tasks;
+    private final Map<Class<? extends Ability>, Integer> cooldowns;
+    private final List<BukkitTask> tasks;
     public static ArmorStand a;
     private final Map<Integer, String> messages;
-    
+
     public static Dimoon spawnDimoon() {
         final Dimoon dimoon = new Dimoon();
         SkySimEngine.getPlugin().dimoon = dimoon;
@@ -79,17 +93,17 @@ public class Dimoon
             public void run() {
                 Utils.bossMessage("Finally, after years, those crystals, they trapped me, finally...!");
             }
-        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 35L);
+        }.runTaskLater(SkySimEngine.getPlugin(), 35L);
         new BukkitRunnable() {
             public void run() {
                 Utils.bossMessage("Anyway, how did you get to this place? And you want to challenge me?");
             }
-        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 75L);
+        }.runTaskLater(SkySimEngine.getPlugin(), 75L);
         new BukkitRunnable() {
             public void run() {
                 Utils.bossMessage("Only best parkour players are able to pass. Let's see how you will handle this...");
             }
-        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 115L);
+        }.runTaskLater(SkySimEngine.getPlugin(), 115L);
         new BukkitRunnable() {
             public void run() {
                 Utils.bossMessage("Good luck! And don't die, seriously, you only have ONE chance.");
@@ -103,26 +117,25 @@ public class Dimoon
                         }
                         dimoon.getEntity().getWorld().playSound(dimoon.getEntity().getLocation(), Sound.WITHER_DEATH, 15.0f, 1.5f);
                     }
-                    return;
                 }, 100L);
                 SUtil.delay(() -> {
                     final Object val$dimoon2 = dimoon;
                     if (dimoon != null && SkySimEngine.getPlugin().arena != null) {
-                        SkySimEngine.getPlugin().arena.spawnDimoonaize((Entity)dimoon.getEntity());
+                        SkySimEngine.getPlugin().arena.spawnDimoonaize(dimoon.getEntity());
                         dimoon.getEntity().getWorld().playSound(dimoon.getEntity().getLocation(), Sound.WITHER_SPAWN, 15.0f, 1.5f);
                     }
                 }, 200L);
             }
-        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 155L);
+        }.runTaskLater(SkySimEngine.getPlugin(), 155L);
         return dimoon;
     }
-    
+
     public int getPlayerPlacement(final Player player) {
         final Iterator<Map.Entry<Integer, String>> iterator = this.getDamages().entries().iterator();
         int place = -1;
         int i = 0;
         while (iterator.hasNext()) {
-            if (((String)iterator.next().getValue()).equals(player.getName())) {
+            if (iterator.next().getValue().equals(player.getName())) {
                 place = i + 1;
                 break;
             }
@@ -130,14 +143,14 @@ public class Dimoon
         }
         return place;
     }
-    
+
     private Dimoon() {
         this.health = 100000;
         this.diminiS = false;
         this.failed = false;
-        this.abilities = Arrays.<Ability>asList(new WindForce(), new WitherBullet(), new FireRain(), new Void(), new Healing());
+        this.abilities = Arrays.asList(new WindForce(), new WitherBullet(), new FireRain(), new Void(), new Healing());
         this.stunned = false;
-        this.damages = (TreeMultimap<Integer, String>)TreeMultimap.create((Comparator)Ordering.natural().reverse(), (Comparator)Ordering.arbitrary());
+        this.damages = (TreeMultimap<Integer, String>) TreeMultimap.create((Comparator) Ordering.natural().reverse(), Ordering.arbitrary());
         this.lastBlow = "N/A";
         this.parkoursCompleted = 0;
         this.cooldowns = new HashMap<Class<? extends Ability>, Integer>();
@@ -155,20 +168,20 @@ public class Dimoon
             }
         };
         final World world = Bukkit.getWorld("arena");
-        (this.entity = (LivingEntity)world.spawnEntity(new Location(world, 234668.5, 155.0, 236481.5), EntityType.WITHER)).setMaxHealth(100000.0);
+        (this.entity = (LivingEntity) world.spawnEntity(new Location(world, 234668.5, 155.0, 236481.5), EntityType.WITHER)).setMaxHealth(100000.0);
         this.entity.setHealth(100000.0);
         SUtil.delay(() -> this.pls = Sputnik.playNativeSound("proschanie", 200, 100, true, this.entity.getLocation()), 20L);
-        EntityManager.DEFENSE_PERCENTAGE.put((Entity)this.entity, 100);
+        EntityManager.DEFENSE_PERCENTAGE.put(this.entity, 100);
         this.entity.setCustomName(Sputnik.trans("&c&lDimoon"));
         this.entity.setCustomNameVisible(false);
         this.entity.setRemoveWhenFarAway(false);
-        this.entity.setMetadata("NoAffect", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        this.entity.setMetadata("Dimoon", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        noAI((Entity)this.entity);
-        final ArmorStand st = Sputnik.spawnStaticDialougeBox((Entity)this.entity, 3.5);
+        this.entity.setMetadata("NoAffect", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        this.entity.setMetadata("Dimoon", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        noAI(this.entity);
+        final ArmorStand st = Sputnik.spawnStaticDialougeBox(this.entity, 3.5);
         st.setCustomName(Sputnik.trans("&4﴾ &c&lDimoon the Wither &4﴿"));
         st.setCustomNameVisible(true);
-        final ArmorStand st2 = Sputnik.spawnStaticDialougeBox((Entity)this.entity, 3.9);
+        final ArmorStand st2 = Sputnik.spawnStaticDialougeBox(this.entity, 3.9);
         st2.setCustomNameVisible(false);
         Dimoon.a = st2;
         for (final Ability ability : this.abilities) {
@@ -180,9 +193,9 @@ public class Dimoon
             bb.addPlayer(p);
         }
         new BukkitRunnable() {
-            LivingEntity e = Dimoon.this.entity;
+            final LivingEntity e = Dimoon.this.entity;
             float cout = this.e.getLocation().getYaw();
-            
+
             public void run() {
                 if (Dimoon.this.health <= 0 || this.e.isDead()) {
                     this.cancel();
@@ -195,14 +208,13 @@ public class Dimoon
                     if (!dimoon.getLastBlow().contains("N/A")) {
                         for (Player player : dimoon.getEntity().getWorld().getPlayers()) {
                             if (Dimoon.this.damages.containsValue(player.getName())) continue;
-                            Dimoon.this.damages.put(0 , player.getName());
+                            Dimoon.this.damages.put(0, player.getName());
                         }
                     }
                     if (!Dimoon.this.failed) {
                         SUtil.delay(() -> {
                             final PositionSongPlayer plz = Sputnik.playNativeSound("victory", 200, 100, true, Dimoon.this.entity.getLocation());
                             SUtil.delay(() -> plz.destroy(), 1395L);
-                            return;
                         }, 20L);
                         for (final Player player : dimoon.getEntity().getWorld().getPlayers()) {
                             final StringBuilder message = new StringBuilder();
@@ -238,7 +250,7 @@ public class Dimoon
                                 final Map.Entry<Integer, String> entry = iterator.next();
                                 message.append(" Damager").append(ChatColor.RESET).append(ChatColor.GRAY).append(" - ").append(ChatColor.GREEN).append(entry.getValue()).append(ChatColor.GRAY).append(" - ").append(ChatColor.YELLOW).append(Utils.commaInt(entry.getKey())).append("\n");
                             }
-                            final Set<Integer> damageSet = ((HashMultimap)Multimaps.invertFrom((Multimap)dimoon.getDamages(), (Multimap)HashMultimap.create())).get((Object)player.getName());
+                            final Set<Integer> damageSet = ((HashMultimap) Multimaps.invertFrom((Multimap) dimoon.getDamages(), (Multimap) HashMultimap.create())).get(player.getName());
                             final int damageDealt = damageSet.iterator().hasNext() ? damageSet.iterator().next() : 0;
                             message.append("\n \n").append("         ").append(ChatColor.RESET).append(ChatColor.YELLOW).append("Your Damage: ").append(ChatColor.GREEN + Utils.commaInt(damageDealt) + " Hits" + Sputnik.trans(" &7(Position #" + Dimoon.this.getPlayerPlacement(player) + ")")).append(ChatColor.RESET).append("\n \n");
                             message.append(ChatColor.GREEN).append(ChatColor.BOLD).append("▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
@@ -247,21 +259,19 @@ public class Dimoon
                         for (Player player : dimoon.getEntity().getWorld().getPlayers()) {
                             Object[] o = Dimoon.this.calculateDropChance(player, Dimoon.this.getPlayerPlacement(player));
                             if (o == null) continue;
-                            ((List)o[0]).forEach(lt ->{
+                            ((List) o[0]).forEach(lt -> {
                                 DimoonLootItem item = (DimoonLootItem) lt;
-                                int random = SUtil.random(8, 10 + (Integer)o[1] / 200);
+                                int random = SUtil.random(8, 10 + (Integer) o[1] / 200);
                                 ItemStack itemStack = item.getItem().getStack();
                                 if (!item.isRandomizedAmount()) {
                                     itemStack.setAmount(item.getAmount());
-                                }
-                                else {
+                                } else {
                                     itemStack.setAmount(random);
                                 }
                                 if (DimoonLootTable.highQualitylootTable.contains(item)) {
                                     player.sendMessage(Sputnik.trans("&6&lCONGRATS! &eYou have obtained &8" + itemStack.getAmount() + "x " + item.getItem().getFullName() + "&e! &d&lGG!"));
                                     SUtil.broadcastExcept(Sputnik.trans("&6&lCONGRATS! &a" + player.getName() + " &ehas obtained &8" + itemStack.getAmount() + "x " + item.getItem().getFullName() + "&e! &d&lGG!"), player);
-                                }
-                                else {
+                                } else {
                                     player.sendMessage(Sputnik.trans("&eYou have obtained &8" + itemStack.getAmount() + "x " + item.getItem().getFullName() + "&e!"));
                                     SUtil.broadcastExcept(Sputnik.trans("&a" + player.getName() + " &ehas obtained &8" + itemStack.getAmount() + "x " + item.getItem().getFullName() + "&e!"), player);
                                 }
@@ -312,11 +322,9 @@ public class Dimoon
                 int stage = 3;
                 if (hitshield <= hitshieldmax / 2 && hitshield > hitshieldmax * 25 / 100) {
                     stage = 2;
-                }
-                else if (hitshield <= hitshieldmax * 25 / 100 && hitshield != 1) {
+                } else if (hitshield <= hitshieldmax * 25 / 100 && hitshield != 1) {
                     stage = 1;
-                }
-                else if (hitshield == 1) {
+                } else if (hitshield == 1) {
                     stage = 1;
                 }
                 this.e.getWorld().spigot().playEffect(loc, Effect.LARGE_SMOKE, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
@@ -329,7 +337,7 @@ public class Dimoon
                 }
                 this.cout += 18.0f;
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 final LivingEntity stand = Dimoon.this.entity;
@@ -337,13 +345,13 @@ public class Dimoon
                     this.cancel();
                     return;
                 }
-                stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 0.75, 0.0), Effect.LARGE_SMOKE, 0, 1, (float)SUtil.random(-2, 2), (float)SUtil.random(-1.5, 1.5), (float)SUtil.random(-2, 2), 0.0f, 1, 20);
-                stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 0.75, 0.0), Effect.WITCH_MAGIC, 0, 1, (float)SUtil.random(-2, 2), (float)SUtil.random(-1.5, 1.5), (float)SUtil.random(-2, 2), 0.0f, 1, 20);
-                stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 0.75, 0.0), Effect.LARGE_SMOKE, 0, 1, (float)SUtil.random(-2, 2), (float)SUtil.random(-1.5, 1.5), (float)SUtil.random(-2, 2), 0.0f, 1, 20);
-                stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 0.75, 0.0), Effect.WITCH_MAGIC, 0, 1, (float)SUtil.random(-2, 2), (float)SUtil.random(-1.5, 1.5), (float)SUtil.random(-2, 2), 0.0f, 1, 20);
+                stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 0.75, 0.0), Effect.LARGE_SMOKE, 0, 1, (float) SUtil.random(-2, 2), (float) SUtil.random(-1.5, 1.5), (float) SUtil.random(-2, 2), 0.0f, 1, 20);
+                stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 0.75, 0.0), Effect.WITCH_MAGIC, 0, 1, (float) SUtil.random(-2, 2), (float) SUtil.random(-1.5, 1.5), (float) SUtil.random(-2, 2), 0.0f, 1, 20);
+                stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 0.75, 0.0), Effect.LARGE_SMOKE, 0, 1, (float) SUtil.random(-2, 2), (float) SUtil.random(-1.5, 1.5), (float) SUtil.random(-2, 2), 0.0f, 1, 20);
+                stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 0.75, 0.0), Effect.WITCH_MAGIC, 0, 1, (float) SUtil.random(-2, 2), (float) SUtil.random(-1.5, 1.5), (float) SUtil.random(-2, 2), 0.0f, 1, 20);
                 stand.getWorld().spigot().playEffect(new Location(stand.getWorld(), stand.getLocation().getX() + SUtil.random(-2, 2), stand.getLocation().getY() + 1.75 + SUtil.random(-1.5, 1.5), stand.getLocation().getZ() + SUtil.random(-2, 2)), Effect.COLOURED_DUST, 0, 1, 0.99607843f, 0.12941177f, 0.003921569f, 1.0f, 0, 64);
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 2L, 2L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 2L, 2L);
         new BukkitRunnable() {
             public void run() {
                 final LivingEntity stand = Dimoon.this.entity;
@@ -354,13 +362,13 @@ public class Dimoon
                 if (!Dimoon.this.stunned) {
                     Dimoon.this.entity.getNearbyEntities(22.0, 22.0, 22.0).forEach(ent -> {
                         if (ent instanceof Player) {
-                            ((Player)ent).sendMessage(Sputnik.trans("&cA Magicial Force have pushed you away from Dimoon!"));
+                            ent.sendMessage(Sputnik.trans("&cA Magicial Force have pushed you away from Dimoon!"));
                             ent.setVelocity(Dimoon.this.entity.getLocation().toVector().subtract(ent.getLocation().toVector()).normalize().multiply(-1.0).multiply(3.0));
                         }
                     });
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 5L, 5L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 5L, 5L);
         new BukkitRunnable() {
             public void run() {
                 if (Dimoon.this.entity.isDead()) {
@@ -371,7 +379,6 @@ public class Dimoon
                     plist.forEach(pl -> {
                         final Object val$bb = bb;
                         bb.removePlayer(pl);
-                        return;
                     });
                     bb.setProgress(0.0);
                     bb.cancel();
@@ -380,7 +387,7 @@ public class Dimoon
                 }
                 bb.setProgress(Dimoon.this.health / 100000.0);
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 1L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 1L, 1L);
         this.tasks.add(new BukkitRunnable() {
             public void run() {
                 if (!Dimoon.this.stunned) {
@@ -389,8 +396,8 @@ public class Dimoon
                         final double z = Math.sin(Math.toRadians(degrees)) * 40.0;
                         final Location particleLoc = Dimoon.this.entity.getLocation().clone().add(x, 0.0, z);
                         for (int y = 0; y < 5; ++y) {
-                            Dimoon.this.entity.getWorld().spigot().playEffect(new Location(Dimoon.this.entity.getWorld(), (double)(float)particleLoc.getX(), (double)(float)particleLoc.clone().add(0.0, (double)y, 0.0).getY(), (double)(float)particleLoc.getZ()), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
-                            Dimoon.this.entity.getWorld().spigot().playEffect(new Location(Dimoon.this.entity.getWorld(), (double)(float)particleLoc.getX(), (double)(float)particleLoc.clone().add(0.0, (double)y, 0.0).getY(), (double)(float)particleLoc.getZ()), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                            Dimoon.this.entity.getWorld().spigot().playEffect(new Location(Dimoon.this.entity.getWorld(), (float) particleLoc.getX(), (float) particleLoc.clone().add(0.0, y, 0.0).getY(), (float) particleLoc.getZ()), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                            Dimoon.this.entity.getWorld().spigot().playEffect(new Location(Dimoon.this.entity.getWorld(), (float) particleLoc.getX(), (float) particleLoc.clone().add(0.0, y, 0.0).getY(), (float) particleLoc.getZ()), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                         }
                     }
                     for (double degrees = 0.0; degrees < 360.0; ++degrees) {
@@ -398,8 +405,8 @@ public class Dimoon
                         final double z = Math.sin(Math.toRadians(degrees)) * 60.0;
                         final Location particleLoc = Dimoon.this.entity.getLocation().clone().add(x, 0.0, z);
                         for (int y = 0; y < 5; ++y) {
-                            Dimoon.this.entity.getWorld().spigot().playEffect(new Location(Dimoon.this.entity.getWorld(), (double)(float)particleLoc.getX(), (double)(float)particleLoc.clone().add(0.0, (double)y, 0.0).getY(), (double)(float)particleLoc.getZ()), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
-                            Dimoon.this.entity.getWorld().spigot().playEffect(new Location(Dimoon.this.entity.getWorld(), (double)(float)particleLoc.getX(), (double)(float)particleLoc.clone().add(0.0, (double)y, 0.0).getY(), (double)(float)particleLoc.getZ()), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                            Dimoon.this.entity.getWorld().spigot().playEffect(new Location(Dimoon.this.entity.getWorld(), (float) particleLoc.getX(), (float) particleLoc.clone().add(0.0, y, 0.0).getY(), (float) particleLoc.getZ()), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                            Dimoon.this.entity.getWorld().spigot().playEffect(new Location(Dimoon.this.entity.getWorld(), (float) particleLoc.getX(), (float) particleLoc.clone().add(0.0, y, 0.0).getY(), (float) particleLoc.getZ()), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                         }
                     }
                 }
@@ -409,25 +416,23 @@ public class Dimoon
                             if (Dimoon.this.cooldowns.get(ability.getClass()) <= 1) {
                                 Dimoon.this.cooldowns.replace(ability.getClass(), ability.getCooldown());
                                 ability.activate(p, Dimoon.this);
-                            }
-                            else {
+                            } else {
                                 Dimoon.this.cooldowns.replace(ability.getClass(), Dimoon.this.cooldowns.get(ability.getClass()) - 1);
                             }
                         }
                     }
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 20L));
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 20L));
         this.tasks.add(new BukkitRunnable() {
             public void run() {
                 try {
                     SkySimEngine.getPlugin().arena.pasteParkour();
-                }
-                catch (final IOException e) {
+                } catch (final IOException e) {
                     throw new RuntimeException(e);
                 }
             }
-        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 600L));
+        }.runTaskLater(SkySimEngine.getPlugin(), 600L));
         this.tasks.add(new BukkitRunnable() {
             public void run() {
                 for (final Player p : Dimoon.this.entity.getWorld().getPlayers()) {
@@ -441,15 +446,14 @@ public class Dimoon
                     for (Player p : Dimoon.this.entity.getWorld().getPlayers()) {
                         p.playSound(p.getLocation(), Sound.WITHER_DEATH, 1.0f, 1.0f);
                     }
-                    return;
                 }, 100L);
                 for (final BukkitTask task : Dimoon.this.tasks) {
                     task.cancel();
                 }
             }
-        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 54000L));
+        }.runTaskLater(SkySimEngine.getPlugin(), 54000L));
     }
-    
+
     void func(final Player p) {
         this.damage(12000, p.getName());
         for (final Player pl : this.getEntity().getWorld().getPlayers()) {
@@ -467,15 +471,15 @@ public class Dimoon
             Utils.bossMessage(entry.getValue());
             break;
         }
-        this.lastBlow = Bukkit.getPlayer((String)player).getName();
+        this.lastBlow = Bukkit.getPlayer(player).getName();
         if (this.damages.containsValue(player)) {
             Map.Entry toReplace = null;
             for (Map.Entry entry : this.damages.entries()) {
-                if (!((String)entry.getValue()).equals(player)) continue;
+                if (!entry.getValue().equals(player)) continue;
                 toReplace = entry;
                 break;
             }
-            this.damages.put(((Integer)toReplace.getKey() + damage), player);
+            this.damages.put(((Integer) toReplace.getKey() + damage), player);
             this.damages.remove(toReplace.getKey(), toReplace.getValue());
         } else {
             this.damages.put(damage, player);
@@ -486,17 +490,17 @@ public class Dimoon
             hits = hits.substring(0, hits.length() - 3) + "," + hits.substring(hits.length() - 3);
         }
     }
-    
+
     public void heal(final int heal) {
         this.health += heal;
     }
-    
+
     public void completedParkour() {
         ++this.parkoursCompleted;
     }
-    
+
     private static void noAI(final Entity bukkitEntity) {
-        final net.minecraft.server.v1_8_R3.Entity nmsEntity = ((CraftEntity)bukkitEntity).getHandle();
+        final net.minecraft.server.v1_8_R3.Entity nmsEntity = ((CraftEntity) bukkitEntity).getHandle();
         NBTTagCompound tag = nmsEntity.getNBTTag();
         if (tag == null) {
             tag = new NBTTagCompound();
@@ -505,7 +509,7 @@ public class Dimoon
         tag.setInt("NoAI", 1);
         nmsEntity.f(tag);
     }
-    
+
     Object[] calculateDropChance(final Player p, final int place) {
         if (place <= 0) {
             return null;
@@ -518,41 +522,41 @@ public class Dimoon
             }
         }
         final DimoonLootTable ltable = new DimoonLootTable(p, place, catalPlaced);
-        return new Object[] { ltable.roll(), ltable.getWeight() };
+        return new Object[]{ltable.roll(), ltable.getWeight()};
     }
-    
+
     public LivingEntity getEntity() {
         return this.entity;
     }
-    
+
     public int getHealth() {
         return this.health;
     }
-    
+
     public boolean isDiminiS() {
         return this.diminiS;
     }
-    
+
     public List<Ability> getAbilities() {
         return this.abilities;
     }
-    
+
     public TreeMultimap<Integer, String> getDamages() {
         return this.damages;
     }
-    
+
     public String getLastBlow() {
         return this.lastBlow;
     }
-    
+
     public int getParkoursCompleted() {
         return this.parkoursCompleted;
     }
-    
+
     public List<BukkitTask> getTasks() {
         return this.tasks;
     }
-    
+
     static {
         Dimoon.a = null;
     }

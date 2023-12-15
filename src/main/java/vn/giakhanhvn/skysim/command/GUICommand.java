@@ -6,8 +6,7 @@ import vn.giakhanhvn.skysim.gui.GUIType;
 import org.bukkit.command.ConsoleCommandSender;
 
 @CommandParameters(description = "Opens a GUI.", permission = "spt.gui.edit")
-public class GUICommand extends SCommand
-{
+public class GUICommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (args.length != 1) {

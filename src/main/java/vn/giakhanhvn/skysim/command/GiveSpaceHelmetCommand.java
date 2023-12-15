@@ -10,8 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 
 @CommandParameters(description = "bruhbu", aliases = "gsh")
-public class GiveSpaceHelmetCommand extends SCommand
-{
+public class GiveSpaceHelmetCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         final Player player = sender.getPlayer();
@@ -34,11 +33,10 @@ public class GiveSpaceHelmetCommand extends SCommand
             sitem.setDataString("p_rcv", pgv);
             if (args[1] != null) {
                 sitem.setDataString("lore_d", lore);
-            }
-            else {
+            } else {
                 sitem.setDataString("lore_d", "null");
             }
-            player.getInventory().addItem(new ItemStack[] { sitem.getStack() });
+            player.getInventory().addItem(sitem.getStack());
             this.send(ChatColor.GREEN + "Done!");
         }
     }

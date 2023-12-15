@@ -1,6 +1,7 @@
 package vn.giakhanhvn.skysim.gui;
 
 import java.util.List;
+
 import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.ChatColor;
@@ -13,10 +14,9 @@ import net.minecraft.server.v1_8_R3.Item;
 import vn.giakhanhvn.skysim.item.SMaterial;
 import vn.giakhanhvn.skysim.util.PaginationList;
 
-public class ItemBrowserGUI extends GUI
-{
+public class ItemBrowserGUI extends GUI {
     private static final int[] INTERIOR;
-    
+
     public ItemBrowserGUI(final String query, int page) {
         super("Item Browser", 54);
         this.border(ItemBrowserGUI.BLACK_STAINED_GLASS_PANE);
@@ -42,15 +42,15 @@ public class ItemBrowserGUI extends GUI
             this.set(new GUIClickableItem() {
                 @Override
                 public void run(final InventoryClickEvent e) {
-                    new ItemBrowserGUI(finalPage - 1).open((Player)e.getWhoClicked());
-                    ((Player)e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.NOTE_PIANO, 1.0f, 1.0f);
+                    new ItemBrowserGUI(finalPage - 1).open((Player) e.getWhoClicked());
+                    ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.NOTE_PIANO, 1.0f, 1.0f);
                 }
-                
+
                 @Override
                 public int getSlot() {
                     return 45;
                 }
-                
+
                 @Override
                 public ItemStack getItem() {
                     return SUtil.createNamedItemStack(Material.ARROW, ChatColor.GRAY + "Pervious Page");
@@ -61,15 +61,15 @@ public class ItemBrowserGUI extends GUI
             this.set(new GUIClickableItem() {
                 @Override
                 public void run(final InventoryClickEvent e) {
-                    new ItemBrowserGUI(finalPage + 1).open((Player)e.getWhoClicked());
-                    ((Player)e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.NOTE_PIANO, 1.0f, 1.0f);
+                    new ItemBrowserGUI(finalPage + 1).open((Player) e.getWhoClicked());
+                    ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.NOTE_PIANO, 1.0f, 1.0f);
                 }
-                
+
                 @Override
                 public int getSlot() {
                     return 53;
                 }
-                
+
                 @Override
                 public ItemStack getItem() {
                     return SUtil.createNamedItemStack(Material.ARROW, ChatColor.GRAY + "Next Page");
@@ -81,16 +81,16 @@ public class ItemBrowserGUI extends GUI
             public GUI onQueryFinish(final String query) {
                 return new ItemBrowserGUI(query);
             }
-            
+
             @Override
             public void run(final InventoryClickEvent e) {
             }
-            
+
             @Override
             public int getSlot() {
                 return 48;
             }
-            
+
             @Override
             public ItemStack getItem() {
                 return SUtil.createNamedItemStack(Material.SIGN, ChatColor.GREEN + "Search");
@@ -103,21 +103,21 @@ public class ItemBrowserGUI extends GUI
         }
         for (int i = 0; i < p.size(); ++i) {
             final int slot = ItemBrowserGUI.INTERIOR[i];
-            final SItem sItem = SItem.of(p.get(i), (byte)p.get(i).getData());
+            final SItem sItem = SItem.of(p.get(i), (byte) p.get(i).getData());
             this.set(new GUIClickableItem() {
                 @Override
                 public void run(final InventoryClickEvent e) {
-                    final Player player = (Player)e.getWhoClicked();
+                    final Player player = (Player) e.getWhoClicked();
                     player.playSound(player.getLocation(), Sound.NOTE_PLING, 1.0f, 2.0f);
                     player.sendMessage(ChatColor.GOLD + sItem.getType().getDisplayName(sItem.getVariant()) + ChatColor.GREEN + " has been added to your inventory.");
-                    player.getInventory().addItem(new ItemStack[] { SItem.of(sItem.getType(), sItem.getVariant()).getStack() });
+                    player.getInventory().addItem(SItem.of(sItem.getType(), sItem.getVariant()).getStack());
                 }
-                
+
                 @Override
                 public int getSlot() {
                     return slot;
                 }
-                
+
                 @Override
                 public ItemStack getItem() {
                     return sItem.getStack();
@@ -125,20 +125,20 @@ public class ItemBrowserGUI extends GUI
             });
         }
     }
-    
+
     public ItemBrowserGUI(final String query) {
         this(query, 1);
     }
-    
+
     public ItemBrowserGUI(final int page) {
         this("", page);
     }
-    
+
     public ItemBrowserGUI() {
         this(1);
     }
-    
+
     static {
-        INTERIOR = new int[] { 10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43 };
+        INTERIOR = new int[]{10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43};
     }
 }

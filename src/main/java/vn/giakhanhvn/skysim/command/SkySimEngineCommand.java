@@ -4,8 +4,7 @@ import vn.giakhanhvn.skysim.util.Sputnik;
 import org.bukkit.ChatColor;
 
 @CommandParameters(description = "The main command for SkySimEngine.", aliases = "ssei")
-public class SkySimEngineCommand extends SCommand
-{
+public class SkySimEngineCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         this.send(ChatColor.RED + "Sky" + ChatColor.GREEN + "Sim" + ChatColor.GOLD + " Engine v" + SkySimEngineCommand.plugin.getDescription().getVersion());

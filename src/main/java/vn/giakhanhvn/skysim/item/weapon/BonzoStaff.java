@@ -1,6 +1,7 @@
 package vn.giakhanhvn.skysim.item.weapon;
 
 import java.util.Iterator;
+
 import org.bukkit.plugin.Plugin;
 import vn.giakhanhvn.skysim.SkySimEngine;
 import vn.giakhanhvn.skysim.listener.PlayerListener;
@@ -19,7 +20,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import vn.giakhanhvn.skysim.item.SMaterial;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.Color;
+
 import java.util.Random;
+
 import org.bukkit.Sound;
 import vn.giakhanhvn.skysim.item.SItem;
 import org.bukkit.entity.Player;
@@ -31,64 +34,63 @@ import vn.giakhanhvn.skysim.item.Ability;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
 import vn.giakhanhvn.skysim.item.ToolStatistics;
 
-public class BonzoStaff implements ToolStatistics, MaterialFunction, Ability
-{
+public class BonzoStaff implements ToolStatistics, MaterialFunction, Ability {
     String ACT;
-    
+
     public BonzoStaff() {
         this.ACT = "true";
     }
-    
+
     @Override
     public int getBaseDamage() {
         return 160;
     }
-    
+
     @Override
     public double getBaseIntelligence() {
         return 250.0;
     }
-    
+
     @Override
     public String getDisplayName() {
         return "Bonzo's Staff";
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.RARE;
     }
-    
+
     @Override
     public GenericItemType getType() {
         return GenericItemType.WEAPON;
     }
-    
+
     @Override
     public SpecificItemType getSpecificType() {
         return SpecificItemType.SWORD;
     }
-    
+
     @Override
     public String getLore() {
         return null;
     }
-    
+
     @Override
     public String getAbilityName() {
         return "Showtime";
     }
-    
+
     @Override
     public String getAbilityDescription() {
         return Sputnik.trans("&7Shoots balloons that create a large explosion on impact, dealing up to &c1,000 &7damage.");
     }
-    
+
     @Override
     public boolean isEnchanted() {
         return true;
     }
-    
+
     @Override
     public void onAbilityUse(final Player player1, final SItem sItem) {
         player1.getWorld().playSound(player1.getLocation(), Sound.GHAST_MOAN, 1.0f, 2.0f);
@@ -98,7 +100,7 @@ public class BonzoStaff implements ToolStatistics, MaterialFunction, Ability
         final Random random = new Random();
         final int i = random.nextInt(9);
         Color color = Color.RED;
-        final ArmorStand stand = (ArmorStand)player1.getWorld().spawn(location.add(player1.getLocation().getDirection().multiply(1)), (Class)ArmorStand.class);
+        final ArmorStand stand = (ArmorStand) player1.getWorld().spawn(location.add(player1.getLocation().getDirection().multiply(1)), (Class) ArmorStand.class);
         stand.setVisible(false);
         stand.setGravity(false);
         stand.setMarker(true);
@@ -144,7 +146,7 @@ public class BonzoStaff implements ToolStatistics, MaterialFunction, Ability
         new BukkitRunnable() {
             double t = 0.0;
             int tick = 0;
-            
+
             public void run() {
                 this.t += 1.0995574287564276;
                 ++this.tick;
@@ -169,7 +171,7 @@ public class BonzoStaff implements ToolStatistics, MaterialFunction, Ability
                     stand.remove();
                     final FireworkEffect.Builder builder = FireworkEffect.builder();
                     final FireworkEffect effect = builder.flicker(false).trail(false).with(FireworkEffect.Type.BURST).withColor(color2).build();
-                    SSU.spawn(stand.getLocation(), effect, new Player[0]);
+                    SSU.spawn(stand.getLocation(), effect);
                     this.cancel();
                 }
                 if (stand.getNearbyEntities(0.7, 1.0, 0.7).contains(player1) && locof.getBlock().getType() != Material.AIR) {
@@ -200,33 +202,33 @@ public class BonzoStaff implements ToolStatistics, MaterialFunction, Ability
                     }
                     final User user = User.getUser(player1.getUniqueId());
                     final double baseDamage = Sputnik.calculateMagicDamage(entity, player1, 1000, 0.2);
-                    user.damageEntityIgnoreShield((Damageable)entity, (int)baseDamage);
+                    user.damageEntityIgnoreShield((Damageable) entity, (int) baseDamage);
                     stand.remove();
                     PlayerListener.spawnDamageInd(entity, baseDamage, false);
                     new BukkitRunnable() {
                         public void run() {
                             this.cancel();
                         }
-                    }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 30L);
+                    }.runTaskLater(SkySimEngine.getPlugin(), 30L);
                     BonzoStaff.this.ACT = "false";
                     final FireworkEffect.Builder builder2 = FireworkEffect.builder();
                     final FireworkEffect effect2 = builder2.flicker(false).trail(false).with(FireworkEffect.Type.BURST).withColor(color2).build();
-                    SSU.spawn(stand.getLocation(), effect2, new Player[0]);
+                    SSU.spawn(stand.getLocation(), effect2);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
     }
-    
+
     @Override
     public int getAbilityCooldownTicks() {
         return 4;
     }
-    
+
     @Override
     public boolean displayCooldown() {
         return false;
     }
-    
+
     @Override
     public int getManaCost() {
         return 100;

@@ -2,10 +2,12 @@ package vn.giakhanhvn.skysim.gui;
 
 import org.bukkit.inventory.meta.ItemMeta;
 import vn.giakhanhvn.skysim.util.SUtil;
+
 import java.util.List;
 import java.util.Collection;
 import java.util.ArrayList;
 import java.util.Collections;
+
 import vn.giakhanhvn.skysim.item.SItem;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -15,17 +17,16 @@ import org.bukkit.ChatColor;
 import vn.giakhanhvn.skysim.user.User;
 import org.bukkit.entity.Player;
 
-public class CreateAuctionGUI extends GUI
-{
+public class CreateAuctionGUI extends GUI {
     private CreateAuctionGUI(final String title) {
         super(title, 54);
         this.fill(CreateAuctionGUI.BLACK_STAINED_GLASS_PANE);
     }
-    
+
     public CreateAuctionGUI() {
         this("Create Auction");
     }
-    
+
     @Override
     public void early(final Player player) {
         final User user = User.getUser(player.getUniqueId());
@@ -33,7 +34,7 @@ public class CreateAuctionGUI extends GUI
             this.title = "Create BIN Auction";
         }
     }
-    
+
     @Override
     public void onOpen(final GUIOpenEvent e) {
         final Player player = e.getPlayer();
@@ -47,32 +48,32 @@ public class CreateAuctionGUI extends GUI
                 if (user.getAuctionEscrow().getItem() == null) {
                     return;
                 }
-                player.getInventory().addItem(new ItemStack[] { user.getAuctionEscrow().getItem().getStack() });
+                player.getInventory().addItem(user.getAuctionEscrow().getItem().getStack());
                 user.getAuctionEscrow().setItem(null);
                 new CreateAuctionGUI().open(player);
             }
-            
+
             @Override
             public int getSlot() {
                 return 13;
             }
-            
+
             @Override
             public ItemStack getItem() {
                 if (user.getAuctionEscrow().getItem() != null) {
                     final SItem display = user.getAuctionEscrow().getItem().clone();
                     final ItemMeta meta = display.getStack().getItemMeta();
                     meta.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + ChatColor.UNDERLINE + "AUCTION FOR ITEM:");
-                    final List<String> lore = new ArrayList<String>(Collections.<String>singletonList(" "));
+                    final List<String> lore = new ArrayList<String>(Collections.singletonList(" "));
                     lore.add(ChatColor.GRAY + "" + display.getStack().getAmount() + "x " + escrow.getItem().getFullName());
                     lore.add(display.getRarity().getDisplay());
                     lore.add(" ");
                     lore.add(ChatColor.YELLOW + "Click to pickup!");
-                    meta.setLore((List)lore);
+                    meta.setLore(lore);
                     display.getStack().setItemMeta(meta);
                     return display.getStack();
                 }
-                return SUtil.getStack(ChatColor.YELLOW + "Click an item in your inventory!", Material.STONE_BUTTON, (short)0, 1, ChatColor.GRAY + "Selects it for auction");
+                return SUtil.getStack(ChatColor.YELLOW + "Click an item in your inventory!", Material.STONE_BUTTON, (short) 0, 1, ChatColor.GRAY + "Selects it for auction");
             }
         });
         this.set(new GUIClickableItem() {
@@ -87,12 +88,12 @@ public class CreateAuctionGUI extends GUI
                 }
                 new AuctionConfirmGUI().open(player);
             }
-            
+
             @Override
             public int getSlot() {
                 return 29;
             }
-            
+
             @Override
             public ItemStack getItem() {
                 final List<String> lore = new ArrayList<String>();
@@ -102,8 +103,7 @@ public class CreateAuctionGUI extends GUI
                     lore.add(ChatColor.GRAY + "Click an item in your");
                     lore.add(ChatColor.GRAY + "inventory to select it for");
                     lore.add(ChatColor.GRAY + "this auction.");
-                }
-                else {
+                } else {
                     lore.add(ChatColor.GRAY + "This item will be added to");
                     lore.add(ChatColor.GRAY + "the auction house for other");
                     lore.add(ChatColor.GRAY + "players to purchase.");
@@ -116,7 +116,7 @@ public class CreateAuctionGUI extends GUI
                     lore.add(" ");
                     lore.add(ChatColor.YELLOW + "Click to submit!");
                 }
-                return SUtil.getStack(((escrow.getItem() != null) ? ChatColor.GREEN : ChatColor.RED) + "Create Auction", Material.STAINED_CLAY, (short)((escrow.getItem() != null) ? 13 : 14), 1, lore);
+                return SUtil.getStack(((escrow.getItem() != null) ? ChatColor.GREEN : ChatColor.RED) + "Create Auction", Material.STAINED_CLAY, (short) ((escrow.getItem() != null) ? 13 : 14), 1, lore);
             }
         });
         this.set(new GUIQueryItem() {
@@ -129,32 +129,30 @@ public class CreateAuctionGUI extends GUI
                         player.sendMessage(ChatColor.RED + "Could not read this number!");
                         return null;
                     }
-                }
-                catch (final NumberFormatException ex) {
+                } catch (final NumberFormatException ex) {
                     player.sendMessage(ChatColor.RED + "Could not read this number!");
                     return null;
                 }
                 user.getAuctionEscrow().setStarter(l);
                 return new CreateAuctionGUI();
             }
-            
+
             @Override
             public void run(final InventoryClickEvent e) {
             }
-            
+
             @Override
             public int getSlot() {
                 return 31;
             }
-            
+
             @Override
             public ItemStack getItem() {
                 final List<String> lore = new ArrayList<String>();
                 if (bin) {
                     lore.add(ChatColor.GRAY + "The price at which you want");
                     lore.add(ChatColor.GRAY + "to sell this item.");
-                }
-                else {
+                } else {
                     lore.add(ChatColor.GRAY + "The minimum price a player");
                     lore.add(ChatColor.GRAY + "can offer to obtain your");
                     lore.add(ChatColor.GRAY + "item.");
@@ -168,7 +166,7 @@ public class CreateAuctionGUI extends GUI
                 lore.add(ChatColor.GRAY + "Extra fee: " + ChatColor.GOLD + "+" + SUtil.commaify(escrow.getCreationFee(user.isAuctionCreationBIN())) + " coins " + ChatColor.YELLOW + "(" + (bin ? 1 : 5) + "%)");
                 lore.add(" ");
                 lore.add(ChatColor.YELLOW + "Click to edit!");
-                return SUtil.getStack(ChatColor.WHITE + (bin ? "Item price: " : "Starting bid: ") + ChatColor.GOLD + SUtil.commaify(escrow.getStarter()) + " coins", bin ? Material.GOLD_INGOT : Material.POWERED_RAIL, (short)0, 1, lore);
+                return SUtil.getStack(ChatColor.WHITE + (bin ? "Item price: " : "Starting bid: ") + ChatColor.GOLD + SUtil.commaify(escrow.getStarter()) + " coins", bin ? Material.GOLD_INGOT : Material.POWERED_RAIL, (short) 0, 1, lore);
             }
         });
         this.set(new GUIClickableItem() {
@@ -176,20 +174,19 @@ public class CreateAuctionGUI extends GUI
             public void run(final InventoryClickEvent e) {
                 new AuctionDurationGUI().open(player);
             }
-            
+
             @Override
             public int getSlot() {
                 return 33;
             }
-            
+
             @Override
             public ItemStack getItem() {
                 final List<String> lore = new ArrayList<String>();
                 if (bin) {
                     lore.add(ChatColor.GRAY + "How long the item will be");
                     lore.add(ChatColor.GRAY + "up for sale.");
-                }
-                else {
+                } else {
                     lore.add(ChatColor.GRAY + "How long players will be");
                     lore.add(ChatColor.GRAY + "able to place bids for.");
                     lore.add(" ");
@@ -199,7 +196,7 @@ public class CreateAuctionGUI extends GUI
                 }
                 lore.add(" ");
                 lore.add(ChatColor.YELLOW + "Click to edit!");
-                return SUtil.getStack(ChatColor.WHITE + "Duration: " + ChatColor.YELLOW + SUtil.getAuctionSetupFormattedTime(escrow.getDuration()), Material.WATCH, (short)0, 1, lore);
+                return SUtil.getStack(ChatColor.WHITE + "Duration: " + ChatColor.YELLOW + SUtil.getAuctionSetupFormattedTime(escrow.getDuration()), Material.WATCH, (short) 0, 1, lore);
             }
         });
         this.set(new GUIClickableItem() {
@@ -208,22 +205,22 @@ public class CreateAuctionGUI extends GUI
                 user.setAuctionCreationBIN(!user.isAuctionCreationBIN());
                 new CreateAuctionGUI().open(player);
             }
-            
+
             @Override
             public int getSlot() {
                 return 48;
             }
-            
+
             @Override
             public ItemStack getItem() {
                 if (bin) {
-                    return SUtil.getStack(ChatColor.GREEN + "Click to Auction", Material.POWERED_RAIL, (short)0, 1, ChatColor.GRAY + "With traditional auctions,", ChatColor.GRAY + "multiple buyers compete for the", ChatColor.GRAY + "item by bidding turn by turn.", " ", ChatColor.YELLOW + "Click to switch!");
+                    return SUtil.getStack(ChatColor.GREEN + "Click to Auction", Material.POWERED_RAIL, (short) 0, 1, ChatColor.GRAY + "With traditional auctions,", ChatColor.GRAY + "multiple buyers compete for the", ChatColor.GRAY + "item by bidding turn by turn.", " ", ChatColor.YELLOW + "Click to switch!");
                 }
-                return SUtil.getStack(ChatColor.GREEN + "Switch to BIN", Material.GOLD_INGOT, (short)0, 1, ChatColor.GRAY + "BIN Auctions are simple.", " ", ChatColor.GRAY + "Set a price, then one player may", ChatColor.GRAY + "buy the item at that price.", " ", ChatColor.DARK_GRAY + "(BIN means Buy It Now)", " ", ChatColor.YELLOW + "Click to switch!");
+                return SUtil.getStack(ChatColor.GREEN + "Switch to BIN", Material.GOLD_INGOT, (short) 0, 1, ChatColor.GRAY + "BIN Auctions are simple.", " ", ChatColor.GRAY + "Set a price, then one player may", ChatColor.GRAY + "buy the item at that price.", " ", ChatColor.DARK_GRAY + "(BIN means Buy It Now)", " ", ChatColor.YELLOW + "Click to switch!");
             }
         });
     }
-    
+
     @Override
     public void onBottomClick(final InventoryClickEvent e) {
         final ItemStack current = e.getCurrentItem();
@@ -241,7 +238,7 @@ public class CreateAuctionGUI extends GUI
             item = SItem.convert(current);
         }
         e.setCancelled(true);
-        final Player player = (Player)e.getWhoClicked();
+        final Player player = (Player) e.getWhoClicked();
         final User user = User.getUser(player.getUniqueId());
         if (user.getAuctionEscrow().getItem() != null) {
             return;

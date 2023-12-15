@@ -2,8 +2,11 @@ package vn.giakhanhvn.skysim.gui;
 
 import java.util.Iterator;
 import java.util.List;
+
 import vn.giakhanhvn.skysim.util.Sputnik;
+
 import java.util.ArrayList;
+
 import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
@@ -16,20 +19,21 @@ import vn.giakhanhvn.skysim.skill.MiningSkill;
 import vn.giakhanhvn.skysim.skill.CombatSkill;
 import org.bukkit.entity.Player;
 import org.bukkit.Material;
+
 import java.util.UUID;
+
 import vn.giakhanhvn.skysim.skill.Skill;
 
-public class SkillDetails extends GUI
-{
-    private Skill skill;
-    private UUID uuid;
+public class SkillDetails extends GUI {
+    private final Skill skill;
+    private final UUID uuid;
     private Material skillInstanceMat;
     private Material skillLvlMat;
     private short data;
-    private Player player;
-    private int page;
+    private final Player player;
+    private final int page;
     static final int[] slots;
-    
+
     public SkillDetails(final Skill skill, final Player player, final int index) {
         super(skill.getName() + " Skill", 54);
         this.data = 0;
@@ -38,7 +42,7 @@ public class SkillDetails extends GUI
         this.player = player;
         this.uuid = player.getUniqueId();
     }
-    
+
     @Override
     public void onOpen(final GUIOpenEvent e) {
         this.fill(SkillDetails.BLACK_STAINED_GLASS_PANE);
@@ -46,21 +50,17 @@ public class SkillDetails extends GUI
         if (this.skill instanceof CombatSkill) {
             this.skillInstanceMat = Material.STONE_SWORD;
             this.skillLvlMat = Material.DIAMOND_HELMET;
-        }
-        else if (this.skill instanceof MiningSkill) {
+        } else if (this.skill instanceof MiningSkill) {
             this.skillInstanceMat = Material.STONE_PICKAXE;
             this.skillLvlMat = Material.IRON_BLOCK;
-        }
-        else if (this.skill instanceof ForagingSkill) {
+        } else if (this.skill instanceof ForagingSkill) {
             this.skillInstanceMat = Material.SAPLING;
             this.data = 3;
             this.skillLvlMat = Material.LOG;
-        }
-        else if (this.skill instanceof FarmingSkill) {
+        } else if (this.skill instanceof FarmingSkill) {
             this.skillInstanceMat = Material.GOLD_HOE;
             this.skillLvlMat = Material.HAY_BLOCK;
-        }
-        else if (this.skill instanceof EnchantingSkill) {
+        } else if (this.skill instanceof EnchantingSkill) {
             this.skillInstanceMat = Material.ENCHANTMENT_TABLE;
             this.skillLvlMat = Material.ENCHANTED_BOOK;
         }
@@ -71,15 +71,15 @@ public class SkillDetails extends GUI
             public void run(final InventoryClickEvent e) {
                 GUIType.SKILL_MENU.getGUI().open(SkillDetails.this.player);
             }
-            
+
             @Override
             public int getSlot() {
                 return 48;
             }
-            
+
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.GREEN + "Go Back", Material.ARROW, (short)0, 1, ChatColor.GRAY + "To Skill Menu");
+                return SUtil.getStack(ChatColor.GREEN + "Go Back", Material.ARROW, (short) 0, 1, ChatColor.GRAY + "To Skill Menu");
             }
         });
         String name = "";
@@ -102,8 +102,7 @@ public class SkillDetails extends GUI
                 l.add("  " + line2);
             }
             l.add(" ");
-        }
-        else if (this.skill != null) {
+        } else if (this.skill != null) {
             name = this.skill.getName();
             l.add(" ");
         }
@@ -117,39 +116,37 @@ public class SkillDetails extends GUI
             this.set(new GUIClickableItem() {
                 @Override
                 public void run(final InventoryClickEvent e) {
-                    new SkillDetails(SkillDetails.this.skill, (Player)e.getWhoClicked(), SkillDetails.this.page + 1).open(SkillDetails.this.player);
+                    new SkillDetails(SkillDetails.this.skill, (Player) e.getWhoClicked(), SkillDetails.this.page + 1).open(SkillDetails.this.player);
                 }
-                
+
                 @Override
                 public int getSlot() {
                     return 50;
                 }
-                
+
                 @Override
                 public ItemStack getItem() {
-                    return SUtil.getStack(ChatColor.GREEN + "Levels 26-50", Material.ARROW, (short)0, 1, ChatColor.YELLOW + "Click to view!");
+                    return SUtil.getStack(ChatColor.GREEN + "Levels 26-50", Material.ARROW, (short) 0, 1, ChatColor.YELLOW + "Click to view!");
                 }
             });
-        }
-        else if (this.page == 2 && level >= 25) {
+        } else if (this.page == 2 && level >= 25) {
             this.set(new GUIClickableItem() {
                 @Override
                 public void run(final InventoryClickEvent e) {
-                    new SkillDetails(SkillDetails.this.skill, (Player)e.getWhoClicked(), SkillDetails.this.page - 1).open(SkillDetails.this.player);
+                    new SkillDetails(SkillDetails.this.skill, (Player) e.getWhoClicked(), SkillDetails.this.page - 1).open(SkillDetails.this.player);
                 }
-                
+
                 @Override
                 public int getSlot() {
                     return 50;
                 }
-                
+
                 @Override
                 public ItemStack getItem() {
-                    return SUtil.getStack(ChatColor.GREEN + "Levels 1-25", Material.ARROW, (short)0, 1, ChatColor.YELLOW + "Click to view!");
+                    return SUtil.getStack(ChatColor.GREEN + "Levels 1-25", Material.ARROW, (short) 0, 1, ChatColor.YELLOW + "Click to view!");
                 }
             });
-        }
-        else if (level < 25 && this.page > 1) {
+        } else if (level < 25 && this.page > 1) {
             this.player.closeInventory();
         }
         if (this.page == 1) {
@@ -166,30 +163,26 @@ public class SkillDetails extends GUI
                 if (i > level && i != level + 1) {
                     data = 14;
                     c = ChatColor.RED;
-                }
-                else if (i == level + 1) {
+                } else if (i == level + 1) {
                     data = 4;
                     c = ChatColor.YELLOW;
                     lore.add(" ");
                     lore.add(SUtil.createProgressText(ChatColor.GRAY + "Progress" + ChatColor.YELLOW, xp, nextXP2));
                     lore.add(SUtil.createSLineProgressBar(20, ChatColor.DARK_GREEN, xp, nextXP2));
-                }
-                else if (i <= level) {
+                } else if (i <= level) {
                     data = 5;
                     c = ChatColor.GREEN;
                     lore.add(" ");
                     lore.add(c + "UNLOCKED");
                 }
                 if (i <= level && i % 5 == 0) {
-                    this.set(slot, SUtil.getStack("" + c + this.skill.getName() + " Level " + SUtil.toRomanNumeral(i), this.skillLvlMat, this.data, i, lore));
-                }
-                else {
-                    this.set(slot, SUtil.getColorStack(data, "" + c + this.skill.getName() + " Level " + SUtil.toRomanNumeral(i), lore, (short)0, i));
+                    this.set(slot, SUtil.getStack(c + this.skill.getName() + " Level " + SUtil.toRomanNumeral(i), this.skillLvlMat, this.data, i, lore));
+                } else {
+                    this.set(slot, SUtil.getColorStack(data, c + this.skill.getName() + " Level " + SUtil.toRomanNumeral(i), lore, (short) 0, i));
                 }
                 ++i;
             }
-        }
-        else if (this.page == 2) {
+        } else if (this.page == 2) {
             int i = 26;
             short data = 0;
             ChatColor c = ChatColor.GRAY;
@@ -203,32 +196,29 @@ public class SkillDetails extends GUI
                 if (i > level && i != level + 1) {
                     data = 14;
                     c = ChatColor.RED;
-                }
-                else if (i == level + 1) {
+                } else if (i == level + 1) {
                     data = 4;
                     c = ChatColor.YELLOW;
                     lore.add(" ");
                     lore.add(SUtil.createProgressText(ChatColor.GRAY + "Progress" + ChatColor.YELLOW, xp, nextXP2));
                     lore.add(SUtil.createSLineProgressBar(20, ChatColor.DARK_GREEN, xp, nextXP2));
-                }
-                else if (i <= level) {
+                } else if (i <= level) {
                     data = 5;
                     c = ChatColor.GREEN;
                     lore.add(" ");
                     lore.add(c + "UNLOCKED");
                 }
                 if (i <= level && i % 5 == 0) {
-                    this.set(slot, SUtil.getStack("" + c + this.skill.getName() + " Level " + SUtil.toRomanNumeral(i), this.skillInstanceMat, this.data, i, lore));
-                }
-                else {
-                    this.set(slot, SUtil.getColorStack(data, "" + c + this.skill.getName() + " Level " + SUtil.toRomanNumeral(i), lore, (short)0, i));
+                    this.set(slot, SUtil.getStack(c + this.skill.getName() + " Level " + SUtil.toRomanNumeral(i), this.skillInstanceMat, this.data, i, lore));
+                } else {
+                    this.set(slot, SUtil.getColorStack(data, c + this.skill.getName() + " Level " + SUtil.toRomanNumeral(i), lore, (short) 0, i));
                 }
                 ++i;
             }
         }
     }
-    
+
     static {
-        slots = new int[] { 9, 18, 27, 28, 29, 20, 11, 2, 3, 4, 13, 22, 31, 32, 33, 24, 15, 6, 7, 8, 17, 26, 35, 44, 53 };
+        slots = new int[]{9, 18, 27, 28, 29, 20, 11, 2, 3, 4, 13, 22, 31, 32, 33, 24, 15, 6, 7, 8, 17, 26, 35, 44, 53};
     }
 }

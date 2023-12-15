@@ -9,21 +9,29 @@ import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
 import com.sk89q.worldedit.world.World;
+
 import java.util.Iterator;
+
 import org.bukkit.plugin.Plugin;
+
 import java.io.IOException;
+
 import org.bukkit.scheduler.BukkitRunnable;
 import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.Location;
+
 import java.util.Collection;
+
 import com.sk89q.worldedit.WorldEditException;
 import org.bukkit.Material;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
+
 import java.io.InputStream;
 import java.io.BufferedInputStream;
 import java.io.Closeable;
 import java.io.FileInputStream;
+
 import com.sk89q.worldedit.util.io.Closer;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import vn.giakhanhvn.skysim.util.Sputnik;
@@ -31,27 +39,29 @@ import vn.giakhanhvn.skysim.dimoon.utils.Utils;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.SkySimEngine;
+
 import java.io.File;
 import java.util.ArrayList;
+
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.block.Block;
+
 import java.util.List;
 
-public class Arena
-{
+public class Arena {
     private int currentParkour;
-    private List<Block> parkourBlocks;
+    private final List<Block> parkourBlocks;
     private boolean isCollapsing;
     public int highestY;
     private BukkitTask parkourTask;
-    
+
     public Arena() {
         this.currentParkour = 1;
         this.parkourBlocks = new ArrayList<Block>();
         this.isCollapsing = false;
         this.highestY = -1;
     }
-    
+
     public void pasteParkour() throws IOException {
         final File parkour = new File("plugins/dimoon/parkours/parkour" + this.currentParkour + ".schematic");
         final Dimoon dimoon = SkySimEngine.getPlugin().dimoon;
@@ -64,11 +74,11 @@ public class Arena
             p.sendMessage(Sputnik.trans("&eHint: &6Reach the &chighest point &6of the parkour to complete it!"));
         }
         final Location location = dimoon.getEntity().getLocation();
-        final World world = (World)new BukkitWorld(location.getWorld());
+        final World world = new BukkitWorld(location.getWorld());
         final Closer closer = Closer.create();
-        final FileInputStream fis = (FileInputStream)closer.register((Closeable)new FileInputStream(parkour));
-        final BufferedInputStream bis = (BufferedInputStream)closer.register((Closeable)new BufferedInputStream(fis));
-        final ClipboardReader reader = ClipboardFormat.SCHEMATIC.getReader((InputStream)bis);
+        final FileInputStream fis = (FileInputStream) closer.register((Closeable) new FileInputStream(parkour));
+        final BufferedInputStream bis = (BufferedInputStream) closer.register((Closeable) new BufferedInputStream(fis));
+        final ClipboardReader reader = ClipboardFormat.SCHEMATIC.getReader(bis);
         final Clipboard clipboard = reader.read(world.getWorldData());
         int highestYC = this.highestY;
         Location minYLoc = null;
@@ -80,7 +90,7 @@ public class Arena
                     final Vector clipboardLoc = new Vector(minimumPoint.getBlockX() + x, minimumPoint.getBlockY() + y, minimumPoint.getBlockZ() + z);
                     final BaseBlock baseBlock = clipboard.getBlock(clipboardLoc);
                     if (baseBlock.getId() != 0) {
-                        final Location newLocation = location.clone().subtract(57.0, 0.0, 57.0).add((double)x, (double)y, (double)z);
+                        final Location newLocation = location.clone().subtract(57.0, 0.0, 57.0).add(x, y, z);
                         final Vector loc = new Vector(newLocation.getBlockX(), newLocation.getBlockY(), newLocation.getBlockZ());
                         try {
                             world.setBlock(loc, baseBlock);
@@ -93,8 +103,7 @@ public class Arena
                                 newLocation.getBlock().setType(Material.AIR);
                             }
                             highestYC = Math.max(highestYC, loc.getBlockY());
-                        }
-                        catch (final WorldEditException e) {
+                        } catch (final WorldEditException e) {
                             e.printStackTrace();
                         }
                     }
@@ -118,8 +127,7 @@ public class Arena
             for (final Player p2 : dimoon.getEntity().getWorld().getPlayers()) {
                 p2.teleport(minYLoc.add(0.0, 1.0, 0.0));
             }
-        }
-        else {
+        } else {
             for (final Player p2 : dimoon.getEntity().getWorld().getPlayers()) {
                 p2.teleport(new Location(dimoon.getEntity().getWorld(), 234673.5, 155.0, 236425.5));
             }
@@ -140,19 +148,18 @@ public class Arena
                     public void run() {
                         try {
                             SkySimEngine.getPlugin().arena.pasteParkour();
-                        }
-                        catch (final IOException e) {
+                        } catch (final IOException e) {
                             throw new RuntimeException(e);
                         }
                     }
-                }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 1200L));
+                }.runTaskLater(SkySimEngine.getPlugin(), 1200L));
                 if (plugin.dimoon != null) {
                     plugin.dimoon.heal(5000);
                 }
             }
-        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 12000L);
+        }.runTaskLater(SkySimEngine.getPlugin(), 12000L);
     }
-    
+
     public void collapseParkour() {
         if (this.isCollapsing) {
             return;
@@ -175,16 +182,15 @@ public class Arena
                 }
                 block.setType(Material.AIR);
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 1L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 1L, 1L);
     }
-    
+
     public void collapseFloor() {
         final Dimoon dimoon = SkySimEngine.getPlugin().dimoon;
         if (dimoon == null) {
-            return;
         }
     }
-    
+
     public void spawnDimoonaize(final Entity entity) {
         Utils.bossMessage("DIMOONAIZE! GO!");
         final List<Location> locList = new ArrayList<Location>();
@@ -194,7 +200,7 @@ public class Arena
         }
         for (int x = 0; x < 120; ++x) {
             for (int z = 0; z < 120; ++z) {
-                final Location location = dimoon.getEntity().getLocation().clone().add(60.0, 0.0, 60.0).subtract((double)x, 2.0, (double)z);
+                final Location location = dimoon.getEntity().getLocation().clone().add(60.0, 0.0, 60.0).subtract(x, 2.0, z);
                 final Block block = location.getBlock();
                 if (block.getType() == Material.BEACON) {
                     locList.add(block.getLocation().add(0.5, 3.0, 0.5));
@@ -206,15 +212,16 @@ public class Arena
             ++i;
             SUtil.delay(() -> {
                 final org.bukkit.World world = entity.getWorld();
-                final org.bukkit.util.Vector[] velocity = { loc.toVector().subtract(entity.getLocation().toVector()).normalize() };
+                final org.bukkit.util.Vector[] velocity = {loc.toVector().subtract(entity.getLocation().toVector()).normalize()};
                 new BukkitRunnable() {
-                    private Location particleLocation;
-                    double multiplier;
+                    private final Location particleLocation;
+                    final double multiplier;
+
                     {
                         this.particleLocation = entity.getLocation().add(0.0, 2.0, 0.0).clone();
                         this.multiplier = 1.0;
                     }
-                    
+
                     public void run() {
                         this.particleLocation.add(velocity[0]);
                         velocity[0] = loc.toVector().subtract(this.particleLocation.toVector()).normalize().multiply(this.multiplier);
@@ -238,11 +245,11 @@ public class Arena
                             this.cancel();
                         }
                     }
-                }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
-            }, i * 5);
+                }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+            }, i * 5L);
         }
     }
-    
+
     public void fixFloor() {
         final Dimoon dimoon = SkySimEngine.getPlugin().dimoon;
         if (dimoon == null) {
@@ -250,7 +257,7 @@ public class Arena
         }
         for (int x = 0; x < 120; ++x) {
             for (int z = 0; z < 120; ++z) {
-                final Location location = dimoon.getEntity().getLocation().clone().add(60.0, 0.0, 60.0).subtract((double)x, 2.0, (double)z);
+                final Location location = dimoon.getEntity().getLocation().clone().add(60.0, 0.0, 60.0).subtract(x, 2.0, z);
                 final Block block = location.getBlock();
                 if (block.getType() == Material.STAINED_CLAY) {
                     block.setType(Material.SMOOTH_BRICK);
@@ -258,13 +265,12 @@ public class Arena
             }
         }
     }
-    
+
     public static void cleanArena() {
         for (int i = 1; i < 4; ++i) {
             try {
                 rp(i);
-            }
-            catch (final IOException e) {
+            } catch (final IOException e) {
                 e.printStackTrace();
             }
         }
@@ -275,15 +281,15 @@ public class Arena
             c.setType(Material.AIR);
         }
     }
-    
+
     private static void rp(final int s) throws IOException {
         final File parkour = new File("plugins/dimoon/parkours/parkour" + s + ".schematic");
         final Location location = new Location(Bukkit.getWorld("arena"), 234668.5, 155.0, 236481.5);
-        final World world = (World)new BukkitWorld(location.getWorld());
+        final World world = new BukkitWorld(location.getWorld());
         final Closer closer = Closer.create();
-        final FileInputStream fis = (FileInputStream)closer.register((Closeable)new FileInputStream(parkour));
-        final BufferedInputStream bis = (BufferedInputStream)closer.register((Closeable)new BufferedInputStream(fis));
-        final ClipboardReader reader = ClipboardFormat.SCHEMATIC.getReader((InputStream)bis);
+        final FileInputStream fis = (FileInputStream) closer.register((Closeable) new FileInputStream(parkour));
+        final BufferedInputStream bis = (BufferedInputStream) closer.register((Closeable) new BufferedInputStream(fis));
+        final ClipboardReader reader = ClipboardFormat.SCHEMATIC.getReader(bis);
         final Clipboard clipboard = reader.read(world.getWorldData());
         for (int x = 0; x < clipboard.getRegion().getWidth(); ++x) {
             for (int y = 0; y < clipboard.getRegion().getHeight(); ++y) {
@@ -292,13 +298,12 @@ public class Arena
                     final Vector clipboardLoc = new Vector(minimumPoint.getBlockX() + x, minimumPoint.getBlockY() + y, minimumPoint.getBlockZ() + z);
                     final BaseBlock baseBlock = clipboard.getBlock(clipboardLoc);
                     if (baseBlock.getId() != 0) {
-                        final Location newLocation = location.clone().subtract(57.0, 0.0, 57.0).add((double)x, (double)y, (double)z);
+                        final Location newLocation = location.clone().subtract(57.0, 0.0, 57.0).add(x, y, z);
                         final Vector loc = new Vector(newLocation.getBlockX(), newLocation.getBlockY(), newLocation.getBlockZ());
                         try {
                             world.setBlock(loc, baseBlock);
                             location.getWorld().getBlockAt(newLocation).setType(Material.AIR);
-                        }
-                        catch (final WorldEditException e) {
+                        } catch (final WorldEditException e) {
                             e.printStackTrace();
                         }
                     }
@@ -307,7 +312,7 @@ public class Arena
         }
         closer.close();
     }
-    
+
     public BukkitTask getParkourTask() {
         return this.parkourTask;
     }

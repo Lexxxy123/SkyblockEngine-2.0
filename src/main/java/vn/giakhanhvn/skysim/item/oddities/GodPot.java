@@ -1,6 +1,7 @@
 package vn.giakhanhvn.skysim.item.oddities;
 
 import java.util.Iterator;
+
 import org.bukkit.inventory.ItemStack;
 import vn.giakhanhvn.skysim.user.PlayerUtils;
 import vn.giakhanhvn.skysim.user.PlayerStatistics;
@@ -11,7 +12,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import vn.giakhanhvn.skysim.user.User;
 import vn.giakhanhvn.skysim.potion.PotionEffectType;
 import vn.giakhanhvn.skysim.potion.PotionEffect;
+
 import java.util.ArrayList;
+
 import vn.giakhanhvn.skysim.util.SUtil;
 import vn.giakhanhvn.skysim.item.SItem;
 import org.bukkit.entity.Player;
@@ -22,64 +25,63 @@ import vn.giakhanhvn.skysim.item.Ability;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
 import vn.giakhanhvn.skysim.item.SkullStatistics;
 
-public class GodPot implements SkullStatistics, MaterialFunction, Ability
-{
+public class GodPot implements SkullStatistics, MaterialFunction, Ability {
     private boolean bool;
-    
+
     public GodPot() {
         this.bool = true;
     }
-    
+
     @Override
     public String getURL() {
         return "60226d4c1d30fbebecae939da900603e4cd0fed8592a1bb3e11f9ac92391a45a";
     }
-    
+
     @Override
     public String getDisplayName() {
         return "God Potion";
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.SPECIAL;
     }
-    
+
     @Override
     public GenericItemType getType() {
         return GenericItemType.ITEM;
     }
-    
+
     @Override
     public String getAbilityName() {
         return "Drink!";
     }
-    
+
     @Override
     public String getAbilityDescription() {
         return Sputnik.trans("&7Consume this potion give the player &a24 hours &7of positive effects!");
     }
-    
+
     @Override
     public int getAbilityCooldownTicks() {
         return 0;
     }
-    
+
     @Override
     public int getManaCost() {
         return 0;
     }
-    
+
     @Override
     public boolean displayUsage() {
         return false;
     }
-    
+
     @Override
     public boolean isStackable() {
         return false;
     }
-    
+
     @Override
     public void onAbilityUse(final Player player, final SItem sItem) {
         SUtil.delay(() -> this.bool = false, 35L);
@@ -117,7 +119,7 @@ public class GodPot implements SkullStatistics, MaterialFunction, Ability
                     player.getWorld().playEffect(player.getLocation().add(0.0, r, 0.0), Effect.POTION_SWIRL, 0);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
         for (final PotionEffect effect : effects) {
             user.removePotionEffect(effect.getType());
             PlayerUtils.updatePotionEffects(user, PlayerUtils.STATISTICS_CACHE.get(user.getUuid()));
@@ -126,6 +128,6 @@ public class GodPot implements SkullStatistics, MaterialFunction, Ability
             }
             user.addPotionEffect(effect);
         }
-        player.setItemInHand((ItemStack)null);
+        player.setItemInHand(null);
     }
 }

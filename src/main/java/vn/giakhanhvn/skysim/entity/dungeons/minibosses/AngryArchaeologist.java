@@ -13,7 +13,9 @@ import com.google.common.util.concurrent.AtomicDouble;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
+
 import java.util.Iterator;
+
 import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -36,7 +38,9 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+
 import java.util.Random;
+
 import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.Effect;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -54,14 +58,13 @@ import org.bukkit.entity.LivingEntity;
 import vn.giakhanhvn.skysim.util.Sputnik;
 import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
 
-public class AngryArchaeologist extends BaseZombie
-{
+public class AngryArchaeologist extends BaseZombie {
     private boolean isSplashing;
     private boolean isBowing;
     private boolean startedBattle;
     private boolean SplashCooldown;
     private boolean s;
-    
+
     public AngryArchaeologist() {
         this.isSplashing = false;
         this.isBowing = false;
@@ -69,33 +72,33 @@ public class AngryArchaeologist extends BaseZombie
         this.SplashCooldown = false;
         this.s = false;
     }
-    
+
     @Override
     public String getEntityName() {
         return Sputnik.trans("&d&lAngry Archaeologist");
     }
-    
+
     @Override
     public double getEntityMaxHealth() {
         return 2.5E8;
     }
-    
+
     @Override
     public double getDamageDealt() {
         return 5300000.0;
     }
-    
+
     @Override
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
-        ((CraftZombie)entity).setBaby(false);
-        final AttributeInstance followRange = ((CraftLivingEntity)entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
+        ((CraftZombie) entity).setBaby(false);
+        final AttributeInstance followRange = ((CraftLivingEntity) entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
         followRange.setValue(40.0);
-        final PlayerDisguise pl = Sputnik.applyPacketNPC((Entity)entity, "ewogICJ0aW1lc3RhbXAiIDogMTYxMjAzMDY5NDA5OSwKICAicHJvZmlsZUlkIiA6ICJmNWQwYjFhZTQxNmU0YTE5ODEyMTRmZGQzMWU3MzA1YiIsCiAgInByb2ZpbGVOYW1lIiA6ICJDYXRjaFRoZVdhdmUxMCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9jNDhjNzgzNDU4ZTRjZjg1MThlOGFiNTg2M2ZiYzRjYjk0OGY5MDU2OGVlYjlhNjBkMTZjNGZkZTJiOTZjMDMzIgogICAgfQogIH0KfQ==", "h0EcebQKYgqarHvlkbkkkRN798ir/crHJD4PUtLWNgohxOCk0WbtPu5YxQpmCL75Y6I2Y0vVQvic7x2r4vfMUu5z0O5dfjUXwpXQ6zWYdmHIbeg796EqUsdr1VJlPHMY/PVYle+NoYflwssIXYqLOWqswaBB4cz6qfyinujYoU6wVhGbONns7h/mpCM1r+gyua0hP9g+kjgslGebpDtkQRtv/kZpJ5+19cM5KT12KmjBGlTwsmiP+RfEINt5oGv2p12wqwv0CC5TFqB+/SM1yjYcEdWXQfzmsnC9nzIfgEHpNquKiX2pcGfVPvKgjkkLkO23nnQ0e2KOfIhLKHlyHcESd/lwGP9Ea/i+JVtZMEMUmuU3lQU+ywDMCQiGNEnB9MFlDdA6LBc2mwZKYShyQNgEveXxV2V1j8dt5ctKe7ANBMrCKXRjIO0TcHv2q/PJ9GwEuSfRNwdZp88gkbb79VV+7R4nkzAzEmNpRUxpB4P0qYDpMNCaC+NYEjHrzUr3hiD3tyHQzWHqvOJYYkor5kxGBoE19lZNxfVOEv9K6dIiSAPAtyYbRc9PVL9DUwlshfQO+kYwymSfZqVqW8CUafIA2NtIpIshsuOigqPMYIJv/p1HfGZVSGZ2B1Zmb/DQ9QoTLPqv+ExZ/zMMAqLQB+aB1DL5qfMABNOYhyfSQ2c=", true);
+        final PlayerDisguise pl = Sputnik.applyPacketNPC(entity, "ewogICJ0aW1lc3RhbXAiIDogMTYxMjAzMDY5NDA5OSwKICAicHJvZmlsZUlkIiA6ICJmNWQwYjFhZTQxNmU0YTE5ODEyMTRmZGQzMWU3MzA1YiIsCiAgInByb2ZpbGVOYW1lIiA6ICJDYXRjaFRoZVdhdmUxMCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9jNDhjNzgzNDU4ZTRjZjg1MThlOGFiNTg2M2ZiYzRjYjk0OGY5MDU2OGVlYjlhNjBkMTZjNGZkZTJiOTZjMDMzIgogICAgfQogIH0KfQ==", "h0EcebQKYgqarHvlkbkkkRN798ir/crHJD4PUtLWNgohxOCk0WbtPu5YxQpmCL75Y6I2Y0vVQvic7x2r4vfMUu5z0O5dfjUXwpXQ6zWYdmHIbeg796EqUsdr1VJlPHMY/PVYle+NoYflwssIXYqLOWqswaBB4cz6qfyinujYoU6wVhGbONns7h/mpCM1r+gyua0hP9g+kjgslGebpDtkQRtv/kZpJ5+19cM5KT12KmjBGlTwsmiP+RfEINt5oGv2p12wqwv0CC5TFqB+/SM1yjYcEdWXQfzmsnC9nzIfgEHpNquKiX2pcGfVPvKgjkkLkO23nnQ0e2KOfIhLKHlyHcESd/lwGP9Ea/i+JVtZMEMUmuU3lQU+ywDMCQiGNEnB9MFlDdA6LBc2mwZKYShyQNgEveXxV2V1j8dt5ctKe7ANBMrCKXRjIO0TcHv2q/PJ9GwEuSfRNwdZp88gkbb79VV+7R4nkzAzEmNpRUxpB4P0qYDpMNCaC+NYEjHrzUr3hiD3tyHQzWHqvOJYYkor5kxGBoE19lZNxfVOEv9K6dIiSAPAtyYbRc9PVL9DUwlshfQO+kYwymSfZqVqW8CUafIA2NtIpIshsuOigqPMYIJv/p1HfGZVSGZ2B1Zmb/DQ9QoTLPqv+ExZ/zMMAqLQB+aB1DL5qfMABNOYhyfSQ2c=", true);
         final PlayerWatcher skywatch = pl.getWatcher();
-        final LivingEntity target = (LivingEntity)((CraftZombie)entity).getTarget();
-        EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 95);
-        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("LD", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+        final LivingEntity target = ((CraftZombie) entity).getTarget();
+        EntityManager.DEFENSE_PERCENTAGE.put(entity, 95);
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -103,17 +106,17 @@ public class AngryArchaeologist extends BaseZombie
                     return;
                 }
                 for (int i = 0; i < 20; ++i) {
-                    entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 0.25, 0.0), Effect.MAGIC_CRIT, 0, 1, (float)SUtil.random(-0.5, 0.5), (float)SUtil.random(0.0, 0.6), (float)SUtil.random(-0.5, 0.5), 0.0f, 1, 20);
+                    entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 0.25, 0.0), Effect.MAGIC_CRIT, 0, 1, (float) SUtil.random(-0.5, 0.5), (float) SUtil.random(0.0, 0.6), (float) SUtil.random(-0.5, 0.5), 0.0f, 1, 20);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 15L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 15L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
-                if (((CraftZombie)entity).getTarget() != null && !AngryArchaeologist.this.s) {
+                if (((CraftZombie) entity).getTarget() != null && !AngryArchaeologist.this.s) {
                     final Random random = new Random();
                     AngryArchaeologist.this.s = true;
                     entity.getEquipment().setItemInHand(AngryArchaeologist.getStrPot());
@@ -124,19 +127,17 @@ public class AngryArchaeologist extends BaseZombie
                             entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 65, 4));
                             entity.getWorld().playSound(entity.getLocation(), Sound.DRINK, 0.5f + 0.5f * random.nextInt(2), (random.nextFloat() - random.nextFloat()) * 0.2f + 1.0f);
                         }
-                    }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 4L);
+                    }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 4L);
                     SUtil.delay(() -> {
                         final Object val$entity = entity;
                         entity.getEquipment().setItemInHand(new ItemStack(Material.GLASS_BOTTLE, 1));
                         bkt.cancel();
-                        return;
                     }, 60L);
                     SUtil.delay(() -> {
                         final Object val$entity2 = entity;
                         entity.getEquipment().setItemInHand(SUtil.enchant(SItem.of(SMaterial.DIAMOND_SWORD).getStack()));
                         entity.removePotionEffect(PotionEffectType.SLOW);
                         AngryArchaeologist.this.startedBattle = true;
-                        return;
                     }, 65L);
                 }
                 if (AngryArchaeologist.this.isSplashing) {
@@ -145,17 +146,17 @@ public class AngryArchaeologist extends BaseZombie
                     final Location h = entity.getLocation();
                     h.setPitch(90.0f);
                     entity.teleport(h);
-                    AngryArchaeologist.sendHeadRotation((Entity)entity, entity.getLocation().getYaw(), 90.0f);
+                    AngryArchaeologist.sendHeadRotation(entity, entity.getLocation().getYaw(), 90.0f);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
-                if (entity.getHealth() < entity.getMaxHealth() * 1.0 / 2.0 && !AngryArchaeologist.this.SplashCooldown && !AngryArchaeologist.this.isSplashing) {
+                if (entity.getHealth() < entity.getMaxHealth() / 2.0 && !AngryArchaeologist.this.SplashCooldown && !AngryArchaeologist.this.isSplashing) {
                     final float perv = entity.getLocation().getPitch();
                     AngryArchaeologist.this.SplashCooldown = true;
                     entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 35, 6));
@@ -169,51 +170,36 @@ public class AngryArchaeologist extends BaseZombie
                     SUtil.delay(() -> {
                         final Object val$entity = entity;
                         if (entity.isDead()) {
-                            return;
-                        }
-                        else {
-                            AngryArchaeologist.spawnHealthPotion(entity.getEyeLocation(), (Entity)entity);
-                            return;
+                        } else {
+                            AngryArchaeologist.spawnHealthPotion(entity.getEyeLocation(), entity);
                         }
                     }, 5L);
                     SUtil.delay(() -> {
                         final Object val$entity2 = entity;
                         if (entity.isDead()) {
-                            return;
-                        }
-                        else {
-                            AngryArchaeologist.spawnHealthPotion(entity.getEyeLocation(), (Entity)entity);
-                            return;
+                        } else {
+                            AngryArchaeologist.spawnHealthPotion(entity.getEyeLocation(), entity);
                         }
                     }, 10L);
                     SUtil.delay(() -> {
                         final Object val$entity3 = entity;
                         if (entity.isDead()) {
-                            return;
-                        }
-                        else {
-                            AngryArchaeologist.spawnHealthPotion(entity.getEyeLocation(), (Entity)entity);
-                            return;
+                        } else {
+                            AngryArchaeologist.spawnHealthPotion(entity.getEyeLocation(), entity);
                         }
                     }, 15L);
                     SUtil.delay(() -> {
                         final Object val$entity4 = entity;
                         if (entity.isDead()) {
-                            return;
-                        }
-                        else {
-                            AngryArchaeologist.spawnHealthPotion(entity.getEyeLocation(), (Entity)entity);
-                            return;
+                        } else {
+                            AngryArchaeologist.spawnHealthPotion(entity.getEyeLocation(), entity);
                         }
                     }, 20L);
                     SUtil.delay(() -> {
                         final Object val$entity5 = entity;
                         if (entity.isDead()) {
-                            return;
-                        }
-                        else {
-                            AngryArchaeologist.spawnHealthPotion(entity.getEyeLocation(), (Entity)entity);
-                            return;
+                        } else {
+                            AngryArchaeologist.spawnHealthPotion(entity.getEyeLocation(), entity);
                         }
                     }, 25L);
                     new BukkitRunnable() {
@@ -223,7 +209,7 @@ public class AngryArchaeologist extends BaseZombie
                             }
                             entity.getEquipment().setItemInHand(new ItemStack(Material.AIR));
                             AngryArchaeologist.this.isSplashing = false;
-                            AngryArchaeologist.sendHeadRotation((Entity)entity, entity.getLocation().getYaw(), perv);
+                            AngryArchaeologist.sendHeadRotation(entity, entity.getLocation().getYaw(), perv);
                             final Location h = entity.getLocation();
                             h.setPitch(perv);
                             entity.teleport(h);
@@ -231,39 +217,36 @@ public class AngryArchaeologist extends BaseZombie
                                 final Object val$entity = entity;
                                 if (!AngryArchaeologist.this.isBowing) {
                                     entity.getEquipment().setItemInHand(SUtil.enchant(SItem.of(SMaterial.DIAMOND_SWORD).getStack()));
-                                }
-                                else {
+                                } else {
                                     entity.getEquipment().setItemInHand(SItem.of(SMaterial.BOW).getStack());
                                 }
-                                return;
                             }, 3L);
                             SUtil.delay(() -> AngryArchaeologist.this.SplashCooldown = false, SUtil.random(500, 900));
                         }
-                    }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 40L);
+                    }.runTaskLater(SkySimEngine.getPlugin(), 40L);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 10L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 10L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
-                    Sputnik.zero((Entity)entity);
+                    Sputnik.zero(entity);
                     this.cancel();
                     return;
                 }
                 if (!AngryArchaeologist.this.startedBattle) {
                     return;
                 }
-                final LivingEntity target1 = (LivingEntity)((CraftZombie)entity).getTarget();
+                final LivingEntity target1 = ((CraftZombie) entity).getTarget();
                 if (target1 != null) {
                     if (target1.getLocation().distance(entity.getLocation()) >= 6.0 && target1.getLocation().distance(entity.getLocation()) < 16.0 && !AngryArchaeologist.this.isSplashing) {
                         entity.teleport(entity.getLocation().setDirection(target1.getLocation().toVector().subtract(entity.getLocation().toVector())));
-                        Sputnik.sendHeadRotation((Entity)entity, entity.getLocation().getYaw(), entity.getLocation().getPitch());
+                        Sputnik.sendHeadRotation(entity, entity.getLocation().getYaw(), entity.getLocation().getPitch());
                     }
                     if ((target1.getLocation().distance(entity.getLocation()) < 6.0 || target1.getLocation().distance(entity.getLocation()) > 16.0) && !AngryArchaeologist.this.isSplashing) {
                         SUtil.delay(() -> {
                             final Object val$entity = entity;
                             entity.getEquipment().setItemInHand(SUtil.enchant(SItem.of(SMaterial.DIAMOND_SWORD).getStack()));
-                            return;
                         }, 0L);
                         AngryArchaeologist.this.isBowing = false;
                     }
@@ -277,7 +260,7 @@ public class AngryArchaeologist extends BaseZombie
                             int atkCharge = 20;
                             double bowPower = 2.2;
                             boolean crit = true;
-                            
+
                             public void run() {
                                 if (target1.getLocation().distance(entity.getLocation()) <= 10.0) {
                                     this.atkCharge = 10;
@@ -310,12 +293,11 @@ public class AngryArchaeologist extends BaseZombie
                                     final Location location = entity.getEyeLocation().add(entity.getEyeLocation().getDirection().toLocation(entity.getWorld()));
                                     final Location l = location.clone();
                                     l.setYaw(location.getYaw());
-                                    final Arrow arr = entity.getWorld().spawnArrow(l, l.getDirection(), (float)this.bowPower, 1.6f);
-                                    arr.setShooter((ProjectileSource)entity);
+                                    final Arrow arr = entity.getWorld().spawnArrow(l, l.getDirection(), (float) this.bowPower, 1.6f);
+                                    arr.setShooter(entity);
                                     if (!this.crit) {
                                         arr.setCritical(SUtil.random(0, 1) == 1);
-                                    }
-                                    else {
+                                    } else {
                                         arr.setCritical(true);
                                     }
                                     skywatch.setRightClicking(false);
@@ -323,19 +305,18 @@ public class AngryArchaeologist extends BaseZombie
                                     AngryArchaeologist.this.isBowing = false;
                                 }
                             }
-                        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+                        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
                     }
-                }
-                else if (!AngryArchaeologist.this.isSplashing) {
+                } else if (!AngryArchaeologist.this.isSplashing) {
                     AngryArchaeologist.this.isBowing = false;
                     entity.getEquipment().setItemInHand(SUtil.enchant(SItem.of(SMaterial.DIAMOND_SWORD).getStack()));
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
         new BukkitRunnable() {
             Location loc = entity.getLocation();
-            final EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
-            
+            final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
+
             public void run() {
                 if (entity.isDead()) {
                     this.cancel();
@@ -348,13 +329,13 @@ public class AngryArchaeologist extends BaseZombie
                 if (entity.hasMetadata("frozen")) {
                     return;
                 }
-                if (((CraftZombie)entity).getTarget() == null) {
+                if (((CraftZombie) entity).getTarget() == null) {
                     return;
                 }
-                if (((CraftZombie)entity).getTarget().getWorld() != entity.getWorld()) {
+                if (((CraftZombie) entity).getTarget().getWorld() != entity.getWorld()) {
                     return;
                 }
-                if (((CraftZombie)entity).getTarget().getLocation().distance(entity.getLocation()) <= 4.0 || AngryArchaeologist.this.isSplashing || AngryArchaeologist.this.isBowing || !AngryArchaeologist.this.startedBattle) {
+                if (((CraftZombie) entity).getTarget().getLocation().distance(entity.getLocation()) <= 4.0 || AngryArchaeologist.this.isSplashing || AngryArchaeologist.this.isBowing || !AngryArchaeologist.this.startedBattle) {
                     return;
                 }
                 if (this.loc.distance(loc2) >= 0.2) {
@@ -378,10 +359,10 @@ public class AngryArchaeologist extends BaseZombie
                 }
                 this.nms.setSprinting(false);
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 7L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 7L);
         new BukkitRunnable() {
             public void run() {
-                final EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
+                final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
@@ -399,7 +380,7 @@ public class AngryArchaeologist extends BaseZombie
                     if (!(entities instanceof Player)) {
                         continue;
                     }
-                    final Player target = (Player)entities;
+                    final Player target = (Player) entities;
                     if (target.getGameMode() == GameMode.CREATIVE) {
                         continue;
                     }
@@ -417,52 +398,52 @@ public class AngryArchaeologist extends BaseZombie
                     }
                     entity.teleport(entity.getLocation().setDirection(target.getLocation().subtract(entities.getLocation()).toVector()));
                     for (final Player players : Bukkit.getOnlinePlayers()) {
-                        ((CraftPlayer)players).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)entity).getHandle(), 0));
+                        ((CraftPlayer) players).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) entity).getHandle(), 0));
                     }
-                    nms.r((net.minecraft.server.v1_8_R3.Entity)((CraftPlayer)target).getHandle());
+                    nms.r(((CraftPlayer) target).getHandle());
                     break;
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
     }
-    
+
     @Override
     public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
-        final Entity en = (Entity)sEntity.getEntity();
+        final Entity en = sEntity.getEntity();
         final Vector v = new Vector(0, 0, 0);
         SUtil.delay(() -> en.setVelocity(v), 1L);
     }
-    
+
     @Override
     public SEntityEquipment getEntityEquipment() {
         return new SEntityEquipment(SUtil.enchant(SItem.of(SMaterial.DIAMOND_SWORD).getStack()), SUtil.enchant(SItem.of(SMaterial.DIAMOND_HELMET).getStack()), SUtil.enchant(SItem.of(SMaterial.DIAMOND_CHESTPLATE).getStack()), SUtil.enchant(SItem.of(SMaterial.DIAMOND_LEGGINGS).getStack()), SUtil.enchant(SItem.of(SMaterial.DIAMOND_BOOTS).getStack()));
     }
-    
+
     @Override
     public boolean isBaby() {
         return false;
     }
-    
+
     @Override
     public boolean hasNameTag() {
         return false;
     }
-    
+
     @Override
     public boolean isVillager() {
         return false;
     }
-    
+
     @Override
     public double getXPDropped() {
         return 0.0;
     }
-    
+
     @Override
     public double getMovementSpeed() {
         return 0.35;
     }
-    
+
     public void playPar(final Location l) {
         final ConeEffect Effect = new ConeEffect(SkySimEngine.effectManager);
         Effect.setLocation(l.clone().add(l.getDirection().normalize().multiply(-0.25)).add(0.0, -0.1, 0.0));
@@ -474,7 +455,7 @@ public class AngryArchaeologist extends BaseZombie
         Effect.iterations = 5;
         Effect.start();
     }
-    
+
     public static void spawnHealthPotion(final Location location, final Entity en) {
         final World world = location.getWorld();
         final ItemStack item = new ItemStack(Material.POTION, 1);
@@ -482,11 +463,11 @@ public class AngryArchaeologist extends BaseZombie
         pot.setType(PotionType.INSTANT_HEAL);
         pot.setSplash(true);
         pot.apply(item);
-        final ThrownPotion thrownPotion = (ThrownPotion)world.spawnEntity(location.clone().add(0.0, -0.5, 0.0), EntityType.SPLASH_POTION);
-        thrownPotion.setShooter((ProjectileSource)en);
+        final ThrownPotion thrownPotion = (ThrownPotion) world.spawnEntity(location.clone().add(0.0, -0.5, 0.0), EntityType.SPLASH_POTION);
+        thrownPotion.setShooter((ProjectileSource) en);
         thrownPotion.setItem(item);
     }
-    
+
     public static ItemStack getPot() {
         final ItemStack item = new ItemStack(Material.POTION, 1);
         final Potion pot = new Potion(1);
@@ -495,7 +476,7 @@ public class AngryArchaeologist extends BaseZombie
         pot.apply(item);
         return item;
     }
-    
+
     public static ItemStack getStrPot() {
         final ItemStack item = new ItemStack(Material.POTION, 1);
         final Potion pot = new Potion(1);
@@ -504,11 +485,11 @@ public class AngryArchaeologist extends BaseZombie
         pot.apply(item);
         return item;
     }
-    
+
     public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
-        final net.minecraft.server.v1_8_R3.Entity pl = (net.minecraft.server.v1_8_R3.Entity)((CraftZombie)e).getHandle();
+        final net.minecraft.server.v1_8_R3.Entity pl = ((CraftZombie) e).getHandle();
         pl.setLocation(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), yaw, pitch);
         final PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(pl);
-        Sputnik.sendPacket(e.getWorld(), (Packet)packet);
+        Sputnik.sendPacket(e.getWorld(), packet);
     }
 }

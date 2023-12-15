@@ -1,6 +1,7 @@
 package vn.giakhanhvn.skysim.item;
 
 import java.util.HashMap;
+
 import org.bukkit.event.entity.EntityDeathEvent;
 import vn.giakhanhvn.skysim.entity.dungeons.boss.sadan.SadanGiant;
 import vn.giakhanhvn.skysim.entity.dungeons.boss.sadan.JollyPinkGiant;
@@ -20,8 +21,10 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.EntityType;
 import org.bukkit.block.Block;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import vn.giakhanhvn.skysim.entity.StaticDragonManager;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -63,14 +66,18 @@ import vn.giakhanhvn.skysim.user.User;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.EnderDragonPart;
+
 import java.util.Set;
+
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.Material;
 import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+
 import java.util.Iterator;
+
 import vn.giakhanhvn.skysim.util.Sputnik;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.potion.PotionEffectType;
@@ -78,7 +85,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.EventHandler;
+
 import java.util.UUID;
+
 import vn.giakhanhvn.skysim.util.ManaReplacement;
 import org.bukkit.Sound;
 import net.md_5.bungee.api.ChatColor;
@@ -88,14 +97,15 @@ import vn.giakhanhvn.skysim.user.PlayerUtils;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.entity.Player;
+
 import java.util.Map;
+
 import vn.giakhanhvn.skysim.listener.PListener;
 
-public class ItemListener extends PListener
-{
+public class ItemListener extends PListener {
     public static final Map<Player, String> Classes;
     public static final Map<Player, Boolean> IsDead;
-    
+
     @EventHandler
     public void useEtherWarp(final PlayerInteractEvent e) {
         if (!SItem.isSpecItem(e.getItem())) {
@@ -121,8 +131,7 @@ public class ItemListener extends PListener
                                     return;
                                 }
                             }
-                        }
-                        else if (action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK) {
+                        } else if (action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK) {
                             return;
                         }
                         PlayerUtils.useAbility(player, sItem);
@@ -142,15 +151,14 @@ public class ItemListener extends PListener
                     public String getReplacement() {
                         return ChatColor.AQUA + "-" + cost + " Mana (" + ChatColor.GOLD + "Ether Transmission" + ChatColor.AQUA + ")";
                     }
-                    
+
                     @Override
                     public long getEnd() {
                         return c + 2000L;
                     }
                 });
                 SItem.etherWarpTeleportation(e.getPlayer(), sItem);
-            }
-            else {
+            } else {
                 player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
                 final long c = System.currentTimeMillis();
                 Repeater.MANA_REPLACEMENT_MAP.put(player.getUniqueId(), new ManaReplacement() {
@@ -158,7 +166,7 @@ public class ItemListener extends PListener
                     public String getReplacement() {
                         return "" + ChatColor.RED + ChatColor.BOLD + "NOT ENOUGH MANA";
                     }
-                    
+
                     @Override
                     public long getEnd() {
                         return c + 1500L;
@@ -167,11 +175,11 @@ public class ItemListener extends PListener
             }
         }
     }
-    
+
     @EventHandler
     public void onPlayerInteracting(final PlayerInteractEvent e) {
     }
-    
+
     @EventHandler
     public void PotionsSplash(final PotionSplashEvent e) {
         for (final Entity ef : e.getAffectedEntities()) {
@@ -179,38 +187,36 @@ public class ItemListener extends PListener
                 for (final PotionEffect pe : e.getEntity().getEffects()) {
                     if (pe.getType() == PotionEffectType.HEAL) {
                         e.setCancelled(true);
-                    }
-                    else {
+                    } else {
                         if (pe.getType() != PotionEffectType.HARM) {
                             continue;
                         }
                         e.setCancelled(true);
-                        ((LivingEntity)ef).damage(1.0E-4);
+                        ((LivingEntity) ef).damage(1.0E-4);
                     }
                 }
             }
         }
-        if (e.getEntity().getShooter() instanceof LivingEntity && ((LivingEntity)e.getEntity().getShooter()).hasMetadata("LD")) {
+        if (e.getEntity().getShooter() instanceof LivingEntity && ((LivingEntity) e.getEntity().getShooter()).hasMetadata("LD")) {
             for (final Entity ef : e.getAffectedEntities()) {
                 if (ef.hasMetadata("LD")) {
                     e.setCancelled(true);
                     if (ef.isDead()) {
                         return;
                     }
-                    ((LivingEntity)ef).setHealth(Math.min(((LivingEntity)ef).getMaxHealth(), ((LivingEntity)ef).getHealth() + ((LivingEntity)ef).getMaxHealth() * 10.0 / 100.0));
-                }
-                else {
+                    ((LivingEntity) ef).setHealth(Math.min(((LivingEntity) ef).getMaxHealth(), ((LivingEntity) ef).getHealth() + ((LivingEntity) ef).getMaxHealth() * 10.0 / 100.0));
+                } else {
                     if (!(ef instanceof Player)) {
                         continue;
                     }
                     e.setCancelled(true);
-                    ((LivingEntity)ef).setHealth(Math.min(((LivingEntity)ef).getMaxHealth(), ((LivingEntity)ef).getHealth() + 500.0));
-                    ((Player)ef).sendMessage(Sputnik.trans("&a&lBUFF! &fYou were splashed with &cHealing V&f!"));
+                    ((LivingEntity) ef).setHealth(Math.min(((LivingEntity) ef).getMaxHealth(), ((LivingEntity) ef).getHealth() + 500.0));
+                    ef.sendMessage(Sputnik.trans("&a&lBUFF! &fYou were splashed with &cHealing V&f!"));
                 }
             }
         }
     }
-    
+
     @EventHandler
     public void onPlayerInteract(final PlayerInteractEvent e) {
         if (e.getAction() != Action.RIGHT_CLICK_AIR) {
@@ -218,7 +224,7 @@ public class ItemListener extends PListener
                 if (p == e.getPlayer()) {
                     continue;
                 }
-                ((CraftPlayer)p).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)e.getPlayer()).getHandle(), 0));
+                ((CraftPlayer) p).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) e.getPlayer()).getHandle(), 0));
             }
         }
         if (!SItem.isSpecItem(e.getItem())) {
@@ -241,11 +247,12 @@ public class ItemListener extends PListener
         final Action action = e.getAction();
         if (sItem.getType().getStatistics().getSpecificType() == SpecificItemType.HELMET && action == Action.RIGHT_CLICK_AIR && isAir(e.getPlayer().getInventory().getHelmet())) {
             e.getPlayer().getInventory().setHelmet(sItem.getStack());
-            e.getPlayer().setItemInHand((ItemStack)null);
+            e.getPlayer().setItemInHand(null);
         }
         final Player player = e.getPlayer();
         final Ability ability = sItem.getType().getAbility();
-        Label_0409: {
+        Label_0409:
+        {
             if (ability != null) {
                 final AbilityActivation activation = ability.getAbilityActivation();
                 if (activation == AbilityActivation.LEFT_CLICK || activation == AbilityActivation.RIGHT_CLICK) {
@@ -255,16 +262,14 @@ public class ItemListener extends PListener
                                 break Label_0409;
                             }
                         }
-                    }
-                    else if (action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK) {
+                    } else if (action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK) {
                         break Label_0409;
                     }
                     if (sItem.getDataString("etherwarp_trans").equals("true")) {
                         if (!player.isSneaking()) {
                             PlayerUtils.useAbility(player, sItem);
                         }
-                    }
-                    else {
+                    } else {
                         PlayerUtils.useAbility(player, sItem);
                     }
                 }
@@ -275,7 +280,7 @@ public class ItemListener extends PListener
             function.onInteraction(e);
         }
     }
-    
+
     @EventHandler
     public void onPlayerMage(final PlayerInteractEvent e) {
         final Player player = e.getPlayer();
@@ -297,11 +302,11 @@ public class ItemListener extends PListener
             final MaterialStatistics statistics = material.getStatistics();
             final SpecificItemType type = statistics.getSpecificType();
             if (type.getName().contains("SWORD")) {
-                final Location blockLocation = player.getTargetBlock((Set)null, 30).getLocation();
+                final Location blockLocation = player.getTargetBlock((Set) null, 30).getLocation();
                 final Location crystalLocation = player.getEyeLocation();
                 final Vector vector = blockLocation.clone().add(0.1, 0.0, 0.1).toVector().subtract(crystalLocation.clone().toVector());
                 final double count = 25.0;
-                for (int i = 1; i <= (int)count; ++i) {
+                for (int i = 1; i <= (int) count; ++i) {
                     for (final Entity entity : player.getWorld().getNearbyEntities(crystalLocation.clone().add(vector.clone().multiply(i / count)), 0.5, 0.0, 0.5)) {
                         if (ACT == "false") {
                             return;
@@ -358,12 +363,12 @@ public class ItemListener extends PListener
                                 critDamage += level * 10 / 100.0;
                             }
                         }
-                        final PlayerBoostStatistics playerBoostStatistics = (PlayerBoostStatistics)material.getStatistics();
+                        final PlayerBoostStatistics playerBoostStatistics = (PlayerBoostStatistics) material.getStatistics();
                         final double baseDamage = (5 + playerBoostStatistics.getBaseDamage() + statistics2.getStrength().addAll() / 5.0) * (1.0 + statistics2.getStrength().addAll() / 100.0);
                         final int combatLevel = Skill.getLevel(User.getUser(player.getUniqueId()).getCombatXP(), false);
                         final double weaponBonus = 0.0;
                         final double armorBonus = 1.0;
-                        final int critChanceMul = (int)(statistics2.getCritChance().addAll() * 100.0);
+                        final int critChanceMul = (int) (statistics2.getCritChance().addAll() * 100.0);
                         final int chance = SUtil.random(0, 100);
                         if (chance > critChanceMul) {
                             critDamage = 0.0;
@@ -388,23 +393,22 @@ public class ItemListener extends PListener
                             finalDamage *= 2.0;
                             EdibleMace.edibleMace.put(player.getUniqueId(), false);
                         }
-                        final ArmorStand stand3 = (ArmorStand)new SEntity(entity.getLocation().clone().add(SUtil.random(-1.5, 1.5), 1.0, SUtil.random(-1.5, 1.5)), SEntityType.UNCOLLIDABLE_ARMOR_STAND).getEntity();
+                        final ArmorStand stand3 = (ArmorStand) new SEntity(entity.getLocation().clone().add(SUtil.random(-1.5, 1.5), 1.0, SUtil.random(-1.5, 1.5)), SEntityType.UNCOLLIDABLE_ARMOR_STAND).getEntity();
                         if (finalCritDamage == 0.0) {
-                            stand3.setCustomName("" + ChatColor.GRAY + (int)finalDamage);
-                        }
-                        else {
-                            stand3.setCustomName(SUtil.rainbowize("✧" + (int)finalDamage + "✧"));
+                            stand3.setCustomName("" + ChatColor.GRAY + (int) finalDamage);
+                        } else {
+                            stand3.setCustomName(SUtil.rainbowize("✧" + (int) finalDamage + "✧"));
                         }
                         stand3.setCustomNameVisible(true);
                         stand3.setGravity(false);
                         stand3.setVisible(false);
-                        user.damageEntity((Damageable)entity, finalDamage);
+                        user.damageEntity((Damageable) entity, finalDamage);
                         new BukkitRunnable() {
                             public void run() {
                                 stand3.remove();
                                 this.cancel();
                             }
-                        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 30L);
+                        }.runTaskLater(SkySimEngine.getPlugin(), 30L);
                         ACT = "false";
                     }
                     player.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply(i / count)), Effect.FIREWORKS_SPARK, 24, 1, 0.0f, 0.0f, 0.0f, 1.0f, 0, 64);
@@ -412,13 +416,13 @@ public class ItemListener extends PListener
             }
         }
     }
-    
+
     @EventHandler
     public void onInventoryClose(final InventoryCloseEvent e) {
         if (!(e.getPlayer() instanceof Player)) {
             return;
         }
-        final Player player = (Player)e.getPlayer();
+        final Player player = (Player) e.getPlayer();
         final Inventory storage = Storage.getCurrentStorageOpened(player);
         if (storage == null) {
             return;
@@ -435,20 +439,18 @@ public class ItemListener extends PListener
                 final SItem equiv = SItem.of(inventory.getItem(i));
                 if (equiv != null) {
                     storageData.setByteArray(String.valueOf(i), SUtil.gzipCompress(equiv.toCompound().toString().getBytes()));
-                }
-                else {
+                } else {
                     storageData.remove(String.valueOf(i));
                 }
-            }
-            else {
+            } else {
                 storageData.setByteArray(String.valueOf(i), SUtil.gzipCompress(sItem.toCompound().toString().getBytes()));
             }
         }
-        hand.getData().set("storage_data", (NBTBase)storageData);
+        hand.getData().set("storage_data", storageData);
         hand.update();
         Storage.closeCurrentStorage(player);
     }
-    
+
     @EventHandler
     public void onPlayerFlight(final PlayerToggleFlightEvent e) {
         final Player player = e.getPlayer();
@@ -467,7 +469,7 @@ public class ItemListener extends PListener
             }
         }
     }
-    
+
     @EventHandler
     public void onPlayerSneak(final PlayerToggleSneakEvent e) {
         final Player player = e.getPlayer();
@@ -482,7 +484,7 @@ public class ItemListener extends PListener
             }
         }
     }
-    
+
     @EventHandler
     public void onInventoryClick(final InventoryClickEvent e) {
         if (e.getView().getTopInventory().getType() != InventoryType.CRAFTING) {
@@ -509,11 +511,11 @@ public class ItemListener extends PListener
         if (sItem == null) {
             sItem = SItem.of(current);
         }
-        updateStatistics((Player)e.getWhoClicked());
+        updateStatistics((Player) e.getWhoClicked());
         if (sItem.getType().getStatistics().getSpecificType() == null || sItem.getType().getStatistics().getSpecificType() != SpecificItemType.HELMET) {
             return;
         }
-        final PlayerInventory playerInventory = (PlayerInventory)inventory;
+        final PlayerInventory playerInventory = (PlayerInventory) inventory;
         if (!isAir(playerInventory.getHelmet())) {
             return;
         }
@@ -521,33 +523,33 @@ public class ItemListener extends PListener
         e.setCurrentItem(new ItemStack(Material.AIR));
         playerInventory.setHelmet(current);
     }
-    
+
     @EventHandler
     public void onArmorChange(final InventoryClickEvent e) {
-        final Player player = (Player)e.getWhoClicked();
+        final Player player = (Player) e.getWhoClicked();
         if (e.getClickedInventory() == null) {
             return;
         }
         if (e.getClickedInventory().getType() != InventoryType.PLAYER && e.getClickedInventory().getType() != InventoryType.CRAFTING) {
             return;
         }
-        updateStatistics((Player)e.getWhoClicked());
+        updateStatistics((Player) e.getWhoClicked());
         player.getInventory().setHelmet(player.getInventory().getHelmet());
         player.getInventory().setChestplate(player.getInventory().getChestplate());
         player.getInventory().setLeggings(player.getInventory().getLeggings());
         player.getInventory().setBoots(player.getInventory().getBoots());
     }
-    
+
     @EventHandler
     public void onArmorChange1(final InventoryCloseEvent e) {
-        final Player player = (Player)e.getPlayer();
+        final Player player = (Player) e.getPlayer();
         player.getInventory().setHelmet(player.getInventory().getHelmet());
         player.getInventory().setChestplate(player.getInventory().getChestplate());
         player.getInventory().setLeggings(player.getInventory().getLeggings());
         player.getInventory().setBoots(player.getInventory().getBoots());
         updateStatistics(player);
     }
-    
+
     @EventHandler
     public void onArmorChange2(PlayerJoinEvent e) {
         Player player = e.getPlayer();
@@ -560,11 +562,11 @@ public class ItemListener extends PListener
         }
         TickingMaterial tickingMaterial = helmet1.getType().getTickingInstance();
         if (tickingMaterial != null) {
-            statistics.tickItem(39, tickingMaterial.getInterval(), () -> tickingMaterial.tick(helmet1, Bukkit.getPlayer((UUID)statistics.getUuid())));
+            statistics.tickItem(39, tickingMaterial.getInterval(), () -> tickingMaterial.tick(helmet1, Bukkit.getPlayer(statistics.getUuid())));
         }
         updateStatistics(player);
     }
-    
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onItemClick(final InventoryClickEvent e) {
         final ItemStack stack = e.getCurrentItem();
@@ -580,7 +582,7 @@ public class ItemListener extends PListener
         }
         sItem.getType().getFunction().onInventoryClick(sItem, e);
     }
-    
+
     @EventHandler
     public void onItemMove(final InventoryClickEvent e) {
         if (e.getClickedInventory() == null) {
@@ -594,7 +596,7 @@ public class ItemListener extends PListener
         }
         e.setCancelled(true);
     }
-    
+
     @EventHandler
     public void onBlockPlace(final BlockPlaceEvent e) {
         final SItem sItem = SItem.find(e.getItemInHand());
@@ -604,19 +606,18 @@ public class ItemListener extends PListener
         if (sItem.getType().getStatistics().getSpecificType() == SpecificItemType.HELMET && isAir(e.getPlayer().getInventory().getHelmet())) {
             e.setCancelled(true);
             e.getPlayer().getInventory().setHelmet(sItem.getStack());
-            e.getPlayer().setItemInHand((ItemStack)null);
+            e.getPlayer().setItemInHand(null);
             return;
         }
         if (!sItem.getType().isCraft()) {
             if (sItem.getType().getStatistics().getType() != GenericItemType.BLOCK) {
                 e.setCancelled(true);
-            }
-            else {
+            } else {
                 new SBlock(e.getBlockPlaced().getLocation(), sItem.getType(), sItem.getData()).save();
             }
         }
     }
-    
+
     @EventHandler
     public void onFrameInteract(final PlayerInteractEvent e) {
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK) {
@@ -648,9 +649,9 @@ public class ItemListener extends PListener
             if (item.getType() != SMaterial.SUMMONING_EYE) {
                 return;
             }
-            block.setMetadata("placer", (MetadataValue)new FixedMetadataValue((Plugin)this.plugin, (Object)player.getUniqueId()));
+            block.setMetadata("placer", new FixedMetadataValue(this.plugin, player.getUniqueId()));
             final BlockState state = block.getState();
-            state.setRawData((byte)4);
+            state.setRawData((byte) 4);
             state.update();
             player.getInventory().setItemInHand(SItem.of(SMaterial.SLEEPING_EYE).getStack());
             final List<Location> locations = StaticDragonManager.EYES.containsKey(player.getUniqueId()) ? StaticDragonManager.EYES.get(player.getUniqueId()) : new ArrayList<Location>();
@@ -674,7 +675,7 @@ public class ItemListener extends PListener
                 for (final Location location : ls2) {
                     final Block b = location.getBlock();
                     final List<MetadataValue> values = b.getMetadata("placer");
-                    final Player p2 = Bukkit.getPlayer((UUID)values.get(0).value());
+                    final Player p2 = Bukkit.getPlayer((UUID) values.get(0).value());
                     if (p2 == null) {
                         continue;
                     }
@@ -700,7 +701,7 @@ public class ItemListener extends PListener
                 public void run() {
                     block.getWorld().playSound(block.getLocation(), Sound.ENDERDRAGON_DEATH, 50.0f, -2.0f);
                 }
-            }.runTaskLater((Plugin)this.plugin, 90L);
+            }.runTaskLater(this.plugin, 90L);
             new BukkitRunnable() {
                 public void run() {
                     for (int i = 0; i < 3; ++i) {
@@ -752,11 +753,10 @@ public class ItemListener extends PListener
                         }
                     }
                 }
-            }.runTaskLater((Plugin)this.plugin, 180L);
-        }
-        else {
+            }.runTaskLater(this.plugin, 180L);
+        } else {
             final List<MetadataValue> values2 = block.getMetadata("placer");
-            final Player p3 = Bukkit.getPlayer((UUID)values2.get(0).value());
+            final Player p3 = Bukkit.getPlayer((UUID) values2.get(0).value());
             if (p3 == null) {
                 return;
             }
@@ -771,16 +771,16 @@ public class ItemListener extends PListener
                 player.sendMessage(ChatColor.RED + "You cannot recover Summoning Eyes after the dragon has been summoned!");
                 return;
             }
-            block.removeMetadata("placer", (Plugin)this.plugin);
+            block.removeMetadata("placer", this.plugin);
             final BlockState state2 = block.getState();
-            state2.setRawData((byte)0);
+            state2.setRawData((byte) 0);
             state2.update();
             player.getInventory().setItemInHand(SItem.of(SMaterial.SUMMONING_EYE).getStack());
             StaticDragonManager.EYES.get(p3.getUniqueId()).remove(block.getLocation());
             player.sendMessage(ChatColor.DARK_PURPLE + "You recovered a Summoning Eye!");
         }
     }
-    
+
     @EventHandler
     public void onItemPickup(final PlayerPickupItemEvent e) {
         final Item item = e.getItem();
@@ -811,8 +811,7 @@ public class ItemListener extends PListener
                 if (p.getWorld().getName().equals("dragon")) {
                     if (!sItem.getFullName().equals("§6Ender Dragon") && !sItem.getFullName().equals("§5Ender Dragon")) {
                         p.sendMessage(ChatColor.GREEN + player.getName() + ChatColor.YELLOW + " has obtained " + sItem.getFullName() + ChatColor.YELLOW + "!");
-                    }
-                    else {
+                    } else {
                         p.sendMessage(ChatColor.GREEN + player.getName() + ChatColor.YELLOW + " has obtained " + ChatColor.GRAY + "[Lvl 1] " + sItem.getFullName() + ChatColor.YELLOW + "!");
                     }
                 }
@@ -832,7 +831,7 @@ public class ItemListener extends PListener
             }
         }
     }
-    
+
     @EventHandler
     public void onItemDrop(final PlayerDropItemEvent e) {
         final SItem sItem = SItem.find(e.getItemDrop().getItemStack());
@@ -841,7 +840,7 @@ public class ItemListener extends PListener
         }
         updateStatistics(e.getPlayer());
     }
-    
+
     @EventHandler
     public void onItemMove(final PlayerDropItemEvent e) {
         final SItem sItem = SItem.find(e.getItemDrop().getItemStack());
@@ -850,7 +849,7 @@ public class ItemListener extends PListener
         }
         updateStatistics(e.getPlayer());
     }
-    
+
     @EventHandler
     public void onItemDrop1(final PlayerDropItemEvent e) {
         final SItem sItem = SItem.find(e.getItemDrop().getItemStack());
@@ -858,7 +857,7 @@ public class ItemListener extends PListener
             e.setCancelled(true);
         }
     }
-    
+
     @EventHandler
     public void onItemMove1(final PlayerDropItemEvent e) {
         final SItem sItem = SItem.find(e.getItemDrop().getItemStack());
@@ -866,23 +865,23 @@ public class ItemListener extends PListener
             e.setCancelled(true);
         }
     }
-    
+
     @EventHandler
     public void onFishingRodReel(final PlayerFishEvent e) {
         final SItem rod = SItem.find(e.getPlayer().getItemInHand());
         if (rod == null) {
             return;
         }
-        e.getHook().setMetadata("owner", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)e.getPlayer()));
+        e.getHook().setMetadata("owner", new FixedMetadataValue(SkySimEngine.getPlugin(), e.getPlayer()));
         final MaterialFunction function = rod.getType().getFunction();
         if (function == null) {
             return;
         }
         if (function instanceof FishingRodFunction) {
-            ((FishingRodFunction)function).onFish(rod, e);
+            ((FishingRodFunction) function).onFish(rod, e);
         }
     }
-    
+
     @EventHandler
     public void onPotionSplash(final PotionSplashEvent e) {
         final SItem item = SItem.find(e.getPotion().getItem());
@@ -904,9 +903,9 @@ public class ItemListener extends PListener
             for (final vn.giakhanhvn.skysim.potion.PotionEffect effect : item.getPotionEffects()) {
                 PlayerUtils.updatePotionEffects(user, PlayerUtils.STATISTICS_CACHE.get(user.getUuid()));
                 if (effect.getType().getOnDrink() != null) {
-                    effect.getType().getOnDrink().accept(effect, (Player)entity);
+                    effect.getType().getOnDrink().accept(effect, (Player) entity);
                 }
-                final long ticks = (long)(effect.getDuration() * e.getIntensity(entity));
+                final long ticks = (long) (effect.getDuration() * e.getIntensity(entity));
                 if (!user.hasPotionEffect(effect.getType()) || (user.hasPotionEffect(effect.getType()) && ticks > user.getPotionEffect(effect.getType()).getRemaining())) {
                     user.removePotionEffect(effect.getType());
                     user.addPotionEffect(new vn.giakhanhvn.skysim.potion.PotionEffect(effect.getType(), effect.getLevel(), ticks));
@@ -915,7 +914,7 @@ public class ItemListener extends PListener
             }
         }
     }
-    
+
     public static void updateStatistics(final Player player) {
         final PlayerInventory inv = player.getInventory();
         final ItemStack beforeHelmet = inv.getHelmet();
@@ -953,9 +952,9 @@ public class ItemListener extends PListener
                 User.getUser(player.getUniqueId()).updateArmorInventory();
                 ItemListener.checkCondition(player);
             }
-        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 1L);
+        }.runTaskLater(SkySimEngine.getPlugin(), 1L);
     }
-    
+
     public static void checkCondition(final Player p) {
         final SItem helm = SItem.find(p.getInventory().getHelmet());
         final SItem chest = SItem.find(p.getInventory().getChestplate());
@@ -968,21 +967,14 @@ public class ItemListener extends PListener
                         final Witherborn w = new Witherborn(p);
                         w.spawnWither();
                     }
-                }
-                else if (!Witherborn.WITHER_MAP.containsKey(p.getUniqueId())) {
+                } else if (!Witherborn.WITHER_MAP.containsKey(p.getUniqueId())) {
                     final Witherborn w = new Witherborn(p);
                     w.spawnWither();
                 }
-            }
-            else if (Witherborn.WITHER_MAP.containsKey(p.getUniqueId())) {
-                Witherborn.WITHER_MAP.remove(p.getUniqueId());
-            }
-        }
-        else if (Witherborn.WITHER_MAP.containsKey(p.getUniqueId())) {
-            Witherborn.WITHER_MAP.remove(p.getUniqueId());
-        }
+            } else Witherborn.WITHER_MAP.remove(p.getUniqueId());
+        } else Witherborn.WITHER_MAP.remove(p.getUniqueId());
     }
-    
+
     public static void updateStatistics1(final Player player) {
         final PlayerInventory inv = player.getInventory();
         final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
@@ -1000,25 +992,25 @@ public class ItemListener extends PListener
         PlayerUtils.updateArmorStatistics(boots = SItem.find(afterBoots), statistics, 3);
         SUtil.delay(() -> PlayerUtils.updateInventoryStatistics(player, statistics), 1L);
     }
-    
+
     private static boolean similar(final ItemStack is, final ItemStack is1) {
         return (is == null && is1 == null) || ((is == null || is1 != null) && is != null && is.isSimilar(is1));
     }
-    
+
     private static boolean isAir(final ItemStack is) {
         return is == null || is.getType() == Material.AIR;
     }
-    
+
     @EventHandler
     public void aAaB(final ProjectileHitEvent enn) {
-        final Entity e = (Entity)enn.getEntity();
+        final Entity e = enn.getEntity();
         if (!(e instanceof Arrow)) {
             return;
         }
-        if (!(((Arrow)e).getShooter() instanceof Player)) {
+        if (!(((Arrow) e).getShooter() instanceof Player)) {
             return;
         }
-        final Player player = (Player)((Arrow)e).getShooter();
+        final Player player = (Player) ((Arrow) e).getShooter();
         boolean ACT = true;
         if (e.isOnGround()) {
             return;
@@ -1034,14 +1026,14 @@ public class ItemListener extends PListener
                     return;
                 }
                 ACT = false;
-                final EntityDamageByEntityEvent bl = new EntityDamageByEntityEvent((Entity)e, (Entity)enderman_1, EntityDamageEvent.DamageCause.CUSTOM, 1);
-                Bukkit.getPluginManager().callEvent((Event)bl);
-                ((LivingEntity)enderman_1).setHealth(((LivingEntity)enderman_1).getHealth() - Math.min(((LivingEntity)enderman_1).getHealth(), bl.getDamage()));
+                final EntityDamageByEntityEvent bl = new EntityDamageByEntityEvent(e, enderman_1, EntityDamageEvent.DamageCause.CUSTOM, 1);
+                Bukkit.getPluginManager().callEvent(bl);
+                ((LivingEntity) enderman_1).setHealth(((LivingEntity) enderman_1).getHealth() - Math.min(((LivingEntity) enderman_1).getHealth(), bl.getDamage()));
                 e.remove();
             }
         }
     }
-    
+
     @EventHandler
     public void changeBlock(final EntityChangeBlockEvent event) {
         final Entity fallingBlock = event.getEntity();
@@ -1063,22 +1055,19 @@ public class ItemListener extends PListener
                 if (entity.getType() == EntityType.FALLING_BLOCK && entity.hasMetadata("t")) {
                     entity.remove();
                 }
-                return;
             });
             entityList.forEach(entity -> {
                 if (entity instanceof Player) {
-                    final Player p = (Player)entity;
+                    final Player p = (Player) entity;
                     JollyPinkGiant.damagePlayer(p);
+                } else if (entity instanceof LivingEntity && !(entity instanceof Player)) {
+                    ((LivingEntity) entity).damage(0.0);
                 }
-                else if (entity instanceof LivingEntity && !(entity instanceof Player)) {
-                    ((LivingEntity)entity).damage(0.0);
-                }
-                return;
             });
             fallingBlock.remove();
         }
     }
-    
+
     @EventHandler
     public void changeBlockF1(final EntityChangeBlockEvent event) {
         final Entity fallingBlock = event.getEntity();
@@ -1100,29 +1089,26 @@ public class ItemListener extends PListener
                 if (entity.getType() == EntityType.FALLING_BLOCK && entity.hasMetadata("f")) {
                     entity.remove();
                 }
-                return;
             });
             entityList.forEach(entity -> {
                 if (entity instanceof Player) {
-                    final Player p = (Player)entity;
+                    final Player p = (Player) entity;
                     SadanGiant.damagePlayer(p);
+                } else if (entity instanceof LivingEntity && !(entity instanceof Player)) {
+                    ((LivingEntity) entity).damage(0.0);
                 }
-                else if (entity instanceof LivingEntity && !(entity instanceof Player)) {
-                    ((LivingEntity)entity).damage(0.0);
-                }
-                return;
             });
             fallingBlock.remove();
         }
     }
-    
+
     @EventHandler
     public void onentityded(final EntityDeathEvent e) {
         if (e.getEntity().getWorld().getName().contains("f6")) {
             e.setDroppedExp(0);
         }
     }
-    
+
     static {
         Classes = new HashMap<Player, String>();
         IsDead = new HashMap<Player, Boolean>();

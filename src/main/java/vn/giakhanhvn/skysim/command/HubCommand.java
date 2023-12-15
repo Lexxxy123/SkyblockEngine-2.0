@@ -1,18 +1,19 @@
 package vn.giakhanhvn.skysim.command;
 
 import java.util.HashMap;
+
 import org.bukkit.Location;
 import org.bukkit.Bukkit;
 import vn.giakhanhvn.skysim.util.Sputnik;
 import vn.giakhanhvn.skysim.region.RegionGenerator;
 import org.bukkit.command.CommandSender;
+
 import java.util.Map;
 
 @CommandParameters(description = "Manage world regions.", usage = "", aliases = "hub")
-public class HubCommand extends SCommand
-{
+public class HubCommand extends SCommand {
     public static Map<CommandSender, RegionGenerator> REGION_GENERATION_MAP;
-    
+
     @Override
     public void run(final CommandSource sender, final String[] args) {
         this.send(Sputnik.trans("&7Sending you to the Hub..."));
@@ -21,7 +22,7 @@ public class HubCommand extends SCommand
             sender.getPlayer().teleport(l);
         }
     }
-    
+
     static {
         HubCommand.REGION_GENERATION_MAP = new HashMap<CommandSender, RegionGenerator>();
     }

@@ -2,6 +2,7 @@ package vn.giakhanhvn.skysim.command;
 
 import java.util.HashMap;
 import java.util.Iterator;
+
 import org.bukkit.plugin.Plugin;
 import vn.giakhanhvn.skysim.SkySimEngine;
 import vn.giakhanhvn.skysim.util.SUtil;
@@ -13,13 +14,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.Bukkit;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Server;
+
 import java.util.Map;
 
 @CommandParameters(description = "Spec test command.", aliases = "rebootserver")
-public class RebootServerCommand extends SCommand
-{
+public class RebootServerCommand extends SCommand {
     public static Map<Server, Integer> secondMap;
-    
+
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (sender.getPlayer() != null) {
@@ -32,15 +33,13 @@ public class RebootServerCommand extends SCommand
         }
         String reasonraw = "";
         if (args[0].contains("time")) {
-            Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), "ptitle2");
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ptitle2");
             reasonraw = "Scheduled Reboot";
-        }
-        else if (args[0].contains("update")) {
-            Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), "ptitle1");
+        } else if (args[0].contains("update")) {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ptitle1");
             reasonraw = "For a game update";
-        }
-        else {
-            Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), "ptitle3");
+        } else {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ptitle3");
             reasonraw = "Unknown Reason!";
         }
         for (final Player p : Bukkit.getOnlinePlayers()) {
@@ -56,34 +55,33 @@ public class RebootServerCommand extends SCommand
                 if (RebootServerCommand.secondMap.get(Bukkit.getServer()) <= 5 && RebootServerCommand.secondMap.get(Bukkit.getServer()) > 0) {
                     Bukkit.broadcastMessage(Sputnik.trans("&c[Important] &eThe server will restart soon: &b" + reason));
                     Bukkit.broadcastMessage(Sputnik.trans("&eServer closing down in &c" + RebootServerCommand.secondMap.get(Bukkit.getServer()) + " &eseconds"));
-                }
-                else if (RebootServerCommand.secondMap.get(Bukkit.getServer()) <= 0) {
+                } else if (RebootServerCommand.secondMap.get(Bukkit.getServer()) <= 0) {
                     Bukkit.broadcastMessage(Sputnik.trans("&c[Important] &eThe server will restart soon: &b" + reason));
                     Bukkit.broadcastMessage(Sputnik.trans("&eServer is &cshutting down&e!"));
                     this.cancel();
                     SUtil.delay(() -> {
                         Bukkit.broadcastMessage(Sputnik.trans("&7Saving..."));
-                        Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), "fsd");
-                        Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), "kickall &cThe Server is restarting!");
-                        Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), "stop");
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "fsd");
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "kickall &cThe Server is restarting!");
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "stop");
                     }, 10L);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 20L, 20L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 20L, 20L);
     }
-    
+
     public static boolean isPrimeNumber(final int n) {
         if (n < 2) {
             return false;
         }
-        for (int squareRoot = (int)Math.sqrt(n), i = 2; i <= squareRoot; ++i) {
+        for (int squareRoot = (int) Math.sqrt(n), i = 2; i <= squareRoot; ++i) {
             if (n % i == 0) {
                 return false;
             }
         }
         return true;
     }
-    
+
     static {
         RebootServerCommand.secondMap = new HashMap<Server, Integer>();
     }

@@ -10,43 +10,42 @@ import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.item.Rarity;
 import org.bukkit.ChatColor;
 
-public class PlasmafluxPowerOrb extends PowerOrb
-{
+public class PlasmafluxPowerOrb extends PowerOrb {
     @Override
     public String getAbilityDescription() {
         return "Place an orb for " + ChatColor.GREEN + "60s " + ChatColor.GRAY + "buffing up to " + ChatColor.AQUA + "5 " + ChatColor.GRAY + "players within " + ChatColor.GREEN + "18 " + ChatColor.GRAY + "blocks. " + ChatColor.DARK_GRAY + "Costs " + ChatColor.DARK_GRAY + "50% of max mana. " + ChatColor.DARK_GRAY + "Only " + ChatColor.DARK_GRAY + "one orb applies per player.";
     }
-    
+
     @Override
     public String getURL() {
         return "83ed4ce23933e66e04df16070644f7599eeb55307f7eafe8d92f40fb3520863c";
     }
-    
+
     @Override
     public String getDisplayName() {
         return "Plasmaflux Power Orb";
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.LEGENDARY;
     }
-    
+
     @Override
     public String getBuffName() {
         return "Plasmaflux";
     }
-    
+
     @Override
     public String getBuffDescription() {
         return "Grants " + ChatColor.AQUA + "+125% " + ChatColor.GRAY + "base mana regen. Heals " + ChatColor.RED + "3% " + ChatColor.GRAY + "of max " + ChatColor.RED + "❤ " + ChatColor.GRAY + "per second. Increases all heals by " + ChatColor.GREEN + "7%" + ChatColor.GRAY + ". Grants " + ChatColor.RED + "+35 " + ChatColor.RED + "❁ Strength";
     }
-    
+
     @Override
     public String getCustomOrbName() {
         return "" + ChatColor.LIGHT_PURPLE + ChatColor.BOLD + "Plasmaflux";
     }
-    
+
     @Override
     protected void buff(final Player player) {
         player.setHealth(Math.min(player.getMaxHealth(), player.getHealth() + player.getMaxHealth() * 0.03));
@@ -56,17 +55,17 @@ public class PlasmafluxPowerOrb extends PowerOrb
             public String getDisplayName() {
                 return null;
             }
-            
+
             @Override
             public Rarity getRarity() {
                 return null;
             }
-            
+
             @Override
             public GenericItemType getType() {
                 return null;
             }
-            
+
             @Override
             public double getBaseStrength() {
                 return 35.0;
@@ -77,17 +76,17 @@ public class PlasmafluxPowerOrb extends PowerOrb
             statistics.boostHealthRegeneration(0.075, 20L);
         }
     }
-    
+
     @Override
     protected long getOrbLifeTicks() {
         return 1200L;
     }
-    
+
     @Override
     public boolean isStackable() {
         return false;
     }
-    
+
     @Override
     protected void playEffect(final Location location) {
         location.getWorld().spigot().playEffect(location, Effect.COLOURED_DUST, 0, 1, 0.28235295f, 0.007843138f, 0.4f, 1.0f, 0, 64);

@@ -1,5 +1,4 @@
 package vn.giakhanhvn.skysim.user;
 
-public class UserStorage
-{
+public class UserStorage {
 }

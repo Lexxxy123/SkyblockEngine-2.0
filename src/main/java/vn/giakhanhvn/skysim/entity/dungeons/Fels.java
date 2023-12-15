@@ -10,35 +10,34 @@ import vn.giakhanhvn.skysim.entity.SEntity;
 import org.bukkit.entity.LivingEntity;
 import vn.giakhanhvn.skysim.entity.end.BaseEnderman;
 
-public class Fels extends BaseEnderman
-{
+public class Fels extends BaseEnderman {
     @Override
     public String getEntityName() {
         return "Fels";
     }
-    
+
     @Override
     public double getEntityMaxHealth() {
         return 1.0E8;
     }
-    
+
     @Override
     public double getDamageDealt() {
         return 1400000.0;
     }
-    
+
     @Override
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
-        entity.setMetadata("upsidedown", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 60);
+        entity.setMetadata("upsidedown", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        EntityManager.DEFENSE_PERCENTAGE.put(entity, 60);
     }
-    
+
     @Override
     public double getXPDropped() {
         return 320.0;
     }
-    
+
     @Override
     public int mobLevel() {
         return 0;

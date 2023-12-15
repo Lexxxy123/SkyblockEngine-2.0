@@ -1,14 +1,14 @@
 package vn.giakhanhvn.skysim.command;
 
 import java.util.Iterator;
+
 import org.bukkit.ChatColor;
 import vn.giakhanhvn.skysim.util.SUtil;
 import vn.giakhanhvn.skysim.potion.ActivePotionEffect;
 import org.bukkit.command.ConsoleCommandSender;
 
 @CommandParameters(description = "Get your current active potion effects.", aliases = "effect", permission = "spt.item")
-public class SpecEffectsCommand extends SCommand
-{
+public class SpecEffectsCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (args.length > 1) {

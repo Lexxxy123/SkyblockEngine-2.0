@@ -3,22 +3,25 @@ package vn.giakhanhvn.skysim.sidebar;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
+
 import java.util.ArrayList;
+
 import org.bukkit.scoreboard.Score;
+
 import java.util.List;
+
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
-public class Sidebar
-{
+public class Sidebar {
     private static ScoreboardManager manager;
-    private String name;
-    private String identifier;
-    private Scoreboard board;
-    private Objective obj;
-    private List<Score> scores;
-    
+    private final String name;
+    private final String identifier;
+    private final Scoreboard board;
+    private final Objective obj;
+    private final List<Score> scores;
+
     public Sidebar(final String name, final String identifier) {
         this.name = name;
         this.identifier = identifier;
@@ -28,19 +31,19 @@ public class Sidebar
         this.obj.setDisplaySlot(DisplaySlot.SIDEBAR);
         this.obj.setDisplayName(name);
     }
-    
+
     public void add(final String s) {
         final Score score = this.obj.getScore(s);
         this.scores.add(0, score);
     }
-    
+
     public void apply(final Player player) {
         for (int i = 0; i < this.scores.size(); ++i) {
             this.scores.get(i).setScore(i);
         }
         player.setScoreboard(this.board);
     }
-    
+
     static {
         Sidebar.manager = Bukkit.getScoreboardManager();
     }

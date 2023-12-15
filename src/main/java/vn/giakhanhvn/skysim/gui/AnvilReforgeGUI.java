@@ -1,9 +1,12 @@
 package vn.giakhanhvn.skysim.gui;
 
 import java.util.List;
+
 import vn.giakhanhvn.skysim.item.GenericItemType;
 import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
+
 import java.util.Iterator;
+
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.Sound;
 import vn.giakhanhvn.skysim.skill.Skill;
@@ -21,27 +24,28 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.Material;
 import org.bukkit.ChatColor;
+
 import java.util.Arrays;
+
 import org.bukkit.inventory.ItemStack;
 
-public class AnvilReforgeGUI extends GUI implements BlockBasedGUI
-{
+public class AnvilReforgeGUI extends GUI implements BlockBasedGUI {
     private static final ItemStack ANVIL_BARRIER;
     private static final ItemStack DEFAULT_COMBINE_ITEMS;
     private static final String CANNOT_COMBINE;
     private boolean isApplied;
-    
+
     public AnvilReforgeGUI() {
         super("Reforge Anvil", 54);
         this.isApplied = false;
         this.fill(AnvilReforgeGUI.BLACK_STAINED_GLASS_PANE);
         this.fill(AnvilReforgeGUI.RED_STAINED_GLASS_PANE, 45, 53);
         this.set(GUIClickableItem.getCloseItem(49));
-        for (final int i : Arrays.<Integer>asList(11, 12, 20)) {
-            this.set(i, SUtil.getSingleLoreStack(ChatColor.GOLD + "Item to Upgrade", Material.STAINED_GLASS_PANE, (short)14, 1, "The item you want to upgrade should be placed in the slot on this side."));
+        for (final int i : Arrays.asList(11, 12, 20)) {
+            this.set(i, SUtil.getSingleLoreStack(ChatColor.GOLD + "Item to Upgrade", Material.STAINED_GLASS_PANE, (short) 14, 1, "The item you want to upgrade should be placed in the slot on this side."));
         }
-        for (final int i : Arrays.<Integer>asList(14, 15, 24)) {
-            this.set(i, SUtil.getSingleLoreStack(ChatColor.GOLD + "Item to Sacrifice", Material.STAINED_GLASS_PANE, (short)14, 1, "The item you are sacrificing in order to upgrade the item on the left should be placed in the slot on this side."));
+        for (final int i : Arrays.asList(14, 15, 24)) {
+            this.set(i, SUtil.getSingleLoreStack(ChatColor.GOLD + "Item to Sacrifice", Material.STAINED_GLASS_PANE, (short) 14, 1, "The item you are sacrificing in order to upgrade the item on the left should be placed in the slot on this side."));
         }
         this.set(29, null);
         this.set(33, null);
@@ -65,19 +69,19 @@ public class AnvilReforgeGUI extends GUI implements BlockBasedGUI
                     public void run() {
                         inventory.setItem(e.getSlot(), AnvilReforgeGUI.ANVIL_BARRIER);
                     }
-                }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 1L);
+                }.runTaskLater(SkySimEngine.getPlugin(), 1L);
             }
-            
+
             @Override
             public int getSlot() {
                 return 13;
             }
-            
+
             @Override
             public boolean canPickup() {
                 return true;
             }
-            
+
             @Override
             public ItemStack getItem() {
                 return AnvilReforgeGUI.ANVIL_BARRIER;
@@ -105,30 +109,30 @@ public class AnvilReforgeGUI extends GUI implements BlockBasedGUI
                 }
                 if (specSacrifice.getType() == SMaterial.ENCHANTED_BOOK) {
                     for (final Enchantment enchantment : specSacrifice.getEnchantments()) {
-                        Skill.reward(EnchantingSkill.INSTANCE, enchantment.getLevel() * 2, (Player)e.getWhoClicked());
+                        Skill.reward(EnchantingSkill.INSTANCE, enchantment.getLevel() * 2, (Player) e.getWhoClicked());
                     }
                 }
                 inventory.setItem(22, AnvilReforgeGUI.DEFAULT_COMBINE_ITEMS);
                 AnvilReforgeGUI.this.isApplied = true;
                 setItemTo(true, false, inventory);
                 setItemTo(false, false, inventory);
-                inventory.setItem(29, (ItemStack)null);
-                inventory.setItem(33, (ItemStack)null);
+                inventory.setItem(29, null);
+                inventory.setItem(33, null);
                 entity.getWorld().playSound(entity.getLocation(), Sound.ANVIL_USE, 1.0f, 1.0f);
             }
-            
+
             @Override
             public int getSlot() {
                 return 22;
             }
-            
+
             @Override
             public ItemStack getItem() {
                 return AnvilReforgeGUI.DEFAULT_COMBINE_ITEMS;
             }
         });
     }
-    
+
     @Override
     public void onOpen(final GUIOpenEvent e) {
         new BukkitRunnable() {
@@ -141,30 +145,29 @@ public class AnvilReforgeGUI extends GUI implements BlockBasedGUI
                 final Inventory inventory = e.getInventory();
                 AnvilReforgeGUI.this.update(inventory);
                 if (inventory.getItem(11).getData().getData() == 14 || inventory.getItem(14).getData().getData() == 14) {
-                    SUtil.border(inventory, AnvilReforgeGUI.this, SUtil.createColoredStainedGlassPane((short)14, ChatColor.RESET + " "), 45, 48, true, false);
-                    SUtil.border(inventory, AnvilReforgeGUI.this, SUtil.createColoredStainedGlassPane((short)14, ChatColor.RESET + " "), 50, 53, true, false);
-                }
-                else {
-                    SUtil.border(inventory, AnvilReforgeGUI.this, SUtil.createColoredStainedGlassPane((short)5, ChatColor.RESET + " "), 45, 48, true, false);
-                    SUtil.border(inventory, AnvilReforgeGUI.this, SUtil.createColoredStainedGlassPane((short)5, ChatColor.RESET + " "), 50, 53, true, false);
+                    SUtil.border(inventory, AnvilReforgeGUI.this, SUtil.createColoredStainedGlassPane((short) 14, ChatColor.RESET + " "), 45, 48, true, false);
+                    SUtil.border(inventory, AnvilReforgeGUI.this, SUtil.createColoredStainedGlassPane((short) 14, ChatColor.RESET + " "), 50, 53, true, false);
+                } else {
+                    SUtil.border(inventory, AnvilReforgeGUI.this, SUtil.createColoredStainedGlassPane((short) 5, ChatColor.RESET + " "), 45, 48, true, false);
+                    SUtil.border(inventory, AnvilReforgeGUI.this, SUtil.createColoredStainedGlassPane((short) 5, ChatColor.RESET + " "), 50, 53, true, false);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 5L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 5L);
     }
-    
+
     @Override
     public void update(final Inventory inventory) {
         new BukkitRunnable() {
             public void run() {
                 if (inventory.getItem(13) == null) {
-                    inventory.setItem(13, SUtil.getStack(ChatColor.RED + "Loading...", Material.BARRIER, (short)0, 1, ChatColor.GRAY + "If this appear for too long", ChatColor.GRAY + "contact admins!"));
+                    inventory.setItem(13, SUtil.getStack(ChatColor.RED + "Loading...", Material.BARRIER, (short) 0, 1, ChatColor.GRAY + "If this appear for too long", ChatColor.GRAY + "contact admins!"));
                 }
                 if (inventory.getItem(29) == null && inventory.getItem(33) == null && inventory.getItem(13).getType() == Material.BARRIER && AnvilReforgeGUI.this.isApplied) {
                     AnvilReforgeGUI.this.isApplied = false;
                 }
                 if ((inventory.getItem(29) != null || inventory.getItem(33) != null) && AnvilReforgeGUI.this.isApplied) {
-                    Sputnik.smartGiveItem(inventory.getItem(13), (Player)inventory.getViewers().get(0));
-                    inventory.setItem(13, SUtil.getStack((Object)ChatColor.RED + "Loading...", Material.BARRIER, (short)0, 1, (Object)ChatColor.GRAY + "If this appear for too long", (Object)ChatColor.GRAY + "contact admins!"));
+                    Sputnik.smartGiveItem(inventory.getItem(13), (Player) inventory.getViewers().get(0));
+                    inventory.setItem(13, SUtil.getStack(ChatColor.RED + "Loading...", Material.BARRIER, (short) 0, 1, ChatColor.GRAY + "If this appear for too long", ChatColor.GRAY + "contact admins!"));
                     AnvilReforgeGUI.this.isApplied = false;
                 }
                 final ItemStack select = inventory.getItem(13);
@@ -192,11 +195,9 @@ public class AnvilReforgeGUI extends GUI implements BlockBasedGUI
                 if (specSacrifice != null) {
                     if (SUtil.isEnchantable(specSacrifice)) {
                         sacrificeGreen = true;
-                    }
-                    else if (specSacrifice.getType() == SMaterial.HOT_POTATO_BOOK) {
+                    } else if (specSacrifice.getType() == SMaterial.HOT_POTATO_BOOK) {
                         sacrificeGreen = true;
-                    }
-                    else if (specSacrifice.getType().toString().contains("HIDDEN_ETHERWARP")) {
+                    } else if (specSacrifice.getType().toString().contains("HIDDEN_ETHERWARP")) {
                         sacrificeGreen = true;
                     }
                 }
@@ -273,15 +274,12 @@ public class AnvilReforgeGUI extends GUI implements BlockBasedGUI
                             display.removeEnchantment(enchantment2.getType());
                             if (enchantment2.getType() == EnchantmentType.ONE_FOR_ALL || enchantment2.getType() == EnchantmentType.TELEKINESIS) {
                                 display.addEnchantment(enchantment2.getType(), enchantment2.getLevel());
-                            }
-                            else if (enchantment2.getLevel() < 5) {
+                            } else if (enchantment2.getLevel() < 5) {
                                 display.addEnchantment(enchantment2.getType(), enchantment2.getLevel() + 1);
-                            }
-                            else {
+                            } else {
                                 display.addEnchantment(enchantment2.getType(), enchantment2.getLevel());
                             }
-                        }
-                        else {
+                        } else {
                             display.addEnchantment(enchantment2.getType(), enchantment2.getLevel());
                         }
                     }
@@ -308,40 +306,37 @@ public class AnvilReforgeGUI extends GUI implements BlockBasedGUI
                             }
                         }
                     }
-                }
-                else if (specSacrifice.getType() == SMaterial.HOT_POTATO_BOOK) {
+                } else if (specSacrifice.getType() == SMaterial.HOT_POTATO_BOOK) {
                     display.setDataInt("hpb", display.getDataInt("hpb") + 1);
-                }
-                else if (specUpgrade.getType() == SMaterial.HIDDEN_ETHERWARP_CONDUIT && specSacrifice.getType() == SMaterial.HIDDEN_ETHERWARP_MERGER) {
+                } else if (specUpgrade.getType() == SMaterial.HIDDEN_ETHERWARP_CONDUIT && specSacrifice.getType() == SMaterial.HIDDEN_ETHERWARP_MERGER) {
                     display = SItem.of(SMaterial.HIDDEN_ETHERWARP_TRANSCODER);
-                }
-                else if ((specUpgrade.getType() == SMaterial.ASPECT_OF_THE_VOID || specUpgrade.getType() == SMaterial.ASPECT_OF_THE_END) && specSacrifice.getType() == SMaterial.HIDDEN_ETHERWARP_TRANSCODER) {
+                } else if ((specUpgrade.getType() == SMaterial.ASPECT_OF_THE_VOID || specUpgrade.getType() == SMaterial.ASPECT_OF_THE_END) && specSacrifice.getType() == SMaterial.HIDDEN_ETHERWARP_TRANSCODER) {
                     display.setDataString("etherwarp_trans", "true");
                 }
                 inventory.setItem(13, display.getStack());
                 inventory.setItem(22, getCombineItemsForXP(0));
             }
-        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 0L);
+        }.runTaskLater(SkySimEngine.getPlugin(), 0L);
     }
-    
+
     @Override
     public Material getBlock() {
         return Material.ANVIL;
     }
-    
+
     private static void setItemTo(final boolean upgrade, final boolean green, final Inventory inventory) {
-        for (final int i : upgrade ? Arrays.<Integer>asList(11, 12, 20) : Arrays.<Integer>asList(14, 15, 24)) {
-            inventory.setItem(i, SUtil.getSingleLoreStack(ChatColor.GOLD + "Item to " + (upgrade ? "Upgrade" : "Sacrifice"), Material.STAINED_GLASS_PANE, (short)(green ? 5 : 14), 1, upgrade ? "The item you want to upgrade should be placed in the slot on this side." : "The item you are sacrificing in order to upgrade the item on the left should be placed in the slot on this side."));
+        for (final int i : upgrade ? Arrays.asList(11, 12, 20) : Arrays.asList(14, 15, 24)) {
+            inventory.setItem(i, SUtil.getSingleLoreStack(ChatColor.GOLD + "Item to " + (upgrade ? "Upgrade" : "Sacrifice"), Material.STAINED_GLASS_PANE, (short) (green ? 5 : 14), 1, upgrade ? "The item you want to upgrade should be placed in the slot on this side." : "The item you are sacrificing in order to upgrade the item on the left should be placed in the slot on this side."));
         }
     }
-    
+
     private static ItemStack getCombineItemsForXP(final int levels) {
-        return SUtil.getStack(ChatColor.GREEN + "Combine Items", Material.ANVIL, (short)0, 1, ChatColor.GRAY + "Combine the items in the slots", ChatColor.GRAY + "to the left and right below.", "", ChatColor.GRAY + "Cost", ChatColor.DARK_AQUA + "" + levels + " Exp Level" + ((levels != 1) ? "s" : ""), "", ChatColor.YELLOW + "Click to combine!");
+        return SUtil.getStack(ChatColor.GREEN + "Combine Items", Material.ANVIL, (short) 0, 1, ChatColor.GRAY + "Combine the items in the slots", ChatColor.GRAY + "to the left and right below.", "", ChatColor.GRAY + "Cost", ChatColor.DARK_AQUA + "" + levels + " Exp Level" + ((levels != 1) ? "s" : ""), "", ChatColor.YELLOW + "Click to combine!");
     }
-    
+
     static {
-        ANVIL_BARRIER = SUtil.getSingleLoreStack(ChatColor.RED + "Reforge Anvil", Material.BARRIER, (short)0, 1, "Place a target item in the left slot and a sacrifice item in the right slot to combine Reforge Stones!");
-        DEFAULT_COMBINE_ITEMS = SUtil.getStack(ChatColor.GREEN + "Combine Items", Material.ANVIL, (short)0, 1, ChatColor.GRAY + "Combine the items in the slots", ChatColor.GRAY + "to the left and right below.");
+        ANVIL_BARRIER = SUtil.getSingleLoreStack(ChatColor.RED + "Reforge Anvil", Material.BARRIER, (short) 0, 1, "Place a target item in the left slot and a sacrifice item in the right slot to combine Reforge Stones!");
+        DEFAULT_COMBINE_ITEMS = SUtil.getStack(ChatColor.GREEN + "Combine Items", Material.ANVIL, (short) 0, 1, ChatColor.GRAY + "Combine the items in the slots", ChatColor.GRAY + "to the left and right below.");
         CANNOT_COMBINE = ChatColor.RED + "These items cannot be combined!";
     }
 }

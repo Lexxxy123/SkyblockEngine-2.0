@@ -1,11 +1,15 @@
 package vn.giakhanhvn.skysim.gui;
 
 import org.bukkit.inventory.meta.ItemMeta;
+
 import java.util.Map;
+
 import org.bukkit.Sound;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.event.inventory.InventoryClickEvent;
+
 import java.util.List;
+
 import vn.giakhanhvn.skysim.util.SUtil;
 import vn.giakhanhvn.skysim.user.User;
 import org.bukkit.entity.Player;
@@ -13,17 +17,16 @@ import org.bukkit.Material;
 import org.bukkit.ChatColor;
 import vn.giakhanhvn.skysim.item.SItem;
 
-public class ShopTradingOptionsGUI extends GUI
-{
+public class ShopTradingOptionsGUI extends GUI {
     private final SItem item;
     private final GUI ret;
-    
+
     public ShopTradingOptionsGUI(final SItem item, final GUI ret) {
         super("Shop Trading Options", 54);
         this.item = item;
         this.ret = ret;
     }
-    
+
     @Override
     public void onOpen(final GUIOpenEvent e) {
         final Player player = e.getPlayer();
@@ -33,10 +36,10 @@ public class ShopTradingOptionsGUI extends GUI
         this.set(createTrade(this.item, 22, 10, player));
         this.set(createTrade(this.item, 23, 32, player));
         this.set(createTrade(this.item, 24, 64, player));
-        this.set(GUIClickableItem.createGUIOpenerItem(this.ret, player, ChatColor.GREEN + "Go Back", 48, Material.ARROW, (short)0, ChatColor.GRAY + "To " + this.ret.getTitle()));
+        this.set(GUIClickableItem.createGUIOpenerItem(this.ret, player, ChatColor.GREEN + "Go Back", 48, Material.ARROW, (short) 0, ChatColor.GRAY + "To " + this.ret.getTitle()));
         this.set(GUIClickableItem.getCloseItem(49));
     }
-    
+
     private static GUIClickableItem createTrade(final SItem item, final int slot, final int amount, final Player player) {
         final User user = User.getUser(player.getUniqueId());
         final SItem display = item.clone();
@@ -52,7 +55,7 @@ public class ShopTradingOptionsGUI extends GUI
         lore.add(ChatColor.GOLD + SUtil.commaify(price) + " Coin" + ((price != 1L) ? "s" : ""));
         lore.add(" ");
         lore.add(ChatColor.YELLOW + "Click to purchase!");
-        meta.setLore((List)lore);
+        meta.setLore(lore);
         display.getStack().setItemMeta(meta);
         return new GUIClickableItem() {
             @Override
@@ -61,7 +64,7 @@ public class ShopTradingOptionsGUI extends GUI
                     player.sendMessage(ChatColor.RED + "You don't have enough coins!");
                     return;
                 }
-                final Map<Integer, ItemStack> m = player.getInventory().addItem(new ItemStack[] { SUtil.setSItemAmount(item.clone(), amount).getStack() });
+                final Map<Integer, ItemStack> m = player.getInventory().addItem(SUtil.setSItemAmount(item.clone(), amount).getStack());
                 if (m.size() != 0) {
                     player.sendMessage(ChatColor.RED + "Free up inventory space to purchase this!");
                     return;
@@ -69,12 +72,12 @@ public class ShopTradingOptionsGUI extends GUI
                 player.playSound(player.getLocation(), Sound.NOTE_PLING, 1.0f, 2.0f);
                 user.subCoins(price);
             }
-            
+
             @Override
             public int getSlot() {
                 return slot;
             }
-            
+
             @Override
             public ItemStack getItem() {
                 return display.getStack();

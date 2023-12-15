@@ -5,33 +5,33 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.bukkit.ChatColor;
 import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-public class Enchantment implements ConfigurationSerializable
-{
+public class Enchantment implements ConfigurationSerializable {
     private final EnchantmentType type;
     private final int level;
-    
+
     public Enchantment(final EnchantmentType type, final int level) {
         this.type = type;
         this.level = level;
     }
-    
+
     @Override
     public String toString() {
         return this.type.getName() + " " + ((this.level <= 3000) ? SUtil.toRomanNumeral(this.level) : SUtil.commaify(this.level));
     }
-    
+
     public String getDisplayName() {
         return (this.type.isUltimate() ? ("" + ChatColor.LIGHT_PURPLE + ChatColor.BOLD) : ChatColor.BLUE) + this.toString();
     }
-    
+
     public String toIdentifiableString() {
         return this.type.getNamespace() + "." + this.level;
     }
-    
+
     public String getDescription() {
         if (this.type == EnchantmentType.SHARPNESS) {
             return this.type.getDescription(5 * this.level);
@@ -101,32 +101,32 @@ public class Enchantment implements ConfigurationSerializable
         }
         return this.type.getDescription();
     }
-    
+
     public static Enchantment getByIdentifiable(final String identifiable) {
         final String[] spl = identifiable.split("\\.");
         return new Enchantment(EnchantmentType.getByNamespace(spl[0]), Integer.parseInt(spl[1]));
     }
-    
+
     public boolean equalsType(final Enchantment enchantment) {
         return enchantment.type.equals(this.type);
     }
-    
+
     @Override
     public boolean equals(final Object o) {
         if (!(o instanceof Enchantment)) {
             return false;
         }
-        final Enchantment enchantment = (Enchantment)o;
+        final Enchantment enchantment = (Enchantment) o;
         return enchantment.level == this.level && enchantment.type.equals(this.type);
     }
-    
+
     public Map<String, Object> serialize() {
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("type", this.type.getNamespace());
         map.put("level", this.level);
         return null;
     }
-    
+
     public static List<Enchantment> ultimateEnchantsListFromList(final List<Enchantment> list) {
         final List<Enchantment> filteredList_ultimate = new ArrayList<Enchantment>();
         for (final Enchantment enchantment : list) {
@@ -136,7 +136,7 @@ public class Enchantment implements ConfigurationSerializable
         }
         return filteredList_ultimate;
     }
-    
+
     public static List<Enchantment> normalEnchantsListFromList(final List<Enchantment> list) {
         final List<Enchantment> filteredList_normal = new ArrayList<Enchantment>();
         for (final Enchantment enchantment : list) {
@@ -146,11 +146,11 @@ public class Enchantment implements ConfigurationSerializable
         }
         return filteredList_normal;
     }
-    
+
     public EnchantmentType getType() {
         return this.type;
     }
-    
+
     public int getLevel() {
         return this.level;
     }

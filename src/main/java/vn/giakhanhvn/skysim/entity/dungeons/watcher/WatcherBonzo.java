@@ -6,7 +6,9 @@ import vn.giakhanhvn.skysim.util.SSU;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
 import org.bukkit.Color;
+
 import java.util.Random;
+
 import org.bukkit.Sound;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityTeleport;
 import org.bukkit.Location;
@@ -20,7 +22,9 @@ import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.item.SMaterial;
 import vn.giakhanhvn.skysim.entity.SEntityEquipment;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
+
 import java.util.Iterator;
+
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
@@ -44,42 +48,41 @@ import vn.giakhanhvn.skysim.util.Sputnik;
 import org.bukkit.entity.ArmorStand;
 import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
 
-public class WatcherBonzo extends BaseZombie
-{
+public class WatcherBonzo extends BaseZombie {
     private ArmorStand tb;
     private boolean barrCD;
-    private String[] bozoCringe;
-    
+    private final String[] bozoCringe;
+
     public WatcherBonzo() {
         this.barrCD = true;
-        this.bozoCringe = new String[] { "Cringe.", "Lame.", "Why are you running?", "Leave me alone!", "Oh noes! You got me! Whatever will I do?", "OUCH!", "Stop.", "Hacker!" };
+        this.bozoCringe = new String[]{"Cringe.", "Lame.", "Why are you running?", "Leave me alone!", "Oh noes! You got me! Whatever will I do?", "OUCH!", "Stop.", "Hacker!"};
     }
-    
+
     @Override
     public String getEntityName() {
         return Sputnik.trans("&4&lMaster Bonzo");
     }
-    
+
     @Override
     public double getEntityMaxHealth() {
         return 9.0E8;
     }
-    
+
     @Override
     public double getDamageDealt() {
         return 5800000.0;
     }
-    
+
     @Override
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
         final HeadsOnWall h = new HeadsOnWall(EnumWatcherType.BONZO);
-        final PlayerDisguise p = Sputnik.applyPacketNPC((Entity)entity, h.value, h.signature, true);
-        EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 85);
-        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("LD", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("WATCHER_E", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+        final PlayerDisguise p = Sputnik.applyPacketNPC(entity, h.value, h.signature, true);
+        EntityManager.DEFENSE_PERCENTAGE.put(entity, 85);
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("WATCHER_E", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
         p.setReplaceSounds(true);
-        this.tb = Sputnik.spawnDialougeBox((Entity)entity, 2.2);
+        this.tb = Sputnik.spawnDialougeBox(entity, 2.2);
         this.sd("I'm back baby!", 10, 50, true);
         SUtil.delay(() -> this.barrCD = false, 250L);
         new BukkitRunnable() {
@@ -89,27 +92,27 @@ public class WatcherBonzo extends BaseZombie
                     this.cancel();
                     return;
                 }
-                if (!WatcherBonzo.this.barrCD && SUtil.random(0, 30) <= 5 && ((CraftZombie)entity).getTarget() != null) {
+                if (!WatcherBonzo.this.barrCD && SUtil.random(0, 30) <= 5 && ((CraftZombie) entity).getTarget() != null) {
                     WatcherBonzo.this.barrCD = true;
                     WatcherBonzo.this.ballonBarrage(entity);
                     SUtil.delay(() -> WatcherBonzo.this.barrCD = false, 300L);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
-                if (((CraftZombie)entity).getTarget() != null) {
+                if (((CraftZombie) entity).getTarget() != null) {
                     WatcherBonzo.this.sd(WatcherBonzo.this.bozoCringe[SUtil.random(0, WatcherBonzo.this.bozoCringe.length - 1)], 1, 50, true);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 80L, 80L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 80L, 80L);
         new BukkitRunnable() {
             public void run() {
-                final EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
+                final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
@@ -118,7 +121,7 @@ public class WatcherBonzo extends BaseZombie
                     if (!(entities instanceof Player)) {
                         continue;
                     }
-                    final Player target = (Player)entities;
+                    final Player target = (Player) entities;
                     if (target.getGameMode() == GameMode.CREATIVE) {
                         continue;
                     }
@@ -136,27 +139,27 @@ public class WatcherBonzo extends BaseZombie
                     }
                     entity.teleport(entity.getLocation().setDirection(target.getLocation().subtract(entities.getLocation()).toVector()));
                     for (final Player players : Bukkit.getOnlinePlayers()) {
-                        ((CraftPlayer)players).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)entity).getHandle(), 0));
+                        ((CraftPlayer) players).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) entity).getHandle(), 0));
                     }
-                    nms.r((net.minecraft.server.v1_8_R3.Entity)((CraftPlayer)target).getHandle());
+                    nms.r(((CraftPlayer) target).getHandle());
                     break;
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 3L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 3L);
     }
-    
+
     @Override
     public SEntityEquipment getEntityEquipment() {
         return new SEntityEquipment(SItem.of(SMaterial.BONZO_STAFF).getStack(), null, null, null, null);
     }
-    
+
     @Override
     public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
-        final Entity en = (Entity)sEntity.getEntity();
+        final Entity en = sEntity.getEntity();
         final Vector v = new Vector(0, 0, 0);
         SUtil.delay(() -> en.setVelocity(v), 1L);
     }
-    
+
     public void say(final String str) {
         if (str == null) {
             this.tb.setCustomNameVisible(false);
@@ -168,7 +171,7 @@ public class WatcherBonzo extends BaseZombie
         this.tb.setCustomNameVisible(true);
         this.tb.setCustomName(Sputnik.trans("&f&l" + str));
     }
-    
+
     public void sd(final String str, final int delay, final int timeout, final boolean needTo) {
         SUtil.delay(() -> this.say(str), delay);
         if (needTo) {
@@ -179,12 +182,12 @@ public class WatcherBonzo extends BaseZombie
             }, timeout + delay);
         }
     }
-    
+
     public void ballonBarrage(final LivingEntity e) {
         this.sd("SHOOOOOOWWWWWWWW TIMEEEEEEEEEEEE!!!", 1, 50, true);
         new BukkitRunnable() {
             int i = 0;
-            
+
             public void run() {
                 if (e.isDead() || this.i >= 100) {
                     e.removePotionEffect(PotionEffectType.SLOW);
@@ -195,22 +198,22 @@ public class WatcherBonzo extends BaseZombie
                 e.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1000, 10));
                 final Location lc = e.getLocation();
                 lc.setYaw(lc.getYaw() + SUtil.random(0, 360));
-                ((CraftZombie)e).getHandle().setPositionRotation(lc.getX(), lc.getY(), lc.getZ(), lc.getYaw(), lc.getPitch());
-                WatcherBonzo.sendHeadRotation((Entity)e, lc.getYaw(), lc.getPitch());
+                ((CraftZombie) e).getHandle().setPositionRotation(lc.getX(), lc.getY(), lc.getZ(), lc.getYaw(), lc.getPitch());
+                WatcherBonzo.sendHeadRotation(e, lc.getYaw(), lc.getPitch());
                 WatcherBonzo.this.launchBaloon(e);
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
     }
-    
+
     public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
-        final net.minecraft.server.v1_8_R3.Entity pl = (net.minecraft.server.v1_8_R3.Entity)((CraftZombie)e).getHandle();
+        final net.minecraft.server.v1_8_R3.Entity pl = ((CraftZombie) e).getHandle();
         pl.setLocation(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), yaw, pitch);
         final PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(pl);
         for (final Player p : e.getWorld().getPlayers()) {
-            ((CraftPlayer)p).getHandle().playerConnection.sendPacket((Packet)packet);
+            ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
         }
     }
-    
+
     public void launchBaloon(final LivingEntity player1) {
         player1.getWorld().playSound(player1.getLocation(), Sound.GHAST_MOAN, 1.0f, 2.0f);
         final Location location = player1.getLocation().add(0.0, -0.5, 0.0);
@@ -219,7 +222,7 @@ public class WatcherBonzo extends BaseZombie
         final Random random = new Random();
         final int i = random.nextInt(9);
         Color color = Color.RED;
-        final ArmorStand stand = (ArmorStand)player1.getWorld().spawn(location.add(player1.getLocation().getDirection().multiply(1)), (Class)ArmorStand.class);
+        final ArmorStand stand = (ArmorStand) player1.getWorld().spawn(location.add(player1.getLocation().getDirection().multiply(1)), (Class) ArmorStand.class);
         stand.setVisible(false);
         stand.setGravity(false);
         stand.setMarker(true);
@@ -265,7 +268,7 @@ public class WatcherBonzo extends BaseZombie
         new BukkitRunnable() {
             double t = 0.0;
             int tick = 0;
-            
+
             public void run() {
                 this.t += 1.0995574287564276;
                 ++this.tick;
@@ -290,58 +293,58 @@ public class WatcherBonzo extends BaseZombie
                     stand.remove();
                     final FireworkEffect.Builder builder = FireworkEffect.builder();
                     final FireworkEffect effect = builder.flicker(false).trail(false).with(FireworkEffect.Type.BURST).withColor(color2).build();
-                    SSU.spawn(stand.getLocation(), effect, new Player[0]);
+                    SSU.spawn(stand.getLocation(), effect);
                     this.cancel();
                 }
                 for (final Entity en : stand.getNearbyEntities(1.0, 1.0, 1.0)) {
                     if (en instanceof Player) {
-                        final Player p = (Player)en;
+                        final Player p = (Player) en;
                         p.getWorld().playSound(p.getLocation(), Sound.ITEM_BREAK, 1.0f, 1.0f);
-                        User.getUser(p.getUniqueId()).damage(p.getMaxHealth() * 30.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)player1);
+                        User.getUser(p.getUniqueId()).damage(p.getMaxHealth() * 30.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, player1);
                         p.sendMessage(Sputnik.trans("&4&lMaster Bonzo&7's Balloon hit you for &c" + SUtil.commaify(p.getMaxHealth() * 20.0 / 100.0) + " &7damage."));
                         p.damage(1.0E-5);
                         p.setVelocity(player1.getLocation().toVector().subtract(p.getLocation().toVector()).normalize().multiply(-1.0).multiply(1.5));
                         final FireworkEffect.Builder builder2 = FireworkEffect.builder();
                         final FireworkEffect effect2 = builder2.flicker(false).trail(false).with(FireworkEffect.Type.BURST).withColor(color2).build();
-                        SSU.spawn(stand.getLocation(), effect2, new Player[0]);
+                        SSU.spawn(stand.getLocation(), effect2);
                         stand.remove();
                         this.cancel();
                         break;
                     }
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
     }
-    
+
     @Override
     public void onAttack(final EntityDamageByEntityEvent e) {
     }
-    
+
     @Override
     public boolean isBaby() {
         return false;
     }
-    
+
     @Override
     public boolean hasNameTag() {
         return false;
     }
-    
+
     @Override
     public boolean isVillager() {
         return false;
     }
-    
+
     @Override
     public double getXPDropped() {
         return 155.0;
     }
-    
+
     @Override
     public double getMovementSpeed() {
         return 0.4;
     }
-    
+
     @Override
     public int mobLevel() {
         return 540;

@@ -9,7 +9,9 @@ import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldedit.bukkit.BukkitUtil;
+
 import java.util.Iterator;
+
 import org.bukkit.entity.Entity;
 import vn.giakhanhvn.skysim.entity.SEntityType;
 import vn.giakhanhvn.skysim.entity.SEntity;
@@ -19,8 +21,7 @@ import vn.giakhanhvn.skysim.util.Sputnik;
 import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.World;
 
-public class AnimationSequence
-{
+public class AnimationSequence {
     public static void chainAnimation(final World w) {
         final boolean chaining = false;
         if (w.getName().contains("f6")) {
@@ -28,34 +29,32 @@ public class AnimationSequence
             SUtil.delay(() -> beginRenderUp(w), 330L);
         }
     }
-    
+
     public static void pasteBase(final World w, final int delay) {
         SUtil.delay(() -> Sputnik.pasteSchematic("chain_base", true, 186.0f, 105.0f, 271.0f, w), delay - 1);
         SUtil.delay(() -> Sputnik.pasteSchematic("chain_base", true, 186.0f, 105.0f, 271.0f, w), delay);
         SUtil.delay(() -> Sputnik.pasteSchematic("chain_base", true, 186.0f, 105.0f, 271.0f, w), delay + 1);
     }
-    
+
     public static void pasteGlass(final World w, final int delay, final int phase) {
         if (phase == 0) {
             SUtil.delay(() -> Sputnik.pasteSchematic("f6_h1", true, 189.0f, 71.0f, 266.0f, w), delay);
-        }
-        else if (phase == 1) {
+        } else if (phase == 1) {
             SUtil.delay(() -> Sputnik.pasteSchematic("f6_h2", true, 190.0f, 71.0f, 269.0f, w), delay);
-        }
-        else if (phase == 2) {
+        } else if (phase == 2) {
             SUtil.delay(() -> Sputnik.pasteSchematic("f6_h3", true, 191.0f, 73.0f, 266.0f, w), delay);
         }
     }
-    
+
     public static void pasteChain(final World w, final float y, final int delay, final boolean up) {
         SUtil.delay(() -> Sputnik.pasteSchematic("chain_main", true, 195.0f, y, 261.0f, w), delay);
-        SUtil.delay(() -> w.playSound(new Location(w, 195.0, (double)y, 261.0), Sound.HORSE_ARMOR, 100.0f, 0.0f), delay);
+        SUtil.delay(() -> w.playSound(new Location(w, 195.0, y, 261.0), Sound.HORSE_ARMOR, 100.0f, 0.0f), delay);
     }
-    
+
     public static void pasteAir(final World w, final float y, final int delay) {
-        SUtil.delay(() -> edit(new Location(w, 191.0, (double)(y - 2.0f), 266.0), new Location(w, 191.0, 69.0, 266.0), w), delay + 1);
+        SUtil.delay(() -> edit(new Location(w, 191.0, y - 2.0f, 266.0), new Location(w, 191.0, 69.0, 266.0), w), delay + 1);
     }
-    
+
     public static void beginRenderUp(final World w) {
         pasteChain(w, 69.0f, 1, false);
         pasteBase(w, 1);
@@ -107,7 +106,7 @@ public class AnimationSequence
         pasteAir(w, 99.0f, 300);
         pasteBase(w, 301);
     }
-    
+
     public static void beginRenderDown(final World w) {
         pasteChain(w, 99.0f, 1, false);
         pasteBase(w, 1);
@@ -147,7 +146,7 @@ public class AnimationSequence
         SUtil.delay(() -> r(w), 301L);
         SUtil.delay(() -> new SEntity(new Location(w, 191.5, 54.0, 266.5, 180.0f, 0.0f), SEntityType.DUMMY_FUNCTION_2), 300L);
     }
-    
+
     public static void r(final World w) {
         for (final Entity e1 : w.getEntities()) {
             if (e1.hasMetadata("dummy_r")) {
@@ -155,15 +154,14 @@ public class AnimationSequence
             }
         }
     }
-    
+
     public static void edit(final Location pos1, final Location pos2, final World w) {
-        final com.sk89q.worldedit.world.World world = (com.sk89q.worldedit.world.World)BukkitUtil.getLocalWorld(w);
-        final CuboidRegion selection = new CuboidRegion(world, (Vector)BlockVector.toBlockPoint(pos1.getX(), pos1.getY(), pos1.getZ()), (Vector)BlockVector.toBlockPoint(pos2.getX(), pos2.getY(), pos2.getZ()));
+        final com.sk89q.worldedit.world.World world = BukkitUtil.getLocalWorld(w);
+        final CuboidRegion selection = new CuboidRegion(world, BlockVector.toBlockPoint(pos1.getX(), pos1.getY(), pos1.getZ()), BlockVector.toBlockPoint(pos2.getX(), pos2.getY(), pos2.getZ()));
         final EditSession e = WorldEdit.getInstance().getEditSessionFactory().getEditSession(world, -1);
         try {
-            e.setBlocks((Region)selection, new BaseBlock(0));
-        }
-        catch (final MaxChangedBlocksException e2) {
+            e.setBlocks(selection, new BaseBlock(0));
+        } catch (final MaxChangedBlocksException e2) {
             e2.printStackTrace();
         }
     }

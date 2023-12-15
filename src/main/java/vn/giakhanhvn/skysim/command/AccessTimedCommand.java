@@ -1,18 +1,19 @@
 package vn.giakhanhvn.skysim.command;
 
 import java.util.ArrayList;
+
 import org.bukkit.entity.Player;
 import org.bukkit.Sound;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
+
 import java.util.UUID;
 import java.util.List;
 
 @CommandParameters(description = "Hidden command.", aliases = "attc")
-public class AccessTimedCommand extends SCommand
-{
+public class AccessTimedCommand extends SCommand {
     public static final List<UUID> KEYS;
-    
+
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (sender instanceof ConsoleCommandSender) {
@@ -32,7 +33,7 @@ public class AccessTimedCommand extends SCommand
         p.chat("/trade " + args[1]);
         AccessTimedCommand.KEYS.remove(UUID.fromString(args[0]));
     }
-    
+
     static {
         KEYS = new ArrayList<UUID>();
     }

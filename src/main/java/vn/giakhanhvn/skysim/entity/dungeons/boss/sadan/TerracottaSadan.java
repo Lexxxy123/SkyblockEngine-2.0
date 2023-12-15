@@ -2,6 +2,7 @@ package vn.giakhanhvn.skysim.entity.dungeons.boss.sadan;
 
 import java.util.Collection;
 import java.util.ArrayList;
+
 import org.bukkit.util.EulerAngle;
 import org.bukkit.entity.EntityType;
 import org.bukkit.Sound;
@@ -25,7 +26,9 @@ import com.google.common.util.concurrent.AtomicDouble;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.entity.ArmorStand;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
+
 import java.util.Iterator;
+
 import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -56,29 +59,28 @@ import org.bukkit.entity.LivingEntity;
 import vn.giakhanhvn.skysim.util.Sputnik;
 import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
 
-public class TerracottaSadan extends BaseZombie
-{
+public class TerracottaSadan extends BaseZombie {
     private double y;
-    
+
     public TerracottaSadan() {
         this.y = 0.85;
     }
-    
+
     @Override
     public String getEntityName() {
         return Sputnik.trans("&6&lTerracotta");
     }
-    
+
     @Override
     public double getEntityMaxHealth() {
         return 1.4E7;
     }
-    
+
     @Override
     public double getDamageDealt() {
         return 20000.0;
     }
-    
+
     @Override
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
         if (entity.getWorld().getPlayers().size() == 0) {
@@ -86,24 +88,24 @@ public class TerracottaSadan extends BaseZombie
         }
         final Player p = entity.getWorld().getPlayers().get(SUtil.random(0, entity.getWorld().getPlayers().size() - 1));
         if (p != null && p.getGameMode() != GameMode.SPECTATOR && p.getGameMode() != GameMode.CREATIVE) {
-            ((CraftZombie)entity).setTarget((LivingEntity)p);
+            ((CraftZombie) entity).setTarget(p);
         }
-        final AttributeInstance followRange = ((CraftLivingEntity)entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
+        final AttributeInstance followRange = ((CraftLivingEntity) entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
         followRange.setValue(500.0);
-        ((CraftZombie)entity).setBaby(false);
-        Sputnik.applyPacketNPC((Entity)entity, "Ethelian", null, false);
+        ((CraftZombie) entity).setBaby(false);
+        Sputnik.applyPacketNPC(entity, "Ethelian", null, false);
         SUtil.delay(() -> entity.getEquipment().setItemInHand(SItem.of(SMaterial.FLOWER_OF_TRUTH).getStack()), 10L);
-        EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 30);
-        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("LD", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("t_sadan", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+        EntityManager.DEFENSE_PERCENTAGE.put(entity, 30);
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("t_sadan", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
-                final LivingEntity target = (LivingEntity)((CraftZombie)entity).getTarget();
+                final LivingEntity target = ((CraftZombie) entity).getTarget();
                 if (target != null && entity.getTicksLived() > 10) {
                     if (target.getWorld() != entity.getWorld()) {
                         return;
@@ -113,16 +115,16 @@ public class TerracottaSadan extends BaseZombie
                     }
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 30L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 30L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
-                Sputnik.applyPacketNPC((Entity)entity, "Ethelian", null, false);
+                Sputnik.applyPacketNPC(entity, "Ethelian", null, false);
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1000L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1000L);
         final SkySimBrainCell sbc = SkySimBrainCell.loadFromDB("localhost:27786/skysim/artifical_intelligence/cloud/");
         sbc.accessAIFrom(SkySimBrainCell.BrainCellFor.MELEE);
         sbc.accessAIFrom(SkySimBrainCell.BrainCellFor.MOVEMENT);
@@ -133,8 +135,8 @@ public class TerracottaSadan extends BaseZombie
         SkySimBrainCell.applyAIToNMSPlayer(this, 140, sbc);
         new BukkitRunnable() {
             Location loc = entity.getLocation();
-            final EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
-            
+            final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
+
             public void run() {
                 if (entity.isDead()) {
                     this.cancel();
@@ -147,13 +149,13 @@ public class TerracottaSadan extends BaseZombie
                 if (entity.hasMetadata("frozen")) {
                     return;
                 }
-                if (((CraftZombie)entity).getTarget() == null) {
+                if (((CraftZombie) entity).getTarget() == null) {
                     return;
                 }
-                if (((CraftZombie)entity).getTarget().getWorld() != entity.getWorld()) {
+                if (((CraftZombie) entity).getTarget().getWorld() != entity.getWorld()) {
                     return;
                 }
-                if (((CraftZombie)entity).getTarget().getLocation().distance(entity.getLocation()) <= 4.0) {
+                if (((CraftZombie) entity).getTarget().getLocation().distance(entity.getLocation()) <= 4.0) {
                     return;
                 }
                 if (this.loc.distance(loc2) >= 0.2) {
@@ -177,10 +179,10 @@ public class TerracottaSadan extends BaseZombie
                 }
                 this.nms.setSprinting(false);
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 7L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 7L);
         new BukkitRunnable() {
             public void run() {
-                final EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
+                final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
@@ -189,7 +191,7 @@ public class TerracottaSadan extends BaseZombie
                     if (!(entities instanceof Player)) {
                         continue;
                     }
-                    final Player target = (Player)entities;
+                    final Player target = (Player) entities;
                     if (target.getGameMode() == GameMode.CREATIVE) {
                         continue;
                     }
@@ -201,22 +203,22 @@ public class TerracottaSadan extends BaseZombie
                     }
                     entity.teleport(entity.getLocation().setDirection(target.getLocation().toVector().subtract(target.getLocation().toVector())));
                     for (final Player players : Bukkit.getOnlinePlayers()) {
-                        ((CraftPlayer)players).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)entity).getHandle(), 0));
+                        ((CraftPlayer) players).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) entity).getHandle(), 0));
                     }
-                    nms.r((net.minecraft.server.v1_8_R3.Entity)((CraftPlayer)target).getHandle());
+                    nms.r(((CraftPlayer) target).getHandle());
                     break;
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
     }
-    
+
     public void t(final ArmorStand respawnAnchor) {
     }
-    
+
     @Override
     public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
     }
-    
+
     @Override
     public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
         Sputnik.zero(killed);
@@ -241,7 +243,7 @@ public class TerracottaSadan extends BaseZombie
             SadanHuman.SadanInterest.put(killed.getWorld().getUID(), SadanHuman.SadanInterest.get(killed.getWorld().getUID()) - 1);
         }
         killed.remove();
-        final ArmorStand respawnAnchor = (ArmorStand)killed.getWorld().spawn(this.a(l1), (Class)ArmorStand.class);
+        final ArmorStand respawnAnchor = (ArmorStand) killed.getWorld().spawn(this.a(l1), (Class) ArmorStand.class);
         new BukkitRunnable() {
             public void run() {
                 if (respawnAnchor.isDead()) {
@@ -251,9 +253,9 @@ public class TerracottaSadan extends BaseZombie
                 respawnAnchor.getLocation().getBlock().getLocation().clone().getWorld().spigot().playEffect(respawnAnchor.getLocation().clone().add(0.0, TerracottaSadan.this.y, 0.0), Effect.LARGE_SMOKE, 21, 0, 0.1f, 0.0f, 0.1f, 0.01f, 1, 30);
                 respawnAnchor.getLocation().getBlock().getLocation().clone().getWorld().spigot().playEffect(respawnAnchor.getLocation().clone().add(0.0, TerracottaSadan.this.y, 0.0), Effect.WITCH_MAGIC, 21, 0, 0.1f, 0.0f, 0.1f, 0.01f, 1, 30);
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 3L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 3L);
         respawnAnchor.setVisible(false);
-        respawnAnchor.setMetadata("t_sadan", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+        respawnAnchor.setMetadata("t_sadan", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
         respawnAnchor.setGravity(false);
         respawnAnchor.setMarker(true);
         this.f(respawnAnchor.getLocation().add(0.0, this.y, 0.0));
@@ -265,7 +267,7 @@ public class TerracottaSadan extends BaseZombie
                 }
                 TerracottaSadan.this.f(respawnAnchor.getLocation().clone().add(0.0, TerracottaSadan.this.y + 0.2, 0.0));
             }
-        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 66L);
+        }.runTaskLater(SkySimEngine.getPlugin(), 66L);
         new BukkitRunnable() {
             public void run() {
                 if (respawnAnchor.isDead()) {
@@ -274,7 +276,7 @@ public class TerracottaSadan extends BaseZombie
                 }
                 TerracottaSadan.this.f(respawnAnchor.getLocation().clone().add(0.0, TerracottaSadan.this.y + 0.2, 0.0));
             }
-        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 131L);
+        }.runTaskLater(SkySimEngine.getPlugin(), 131L);
         new BukkitRunnable() {
             public void run() {
                 if (respawnAnchor.isDead()) {
@@ -283,8 +285,8 @@ public class TerracottaSadan extends BaseZombie
                 }
                 TerracottaSadan.this.f(respawnAnchor.getLocation().clone().add(0.0, TerracottaSadan.this.y + 0.2, 0.0));
             }
-        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 201L);
-        this.sendPacketBlock(respawnAnchor.getLocation().getBlock().getLocation().clone().add(0.0, 0.0, 0.0), respawnAnchor.getWorld(), 0, killed.getLocation().getYaw(), (LivingEntity)killed, respawnAnchor);
+        }.runTaskLater(SkySimEngine.getPlugin(), 201L);
+        this.sendPacketBlock(respawnAnchor.getLocation().getBlock().getLocation().clone().add(0.0, 0.0, 0.0), respawnAnchor.getWorld(), 0, killed.getLocation().getYaw(), (LivingEntity) killed, respawnAnchor);
         SUtil.delay(() -> respawnAnchor.remove(), 202L);
         new BukkitRunnable() {
             public void run() {
@@ -294,35 +296,35 @@ public class TerracottaSadan extends BaseZombie
                 }
                 new SEntity(respawnAnchor.getLocation().clone(), SEntityType.TERRACOTTA_SADAN);
             }
-        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 201L);
+        }.runTaskLater(SkySimEngine.getPlugin(), 201L);
     }
-    
+
     public void summonOnLoc() {
     }
-    
+
     public void f(final Location loc) {
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData((ParticleData)new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData((ParticleData)new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.4, (double)Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData((ParticleData)new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.4, (double)Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData((ParticleData)new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.4, (double)Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData((ParticleData)new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData((ParticleData)new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData((ParticleData)new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData((ParticleData)new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData((ParticleData)new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData((ParticleData)new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData((ParticleData)new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData((ParticleData)new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData((ParticleData)new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData((ParticleData)new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData((ParticleData)new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData((ParticleData)new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData((ParticleData)new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData((ParticleData)new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData((ParticleData)new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData((ParticleData)new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.4, Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.4, Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.4, Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
     }
-    
+
     public Location getBlockLoc(final Block b) {
         final Location l = b.getLocation();
         double x = l.getX() + 0.5;
@@ -336,7 +338,7 @@ public class TerracottaSadan extends BaseZombie
         final Location loc = new Location(l.getWorld(), x, l.getY(), z);
         return loc;
     }
-    
+
     public Location a(final Location l) {
         final double x = l.getBlockX();
         final double z = l.getBlockZ();
@@ -344,7 +346,7 @@ public class TerracottaSadan extends BaseZombie
         final Location loc2 = this.getBlockLoc2(loc);
         return loc2;
     }
-    
+
     public Location getBlockLoc2(final Location l) {
         double x = l.getX() + 0.5;
         double z = l.getZ() + 0.5;
@@ -357,7 +359,7 @@ public class TerracottaSadan extends BaseZombie
         final Location loc = new Location(l.getWorld(), x, l.getY(), z);
         return loc;
     }
-    
+
     public void spawnHeadBlock(final Location loc, final LivingEntity e, final ArmorStand s) {
         final Material perviousblock = loc.getBlock().getType();
         final byte data = loc.getBlock().getData();
@@ -371,7 +373,7 @@ public class TerracottaSadan extends BaseZombie
                     this.cancel();
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
         double rot = (e.getLocation().getYaw() - 90.0f) % 360.0f;
         if (rot < 0.0) {
             rot += 360.0;
@@ -379,37 +381,28 @@ public class TerracottaSadan extends BaseZombie
         BlockFace facingDirection = null;
         if (0.0 <= rot && rot < 22.5) {
             facingDirection = BlockFace.NORTH;
-        }
-        else if (22.5 <= rot && rot < 67.5) {
+        } else if (22.5 <= rot && rot < 67.5) {
             facingDirection = BlockFace.NORTH_EAST;
-        }
-        else if (67.5 <= rot && rot < 112.5) {
+        } else if (67.5 <= rot && rot < 112.5) {
             facingDirection = BlockFace.EAST;
-        }
-        else if (112.5 <= rot && rot < 157.5) {
+        } else if (112.5 <= rot && rot < 157.5) {
             facingDirection = BlockFace.SOUTH_EAST;
-        }
-        else if (157.5 <= rot && rot < 202.5) {
+        } else if (157.5 <= rot && rot < 202.5) {
             facingDirection = BlockFace.SOUTH;
-        }
-        else if (202.5 <= rot && rot < 247.5) {
+        } else if (202.5 <= rot && rot < 247.5) {
             facingDirection = BlockFace.SOUTH_WEST;
-        }
-        else if (247.5 <= rot && rot < 292.5) {
+        } else if (247.5 <= rot && rot < 292.5) {
             facingDirection = BlockFace.WEST;
-        }
-        else if (292.5 <= rot && rot < 337.5) {
+        } else if (292.5 <= rot && rot < 337.5) {
             facingDirection = BlockFace.NORTH_WEST;
-        }
-        else if (337.5 <= rot && rot < 360.0) {
+        } else if (337.5 <= rot && rot < 360.0) {
             facingDirection = BlockFace.NORTH;
-        }
-        else {
+        } else {
             facingDirection = null;
         }
         final Block b = loc.getBlock();
-        b.setTypeIdAndData(Material.SKULL.getId(), (byte)1, true);
-        final Skull skull = (Skull)b.getState();
+        b.setTypeIdAndData(Material.SKULL.getId(), (byte) 1, true);
+        final Skull skull = (Skull) b.getState();
         skull.setSkullType(SkullType.PLAYER);
         skull.setOwner("Ethelian");
         skull.setRotation(facingDirection);
@@ -417,7 +410,7 @@ public class TerracottaSadan extends BaseZombie
         SUtil.delay(() -> b.getLocation().getBlock().setType(Material.AIR), 70L);
         SUtil.delay(() -> this.r(loc.getBlock().getLocation(), perviousblock, data), 70L);
     }
-    
+
     public void sendPacketBlock(final Location loc, final World w, final int type, final float yaw, final LivingEntity e, final ArmorStand s) {
         final Material perviousblock = loc.getBlock().getType();
         final byte data = loc.getBlock().getData();
@@ -429,7 +422,7 @@ public class TerracottaSadan extends BaseZombie
                     this.cancel();
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
         if (s.isDead()) {
             this.r(loc.getBlock().getLocation(), perviousblock, data);
             return;
@@ -446,77 +439,77 @@ public class TerracottaSadan extends BaseZombie
                     this.cancel();
                     return;
                 }
-                loc.getBlock().setTypeIdAndData(159, (byte)12, true);
+                loc.getBlock().setTypeIdAndData(159, (byte) 12, true);
             }
-        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 65L);
+        }.runTaskLater(SkySimEngine.getPlugin(), 65L);
         SUtil.delay(() -> this.y = 1.2, 65L);
         SUtil.delay(() -> this.y = 1.7, 130L);
         SUtil.delay(() -> this.y = 0.85, 200L);
         SUtil.delay(() -> this.r(loc.getBlock().getLocation(), perviousblock, data), 200L);
     }
-    
+
     public void r(final Location loc, final Material perviousblock, final byte data) {
         if (perviousblock != Material.FLOWER_POT && perviousblock != Material.SKULL) {
             loc.getBlock().setType(perviousblock);
             SUtil.delay(() -> loc.getBlock().setData(data), 1L);
         }
     }
-    
+
     public void removeItemOnGround(final Location l, final Material mat) {
         for (final Entity e : l.getWorld().getNearbyEntities(l, 4.0, 4.0, 4.0)) {
-            if (e instanceof Item && ((Item)e).getItemStack().getType() == mat) {
+            if (e instanceof Item && ((Item) e).getItemStack().getType() == mat) {
                 e.remove();
             }
         }
     }
-    
+
     @Override
     public SEntityEquipment getEntityEquipment() {
         return new SEntityEquipment(null, null, null, null, null);
     }
-    
+
     @Override
     public boolean isBaby() {
         return false;
     }
-    
+
     @Override
     public boolean hasNameTag() {
         return false;
     }
-    
+
     @Override
     public boolean isVillager() {
         return false;
     }
-    
+
     @Override
     public double getXPDropped() {
         return 0.0;
     }
-    
+
     @Override
     public double getMovementSpeed() {
         return 0.37;
     }
-    
+
     public void throwRose(final LivingEntity e) {
         final Location throwLoc = e.getLocation().add(0.0, 0.2, 0.0);
         final Vector throwVec = e.getLocation().add(e.getLocation().getDirection().multiply(10)).toVector().subtract(e.getLocation().toVector()).normalize().multiply(1.2);
         e.getWorld().playSound(e.getLocation(), Sound.EAT, 1.0f, 1.0f);
-        final ArmorStand armorStand1 = (ArmorStand)e.getWorld().spawnEntity(throwLoc, EntityType.ARMOR_STAND);
-        armorStand1.setMetadata("ftd", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+        final ArmorStand armorStand1 = (ArmorStand) e.getWorld().spawnEntity(throwLoc, EntityType.ARMOR_STAND);
+        armorStand1.setMetadata("ftd", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
         armorStand1.getEquipment().setHelmet(SItem.of(SMaterial.RED_ROSE).getStack());
         armorStand1.setHeadPose(new EulerAngle(-92.55000305175781, 0.0, 0.0));
         armorStand1.setGravity(false);
         armorStand1.setMarker(true);
         armorStand1.setVisible(false);
-        final Vector[] previousVector = { throwVec };
+        final Vector[] previousVector = {throwVec};
         final Collection<Entity> damaged = new ArrayList<Entity>();
         new BukkitRunnable() {
             private int run = -1;
             private int ticklived = 0;
-            
+
             public void run() {
                 final Vector teleportTo = armorStand1.getLocation().getDirection().normalize().multiply(1);
                 ++this.ticklived;
@@ -542,10 +535,10 @@ public class TerracottaSadan extends BaseZombie
                 }
                 for (final Entity e2 : armorStand1.getNearbyEntities(20.0, 20.0, 20.0)) {
                     if (e2 instanceof Player) {
-                        if (((Player)e2).getGameMode() == GameMode.CREATIVE) {
+                        if (((Player) e2).getGameMode() == GameMode.CREATIVE) {
                             continue;
                         }
-                        if (((CraftPlayer)e2).getGameMode() == GameMode.SPECTATOR) {
+                        if (((CraftPlayer) e2).getGameMode() == GameMode.SPECTATOR) {
                             continue;
                         }
                         if (e2.hasMetadata("NPC")) {
@@ -557,15 +550,14 @@ public class TerracottaSadan extends BaseZombie
                 if (i % 2 == 0 && i < 13) {
                     armorStand1.teleport(armorStand1.getLocation().add(teleportTo).multiply(1.0));
                     armorStand1.teleport(armorStand1.getLocation().add(teleportTo).multiply(1.0));
-                }
-                else if (i % 2 == 0) {
+                } else if (i % 2 == 0) {
                     armorStand1.teleport(armorStand1.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                     armorStand1.teleport(armorStand1.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                 }
                 for (final Entity e3 : armorStand1.getNearbyEntities(0.5, 0.5, 0.5)) {
                     if (e3 instanceof Player) {
-                        final Player p = (Player)e3;
-                        ((LivingEntity)p).damage(55000.0, (Entity)e);
+                        final Player p = (Player) e3;
+                        p.damage(55000.0, e);
                         armorStand1.getWorld().playEffect(locof, Effect.SNOWBALL_BREAK, 3);
                         armorStand1.getWorld().playEffect(locof, Effect.SNOWBALL_BREAK, 10);
                         armorStand1.getWorld().playEffect(locof, Effect.SNOWBALL_BREAK, 10);
@@ -575,6 +567,6 @@ public class TerracottaSadan extends BaseZombie
                     }
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 1L, 3L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 1L, 3L);
     }
 }

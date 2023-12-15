@@ -9,8 +9,7 @@ import vn.giakhanhvn.skysim.region.RegionGenerator;
 import vn.giakhanhvn.skysim.command.RegionCommand;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-public class BlockListener extends PListener
-{
+public class BlockListener extends PListener {
     @EventHandler
     public void onBlockInteract(final PlayerInteractEvent e) {
         final Block block = e.getClickedBlock();
@@ -34,8 +33,7 @@ public class BlockListener extends PListener
                 generator.setSecondLocation(block.getLocation());
                 if (generator.getModificationType().equals("create")) {
                     Region.create(generator.getName(), generator.getFirstLocation(), generator.getSecondLocation(), generator.getType());
-                }
-                else {
+                } else {
                     final Region region = Region.get(generator.getName());
                     region.setFirstLocation(generator.getFirstLocation());
                     region.setSecondLocation(generator.getSecondLocation());

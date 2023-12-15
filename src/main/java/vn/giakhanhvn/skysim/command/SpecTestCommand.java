@@ -5,8 +5,7 @@ import vn.giakhanhvn.skysim.user.User;
 import org.bukkit.command.ConsoleCommandSender;
 
 @CommandParameters(description = "Spec test command.", aliases = "setf6c")
-public class SpecTestCommand extends SCommand
-{
+public class SpecTestCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (args.length != 1) {

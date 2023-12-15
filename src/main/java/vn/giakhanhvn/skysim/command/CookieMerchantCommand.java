@@ -7,8 +7,7 @@ import vn.giakhanhvn.skysim.util.Sputnik;
 import vn.giakhanhvn.skysim.user.PlayerUtils;
 
 @CommandParameters(description = "Gets the NBT of your current item.", aliases = "fm", permission = "sse.cc")
-public class CookieMerchantCommand extends SCommand
-{
+public class CookieMerchantCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         final Player player = sender.getPlayer();

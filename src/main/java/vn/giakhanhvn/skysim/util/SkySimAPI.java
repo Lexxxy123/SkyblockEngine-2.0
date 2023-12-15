@@ -5,8 +5,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.entity.Player;
 import org.bukkit.OfflinePlayer;
 
-public class SkySimAPI
-{
+public class SkySimAPI {
     public static void requestPlayerAPI(final OfflinePlayer player) {
         final Player p = player.getPlayer();
         final PlayerInventory inv = p.getInventory();

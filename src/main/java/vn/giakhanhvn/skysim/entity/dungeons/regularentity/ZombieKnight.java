@@ -5,7 +5,9 @@ import org.bukkit.inventory.ItemStack;
 import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.item.SMaterial;
 import vn.giakhanhvn.skysim.entity.SEntityEquipment;
+
 import java.util.Iterator;
+
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
@@ -26,31 +28,30 @@ import vn.giakhanhvn.skysim.entity.SEntity;
 import org.bukkit.entity.LivingEntity;
 import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
 
-public class ZombieKnight extends BaseZombie
-{
+public class ZombieKnight extends BaseZombie {
     @Override
     public String getEntityName() {
         return "Zombie Knight";
     }
-    
+
     @Override
     public double getEntityMaxHealth() {
         return 1.0E8;
     }
-    
+
     @Override
     public double getDamageDealt() {
         return 2050000.0;
     }
-    
+
     @Override
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
-        EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 61);
-        entity.setMetadata("DungeonMobs", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+        EntityManager.DEFENSE_PERCENTAGE.put(entity, 61);
+        entity.setMetadata("DungeonMobs", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
-                final EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
+                final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
@@ -59,7 +60,7 @@ public class ZombieKnight extends BaseZombie
                     if (!(entities instanceof Player)) {
                         continue;
                     }
-                    final Player target = (Player)entities;
+                    final Player target = (Player) entities;
                     if (target.getGameMode() == GameMode.CREATIVE) {
                         continue;
                     }
@@ -77,45 +78,45 @@ public class ZombieKnight extends BaseZombie
                     }
                     entity.teleport(entity.getLocation().setDirection(target.getLocation().subtract(entities.getLocation()).toVector()));
                     for (final Player players : Bukkit.getOnlinePlayers()) {
-                        ((CraftPlayer)players).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)entity).getHandle(), 0));
+                        ((CraftPlayer) players).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) entity).getHandle(), 0));
                     }
-                    nms.r((net.minecraft.server.v1_8_R3.Entity)((CraftPlayer)target).getHandle());
+                    nms.r(((CraftPlayer) target).getHandle());
                     break;
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 3L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 3L);
     }
-    
+
     @Override
     public SEntityEquipment getEntityEquipment() {
         return new SEntityEquipment(null, SItem.of(SMaterial.GOLDEN_HELMET).getStack(), SItem.of(SMaterial.GOLDEN_CHESTPLATE).getStack(), SItem.of(SMaterial.GOLDEN_LEGGINGS).getStack(), SItem.of(SMaterial.GOLDEN_BOOTS).getStack());
     }
-    
+
     @Override
     public void onAttack(final EntityDamageByEntityEvent e) {
-        ((LivingEntity)e.getDamager()).setHealth(Math.min(((LivingEntity)e.getDamager()).getMaxHealth(), ((LivingEntity)e.getDamager()).getHealth() + ((LivingEntity)e.getDamager()).getMaxHealth() * 1.0 / 100.0));
+        ((LivingEntity) e.getDamager()).setHealth(Math.min(((LivingEntity) e.getDamager()).getMaxHealth(), ((LivingEntity) e.getDamager()).getHealth() + ((LivingEntity) e.getDamager()).getMaxHealth() / 100.0));
     }
-    
+
     @Override
     public boolean isBaby() {
         return false;
     }
-    
+
     @Override
     public boolean hasNameTag() {
         return false;
     }
-    
+
     @Override
     public boolean isVillager() {
         return false;
     }
-    
+
     @Override
     public double getXPDropped() {
         return 155.0;
     }
-    
+
     @Override
     public double getMovementSpeed() {
         return 0.25;

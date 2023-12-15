@@ -11,26 +11,25 @@ import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.item.Rarity;
 
-public class FarmingTalisman implements AccessoryStatistics, AccessoryFunction
-{
+public class FarmingTalisman implements AccessoryStatistics, AccessoryFunction {
     @Override
     public String getDisplayName() {
         return "Farming Talisman";
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.COMMON;
     }
-    
+
     @Override
     public String getURL() {
         return "9af328c87b068509aca9834eface197705fe5d4f0871731b7b21cd99b9fddc";
     }
-    
+
     @Override
     public void update(final SItem instance, final Player player, final int accessorySlot) {
-        final Region region = Region.getQuickRegionOfEntity((Entity)player);
+        final Region region = Region.getQuickRegionOfEntity(player);
         if (region == null) {
             return;
         }
@@ -42,17 +41,17 @@ public class FarmingTalisman implements AccessoryStatistics, AccessoryFunction
             public String getDisplayName() {
                 return null;
             }
-            
+
             @Override
             public Rarity getRarity() {
                 return null;
             }
-            
+
             @Override
             public GenericItemType getType() {
                 return null;
             }
-            
+
             @Override
             public double getBaseSpeed() {
                 return 0.1;

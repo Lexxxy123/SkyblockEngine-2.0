@@ -1,6 +1,7 @@
 package vn.giakhanhvn.skysim.item.weapon;
 
 import java.util.Iterator;
+
 import org.bukkit.Location;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -38,53 +39,52 @@ import vn.giakhanhvn.skysim.item.Ability;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
 import vn.giakhanhvn.skysim.item.ToolStatistics;
 
-public class IceSprayWand implements ToolStatistics, MaterialFunction, Ability
-{
+public class IceSprayWand implements ToolStatistics, MaterialFunction, Ability {
     @Override
     public int getBaseDamage() {
         return 140;
     }
-    
+
     @Override
     public double getBaseIntelligence() {
         return 345.0;
     }
-    
+
     @Override
     public String getDisplayName() {
         return "Ice Spray Wand";
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.EPIC;
     }
-    
+
     @Override
     public GenericItemType getType() {
         return GenericItemType.WEAPON;
     }
-    
+
     @Override
     public SpecificItemType getSpecificType() {
         return SpecificItemType.SWORD;
     }
-    
+
     @Override
     public String getLore() {
         return null;
     }
-    
+
     @Override
     public String getAbilityName() {
         return "Ice Spray";
     }
-    
+
     @Override
     public String getAbilityDescription() {
         return Sputnik.trans("&7Produces a cone of ice in front of the caster that deals &c25,000 &7damage to mobs and freezes them in place for &e5 &7seconds! Frozen mobs take &c10% &7incresed damage!");
     }
-    
+
     @Override
     public void onAbilityUse(final Player player, final SItem sItem) {
         final Location loc = player.getEyeLocation();
@@ -122,22 +122,20 @@ public class IceSprayWand implements ToolStatistics, MaterialFunction, Ability
             }
             final User user = User.getUser(player.getUniqueId());
             final double baseDamage = Sputnik.calculateMagicDamage(entity, player, 32000, 0.1);
-            user.damageEntityIgnoreShield((Damageable)entity, baseDamage);
-            entity.setMetadata("frozen", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+            user.damageEntityIgnoreShield((Damageable) entity, baseDamage);
+            entity.setMetadata("frozen", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
             PlayerListener.spawnDamageInd(entity, baseDamage, false);
             double b = 0.0;
             for (int i = 0; i < 2; ++i) {
                 final int d;
                 if ((d = i) == 0) {
                     b = 0.2;
-                }
-                else if (i == 1) {
+                } else if (i == 1) {
                     b = 0.4;
-                }
-                else if (i == 2) {
+                } else if (i == 2) {
                     b = 0.6;
                 }
-                final ArmorStand stands = (ArmorStand)entity.getWorld().spawn(entity.getLocation().add(0.0, b + 1.0, 0.0), (Class)ArmorStand.class);
+                final ArmorStand stands = (ArmorStand) entity.getWorld().spawn(entity.getLocation().add(0.0, b + 1.0, 0.0), (Class) ArmorStand.class);
                 stands.setCustomNameVisible(false);
                 stands.setVisible(false);
                 stands.setArms(true);
@@ -151,35 +149,33 @@ public class IceSprayWand implements ToolStatistics, MaterialFunction, Ability
                         double c = 0.0;
                         if (d == 0) {
                             c = 0.2;
-                        }
-                        else if (d == 1) {
+                        } else if (d == 1) {
                             c = 0.4;
-                        }
-                        else if (d == 2) {
+                        } else if (d == 2) {
                             c = 0.6;
                         }
                         if (stands.isDead()) {
-                            ((LivingEntity)entity).removePotionEffect(PotionEffectType.SLOW);
-                            entity.removeMetadata("frozen", (Plugin)SkySimEngine.getPlugin());
+                            ((LivingEntity) entity).removePotionEffect(PotionEffectType.SLOW);
+                            entity.removeMetadata("frozen", SkySimEngine.getPlugin());
                             this.cancel();
                             return;
                         }
                         if (entity.isDead()) {
                             stands.remove();
                         }
-                        ((LivingEntity)entity).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 20));
+                        ((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 20));
                         stands.teleport(entity.getLocation().add(0.0, c + 1.0, 0.0));
                     }
-                }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+                }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
             }
         }
     }
-    
+
     @Override
     public int getAbilityCooldownTicks() {
         return 100;
     }
-    
+
     @Override
     public int getManaCost() {
         return 50;

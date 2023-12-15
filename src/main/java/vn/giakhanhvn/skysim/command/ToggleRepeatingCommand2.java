@@ -5,10 +5,9 @@ import org.bukkit.ChatColor;
 import vn.giakhanhvn.skysim.Repeater;
 
 @CommandParameters(description = "Spec test command.", aliases = "db:ssp")
-public class ToggleRepeatingCommand2 extends SCommand
-{
+public class ToggleRepeatingCommand2 extends SCommand {
     public Repeater repeater;
-    
+
     @Override
     public void run(final CommandSource sender, final String[] args) {
         final Player player = sender.getPlayer();

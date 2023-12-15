@@ -3,15 +3,13 @@ package vn.giakhanhvn.skysim.command;
 import vn.giakhanhvn.skysim.SkySimEngine;
 
 @CommandParameters(description = "", aliases = "ssi", permission = "sse.cc")
-public class ServerInfoCommand extends SCommand
-{
+public class ServerInfoCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         this.send("&aYou're playing on &cSkySim Network &bBeta 2");
         try {
             this.send("&7Server Version: &a" + SkySimEngine.getPlugin().getServerVersion().readableString());
-        }
-        catch (final Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         }
         this.send("&7Developed by: &cGiaKhanhVN &e(Major) &7and &cKP56&7.");

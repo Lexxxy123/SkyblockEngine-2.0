@@ -5,23 +5,22 @@ import vn.giakhanhvn.skysim.item.Rarity;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
 import vn.giakhanhvn.skysim.item.MaterialStatistics;
 
-public class RevenantViscera implements MaterialStatistics, MaterialFunction
-{
+public class RevenantViscera implements MaterialStatistics, MaterialFunction {
     @Override
     public String getDisplayName() {
         return "Revenant Viscera";
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.RARE;
     }
-    
+
     @Override
     public GenericItemType getType() {
         return GenericItemType.ITEM;
     }
-    
+
     @Override
     public boolean isEnchanted() {
         return true;

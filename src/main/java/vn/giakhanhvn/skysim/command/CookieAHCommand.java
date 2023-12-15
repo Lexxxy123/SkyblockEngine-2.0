@@ -7,8 +7,7 @@ import org.bukkit.Sound;
 import vn.giakhanhvn.skysim.user.PlayerUtils;
 
 @CommandParameters(description = "Gets the NBT of your current item.", aliases = "auh", permission = "sse.cc")
-public class CookieAHCommand extends SCommand
-{
+public class CookieAHCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         final Player player = sender.getPlayer();

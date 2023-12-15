@@ -1,6 +1,7 @@
 package vn.giakhanhvn.skysim.entity;
 
 import java.util.HashMap;
+
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.plugin.Plugin;
 import vn.giakhanhvn.skysim.SkySimEngine;
@@ -13,45 +14,49 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.LivingEntity;
+
 import java.util.List;
+
 import com.google.common.util.concurrent.AtomicDouble;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+
 import java.util.UUID;
 import java.util.ArrayList;
+
 import org.bukkit.entity.Entity;
+
 import java.util.Map;
 
-public interface EntityFunction
-{
-    public static final Map<Entity, ArrayList<UUID>> FIRST_STRIKE_MAP = new HashMap<Entity, ArrayList<UUID>>();
-    
+public interface EntityFunction {
+    Map<Entity, ArrayList<UUID>> FIRST_STRIKE_MAP = new HashMap<Entity, ArrayList<UUID>>();
+
     default void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
     }
-    
+
     default void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
     }
-    
+
     default List<EntityDrop> drops() {
         return new ArrayList<EntityDrop>();
     }
-    
+
     default boolean tick(final LivingEntity entity) {
         return false;
     }
-    
+
     default void onSpawnNameTag(final LivingEntity entity, final SEntity sEntity, final SEntityType specType, final Object... params) {
-        final ArmorStand hologram1 = (ArmorStand)entity.getWorld().spawn(entity.getLocation().add(0.0, 0.0, 0.0), (Class)ArmorStand.class);
+        final ArmorStand hologram1 = (ArmorStand) entity.getWorld().spawn(entity.getLocation().add(0.0, 0.0, 0.0), (Class) ArmorStand.class);
         hologram1.setVisible(false);
         hologram1.setGravity(false);
         hologram1.setSmall(true);
         hologram1.setMarker(true);
         hologram1.setBasePlate(false);
         hologram1.setCustomNameVisible(false);
-        entity.setPassenger((Entity)hologram1);
+        entity.setPassenger(hologram1);
         if (!entity.hasMetadata("LD")) {
             hologram1.remove();
         }
-        EntityFunction.FIRST_STRIKE_MAP.put((Entity)entity, new ArrayList<UUID>());
+        EntityFunction.FIRST_STRIKE_MAP.put(entity, new ArrayList<UUID>());
         if (entity.hasMetadata("notDisplay")) {
             return;
         }
@@ -64,14 +69,14 @@ public interface EntityFunction
         if (entity.getType() == EntityType.ENDER_CRYSTAL) {
             return;
         }
-        final net.minecraft.server.v1_8_R3.Entity e = ((CraftEntity)entity).getHandle();
+        final net.minecraft.server.v1_8_R3.Entity e = ((CraftEntity) entity).getHandle();
         double height_ = e.getBoundingBox().e - e.getBoundingBox().b;
         final Object instance = specType.instance(params);
-        final EntityStatistics statistics = (EntityStatistics)instance;
+        final EntityStatistics statistics = (EntityStatistics) instance;
         if (entity.getType() == EntityType.SKELETON || entity.hasMetadata("SKEL")) {
             height_ += 0.2;
         }
-        if (entity.getType() == EntityType.SKELETON && ((CraftSkeleton)entity).getSkeletonType() == Skeleton.SkeletonType.WITHER) {
+        if (entity.getType() == EntityType.SKELETON && ((CraftSkeleton) entity).getSkeletonType() == Skeleton.SkeletonType.WITHER) {
             height_ -= 0.2;
         }
         if (entity.hasMetadata("LD")) {
@@ -87,26 +92,18 @@ public interface EntityFunction
             height_ += 0.8;
         }
         final double height = height_;
-        final ArmorStand hologram2 = (ArmorStand)entity.getWorld().spawn(entity.getLocation().add(0.0, height, 0.0), (Class)ArmorStand.class);
+        final ArmorStand hologram2 = (ArmorStand) entity.getWorld().spawn(entity.getLocation().add(0.0, height, 0.0), (Class) ArmorStand.class);
         hologram2.setVisible(false);
         hologram2.setGravity(false);
         hologram2.setSmall(false);
         hologram2.setMarker(true);
         hologram2.setBasePlate(false);
         hologram2.setCustomNameVisible(true);
-        boolean hideLVLA = false;
-        if (entity.hasMetadata("WATCHER_E")) {
-            hideLVLA = true;
-        }
+        boolean hideLVLA = entity.hasMetadata("WATCHER_E");
         final boolean hideLVL = hideLVLA;
         new BukkitRunnable() {
             public void run() {
-                if (entity.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
-                    hologram2.setCustomNameVisible(false);
-                }
-                else {
-                    hologram2.setCustomNameVisible(true);
-                }
+                hologram2.setCustomNameVisible(!entity.hasPotionEffect(PotionEffectType.INVISIBILITY));
                 if (!hologram2.getLocation().getChunk().isLoaded()) {
                     hologram2.remove();
                     this.cancel();
@@ -126,7 +123,7 @@ public interface EntityFunction
                             hologram2.remove();
                             hologram1.remove();
                         }
-                    }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 20L);
+                    }.runTaskLater(SkySimEngine.getPlugin(), 20L);
                 }
                 if (hologram2.isDead()) {
                     this.cancel();
@@ -134,41 +131,38 @@ public interface EntityFunction
                 }
                 if (entity.hasMetadata("RMHN")) {
                     hologram1.remove();
-                }
-                else {
-                    entity.setPassenger((Entity)hologram1);
+                } else {
+                    entity.setPassenger(hologram1);
                 }
                 hologram2.teleport(entity.getLocation().clone().add(0.0, height, 0.0));
                 hologram2.teleport(entity.getLocation().clone().add(0.0, height, 0.0));
                 if (!entity.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
                     if (entity.hasMetadata("Boss")) {
                         hologram2.setCustomName(Sputnik.trans("&e﴾ " + Sputnik.entityNameTag(entity, Sputnik.buildcustomString(statistics.getEntityName(), statistics.mobLevel(), true)) + " &e﴿"));
-                    }
-                    else if (entity.hasMetadata("NNP")) {
+                    } else if (entity.hasMetadata("NNP")) {
                         hologram2.setCustomName(statistics.getEntityName());
-                    }
-                    else {
+                    } else {
                         hologram2.setCustomName(Sputnik.trans(Sputnik.entityNameTag(entity, Sputnik.buildcustomString(statistics.getEntityName(), statistics.mobLevel(), hideLVL))));
                     }
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 0L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 0L);
     }
-    
+
     default void onSpawn(final LivingEntity entity, final SEntity sEntity) {
     }
-    
+
     default void onAttack(final EntityDamageByEntityEvent e) {
     }
-    
+
     default void onTarget(final SEntity sEntity, final EntityTargetLivingEntityEvent e) {
     }
-    
+
     default void onSpawnNameTag(final LivingEntity entity, final SEntityType specType, final Object... params) {
-        this.onSpawnNameTag(entity, SEntity.findSEntity((Entity)entity), specType, params);
+        this.onSpawnNameTag(entity, SEntity.findSEntity(entity), specType, params);
     }
-    
+
     default void onSpawn(final LivingEntity entity) {
-        this.onSpawn(entity, SEntity.findSEntity((Entity)entity));
+        this.onSpawn(entity, SEntity.findSEntity(entity));
     }
 }

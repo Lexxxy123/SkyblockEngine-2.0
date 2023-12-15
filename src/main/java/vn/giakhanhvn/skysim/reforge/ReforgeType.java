@@ -1,56 +1,54 @@
 package vn.giakhanhvn.skysim.reforge;
 
-public enum ReforgeType
-{
-    OVERPOWERED((Class<? extends Reforge>)OverpoweredReforge.class, false), 
-    GENIUS((Class<? extends Reforge>)GeniusReforge.class), 
-    STRONK((Class<? extends Reforge>)StronkReforge.class), 
-    SUPERGENIUS((Class<? extends Reforge>)SupergeniusReforge.class, false), 
-    HASTY((Class<? extends Reforge>)Hasty.class), 
-    FAST((Class<? extends Reforge>)FastReforge.class), 
-    SPICY((Class<? extends Reforge>)SpicyReforge.class), 
-    FIERCE((Class<? extends Reforge>)FierceReforge.class), 
-    HEROIC((Class<? extends Reforge>)HeroicReforge.class), 
-    ODD((Class<? extends Reforge>)OddReforge.class), 
-    RAPID((Class<? extends Reforge>)RapidReforge.class), 
-    ANCIENT((Class<? extends Reforge>)Ancient.class), 
-    WITHERED((Class<? extends Reforge>)WitheredReforge.class), 
-    LEGENDARY((Class<? extends Reforge>)LegendaryReforge.class), 
-    SHARP((Class<? extends Reforge>)SharpReforge.class), 
-    EPIC((Class<? extends Reforge>)EpicReforge.class), 
-    FABLED((Class<? extends Reforge>)Fabled.class), 
-    RENOWNED((Class<? extends Reforge>)Renowned.class), 
-    SPIRITUAL((Class<? extends Reforge>)Spiritual.class), 
-    UNREAL((Class<? extends Reforge>)Unreal.class), 
-    WISE((Class<? extends Reforge>)Wise.class), 
-    NECROTIC((Class<? extends Reforge>)Necrotic.class);
-    
+public enum ReforgeType {
+    OVERPOWERED(OverpoweredReforge.class, false),
+    GENIUS(GeniusReforge.class),
+    STRONK(StronkReforge.class),
+    SUPERGENIUS(SupergeniusReforge.class, false),
+    HASTY(Hasty.class),
+    FAST(FastReforge.class),
+    SPICY(SpicyReforge.class),
+    FIERCE(FierceReforge.class),
+    HEROIC(HeroicReforge.class),
+    ODD(OddReforge.class),
+    RAPID(RapidReforge.class),
+    ANCIENT(Ancient.class),
+    WITHERED(WitheredReforge.class),
+    LEGENDARY(LegendaryReforge.class),
+    SHARP(SharpReforge.class),
+    EPIC(EpicReforge.class),
+    FABLED(Fabled.class),
+    RENOWNED(Renowned.class),
+    SPIRITUAL(Spiritual.class),
+    UNREAL(Unreal.class),
+    WISE(Wise.class),
+    NECROTIC(Necrotic.class);
+
     private final Class<? extends Reforge> clazz;
     private final boolean accessible;
-    
-    private ReforgeType(final Class<? extends Reforge> clazz, final boolean accessible) {
+
+    ReforgeType(final Class<? extends Reforge> clazz, final boolean accessible) {
         this.clazz = clazz;
         this.accessible = accessible;
     }
-    
-    private ReforgeType(final Class<? extends Reforge> clazz) {
+
+    ReforgeType(final Class<? extends Reforge> clazz) {
         this(clazz, true);
     }
-    
+
     public Reforge getReforge() {
         try {
-            return (Reforge)this.clazz.newInstance();
-        }
-        catch (final InstantiationException | IllegalAccessException e) {
+            return this.clazz.newInstance();
+        } catch (final InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
             return null;
         }
     }
-    
+
     public static ReforgeType getReforgeType(final String name) {
         return valueOf(name.toUpperCase());
     }
-    
+
     public static ReforgeType getByClass(final Class<? extends Reforge> clazz) {
         for (final ReforgeType type : values()) {
             if (type.clazz == clazz) {
@@ -59,7 +57,7 @@ public enum ReforgeType
         }
         return null;
     }
-    
+
     public boolean isAccessible() {
         return this.accessible;
     }

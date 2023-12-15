@@ -5,7 +5,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.entity.ArmorStand;
+
 import java.util.UUID;
+
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import vn.giakhanhvn.skysim.util.SUtil;
@@ -19,9 +21,13 @@ import vn.giakhanhvn.skysim.util.Sputnik;
 import org.bukkit.Material;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+
 import java.io.IOException;
+
 import vn.giakhanhvn.skysim.dimoon.Arena;
+
 import java.util.Iterator;
+
 import org.bukkit.Sound;
 import vn.giakhanhvn.skysim.dimoon.utils.Utils;
 import org.bukkit.plugin.Plugin;
@@ -42,20 +48,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.Listener;
 
-public class PlayerListener implements Listener
-{
+public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerDealDamage(final EntityDamageByEntityEvent event) {
         Player damager = null;
         int bonusDamage = 0;
         if (event.getDamager() instanceof Player) {
-            damager = (Player)event.getDamager();
+            damager = (Player) event.getDamager();
             bonusDamage += 3;
-        }
-        else if (event.getDamager() instanceof Projectile) {
-            final Projectile projectile = (Projectile)event.getDamager();
+        } else if (event.getDamager() instanceof Projectile) {
+            final Projectile projectile = (Projectile) event.getDamager();
             if (projectile.getShooter() instanceof Player) {
-                damager = (Player)projectile.getShooter();
+                damager = (Player) projectile.getShooter();
             }
         }
         if (damager != null && event.getEntity().hasMetadata("Dimoon")) {
@@ -65,7 +69,7 @@ public class PlayerListener implements Listener
             dimoon.damage(damage, damager.getName());
         }
     }
-    
+
     @EventHandler
     public void onMove(final PlayerMoveEvent event) {
         final Player player = event.getPlayer();
@@ -78,7 +82,7 @@ public class PlayerListener implements Listener
                 if (withoutY.distance(plugin.dimoon.getEntity().getLocation()) < 40.0 && !plugin.dimoon.stunned) {
                     new BukkitRunnable() {
                         int counter = 0;
-                        
+
                         public void run() {
                             if (plugin.dimoon == null) {
                                 this.cancel();
@@ -100,15 +104,15 @@ public class PlayerListener implements Listener
                             }
                             if (this.counter == 3) {
                                 this.cancel();
-                                User.getUser(player.getUniqueId()).damage(player.getMaxHealth() * 30.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)SkySimEngine.getPlugin().dimoon.getEntity());
+                                User.getUser(player.getUniqueId()).damage(player.getMaxHealth() * 30.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, SkySimEngine.getPlugin().dimoon.getEntity());
                             }
                         }
-                    }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 20L);
+                    }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 20L);
                 }
                 if (withoutY.distance(plugin.dimoon.getEntity().getLocation()) > 60.0) {
                     new BukkitRunnable() {
                         int counter = 0;
-                        
+
                         public void run() {
                             if (plugin.dimoon == null) {
                                 this.cancel();
@@ -130,10 +134,10 @@ public class PlayerListener implements Listener
                             }
                             if (this.counter == 3) {
                                 this.cancel();
-                                User.getUser(player.getUniqueId()).damage(player.getMaxHealth() * 30.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)SkySimEngine.getPlugin().dimoon.getEntity());
+                                User.getUser(player.getUniqueId()).damage(player.getMaxHealth() * 30.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, SkySimEngine.getPlugin().dimoon.getEntity());
                             }
                         }
-                    }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 20L);
+                    }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 20L);
                 }
                 if (arena.highestY != -1 && player.getLocation().getY() >= arena.highestY) {
                     for (final Player p : plugin.dimoon.getEntity().getWorld().getPlayers()) {
@@ -160,7 +164,7 @@ public class PlayerListener implements Listener
                                 p.sendMessage(Utils.format("&c&lALERT! &eThe boss is about to reactivate its &cdeadly aura &ein &c10 &eseconds&e! RUN!"));
                             }
                         }
-                    }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 400L);
+                    }.runTaskLater(SkySimEngine.getPlugin(), 400L);
                     new BukkitRunnable() {
                         public void run() {
                             if (plugin.dimoon == null) {
@@ -173,7 +177,7 @@ public class PlayerListener implements Listener
                                 p.sendMessage(Utils.format("&c&lALERT! &6Wither Aura &eactivated! Crossing those aura will deal &cinsane damage &eto you!"));
                             }
                         }
-                    }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 600L);
+                    }.runTaskLater(SkySimEngine.getPlugin(), 600L);
                     plugin.dimoon.getTasks().add(new BukkitRunnable() {
                         public void run() {
                             if (plugin.dimoon == null) {
@@ -182,23 +186,21 @@ public class PlayerListener implements Listener
                             try {
                                 arena.highestY = -1;
                                 SkySimEngine.getPlugin().arena.pasteParkour();
-                            }
-                            catch (final IOException e) {
+                            } catch (final IOException e) {
                                 throw new RuntimeException(e);
                             }
                         }
-                    }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 1800L));
+                    }.runTaskLater(SkySimEngine.getPlugin(), 1800L));
                 }
-            }
-            else {
+            } else {
                 User.getUser(player.getUniqueId()).setInDanger(false);
             }
         }
     }
-    
+
     public static void worldBorder(final Player p, final boolean on) {
     }
-    
+
     @EventHandler
     public void onCatalPlace(final PlayerInteractEvent e) {
         if (!e.getPlayer().getWorld().getName().contains("arena")) {
@@ -219,11 +221,11 @@ public class PlayerListener implements Listener
             }
         }
     }
-    
+
     SItem getItemInHand(final Player p) {
         return SItem.find(p.getItemInHand());
     }
-    
+
     @EventHandler
     public void onMoveWorld(final PlayerChangedWorldEvent e) {
         final Player player = e.getPlayer();
@@ -232,7 +234,7 @@ public class PlayerListener implements Listener
             this.updateCatalystsBlock(Bukkit.getWorld("arena"));
         }
     }
-    
+
     @EventHandler
     public void onQuit(final PlayerQuitEvent e) {
         final Player player = e.getPlayer();
@@ -241,18 +243,18 @@ public class PlayerListener implements Listener
             this.updateCatalystsBlock(Bukkit.getWorld("arena"));
         }
     }
-    
+
     public void pbA() {
         final Block[] a = Altar.altarList;
         for (int i = 0; i < a.length; ++i) {
             final Location loc = a[i].getLocation().clone().add(0.5, 1.0, 0.5);
             loc.getWorld().playSound(loc, Sound.GLASS, 1.0f, 1.0f);
             for (int j = 0; j < 30; ++j) {
-                loc.getWorld().spigot().playEffect(loc, Effect.EXPLOSION, 0, 1, (float)SUtil.random(-0.5, 0.5), (float)SUtil.random(0.0, 0.5), (float)SUtil.random(-0.5, 0.5), 0.0f, 1, 100);
+                loc.getWorld().spigot().playEffect(loc, Effect.EXPLOSION, 0, 1, (float) SUtil.random(-0.5, 0.5), (float) SUtil.random(0.0, 0.5), (float) SUtil.random(-0.5, 0.5), 0.0f, 1, 100);
             }
         }
     }
-    
+
     boolean isAltar(final Block b) {
         final Block[] a = Altar.altarList;
         for (int i = 0; i < a.length; ++i) {
@@ -264,7 +266,7 @@ public class PlayerListener implements Listener
         }
         return false;
     }
-    
+
     int getAltar(final Block b) {
         if (!this.isAltar(b)) {
             return -1;
@@ -279,7 +281,7 @@ public class PlayerListener implements Listener
         }
         return -1;
     }
-    
+
     public void updateCatalystsBlock(final World w) {
         if (SkySimEngine.getPlugin().altarCooldown) {
             return;
@@ -292,10 +294,9 @@ public class PlayerListener implements Listener
                 if (c.getType() != Material.STAINED_GLASS) {
                     this.spawnCatalCore(c.getLocation(), i);
                     c.setType(Material.STAINED_GLASS);
-                    c.setData((byte)10);
+                    c.setData((byte) 10);
                 }
-            }
-            else {
+            } else {
                 c.setType(Material.AIR);
                 if (this.isCatalCoreExist(w, i)) {
                     this.removeCatalCore(w, i);
@@ -303,19 +304,19 @@ public class PlayerListener implements Listener
             }
         }
     }
-    
+
     void spawnCatalCore(final Location loc, final int catalystID) {
         if (this.isCatalCoreExist(loc.getWorld(), catalystID)) {
             return;
         }
         loc.add(0.5, 0.0, 0.5);
-        final ArmorStand core = (ArmorStand)loc.getWorld().spawn(loc.clone().add(0.0, -1.2, 0.0), (Class)ArmorStand.class);
+        final ArmorStand core = (ArmorStand) loc.getWorld().spawn(loc.clone().add(0.0, -1.2, 0.0), (Class) ArmorStand.class);
         core.setVisible(false);
         core.setMarker(true);
         core.setGravity(false);
         core.setHelmet(SUtil.getSkullURLStack("a", "74e8ff30e3937098637c0af03a1f2a6b17f0e828ab2a57a267a01da484ba0c57", 1, ""));
-        core.setMetadata("cid_" + catalystID, (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        core.setMetadata("inv", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+        core.setMetadata("cid_" + catalystID, new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        core.setMetadata("inv", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 if (core.isDead()) {
@@ -326,11 +327,11 @@ public class PlayerListener implements Listener
                     core.getWorld().spigot().playEffect(core.getLocation().add(0.0, 1.8, 0.0).clone().add(SUtil.random(-0.5, 0.5), SUtil.random(-0.5, 0.5), SUtil.random(-0.5, 0.5)), Effect.COLOURED_DUST, 0, 1, 0.68235296f, 0.1882353f, 0.6901961f, 1.0f, 0, 640);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 6L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 6L);
         new BukkitRunnable() {
             double yaw = core.getLocation().getYaw();
             final double archived_yaw = core.getLocation().getYaw();
-            
+
             public void run() {
                 if (core.isDead()) {
                     this.cancel();
@@ -341,25 +342,24 @@ public class PlayerListener implements Listener
                     if (PlayerListener.this.s(catalystID) && !sse.sq.isBossSpawned()) {
                         this.yaw += 16.0;
                         final Location nloc = core.getLocation();
-                        nloc.setYaw((float)this.yaw);
+                        nloc.setYaw((float) this.yaw);
                         core.teleport(nloc);
                         for (int i = 0; i < 3; ++i) {
                             core.getWorld().spigot().playEffect(core.getLocation().add(0.0, 1.8, 0.0).clone().add(SUtil.random(-0.5, 0.5), SUtil.random(-0.5, 0.5), SUtil.random(-0.5, 0.5)), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 640);
                         }
-                    }
-                    else if (!PlayerListener.this.s(catalystID)) {
+                    } else if (!PlayerListener.this.s(catalystID)) {
                         final Location nloc = core.getLocation();
-                        nloc.setYaw((float)this.archived_yaw);
+                        nloc.setYaw((float) this.archived_yaw);
                         core.teleport(nloc);
                     }
                     if (sse.sq.isBossSpawned()) {
-                        core.setHelmet((ItemStack)null);
+                        core.setHelmet(null);
                     }
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
     }
-    
+
     boolean s(final int z) {
         if (z == 0 || z == 1) {
             return SkySimEngine.getPlugin().sq.isAcD();
@@ -372,7 +372,7 @@ public class PlayerListener implements Listener
         }
         return (z == 6 || z == 7) && SkySimEngine.getPlugin().sq.isAcR();
     }
-    
+
     boolean isCatalCoreExist(final World w, final int id) {
         for (final Entity e : w.getEntities()) {
             if (e.hasMetadata("cid_" + id)) {
@@ -381,7 +381,7 @@ public class PlayerListener implements Listener
         }
         return false;
     }
-    
+
     void removeCatalCore(final World w, final int id) {
         for (final Entity e : w.getEntities()) {
             if (e.hasMetadata("cid_" + id)) {
@@ -389,10 +389,10 @@ public class PlayerListener implements Listener
             }
         }
     }
-    
+
     @EventHandler
     public void onTeleport(final PlayerTeleportEvent event) {
-        if (event.getCause().equals((Object)PlayerTeleportEvent.TeleportCause.ENDER_PEARL)) {
+        if (event.getCause().equals(PlayerTeleportEvent.TeleportCause.ENDER_PEARL)) {
             event.setCancelled(true);
         }
     }

@@ -1,7 +1,9 @@
 package vn.giakhanhvn.skysim.gui;
 
 import org.bukkit.event.inventory.InventoryCloseEvent;
+
 import java.util.Iterator;
+
 import org.bukkit.inventory.Inventory;
 import org.bukkit.Sound;
 import vn.giakhanhvn.skysim.util.Sputnik;
@@ -12,32 +14,33 @@ import vn.giakhanhvn.skysim.util.SUtil;
 import vn.giakhanhvn.skysim.item.SItem;
 import org.bukkit.inventory.ItemStack;
 import vn.giakhanhvn.skysim.item.SMaterial;
+
 import java.util.Map;
+
 import vn.giakhanhvn.skysim.user.User;
 import org.bukkit.Material;
 import org.bukkit.ChatColor;
 
-public class QuiverGUI extends GUI
-{
+public class QuiverGUI extends GUI {
     public QuiverGUI() {
         super("Quiver", 36);
         this.fill(QuiverGUI.BLACK_STAINED_GLASS_PANE, 27, 35);
         this.set(GUIClickableItem.getCloseItem(31));
     }
-    
+
     @Override
     public void onOpen(final GUIOpenEvent e) {
         final Player player = e.getPlayer();
-        this.set(GUIClickableItem.createGUIOpenerItem(GUIType.SKYBLOCK_MENU, e.getPlayer(), ChatColor.GREEN + "Go Back", 30, Material.ARROW, new String[0]));
+        this.set(GUIClickableItem.createGUIOpenerItem(GUIType.SKYBLOCK_MENU, e.getPlayer(), ChatColor.GREEN + "Go Back", 30, Material.ARROW));
         final User user = User.getUser(e.getPlayer().getUniqueId());
         final Inventory inventory = e.getInventory();
         for (final Map.Entry<SMaterial, Integer> entry : user.getQuiver().entrySet()) {
-            inventory.addItem(new ItemStack[] { SUtil.setStackAmount(SItem.of(entry.getKey()).getStack(), entry.getValue()) });
+            inventory.addItem(SUtil.setStackAmount(SItem.of(entry.getKey()).getStack(), entry.getValue()));
         }
         this.set(new GUIClickableItem() {
             @Override
             public void run(final InventoryClickEvent e) {
-                final Player p = (Player)e.getWhoClicked();
+                final Player p = (Player) e.getWhoClicked();
                 if (p == null) {
                     return;
                 }
@@ -47,18 +50,18 @@ public class QuiverGUI extends GUI
                     return;
                 }
                 for (int a = 0; a < 27; ++a) {
-                    e.getInventory().setItem(a, (ItemStack)null);
+                    e.getInventory().setItem(a, null);
                 }
                 p.closeInventory();
                 p.sendMessage(Sputnik.trans("&aSuccessfully cleared your Quiver!"));
                 p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
             }
-            
+
             @Override
             public int getSlot() {
                 return 34;
             }
-            
+
             @Override
             public ItemStack getItem() {
                 ItemStack isBuilder = new ItemStack(Material.BEDROCK, 1);
@@ -66,14 +69,14 @@ public class QuiverGUI extends GUI
                 if (PlayerUtils.getCookieDurationTicks(player) <= 0L) {
                     a = ChatColor.RED + "Requires Cookie Buff!";
                 }
-                isBuilder = SUtil.getStack(ChatColor.RED + "Clear Quiver", Material.LAVA_BUCKET, (short)0, 1, ChatColor.GRAY + "Click to clear your Quiver", ChatColor.GRAY + "instantly.", " ", a);
+                isBuilder = SUtil.getStack(ChatColor.RED + "Clear Quiver", Material.LAVA_BUCKET, (short) 0, 1, ChatColor.GRAY + "Click to clear your Quiver", ChatColor.GRAY + "instantly.", " ", a);
                 return isBuilder;
             }
         });
         this.set(new GUIClickableItem() {
             @Override
             public void run(final InventoryClickEvent e) {
-                final Player p = (Player)e.getWhoClicked();
+                final Player p = (Player) e.getWhoClicked();
                 if (p == null) {
                     return;
                 }
@@ -91,12 +94,12 @@ public class QuiverGUI extends GUI
                 p.sendMessage(Sputnik.trans("&aSuccessfully filled your Quiver!"));
                 p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 1.0f);
             }
-            
+
             @Override
             public int getSlot() {
                 return 35;
             }
-            
+
             @Override
             public ItemStack getItem() {
                 ItemStack isBuilder = new ItemStack(Material.BEDROCK, 1);
@@ -104,12 +107,12 @@ public class QuiverGUI extends GUI
                 if (PlayerUtils.getCookieDurationTicks(player) <= 0L) {
                     a = ChatColor.RED + "Requires Cookie Buff!";
                 }
-                isBuilder = SUtil.getStack(ChatColor.GREEN + "Fill Quiver", Material.CHEST, (short)0, 1, ChatColor.GRAY + "Click to fill your Quiver", ChatColor.GRAY + "instantly.", " ", a);
+                isBuilder = SUtil.getStack(ChatColor.GREEN + "Fill Quiver", Material.CHEST, (short) 0, 1, ChatColor.GRAY + "Click to fill your Quiver", ChatColor.GRAY + "instantly.", " ", a);
                 return isBuilder;
             }
         });
     }
-    
+
     @Override
     public void onClose(final InventoryCloseEvent e) {
         final User user = User.getUser(e.getPlayer().getUniqueId());

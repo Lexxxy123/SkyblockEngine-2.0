@@ -1,23 +1,32 @@
 package vn.giakhanhvn.skysim.nms.nmsutil.packetlistener.channel;
 
 import vn.giakhanhvn.skysim.nms.nmsutil.packetlistener.Cancellable;
+
 import java.util.Iterator;
 import java.util.Collections;
+
 import vn.giakhanhvn.skysim.nms.nmsutil.reflection.util.AccessUtil;
+
 import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
 import java.util.concurrent.Executors;
+
 import vn.giakhanhvn.skysim.nms.nmsutil.packetlistener.IPacketListener;
+
 import java.util.concurrent.Executor;
 import java.lang.reflect.Method;
+
 import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.MethodResolver;
+
 import java.lang.reflect.Field;
+
 import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.FieldResolver;
 import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.minecraft.NMSClassResolver;
 
-public abstract class ChannelAbstract
-{
+public abstract class ChannelAbstract {
     protected static final NMSClassResolver nmsClassResolver;
     static final Class<?> EntityPlayer;
     static final Class<?> PlayerConnection;
@@ -41,18 +50,18 @@ public abstract class ChannelAbstract
     static final String KEY_HANDLER = "packet_handler";
     static final String KEY_PLAYER = "packet_listener_player";
     static final String KEY_SERVER = "packet_listener_server";
-    private IPacketListener iPacketListener;
-    
+    private final IPacketListener iPacketListener;
+
     public ChannelAbstract(final IPacketListener iPacketListener) {
         this.addChannelExecutor = Executors.newSingleThreadExecutor();
         this.removeChannelExecutor = Executors.newSingleThreadExecutor();
         this.iPacketListener = iPacketListener;
     }
-    
+
     public abstract void addChannel(final Player p0);
-    
+
     public abstract void removeChannel(final Player p0);
-    
+
     public void addServerChannel() {
         try {
             final Object dedicatedServer = ChannelAbstract.getServer.invoke(Bukkit.getServer());
@@ -63,33 +72,32 @@ public abstract class ChannelAbstract
             if (serverConnection == null) {
                 return;
             }
-            final List currentList = (List)ChannelAbstract.connectionList.get(serverConnection);
+            final List currentList = (List) ChannelAbstract.connectionList.get(serverConnection);
             final Field superListField = AccessUtil.setAccessible(currentList.getClass().getSuperclass().getDeclaredField("list"));
             final Object list = superListField.get(currentList);
             if (IListenerList.class.isAssignableFrom(list.getClass())) {
                 return;
             }
-            final List newList = Collections.<Object>synchronizedList((List<Object>)this.newListenerList());
+            final List newList = Collections.synchronizedList((List<Object>) this.newListenerList());
             for (final Object o : currentList) {
                 newList.add(o);
             }
             ChannelAbstract.connectionList.set(serverConnection, newList);
-        }
-        catch (final Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     public abstract IListenerList newListenerList();
-    
+
     protected final Object onPacketSend(final Object receiver, final Object packet, final Cancellable cancellable) {
-        return this.iPacketListener.onPacketSend(receiver, packet, (org.bukkit.event.Cancellable)cancellable);
+        return this.iPacketListener.onPacketSend(receiver, packet, cancellable);
     }
-    
+
     protected final Object onPacketReceive(final Object sender, final Object packet, final Cancellable cancellable) {
-        return this.iPacketListener.onPacketReceive(sender, packet, (org.bukkit.event.Cancellable)cancellable);
+        return this.iPacketListener.onPacketReceive(sender, packet, cancellable);
     }
-    
+
     static {
         nmsClassResolver = new NMSClassResolver();
         EntityPlayer = ChannelAbstract.nmsClassResolver.resolveSilent("EntityPlayer");
@@ -110,16 +118,13 @@ public abstract class ChannelAbstract
         craftServerFieldResolver = new MethodResolver(Bukkit.getServer().getClass());
         getServer = ChannelAbstract.craftServerFieldResolver.resolveSilent("getServer");
     }
-    
-    interface IListenerList<E> extends List<E>
-    {
+
+    interface IListenerList<E> extends List<E> {
     }
-    
-    interface IChannelWrapper
-    {
+
+    interface IChannelWrapper {
     }
-    
-    interface IChannelHandler
-    {
+
+    interface IChannelHandler {
     }
 }

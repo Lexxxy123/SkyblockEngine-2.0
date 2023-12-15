@@ -4,7 +4,9 @@ import com.google.common.util.concurrent.AtomicDouble;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.Sound;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
+
 import java.util.Iterator;
+
 import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -31,36 +33,35 @@ import org.bukkit.entity.LivingEntity;
 import vn.giakhanhvn.skysim.util.Sputnik;
 import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
 
-public class WokeGolem_W extends BaseZombie
-{
+public class WokeGolem_W extends BaseZombie {
     @Override
     public String getEntityName() {
         return Sputnik.trans("&c&lWoke Golem");
     }
-    
+
     @Override
     public double getEntityMaxHealth() {
         return 2.0E7;
     }
-    
+
     @Override
     public double getDamageDealt() {
         return 150000.0;
     }
-    
+
     @Override
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
-        ((CraftZombie)entity).setBaby(false);
-        final AttributeInstance followRange = ((CraftLivingEntity)entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
+        ((CraftZombie) entity).setBaby(false);
+        final AttributeInstance followRange = ((CraftLivingEntity) entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
         followRange.setValue(500.0);
-        Sputnik.applyPacketGolem((Entity)entity);
-        EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 0);
-        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("NNPS", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+        Sputnik.applyPacketGolem(entity);
+        EntityManager.DEFENSE_PERCENTAGE.put(entity, 0);
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("NNPS", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
         new BukkitRunnable() {
             Location loc = entity.getLocation();
-            final EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
-            
+            final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
+
             public void run() {
                 if (entity.isDead()) {
                     this.cancel();
@@ -73,13 +74,13 @@ public class WokeGolem_W extends BaseZombie
                 if (entity.hasMetadata("frozen")) {
                     return;
                 }
-                if (((CraftZombie)entity).getTarget() == null) {
+                if (((CraftZombie) entity).getTarget() == null) {
                     return;
                 }
-                if (((CraftZombie)entity).getTarget().getWorld() != entity.getWorld()) {
+                if (((CraftZombie) entity).getTarget().getWorld() != entity.getWorld()) {
                     return;
                 }
-                if (((CraftZombie)entity).getTarget().getLocation().distance(entity.getLocation()) <= 4.0) {
+                if (((CraftZombie) entity).getTarget().getLocation().distance(entity.getLocation()) <= 4.0) {
                     return;
                 }
                 if (this.loc.distance(loc2) >= 0.2) {
@@ -103,10 +104,10 @@ public class WokeGolem_W extends BaseZombie
                 }
                 this.nms.setSprinting(false);
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 7L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 7L);
         new BukkitRunnable() {
             public void run() {
-                final EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
+                final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
@@ -115,7 +116,7 @@ public class WokeGolem_W extends BaseZombie
                     if (!(entities instanceof Player)) {
                         continue;
                     }
-                    final Player target = (Player)entities;
+                    final Player target = (Player) entities;
                     if (target.getGameMode() == GameMode.CREATIVE) {
                         continue;
                     }
@@ -127,45 +128,45 @@ public class WokeGolem_W extends BaseZombie
                     }
                     entity.teleport(entity.getLocation().setDirection(target.getLocation().toVector().subtract(target.getLocation().toVector())));
                     for (final Player players : Bukkit.getOnlinePlayers()) {
-                        ((CraftPlayer)players).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)entity).getHandle(), 0));
+                        ((CraftPlayer) players).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) entity).getHandle(), 0));
                     }
-                    nms.r((net.minecraft.server.v1_8_R3.Entity)((CraftPlayer)target).getHandle());
+                    nms.r(((CraftPlayer) target).getHandle());
                     break;
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
     }
-    
+
     @Override
     public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
         killed.getWorld().playSound(killed.getLocation(), Sound.IRONGOLEM_DEATH, 1.0f, 1.0f);
     }
-    
+
     @Override
     public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
         e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.IRONGOLEM_HIT, 1.0f, 1.0f);
     }
-    
+
     @Override
     public boolean isBaby() {
         return false;
     }
-    
+
     @Override
     public boolean hasNameTag() {
         return false;
     }
-    
+
     @Override
     public boolean isVillager() {
         return false;
     }
-    
+
     @Override
     public double getXPDropped() {
         return 5000.0;
     }
-    
+
     @Override
     public double getMovementSpeed() {
         return 0.37;

@@ -6,11 +6,14 @@ import org.bukkit.plugin.Plugin;
 import vn.giakhanhvn.skysim.SkySimEngine;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
+
 import java.util.Map;
 import java.util.Iterator;
+
 import org.bukkit.inventory.Inventory;
 import vn.giakhanhvn.skysim.user.User;
 import vn.giakhanhvn.skysim.util.SUtil;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -18,14 +21,13 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class CraftingTableGUI extends GUI implements BlockBasedGUI
-{
+public class CraftingTableGUI extends GUI implements BlockBasedGUI {
     private static final ItemStack RECIPE_REQUIRED;
     private static final int[] CRAFT_SLOTS;
 
     private static final ItemStack LOCKED_RECIPE_ITEM;
     private static final int RESULT_SLOT = 24;
-    
+
     public CraftingTableGUI() {
         super("Craft Item", 54);
         this.fill(CraftingTableGUI.BLACK_STAINED_GLASS_PANE, 13, 34);
@@ -57,8 +59,7 @@ public class CraftingTableGUI extends GUI implements BlockBasedGUI
                             return;
                         }
                         e.getCursor().setAmount(e.getCursor().getAmount() + result.getAmount());
-                    }
-                    else {
+                    } else {
                         e.getWhoClicked().setItemOnCursor(result);
                     }
                 }
@@ -97,32 +98,31 @@ public class CraftingTableGUI extends GUI implements BlockBasedGUI
                         materials.remove(ind);
                         if (remaining <= 0) {
                             inventory.setItem(slot, new ItemStack(Material.AIR));
-                        }
-                        else {
+                        } else {
                             material.setAmount(remaining);
                             stack.setAmount(remaining);
                         }
                     }
                 }
                 if (shift) {
-                    final Map<Integer, ItemStack> back = e.getWhoClicked().getInventory().addItem(new ItemStack[] { SUtil.setStackAmount(result, result.getAmount() * max) });
+                    final Map<Integer, ItemStack> back = e.getWhoClicked().getInventory().addItem(SUtil.setStackAmount(result, result.getAmount() * max));
                     for (final ItemStack stack2 : back.values()) {
                         e.getWhoClicked().getWorld().dropItem(e.getWhoClicked().getLocation(), stack2).setVelocity(e.getWhoClicked().getLocation().getDirection());
                     }
                 }
                 CraftingTableGUI.this.update(inventory);
             }
-            
+
             @Override
             public int getSlot() {
                 return 24;
             }
-            
+
             @Override
             public ItemStack getItem() {
                 return CraftingTableGUI.RECIPE_REQUIRED;
             }
-            
+
             @Override
             public boolean canPickup() {
                 return false;
@@ -130,7 +130,7 @@ public class CraftingTableGUI extends GUI implements BlockBasedGUI
         });
         this.set(GUIClickableItem.getCloseItem(49));
     }
-    
+
     @Override
     public void onOpen(final GUIOpenEvent e) {
         new BukkitRunnable() {
@@ -148,29 +148,29 @@ public class CraftingTableGUI extends GUI implements BlockBasedGUI
                         final Recipe<?> recipe = Recipe.parseRecipe(CraftingTableGUI.this.getCurrentRecipe(inventory));
                         if (recipe == null) {
                             inventory.setItem(24, CraftingTableGUI.RECIPE_REQUIRED);
-                            SUtil.border(inventory, gui, SUtil.createColoredStainedGlassPane((short)14, ChatColor.RESET + " "), 45, 48, true, false);
-                            SUtil.border(inventory, gui, SUtil.createColoredStainedGlassPane((short)14, ChatColor.RESET + " "), 50, 53, true, false);
+                            SUtil.border(inventory, gui, SUtil.createColoredStainedGlassPane((short) 14, ChatColor.RESET + " "), 45, 48, true, false);
+                            SUtil.border(inventory, gui, SUtil.createColoredStainedGlassPane((short) 14, ChatColor.RESET + " "), 50, 53, true, false);
                             return;
                         }
-                        if (!recipe.isUnlockedForPlayer(User.getUser(e.getPlayer().getUniqueId())) && !isVanilla(recipe)){
+                        if (!recipe.isUnlockedForPlayer(User.getUser(e.getPlayer().getUniqueId())) && !isVanilla(recipe)) {
                             inventory.setItem(24, CraftingTableGUI.LOCKED_RECIPE_ITEM);
                             return;
                         }
                         final SItem sItem = recipe.getResult();
                         inventory.setItem(24, sItem.getStack());
-                        SUtil.border(inventory, gui, SUtil.createColoredStainedGlassPane((short)5, ChatColor.RESET + " "), 45, 48, true, false);
-                        SUtil.border(inventory, gui, SUtil.createColoredStainedGlassPane((short)5, ChatColor.RESET + " "), 50, 53, true, false);
+                        SUtil.border(inventory, gui, SUtil.createColoredStainedGlassPane((short) 5, ChatColor.RESET + " "), 45, 48, true, false);
+                        SUtil.border(inventory, gui, SUtil.createColoredStainedGlassPane((short) 5, ChatColor.RESET + " "), 50, 53, true, false);
                     }
-                }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 1L);
+                }.runTaskLater(SkySimEngine.getPlugin(), 1L);
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
     }
-    
+
     @Override
     public Material getBlock() {
         return Material.WORKBENCH;
     }
-    
+
     private ItemStack[] getCurrentRecipe(final Inventory inventory) {
         final ItemStack[] stacks = new ItemStack[9];
         for (int i = 0; i < CraftingTableGUI.CRAFT_SLOTS.length; ++i) {
@@ -178,7 +178,7 @@ public class CraftingTableGUI extends GUI implements BlockBasedGUI
         }
         return stacks;
     }
-    
+
     private static int indexOf(final Recipe<?> recipe, final List<MaterialQuantifiable> ingredients, final MaterialQuantifiable search) {
         final List<SMaterial> exchangeables = Recipe.getExchangeablesOf(search.getMaterial());
         for (int i = 0; i < ingredients.size(); ++i) {
@@ -192,6 +192,7 @@ public class CraftingTableGUI extends GUI implements BlockBasedGUI
         }
         return -1;
     }
+
     private boolean isVanilla(Recipe<?> recipe) {
         if (recipe instanceof ShapedRecipe) {
             return ((ShapedRecipe) recipe).isVanilla();
@@ -200,10 +201,10 @@ public class CraftingTableGUI extends GUI implements BlockBasedGUI
         }
         return false;
     }
-    
+
     static {
         RECIPE_REQUIRED = SUtil.createNamedItemStack(Material.BARRIER, ChatColor.RED + "Recipe Required");
         LOCKED_RECIPE_ITEM = SUtil.createNamedItemStack(Material.BARRIER, ChatColor.RED + "Locked Recipe");
-        CRAFT_SLOTS = new int[] { 10, 11, 12, 19, 20, 21, 28, 29, 30 };
+        CRAFT_SLOTS = new int[]{10, 11, 12, 19, 20, 21, 28, 29, 30};
     }
 }

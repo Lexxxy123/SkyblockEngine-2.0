@@ -5,10 +5,9 @@ import org.bukkit.ChatColor;
 import vn.giakhanhvn.skysim.Repeater;
 
 @CommandParameters(description = "Spec test command.", aliases = "db:tsr")
-public class ToggleRepeatingCommand extends SCommand
-{
+public class ToggleRepeatingCommand extends SCommand {
     public Repeater repeater;
-    
+
     @Override
     public void run(final CommandSource sender, final String[] args) {
         final Player player = sender.getPlayer();
@@ -16,13 +15,11 @@ public class ToggleRepeatingCommand extends SCommand
             if (this.repeater == null) {
                 this.repeater = new Repeater();
                 player.sendMessage("SERVER LOOP TURNED ON");
-            }
-            else {
+            } else {
                 this.repeater.stop();
                 player.sendMessage("SERVER LOOP SHUTTED DOWN!");
             }
-        }
-        else {
+        } else {
             this.send(ChatColor.RED + "Something occurred while taking services from the API!");
         }
     }

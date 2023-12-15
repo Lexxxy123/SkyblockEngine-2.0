@@ -4,35 +4,42 @@ import vn.giakhanhvn.skysim.dungeons.ItemSerial;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import vn.giakhanhvn.skysim.item.orb.OrbBuff;
 import vn.giakhanhvn.skysim.item.armor.ArmorSet;
+
 import java.util.Iterator;
+
 import vn.giakhanhvn.skysim.slayer.SlayerBossType;
+
 import java.util.Collection;
+
 import vn.giakhanhvn.skysim.enchantment.Enchantment;
 import org.bukkit.ChatColor;
 import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
 import vn.giakhanhvn.skysim.util.Sputnik;
 import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.Bukkit;
+
 import java.util.UUID;
+
 import vn.giakhanhvn.skysim.reforge.Reforge;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import vn.giakhanhvn.skysim.user.User;
 import org.bukkit.entity.Player;
 
-public class ItemLore
-{
+public class ItemLore {
     private static final String SSE_ID;
-    private SItem parent;
+    private final SItem parent;
     private Player player;
     private User user;
-    
+
     public ItemLore(final SItem parent) {
         this.player = null;
         this.user = null;
         this.parent = parent;
     }
-    
+
     public List<String> asBukkitLore() {
         final String baseMgD = "0";
         final List<String> lore = new ArrayList<String>();
@@ -42,13 +49,13 @@ public class ItemLore
         final Reforge reforge = (this.parent.getReforge() == null) ? Reforge.blank() : this.parent.getReforge();
         try {
             this.player = Bukkit.getPlayer(UUID.fromString(this.parent.getDataString("owner")));
+        } catch (final IllegalArgumentException ex) {
         }
-        catch (final IllegalArgumentException ex) {}
         if (this.player != null) {
             this.user = User.getUser(this.player.getUniqueId());
         }
         if (statistics instanceof PlayerBoostStatistics) {
-            final PlayerBoostStatistics playerBoostStatistics = (PlayerBoostStatistics)material.getStatistics();
+            final PlayerBoostStatistics playerBoostStatistics = (PlayerBoostStatistics) material.getStatistics();
             String hpb1 = "";
             String hpb2 = "";
             String hpb3 = "";
@@ -62,8 +69,7 @@ public class ItemLore
                 if (this.parent.getType().getStatistics().getType() == GenericItemType.WEAPON || this.parent.getType().getStatistics().getType() == GenericItemType.RANGED_WEAPON) {
                     finalhpb1 = this.parent.getDataInt("hpb") * 2;
                     hpb1 = Sputnik.trans(" &e(+" + SUtil.commaify(finalhpb1) + ")");
-                }
-                else if (this.parent.getType().getStatistics().getType() == GenericItemType.ARMOR) {
+                } else if (this.parent.getType().getStatistics().getType() == GenericItemType.ARMOR) {
                     finalhpb2 = this.parent.getDataInt("hpb") * 2;
                     finalhpb3 = this.parent.getDataInt("hpb") * 4;
                     hpb2 = Sputnik.trans(" &e(+" + SUtil.commaify(finalhpb2) + ")");
@@ -72,7 +78,7 @@ public class ItemLore
             }
             if (this.parent.getType().getStatistics().getType() == GenericItemType.WEAPON && this.parent.getEnchantment(EnchantmentType.ONE_FOR_ALL) != null) {
                 final Enchantment e = this.parent.getEnchantment(EnchantmentType.ONE_FOR_ALL);
-                grantedATKDmg = playerBoostStatistics.getBaseDamage() * (e.getLevel() * 210) / 100;
+                grantedATKDmg = playerBoostStatistics.getBaseDamage() * (e.getLevel() * 210L) / 100;
             }
             if (this.parent.getType().getStatistics().getType() == GenericItemType.ARMOR) {
                 final Enchantment growth = this.parent.getEnchantment(EnchantmentType.GROWTH);
@@ -100,34 +106,31 @@ public class ItemLore
             if (this.parent.getType() == SMaterial.EMERALD_BLADE) {
                 if (this.user != null) {
                     final long cap = 35000000000L;
-                    final double d1 = Math.pow((double)Math.min(cap, this.user.getCoins()), 0.25);
+                    final double d1 = Math.pow((double) Math.min(cap, this.user.getCoins()), 0.25);
                     final double finald = 2.5 * d1;
                     if (finald != 0.0) {
-                        damage = this.addPossiblePropertyInt("Damage", playerBoostStatistics.getBaseDamage() + finald + finalhpb1 + grantedATKDmg, "" + hpb1, false, lore);
+                        damage = this.addPossiblePropertyInt("Damage", playerBoostStatistics.getBaseDamage() + finald + finalhpb1 + grantedATKDmg, hpb1, false, lore);
+                    } else {
+                        damage = this.addPossiblePropertyInt("Damage", (double) (playerBoostStatistics.getBaseDamage() + finalhpb1 + grantedATKDmg), hpb1, false, lore);
                     }
-                    else {
-                        damage = this.addPossiblePropertyInt("Damage", (double)(playerBoostStatistics.getBaseDamage() + finalhpb1 + grantedATKDmg), "" + hpb1, false, lore);
-                    }
+                } else {
+                    damage = this.addPossiblePropertyInt("Damage", (double) (playerBoostStatistics.getBaseDamage() + finalhpb1 + grantedATKDmg), hpb1, false, lore);
                 }
-                else {
-                    damage = this.addPossiblePropertyInt("Damage", (double)(playerBoostStatistics.getBaseDamage() + finalhpb1 + grantedATKDmg), "" + hpb1, false, lore);
-                }
+            } else {
+                damage = this.addPossiblePropertyInt("Damage", (double) (playerBoostStatistics.getBaseDamage() + finalhpb1 + grantedATKDmg), hpb1, false, lore);
             }
-            else {
-                damage = this.addPossiblePropertyInt("Damage", (double)(playerBoostStatistics.getBaseDamage() + finalhpb1 + grantedATKDmg), "" + hpb1, false, lore);
-            }
-            final boolean strength = this.addPossiblePropertyInt("Strength", playerBoostStatistics.getBaseStrength() + finalhpb1, SUtil.blackMagic(reforge.getStrength().getForRarity(this.parent.getRarity())), "" + hpb1, false, lore);
-            final boolean critChance = this.addPossiblePropertyInt("Crit Chance", (int)(playerBoostStatistics.getBaseCritChance() * 100.0), (int)(reforge.getCritChance().getForRarity(this.parent.getRarity()) * 100.0), "%", false, lore);
-            final boolean critDamage = this.addPossiblePropertyInt("Crit Damage", (int)(playerBoostStatistics.getBaseCritDamage() * 100.0), (int)(reforge.getCritDamage().getForRarity(this.parent.getRarity()) * 100.0), "%", false, lore);
-            final boolean atkSpeed = this.addPossiblePropertyIntAtkSpeed("Bonus Attack Speed", (int)Math.min(100.0, playerBoostStatistics.getBaseAttackSpeed()), (int)Math.round(reforge.getAttackSpeed().getForRarity(this.parent.getRarity())), "%", false, lore);
+            final boolean strength = this.addPossiblePropertyInt("Strength", playerBoostStatistics.getBaseStrength() + finalhpb1, SUtil.blackMagic(reforge.getStrength().getForRarity(this.parent.getRarity())), hpb1, false, lore);
+            final boolean critChance = this.addPossiblePropertyInt("Crit Chance", (int) (playerBoostStatistics.getBaseCritChance() * 100.0), (int) (reforge.getCritChance().getForRarity(this.parent.getRarity()) * 100.0), "%", false, lore);
+            final boolean critDamage = this.addPossiblePropertyInt("Crit Damage", (int) (playerBoostStatistics.getBaseCritDamage() * 100.0), (int) (reforge.getCritDamage().getForRarity(this.parent.getRarity()) * 100.0), "%", false, lore);
+            final boolean atkSpeed = this.addPossiblePropertyIntAtkSpeed("Bonus Attack Speed", (int) Math.min(100.0, playerBoostStatistics.getBaseAttackSpeed()), (int) Math.round(reforge.getAttackSpeed().getForRarity(this.parent.getRarity())), "%", false, lore);
             if (damage || strength || critChance || critDamage || atkSpeed) {
                 lore.add("");
             }
             final boolean health = this.addPossiblePropertyInt("Health", playerBoostStatistics.getBaseHealth() + finalhpb3 + grantedHP, " HP" + hpb3, true, lore);
-            final boolean defense2 = this.addPossiblePropertyInt("Defense", playerBoostStatistics.getBaseDefense() + finalhpb2 + grantedDEF, "" + hpb2, true, lore);
-            final boolean speed = this.addPossiblePropertyInt("Speed", (int)(playerBoostStatistics.getBaseSpeed() * 100.0), "", true, lore);
+            final boolean defense2 = this.addPossiblePropertyInt("Defense", playerBoostStatistics.getBaseDefense() + finalhpb2 + grantedDEF, hpb2, true, lore);
+            final boolean speed = this.addPossiblePropertyInt("Speed", (int) (playerBoostStatistics.getBaseSpeed() * 100.0), "", true, lore);
             final boolean intelligence = this.addPossiblePropertyInt("Intelligence", playerBoostStatistics.getBaseIntelligence(), SUtil.blackMagic(reforge.getIntelligence().getForRarity(this.parent.getRarity())), "", true, lore);
-            final boolean magicFind = this.addPossiblePropertyInt("Magic Find", (int)(playerBoostStatistics.getBaseMagicFind() * 100.0), "", true, lore);
+            final boolean magicFind = this.addPossiblePropertyInt("Magic Find", (int) (playerBoostStatistics.getBaseMagicFind() * 100.0), "", true, lore);
             final boolean ferocity = this.addPossiblePropertyInt("Ferocity", playerBoostStatistics.getBaseFerocity(), SUtil.blackMagic(reforge.getFerocity().getForRarity(this.parent.getRarity())), "", true, lore);
             if (health || defense2 || speed || intelligence || magicFind || ferocity) {
                 lore.add("");
@@ -141,8 +144,7 @@ public class ItemLore
             for (final Enchantment enchantment : enchantments) {
                 if (enchantment.getDisplayName().contains(ChatColor.LIGHT_PURPLE.toString())) {
                     filteredList_ultimate_a.add(enchantment);
-                }
-                else {
+                } else {
                     filteredList_normal_a.add(enchantment);
                 }
             }
@@ -156,8 +158,7 @@ public class ItemLore
                 for (final Enchantment enchantment2 : enchantments) {
                     if (enchantment2.getDisplayName().contains(ChatColor.LIGHT_PURPLE.toString())) {
                         filteredList_ultimate.add(enchantment2);
-                    }
-                    else {
+                    } else {
                         filteredList_normal.add(enchantment2);
                     }
                 }
@@ -173,15 +174,13 @@ public class ItemLore
                         lore.add(ChatColor.GRAY + line);
                     }
                 }
-            }
-            else if (amount <= 10) {
+            } else if (amount <= 10) {
                 final List<Enchantment> filteredList_ultimate = new ArrayList<Enchantment>();
                 final List<Enchantment> filteredList_normal = new ArrayList<Enchantment>();
                 for (final Enchantment enchantment2 : enchantments) {
                     if (enchantment2.getDisplayName().contains(ChatColor.LIGHT_PURPLE.toString())) {
                         filteredList_ultimate.add(enchantment2);
-                    }
-                    else {
+                    } else {
                         filteredList_normal.add(enchantment2);
                     }
                 }
@@ -189,11 +188,9 @@ public class ItemLore
                 for (final Enchantment enchantment2 : filteredList_ultimate) {
                     lore.add(enchantment2.getDisplayName());
                 }
-            }
-            else if (amount <= 25) {
+            } else if (amount <= 25) {
                 lore.addAll(SUtil.combineElements(stringEnchantments, ", ", 2));
-            }
-            else {
+            } else {
                 lore.addAll(SUtil.combineElements(stringEnchantments, ", ", 3));
             }
             lore.add("");
@@ -301,8 +298,7 @@ public class ItemLore
             }
             if (ability.getAbilityCooldownTicks() >= 20 && ability.getAbilityCooldownTicks() <= 1200) {
                 lore.add(ChatColor.DARK_GRAY + "Cooldown: " + ChatColor.GREEN + ability.getAbilityCooldownTicks() / 20 + "s");
-            }
-            else if (ability.getAbilityCooldownTicks() > 1200) {
+            } else if (ability.getAbilityCooldownTicks() > 1200) {
                 lore.add(ChatColor.DARK_GRAY + "Cooldown: " + ChatColor.GREEN + ability.getAbilityCooldownTicks() / 20 / 60 + "m");
             }
             lore.add("");
@@ -414,14 +410,11 @@ public class ItemLore
         if (this.user != null) {
             if (this.user.getBCollection() < 100L && this.parent.getType() == SMaterial.GOLDEN_TROPHY_SADAN) {
                 lore.add(Sputnik.trans("&c❣ &aRequires &6100 Sadan Kills"));
-            }
-            else if (this.user.getBCollection() < 1000L && this.parent.getType() == SMaterial.DIAMOND_TROPHY_SADAN) {
+            } else if (this.user.getBCollection() < 1000L && this.parent.getType() == SMaterial.DIAMOND_TROPHY_SADAN) {
                 lore.add(Sputnik.trans("&c❣ &aRequires &61,000 Sadan Kills"));
-            }
-            else if (SlayerBossType.SlayerMobType.ENDERMAN.getLevelForXP(this.user.getEndermanSlayerXP()) < 6 && this.parent.getType() == SMaterial.HIDDEN_GYROKINETIC_WAND) {
+            } else if (SlayerBossType.SlayerMobType.ENDERMAN.getLevelForXP(this.user.getEndermanSlayerXP()) < 6 && this.parent.getType() == SMaterial.HIDDEN_GYROKINETIC_WAND) {
                 lore.add(Sputnik.trans("&4☠ &cRequires &5Enderman Slayer 6."));
-            }
-            else if (this.user.getBCollection() < 25L && this.parent.getType() == SMaterial.HIDDEN_SOUL_WHIP) {
+            } else if (this.user.getBCollection() < 25L && this.parent.getType() == SMaterial.HIDDEN_SOUL_WHIP) {
                 lore.add(Sputnik.trans("&c❣ &aRequires &625 Sadan Kills"));
             }
         }
@@ -435,7 +428,7 @@ public class ItemLore
         }
         return lore;
     }
-    
+
     private boolean addPossiblePropertyInt(final String name, double i, final int r, final String succeeding, final boolean green, final List<String> list) {
         if (this.player == null) {
             i += r;
@@ -446,12 +439,11 @@ public class ItemLore
             final StringBuilder builder = new StringBuilder();
             builder.append(ChatColor.GRAY).append(name).append(": ").append(green ? ChatColor.GREEN : ChatColor.RED).append((i < 0.0) ? "" : "+").append(SUtil.commaify(Math.round(i))).append(succeeding);
             if (r != 0) {
-                builder.append(ChatColor.BLUE).append(" (").append("").append((r < 0) ? "" : "+").append(r).append(")");
+                builder.append(ChatColor.BLUE).append(" (").append((r < 0) ? "" : "+").append(r).append(")");
             }
             list.add(builder.toString());
             return true;
-        }
-        else if (this.player.getWorld().getName().contains("f6") || this.player.getWorld().getName().contains("dungeon")) {
+        } else if (this.player.getWorld().getName().contains("f6") || this.player.getWorld().getName().contains("dungeon")) {
             i += r;
             i += this.getBoostStats(this.parent, name);
             if (i == 0.0) {
@@ -460,12 +452,11 @@ public class ItemLore
             final StringBuilder builder = new StringBuilder();
             builder.append(ChatColor.GRAY).append(name).append(": ").append(green ? ChatColor.GREEN : ChatColor.RED).append((i < 0.0) ? "" : "+").append(SUtil.commaify(Math.round(i))).append(succeeding);
             if (r != 0) {
-                builder.append(ChatColor.BLUE).append(" (").append("").append((r < 0) ? "" : "+").append(r).append(")");
+                builder.append(ChatColor.BLUE).append(" (").append((r < 0) ? "" : "+").append(r).append(")");
             }
             list.add(builder.toString());
             return true;
-        }
-        else {
+        } else {
             i += r;
             if (i == 0.0) {
                 return false;
@@ -473,14 +464,14 @@ public class ItemLore
             final StringBuilder builder = new StringBuilder();
             builder.append(ChatColor.GRAY).append(name).append(": ").append(green ? ChatColor.GREEN : ChatColor.RED).append((i < 0.0) ? "" : "+").append(SUtil.commaify(Math.round(i))).append(succeeding);
             if (r != 0) {
-                builder.append(ChatColor.BLUE).append(" (").append("").append((r < 0) ? "" : "+").append(r).append(")");
+                builder.append(ChatColor.BLUE).append(" (").append((r < 0) ? "" : "+").append(r).append(")");
             }
             builder.append(" " + this.getBoostLore(this.parent, i, name));
             list.add(builder.toString());
             return true;
         }
     }
-    
+
     private String getBoostLore(final SItem sitem, final double baseDamagem, final String stats) {
         if (sitem != null) {
             final ItemSerial is = ItemSerial.getItemBoostStatistics(sitem);
@@ -488,38 +479,28 @@ public class ItemLore
             String suffix = "";
             if (stats.contains("Damage") && !stats.contains("Crit")) {
                 amount = is.getDamage();
-            }
-            else if (stats.contains("Strength")) {
+            } else if (stats.contains("Strength")) {
                 amount = is.getStrength();
-            }
-            else if (stats.contains("Chance")) {
+            } else if (stats.contains("Chance")) {
                 amount = is.getCritchance() * 100.0;
                 suffix = "%";
-            }
-            else if (stats.contains("Crit") && stats.contains("Damage")) {
+            } else if (stats.contains("Crit") && stats.contains("Damage")) {
                 amount = is.getCritdamage() * 100.0;
                 suffix = "%";
-            }
-            else if (stats.contains("Ferocity")) {
+            } else if (stats.contains("Ferocity")) {
                 amount = is.getFerocity();
-            }
-            else if (stats.contains("Intelligence")) {
+            } else if (stats.contains("Intelligence")) {
                 amount = is.getIntelligence();
-            }
-            else if (stats.contains("Health")) {
+            } else if (stats.contains("Health")) {
                 amount = is.getHealth();
-            }
-            else if (stats.contains("Defense")) {
+            } else if (stats.contains("Defense")) {
                 amount = is.getDefense();
-            }
-            else if (stats.contains("Magic")) {
+            } else if (stats.contains("Magic")) {
                 amount = is.getMagicFind() * 100.0;
-            }
-            else if (stats.contains("Bonus")) {
+            } else if (stats.contains("Bonus")) {
                 amount = is.getAtkSpeed();
                 suffix = "%";
-            }
-            else if (stats.contains("Speed")) {
+            } else if (stats.contains("Speed")) {
                 amount = is.getSpeed();
             }
             if (sitem.getDataBoolean("dungeons_item")) {
@@ -534,7 +515,7 @@ public class ItemLore
         }
         return "";
     }
-    
+
     private double getBoostStats(final SItem sitem, final String stats) {
         if (sitem != null) {
             final ItemSerial is = ItemSerial.getItemBoostStatistics(sitem);
@@ -542,45 +523,35 @@ public class ItemLore
             String suffix = "";
             if (stats.contains("Damage") && !stats.contains("Crit")) {
                 amount = is.getDamage();
-            }
-            else if (stats.contains("Strength")) {
+            } else if (stats.contains("Strength")) {
                 amount = is.getStrength();
-            }
-            else if (stats.contains("Chance")) {
+            } else if (stats.contains("Chance")) {
                 amount = is.getCritchance() * 100.0;
                 suffix = "%";
-            }
-            else if (stats.contains("Crit") && stats.contains("Damage")) {
+            } else if (stats.contains("Crit") && stats.contains("Damage")) {
                 amount = is.getCritdamage() * 100.0;
                 suffix = "%";
-            }
-            else if (stats.contains("Ferocity")) {
+            } else if (stats.contains("Ferocity")) {
                 amount = is.getFerocity();
-            }
-            else if (stats.contains("Intelligence")) {
+            } else if (stats.contains("Intelligence")) {
                 amount = is.getIntelligence();
-            }
-            else if (stats.contains("Health")) {
+            } else if (stats.contains("Health")) {
                 amount = is.getHealth();
-            }
-            else if (stats.contains("Defense")) {
+            } else if (stats.contains("Defense")) {
                 amount = is.getDefense();
-            }
-            else if (stats.contains("Magic")) {
+            } else if (stats.contains("Magic")) {
                 amount = is.getMagicFind() * 100.0;
-            }
-            else if (stats.contains("Bonus")) {
+            } else if (stats.contains("Bonus")) {
                 amount = is.getAtkSpeed();
                 suffix = "%";
-            }
-            else if (stats.contains("Speed")) {
+            } else if (stats.contains("Speed")) {
                 amount = is.getSpeed();
             }
             return amount;
         }
         return 0.0;
     }
-    
+
     private boolean addPossiblePropertyIntAtkSpeed(final String name, double i, final int r, final String succeeding, final boolean green, final List<String> list) {
         if (this.player == null) {
             i += r;
@@ -590,13 +561,12 @@ public class ItemLore
             final StringBuilder builder = new StringBuilder();
             builder.append(ChatColor.GRAY).append(name).append(": ").append(green ? ChatColor.GREEN : ChatColor.RED).append((i < 0.0) ? "" : "+").append(SUtil.commaify(Math.round(Math.min(100.0, i)))).append(succeeding);
             if (r != 0) {
-                builder.append(ChatColor.BLUE).append(" (").append("").append((r < 0) ? "" : "+").append(r).append(succeeding).append(")");
+                builder.append(ChatColor.BLUE).append(" (").append((r < 0) ? "" : "+").append(r).append(succeeding).append(")");
             }
             builder.append(" " + this.getBoostLore(this.parent, i, name));
             list.add(builder.toString());
             return true;
-        }
-        else if (this.player.getWorld().getName().contains("f6") || this.player.getWorld().getName().contains("dungeon")) {
+        } else if (this.player.getWorld().getName().contains("f6") || this.player.getWorld().getName().contains("dungeon")) {
             i += r;
             i += this.getBoostStats(this.parent, name);
             if (i == 0.0) {
@@ -605,12 +575,11 @@ public class ItemLore
             final StringBuilder builder = new StringBuilder();
             builder.append(ChatColor.GRAY).append(name).append(": ").append(green ? ChatColor.GREEN : ChatColor.RED).append((i < 0.0) ? "" : "+").append(SUtil.commaify(Math.round(Math.min(100.0, i)))).append(succeeding);
             if (r != 0) {
-                builder.append(ChatColor.BLUE).append(" (").append("").append((r < 0) ? "" : "+").append(r).append(succeeding).append(")");
+                builder.append(ChatColor.BLUE).append(" (").append((r < 0) ? "" : "+").append(r).append(succeeding).append(")");
             }
             list.add(builder.toString());
             return true;
-        }
-        else {
+        } else {
             i += r;
             if (i == 0.0) {
                 return false;
@@ -618,18 +587,18 @@ public class ItemLore
             final StringBuilder builder = new StringBuilder();
             builder.append(ChatColor.GRAY).append(name).append(": ").append(green ? ChatColor.GREEN : ChatColor.RED).append((i < 0.0) ? "" : "+").append(SUtil.commaify(Math.round(Math.min(100.0, i)))).append(succeeding);
             if (r != 0) {
-                builder.append(ChatColor.BLUE).append(" (").append("").append((r < 0) ? "" : "+").append(r).append(succeeding).append(")");
+                builder.append(ChatColor.BLUE).append(" (").append((r < 0) ? "" : "+").append(r).append(succeeding).append(")");
             }
             builder.append(" " + this.getBoostLore(this.parent, i, name));
             list.add(builder.toString());
             return true;
         }
     }
-    
+
     private boolean addPossiblePropertyInt(final String name, final double i, final String succeeding, final boolean green, final List<String> list) {
         return this.addPossiblePropertyInt(name, i, 0, succeeding, green, list);
     }
-    
+
     private boolean addPossiblePropertyDouble(final String name, double d, final int r, final String succeeding, final boolean green, final List<String> list) {
         d += r;
         if (d == 0.0) {
@@ -643,7 +612,7 @@ public class ItemLore
         list.add(builder.toString());
         return true;
     }
-    
+
     static {
         SSE_ID = ChatColor.DARK_GRAY + "SKYSIM_ID: %s";
     }

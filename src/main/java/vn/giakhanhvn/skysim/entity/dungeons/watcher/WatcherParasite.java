@@ -9,7 +9,9 @@ import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.item.SMaterial;
 import vn.giakhanhvn.skysim.entity.SEntityEquipment;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
+
 import java.util.Iterator;
+
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
@@ -31,35 +33,34 @@ import org.bukkit.entity.LivingEntity;
 import vn.giakhanhvn.skysim.util.Sputnik;
 import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
 
-public class WatcherParasite extends BaseZombie
-{
+public class WatcherParasite extends BaseZombie {
     @Override
     public String getEntityName() {
         return Sputnik.trans("&4&lMaster Parasite");
     }
-    
+
     @Override
     public double getEntityMaxHealth() {
         return 1.5E7;
     }
-    
+
     @Override
     public double getDamageDealt() {
         return 5000000.0;
     }
-    
+
     @Override
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
         final HeadsOnWall h = new HeadsOnWall(EnumWatcherType.PARASITE);
-        final PlayerDisguise p = Sputnik.applyPacketNPC((Entity)entity, h.value, h.signature, true);
-        EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 99);
-        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("LD", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("WATCHER_E", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+        final PlayerDisguise p = Sputnik.applyPacketNPC(entity, h.value, h.signature, true);
+        EntityManager.DEFENSE_PERCENTAGE.put(entity, 99);
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("WATCHER_E", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
         p.setReplaceSounds(false);
         new BukkitRunnable() {
             public void run() {
-                final EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
+                final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
@@ -68,7 +69,7 @@ public class WatcherParasite extends BaseZombie
                     if (!(entities instanceof Player)) {
                         continue;
                     }
-                    final Player target = (Player)entities;
+                    final Player target = (Player) entities;
                     if (target.getGameMode() == GameMode.CREATIVE) {
                         continue;
                     }
@@ -86,63 +87,63 @@ public class WatcherParasite extends BaseZombie
                     }
                     entity.teleport(entity.getLocation().setDirection(target.getLocation().subtract(entities.getLocation()).toVector()));
                     for (final Player players : Bukkit.getOnlinePlayers()) {
-                        ((CraftPlayer)players).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)entity).getHandle(), 0));
+                        ((CraftPlayer) players).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) entity).getHandle(), 0));
                     }
-                    nms.r((net.minecraft.server.v1_8_R3.Entity)((CraftPlayer)target).getHandle());
+                    nms.r(((CraftPlayer) target).getHandle());
                     break;
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 3L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 3L);
     }
-    
+
     @Override
     public SEntityEquipment getEntityEquipment() {
         return new SEntityEquipment(SItem.of(SMaterial.IRON_SWORD).getStack(), null, SItem.of(SMaterial.IRON_CHESTPLATE).getStack(), null, SItem.of(SMaterial.IRON_BOOTS).getStack());
     }
-    
+
     @Override
     public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
-        final Entity en = (Entity)sEntity.getEntity();
+        final Entity en = sEntity.getEntity();
         final Vector v = new Vector(0, 0, 0);
         SUtil.delay(() -> en.setVelocity(v), 1L);
     }
-    
+
     @Override
     public void onAttack(final EntityDamageByEntityEvent e) {
     }
-    
+
     @Override
     public boolean isBaby() {
         return false;
     }
-    
+
     @Override
     public boolean hasNameTag() {
         return false;
     }
-    
+
     @Override
     public boolean isVillager() {
         return false;
     }
-    
+
     @Override
     public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
         for (int i = 0; i < 3; ++i) {
             new SEntity(killed.getLocation(), SEntityType.WATCHER_PARASITE_SILVERFISH);
         }
     }
-    
+
     @Override
     public double getXPDropped() {
         return 155.0;
     }
-    
+
     @Override
     public double getMovementSpeed() {
         return 0.3;
     }
-    
+
     @Override
     public int mobLevel() {
         return 540;

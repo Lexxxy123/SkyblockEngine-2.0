@@ -3,6 +3,7 @@ package vn.giakhanhvn.skysim.gui;
 import java.util.List;
 import java.util.Collection;
 import java.util.ArrayList;
+
 import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -12,17 +13,16 @@ import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.user.User;
 import vn.giakhanhvn.skysim.auction.AuctionItem;
 
-public class ConfirmBidGUI extends GUI
-{
+public class ConfirmBidGUI extends GUI {
     private final AuctionItem item;
     private final long amount;
-    
+
     public ConfirmBidGUI(final AuctionItem item, final long amount) {
         super("Confirm " + (item.isBin() ? "Purchase" : "Bid"), 27);
         this.item = item;
         this.amount = amount;
     }
-    
+
     @Override
     public void onOpen(final GUIOpenEvent e) {
         final Player player = e.getPlayer();
@@ -54,17 +54,16 @@ public class ConfirmBidGUI extends GUI
                 new AuctionViewGUI(ConfirmBidGUI.this.item).open(player);
                 if (ConfirmBidGUI.this.item.isBin()) {
                     player.sendMessage(ChatColor.GREEN + "Purchased " + ConfirmBidGUI.this.item.getItem().getFullName() + ChatColor.GREEN + " successfully!");
-                }
-                else {
+                } else {
                     player.sendMessage(ChatColor.GREEN + "Bid placed on " + ConfirmBidGUI.this.item.getItem().getFullName() + ChatColor.GREEN + " successfully!");
                 }
             }
-            
+
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.GREEN + "Confirm", Material.STAINED_CLAY, (short)13, 1, ChatColor.GRAY + (ConfirmBidGUI.this.item.isBin() ? "Purchasing" : "Bidding on") + ": " + ((count != 1) ? (count + "x ") : "") + ConfirmBidGUI.this.item.getItem().getFullName(), ChatColor.GRAY + "Cost: " + ChatColor.GOLD + SUtil.commaify(ConfirmBidGUI.this.amount) + " coin" + ((ConfirmBidGUI.this.amount != 1L) ? "s" : ""));
+                return SUtil.getStack(ChatColor.GREEN + "Confirm", Material.STAINED_CLAY, (short) 13, 1, ChatColor.GRAY + (ConfirmBidGUI.this.item.isBin() ? "Purchasing" : "Bidding on") + ": " + ((count != 1) ? (count + "x ") : "") + ConfirmBidGUI.this.item.getItem().getFullName(), ChatColor.GRAY + "Cost: " + ChatColor.GOLD + SUtil.commaify(ConfirmBidGUI.this.amount) + " coin" + ((ConfirmBidGUI.this.amount != 1L) ? "s" : ""));
             }
-            
+
             @Override
             public int getSlot() {
                 return 11;
@@ -80,12 +79,12 @@ public class ConfirmBidGUI extends GUI
             public void run(final InventoryClickEvent e) {
                 e.getWhoClicked().closeInventory();
             }
-            
+
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.RED + "Cancel", Material.STAINED_CLAY, (short)14, 1, new String[0]);
+                return SUtil.getStack(ChatColor.RED + "Cancel", Material.STAINED_CLAY, (short) 14, 1);
             }
-            
+
             @Override
             public int getSlot() {
                 return 15;

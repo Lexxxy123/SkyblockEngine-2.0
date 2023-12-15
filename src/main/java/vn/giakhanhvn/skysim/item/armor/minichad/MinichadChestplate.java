@@ -8,78 +8,77 @@ import vn.giakhanhvn.skysim.item.Rarity;
 import vn.giakhanhvn.skysim.item.armor.LeatherArmorStatistics;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
 
-public class MinichadChestplate implements MaterialFunction, LeatherArmorStatistics
-{
+public class MinichadChestplate implements MaterialFunction, LeatherArmorStatistics {
     @Override
     public double getBaseStrength() {
         return 60.0;
     }
-    
+
     @Override
     public double getBaseCritChance() {
         return 0.05;
     }
-    
+
     @Override
     public double getBaseCritDamage() {
         return 0.25;
     }
-    
+
     @Override
     public double getBaseIntelligence() {
         return 2.0;
     }
-    
+
     @Override
     public double getBaseMagicFind() {
         return 0.05;
     }
-    
+
     @Override
     public double getBaseSpeed() {
         return 0.02;
     }
-    
+
     @Override
     public double getBaseHealth() {
         return 120.0;
     }
-    
+
     @Override
     public double getBaseDefense() {
         return 80.0;
     }
-    
+
     @Override
     public int getColor() {
         return 3289650;
     }
-    
+
     @Override
     public String getDisplayName() {
         return "Minichad Chestplate";
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.LEGENDARY;
     }
-    
+
     @Override
     public GenericItemType getType() {
         return GenericItemType.ARMOR;
     }
-    
+
     @Override
     public SpecificItemType getSpecificType() {
         return SpecificItemType.CHESTPLATE;
     }
-    
+
     @Override
     public String getLore() {
         return null;
     }
-    
+
     @Override
     public void load() {
         final ShapedRecipe recipe = new ShapedRecipe(SMaterial.HIDDEN_MINICHAD_CHESTPLATE);

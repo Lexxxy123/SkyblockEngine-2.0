@@ -8,8 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 
 @CommandParameters(description = "Adds an enchantment from Spec to the specified item.", aliases = "sench", permission = "spt.item")
-public class SpecEnchantmentCommand extends SCommand
-{
+public class SpecEnchantmentCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (args.length != 2) {

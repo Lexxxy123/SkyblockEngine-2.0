@@ -7,45 +7,46 @@ import vn.giakhanhvn.skysim.region.Region;
 import vn.giakhanhvn.skysim.listener.PlayerListener;
 import vn.giakhanhvn.skysim.user.PlayerUtils;
 import vn.giakhanhvn.skysim.user.PlayerStatistics;
+
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.List;
+
 import vn.giakhanhvn.skysim.item.SItem;
 import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.item.MaterialStatistics;
 import vn.giakhanhvn.skysim.item.armor.TickingSet;
 
-public class MinerSet implements TickingSet
-{
+public class MinerSet implements TickingSet {
     @Override
     public String getName() {
         return "Regeneration";
     }
-    
+
     @Override
     public String getDescription() {
         return "Regenerates 5% of your max Health every second if you have been out of combat for the last 8 seconds.";
     }
-    
+
     @Override
     public Class<? extends MaterialStatistics> getHelmet() {
         return MinerHelmet.class;
     }
-    
+
     @Override
     public Class<? extends MaterialStatistics> getChestplate() {
         return MinerChestplate.class;
     }
-    
+
     @Override
     public Class<? extends MaterialStatistics> getLeggings() {
         return MinerLeggings.class;
     }
-    
+
     @Override
     public Class<? extends MaterialStatistics> getBoots() {
         return MinerBoots.class;
     }
-    
+
     @Override
     public void tick(final Player owner, final SItem helmet, final SItem chestplate, final SItem leggings, final SItem boots, final List<AtomicInteger> counters) {
         final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(owner.getUniqueId());
@@ -56,7 +57,7 @@ public class MinerSet implements TickingSet
             owner.setHealth(Math.min(owner.getMaxHealth(), owner.getHealth() + owner.getMaxHealth() * 0.05));
             counters.get(0).set(0);
         }
-        final Region region = Region.getRegionOfEntity((Entity)owner);
+        final Region region = Region.getRegionOfEntity(owner);
         if (region == null) {
             return;
         }

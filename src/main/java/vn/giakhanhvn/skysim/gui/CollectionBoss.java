@@ -1,6 +1,7 @@
 package vn.giakhanhvn.skysim.gui;
 
 import java.util.HashMap;
+
 import vn.giakhanhvn.skysim.util.Sputnik;
 import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.Material;
@@ -13,16 +14,16 @@ import vn.giakhanhvn.skysim.user.PlayerUtils;
 import vn.giakhanhvn.skysim.user.PlayerStatistics;
 import vn.giakhanhvn.skysim.user.User;
 import org.bukkit.entity.Player;
+
 import java.util.Map;
 
-public class CollectionBoss extends GUI
-{
+public class CollectionBoss extends GUI {
     public static final Map<Player, Boolean> ableToJoin;
-    
+
     public CollectionBoss() {
         super("Boss Collections", 36);
     }
-    
+
     @Override
     public void onOpen(final GUIOpenEvent e) {
         this.fill(CollectionBoss.BLACK_STAINED_GLASS_PANE);
@@ -33,58 +34,53 @@ public class CollectionBoss extends GUI
         this.set(new GUIClickableItem() {
             @Override
             public void run(final InventoryClickEvent e) {
-                GUIType.CATACOMBS_BOSS.getGUI().open((Player)e.getWhoClicked());
+                GUIType.CATACOMBS_BOSS.getGUI().open((Player) e.getWhoClicked());
                 player.playSound(player.getLocation(), Sound.NOTE_STICKS, 1.0f, 1.0f);
             }
-            
+
             @Override
             public int getSlot() {
                 return 30;
             }
-            
+
             @Override
             public ItemStack getItem() {
                 Bukkit.getServer();
-                return SUtil.getStack(ChatColor.GREEN + "Back", Material.ARROW, (short)0, 1, new String[0]);
+                return SUtil.getStack(ChatColor.GREEN + "Back", Material.ARROW, (short) 0, 1);
             }
         });
         this.set(new GUIClickableItem() {
             @Override
             public void run(final InventoryClickEvent e) {
             }
-            
+
             @Override
             public int getSlot() {
                 return 13;
             }
-            
+
             @Override
             public ItemStack getItem() {
                 String rw = "&bAble to use &cGolden Sadan Trophy&b!";
                 String a = "";
                 String b = "";
                 if (user.getBCollection() < 100L) {
-                    a = SUtil.createLineProgressBar(25, ChatColor.DARK_GREEN, (double)user.getBCollection(), 100.0);
-                }
-                else if (user.getBCollection() >= 100L) {
-                    a = SUtil.createLineProgressBar(25, ChatColor.DARK_GREEN, (double)user.getBCollection(), 1000.0);
-                }
-                else {
+                    a = SUtil.createLineProgressBar(25, ChatColor.DARK_GREEN, (double) user.getBCollection(), 100.0);
+                } else if (user.getBCollection() >= 100L) {
+                    a = SUtil.createLineProgressBar(25, ChatColor.DARK_GREEN, (double) user.getBCollection(), 1000.0);
+                } else {
                     a = Sputnik.trans("&c&lMAXED!");
                 }
                 if (user.getBCollection() >= 100L && user.getBCollection() < 1000L) {
                     rw = "&aAble to use &cDiamond Sadan Trophy&a!";
-                }
-                else if (user.getBCollection() >= 1000L) {
+                } else if (user.getBCollection() >= 1000L) {
                     rw = "&6&lMAXED OUT! NICE";
                 }
                 if (user.getBCollection() > user.getBRun6()) {
                     b = "&7Completion Rate: &cBruh, what the, how??";
-                }
-                else if (user.getBRun6() > 0L) {
-                    b = "&7Completion Rate: &a" + String.valueOf(Math.round(user.getBCollection() / (double)user.getBRun6() * 100.0)) + "%";
-                }
-                else {
+                } else if (user.getBRun6() > 0L) {
+                    b = "&7Completion Rate: &a" + Math.round(user.getBCollection() / (double) user.getBRun6() * 100.0) + "%";
+                } else {
                     b = "&7Completion Rate: &cHaven't played.";
                 }
                 ItemStack itemstack = null;
@@ -93,7 +89,7 @@ public class CollectionBoss extends GUI
             }
         });
     }
-    
+
     static {
         ableToJoin = new HashMap<Player, Boolean>();
     }

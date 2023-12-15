@@ -2,6 +2,7 @@ package vn.giakhanhvn.skysim.gui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.plugin.Plugin;
@@ -21,19 +22,22 @@ import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.item.SItem;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+
 import java.util.UUID;
 import java.util.List;
+
 import vn.giakhanhvn.skysim.item.Rarity;
+
 import java.util.Map;
+
 import org.bukkit.inventory.ItemStack;
 
-public class DungeonsItemConverting extends GUI
-{
+public class DungeonsItemConverting extends GUI {
     private static final ItemStack DEFAULT_REFORGE_ITEM;
     private static final ItemStack ANVIL_BARRIER;
     private static final Map<Rarity, Integer> COST_MAP;
     private static final List<UUID> COOLDOWN;
-    
+
     public void fillFrom(final Inventory i, final int startFromSlot, final int height, final ItemStack stacc) {
         i.setItem(startFromSlot, stacc);
         i.setItem(startFromSlot + 9, stacc);
@@ -42,7 +46,7 @@ public class DungeonsItemConverting extends GUI
         i.setItem(startFromSlot + 9 + 9 + 9 + 9, stacc);
         i.setItem(startFromSlot + 9 + 9 + 9 + 9 + 9, stacc);
     }
-    
+
     public DungeonsItemConverting() {
         super("Dungeons Crafting", 54);
         this.fill(DungeonsItemConverting.BLACK_STAINED_GLASS_PANE);
@@ -53,24 +57,24 @@ public class DungeonsItemConverting extends GUI
             public int getSlot() {
                 return 22;
             }
-            
+
             @Override
             public ItemStack getItem() {
                 return DungeonsItemConverting.DEFAULT_REFORGE_ITEM;
             }
-            
+
             @Override
             public boolean canPickup() {
                 return false;
             }
-            
+
             @Override
             public void run(final InventoryClickEvent e) {
                 final SItem sItem = SItem.find(e.getClickedInventory().getItem(13));
                 if (sItem == null) {
                     return;
                 }
-                final Player player = (Player)e.getWhoClicked();
+                final Player player = (Player) e.getWhoClicked();
                 if (!sItem.isStarrable()) {
                     player.sendMessage(ChatColor.RED + "That item cannot be upgraded!");
                     player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
@@ -83,8 +87,8 @@ public class DungeonsItemConverting extends GUI
                 }
                 if (e.getClickedInventory().getItem(31) != null && e.getClickedInventory().getItem(31).getType() != Material.BARRIER) {
                     final Economy econ = SkySimEngine.getEconomy();
-                    final long add = DungeonsItemConverting.COST_MAP.get(sItem.getRarity()) * (sItem.getStar() + 1);
-                    final double cur = econ.getBalance((OfflinePlayer)player);
+                    final long add = (long) DungeonsItemConverting.COST_MAP.get(sItem.getRarity()) * (sItem.getStar() + 1);
+                    final double cur = econ.getBalance(player);
                     if (!sItem.isStarrable() || sItem.getStar() >= 5) {
                         player.sendMessage(ChatColor.RED + "You cannot upgrade this item.");
                         return;
@@ -95,13 +99,12 @@ public class DungeonsItemConverting extends GUI
                         return;
                     }
                     player.playSound(player.getLocation(), Sound.ANVIL_USE, 1.0f, 1.0f);
-                    econ.withdrawPlayer((OfflinePlayer)player, (double)add);
-                    e.getClickedInventory().setItem(13, (ItemStack)null);
+                    econ.withdrawPlayer(player, (double) add);
+                    e.getClickedInventory().setItem(13, null);
                     final SItem build = sItem;
                     if (build.isDungeonsItem()) {
                         build.setStarAmount(build.getStar() + 1);
-                    }
-                    else {
+                    } else {
                         build.setDungeonsItem(true);
                         build.setStarAmount(0);
                     }
@@ -112,7 +115,7 @@ public class DungeonsItemConverting extends GUI
             }
         });
     }
-    
+
     @Override
     public void update(final Inventory inventory) {
         new BukkitRunnable() {
@@ -130,26 +133,23 @@ public class DungeonsItemConverting extends GUI
                     inventory.setItem(22, DungeonsItemConverting.DEFAULT_REFORGE_ITEM);
                     inventory.setItem(31, DungeonsItemConverting.ANVIL_BARRIER);
                 }
-                ItemStack stack = SUtil.getStack(ChatColor.GREEN + "Upgrade Item", Material.ANVIL, (short)0, 1, ChatColor.GRAY + "Upgrades the above items to a", ChatColor.GRAY + sItem.getFullName() + Sputnik.createStarStringFromAmount(sItem.getStar() + 1) + ChatColor.GRAY + "!", ChatColor.GRAY + "This grant an additional " + ChatColor.GREEN + (sItem.getStar() + 1) * 10 + "%", ChatColor.GRAY + "stat boost while in Dungeons!", " ", ChatColor.GRAY + "Cost", ChatColor.AQUA + SUtil.commaify(DungeonsItemConverting.COST_MAP.get(sItem.getRarity()) * (sItem.getStar() + 1)) + " Bits", " ", ChatColor.YELLOW + "Click to upgrade!");
+                ItemStack stack = SUtil.getStack(ChatColor.GREEN + "Upgrade Item", Material.ANVIL, (short) 0, 1, ChatColor.GRAY + "Upgrades the above items to a", ChatColor.GRAY + sItem.getFullName() + Sputnik.createStarStringFromAmount(sItem.getStar() + 1) + ChatColor.GRAY + "!", ChatColor.GRAY + "This grant an additional " + ChatColor.GREEN + (sItem.getStar() + 1) * 10 + "%", ChatColor.GRAY + "stat boost while in Dungeons!", " ", ChatColor.GRAY + "Cost", ChatColor.AQUA + SUtil.commaify(DungeonsItemConverting.COST_MAP.get(sItem.getRarity()) * (sItem.getStar() + 1)) + " Bits", " ", ChatColor.YELLOW + "Click to upgrade!");
                 if (!sItem.isDungeonsItem()) {
-                    stack = SUtil.getStack(ChatColor.GREEN + "Upgrade Item", Material.ANVIL, (short)0, 1, ChatColor.GRAY + "Converts the above items into a", ChatColor.GRAY + "Dungeon item! This grants the", ChatColor.GRAY + "item a stat boost while in ", ChatColor.GRAY + "Dungeons!", " ", ChatColor.GRAY + "Cost", ChatColor.AQUA + SUtil.commaify(DungeonsItemConverting.COST_MAP.get(sItem.getRarity()) * (sItem.getStar() + 1)) + " Bits", " ", ChatColor.YELLOW + "Click to upgrade!");
+                    stack = SUtil.getStack(ChatColor.GREEN + "Upgrade Item", Material.ANVIL, (short) 0, 1, ChatColor.GRAY + "Converts the above items into a", ChatColor.GRAY + "Dungeon item! This grants the", ChatColor.GRAY + "item a stat boost while in ", ChatColor.GRAY + "Dungeons!", " ", ChatColor.GRAY + "Cost", ChatColor.AQUA + SUtil.commaify(DungeonsItemConverting.COST_MAP.get(sItem.getRarity()) * (sItem.getStar() + 1)) + " Bits", " ", ChatColor.YELLOW + "Click to upgrade!");
                 }
                 ItemStack barrierStack = DungeonsItemConverting.ANVIL_BARRIER;
                 if (!sItem.isStarrable() || sItem.getStar() >= 5) {
                     stack = DungeonsItemConverting.DEFAULT_REFORGE_ITEM;
                     if (!sItem.isStarrable()) {
-                        barrierStack = SUtil.getStack(ChatColor.RED + "Error!", Material.BARRIER, (short)0, 1, ChatColor.GRAY + "This item cannot be upgraded");
+                        barrierStack = SUtil.getStack(ChatColor.RED + "Error!", Material.BARRIER, (short) 0, 1, ChatColor.GRAY + "This item cannot be upgraded");
+                    } else if (sItem.getStar() >= 5) {
+                        barrierStack = SUtil.getStack(ChatColor.RED + "Error!", Material.BARRIER, (short) 0, 1, ChatColor.GRAY + "This item cannot be upgraded any", ChatColor.GRAY + "further!");
                     }
-                    else if (sItem.getStar() >= 5) {
-                        barrierStack = SUtil.getStack(ChatColor.RED + "Error!", Material.BARRIER, (short)0, 1, ChatColor.GRAY + "This item cannot be upgraded any", ChatColor.GRAY + "further!");
-                    }
-                }
-                else {
+                } else {
                     final SItem build = sItem.clone();
                     if (build.isDungeonsItem()) {
                         build.setStarAmount(build.getStar() + 1);
-                    }
-                    else {
+                    } else {
                         build.setDungeonsItem(true);
                         build.setStarAmount(0);
                     }
@@ -167,16 +167,16 @@ public class DungeonsItemConverting extends GUI
                     s.add(" ");
                     s.add(ChatColor.YELLOW + "Click on the item above to");
                     s.add(ChatColor.YELLOW + "upgrade!");
-                    mt.setLore((List)s);
+                    mt.setLore(s);
                     st.setItemMeta(mt);
                     barrierStack = st;
                 }
                 inventory.setItem(22, stack);
                 inventory.setItem(31, barrierStack);
             }
-        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 1L);
+        }.runTaskLater(SkySimEngine.getPlugin(), 1L);
     }
-    
+
     @Override
     public void onOpen(final GUIOpenEvent e) {
         new BukkitRunnable() {
@@ -190,16 +190,16 @@ public class DungeonsItemConverting extends GUI
                 DungeonsItemConverting.this.update(inventory);
                 final SItem sItem = SItem.find(inventory.getItem(13));
                 if (sItem == null) {
-                    DungeonsItemConverting.this.fillFrom(inventory, 0, 5, SUtil.createColoredStainedGlassPane((short)14, ChatColor.RESET + " "));
-                    DungeonsItemConverting.this.fillFrom(inventory, 8, 5, SUtil.createColoredStainedGlassPane((short)14, ChatColor.RESET + " "));
+                    DungeonsItemConverting.this.fillFrom(inventory, 0, 5, SUtil.createColoredStainedGlassPane((short) 14, ChatColor.RESET + " "));
+                    DungeonsItemConverting.this.fillFrom(inventory, 8, 5, SUtil.createColoredStainedGlassPane((short) 14, ChatColor.RESET + " "));
                     return;
                 }
                 if (sItem.isStarrable() && sItem.getStar() < 5) {
-                    DungeonsItemConverting.this.fillFrom(inventory, 0, 5, SUtil.createColoredStainedGlassPane((short)5, ChatColor.RESET + " "));
-                    DungeonsItemConverting.this.fillFrom(inventory, 8, 5, SUtil.createColoredStainedGlassPane((short)5, ChatColor.RESET + " "));
+                    DungeonsItemConverting.this.fillFrom(inventory, 0, 5, SUtil.createColoredStainedGlassPane((short) 5, ChatColor.RESET + " "));
+                    DungeonsItemConverting.this.fillFrom(inventory, 8, 5, SUtil.createColoredStainedGlassPane((short) 5, ChatColor.RESET + " "));
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 5L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 5L);
         this.set(new GUIClickableItem() {
             @Override
             public void run(final InventoryClickEvent e) {
@@ -221,32 +221,32 @@ public class DungeonsItemConverting extends GUI
                     public void run() {
                         inventory.setItem(e.getSlot(), DungeonsItemConverting.ANVIL_BARRIER);
                     }
-                }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 1L);
+                }.runTaskLater(SkySimEngine.getPlugin(), 1L);
             }
-            
+
             @Override
             public int getSlot() {
                 return 31;
             }
-            
+
             @Override
             public boolean canPickup() {
                 return true;
             }
-            
+
             @Override
             public ItemStack getItem() {
                 return DungeonsItemConverting.ANVIL_BARRIER;
             }
         });
     }
-    
+
     @EventHandler
     public void onInventoryClose(final InventoryCloseEvent e) {
         if (!(e.getPlayer() instanceof Player)) {
             return;
         }
-        final Player player = (Player)e.getPlayer();
+        final Player player = (Player) e.getPlayer();
         final GUI gui = GUI.GUI_MAP.get(player.getUniqueId());
         if (gui == null) {
             return;
@@ -254,10 +254,10 @@ public class DungeonsItemConverting extends GUI
         gui.onClose(e);
         GUI.GUI_MAP.remove(player.getUniqueId());
     }
-    
+
     static {
-        DEFAULT_REFORGE_ITEM = SUtil.getStack(ChatColor.RED + "Upgrade Item", Material.ANVIL, (short)0, 1, Sputnik.trans("&7Upgrades items using"), Sputnik.trans("&bBits &7place a weapon or"), Sputnik.trans("&7armor piece above to upgrade it"), Sputnik.trans("&7to a &dDungeon item&7, improving"), Sputnik.trans("&7its stats while in Dungeons. You"), Sputnik.trans("&7can also upgrade an existing"), Sputnik.trans("&7Dungeon item's stats!"));
-        ANVIL_BARRIER = SUtil.getStack(ChatColor.RED + "Upgrade Item", Material.BARRIER, (short)0, 1, Sputnik.trans("&7Upgrades items using"), Sputnik.trans("&bBits &7place a weapon or"), Sputnik.trans("&7armor piece above to upgrade it"), Sputnik.trans("&7to a &dDungeon item&7, improving"), Sputnik.trans("&7its stats while in Dungeons. You"), Sputnik.trans("&7can also upgrade an existing"), Sputnik.trans("&7Dungeon item's stats!"));
+        DEFAULT_REFORGE_ITEM = SUtil.getStack(ChatColor.RED + "Upgrade Item", Material.ANVIL, (short) 0, 1, Sputnik.trans("&7Upgrades items using"), Sputnik.trans("&bBits &7place a weapon or"), Sputnik.trans("&7armor piece above to upgrade it"), Sputnik.trans("&7to a &dDungeon item&7, improving"), Sputnik.trans("&7its stats while in Dungeons. You"), Sputnik.trans("&7can also upgrade an existing"), Sputnik.trans("&7Dungeon item's stats!"));
+        ANVIL_BARRIER = SUtil.getStack(ChatColor.RED + "Upgrade Item", Material.BARRIER, (short) 0, 1, Sputnik.trans("&7Upgrades items using"), Sputnik.trans("&bBits &7place a weapon or"), Sputnik.trans("&7armor piece above to upgrade it"), Sputnik.trans("&7to a &dDungeon item&7, improving"), Sputnik.trans("&7its stats while in Dungeons. You"), Sputnik.trans("&7can also upgrade an existing"), Sputnik.trans("&7Dungeon item's stats!"));
         COST_MAP = new HashMap<Rarity, Integer>();
         COOLDOWN = new ArrayList<UUID>();
         DungeonsItemConverting.COST_MAP.put(Rarity.COMMON, 400);

@@ -1,36 +1,44 @@
 package vn.giakhanhvn.skysim.util;
 
 import com.google.common.collect.Iterables;
+
 import java.util.Collection;
 import java.util.ArrayDeque;
+
 import com.google.common.io.ByteArrayDataInput;
+
 import java.util.Arrays;
 import java.net.InetSocketAddress;
 import java.util.List;
+
 import com.google.common.io.ByteArrayDataOutput;
 import org.bukkit.entity.Player;
 import com.google.common.io.ByteStreams;
+
 import java.util.function.BiFunction;
+
 import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.Bukkit;
+
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.Queue;
 import java.util.Map;
+
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.bukkit.plugin.Plugin;
+
 import java.util.WeakHashMap;
 
-public class BungeeChannel
-{
+public class BungeeChannel {
     private static WeakHashMap<Plugin, BungeeChannel> registeredInstances;
     private final PluginMessageListener messageListener;
     private final Plugin plugin;
     private final Map<String, Queue<CompletableFuture<?>>> callbackMap;
     private Map<String, ForwardConsumer> forwardListeners;
     private ForwardConsumer globalForwardListener;
-    
+
     public static synchronized BungeeChannel of(final Plugin plugin) {
         return BungeeChannel.registeredInstances.compute(plugin, (k, v) -> {
             if (v == null) {
@@ -39,9 +47,9 @@ public class BungeeChannel
             return v;
         });
     }
-    
+
     public BungeeChannel(final Plugin plugin) {
-        this.plugin = Objects.<Plugin>requireNonNull(plugin, "plugin cannot be null");
+        this.plugin = Objects.requireNonNull(plugin, "plugin cannot be null");
         this.callbackMap = new HashMap<String, Queue<CompletableFuture<?>>>();
         synchronized (BungeeChannel.registeredInstances) {
             BungeeChannel.registeredInstances.compute(plugin, (k, oldInstance) -> {
@@ -56,11 +64,11 @@ public class BungeeChannel
         messenger.registerOutgoingPluginChannel(plugin, "BungeeCord");
         messenger.registerIncomingPluginChannel(plugin, "BungeeCord", this.messageListener);
     }
-    
+
     public void registerForwardListener(final ForwardConsumer globalListener) {
         this.globalForwardListener = globalListener;
     }
-    
+
     public void registerForwardListener(final String channelName, final ForwardConsumer listener) {
         if (this.forwardListeners == null) {
             this.forwardListeners = new HashMap<String, ForwardConsumer>();
@@ -69,7 +77,7 @@ public class BungeeChannel
             this.forwardListeners.put(channelName, listener);
         }
     }
-    
+
     public CompletableFuture<Integer> getPlayerCount(final String serverName) {
         final Player player = this.getFirstPlayer();
         final CompletableFuture<Integer> future = new CompletableFuture<Integer>();
@@ -82,7 +90,7 @@ public class BungeeChannel
         player.sendPluginMessage(this.plugin, "BungeeCord", output.toByteArray());
         return future;
     }
-    
+
     public CompletableFuture<List<String>> getPlayerList(final String serverName) {
         final Player player = this.getFirstPlayer();
         final CompletableFuture<List<String>> future = new CompletableFuture<List<String>>();
@@ -95,7 +103,7 @@ public class BungeeChannel
         player.sendPluginMessage(this.plugin, "BungeeCord", output.toByteArray());
         return future;
     }
-    
+
     public CompletableFuture<List<String>> getServers() {
         final Player player = this.getFirstPlayer();
         final CompletableFuture<List<String>> future = new CompletableFuture<List<String>>();
@@ -107,14 +115,14 @@ public class BungeeChannel
         player.sendPluginMessage(this.plugin, "BungeeCord", output.toByteArray());
         return future;
     }
-    
+
     public void connect(final Player player, final String serverName) {
         final ByteArrayDataOutput output = ByteStreams.newDataOutput();
         output.writeUTF("Connect");
         output.writeUTF(serverName);
         player.sendPluginMessage(this.plugin, "BungeeCord", output.toByteArray());
     }
-    
+
     public void connectOther(final String playerName, final String server) {
         final Player player = this.getFirstPlayer();
         final ByteArrayDataOutput output = ByteStreams.newDataOutput();
@@ -123,7 +131,7 @@ public class BungeeChannel
         output.writeUTF(server);
         player.sendPluginMessage(this.plugin, "BungeeCord", output.toByteArray());
     }
-    
+
     public CompletableFuture<InetSocketAddress> getIp(final Player player) {
         final CompletableFuture<InetSocketAddress> future = new CompletableFuture<InetSocketAddress>();
         synchronized (this.callbackMap) {
@@ -134,7 +142,7 @@ public class BungeeChannel
         player.sendPluginMessage(this.plugin, "BungeeCord", output.toByteArray());
         return future;
     }
-    
+
     public void sendMessage(final String playerName, final String message) {
         final Player player = this.getFirstPlayer();
         final ByteArrayDataOutput output = ByteStreams.newDataOutput();
@@ -143,7 +151,7 @@ public class BungeeChannel
         output.writeUTF(message);
         player.sendPluginMessage(this.plugin, "BungeeCord", output.toByteArray());
     }
-    
+
     public CompletableFuture<String> getServer() {
         final Player player = this.getFirstPlayer();
         final CompletableFuture<String> future = new CompletableFuture<String>();
@@ -155,7 +163,7 @@ public class BungeeChannel
         player.sendPluginMessage(this.plugin, "BungeeCord", output.toByteArray());
         return future;
     }
-    
+
     public CompletableFuture<String> getUUID(final Player player) {
         final CompletableFuture<String> future = new CompletableFuture<String>();
         synchronized (this.callbackMap) {
@@ -166,7 +174,7 @@ public class BungeeChannel
         player.sendPluginMessage(this.plugin, "BungeeCord", output.toByteArray());
         return future;
     }
-    
+
     public CompletableFuture<String> getUUID(final String playerName) {
         final Player player = this.getFirstPlayer();
         final CompletableFuture<String> future = new CompletableFuture<String>();
@@ -179,7 +187,7 @@ public class BungeeChannel
         player.sendPluginMessage(this.plugin, "BungeeCord", output.toByteArray());
         return future;
     }
-    
+
     public CompletableFuture<InetSocketAddress> getServerIp(final String serverName) {
         final Player player = this.getFirstPlayer();
         final CompletableFuture<InetSocketAddress> future = new CompletableFuture<InetSocketAddress>();
@@ -192,7 +200,7 @@ public class BungeeChannel
         player.sendPluginMessage(this.plugin, "BungeeCord", output.toByteArray());
         return future;
     }
-    
+
     public void kickPlayer(final String playerName, final String kickMessage) {
         final Player player = this.getFirstPlayer();
         final CompletableFuture<InetSocketAddress> future = new CompletableFuture<InetSocketAddress>();
@@ -205,7 +213,7 @@ public class BungeeChannel
         output.writeUTF(kickMessage);
         player.sendPluginMessage(this.plugin, "BungeeCord", output.toByteArray());
     }
-    
+
     public void forward(final String server, final String channelName, final byte[] data) {
         final Player player = this.getFirstPlayer();
         final ByteArrayDataOutput output = ByteStreams.newDataOutput();
@@ -216,7 +224,7 @@ public class BungeeChannel
         output.write(data);
         player.sendPluginMessage(this.plugin, "BungeeCord", output.toByteArray());
     }
-    
+
     public void forwardToPlayer(final String playerName, final String channelName, final byte[] data) {
         final Player player = this.getFirstPlayer();
         final ByteArrayDataOutput output = ByteStreams.newDataOutput();
@@ -227,7 +235,7 @@ public class BungeeChannel
         output.write(data);
         player.sendPluginMessage(this.plugin, "BungeeCord", output.toByteArray());
     }
-    
+
     private void onPluginMessageReceived(final String channel, final Player player, final byte[] message) {
         if (!channel.equalsIgnoreCase("BungeeCord")) {
             return;
@@ -241,15 +249,15 @@ public class BungeeChannel
                 if (callbacks == null || callbacks.isEmpty()) {
                     return;
                 }
-                 CompletableFuture<Object> callback = (CompletableFuture<Object>) callbacks.poll();
+                CompletableFuture<Object> callback = (CompletableFuture<Object>) callbacks.poll();
                 try {
                     final String s = subchannel;
                     switch (s) {
                         case "PlayerCount":
-                            callback.complete((Object)input.readInt());
+                            callback.complete(input.readInt());
                             break;
                         case "PlayerList":
-                            callback.complete(Arrays.<String>asList(input.readUTF().split(", ")));
+                            callback.complete(Arrays.asList(input.readUTF().split(", ")));
                             break;
                         case "UUIDOther":
                             callback.complete(input.readUTF());
@@ -261,12 +269,10 @@ public class BungeeChannel
                             break;
                         }
                     }
-                }
-                catch (final Exception ex) {
+                } catch (final Exception ex) {
                     callback.completeExceptionally(ex);
                 }
-            }
-            else {
+            } else {
                 final Queue<CompletableFuture<?>> callbacks = this.callbackMap.get(subchannel);
                 if (callbacks == null) {
                     final short dataLength = input.readShort();
@@ -288,12 +294,12 @@ public class BungeeChannel
                 if (callbacks.isEmpty()) {
                     return;
                 }
-                 CompletableFuture<Object> callback2 = (CompletableFuture<Object>) callbacks.poll();
+                CompletableFuture<Object> callback2 = (CompletableFuture<Object>) callbacks.poll();
                 try {
                     final String s2 = subchannel;
                     switch (s2) {
                         case "GetServers":
-                            callback2.complete(Arrays.<String>asList(input.readUTF().split(", ")));
+                            callback2.complete(Arrays.asList(input.readUTF().split(", ")));
                             break;
                         case "GetServer":
                         case "UUID":
@@ -306,31 +312,30 @@ public class BungeeChannel
                             break;
                         }
                     }
-                }
-                catch (final Exception ex2) {
+                } catch (final Exception ex2) {
                     callback2.completeExceptionally(ex2);
                 }
             }
         }
     }
-    
+
     public void unregister() {
         final Messenger messenger = Bukkit.getServer().getMessenger();
         messenger.unregisterIncomingPluginChannel(this.plugin, "BungeeCord", this.messageListener);
         messenger.unregisterOutgoingPluginChannel(this.plugin);
         this.callbackMap.clear();
     }
-    
+
     private BiFunction<String, Queue<CompletableFuture<?>>, Queue<CompletableFuture<?>>> computeQueueValue(final CompletableFuture<?> queueValue) {
-        return (BiFunction<String, Queue<CompletableFuture<?>>, Queue<CompletableFuture<?>>>)((key, value) -> {
+        return (key, value) -> {
             if (value == null) {
                 value = new ArrayDeque();
             }
             value.add(queueValue);
             return value;
-        });
+        };
     }
-    
+
     private Player getFirstPlayer() {
         final Player firstPlayer = this.getFirstPlayer0(Bukkit.getOnlinePlayers());
         if (firstPlayer == null) {
@@ -338,22 +343,21 @@ public class BungeeChannel
         }
         return firstPlayer;
     }
-    
+
     private Player getFirstPlayer0(final Player[] playerArray) {
         return (playerArray.length > 0) ? playerArray[0] : null;
     }
-    
+
     private Player getFirstPlayer0(final Collection<? extends Player> playerCollection) {
-        return (Player)Iterables.getFirst((Iterable)playerCollection, (Object)null);
+        return (Player) Iterables.getFirst(playerCollection, (Object) null);
     }
-    
+
     static {
         BungeeChannel.registeredInstances = new WeakHashMap<Plugin, BungeeChannel>();
     }
-    
+
     @FunctionalInterface
-    public interface ForwardConsumer
-    {
+    public interface ForwardConsumer {
         void accept(final String p0, final Player p1, final byte[] p2);
     }
 }

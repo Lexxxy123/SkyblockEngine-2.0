@@ -1,11 +1,14 @@
 package vn.giakhanhvn.skysim.entity.nms;
 
 import java.util.HashMap;
+
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.entity.Creature;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.inventory.ItemStack;
+
 import java.util.Iterator;
+
 import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
 import vn.giakhanhvn.skysim.entity.EntityDropType;
 import vn.giakhanhvn.skysim.entity.EntityDrop;
@@ -49,19 +52,24 @@ import net.minecraft.server.v1_8_R3.World;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.block.Block;
+
 import java.util.List;
 import java.util.ArrayList;
+
 import vn.giakhanhvn.skysim.entity.SEntity;
+
 import java.util.UUID;
+
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Entity;
+
 import java.util.Map;
+
 import vn.giakhanhvn.skysim.entity.end.EndermanStatistics;
 import vn.giakhanhvn.skysim.entity.EntityFunction;
 import net.minecraft.server.v1_8_R3.EntityEnderman;
 
-public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, EntityFunction, SlayerBoss, EndermanStatistics
-{
+public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, EntityFunction, SlayerBoss, EndermanStatistics {
     private static final TieredValue<Double> MAX_HEALTH_VALUES;
     private static final TieredValue<Double> DAMAGE_VALUES;
     private static final TieredValue<Double> SPEED_VALUES;
@@ -86,24 +94,24 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
     private boolean isBroken;
     private SEntity hologram;
     private SEntity hologram_name;
-    private ArrayList<Entity> Ar1;
+    private final ArrayList<Entity> Ar1;
     public static final Map<UUID, List<Entity>> LivingSkulls;
-    private ArrayList<Entity> Ar2;
+    private final ArrayList<Entity> Ar2;
     private final UUID spawnerUUID;
     static UUID spawnerUUID2;
     public static final Map<Entity, Block> CACHED_BLOCK;
     public static final Map<Entity, Integer> CACHED_BLOCK_ID;
     public static final Map<Entity, Byte> CACHED_BLOCK_DATA;
-    
+
     public VoidgloomSeraph(final Integer tier, final UUID spawnerUUID) {
-        super((World)((CraftWorld)Bukkit.getPlayer(spawnerUUID).getWorld()).getHandle());
+        super(((CraftWorld) Bukkit.getPlayer(spawnerUUID).getWorld()).getHandle());
         this.Ar1 = new ArrayList<Entity>();
         this.Ar2 = new ArrayList<Entity>();
         this.setSize(0.6f, 2.9f);
         this.S = 1.0f;
-        this.goalSelector.a(0, (PathfinderGoal)new PathfinderGoalFloat((EntityInsentient)this));
-        this.goalSelector.a(7, (PathfinderGoal)new PathfinderGoalRandomStroll((EntityCreature)this, 1.0));
-        this.goalSelector.a(8, (PathfinderGoal)new PathfinderGoalRandomLookaround((EntityInsentient)this));
+        this.goalSelector.a(0, new PathfinderGoalFloat(this));
+        this.goalSelector.a(7, new PathfinderGoalRandomStroll(this, 1.0));
+        this.goalSelector.a(8, new PathfinderGoalRandomLookaround(this));
         this.tier = tier;
         this.end = System.currentTimeMillis() + 240000L;
         this.spawnerUUID = spawnerUUID;
@@ -119,16 +127,16 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
         this.activeskull = false;
         VoidgloomSeraph.spawnerUUID2 = spawnerUUID;
     }
-    
+
     public VoidgloomSeraph(final World world) {
         super(world);
         this.Ar1 = new ArrayList<Entity>();
         this.Ar2 = new ArrayList<Entity>();
         this.setSize(0.6f, 2.9f);
         this.S = 1.0f;
-        this.goalSelector.a(0, (PathfinderGoal)new PathfinderGoalFloat((EntityInsentient)this));
-        this.goalSelector.a(7, (PathfinderGoal)new PathfinderGoalRandomStroll((EntityCreature)this, 1.0));
-        this.goalSelector.a(8, (PathfinderGoal)new PathfinderGoalRandomLookaround((EntityInsentient)this));
+        this.goalSelector.a(0, new PathfinderGoalFloat(this));
+        this.goalSelector.a(7, new PathfinderGoalRandomStroll(this, 1.0));
+        this.goalSelector.a(8, new PathfinderGoalRandomLookaround(this));
         this.tier = 1;
         this.activebea = false;
         this.activehs = false;
@@ -144,25 +152,25 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
         this.activeskull = false;
         VoidgloomSeraph.spawnerUUID2 = this.spawnerUUID;
     }
-    
+
     public static Player getPlayer() {
         return Bukkit.getPlayer(VoidgloomSeraph.spawnerUUID2);
     }
-    
+
     public void t_() {
         super.t_();
-        ((CraftEnderman)this.bukkitEntity).getHandle();
+        ((CraftEnderman) this.bukkitEntity).getHandle();
         final Player player = Bukkit.getPlayer(this.spawnerUUID);
         if (player == null) {
             return;
         }
-        VoidgloomSeraph.OWNER_BOSS.put(player.getUniqueId(), (Entity)this.bukkitEntity);
+        VoidgloomSeraph.OWNER_BOSS.put(player.getUniqueId(), this.bukkitEntity);
         if (this.bukkitEntity.getWorld() == player.getWorld() && this.getBukkitEntity().getLocation().distance(player.getLocation()) >= 50.0 && SUtil.random(0, 10) == 0 && !this.HeartRadi) {
             this.getBukkitEntity().teleport(player.getLocation());
-            this.getBukkitEntity().getWorld().spigot().playEffect(this.getBukkitEntity().getLocation(), Effect.SMOKE, 0, 1, (float)SUtil.random(-1.0, 1.0), 2.0f, (float)SUtil.random(-1.0, 1.0), 0.0f, 1, 12);
+            this.getBukkitEntity().getWorld().spigot().playEffect(this.getBukkitEntity().getLocation(), Effect.SMOKE, 0, 1, (float) SUtil.random(-1.0, 1.0), 2.0f, (float) SUtil.random(-1.0, 1.0), 0.0f, 1, 12);
         }
         if (!this.CooldownSkill5 && !this.HeartRadi && !this.activehs) {
-            this.teleportSkill((Entity)this.bukkitEntity, player);
+            this.teleportSkill(this.bukkitEntity, player);
             this.CooldownSkill5 = true;
             SUtil.delay(() -> this.CooldownSkill5 = false, SUtil.random(170, 250));
         }
@@ -172,7 +180,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
             this.bukkitEntity.teleport(locPitch);
         }
         if (this.bukkitEntity.getLocation().getBlock().getType() != Material.AIR && this.bukkitEntity.getLocation().add(0.0, 1.0, 0.0).getBlock().getType() != Material.AIR) {
-            this.bukkitEntity.teleport((Entity)player);
+            this.bukkitEntity.teleport(player);
         }
         Entity stand;
         if (System.currentTimeMillis() > this.end) {
@@ -188,20 +196,20 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                 stand.remove();
             }
             User.getUser(player.getUniqueId()).failSlayerQuest();
-            ((Enderman)this.bukkitEntity).remove();
+            ((Enderman) this.bukkitEntity).remove();
             this.hologram.remove();
             return;
         } else {
             stand = null;
         }
-        final Entity entity = (Entity)this.bukkitEntity;
+        final Entity entity = this.bukkitEntity;
         if (this.tier > 1 && this.activebea && !this.isBroken) {
             final Entity stand2 = Repeater.BEACON_THROW2.get(player.getUniqueId());
             if (stand2 != null) {
                 if (stand2.isDead()) {
                     BlockFallAPI.removeBlock(Repeater.BEACON.get(stand2), entity.getWorld());
                     if (VoidgloomSeraph.CACHED_BLOCK.containsKey(stand2) && VoidgloomSeraph.CACHED_BLOCK_ID.containsKey(stand2) && VoidgloomSeraph.CACHED_BLOCK_DATA.containsKey(stand2)) {
-                        VoidgloomSeraph.CACHED_BLOCK.get(stand2).getLocation().getBlock().setTypeIdAndData((int)VoidgloomSeraph.CACHED_BLOCK_ID.get(stand2), (byte)VoidgloomSeraph.CACHED_BLOCK_DATA.get(stand2), true);
+                        VoidgloomSeraph.CACHED_BLOCK.get(stand2).getLocation().getBlock().setTypeIdAndData(VoidgloomSeraph.CACHED_BLOCK_ID.get(stand2), VoidgloomSeraph.CACHED_BLOCK_DATA.get(stand2), true);
                     }
                 }
                 if (stand2.getNearbyEntities(0.5, 0.5, 0.5).contains(player)) {
@@ -212,7 +220,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                         entity.getWorld().playSound(stand.getLocation(), Sound.ITEM_BREAK, 1.0f, 0.5f);
                         entity.getWorld().playEffect(stand.getLocation(), Effect.EXPLOSION_LARGE, 1);
                         if (VoidgloomSeraph.CACHED_BLOCK.containsKey(stand) && VoidgloomSeraph.CACHED_BLOCK_ID.containsKey(stand) && VoidgloomSeraph.CACHED_BLOCK_DATA.containsKey(stand)) {
-                            VoidgloomSeraph.CACHED_BLOCK.get(stand).getLocation().getBlock().setTypeIdAndData((int)VoidgloomSeraph.CACHED_BLOCK_ID.get(stand), (byte)VoidgloomSeraph.CACHED_BLOCK_DATA.get(stand), true);
+                            VoidgloomSeraph.CACHED_BLOCK.get(stand).getLocation().getBlock().setTypeIdAndData(VoidgloomSeraph.CACHED_BLOCK_ID.get(stand), VoidgloomSeraph.CACHED_BLOCK_DATA.get(stand), true);
                         }
                     }, 4L);
                     return;
@@ -220,14 +228,10 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
             }
         }
         if (this.tier > 1 && !this.CooldownSkill && SUtil.random(0, 100) == 4 && !this.activebea && !this.activehs) {
-            Sputnik.endermanCarryBlock((Enderman)this.bukkitEntity, Material.BEACON);
+            Sputnik.endermanCarryBlock((Enderman) this.bukkitEntity, Material.BEACON);
             this.activebea = true;
-            if (VoidgloomSeraph.BEACON_THROW.containsKey(entity)) {
-                VoidgloomSeraph.BEACON_THROW.remove(entity);
-            }
-            if (Repeater.BEACON_THROW2.containsKey(player.getUniqueId())) {
-                Repeater.BEACON_THROW2.remove(player.getUniqueId());
-            }
+            VoidgloomSeraph.BEACON_THROW.remove(entity);
+            Repeater.BEACON_THROW2.remove(player.getUniqueId());
             new BukkitRunnable() {
                 public void run() {
                     if (entity.isDead()) {
@@ -241,50 +245,46 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     }
                     final Location l1 = entity.getLocation();
                     l1.add(entity.getLocation().getDirection().normalize().multiply(1));
-                    l1.setYaw((float)SUtil.random(0, 360));
-                    final ArmorStand armorStand1 = (ArmorStand)entity.getWorld().spawnEntity(l1.add(0.0, 0.3, 0.0), EntityType.ARMOR_STAND);
+                    l1.setYaw((float) SUtil.random(0, 360));
+                    final ArmorStand armorStand1 = (ArmorStand) entity.getWorld().spawnEntity(l1.add(0.0, 0.3, 0.0), EntityType.ARMOR_STAND);
                     armorStand1.getEquipment().setHelmet(SItem.of(SMaterial.BEACON).getStack());
                     armorStand1.setGravity(true);
                     armorStand1.setVisible(false);
                     armorStand1.setCustomName(ChatColor.translateAlternateColorCodes('&', ""));
                     final Vector vec = armorStand1.getLocation().getDirection().normalize().multiply(1.25);
-                    armorStand1.setMetadata("BeaconSkill", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+                    armorStand1.setMetadata("BeaconSkill", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
                     vec.setY(0.55);
                     armorStand1.setVelocity(vec);
-                    Sputnik.endermanCarryBlock((Enderman)entity, Material.AIR);
+                    Sputnik.endermanCarryBlock((Enderman) entity, Material.AIR);
                     SUtil.delay(() -> {
                         final Object val$player = player;
                         player.playSound(player.getLocation(), Sound.PORTAL_TRIGGER, 0.4f, 0.81f);
-                        return;
                     }, 10L);
                     SUtil.delay(() -> {
                         final Object val$player2 = player;
                         player.playSound(player.getLocation(), "mob.guardian.elder.idle", 0.2f, 0.85f);
-                        return;
                     }, 15L);
                     SUtil.delay(() -> {
                         final Object val$player3 = player;
                         player.playSound(player.getLocation(), "mob.guardian.elder.idle", 0.2f, 0.85f);
-                        return;
                     }, 40L);
                     SUtil.delay(() -> {
                         final Object val$player4 = player;
                         player.playSound(player.getLocation(), "mob.guardian.elder.idle", 0.2f, 0.85f);
-                        return;
                     }, 40L);
                     VoidgloomSeraph.this.Ar1.add(armorStand1);
                     Repeater.BEACON_OWNER.remove(armorStand1);
-                    Repeater.BEACON_OWNER.put((Entity)armorStand1, player);
+                    Repeater.BEACON_OWNER.put(armorStand1, player);
                     VoidgloomSeraph.a(armorStand1);
                 }
-            }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 80L);
+            }.runTaskLater(SkySimEngine.getPlugin(), 80L);
             new BukkitRunnable() {
                 public void run() {
                     if (entity.isDead()) {
                         final Entity stand = Repeater.BEACON_THROW2.get(player.getUniqueId());
                         BlockFallAPI.removeBlock(Repeater.BEACON.get(stand), entity.getWorld());
                         if (VoidgloomSeraph.CACHED_BLOCK.containsKey(stand) && VoidgloomSeraph.CACHED_BLOCK_ID.containsKey(stand) && VoidgloomSeraph.CACHED_BLOCK_DATA.containsKey(stand)) {
-                            VoidgloomSeraph.CACHED_BLOCK.get(stand).getLocation().getBlock().setTypeIdAndData((int)VoidgloomSeraph.CACHED_BLOCK_ID.get(stand), (byte)VoidgloomSeraph.CACHED_BLOCK_DATA.get(stand), true);
+                            VoidgloomSeraph.CACHED_BLOCK.get(stand).getLocation().getBlock().setTypeIdAndData(VoidgloomSeraph.CACHED_BLOCK_ID.get(stand), VoidgloomSeraph.CACHED_BLOCK_DATA.get(stand), true);
                         }
                         if (stand != null) {
                             stand.remove();
@@ -296,7 +296,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     VoidgloomSeraph.this.Ar1.add(stand);
                     if (!VoidgloomSeraph.this.isBroken) {
                         User.getUser(player.getUniqueId()).damage(player.getMaxHealth() * 3.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, entity);
-                        ((LivingEntity)player).damage(0.1, entity);
+                        player.damage(0.1, entity);
                         BlockFallAPI.removeBlock(Repeater.BEACON.get(stand), entity.getWorld());
                         if (stand != null) {
                             stand.remove();
@@ -305,28 +305,27 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                         entity.getWorld().playSound(stand.getLocation(), Sound.ITEM_BREAK, 1.0f, 0.5f);
                         entity.getWorld().playEffect(stand.getLocation(), Effect.EXPLOSION_LARGE, 1);
                         if (VoidgloomSeraph.CACHED_BLOCK.containsKey(stand) && VoidgloomSeraph.CACHED_BLOCK_ID.containsKey(stand) && VoidgloomSeraph.CACHED_BLOCK_DATA.containsKey(stand)) {
-                            VoidgloomSeraph.CACHED_BLOCK.get(stand).getLocation().getBlock().setTypeIdAndData((int)VoidgloomSeraph.CACHED_BLOCK_ID.get(stand), (byte)VoidgloomSeraph.CACHED_BLOCK_DATA.get(stand), true);
+                            VoidgloomSeraph.CACHED_BLOCK.get(stand).getLocation().getBlock().setTypeIdAndData(VoidgloomSeraph.CACHED_BLOCK_ID.get(stand), VoidgloomSeraph.CACHED_BLOCK_DATA.get(stand), true);
                         }
-                    }
-                    else {
+                    } else {
                         VoidgloomSeraph.this.isBroken = false;
                         BlockFallAPI.removeBlock(Repeater.BEACON.get(stand), entity.getWorld());
                         if (VoidgloomSeraph.CACHED_BLOCK.containsKey(stand) && VoidgloomSeraph.CACHED_BLOCK_ID.containsKey(stand) && VoidgloomSeraph.CACHED_BLOCK_DATA.containsKey(stand)) {
-                            VoidgloomSeraph.CACHED_BLOCK.get(stand).getLocation().getBlock().setTypeIdAndData((int)VoidgloomSeraph.CACHED_BLOCK_ID.get(stand), (byte)VoidgloomSeraph.CACHED_BLOCK_DATA.get(stand), true);
+                            VoidgloomSeraph.CACHED_BLOCK.get(stand).getLocation().getBlock().setTypeIdAndData(VoidgloomSeraph.CACHED_BLOCK_ID.get(stand), VoidgloomSeraph.CACHED_BLOCK_DATA.get(stand), true);
                         }
                         stand.remove();
                         VoidgloomSeraph.this.activebea = false;
                     }
                     VoidgloomSeraph.this.activebea = false;
                 }
-            }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 185L);
+            }.runTaskLater(SkySimEngine.getPlugin(), 185L);
             new BukkitRunnable() {
                 public void run() {
                     if (VoidgloomSeraph.this.CooldownSkill) {
                         VoidgloomSeraph.this.CooldownSkill = false;
                     }
                 }
-            }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 400L);
+            }.runTaskLater(SkySimEngine.getPlugin(), 400L);
         }
         int amounths = 30;
         if (this.tier == 2) {
@@ -362,19 +361,19 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                         VoidgloomSeraph.this.CooldownSkill2 = false;
                     }
                 }
-            }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 850L);
+            }.runTaskLater(SkySimEngine.getPlugin(), 850L);
         }
         if (this.bukkitEntity.getWorld() == player.getWorld() && this.getBukkitEntity().getLocation().distance(player.getLocation()) > 20.0 && this.HeartRadi) {
             User.getUser(player.getUniqueId()).damage(player.getMaxHealth() * 90.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, entity);
-            ((LivingEntity)player).damage(1.0E-4, entity);
+            player.damage(1.0E-4, entity);
         }
         final net.minecraft.server.v1_8_R3.Entity entity_ = this.getBukkitEntity().getHandle();
         final double height = entity_.getBoundingBox().e - entity_.getBoundingBox().b;
         this.hologram_name.getEntity().teleport(this.getBukkitEntity().getLocation().clone().add(0.0, height, 0.0));
-        this.hologram_name.getEntity().setCustomName(Sputnik.trans(Sputnik.entityNameTag((LivingEntity)this.getBukkitEntity(), Sputnik.buildcustomString(this.getEntityName(), 0, true))));
+        this.hologram_name.getEntity().setCustomName(Sputnik.trans(Sputnik.entityNameTag((LivingEntity) this.getBukkitEntity(), Sputnik.buildcustomString(this.getEntityName(), 0, true))));
         this.hologram.getEntity().teleport(this.getBukkitEntity().getLocation().clone().add(0.0, 3.2, 0.0));
         this.hologram.getEntity().setCustomName(ChatColor.RED + SUtil.getFormattedTime(this.end - System.currentTimeMillis(), 1000));
-        ((Enderman)this.getBukkitEntity()).setTarget((LivingEntity)player);
+        ((Enderman) this.getBukkitEntity()).setTarget(player);
         if (this.tier >= 4 && !this.CooldownSkill3 && SUtil.random(0, 100) <= 10 && !this.HeartRadi && !this.activehs) {
             EntityManager.DEFENSE_PERCENTAGE.put(entity, 100);
             this.HeartRadi = true;
@@ -385,13 +384,13 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
             final Location l = new Location(entity.getWorld(), x, y, z);
             entity.getWorld().playEffect(entity.getLocation(), Effect.EXPLOSION_HUGE, 3);
             entity.getWorld().playEffect(entity.getLocation(), Effect.EXPLOSION_HUGE, 3);
-            final ArmorStand stand_sit = (ArmorStand)entity.getWorld().spawn(l, (Class)ArmorStand.class);
+            final ArmorStand stand_sit = (ArmorStand) entity.getWorld().spawn(l, (Class) ArmorStand.class);
             stand_sit.setVisible(false);
             stand_sit.setGravity(true);
             stand_sit.setMarker(true);
             stand_sit.setPassenger(entity);
-            this.Ar1.add((Entity)stand_sit);
-            this.Ar2.add((Entity)stand_sit);
+            this.Ar1.add(stand_sit);
+            this.Ar2.add(stand_sit);
             new BukkitRunnable() {
                 public void run() {
                     if (stand_sit.isDead()) {
@@ -400,56 +399,56 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     }
                     stand_sit.setPassenger(entity);
                 }
-            }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
-            final ArmorStand stand3 = (ArmorStand)stand_sit.getWorld().spawn(stand_sit.getLocation().add(0.0, 0.0, 0.0), (Class)ArmorStand.class);
+            }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+            final ArmorStand stand3 = (ArmorStand) stand_sit.getWorld().spawn(stand_sit.getLocation().add(0.0, 0.0, 0.0), (Class) ArmorStand.class);
             stand3.setVisible(false);
             stand3.setGravity(false);
             stand3.setMarker(true);
-            stand3.setMetadata("HeartRadiAS", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-            this.Ar1.add((Entity)stand3);
-            this.Ar2.add((Entity)stand3);
-            final ArmorStand stand4 = (ArmorStand)entity.getWorld().spawn(stand3.getLocation().add(0.0, 1.5, 0.0), (Class)ArmorStand.class);
+            stand3.setMetadata("HeartRadiAS", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+            this.Ar1.add(stand3);
+            this.Ar2.add(stand3);
+            final ArmorStand stand4 = (ArmorStand) entity.getWorld().spawn(stand3.getLocation().add(0.0, 1.5, 0.0), (Class) ArmorStand.class);
             stand4.setVisible(false);
             stand4.setGravity(false);
             stand4.setMarker(true);
-            this.Ar1.add((Entity)stand4);
-            this.Ar2.add((Entity)stand4);
-            stand4.setMetadata("HeartRadiAS", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-            final ArmorStand stand5 = (ArmorStand)entity.getWorld().spawn(stand4.getLocation().add(0.0, 1.5, 0.0), (Class)ArmorStand.class);
+            this.Ar1.add(stand4);
+            this.Ar2.add(stand4);
+            stand4.setMetadata("HeartRadiAS", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+            final ArmorStand stand5 = (ArmorStand) entity.getWorld().spawn(stand4.getLocation().add(0.0, 1.5, 0.0), (Class) ArmorStand.class);
             stand5.setVisible(false);
             stand5.setGravity(false);
             stand5.setMarker(true);
-            this.Ar1.add((Entity)stand5);
-            this.Ar2.add((Entity)stand5);
-            stand5.setMetadata("HeartRadiAS", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+            this.Ar1.add(stand5);
+            this.Ar2.add(stand5);
+            stand5.setMetadata("HeartRadiAS", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
             final Location l2 = l;
             l2.setYaw(l.getYaw() + 90.0f);
-            final ArmorStand stand1_ = (ArmorStand)stand_sit.getWorld().spawn(l2, (Class)ArmorStand.class);
+            final ArmorStand stand1_ = (ArmorStand) stand_sit.getWorld().spawn(l2, (Class) ArmorStand.class);
             stand1_.setVisible(false);
             stand1_.setGravity(false);
             stand1_.setMarker(true);
-            this.Ar1.add((Entity)stand1_);
-            this.Ar2.add((Entity)stand1_);
-            stand4.setMetadata("HeartRadiAS", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-            final ArmorStand stand6 = (ArmorStand)entity.getWorld().spawn(stand1_.getLocation().add(0.0, 1.5, 0.0), (Class)ArmorStand.class);
+            this.Ar1.add(stand1_);
+            this.Ar2.add(stand1_);
+            stand4.setMetadata("HeartRadiAS", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+            final ArmorStand stand6 = (ArmorStand) entity.getWorld().spawn(stand1_.getLocation().add(0.0, 1.5, 0.0), (Class) ArmorStand.class);
             stand6.setVisible(false);
             stand6.setGravity(false);
             stand6.setMarker(true);
-            this.Ar1.add((Entity)stand6);
-            this.Ar2.add((Entity)stand6);
-            stand6.setMetadata("HeartRadiAS", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-            final ArmorStand stand7 = (ArmorStand)entity.getWorld().spawn(stand6.getLocation().add(0.0, 1.5, 0.0), (Class)ArmorStand.class);
+            this.Ar1.add(stand6);
+            this.Ar2.add(stand6);
+            stand6.setMetadata("HeartRadiAS", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+            final ArmorStand stand7 = (ArmorStand) entity.getWorld().spawn(stand6.getLocation().add(0.0, 1.5, 0.0), (Class) ArmorStand.class);
             stand7.setVisible(false);
             stand7.setGravity(false);
             stand7.setMarker(true);
-            this.Ar1.add((Entity)stand7);
-            this.Ar2.add((Entity)stand7);
+            this.Ar1.add(stand7);
+            this.Ar2.add(stand7);
             new BukkitRunnable() {
                 public void run() {
                     player.playSound(player.getLocation(), Sound.FIREWORK_LARGE_BLAST, 1.0f, 0.5f);
-                    Sputnik.playFuckingSoundOfVoidgloomThatTookForeverToMake(player, (Entity)stand_sit);
+                    Sputnik.playFuckingSoundOfVoidgloomThatTookForeverToMake(player, stand_sit);
                 }
-            }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 15L);
+            }.runTaskLater(SkySimEngine.getPlugin(), 15L);
             new BukkitRunnable() {
                 public void run() {
                     if (entity.isDead()) {
@@ -484,9 +483,9 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                                 Sputnik.IsInsideTheBeam.remove(player.getUniqueId());
                             }
                         }
-                    }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 3L);
+                    }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 3L);
                 }
-            }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 25L);
+            }.runTaskLater(SkySimEngine.getPlugin(), 25L);
             new BukkitRunnable() {
                 public void run() {
                     VoidgloomSeraph.this.HeartRadi = false;
@@ -498,9 +497,9 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                                 VoidgloomSeraph.this.CooldownSkill3 = false;
                             }
                         }
-                    }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 700L);
+                    }.runTaskLater(SkySimEngine.getPlugin(), 700L);
                 }
-            }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 200L);
+            }.runTaskLater(SkySimEngine.getPlugin(), 200L);
         }
         if (this.activeskull) {
             int damagefin = 800;
@@ -512,17 +511,10 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
             }
         }
         if (VoidgloomSeraph.LivingSkulls.containsKey(player.getUniqueId()) && this.activeskull) {
-            if (VoidgloomSeraph.LivingSkulls.get(player.getUniqueId()).size() > 0) {
-                this.activeskull = true;
-            }
-            else {
-                this.activeskull = false;
-            }
+            this.activeskull = VoidgloomSeraph.LivingSkulls.get(player.getUniqueId()).size() > 0;
         }
         if (this.tier >= 3 && !this.CooldownSkill4 && SUtil.random(0, 100) == 2 && !this.activehs && !this.activeskull) {
-            if (VoidgloomSeraph.LivingSkulls.containsKey(player.getUniqueId())) {
-                VoidgloomSeraph.LivingSkulls.remove(player.getUniqueId());
-            }
+            VoidgloomSeraph.LivingSkulls.remove(player.getUniqueId());
             this.CooldownSkill4 = true;
             this.activeskull = true;
             spawnNukekubi(entity, player, 1, 3);
@@ -537,8 +529,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     }
                     if (VoidgloomSeraph.this.activeskull) {
                         VoidgloomSeraph.spawnNukekubi(entity, player, 1, 2);
-                    }
-                    else {
+                    } else {
                         VoidgloomSeraph.updateSkill(VoidgloomSeraph.LivingSkulls.get(player.getUniqueId()));
                         new BukkitRunnable() {
                             public void run() {
@@ -546,21 +537,21 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                                     VoidgloomSeraph.this.CooldownSkill4 = false;
                                 }
                             }
-                        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 400L);
+                        }.runTaskLater(SkySimEngine.getPlugin(), 400L);
                     }
                 }
-            }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 300L);
+            }.runTaskLater(SkySimEngine.getPlugin(), 300L);
         }
     }
-    
+
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
-        entity.setMetadata("NoAffect", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("Voidgloom", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("BOSS_OWNER_" + Bukkit.getPlayer(this.getSpawnerUUID()).getUniqueId().toString(), (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("GiantSword", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+        entity.setMetadata("NoAffect", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("Voidgloom", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("BOSS_OWNER_" + Bukkit.getPlayer(this.getSpawnerUUID()).getUniqueId().toString(), new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("GiantSword", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
         VoidgloomSeraph.LivingSkulls.put(this.spawnerUUID, new ArrayList<Entity>());
-        SUtil.delay(() -> entity.removeMetadata("GiantSword", (Plugin)SkySimEngine.getPlugin()), 20L);
+        SUtil.delay(() -> entity.removeMetadata("GiantSword", SkySimEngine.getPlugin()), 20L);
         SUtil.delay(() -> {
             int amounths = 30;
             if (this.tier == 2) {
@@ -574,31 +565,30 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
             }
             this.CooldownSkill2 = true;
             this.activehs = true;
-            VoidgloomSeraph.HIT_SHIELD.put((Entity)entity, amounths);
-            VoidgloomSeraph.HIT_SHIELD_MAX.put((Entity)entity, amounths);
-            EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 100);
-            return;
+            VoidgloomSeraph.HIT_SHIELD.put(entity, amounths);
+            VoidgloomSeraph.HIT_SHIELD_MAX.put(entity, amounths);
+            EntityManager.DEFENSE_PERCENTAGE.put(entity, 100);
         }, 0L);
         SUtil.delay(() -> this.CooldownSkill5 = false, 70L);
-        this.playBossParticle_1((Entity)entity);
-        this.playBossParticle_2((Entity)entity);
-        this.playShieldParticle((Entity)entity);
+        this.playBossParticle_1(entity);
+        this.playBossParticle_2(entity);
+        this.playShieldParticle(entity);
         SUtil.delay(() -> this.CooldownSkill = false, 150L);
         this.CooldownSkill2 = false;
         SUtil.delay(() -> this.CooldownSkill3 = false, 100L);
         SUtil.delay(() -> this.CooldownSkill4 = false, 300L);
         final net.minecraft.server.v1_8_R3.Entity entity_ = this.getBukkitEntity().getHandle();
         this.hologram = new SEntity(entity.getLocation().add(0.0, 3.2, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND);
-        VoidgloomSeraph.BEACON_THROW.put((Entity)entity, Bukkit.getPlayer(this.spawnerUUID));
-        ((ArmorStand)this.hologram.getEntity()).setVisible(false);
-        ((ArmorStand)this.hologram.getEntity()).setGravity(false);
+        VoidgloomSeraph.BEACON_THROW.put(entity, Bukkit.getPlayer(this.spawnerUUID));
+        ((ArmorStand) this.hologram.getEntity()).setVisible(false);
+        ((ArmorStand) this.hologram.getEntity()).setGravity(false);
         this.hologram.getEntity().setCustomNameVisible(true);
-        entity.setMetadata("notDisplay", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+        entity.setMetadata("notDisplay", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
         final net.minecraft.server.v1_8_R3.Entity e = this.getBukkitEntity().getHandle();
         final double height_ = e.getBoundingBox().e - e.getBoundingBox().b;
         this.hologram_name = new SEntity(entity.getLocation().add(0.0, height_, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND);
-        ((ArmorStand)this.hologram_name.getEntity()).setVisible(false);
-        ((ArmorStand)this.hologram_name.getEntity()).setGravity(false);
+        ((ArmorStand) this.hologram_name.getEntity()).setVisible(false);
+        ((ArmorStand) this.hologram_name.getEntity()).setGravity(false);
         this.hologram_name.getEntity().setCustomNameVisible(true);
         new BukkitRunnable() {
             public void run() {
@@ -618,7 +608,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     Repeater.BEACON_OWNER.remove(entity);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -630,7 +620,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     }
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -643,18 +633,18 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     return;
                 }
                 if (!VoidgloomSeraph.this.HeartRadi) {
-                    VoidgloomSeraph.getPlayer().damage((double)VoidgloomSeraph.DAMAGE_VALUES.getByNumber(VoidgloomSeraph.this.tier), (Entity)entity);
+                    VoidgloomSeraph.getPlayer().damage(VoidgloomSeraph.DAMAGE_VALUES.getByNumber(VoidgloomSeraph.this.tier), entity);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 20L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 20L);
     }
-    
+
     public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
-        final Entity en = (Entity)sEntity.getEntity();
+        final Entity en = sEntity.getEntity();
         final Vector v = new Vector(0, 0, 0);
         SUtil.delay(() -> en.setVelocity(v), 1L);
     }
-    
+
     public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
         this.hologram.remove();
         SUtil.delay(() -> this.hologram_name.remove(), 20L);
@@ -670,30 +660,30 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
             stand.remove();
         }
     }
-    
+
     public String getEntityName() {
         return ChatColor.RED + "☠ " + ChatColor.AQUA + "Voidgloom Seraph";
     }
-    
+
     public double getEntityMaxHealth() {
         return VoidgloomSeraph.MAX_HEALTH_VALUES.getByNumber(this.tier);
     }
-    
+
     public double getDamageDealt() {
         return VoidgloomSeraph.DAMAGE_VALUES.getByNumber(this.tier);
     }
-    
+
     public double getMovementSpeed() {
         return VoidgloomSeraph.SPEED_VALUES.getByNumber(this.tier);
     }
-    
+
     public LivingEntity spawn(final Location location) {
-        this.world = (World)((CraftWorld)location.getWorld()).getHandle();
+        this.world = ((CraftWorld) location.getWorld()).getHandle();
         this.setPosition(location.getX(), location.getY(), location.getZ());
-        this.world.addEntity((net.minecraft.server.v1_8_R3.Entity)this, CreatureSpawnEvent.SpawnReason.CUSTOM);
-        return (LivingEntity)this.getBukkitEntity();
+        this.world.addEntity(this, CreatureSpawnEvent.SpawnReason.CUSTOM);
+        return (LivingEntity) this.getBukkitEntity();
     }
-    
+
     public List<EntityDrop> drops() {
         final List<EntityDrop> drops = new ArrayList<EntityDrop>();
         int revFlesh = SUtil.random(1, 3);
@@ -731,23 +721,23 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
         }
         return drops;
     }
-    
+
     public double getXPDropped() {
         return VoidgloomSeraph.XP_DROPS.getByNumber(this.tier);
     }
-    
+
     public boolean isBaby() {
         return false;
     }
-    
+
     public boolean isAngry() {
         return true;
     }
-    
+
     public UUID getSpawnerUUID() {
         return this.spawnerUUID;
     }
-    
+
     public static void spawnNukekubi(final Entity e, final Player p, final Integer damage, final Integer spawnCouples) {
         if (spawnCouples <= 2) {
             final Location loc1_ = p.getLocation();
@@ -756,10 +746,9 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
             loc2_.setYaw(loc1_.getYaw() + SUtil.random(0, 360));
             final Location loc1 = loc1_.add(loc1_.getDirection().multiply(5));
             final Location loc2 = loc2_.add(loc2_.getDirection().multiply(-5));
-            moveHeadAround((Entity)spawnHeads(e, loc1, p), p, damage);
-            moveHeadAround((Entity)spawnHeads(e, loc2, p), p, damage);
-        }
-        else {
+            moveHeadAround(spawnHeads(e, loc1, p), p, damage);
+            moveHeadAround(spawnHeads(e, loc2, p), p, damage);
+        } else {
             for (int i = 0; i < spawnCouples; ++i) {
                 if (SUtil.random(1, 2) == 1) {
                     final Location loc1_2 = p.getLocation();
@@ -768,21 +757,20 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     loc2_2.setYaw(loc1_2.getYaw() + SUtil.random(0, 360));
                     final Location loc3 = loc1_2.add(loc1_2.getDirection().multiply(5));
                     final Location loc4 = loc2_2.add(loc2_2.getDirection().multiply(-5));
-                    moveHeadAround((Entity)spawnHeads(e, loc3, p), p, damage);
-                }
-                else {
+                    moveHeadAround(spawnHeads(e, loc3, p), p, damage);
+                } else {
                     final Location loc1_2 = p.getLocation();
                     loc1_2.setYaw(loc1_2.getYaw() + SUtil.random(0, 360));
                     final Location loc2_2 = p.getLocation();
                     loc2_2.setYaw(loc1_2.getYaw() + SUtil.random(0, 360));
                     final Location loc3 = loc1_2.add(loc1_2.getDirection().multiply(5));
                     final Location loc4 = loc2_2.add(loc2_2.getDirection().multiply(-5));
-                    moveHeadAround((Entity)spawnHeads(e, loc4, p), p, damage);
+                    moveHeadAround(spawnHeads(e, loc4, p), p, damage);
                 }
             }
         }
     }
-    
+
     public static void destroyArmorStandWithUUID(final UUID uuid, final org.bukkit.World w) {
         final String uuidString = uuid.toString() + "_NUKEKUBI";
         for (final Entity e : w.getEntities()) {
@@ -791,23 +779,23 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
             }
         }
     }
-    
+
     public static LivingEntity spawnHeads(final Entity e, final Location loc, final Player p) {
-        final ArmorStand entity = (ArmorStand)loc.getWorld().spawnEntity(e.getLocation().add(e.getLocation().getDirection().normalize().multiply(-1)), EntityType.ARMOR_STAND);
+        final ArmorStand entity = (ArmorStand) loc.getWorld().spawnEntity(e.getLocation().add(e.getLocation().getDirection().normalize().multiply(-1)), EntityType.ARMOR_STAND);
         loc.setY(loc.getY() + SUtil.random(0.0, 0.6));
         entity.setCustomName(Sputnik.trans("&c☠ &bVoidgloom Seraph"));
         entity.setVisible(false);
         entity.setGravity(false);
         entity.getEquipment().setHelmet(SItem.of(SMaterial.NUKEKUBI).getStack());
         entity.getEquipment().setItemInHand(new ItemStack(Material.AIR));
-        entity.setMetadata("Nukekubi", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata(p.getUniqueId().toString() + "_NUKEKUBI", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        VoidgloomSeraph.NUKEKUBI_TARGET.put((Entity)entity, p);
+        entity.setMetadata("Nukekubi", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata(p.getUniqueId().toString() + "_NUKEKUBI", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        VoidgloomSeraph.NUKEKUBI_TARGET.put(entity, p);
         if (!VoidgloomSeraph.LivingSkulls.containsKey(p.getUniqueId())) {
             VoidgloomSeraph.LivingSkulls.put(p.getUniqueId(), new ArrayList<Entity>());
         }
         VoidgloomSeraph.LivingSkulls.get(p.getUniqueId()).add(entity);
-        moveToLoc((Entity)entity, loc, 3, 0, 1.0);
+        moveToLoc(entity, loc, 3, 0, 1.0);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -829,10 +817,10 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     entity.getWorld().playEffect(entity.getLocation().add(0.0, 1.4, 0.0), Effect.WITCH_MAGIC, 1);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
-        return (LivingEntity)entity;
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        return entity;
     }
-    
+
     public static void moveToLoc(final Entity e, final Location target, final int tickingRad, final int firstTickRad, final double jump) {
         final Location l = e.getLocation().setDirection(target.toVector().subtract(e.getLocation().toVector()));
         new BukkitRunnable() {
@@ -851,9 +839,9 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                 e.getWorld().spigot().playEffect(e.getLocation().add(0.0, 1.0, 0.0), Effect.FLAME, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                 e.getWorld().spigot().playEffect(e.getLocation().add(0.0, 1.0, 0.0), Effect.FLAME, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), (long)firstTickRad, (long)tickingRad);
+        }.runTaskTimer(SkySimEngine.getPlugin(), firstTickRad, tickingRad);
     }
-    
+
     public static void moveHeadAround(final Entity head, final Player p, final Integer damage) {
         new BukkitRunnable() {
             public void run() {
@@ -868,31 +856,30 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                 if (head.getWorld().equals(p.getWorld())) {
                     Sputnik.drawLineforMovingPoints(head.getLocation().add(head.getLocation().getDirection().multiply(0.1)).add(0.0, 2.0, 0.0), p.getLocation().add(0.0, 1.8, 0.0), 20.0, p, damage, head);
                     Sputnik.dmgc(i1, p, head);
-                }
-                else {
+                } else {
                     head.remove();
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 20L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 20L);
     }
-    
+
     public static void damageUpdate(final double formula) {
-        VoidgloomSeraph.NUKEKUBI_DAMAGE.put((Entity)getPlayer(), (int)formula);
+        VoidgloomSeraph.NUKEKUBI_DAMAGE.put(getPlayer(), (int) formula);
     }
-    
+
     public static void targetSelect(final Entity entity, final LivingEntity target) {
         if (!(entity instanceof Creature)) {
             return;
         }
-        ((Creature)entity).setTarget(target);
+        ((Creature) entity).setTarget(target);
     }
-    
+
     public static void updateSkill(final List<Entity> list) {
         for (final Entity e : list) {
             VoidgloomSeraph.NUKEKUBI_TARGET.remove(e);
         }
     }
-    
+
     public static BukkitTask a(final ArmorStand entity) {
         return new BukkitRunnable() {
             public void run() {
@@ -907,23 +894,23 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                         VoidgloomSeraph.getPlayer().getWorld().playSound(VoidgloomSeraph.getPlayer().getLocation(), Sound.ITEM_BREAK, 0.5f, 0.67f);
                     }
                     final Location loc = entity.getLocation().getBlock().getLocation().add(0.5, 0.0, 0.5);
-                    final ArmorStand armorStand2 = (ArmorStand)entity.getWorld().spawnEntity(loc, EntityType.ARMOR_STAND);
-                    VoidgloomSeraph.CACHED_BLOCK.put((Entity)armorStand2, loc.getBlock());
-                    VoidgloomSeraph.CACHED_BLOCK_ID.put((Entity)armorStand2, loc.getBlock().getTypeId());
-                    VoidgloomSeraph.CACHED_BLOCK_DATA.put((Entity)armorStand2, loc.getBlock().getData());
+                    final ArmorStand armorStand2 = (ArmorStand) entity.getWorld().spawnEntity(loc, EntityType.ARMOR_STAND);
+                    VoidgloomSeraph.CACHED_BLOCK.put(armorStand2, loc.getBlock());
+                    VoidgloomSeraph.CACHED_BLOCK_ID.put(armorStand2, loc.getBlock().getTypeId());
+                    VoidgloomSeraph.CACHED_BLOCK_DATA.put(armorStand2, loc.getBlock().getData());
                     armorStand2.setGravity(true);
                     armorStand2.setVisible(false);
                     armorStand2.setCustomName(ChatColor.translateAlternateColorCodes('&', "&c☠ &fTEST"));
-                    armorStand2.setMetadata("BeaconSkill2", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+                    armorStand2.setMetadata("BeaconSkill2", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
                     loc.getBlock().setType(Material.BARRIER);
-                    Repeater.BEACON_THROW2.put(Repeater.BEACON_OWNER.get(entity).getUniqueId(), (Entity)armorStand2);
-                    VoidgloomSeraph.b((Entity)armorStand2);
-                    Repeater.BEACON.put((Entity)armorStand2, BlockFallAPI.sendBlockDestroyWithSignal(loc, Material.BEACON, (byte)0, world));
+                    Repeater.BEACON_THROW2.put(Repeater.BEACON_OWNER.get(entity).getUniqueId(), armorStand2);
+                    VoidgloomSeraph.b(armorStand2);
+                    Repeater.BEACON.put(armorStand2, BlockFallAPI.sendBlockDestroyWithSignal(loc, Material.BEACON, (byte) 0, world));
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
     }
-    
+
     public static void b(final Entity armorStand2) {
         new BukkitRunnable() {
             public void run() {
@@ -945,15 +932,15 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                 world.playEffect(armorStand2.getLocation().add(0.0, 1.0, 0.0), Effect.FLYING_GLYPH, 3);
                 world.playEffect(armorStand2.getLocation().add(0.0, 1.0, 0.0), Effect.FLYING_GLYPH, 3);
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
     }
-    
+
     public void teleportSkill(final Entity e, final Player p) {
         final int LOR = SUtil.random(0, 1);
         new BukkitRunnable() {
             int cout = 0;
             float addedYaw = p.getLocation().getYaw();
-            
+
             public void run() {
                 if (this.cout >= 7) {
                     p.getLocation().getWorld().playSound(p.getLocation(), Sound.ENDERDRAGON_HIT, 1.0f, 1.0f);
@@ -963,8 +950,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                 final Location a = p.getLocation();
                 if (LOR == 0) {
                     this.addedYaw += 19.0f;
-                }
-                else {
+                } else {
                     this.addedYaw -= 19.0f;
                 }
                 a.setPitch(0.0f);
@@ -978,25 +964,25 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                 a.getWorld().playSound(a, Sound.ENDERMAN_TELEPORT, 0.2f, 1.0f);
                 ++this.cout;
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
     }
-    
+
     public void drawPointerAt(final Location loc) {
         loc.getWorld().spigot().playEffect(loc, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
         loc.getWorld().spigot().playEffect(loc, Effect.LARGE_SMOKE, 21, 0, 0.1f, 0.0f, 0.1f, 0.01f, 1, 30);
         loc.getWorld().spigot().playEffect(loc, Effect.LARGE_SMOKE, 21, 0, 0.1f, 0.0f, 0.1f, 0.01f, 1, 30);
         loc.getWorld().spigot().playEffect(loc, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
     }
-    
+
     public void dP(final Location loc) {
         this.drawPointerAt(loc.clone().add(0.0, 0.9, 0.0));
         this.drawPointerAt(loc.clone().add(0.0, 1.5, 0.0));
     }
-    
+
     public void playShieldParticle(final Entity e) {
         new BukkitRunnable() {
             float cout = e.getLocation().getYaw();
-            
+
             public void run() {
                 if (e.isDead()) {
                     this.cancel();
@@ -1012,11 +998,9 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     int stage = 3;
                     if (hitshield <= hitshieldmax / 2 && hitshield > hitshieldmax * 25 / 100) {
                         stage = 2;
-                    }
-                    else if (hitshield <= hitshieldmax * 25 / 100 && hitshield != 1) {
+                    } else if (hitshield <= hitshieldmax * 25 / 100 && hitshield != 1) {
                         stage = 1;
-                    }
-                    else if (hitshield == 1) {
+                    } else if (hitshield == 1) {
                         stage = 1;
                     }
                     if (VoidgloomSeraph.HIT_SHIELD.get(e) > 0) {
@@ -1038,13 +1022,13 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                 }
                 this.cout += 18.0f;
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
     }
-    
+
     public void playBossParticle_1(final Entity e) {
         new BukkitRunnable() {
             float cout = e.getLocation().getYaw();
-            
+
             public void run() {
                 if (e.isDead()) {
                     this.cancel();
@@ -1058,13 +1042,13 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                 e.getWorld().spigot().playEffect(loc, Effect.CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                 this.cout += 9.0f;
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
     }
-    
+
     public void playBossParticle_2(final Entity e) {
         new BukkitRunnable() {
             float cout = e.getLocation().getYaw();
-            
+
             public void run() {
                 if (e.isDead()) {
                     this.cancel();
@@ -1078,13 +1062,13 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                 e.getWorld().spigot().playEffect(loc.clone().add(0.0, 0.6, 0.0), Effect.CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                 this.cout -= 9.0f;
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
     }
-    
+
     public int getTier() {
         return this.tier;
     }
-    
+
     static {
         MAX_HEALTH_VALUES = new TieredValue<Double>(3.0E7, 1.5E8, 6.66E8, 1.0E9);
         DAMAGE_VALUES = new TieredValue<Double>(120000.0, 1000000.0, 1200000.0, 1500000.0);

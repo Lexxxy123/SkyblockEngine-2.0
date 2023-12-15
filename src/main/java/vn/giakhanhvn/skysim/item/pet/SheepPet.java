@@ -6,19 +6,24 @@ import vn.giakhanhvn.skysim.item.GenericItemType;
 import vn.giakhanhvn.skysim.skill.CombatSkill;
 import vn.giakhanhvn.skysim.skill.Skill;
 import vn.giakhanhvn.skysim.item.Rarity;
+
 import java.util.Collection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Arrays;
+
 import org.bukkit.ChatColor;
+
 import java.math.RoundingMode;
 import java.math.BigDecimal;
+
 import vn.giakhanhvn.skysim.item.RarityValue;
+
 import java.util.List;
+
 import vn.giakhanhvn.skysim.item.SItem;
 
-public class SheepPet extends Pet
-{
+public class SheepPet extends Pet {
     @Override
     public List<PetAbility> getPetAbilities(final SItem instance) {
         final RarityValue<Double> enderianMul = new RarityValue<Double>(0.1, 0.2, 0.2, 0.3, 0.3, 0.3);
@@ -33,10 +38,10 @@ public class SheepPet extends Pet
             public String getName() {
                 return "End Strike";
             }
-            
+
             @Override
             public List<String> getDescription(final SItem instance) {
-                return Arrays.<String>asList("Deal +" + ChatColor.GREEN + endstrike.toPlainString() + "%" + ChatColor.GRAY + " more damage to", "end mobs.");
+                return Arrays.asList("Deal +" + ChatColor.GREEN + endstrike.toPlainString() + "%" + ChatColor.GRAY + " more damage to", "end mobs.");
             }
         }));
         if (instance.getRarity().isAtLeast(Rarity.EPIC)) {
@@ -45,10 +50,10 @@ public class SheepPet extends Pet
                 public String getName() {
                     return "One with the Dragons";
                 }
-                
+
                 @Override
                 public List<String> getDescription(final SItem instance) {
-                    return Arrays.<String>asList("Buffs the Aspect of the", "Dragons sword by " + ChatColor.GREEN + aotd1.toPlainString() + ChatColor.RED + " ❁", "" + ChatColor.RED + "Damage" + ChatColor.GRAY + " and " + ChatColor.GREEN + aotd2.toPlainString() + ChatColor.RED + " ❁ Strength");
+                    return Arrays.asList("Buffs the Aspect of the", "Dragons sword by " + ChatColor.GREEN + aotd1.toPlainString() + ChatColor.RED + " ❁", ChatColor.RED + "Damage" + ChatColor.GRAY + " and " + ChatColor.GREEN + aotd2.toPlainString() + ChatColor.RED + " ❁ Strength");
                 }
             });
         }
@@ -58,46 +63,46 @@ public class SheepPet extends Pet
                 public String getName() {
                     return "Superior";
                 }
-                
+
                 @Override
                 public List<String> getDescription(final SItem instance) {
-                    return Arrays.<String>asList("Increases most stats by " + ChatColor.GREEN + buffstat.toPlainString() + "%");
+                    return Collections.singletonList("Increases most stats by " + ChatColor.GREEN + buffstat.toPlainString() + "%");
                 }
             });
         }
         return abilities;
     }
-    
+
     @Override
     public Skill getSkill() {
         return CombatSkill.INSTANCE;
     }
-    
+
     @Override
     public String getURL() {
         return "aec3ff563290b13ff3bcc36898af7eaa988b6cc18dc254147f58374afe9b21b9";
     }
-    
+
     @Override
     public String getDisplayName() {
         return "Sheep";
     }
-    
+
     @Override
     public GenericItemType getType() {
         return GenericItemType.PET;
     }
-    
+
     @Override
     public double getPerIntelligence() {
         return 3.0;
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.LEGENDARY;
     }
-    
+
     @Override
     public void particleBelowA(final Player p, final Location l) {
     }

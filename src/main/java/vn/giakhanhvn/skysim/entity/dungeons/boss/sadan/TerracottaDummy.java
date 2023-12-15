@@ -16,57 +16,56 @@ import org.bukkit.entity.LivingEntity;
 import vn.giakhanhvn.skysim.util.Sputnik;
 import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
 
-public class TerracottaDummy extends BaseZombie
-{
+public class TerracottaDummy extends BaseZombie {
     @Override
     public String getEntityName() {
         return Sputnik.trans("");
     }
-    
+
     @Override
     public double getEntityMaxHealth() {
         return 1.4E7;
     }
-    
+
     @Override
     public double getDamageDealt() {
         return 40000.0;
     }
-    
+
     @Override
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
         if (entity.getWorld().getPlayers().size() == 0) {
             return;
         }
-        ((CraftZombie)entity).setBaby(false);
-        Sputnik.applyPacketNPC((Entity)entity, "Ethelian", null, false);
-        EntityManager.noAI((Entity)entity);
-        EntityManager.noHit((Entity)entity);
-        entity.setMetadata("GiantSword", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("NoAffect", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("t_sadan_p1_1", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        EntityManager.shutTheFuckUp((Entity)entity);
-        EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 100);
-        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("LD", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("notDisplay", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        SUtil.delay(() -> Sputnik.applyPacketNPC((Entity)entity, "Ethelian", null, false), 50L);
+        ((CraftZombie) entity).setBaby(false);
+        Sputnik.applyPacketNPC(entity, "Ethelian", null, false);
+        EntityManager.noAI(entity);
+        EntityManager.noHit(entity);
+        entity.setMetadata("GiantSword", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("NoAffect", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("t_sadan_p1_1", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        EntityManager.shutTheFuckUp(entity);
+        EntityManager.DEFENSE_PERCENTAGE.put(entity, 100);
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("notDisplay", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        SUtil.delay(() -> Sputnik.applyPacketNPC(entity, "Ethelian", null, false), 50L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
-                Sputnik.applyPacketNPC((Entity)entity, "Ethelian", null, false);
+                Sputnik.applyPacketNPC(entity, "Ethelian", null, false);
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 200L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 200L);
     }
-    
+
     @Override
     public SEntityEquipment getEntityEquipment() {
         return new SEntityEquipment(null, null, null, null, null);
     }
-    
+
     @Override
     public double getXPDropped() {
         return 0.0;

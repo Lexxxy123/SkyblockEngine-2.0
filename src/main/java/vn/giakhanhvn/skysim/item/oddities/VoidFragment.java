@@ -5,28 +5,27 @@ import vn.giakhanhvn.skysim.item.Rarity;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
 import vn.giakhanhvn.skysim.item.MaterialStatistics;
 
-public class VoidFragment implements MaterialStatistics, MaterialFunction
-{
+public class VoidFragment implements MaterialStatistics, MaterialFunction {
     @Override
     public String getDisplayName() {
         return "Ender's Fragment";
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.RARE;
     }
-    
+
     @Override
     public String getLore() {
         return "It's... glowing?";
     }
-    
+
     @Override
     public GenericItemType getType() {
         return GenericItemType.ITEM;
     }
-    
+
     @Override
     public boolean isEnchanted() {
         return true;

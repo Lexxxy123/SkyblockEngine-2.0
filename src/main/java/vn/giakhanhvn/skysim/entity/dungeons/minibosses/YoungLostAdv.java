@@ -16,7 +16,9 @@ import org.bukkit.util.Vector;
 import net.minecraft.server.v1_8_R3.MathHelper;
 import net.minecraft.server.v1_8_R3.MobEffectList;
 import net.minecraft.server.v1_8_R3.EntityLiving;
+
 import java.util.Iterator;
+
 import org.bukkit.event.entity.EntityDamageEvent;
 import vn.giakhanhvn.skysim.user.User;
 import vn.giakhanhvn.skysim.user.PlayerUtils;
@@ -49,46 +51,45 @@ import org.bukkit.entity.LivingEntity;
 import vn.giakhanhvn.skysim.util.Sputnik;
 import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
 
-public class YoungLostAdv extends BaseZombie
-{
+public class YoungLostAdv extends BaseZombie {
     private boolean isEating;
     private boolean isBowing;
     private boolean EatingCooldown;
     private boolean CDDR;
-    
+
     public YoungLostAdv() {
         this.isEating = false;
         this.isBowing = false;
         this.EatingCooldown = false;
         this.CDDR = false;
     }
-    
+
     @Override
     public String getEntityName() {
         return Sputnik.trans("&d&lLost Adventurer");
     }
-    
+
     @Override
     public double getEntityMaxHealth() {
         return 5.0E8;
     }
-    
+
     @Override
     public double getDamageDealt() {
         return 4280000.0;
     }
-    
+
     @Override
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
-        ((CraftZombie)entity).setBaby(false);
-        final AttributeInstance followRange = ((CraftLivingEntity)entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
+        ((CraftZombie) entity).setBaby(false);
+        final AttributeInstance followRange = ((CraftLivingEntity) entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
         followRange.setValue(40.0);
-        final PlayerDisguise pl = Sputnik.applyPacketNPC((Entity)entity, "adventuure", null, false);
+        final PlayerDisguise pl = Sputnik.applyPacketNPC(entity, "adventuure", null, false);
         final PlayerWatcher skywatch = pl.getWatcher();
-        final LivingEntity target = (LivingEntity)((CraftZombie)entity).getTarget();
-        EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 80);
-        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("LD", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+        final LivingEntity target = ((CraftZombie) entity).getTarget();
+        EntityManager.DEFENSE_PERCENTAGE.put(entity, 80);
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -101,14 +102,14 @@ public class YoungLostAdv extends BaseZombie
                     Sputnik.sendEatingAnimation(entity);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 4L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 4L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
-                if (entity.getHealth() < entity.getMaxHealth() * 1.0 / 2.0 && !YoungLostAdv.this.EatingCooldown && !YoungLostAdv.this.isEating) {
+                if (entity.getHealth() < entity.getMaxHealth() / 2.0 && !YoungLostAdv.this.EatingCooldown && !YoungLostAdv.this.isEating) {
                     YoungLostAdv.this.EatingCooldown = true;
                     entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 65, 4));
                     YoungLostAdv.this.isBowing = false;
@@ -130,36 +131,33 @@ public class YoungLostAdv extends BaseZombie
                                 final Object val$entity = entity;
                                 if (!YoungLostAdv.this.isBowing) {
                                     entity.getEquipment().setItemInHand(SUtil.enchant(SItem.of(SMaterial.ASPECT_OF_THE_DRAGONS).getStack()));
-                                }
-                                else {
+                                } else {
                                     entity.getEquipment().setItemInHand(SItem.of(SMaterial.BOW).getStack());
                                 }
-                                return;
                             }, 5L);
                             SUtil.delay(() -> YoungLostAdv.this.EatingCooldown = false, SUtil.random(600, 800));
                         }
-                    }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 60L);
+                    }.runTaskLater(SkySimEngine.getPlugin(), 60L);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 10L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 10L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
-                    Sputnik.zero((Entity)entity);
+                    Sputnik.zero(entity);
                     this.cancel();
                     return;
                 }
-                final LivingEntity target1 = (LivingEntity)((CraftZombie)entity).getTarget();
+                final LivingEntity target1 = ((CraftZombie) entity).getTarget();
                 if (target1 != null) {
                     if (target1.getLocation().distance(entity.getLocation()) >= 6.0 && target1.getLocation().distance(entity.getLocation()) < 16.0) {
                         entity.teleport(entity.getLocation().setDirection(target1.getLocation().toVector().subtract(entity.getLocation().toVector())));
-                        Sputnik.sendHeadRotation((Entity)entity, entity.getLocation().getYaw(), entity.getLocation().getPitch());
+                        Sputnik.sendHeadRotation(entity, entity.getLocation().getYaw(), entity.getLocation().getPitch());
                     }
                     if ((target1.getLocation().distance(entity.getLocation()) < 6.0 || target1.getLocation().distance(entity.getLocation()) > 16.0) && !YoungLostAdv.this.isEating) {
                         SUtil.delay(() -> {
                             final Object val$entity = entity;
                             entity.getEquipment().setItemInHand(SUtil.enchant(SItem.of(SMaterial.ASPECT_OF_THE_DRAGONS).getStack()));
-                            return;
                         }, 0L);
                         YoungLostAdv.this.isBowing = false;
                     }
@@ -173,7 +171,7 @@ public class YoungLostAdv extends BaseZombie
                             int atkCharge = 20;
                             double bowPower = 2.2;
                             boolean crit = true;
-                            
+
                             public void run() {
                                 if (target1.getLocation().distance(entity.getLocation()) <= 10.0) {
                                     this.atkCharge = 10;
@@ -206,12 +204,11 @@ public class YoungLostAdv extends BaseZombie
                                     final Location location = entity.getEyeLocation().add(entity.getEyeLocation().getDirection().toLocation(entity.getWorld()));
                                     final Location l = location.clone();
                                     l.setYaw(location.getYaw());
-                                    final Arrow arr = entity.getWorld().spawnArrow(l, l.getDirection(), (float)this.bowPower, 1.6f);
-                                    arr.setShooter((ProjectileSource)entity);
+                                    final Arrow arr = entity.getWorld().spawnArrow(l, l.getDirection(), (float) this.bowPower, 1.6f);
+                                    arr.setShooter(entity);
                                     if (!this.crit) {
                                         arr.setCritical(SUtil.random(0, 1) == 1);
-                                    }
-                                    else {
+                                    } else {
                                         arr.setCritical(true);
                                     }
                                     skywatch.setRightClicking(false);
@@ -219,7 +216,7 @@ public class YoungLostAdv extends BaseZombie
                                     YoungLostAdv.this.isBowing = false;
                                 }
                             }
-                        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+                        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
                     }
                     if (target1.getLocation().distance(entity.getLocation()) <= 5.0 && !YoungLostAdv.this.isBowing && !YoungLostAdv.this.isEating) {
                         if (SUtil.random(0, 100) > 30) {
@@ -234,7 +231,7 @@ public class YoungLostAdv extends BaseZombie
                         entity.getLocation().getWorld().playSound(entity.getLocation(), Sound.ENDERDRAGON_GROWL, 1.0f, 1.0f);
                         for (final Entity e : target1.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 3.0, 3.0, 3.0)) {
                             if (e instanceof Player) {
-                                final Player player = (Player)e;
+                                final Player player = (Player) e;
                                 player.sendMessage(Sputnik.trans("&cLost Adventurer &aused &6Dragon's Breath &aon you!"));
                                 player.setVelocity(entity.getLocation().toVector().subtract(player.getLocation().toVector()).normalize().multiply(-1.0).multiply(4.0));
                                 final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
@@ -242,9 +239,9 @@ public class YoungLostAdv extends BaseZombie
                                     return;
                                 }
                                 final double defense = statistics.getDefense().addAll();
-                                final int dmglater = (int)Math.round(YoungLostAdv.this.getDamageDealt() * 3.0 - YoungLostAdv.this.getDamageDealt() * 3.0 * (defense / (defense + 100.0)));
-                                User.getUser(player.getUniqueId()).damage(dmglater, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)entity);
-                                ((LivingEntity)e).damage(1.0E-6, (Entity)null);
+                                final int dmglater = (int) Math.round(YoungLostAdv.this.getDamageDealt() * 3.0 - YoungLostAdv.this.getDamageDealt() * 3.0 * (defense / (defense + 100.0)));
+                                User.getUser(player.getUniqueId()).damage(dmglater, EntityDamageEvent.DamageCause.ENTITY_ATTACK, entity);
+                                ((LivingEntity) e).damage(1.0E-6, null);
                             }
                         }
                         SUtil.delay(() -> {
@@ -252,21 +249,19 @@ public class YoungLostAdv extends BaseZombie
                             if (!YoungLostAdv.this.isBowing) {
                                 skywatch.setRightClicking(false);
                             }
-                            return;
                         }, 20L);
                         SUtil.delay(() -> YoungLostAdv.this.CDDR = false, 250L);
                     }
-                }
-                else if (!YoungLostAdv.this.isEating) {
+                } else if (!YoungLostAdv.this.isEating) {
                     YoungLostAdv.this.isBowing = false;
                     entity.getEquipment().setItemInHand(SUtil.enchant(SItem.of(SMaterial.ASPECT_OF_THE_DRAGONS).getStack()));
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
         new BukkitRunnable() {
             Location loc = entity.getLocation();
-            final EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
-            
+            final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
+
             public void run() {
                 if (entity.isDead()) {
                     this.cancel();
@@ -279,13 +274,13 @@ public class YoungLostAdv extends BaseZombie
                 if (entity.hasMetadata("frozen")) {
                     return;
                 }
-                if (((CraftZombie)entity).getTarget() == null) {
+                if (((CraftZombie) entity).getTarget() == null) {
                     return;
                 }
-                if (((CraftZombie)entity).getTarget().getWorld() != entity.getWorld()) {
+                if (((CraftZombie) entity).getTarget().getWorld() != entity.getWorld()) {
                     return;
                 }
-                if (((CraftZombie)entity).getTarget().getLocation().distance(entity.getLocation()) <= 4.0 || YoungLostAdv.this.isEating || YoungLostAdv.this.isBowing) {
+                if (((CraftZombie) entity).getTarget().getLocation().distance(entity.getLocation()) <= 4.0 || YoungLostAdv.this.isEating || YoungLostAdv.this.isBowing) {
                     return;
                 }
                 if (this.loc.distance(loc2) >= 0.2) {
@@ -309,10 +304,10 @@ public class YoungLostAdv extends BaseZombie
                 }
                 this.nms.setSprinting(false);
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 7L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 7L);
         new BukkitRunnable() {
             public void run() {
-                final EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
+                final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
@@ -327,7 +322,7 @@ public class YoungLostAdv extends BaseZombie
                     if (!(entities instanceof Player)) {
                         continue;
                     }
-                    final Player target = (Player)entities;
+                    final Player target = (Player) entities;
                     if (target.getGameMode() == GameMode.CREATIVE) {
                         continue;
                     }
@@ -345,52 +340,52 @@ public class YoungLostAdv extends BaseZombie
                     }
                     entity.teleport(entity.getLocation().setDirection(target.getLocation().subtract(entities.getLocation()).toVector()));
                     for (final Player players : Bukkit.getOnlinePlayers()) {
-                        ((CraftPlayer)players).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)entity).getHandle(), 0));
+                        ((CraftPlayer) players).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) entity).getHandle(), 0));
                     }
-                    nms.r((net.minecraft.server.v1_8_R3.Entity)((CraftPlayer)target).getHandle());
+                    nms.r(((CraftPlayer) target).getHandle());
                     break;
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
     }
-    
+
     @Override
     public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
-        final Entity en = (Entity)sEntity.getEntity();
+        final Entity en = sEntity.getEntity();
         final Vector v = new Vector(0, 0, 0);
         SUtil.delay(() -> en.setVelocity(v), 1L);
     }
-    
+
     @Override
     public SEntityEquipment getEntityEquipment() {
         return new SEntityEquipment(SUtil.enchant(SItem.of(SMaterial.ASPECT_OF_THE_DRAGONS).getStack()), SUtil.enchant(SItem.of(SMaterial.YOUNG_DRAGON_HELMET).getStack()), SUtil.enchant(SItem.of(SMaterial.YOUNG_DRAGON_CHESTPLATE).getStack()), SUtil.enchant(SItem.of(SMaterial.YOUNG_DRAGON_LEGGINGS).getStack()), SUtil.enchant(SItem.of(SMaterial.YOUNG_DRAGON_BOOTS).getStack()));
     }
-    
+
     @Override
     public boolean isBaby() {
         return false;
     }
-    
+
     @Override
     public boolean hasNameTag() {
         return false;
     }
-    
+
     @Override
     public boolean isVillager() {
         return false;
     }
-    
+
     @Override
     public double getXPDropped() {
         return 0.0;
     }
-    
+
     @Override
     public double getMovementSpeed() {
         return 0.45;
     }
-    
+
     public void playPar(final Location l) {
         final ConeEffect Effect = new ConeEffect(SkySimEngine.effectManager);
         Effect.setLocation(l.clone().add(l.getDirection().normalize().multiply(-0.25)).add(0.0, -0.1, 0.0));

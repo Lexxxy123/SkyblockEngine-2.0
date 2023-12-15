@@ -1,6 +1,7 @@
 package vn.giakhanhvn.skysim.dimoon.utils;
 
 import java.util.Iterator;
+
 import vn.giakhanhvn.skysim.util.SUtil;
 import vn.giakhanhvn.skysim.util.Sputnik;
 import vn.giakhanhvn.skysim.dimoon.Dimoon;
@@ -9,12 +10,11 @@ import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.SkySimEngine;
 import org.bukkit.ChatColor;
 
-public class Utils
-{
+public class Utils {
     public static String format(final String str) {
         return ChatColor.translateAlternateColorCodes('&', str);
     }
-    
+
     public static void bossMessage(final String message) {
         if (SkySimEngine.getPlugin().dimoon == null) {
             return;
@@ -32,7 +32,7 @@ public class Utils
             }
         }, 40L);
     }
-    
+
     public static String commaInt(final int num) {
         String str = String.valueOf(num);
         for (int i = str.length() - 3; i > 0; i -= 3) {

@@ -8,12 +8,11 @@ import vn.giakhanhvn.skysim.user.User;
 import org.bukkit.Material;
 import org.bukkit.ChatColor;
 
-public class WithdrawalGUI extends GUI
-{
+public class WithdrawalGUI extends GUI {
     public WithdrawalGUI() {
         super("Bank Withdrawal", 36);
     }
-    
+
     @Override
     public void onOpen(final GUIOpenEvent e) {
         this.fill(WithdrawalGUI.BLACK_STAINED_GLASS_PANE);
@@ -30,15 +29,15 @@ public class WithdrawalGUI extends GUI
                 player.sendMessage(ChatColor.GREEN + "You have withdrawn " + ChatColor.GOLD + SUtil.commaify(coins) + " coins" + ChatColor.GREEN + "! You now have " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()) + " coins " + ChatColor.GREEN + "in your account!");
                 GUIType.BANKER.getGUI().open(player);
             }
-            
+
             @Override
             public int getSlot() {
                 return 10;
             }
-            
+
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.GREEN + "Everything in the account", Material.DROPPER, (short)0, 64, ChatColor.DARK_GRAY + "Bank withdrawal", " ", ChatColor.GRAY + "Current balance: " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()), ChatColor.GRAY + "Amount to withdraw: " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()), " ", ChatColor.YELLOW + "Click to withdraw coins!");
+                return SUtil.getStack(ChatColor.GREEN + "Everything in the account", Material.DROPPER, (short) 0, 64, ChatColor.DARK_GRAY + "Bank withdrawal", " ", ChatColor.GRAY + "Current balance: " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()), ChatColor.GRAY + "Amount to withdraw: " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()), " ", ChatColor.YELLOW + "Click to withdraw coins!");
             }
         });
         this.set(new GUIClickableItem() {
@@ -51,15 +50,15 @@ public class WithdrawalGUI extends GUI
                 player.sendMessage(ChatColor.GREEN + "You have withdrawn " + ChatColor.GOLD + SUtil.commaify(coins) + " coins" + ChatColor.GREEN + "! You now have " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()) + " coins " + ChatColor.GREEN + "in your account!");
                 GUIType.BANKER.getGUI().open(player);
             }
-            
+
             @Override
             public int getSlot() {
                 return 12;
             }
-            
+
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.GREEN + "Half the account", Material.DROPPER, (short)0, 32, ChatColor.DARK_GRAY + "Bank withdrawal", " ", ChatColor.GRAY + "Current balance: " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()), ChatColor.GRAY + "Amount to withdraw: " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins() / 2L), " ", ChatColor.YELLOW + "Click to withdraw coins!");
+                return SUtil.getStack(ChatColor.GREEN + "Half the account", Material.DROPPER, (short) 0, 32, ChatColor.DARK_GRAY + "Bank withdrawal", " ", ChatColor.GRAY + "Current balance: " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()), ChatColor.GRAY + "Amount to withdraw: " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins() / 2L), " ", ChatColor.YELLOW + "Click to withdraw coins!");
             }
         });
         this.set(new GUIClickableItem() {
@@ -72,15 +71,15 @@ public class WithdrawalGUI extends GUI
                 player.sendMessage(ChatColor.GREEN + "You have withdrawn " + ChatColor.GOLD + SUtil.commaify(coins) + " coins" + ChatColor.GREEN + "! You now have " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()) + " coins " + ChatColor.GREEN + "in your account!");
                 GUIType.BANKER.getGUI().open(player);
             }
-            
+
             @Override
             public int getSlot() {
                 return 14;
             }
-            
+
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.GREEN + "Withdraw 20%", Material.DROPPER, (short)0, 1, ChatColor.DARK_GRAY + "Bank withdrawal", " ", ChatColor.GRAY + "Current balance: " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()), ChatColor.GRAY + "Amount to withdraw: " + ChatColor.GOLD + SUtil.commaify(Math.round(user.getBankCoins() * 0.2)), " ", ChatColor.YELLOW + "Click to withdraw coins!");
+                return SUtil.getStack(ChatColor.GREEN + "Withdraw 20%", Material.DROPPER, (short) 0, 1, ChatColor.DARK_GRAY + "Bank withdrawal", " ", ChatColor.GRAY + "Current balance: " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()), ChatColor.GRAY + "Amount to withdraw: " + ChatColor.GOLD + SUtil.commaify(Math.round(user.getBankCoins() * 0.2)), " ", ChatColor.YELLOW + "Click to withdraw coins!");
             }
         });
         this.set(new GUIQueryItem() {
@@ -100,26 +99,25 @@ public class WithdrawalGUI extends GUI
                     user.subBankCoins(coins);
                     user.save();
                     player.sendMessage(ChatColor.GREEN + "You have withdrawn " + ChatColor.GOLD + SUtil.commaify(coins) + " coins" + ChatColor.GREEN + "! You now have " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()) + " coins " + ChatColor.GREEN + "in your account!");
-                }
-                catch (final NumberFormatException ex) {
+                } catch (final NumberFormatException ex) {
                     player.sendMessage(ChatColor.RED + "That is not a valid number!");
                     return null;
                 }
                 return new BankerGUI();
             }
-            
+
             @Override
             public void run(final InventoryClickEvent e) {
             }
-            
+
             @Override
             public int getSlot() {
                 return 16;
             }
-            
+
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.GREEN + "Specific amount", Material.SIGN, (short)0, 1, ChatColor.GRAY + "Current balance: " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()), " ", ChatColor.YELLOW + "Click to withdraw coins!");
+                return SUtil.getStack(ChatColor.GREEN + "Specific amount", Material.SIGN, (short) 0, 1, ChatColor.GRAY + "Current balance: " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()), " ", ChatColor.YELLOW + "Click to withdraw coins!");
             }
         });
     }

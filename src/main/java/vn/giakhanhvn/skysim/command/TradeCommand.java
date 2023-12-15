@@ -6,8 +6,7 @@ import vn.giakhanhvn.skysim.util.Sputnik;
 import org.bukkit.command.ConsoleCommandSender;
 
 @CommandParameters(description = "Modify your absorption amount.", permission = "spt.player")
-public class TradeCommand extends SCommand
-{
+public class TradeCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (sender instanceof ConsoleCommandSender) {

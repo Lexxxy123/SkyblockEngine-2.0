@@ -7,8 +7,7 @@ import org.bukkit.Bukkit;
 import vn.giakhanhvn.skysim.util.Sputnik;
 
 @CommandParameters(description = "Spec test command.", aliases = "fed")
-public class EndCommand extends SCommand
-{
+public class EndCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         final Player player = sender.getPlayer();

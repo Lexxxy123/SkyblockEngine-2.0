@@ -5,32 +5,41 @@ import java.util.stream.Stream;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.concurrent.CompletableFuture;
+
 import vn.giakhanhvn.skysim.user.AuctionSettings;
 import org.bukkit.OfflinePlayer;
+
 import java.util.Collection;
 import java.util.Collections;
+
 import org.bukkit.inventory.meta.ItemMeta;
 import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Bukkit;
+
 import java.util.function.Predicate;
 import java.util.Objects;
+
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.user.User;
+
 import java.util.Iterator;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.config.Config;
+
 import java.io.File;
+
 import vn.giakhanhvn.skysim.SkySimEngine;
+
 import java.util.UUID;
 import java.util.Map;
 
-public class AuctionItem
-{
+public class AuctionItem {
     private static final Map<UUID, AuctionItem> AUCTION_ITEM_CACHE;
     private static final SkySimEngine plugin;
     private static final File AUCTION_ITEM_FOLDER;
@@ -41,9 +50,9 @@ public class AuctionItem
     private List<AuctionBid> bids;
     private long end;
     private UUID owner;
-    private List<UUID> participants;
+    private final List<UUID> participants;
     private boolean bin;
-    
+
     private AuctionItem(final UUID uuid, final SItem item, final long starter, final long end, final UUID owner, final List<UUID> participants, final boolean bin) {
         this.uuid = uuid;
         this.item = item;
@@ -64,8 +73,7 @@ public class AuctionItem
                 save = true;
                 configFile.createNewFile();
             }
-        }
-        catch (final IOException ex) {
+        } catch (final IOException ex) {
             ex.printStackTrace();
         }
         this.config = new Config(AuctionItem.AUCTION_ITEM_FOLDER, path);
@@ -75,12 +83,12 @@ public class AuctionItem
         }
         this.load();
     }
-    
+
     public void load() {
         this.uuid = UUID.fromString(this.config.getString("uuid"));
-        this.item = (SItem)this.config.get("item");
+        this.item = (SItem) this.config.get("item");
         this.starter = this.config.getLong("starter");
-        this.bids = (List)this.config.get("bids");
+        this.bids = (List) this.config.get("bids");
         this.owner = UUID.fromString(this.config.getString("owner"));
         final List<String> strings = this.config.getStringList("participants");
         for (final String string : strings) {
@@ -89,37 +97,37 @@ public class AuctionItem
         this.end = this.config.getLong("end");
         this.bin = this.config.getBoolean("bin");
     }
-    
+
     public void save() {
-        this.config.set("uuid", (Object)this.uuid.toString());
-        this.config.set("item", (Object)this.item);
-        this.config.set("starter", (Object)this.starter);
-        this.config.set("bids", (Object)this.bids);
-        this.config.set("owner", (Object)this.owner.toString());
+        this.config.set("uuid", this.uuid.toString());
+        this.config.set("item", this.item);
+        this.config.set("starter", this.starter);
+        this.config.set("bids", this.bids);
+        this.config.set("owner", this.owner.toString());
         final List<String> strings = new ArrayList<String>();
         for (final UUID uuid : this.participants) {
             strings.add(uuid.toString());
         }
-        this.config.set("participants", (Object)strings);
-        this.config.set("end", (Object)this.end);
-        this.config.set("bin", (Object)this.bin);
+        this.config.set("participants", strings);
+        this.config.set("end", this.end);
+        this.config.set("bin", this.bin);
         this.config.save();
     }
-    
+
     public boolean delete() {
         this.config = null;
         AuctionItem.AUCTION_ITEM_CACHE.remove(this.uuid);
         return new File(AuctionItem.AUCTION_ITEM_FOLDER, this.uuid.toString() + ".yml").delete();
     }
-    
+
     public User getOwner() {
         return User.getUser(this.owner);
     }
-    
+
     public boolean isExpired() {
         return System.currentTimeMillis() >= this.end;
     }
-    
+
     public User getTopBidder() {
         UUID uuid = null;
         long b = 0L;
@@ -131,7 +139,7 @@ public class AuctionItem
         }
         return User.getUser(uuid);
     }
-    
+
     public AuctionBid getTopBid() {
         AuctionBid b = null;
         long l = 0L;
@@ -143,7 +151,7 @@ public class AuctionItem
         }
         return b;
     }
-    
+
     public long getTopBidAmount() {
         long b = 0L;
         for (final AuctionBid bid : this.bids) {
@@ -153,11 +161,11 @@ public class AuctionItem
         }
         return b;
     }
-    
+
     public AuctionBid getRecentBid() {
         return (this.bids.size() == 0) ? null : this.bids.get(this.bids.size() - 1);
     }
-    
+
     public long nextBid() {
         final long top = this.getTopBidAmount();
         if (top == 0L) {
@@ -165,7 +173,7 @@ public class AuctionItem
         }
         return Math.round(top * 1.15);
     }
-    
+
     public AuctionBid getBid(final UUID uuid) {
         for (int i = this.bids.size() - 1; i >= 0; --i) {
             final AuctionBid bid = this.bids.get(i);
@@ -175,11 +183,11 @@ public class AuctionItem
         }
         return null;
     }
-    
+
     public AuctionBid getBid(final User user) {
         return this.getBid(user.getUuid());
     }
-    
+
     public void claim(final Player player) {
         if (!this.participants.contains(player.getUniqueId())) {
             return;
@@ -187,9 +195,8 @@ public class AuctionItem
         final User user = User.getUser(player.getUniqueId());
         if (player.getUniqueId().equals(this.owner)) {
             if (this.bids.size() == 0) {
-                player.getInventory().addItem(new ItemStack[] { this.item.getStack() });
-            }
-            else {
+                player.getInventory().addItem(this.item.getStack());
+            } else {
                 user.addCoins(this.getTopBidAmount());
             }
             this.removeParticipant(user.getUuid());
@@ -204,23 +211,22 @@ public class AuctionItem
             return;
         }
         if (top.getBidder().equals(player.getUniqueId())) {
-            player.getInventory().addItem(new ItemStack[] { this.item.getStack() });
-        }
-        else {
+            player.getInventory().addItem(this.item.getStack());
+        } else {
             user.addCoins(bid.getAmount());
         }
         this.removeParticipant(player.getUniqueId());
     }
-    
+
     public void removeParticipant(final UUID uuid) {
         final List<UUID> participants = this.participants;
-        Objects.<UUID>requireNonNull(uuid);
+        Objects.requireNonNull(uuid);
         participants.removeIf(uuid::equals);
         if (this.participants.size() == 0) {
             this.delete();
         }
     }
-    
+
     public void bid(final User user, final long amount) {
         if (!this.participants.contains(user.getUuid())) {
             this.participants.add(user.getUuid());
@@ -255,7 +261,7 @@ public class AuctionItem
             player2.sendMessage(ChatColor.GOLD + "[Auction] " + ChatColor.GREEN + bidder + ChatColor.YELLOW + " outbid you by " + ChatColor.GOLD + diff + " coin" + ((diff != 1L) ? "s" : "") + ChatColor.YELLOW + " for " + this.item.getFullName());
         }
     }
-    
+
     public void messageOwner(final String message) {
         final User ou = this.getOwner();
         final Player owner = Bukkit.getPlayer(ou.getUuid());
@@ -263,15 +269,15 @@ public class AuctionItem
             owner.sendMessage(message);
         }
     }
-    
+
     public void end() {
         this.end = System.currentTimeMillis() - 1L;
     }
-    
+
     public long getRemaining() {
         return Math.max(0L, this.end - System.currentTimeMillis());
     }
-    
+
     public ItemStack getDisplayItem(final boolean inspect, final boolean yourAuction) {
         final ItemStack stack = this.item.getStack().clone();
         final ItemMeta meta = stack.getItemMeta();
@@ -281,11 +287,9 @@ public class AuctionItem
         final User top = this.getTopBidder();
         if (this.isBin()) {
             lore.add(ChatColor.GRAY + "Buy it now: " + ChatColor.GOLD + SUtil.commaify(this.starter) + " coins");
-        }
-        else if (top == null) {
+        } else if (top == null) {
             lore.add(ChatColor.GRAY + "Starting bid: " + ChatColor.GOLD + SUtil.commaify(this.starter) + " coins");
-        }
-        else {
+        } else {
             lore.add(ChatColor.GRAY + "Bids: " + ChatColor.GREEN + this.bids.size() + " bids");
             lore.add(" ");
             lore.add(ChatColor.GRAY + "Top bid: " + ChatColor.GOLD + SUtil.commaify(this.getTopBidAmount()) + " coins");
@@ -301,20 +305,20 @@ public class AuctionItem
             lore.add(" ");
             lore.add(ChatColor.YELLOW + "Click to inspect!");
         }
-        meta.setLore((List)lore);
+        meta.setLore(lore);
         stack.setItemMeta(meta);
         return stack;
     }
-    
+
     @Override
     public String toString() {
         return "AuctionItem{uuid=" + this.uuid.toString() + ", item=" + this.item.toString() + ", bids=" + this.bids.toString() + ", end=" + this.end + "}";
     }
-    
+
     public static AuctionItem createAuction(final SItem item, final long starter, final long end, final UUID owner, final boolean bin) {
-        return new AuctionItem(UUID.randomUUID(), item, starter, end, owner, new ArrayList<UUID>(Collections.<UUID>singletonList(owner)), bin);
+        return new AuctionItem(UUID.randomUUID(), item, starter, end, owner, new ArrayList<UUID>(Collections.singletonList(owner)), bin);
     }
-    
+
     public static AuctionItem getAuction(final UUID uuid) {
         if (AuctionItem.AUCTION_ITEM_CACHE.containsKey(uuid)) {
             return AuctionItem.AUCTION_ITEM_CACHE.get(uuid);
@@ -324,14 +328,14 @@ public class AuctionItem
         }
         return new AuctionItem(uuid, null, 0L, 0L, null, new ArrayList<UUID>(), false);
     }
-    
+
     public static Collection<AuctionItem> getAuctions() {
         if (AuctionItem.AUCTION_ITEM_FOLDER == null || !AuctionItem.AUCTION_ITEM_FOLDER.exists()) {
             return new ArrayList<AuctionItem>();
         }
         return AuctionItem.AUCTION_ITEM_CACHE.values();
     }
-    
+
     public static List<AuctionItem> getOwnedAuctions(final String name) {
         final OfflinePlayer player = Bukkit.getOfflinePlayer(name);
         if (player == null) {
@@ -343,9 +347,9 @@ public class AuctionItem
         }
         return user.getAuctions();
     }
-    
+
     public static CompletableFuture<List<AuctionItem>> search(final AuctionSettings settings) {
-        return CompletableFuture.<List<AuctionItem>>supplyAsync(() -> {
+        return CompletableFuture.supplyAsync(() -> {
             final Stream<AuctionItem> items = getAuctions().stream();
             final Stream<AuctionItem> items2 = items.filter(item -> !item.isExpired());
             Stream<AuctionItem> items3 = items2.filter(item -> item.getItem().getType().getStatistics().getCategory() == settings.getCategory());
@@ -364,11 +368,9 @@ public class AuctionItem
                     case LOWEST_BID:
                         if (i1.getTopBidAmount() < i2.getTopBidAmount()) {
                             return 1;
-                        }
-                        else if (i2.getTopBidAmount() > i1.getTopBidAmount()) {
+                        } else if (i2.getTopBidAmount() > i1.getTopBidAmount()) {
                             return -1;
-                        }
-                        else {
+                        } else {
                             return 0;
                         }
                     case MOST_BIDS:
@@ -393,21 +395,21 @@ public class AuctionItem
             return items4.collect(Collectors.toList());
         });
     }
-    
+
     public static void loadAuctionsFromDisk() {
         if (!AuctionItem.AUCTION_ITEM_FOLDER.exists()) {
             return;
         }
-        for (final File f : Objects.<File[]>requireNonNull(AuctionItem.AUCTION_ITEM_FOLDER.listFiles())) {
+        for (final File f : Objects.requireNonNull(AuctionItem.AUCTION_ITEM_FOLDER.listFiles())) {
             String name = f.getName();
-            Label_0092: {
+            Label_0092:
+            {
                 if (name.endsWith(".yml")) {
                     name = name.substring(0, name.length() - 4);
                     UUID uuid;
                     try {
                         uuid = UUID.fromString(name);
-                    }
-                    catch (final IllegalArgumentException ex) {
+                    } catch (final IllegalArgumentException ex) {
                         break Label_0092;
                     }
                     getAuction(uuid);
@@ -415,35 +417,35 @@ public class AuctionItem
             }
         }
     }
-    
+
     public UUID getUuid() {
         return this.uuid;
     }
-    
+
     public SItem getItem() {
         return this.item;
     }
-    
+
     public long getStarter() {
         return this.starter;
     }
-    
+
     public List<AuctionBid> getBids() {
         return this.bids;
     }
-    
+
     public long getEnd() {
         return this.end;
     }
-    
+
     public List<UUID> getParticipants() {
         return this.participants;
     }
-    
+
     public boolean isBin() {
         return this.bin;
     }
-    
+
     static {
         AUCTION_ITEM_CACHE = new HashMap<UUID, AuctionItem>();
         plugin = SkySimEngine.getPlugin();

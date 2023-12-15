@@ -2,11 +2,10 @@ package vn.giakhanhvn.skysim.nms.nmsutil.apihelper;
 
 import org.bukkit.plugin.Plugin;
 
-public interface API
-{
+public interface API {
     void load();
-    
+
     void init(final Plugin p0);
-    
+
     void disable(final Plugin p0);
 }

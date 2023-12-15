@@ -12,18 +12,17 @@ import org.bukkit.Sound;
 import vn.giakhanhvn.skysim.dimoon.Dimoon;
 import org.bukkit.entity.Player;
 
-public class WindForce implements Ability
-{
+public class WindForce implements Ability {
     @Override
     public void activate(final Player player, final Dimoon dimoon) {
-        final Entity entity = (Entity)dimoon.getEntity();
+        final Entity entity = dimoon.getEntity();
         player.getWorld().playSound(dimoon.getEntity().getLocation(), Sound.WITHER_SHOOT, 5.0f, 1.0f);
         final World world = entity.getWorld();
-        final Vector[] velocity = { player.getLocation().toVector().subtract(entity.getLocation().toVector()).normalize() };
+        final Vector[] velocity = {player.getLocation().toVector().subtract(entity.getLocation().toVector()).normalize()};
         new BukkitRunnable() {
-            private Location particleLocation = entity.getLocation().add(0.0, 2.0, 0.0).clone();
+            private final Location particleLocation = entity.getLocation().add(0.0, 2.0, 0.0).clone();
             double multiplier = 4.0;
-            
+
             public void run() {
                 this.particleLocation.add(velocity[0]);
                 velocity[0] = player.getLocation().toVector().subtract(this.particleLocation.toVector()).normalize().multiply(this.multiplier);
@@ -45,9 +44,9 @@ public class WindForce implements Ability
                     this.cancel();
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
     }
-    
+
     @Override
     public int getCooldown() {
         return 120;

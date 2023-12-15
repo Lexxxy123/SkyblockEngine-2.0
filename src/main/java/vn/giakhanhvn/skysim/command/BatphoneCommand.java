@@ -1,6 +1,7 @@
 package vn.giakhanhvn.skysim.command;
 
 import java.util.ArrayList;
+
 import vn.giakhanhvn.skysim.gui.GUI;
 import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.gui.GUIType;
@@ -8,15 +9,15 @@ import vn.giakhanhvn.skysim.util.SUtil;
 import vn.giakhanhvn.skysim.item.oddities.MaddoxBatphone;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
+
 import java.util.List;
 import java.util.UUID;
 
 @CommandParameters(description = "Hidden command for Maddox Batphone.")
-public class BatphoneCommand extends SCommand
-{
+public class BatphoneCommand extends SCommand {
     public static final UUID ACCESS_KEY;
     public static final List<String> KEYS;
-    
+
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (sender instanceof ConsoleCommandSender) {
@@ -34,7 +35,7 @@ public class BatphoneCommand extends SCommand
         final GUI gui = GUIType.SLAYER.getGUI();
         gui.open(player);
     }
-    
+
     static {
         ACCESS_KEY = UUID.randomUUID();
         KEYS = new ArrayList<String>();

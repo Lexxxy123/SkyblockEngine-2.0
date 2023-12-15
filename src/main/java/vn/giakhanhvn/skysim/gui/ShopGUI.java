@@ -1,10 +1,13 @@
 package vn.giakhanhvn.skysim.gui;
 
 import java.util.HashMap;
+
 import org.bukkit.event.inventory.ClickType;
 import vn.giakhanhvn.skysim.item.SpecificItemType;
 import org.bukkit.inventory.meta.ItemMeta;
+
 import java.util.List;
+
 import org.bukkit.Sound;
 import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.ChatColor;
@@ -16,26 +19,26 @@ import vn.giakhanhvn.skysim.util.PaginationList;
 import vn.giakhanhvn.skysim.user.User;
 import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.util.StackArrayList;
+
 import java.util.UUID;
 import java.util.Map;
 
-public class ShopGUI extends GUI
-{
+public class ShopGUI extends GUI {
     private static final Map<UUID, StackArrayList<SItem>> BUYBACK_HISTORY;
     private static final int[] INTERIOR;
     private final SItem[] items;
     private int page;
-    
+
     protected ShopGUI(final String title, final int page, final SItem... items) {
         super(title, 54);
         this.page = page;
         this.items = items;
     }
-    
+
     protected ShopGUI(final String name, final SItem... items) {
         this(name, 1, items);
     }
-    
+
     @Override
     public void onOpen(final GUIOpenEvent e) {
         final Player player = e.getPlayer();
@@ -51,14 +54,14 @@ public class ShopGUI extends GUI
             this.set(new GUIClickableItem() {
                 @Override
                 public void run(final InventoryClickEvent e) {
-                    new ShopGUI(ShopGUI.this.title, finalPage - 1, ShopGUI.this.items).open((Player)e.getWhoClicked());
+                    new ShopGUI(ShopGUI.this.title, finalPage - 1, ShopGUI.this.items).open((Player) e.getWhoClicked());
                 }
-                
+
                 @Override
                 public int getSlot() {
                     return 45;
                 }
-                
+
                 @Override
                 public ItemStack getItem() {
                     return SUtil.createNamedItemStack(Material.ARROW, ChatColor.GRAY + "<-");
@@ -69,14 +72,14 @@ public class ShopGUI extends GUI
             this.set(new GUIClickableItem() {
                 @Override
                 public void run(final InventoryClickEvent e) {
-                    new ShopGUI(ShopGUI.this.title, finalPage + 1, ShopGUI.this.items).open((Player)e.getWhoClicked());
+                    new ShopGUI(ShopGUI.this.title, finalPage + 1, ShopGUI.this.items).open((Player) e.getWhoClicked());
                 }
-                
+
                 @Override
                 public int getSlot() {
                     return 53;
                 }
-                
+
                 @Override
                 public ItemStack getItem() {
                     return SUtil.createNamedItemStack(Material.ARROW, ChatColor.GRAY + "->");
@@ -90,7 +93,7 @@ public class ShopGUI extends GUI
             public int getSlot() {
                 return 49;
             }
-            
+
             @Override
             public void run(final InventoryClickEvent e) {
                 if (!ShopGUI.BUYBACK_HISTORY.containsKey(uuid) || ShopGUI.BUYBACK_HISTORY.get(player.getUniqueId()).size() == 0) {
@@ -101,7 +104,7 @@ public class ShopGUI extends GUI
                     player.sendMessage(ChatColor.RED + "You don't have enough coins!");
                     return;
                 }
-                final Map<Integer, ItemStack> m = player.getInventory().addItem(new ItemStack[] { buyback.pop().getStack() });
+                final Map<Integer, ItemStack> m = player.getInventory().addItem(buyback.pop().getStack());
                 if (m.size() != 0) {
                     player.sendMessage(ChatColor.RED + "Free up inventory space to purchase this!");
                     return;
@@ -113,11 +116,11 @@ public class ShopGUI extends GUI
                 }
                 new ShopGUI(ShopGUI.this.title, ShopGUI.this.page, ShopGUI.this.items).open(player);
             }
-            
+
             @Override
             public ItemStack getItem() {
                 if (!ShopGUI.BUYBACK_HISTORY.containsKey(uuid) || ShopGUI.BUYBACK_HISTORY.get(player.getUniqueId()).size() == 0) {
-                    return SUtil.getStack(ChatColor.GREEN + "Sell Item", Material.HOPPER, (short)0, 1, ChatColor.GRAY + "Click items in your inventory to", ChatColor.GRAY + "sell them to this Shop!");
+                    return SUtil.getStack(ChatColor.GREEN + "Sell Item", Material.HOPPER, (short) 0, 1, ChatColor.GRAY + "Click items in your inventory to", ChatColor.GRAY + "sell them to this Shop!");
                 }
                 final SItem last = buyback.last().clone();
                 final ItemMeta meta = last.getStack().getItemMeta();
@@ -128,7 +131,7 @@ public class ShopGUI extends GUI
                 lore.add(ChatColor.GOLD + SUtil.commaify(price) + " Coin" + ((price != 1L) ? "s" : ""));
                 lore.add(" ");
                 lore.add(ChatColor.YELLOW + "Click to buyback!");
-                meta.setLore((List)lore);
+                meta.setLore(lore);
                 last.getStack().setItemMeta(meta);
                 return last.getStack();
             }
@@ -155,7 +158,7 @@ public class ShopGUI extends GUI
             if (type == null || type.isStackable()) {
                 lore.add(ChatColor.YELLOW + "Right-Click for more trading options!");
             }
-            meta.setLore((List)lore);
+            meta.setLore(lore);
             item.getStack().setItemMeta(meta);
             final int finalI = i;
             this.set(new GUIClickableItem() {
@@ -169,7 +172,7 @@ public class ShopGUI extends GUI
                         player.sendMessage(ChatColor.RED + "You don't have enough coins!");
                         return;
                     }
-                    final Map<Integer, ItemStack> m = player.getInventory().addItem(new ItemStack[] { p.get(finalI).clone().getStack() });
+                    final Map<Integer, ItemStack> m = player.getInventory().addItem(p.get(finalI).clone().getStack());
                     if (m.size() != 0) {
                         player.sendMessage(ChatColor.RED + "Free up inventory space to purchase this!");
                         return;
@@ -177,12 +180,12 @@ public class ShopGUI extends GUI
                     player.playSound(player.getLocation(), Sound.NOTE_PLING, 1.0f, 2.0f);
                     user.subCoins(price);
                 }
-                
+
                 @Override
                 public int getSlot() {
                     return slot;
                 }
-                
+
                 @Override
                 public ItemStack getItem() {
                     return item.getStack();
@@ -190,7 +193,7 @@ public class ShopGUI extends GUI
             });
         }
     }
-    
+
     @Override
     public void onBottomClick(final InventoryClickEvent e) {
         final ItemStack current = e.getCurrentItem();
@@ -205,7 +208,7 @@ public class ShopGUI extends GUI
             item = SItem.convert(current);
         }
         e.setCancelled(true);
-        final Player player = (Player)e.getWhoClicked();
+        final Player player = (Player) e.getWhoClicked();
         final User user = User.getUser(player.getUniqueId());
         StackArrayList<SItem> buyback = ShopGUI.BUYBACK_HISTORY.get(player.getUniqueId());
         if (buyback == null) {
@@ -220,9 +223,9 @@ public class ShopGUI extends GUI
         player.getInventory().setItem(e.getSlot(), new ItemStack(Material.AIR));
         new ShopGUI(this.title, this.page, this.items).open(player);
     }
-    
+
     static {
         BUYBACK_HISTORY = new HashMap<UUID, StackArrayList<SItem>>();
-        INTERIOR = new int[] { 10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43 };
+        INTERIOR = new int[]{10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43};
     }
 }

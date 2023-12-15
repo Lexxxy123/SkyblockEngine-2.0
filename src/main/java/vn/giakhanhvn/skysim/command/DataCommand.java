@@ -8,8 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 
 @CommandParameters(description = "Sets data for a Spec item.", permission = "spt.item")
-public class DataCommand extends SCommand
-{
+public class DataCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (args.length < 3) {
@@ -28,7 +27,7 @@ public class DataCommand extends SCommand
         if (!sItem.hasDataFor(key)) {
             throw new CommandFailException(ChatColor.RED + "Error! This item does not have data for '" + key + "'");
         }
-        final String joined = StringUtils.join((Object[])args, " ", 1, args.length - 1);
+        final String joined = StringUtils.join(args, " ", 1, args.length - 1);
         final String lowerCase = args[args.length - 1].toLowerCase();
         switch (lowerCase) {
             case "string":

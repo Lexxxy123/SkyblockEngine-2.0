@@ -1,9 +1,12 @@
 package vn.giakhanhvn.skysim.item.orb;
 
 import java.util.HashMap;
+
 import org.bukkit.Effect;
 import org.bukkit.World;
+
 import java.util.Iterator;
+
 import org.bukkit.entity.Entity;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -14,7 +17,9 @@ import vn.giakhanhvn.skysim.SkySimEngine;
 import org.bukkit.util.Vector;
 import vn.giakhanhvn.skysim.item.SMaterial;
 import vn.giakhanhvn.skysim.util.SUtil;
+
 import java.util.concurrent.atomic.AtomicInteger;
+
 import vn.giakhanhvn.skysim.entity.SEntity;
 import vn.giakhanhvn.skysim.entity.SEntityType;
 import org.bukkit.ChatColor;
@@ -22,47 +27,48 @@ import vn.giakhanhvn.skysim.item.SItem;
 import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.item.GenericItemType;
 import org.bukkit.entity.ArmorStand;
+
 import java.util.UUID;
 import java.util.Map;
+
 import vn.giakhanhvn.skysim.item.Ability;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
 import vn.giakhanhvn.skysim.item.SkullStatistics;
 
-public abstract class PowerOrb implements SkullStatistics, MaterialFunction, Ability, OrbBuff
-{
+public abstract class PowerOrb implements SkullStatistics, MaterialFunction, Ability, OrbBuff {
     private static final Map<UUID, ArmorStand> USING_POWER_ORB_MAP;
     private static final Map<UUID, PowerOrbInstance> POWER_ORB_MAP;
-    
+
     @Override
     public String getAbilityName() {
         return "Deploy";
     }
-    
+
     @Override
     public int getAbilityCooldownTicks() {
         return 5;
     }
-    
+
     @Override
     public boolean displayCooldown() {
         return false;
     }
-    
+
     @Override
     public boolean displayUsage() {
         return false;
     }
-    
+
     @Override
     public int getManaCost() {
         return -2;
     }
-    
+
     @Override
     public GenericItemType getType() {
         return GenericItemType.ITEM;
     }
-    
+
     @Override
     public void onAbilityUse(final Player player, final SItem sItem) {
         final Location sloc = player.getLocation().clone().add(player.getLocation().getDirection().multiply(1.5));
@@ -75,25 +81,25 @@ public abstract class PowerOrb implements SkullStatistics, MaterialFunction, Abi
             player.sendMessage(ChatColor.YELLOW + "Your previous " + instance.getColoredName() + ChatColor.YELLOW + " was removed!");
         }
         final SEntity sEntity = new SEntity(sloc, SEntityType.VELOCITY_ARMOR_STAND);
-        final ArmorStand stand = (ArmorStand)sEntity.getEntity();
+        final ArmorStand stand = (ArmorStand) sEntity.getEntity();
         PowerOrb.POWER_ORB_MAP.put(player.getUniqueId(), new PowerOrbInstance() {
             @Override
             public String getColoredName() {
                 return sItem.getRarity().getColor() + sItem.getType().getDisplayName(sItem.getVariant());
             }
-            
+
             @Override
             public ArmorStand getArmorStand() {
                 return stand;
             }
         });
         stand.setVisible(false);
-        final AtomicInteger seconds = new AtomicInteger((int)(this.getOrbLifeTicks() / 20L));
+        final AtomicInteger seconds = new AtomicInteger((int) (this.getOrbLifeTicks() / 20L));
         stand.setCustomName(sItem.getRarity().getColor() + ((this.getCustomOrbName() == null) ? this.getBuffName() : this.getCustomOrbName()) + " " + ChatColor.YELLOW + seconds.get() + "s");
         stand.setCustomNameVisible(true);
         stand.setHelmet(SUtil.getSkull(this.getURL(), null));
         stand.setVelocity(new Vector(0.0, 0.1, 0.0));
-        stand.setMetadata(player.getUniqueId().toString() + "_powerorb", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+        stand.setMetadata(player.getUniqueId().toString() + "_powerorb", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 if (stand.isDead()) {
@@ -103,7 +109,7 @@ public abstract class PowerOrb implements SkullStatistics, MaterialFunction, Abi
                 final Vector velClone = stand.getVelocity().clone();
                 stand.setVelocity(new Vector(0.0, (velClone.getY() < 0.0) ? 0.1 : -0.1, 0.0));
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 25L, 25L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 25L, 25L);
         new BukkitRunnable() {
             public void run() {
                 if (stand.isDead()) {
@@ -115,7 +121,7 @@ public abstract class PowerOrb implements SkullStatistics, MaterialFunction, Abi
                 stand.teleport(location);
                 PowerOrb.this.playEffect(stand.getEyeLocation().clone().add(stand.getLocation().getDirection().divide(new Vector(2, 2, 2))));
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 if (stand.isDead()) {
@@ -127,7 +133,7 @@ public abstract class PowerOrb implements SkullStatistics, MaterialFunction, Abi
                     if (!(entity instanceof Player)) {
                         continue;
                     }
-                    final Player p = (Player)entity;
+                    final Player p = (Player) entity;
                     if (c >= 5) {
                         break;
                     }
@@ -140,7 +146,7 @@ public abstract class PowerOrb implements SkullStatistics, MaterialFunction, Abi
                         public void run() {
                             PowerOrb.USING_POWER_ORB_MAP.remove(p.getUniqueId());
                         }
-                    }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 20L);
+                    }.runTaskLater(SkySimEngine.getPlugin(), 20L);
                     PowerOrb.this.buff(p);
                     for (int i = 0; i < 8; ++i) {
                         PowerOrb.this.playEffect(p.getLocation().add(SUtil.random(-0.5, 0.5), 0.1, SUtil.random(-0.5, 0.5)));
@@ -148,21 +154,21 @@ public abstract class PowerOrb implements SkullStatistics, MaterialFunction, Abi
                 }
                 stand.setCustomName(sItem.getRarity().getColor() + ((PowerOrb.this.getCustomOrbName() == null) ? PowerOrb.this.getBuffName() : PowerOrb.this.getCustomOrbName()) + " " + ChatColor.YELLOW + Math.max(0, seconds.decrementAndGet()) + "s");
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 20L, 20L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 20L, 20L);
         new BukkitRunnable() {
             public void run() {
                 PowerOrb.POWER_ORB_MAP.remove(player.getUniqueId());
                 stand.remove();
             }
-        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), this.getOrbLifeTicks() + 15L);
+        }.runTaskLater(SkySimEngine.getPlugin(), this.getOrbLifeTicks() + 15L);
     }
-    
+
     protected abstract void buff(final Player p0);
-    
+
     protected abstract long getOrbLifeTicks();
-    
+
     protected abstract void playEffect(final Location p0);
-    
+
     public void destroyArmorStandWithUUID(final UUID uuid, final World w) {
         final String uuidString = uuid.toString() + "_powerorb";
         for (final Entity e : w.getEntities()) {
@@ -171,7 +177,7 @@ public abstract class PowerOrb implements SkullStatistics, MaterialFunction, Abi
             }
         }
     }
-    
+
     public void r(final Player player, final Location loc1) {
         final Location loc2 = loc1.clone().add(0.0, 1.0, 0.0);
         player.playEffect(loc2, Effect.POTION_SWIRL, 0);
@@ -182,16 +188,15 @@ public abstract class PowerOrb implements SkullStatistics, MaterialFunction, Abi
         player.playEffect(loc2, Effect.POTION_SWIRL, 0);
         player.playEffect(loc2, Effect.POTION_SWIRL, 0);
     }
-    
+
     static {
         USING_POWER_ORB_MAP = new HashMap<UUID, ArmorStand>();
         POWER_ORB_MAP = new HashMap<UUID, PowerOrbInstance>();
     }
-    
-    private interface PowerOrbInstance
-    {
+
+    private interface PowerOrbInstance {
         String getColoredName();
-        
+
         ArmorStand getArmorStand();
     }
 }

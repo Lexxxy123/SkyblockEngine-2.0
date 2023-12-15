@@ -7,8 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import vn.giakhanhvn.skysim.slayer.SlayerBossType;
 
-public class SlayerConfirmGUI extends GUI
-{
+public class SlayerConfirmGUI extends GUI {
     public SlayerConfirmGUI(final SlayerBossType type, final Runnable onConfirm) {
         super("Confirm", 27);
         this.set(new GUIClickableItem() {
@@ -17,12 +16,12 @@ public class SlayerConfirmGUI extends GUI
                 onConfirm.run();
                 e.getWhoClicked().closeInventory();
             }
-            
+
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.GREEN + "Confirm", Material.STAINED_CLAY, (short)13, 1, ChatColor.GRAY + "Kill " + type.getType().getPluralName() + " to spawn the", ChatColor.GRAY + "boss!", "", ChatColor.YELLOW + "Click to start quest!");
+                return SUtil.getStack(ChatColor.GREEN + "Confirm", Material.STAINED_CLAY, (short) 13, 1, ChatColor.GRAY + "Kill " + type.getType().getPluralName() + " to spawn the", ChatColor.GRAY + "boss!", "", ChatColor.YELLOW + "Click to start quest!");
             }
-            
+
             @Override
             public int getSlot() {
                 return 11;
@@ -33,12 +32,12 @@ public class SlayerConfirmGUI extends GUI
             public void run(final InventoryClickEvent e) {
                 e.getWhoClicked().closeInventory();
             }
-            
+
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.RED + "Cancel", Material.STAINED_CLAY, (short)14, 1, new String[0]);
+                return SUtil.getStack(ChatColor.RED + "Cancel", Material.STAINED_CLAY, (short) 14, 1);
             }
-            
+
             @Override
             public int getSlot() {
                 return 15;

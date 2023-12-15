@@ -9,8 +9,7 @@ import vn.giakhanhvn.skysim.entity.SEntityType;
 import org.bukkit.command.ConsoleCommandSender;
 
 @CommandParameters(description = "Spawn a mob from Spec.", aliases = "scm", permission = "spt.spawn")
-public class SpawnSpecCommand extends SCommand
-{
+public class SpawnSpecCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (args.length == 0) {
@@ -41,11 +40,11 @@ public class SpawnSpecCommand extends SCommand
                     throw new CommandArgumentException();
                 }
                 final int tier = Integer.parseInt(args[1]);
-                entity = new SEntity((Entity)player, type, new Object[] { tier, player.getUniqueId() });
+                entity = new SEntity(player, type, tier, player.getUniqueId());
                 break;
             }
             default:
-                entity = new SEntity((Entity)player, type);
+                entity = new SEntity(player, type);
                 break;
         }
         this.send(ChatColor.GREEN + "Success! You have spawned a(n) " + ChatColor.GOLD + entity.getStatistics().getEntityName());

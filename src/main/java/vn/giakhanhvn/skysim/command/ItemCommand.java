@@ -8,8 +8,7 @@ import vn.giakhanhvn.skysim.item.SMaterial;
 import org.bukkit.command.ConsoleCommandSender;
 
 @CommandParameters(description = "Gives an item from Spec.", aliases = "sitem,specitem", permission = "spt.item")
-public class ItemCommand extends SCommand
-{
+public class ItemCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (args.length < 1 || args.length > 2) {

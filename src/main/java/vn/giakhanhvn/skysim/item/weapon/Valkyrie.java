@@ -2,7 +2,9 @@ package vn.giakhanhvn.skysim.item.weapon;
 
 import org.bukkit.Effect;
 import org.bukkit.util.Vector;
+
 import java.util.Iterator;
+
 import org.bukkit.Location;
 import vn.giakhanhvn.skysim.util.SUtil;
 import net.minecraft.server.v1_8_R3.Packet;
@@ -21,7 +23,9 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Entity;
 import vn.giakhanhvn.skysim.util.Sputnik;
 import org.bukkit.Material;
+
 import java.util.Set;
+
 import vn.giakhanhvn.skysim.item.SItem;
 import org.bukkit.entity.Player;
 import net.md_5.bungee.api.ChatColor;
@@ -32,63 +36,62 @@ import vn.giakhanhvn.skysim.item.Ability;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
 import vn.giakhanhvn.skysim.item.ToolStatistics;
 
-public class Valkyrie implements ToolStatistics, MaterialFunction, Ability
-{
+public class Valkyrie implements ToolStatistics, MaterialFunction, Ability {
     @Override
     public int getBaseDamage() {
         return 270;
     }
-    
+
     @Override
     public double getBaseStrength() {
         return 145.0;
     }
-    
+
     @Override
     public double getBaseIntelligence() {
         return 60.0;
     }
-    
+
     @Override
     public double getBaseFerocity() {
         return 60.0;
     }
-    
+
     @Override
     public String getDisplayName() {
         return "Valkyrie";
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.LEGENDARY;
     }
-    
+
     @Override
     public GenericItemType getType() {
         return GenericItemType.WEAPON;
     }
-    
+
     @Override
     public SpecificItemType getSpecificType() {
         return SpecificItemType.SWORD;
     }
-    
+
     @Override
     public String getLore() {
         return "Deals " + ChatColor.RED + "+50% " + ChatColor.GRAY + "damage to withers. Grants " + ChatColor.RED + "+1 Damage " + ChatColor.GRAY + "and" + ChatColor.GREEN + " +1" + ChatColor.RED + " ❁ Strength " + ChatColor.GRAY + "per" + ChatColor.RED + " Catacombs " + ChatColor.GRAY + "level.";
     }
-    
+
     @Override
     public String getAbilityName() {
         return "Wither Impact";
     }
-    
+
     @Override
     public String getAbilityDescription() {
         return "Teleports " + ChatColor.GREEN + "10 blocks" + ChatColor.GRAY + " ahead of you. Then implode dealing " + ChatColor.RED + "10,000" + ChatColor.GRAY + " damage to nearby enemies. Also applies the " + ChatColor.GOLD + "wither shield" + ChatColor.GRAY + " scroll ability reducing damage taken and granting an " + ChatColor.GOLD + "❤ " + ChatColor.GOLD + "Absorption" + ChatColor.GRAY + " shield for " + ChatColor.YELLOW + "5" + ChatColor.GRAY + " seconds.";
     }
-    
+
     @Override
     public void onAbilityUse(final Player player, final SItem sItem) {
         double entityTotal = 0.0;
@@ -96,13 +99,13 @@ public class Valkyrie implements ToolStatistics, MaterialFunction, Ability
         try {
             int f_ = 10;
             for (int range = 1; range < 10; ++range) {
-                final Location location = player.getTargetBlock((Set)null, range).getLocation();
+                final Location location = player.getTargetBlock((Set) null, range).getLocation();
                 if (location.getBlock().getType() != Material.AIR) {
                     f_ = range;
                     break;
                 }
             }
-            final Location location2 = player.getTargetBlock((Set)null, f_ - 1).getLocation();
+            final Location location2 = player.getTargetBlock((Set) null, f_ - 1).getLocation();
             location2.setYaw(player.getLocation().getYaw());
             location2.setPitch(player.getLocation().getPitch());
             location2.add(0.5, 0.0, 0.5);
@@ -111,8 +114,7 @@ public class Valkyrie implements ToolStatistics, MaterialFunction, Ability
             }
             if (f_ > 1) {
                 Sputnik.teleport(player, location2);
-            }
-            else {
+            } else {
                 Sputnik.teleport(player, player.getLocation());
             }
             Sputnik.witherShieldActive(player);
@@ -145,37 +147,36 @@ public class Valkyrie implements ToolStatistics, MaterialFunction, Ability
                     }
                     baseDamage -= baseDamage * defensepercent / 100.0;
                 }
-                user.damageEntityIgnoreShield((Damageable)entity, (int)baseDamage);
+                user.damageEntityIgnoreShield((Damageable) entity, (int) baseDamage);
                 PlayerListener.spawnDamageInd(entity, baseDamage, false);
                 entityTotal += baseDamage;
             }
+        } catch (final IllegalStateException ex) {
         }
-        catch (final IllegalStateException ex) {}
         player.playSound(player.getLocation(), Sound.EXPLODE, 3.0f, 2.0f);
-        final PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(EnumParticle.EXPLOSION_LARGE, true, (float)player.getLocation().getX(), (float)player.getLocation().getY(), (float)player.getLocation().getZ(), 0.0f, 0.0f, 0.0f, 7.0f, 6, new int[0]);
+        final PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(EnumParticle.EXPLOSION_LARGE, true, (float) player.getLocation().getX(), (float) player.getLocation().getY(), (float) player.getLocation().getZ(), 0.0f, 0.0f, 0.0f, 7.0f, 6);
         for (final Player online : player.getWorld().getPlayers()) {
-            ((CraftPlayer)online).getHandle().playerConnection.sendPacket((Packet)packet);
+            ((CraftPlayer) online).getHandle().playerConnection.sendPacket(packet);
         }
         if (j > 0) {
             if (j == 1) {
                 player.sendMessage(ChatColor.GRAY + "Your Implosion hit " + ChatColor.RED + j + ChatColor.GRAY + " enemy for " + ChatColor.RED + SUtil.commaify(entityTotal) + ChatColor.GRAY + " damage.");
-            }
-            else {
+            } else {
                 player.sendMessage(ChatColor.GRAY + "Your Implosion hit " + ChatColor.RED + j + ChatColor.GRAY + " enemies for " + ChatColor.RED + SUtil.commaify(entityTotal) + ChatColor.GRAY + " damage.");
             }
         }
     }
-    
+
     @Override
     public int getAbilityCooldownTicks() {
         return 3;
     }
-    
+
     @Override
     public int getManaCost() {
         return 300;
     }
-    
+
     private void createCircle(final Player player, final double radius, final int distance) {
         final Vector dist = player.getEyeLocation().getDirection().multiply(distance);
         final Location mid = player.getEyeLocation().add(dist);
@@ -189,7 +190,7 @@ public class Valkyrie implements ToolStatistics, MaterialFunction, Ability
             player.getWorld().spigot().playEffect(temp, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
         }
     }
-    
+
     private Vector rotateAroundAxisX(final Vector v, double angle) {
         angle = Math.toRadians(angle);
         final double cos = Math.cos(angle);
@@ -198,7 +199,7 @@ public class Valkyrie implements ToolStatistics, MaterialFunction, Ability
         final double z = v.getY() * sin + v.getZ() * cos;
         return v.setY(y).setZ(z);
     }
-    
+
     private Vector rotateAroundAxisY(final Vector v, double angle) {
         angle = -angle;
         angle = Math.toRadians(angle);

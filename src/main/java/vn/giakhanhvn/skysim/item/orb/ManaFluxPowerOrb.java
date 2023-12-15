@@ -10,43 +10,42 @@ import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.item.Rarity;
 import org.bukkit.ChatColor;
 
-public class ManaFluxPowerOrb extends PowerOrb
-{
+public class ManaFluxPowerOrb extends PowerOrb {
     @Override
     public String getAbilityDescription() {
         return "Place an orb for " + ChatColor.GREEN + "30s " + ChatColor.GRAY + "buffing up to " + ChatColor.AQUA + "5 " + ChatColor.GRAY + "players within " + ChatColor.GREEN + "18 " + ChatColor.GRAY + "blocks. " + ChatColor.DARK_GRAY + "Costs " + ChatColor.DARK_GRAY + "50% of max mana. " + ChatColor.DARK_GRAY + "Only " + ChatColor.DARK_GRAY + "one orb applies per player.";
     }
-    
+
     @Override
     public String getURL() {
         return "82ada1c7fcc8cf35defeb944a4f8ffa9a9d260560fc7f5f5826de8085435967c";
     }
-    
+
     @Override
     public String getDisplayName() {
         return "Mana Flux Power Orb";
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.RARE;
     }
-    
+
     @Override
     public String getBuffName() {
         return "Mana Flux";
     }
-    
+
     @Override
     public String getBuffDescription() {
         return "Grants " + ChatColor.AQUA + "+50% " + ChatColor.GRAY + "base mana regen. Heals " + ChatColor.RED + "2% " + ChatColor.GRAY + "of max " + ChatColor.RED + "❤ " + ChatColor.GRAY + "per second. Grants " + ChatColor.RED + "+10 ❁ " + ChatColor.RED + "Strength";
     }
-    
+
     @Override
     public boolean isStackable() {
         return false;
     }
-    
+
     @Override
     protected void buff(final Player player) {
         player.setHealth(Math.min(player.getMaxHealth(), player.getHealth() + player.getMaxHealth() * 0.02));
@@ -56,17 +55,17 @@ public class ManaFluxPowerOrb extends PowerOrb
             public String getDisplayName() {
                 return null;
             }
-            
+
             @Override
             public Rarity getRarity() {
                 return null;
             }
-            
+
             @Override
             public GenericItemType getType() {
                 return null;
             }
-            
+
             @Override
             public double getBaseStrength() {
                 return 10.0;
@@ -76,12 +75,12 @@ public class ManaFluxPowerOrb extends PowerOrb
             statistics.boostManaRegeneration(0.5, 20L);
         }
     }
-    
+
     @Override
     protected long getOrbLifeTicks() {
         return 600L;
     }
-    
+
     @Override
     protected void playEffect(final Location location) {
         location.getWorld().spigot().playEffect(location, Effect.COLOURED_DUST, 0, 1, 0.1882353f, 0.5411765f, 0.8509804f, 1.0f, 0, 64);

@@ -13,14 +13,21 @@ import org.bukkit.inventory.ItemStack;
 import vn.giakhanhvn.skysim.entity.SEntityEquipment;
 import com.google.common.util.concurrent.AtomicDouble;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+
 import java.util.Arrays;
+
 import vn.giakhanhvn.skysim.entity.EntityDropType;
 import vn.giakhanhvn.skysim.entity.EntityDrop;
+
+import java.util.Collections;
 import java.util.List;
+
 import org.bukkit.Sound;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
+
 import java.util.Iterator;
+
 import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -56,45 +63,44 @@ import vn.giakhanhvn.skysim.util.Sputnik;
 import org.bukkit.Location;
 import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
 
-public class Dimoonizae extends BaseZombie
-{
+public class Dimoonizae extends BaseZombie {
     private boolean isBowing;
-    private boolean s;
+    private final boolean s;
     private Location spawnLoc;
-    
+
     public Dimoonizae() {
         this.isBowing = false;
         this.s = false;
         this.spawnLoc = null;
     }
-    
+
     @Override
     public String getEntityName() {
         return Sputnik.trans("&e&lDimooniaze");
     }
-    
+
     @Override
     public double getEntityMaxHealth() {
         return 5.0E8;
     }
-    
+
     @Override
     public double getDamageDealt() {
         return 2500000.0;
     }
-    
+
     @Override
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
         this.spawnLoc = entity.getLocation();
-        ((CraftZombie)entity).setBaby(false);
-        final AttributeInstance followRange = ((CraftLivingEntity)entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
+        ((CraftZombie) entity).setBaby(false);
+        final AttributeInstance followRange = ((CraftLivingEntity) entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
         followRange.setValue(40.0);
-        final PlayerDisguise pl = Sputnik.applyPacketNPC((Entity)entity, "ewogICJ0aW1lc3RhbXAiIDogMTYwNzI2OTE0ODI0NSwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9lMzgxYTE4NzVlZmViMmEyNjBkMzU3OTg0YzNlNzVhN2RmYmM3YTIyYjU4MmJmZTk5OTA0MjFjYmI0NDVhY2MiCiAgICB9CiAgfQp9", "IPtgN21aEt2XOntNnSueh3eJHFJOEwIad/ttKraizcl4ffFSymZQo3NhgUPbRnSy2lFNHR/kTl6fczwnRtwxBNmG/YeA7kyr225kgROEAnze8owdQSDkFhvcnP5QRn5oBW9Aa11ZZRlcHuMEUYyZptYkUo8VZ4EV6NSkxz6n5Vjph8KJc2qTLsFtSZIi9lvMAvZRuR4IaKZT85Pnf04Lqmsj1mXkV22pjG3t5MQECsAEmV6beLAVkSjpxQqEkr86+tCbeYRx77fZxxhswHhCZsTB50I5EpDJ3cx5pvvmz8LW2/KoEppXt+NAW/3P4aHuj34KFMp1+qJjSHStl9yKHEdCzTKUy2bh3b6cq6hr0WfCAOes1X0uObindLA6kP+y0UbtvPHGnuyslvQ47X5NdkT54oATW8wBWh85gPUEPLsBXO3VBvfK5omSgaSrC3D1xZbuFjdDYETg4BmTlJOnhoDHUTAvl/a9gQTnItyJkLvkoa/WNWlSk6lcNqz09X7VipnerY5XYad1A1T5XngOg6+TUBwW+XXcxxh5FDH3kMGLomDCbZjaiKm2QvPzVrHVtZ0DhdvQ3jzGa/oSyCbQCWWgusptxeMcOvgxtrjtb4ZxnFiR3H8XYPYWsSxl2zZUlq7Ias9MbKILu8CulOX90i3Gha27lSIaf+ksUO4vrII=", true);
+        final PlayerDisguise pl = Sputnik.applyPacketNPC(entity, "ewogICJ0aW1lc3RhbXAiIDogMTYwNzI2OTE0ODI0NSwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9lMzgxYTE4NzVlZmViMmEyNjBkMzU3OTg0YzNlNzVhN2RmYmM3YTIyYjU4MmJmZTk5OTA0MjFjYmI0NDVhY2MiCiAgICB9CiAgfQp9", "IPtgN21aEt2XOntNnSueh3eJHFJOEwIad/ttKraizcl4ffFSymZQo3NhgUPbRnSy2lFNHR/kTl6fczwnRtwxBNmG/YeA7kyr225kgROEAnze8owdQSDkFhvcnP5QRn5oBW9Aa11ZZRlcHuMEUYyZptYkUo8VZ4EV6NSkxz6n5Vjph8KJc2qTLsFtSZIi9lvMAvZRuR4IaKZT85Pnf04Lqmsj1mXkV22pjG3t5MQECsAEmV6beLAVkSjpxQqEkr86+tCbeYRx77fZxxhswHhCZsTB50I5EpDJ3cx5pvvmz8LW2/KoEppXt+NAW/3P4aHuj34KFMp1+qJjSHStl9yKHEdCzTKUy2bh3b6cq6hr0WfCAOes1X0uObindLA6kP+y0UbtvPHGnuyslvQ47X5NdkT54oATW8wBWh85gPUEPLsBXO3VBvfK5omSgaSrC3D1xZbuFjdDYETg4BmTlJOnhoDHUTAvl/a9gQTnItyJkLvkoa/WNWlSk6lcNqz09X7VipnerY5XYad1A1T5XngOg6+TUBwW+XXcxxh5FDH3kMGLomDCbZjaiKm2QvPzVrHVtZ0DhdvQ3jzGa/oSyCbQCWWgusptxeMcOvgxtrjtb4ZxnFiR3H8XYPYWsSxl2zZUlq7Ias9MbKILu8CulOX90i3Gha27lSIaf+ksUO4vrII=", true);
         final PlayerWatcher skywatch = pl.getWatcher();
-        final LivingEntity target = (LivingEntity)((CraftZombie)entity).getTarget();
-        EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 70);
-        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("LD", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+        final LivingEntity target = ((CraftZombie) entity).getTarget();
+        EntityManager.DEFENSE_PERCENTAGE.put(entity, 70);
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -102,31 +108,30 @@ public class Dimoonizae extends BaseZombie
                     return;
                 }
                 for (int i = 0; i < 20; ++i) {
-                    entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 0.25, 0.0), Effect.WITCH_MAGIC, 0, 1, (float)SUtil.random(-0.5, 0.5), (float)SUtil.random(0.0, 0.6), (float)SUtil.random(-0.5, 0.5), 0.0f, 1, 20);
+                    entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 0.25, 0.0), Effect.WITCH_MAGIC, 0, 1, (float) SUtil.random(-0.5, 0.5), (float) SUtil.random(0.0, 0.6), (float) SUtil.random(-0.5, 0.5), 0.0f, 1, 20);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 15L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 15L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
-                    Sputnik.zero((Entity)entity);
+                    Sputnik.zero(entity);
                     this.cancel();
                     return;
                 }
-                final LivingEntity target1 = (LivingEntity)((CraftZombie)entity).getTarget();
+                final LivingEntity target1 = ((CraftZombie) entity).getTarget();
                 if (entity.getFireTicks() > 0) {
                     entity.teleport(Dimoonizae.this.spawnLoc);
                 }
                 if (target1 != null) {
                     if (target1.getLocation().distance(entity.getLocation()) >= 6.0 && target1.getLocation().distance(entity.getLocation()) < 16.0) {
                         entity.teleport(entity.getLocation().setDirection(target1.getLocation().toVector().subtract(entity.getLocation().toVector())));
-                        Sputnik.sendHeadRotation((Entity)entity, entity.getLocation().getYaw(), entity.getLocation().getPitch());
+                        Sputnik.sendHeadRotation(entity, entity.getLocation().getYaw(), entity.getLocation().getPitch());
                     }
                     if (target1.getLocation().distance(entity.getLocation()) < 6.0 || target1.getLocation().distance(entity.getLocation()) > 16.0) {
                         SUtil.delay(() -> {
                             final Object val$entity = entity;
                             entity.getEquipment().setItemInHand(SUtil.enchant(SItem.of(SMaterial.DIAMOND_SWORD).getStack()));
-                            return;
                         }, 0L);
                         Dimoonizae.this.isBowing = false;
                     }
@@ -140,7 +145,7 @@ public class Dimoonizae extends BaseZombie
                             int atkCharge = 20;
                             double bowPower = 2.2;
                             boolean crit = true;
-                            
+
                             public void run() {
                                 if (target1.getLocation().distance(entity.getLocation()) <= 10.0) {
                                     this.atkCharge = 10;
@@ -173,12 +178,11 @@ public class Dimoonizae extends BaseZombie
                                     final Location location = entity.getEyeLocation().add(entity.getEyeLocation().getDirection().toLocation(entity.getWorld()));
                                     final Location l = location.clone();
                                     l.setYaw(location.getYaw());
-                                    final Arrow arr = entity.getWorld().spawnArrow(l, l.getDirection(), (float)this.bowPower, 1.6f);
-                                    arr.setShooter((ProjectileSource)entity);
+                                    final Arrow arr = entity.getWorld().spawnArrow(l, l.getDirection(), (float) this.bowPower, 1.6f);
+                                    arr.setShooter(entity);
                                     if (!this.crit) {
                                         arr.setCritical(SUtil.random(0, 1) == 1);
-                                    }
-                                    else {
+                                    } else {
                                         arr.setCritical(true);
                                     }
                                     skywatch.setRightClicking(false);
@@ -186,15 +190,15 @@ public class Dimoonizae extends BaseZombie
                                     Dimoonizae.this.isBowing = false;
                                 }
                             }
-                        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+                        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
                     }
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
         new BukkitRunnable() {
             Location loc = entity.getLocation();
-            final EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
-            
+            final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
+
             public void run() {
                 if (entity.isDead()) {
                     this.cancel();
@@ -207,13 +211,13 @@ public class Dimoonizae extends BaseZombie
                 if (entity.hasMetadata("frozen")) {
                     return;
                 }
-                if (((CraftZombie)entity).getTarget() == null) {
+                if (((CraftZombie) entity).getTarget() == null) {
                     return;
                 }
-                if (((CraftZombie)entity).getTarget().getWorld() != entity.getWorld()) {
+                if (((CraftZombie) entity).getTarget().getWorld() != entity.getWorld()) {
                     return;
                 }
-                if (((CraftZombie)entity).getTarget().getLocation().distance(entity.getLocation()) <= 4.0 || Dimoonizae.this.isBowing) {
+                if (((CraftZombie) entity).getTarget().getLocation().distance(entity.getLocation()) <= 4.0 || Dimoonizae.this.isBowing) {
                     return;
                 }
                 if (this.loc.distance(loc2) >= 0.2) {
@@ -237,10 +241,10 @@ public class Dimoonizae extends BaseZombie
                 }
                 this.nms.setSprinting(false);
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 7L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 7L);
         new BukkitRunnable() {
             public void run() {
-                final EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
+                final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
@@ -252,7 +256,7 @@ public class Dimoonizae extends BaseZombie
                     if (!(entities instanceof Player)) {
                         continue;
                     }
-                    final Player target = (Player)entities;
+                    final Player target = (Player) entities;
                     if (target.getGameMode() == GameMode.CREATIVE) {
                         continue;
                     }
@@ -270,15 +274,15 @@ public class Dimoonizae extends BaseZombie
                     }
                     entity.teleport(entity.getLocation().setDirection(target.getLocation().subtract(entities.getLocation()).toVector()));
                     for (final Player players : Bukkit.getOnlinePlayers()) {
-                        ((CraftPlayer)players).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)entity).getHandle(), 0));
+                        ((CraftPlayer) players).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) entity).getHandle(), 0));
                     }
-                    nms.r((net.minecraft.server.v1_8_R3.Entity)((CraftPlayer)target).getHandle());
+                    nms.r(((CraftPlayer) target).getHandle());
                     break;
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
     }
-    
+
     @Override
     public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
         if (SkySimEngine.getPlugin().dimoon == null) {
@@ -289,51 +293,51 @@ public class Dimoonizae extends BaseZombie
         }
         killed.getWorld().playEffect(killed.getLocation().add(0.0, 0.7, 0.0), Effect.EXPLOSION_HUGE, 0);
         killed.getWorld().playSound(killed.getLocation(), Sound.EXPLODE, 1.0f, 1.0f);
-        SkySimEngine.getPlugin().dimoon.func((Player)damager);
+        SkySimEngine.getPlugin().dimoon.func((Player) damager);
     }
-    
+
     @Override
     public List<EntityDrop> drops() {
-        return Arrays.<EntityDrop>asList(new EntityDrop(SMaterial.HIDDEN_DIMOON_FRAG, EntityDropType.OCCASIONAL, 1.0));
+        return Collections.singletonList(new EntityDrop(SMaterial.HIDDEN_DIMOON_FRAG, EntityDropType.OCCASIONAL, 1.0));
     }
-    
+
     @Override
     public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
-        final Entity en = (Entity)sEntity.getEntity();
+        final Entity en = sEntity.getEntity();
         final Vector v = new Vector(0, 0, 0);
         SUtil.delay(() -> en.setVelocity(v), 1L);
     }
-    
+
     @Override
     public SEntityEquipment getEntityEquipment() {
         return new SEntityEquipment(SUtil.enchant(SItem.of(SMaterial.DIAMOND_SWORD).getStack()), null, null, null, null);
     }
-    
+
     @Override
     public boolean isBaby() {
         return false;
     }
-    
+
     @Override
     public boolean hasNameTag() {
         return false;
     }
-    
+
     @Override
     public boolean isVillager() {
         return false;
     }
-    
+
     @Override
     public double getXPDropped() {
         return 200.0;
     }
-    
+
     @Override
     public double getMovementSpeed() {
         return 0.3;
     }
-    
+
     public void playPar(final Location l) {
         final ConeEffect Effect = new ConeEffect(SkySimEngine.effectManager);
         Effect.setLocation(l.clone().add(l.getDirection().normalize().multiply(-0.25)).add(0.0, -0.1, 0.0));
@@ -345,7 +349,7 @@ public class Dimoonizae extends BaseZombie
         Effect.iterations = 5;
         Effect.start();
     }
-    
+
     public static void spawnHealthPotion(final Location location, final Entity en) {
         final World world = location.getWorld();
         final ItemStack item = new ItemStack(Material.POTION, 1);
@@ -353,11 +357,11 @@ public class Dimoonizae extends BaseZombie
         pot.setType(PotionType.INSTANT_HEAL);
         pot.setSplash(true);
         pot.apply(item);
-        final ThrownPotion thrownPotion = (ThrownPotion)world.spawnEntity(location.clone().add(0.0, -0.5, 0.0), EntityType.SPLASH_POTION);
-        thrownPotion.setShooter((ProjectileSource)en);
+        final ThrownPotion thrownPotion = (ThrownPotion) world.spawnEntity(location.clone().add(0.0, -0.5, 0.0), EntityType.SPLASH_POTION);
+        thrownPotion.setShooter((ProjectileSource) en);
         thrownPotion.setItem(item);
     }
-    
+
     public static ItemStack getPot() {
         final ItemStack item = new ItemStack(Material.POTION, 1);
         final Potion pot = new Potion(1);
@@ -366,7 +370,7 @@ public class Dimoonizae extends BaseZombie
         pot.apply(item);
         return item;
     }
-    
+
     public static ItemStack getStrPot() {
         final ItemStack item = new ItemStack(Material.POTION, 1);
         final Potion pot = new Potion(1);
@@ -375,11 +379,11 @@ public class Dimoonizae extends BaseZombie
         pot.apply(item);
         return item;
     }
-    
+
     public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
-        final net.minecraft.server.v1_8_R3.Entity pl = (net.minecraft.server.v1_8_R3.Entity)((CraftZombie)e).getHandle();
+        final net.minecraft.server.v1_8_R3.Entity pl = ((CraftZombie) e).getHandle();
         pl.setLocation(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), yaw, pitch);
         final PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(pl);
-        Sputnik.sendPacket(e.getWorld(), (Packet)packet);
+        Sputnik.sendPacket(e.getWorld(), packet);
     }
 }

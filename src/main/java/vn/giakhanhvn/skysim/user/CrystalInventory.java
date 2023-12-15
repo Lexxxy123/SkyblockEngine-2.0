@@ -2,8 +2,7 @@ package vn.giakhanhvn.skysim.user;
 
 import org.bukkit.entity.Player;
 
-public class CrystalInventory
-{
+public class CrystalInventory {
     public static void load(final Player player) {
         final User user = User.getUser(player.getUniqueId());
         final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(user.getUuid());

@@ -9,8 +9,7 @@ import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.item.SMaterial;
 
 @CommandParameters(description = "", aliases = "bcb", permission = "sse.cc")
-public class BuyItemCommand extends SCommand
-{
+public class BuyItemCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         final Player player = sender.getPlayer();
@@ -21,8 +20,7 @@ public class BuyItemCommand extends SCommand
                 final ItemStack stack = SItem.of(SMaterial.HIDDEN_COMPRESSED_BITS).getStack();
                 Sputnik.smartGiveItem(stack, player);
             }
-        }
-        else {
+        } else {
             this.send(ChatColor.RED + "Unknown Command.");
         }
     }

@@ -10,18 +10,17 @@ import vn.giakhanhvn.skysim.item.GenericItemType;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
 import vn.giakhanhvn.skysim.item.SkullStatistics;
 
-public abstract class FloatingCrystal implements SkullStatistics, MaterialFunction
-{
+public abstract class FloatingCrystal implements SkullStatistics, MaterialFunction {
     @Override
     public GenericItemType getType() {
         return GenericItemType.ITEM;
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.EXCLUSIVE;
     }
-    
+
     @Override
     public void onInteraction(final PlayerInteractEvent e) {
         if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
@@ -30,6 +29,6 @@ public abstract class FloatingCrystal implements SkullStatistics, MaterialFuncti
         final Player player = e.getPlayer();
         final SEntity sEntity = new SEntity(player.getLocation().clone().add(player.getLocation().getDirection().multiply(1.5)), this.getCrystalType());
     }
-    
+
     protected abstract SEntityType getCrystalType();
 }

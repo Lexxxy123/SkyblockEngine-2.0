@@ -2,6 +2,7 @@ package vn.giakhanhvn.skysim.skill;
 
 import java.util.Collection;
 import java.util.ArrayList;
+
 import org.bukkit.Bukkit;
 import vn.giakhanhvn.skysim.Repeater;
 import org.bukkit.Sound;
@@ -10,16 +11,18 @@ import vn.giakhanhvn.skysim.user.User;
 import org.bukkit.entity.Player;
 import org.bukkit.ChatColor;
 import vn.giakhanhvn.skysim.util.DefenseReplacement;
+
 import java.util.Iterator;
+
 import vn.giakhanhvn.skysim.util.SUtil;
+
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class Skill
-{
+public abstract class Skill {
     public static final List<Integer> XP_GOALS;
     public static final List<Integer> COIN_REWARDS;
-    
+
     public static int getLevel(final double xp, final boolean sixty) {
         if (xp == 0.0) {
             return 0;
@@ -34,15 +37,15 @@ public abstract class Skill
         }
         return 60;
     }
-    
+
     public static int getCoinReward(final int level) {
         return Skill.COIN_REWARDS.get(level);
     }
-    
+
     public static List<Skill> getSkills() {
-        return Arrays.<Skill>asList(FarmingSkill.INSTANCE, MiningSkill.INSTANCE, CombatSkill.INSTANCE, ForagingSkill.INSTANCE, EnchantingSkill.INSTANCE, CatacombsSkill.INSTANCE, TankSkill.INSTANCE, MageSkill.INSTANCE, BerserkSkill.INSTANCE, ArcherSkill.INSTANCE, HealerSkill.INSTANCE);
+        return Arrays.asList(FarmingSkill.INSTANCE, MiningSkill.INSTANCE, CombatSkill.INSTANCE, ForagingSkill.INSTANCE, EnchantingSkill.INSTANCE, CatacombsSkill.INSTANCE, TankSkill.INSTANCE, MageSkill.INSTANCE, BerserkSkill.INSTANCE, ArcherSkill.INSTANCE, HealerSkill.INSTANCE);
     }
-    
+
     public static double getNextXPGoal(final double xp, final boolean sixty) {
         if (xp >= 5.5172425E7 && !sixty) {
             return 0.0;
@@ -55,7 +58,7 @@ public abstract class Skill
         }
         return 0.0;
     }
-    
+
     public static double getNextOverallXPGoal(final double xp, final boolean sixty) {
         if (xp >= 5.5172425E7 && !sixty) {
             return 0.0;
@@ -67,7 +70,7 @@ public abstract class Skill
         }
         return 0.0;
     }
-    
+
     public static double getXPUntilLevelUp(final double xp, final boolean sixty) {
         final double goal = getNextXPGoal(xp, sixty);
         if (goal == 0.0) {
@@ -75,22 +78,22 @@ public abstract class Skill
         }
         return goal - xp;
     }
-    
+
     public static DefenseReplacement getProgressReplacement(final Skill skill, final double xp, final double additive, final long end) {
         return new DefenseReplacement() {
             @Override
             public String getReplacement() {
-                final int next = (int)Skill.getNextXPGoal(xp, skill.hasSixtyLevels());
+                final int next = (int) Skill.getNextXPGoal(xp, skill.hasSixtyLevels());
                 return ChatColor.DARK_AQUA + "+" + SUtil.commaify(additive) + " " + skill.getName() + " (" + SUtil.commaify(next - (Skill.getNextOverallXPGoal(xp, skill.hasSixtyLevels()) - xp)) + "/" + SUtil.commaify(next) + ")";
             }
-            
+
             @Override
             public long getEnd() {
                 return end;
             }
         };
     }
-    
+
     public static void reward(final Skill rewarded, final double rewardXP, final Player player) {
         final User user = User.getUser(player.getUniqueId());
         final Pet pet = user.getActivePetClass();
@@ -103,8 +106,7 @@ public abstract class Skill
                 player.playSound(player.getLocation(), Sound.LEVEL_UP, 1.0f, 2.0f);
                 player.sendMessage(ChatColor.GREEN + "Your " + item.getRarity().getColor() + item.getType().getDisplayName(item.getType().getData()) + ChatColor.GREEN + " levelled up to level " + ChatColor.BLUE + level + ChatColor.GREEN + "!");
             }
-        }
-        else if (pet != null) {
+        } else if (pet != null) {
             final Pet.PetItem item = user.getActivePet();
             final int prevLevel = Pet.getLevel(item.getXp(), item.getRarity());
             item.setXp(item.getXp() + rewardXP * 25.0 / 100.0);
@@ -120,17 +122,17 @@ public abstract class Skill
             Repeater.DEFENSE_REPLACEMENT_MAP.put(player.getUniqueId(), getProgressReplacement(rewarded, user.getSkillXP(rewarded), rewardXP, System.currentTimeMillis() + 2000L));
         }
     }
-    
+
     public abstract String getName();
-    
+
     public abstract String getAlternativeName();
-    
+
     public abstract List<String> getDescription();
-    
+
     public abstract List<String> getLevelUpInformation(final int p0, final int p1, final boolean p2);
-    
+
     public abstract boolean hasSixtyLevels();
-    
+
     public void onSkillUpdate(final User user, final double previousXP) {
         final int prevLevel = getLevel(previousXP, this.hasSixtyLevels());
         final int level = getLevel(user.getSkillXP(this), this.hasSixtyLevels());
@@ -158,7 +160,7 @@ public abstract class Skill
             }
         }
     }
-    
+
     public List<String> getRewardLore(final int level, final int prevLevel, final boolean showOld) {
         final List<String> lore = new ArrayList<String>();
         final String s = this.getAlternativeName();
@@ -171,9 +173,9 @@ public abstract class Skill
         }
         return lore;
     }
-    
+
     static {
-        XP_GOALS = Arrays.<Integer>asList(0, 50, 175, 375, 675, 1175, 1925, 2925, 4425, 6425, 9925, 14925, 22425, 32425, 47425, 67425, 97425, 147425, 222425, 322425, 522425, 822425, 1222425, 1722425, 2322425, 3022425, 3822425, 4722425, 5722425, 6822425, 8022425, 9322425, 10722425, 12222425, 13822425, 15522425, 17322425, 19222425, 21222425, 23322425, 25522425, 27822425, 30222425, 32722425, 35322425, 38072425, 40972425, 44072425, 47472425, 51172425, 55172425, 59472425, 64072425, 68972425, 74172425, 79672425, 85472425, 91572425, 97972425, 104672425, 111672425);
-        COIN_REWARDS = Arrays.<Integer>asList(0, 25, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 2200, 2400, 2600, 2800, 3000, 3500, 4000, 5000, 6000, 7500, 10000, 12500, 15000, 17500, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 60000, 70000, 80000, 90000, 100000, 125000, 150000, 175000, 200000, 250000, 300000, 350000, 400000, 450000, 500000, 600000, 700000, 800000, 1000000);
+        XP_GOALS = Arrays.asList(0, 50, 175, 375, 675, 1175, 1925, 2925, 4425, 6425, 9925, 14925, 22425, 32425, 47425, 67425, 97425, 147425, 222425, 322425, 522425, 822425, 1222425, 1722425, 2322425, 3022425, 3822425, 4722425, 5722425, 6822425, 8022425, 9322425, 10722425, 12222425, 13822425, 15522425, 17322425, 19222425, 21222425, 23322425, 25522425, 27822425, 30222425, 32722425, 35322425, 38072425, 40972425, 44072425, 47472425, 51172425, 55172425, 59472425, 64072425, 68972425, 74172425, 79672425, 85472425, 91572425, 97972425, 104672425, 111672425);
+        COIN_REWARDS = Arrays.asList(0, 25, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 2200, 2400, 2600, 2800, 3000, 3500, 4000, 5000, 6000, 7500, 10000, 12500, 15000, 17500, 20000, 25000, 30000, 35000, 40000, 45000, 50000, 60000, 70000, 80000, 90000, 100000, 125000, 150000, 175000, 200000, 250000, 300000, 350000, 400000, 450000, 500000, 600000, 700000, 800000, 1000000);
     }
 }

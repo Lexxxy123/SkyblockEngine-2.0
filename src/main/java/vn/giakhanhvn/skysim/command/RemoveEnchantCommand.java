@@ -1,6 +1,7 @@
 package vn.giakhanhvn.skysim.command;
 
 import java.util.Iterator;
+
 import vn.giakhanhvn.skysim.user.User;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -14,8 +15,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import vn.giakhanhvn.skysim.item.SItem;
 
 @CommandParameters(description = "Adds an enchantment from Spec to the specified item.", aliases = "rench", permission = "spt.item")
-public class RemoveEnchantCommand extends SCommand
-{
+public class RemoveEnchantCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         final Player player = sender.getPlayer();

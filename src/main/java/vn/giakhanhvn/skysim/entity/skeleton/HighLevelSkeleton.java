@@ -14,28 +14,27 @@ import vn.giakhanhvn.skysim.entity.SEntity;
 import vn.giakhanhvn.skysim.entity.EntityFunction;
 import vn.giakhanhvn.skysim.entity.EntityStatistics;
 
-public class HighLevelSkeleton implements EntityStatistics, EntityFunction
-{
+public class HighLevelSkeleton implements EntityStatistics, EntityFunction {
     @Override
     public String getEntityName() {
         return "Skeleton";
     }
-    
+
     @Override
     public double getEntityMaxHealth() {
         return 200.0;
     }
-    
+
     @Override
     public double getDamageDealt() {
         return 47.0;
     }
-    
+
     @Override
     public double getXPDropped() {
         return 6.0;
     }
-    
+
     @Override
     public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
         final Item item = sEntity.getEntity().getWorld().dropItem(sEntity.getEntity().getLocation(), new ItemStack(Material.BONE, 2));
@@ -51,6 +50,6 @@ public class HighLevelSkeleton implements EntityStatistics, EntityFunction
                 new SEntity(spawn, SEntityType.HIGH_LEVEL_SKELETON);
                 item.remove();
             }
-        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 100L);
+        }.runTaskLater(SkySimEngine.getPlugin(), 100L);
     }
 }

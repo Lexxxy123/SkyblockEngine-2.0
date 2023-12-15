@@ -12,25 +12,24 @@ import vn.giakhanhvn.skysim.user.User;
 
 import java.util.List;
 
-public abstract class Recipe<T>
-{
+public abstract class Recipe<T> {
     protected static final List<List<SMaterial>> EXCHANGEABLES;
     protected SItem result;
     protected boolean useExchangeables;
-    
+
     protected Recipe(final SItem result, final boolean useExchangeables) {
         this.result = result;
         this.useExchangeables = useExchangeables;
     }
-    
+
     protected Recipe(final SItem result) {
         this(result, false);
     }
-    
+
     public abstract T setResult(final SItem p0);
-    
+
     public abstract List<MaterialQuantifiable> getIngredients();
-    
+
     public static Recipe<?> parseRecipe(final ItemStack[] stacks) {
         final ShapedRecipe shaped = ShapedRecipe.parseShapedRecipe(stacks);
         if (shaped != null) {
@@ -38,10 +37,11 @@ public abstract class Recipe<T>
         }
         return ShapelessRecipe.parseShapelessRecipe(stacks);
     }
-    public boolean isUnlockedForPlayer(User user){
+
+    public boolean isUnlockedForPlayer(User user) {
         return user.getUnlockedRecipes().contains(result.getDisplayName());
     }
-    
+
     protected static MaterialQuantifiable[][] airless(final MaterialQuantifiable[][] grid) {
         final List<Integer> excluded = new ArrayList<Integer>(0);
         for (int i = 0; i < grid.length; ++i) {
@@ -63,10 +63,9 @@ public abstract class Recipe<T>
         while (j < grid.length) {
             if (excluded.contains(j)) {
                 ++b;
-            }
-            else {
+            } else {
                 final MaterialQuantifiable[] line = grid[j];
-                final int remaining = (int)Arrays.<MaterialQuantifiable>stream(line).filter(mat -> mat.getMaterial() != SMaterial.AIR).count();
+                final int remaining = (int) Arrays.stream(line).filter(mat -> mat.getMaterial() != SMaterial.AIR).count();
                 g[j - b] = new MaterialQuantifiable[remaining];
                 int k = 0;
                 int r = 0;
@@ -82,10 +81,10 @@ public abstract class Recipe<T>
         }
         return g;
     }
-    
+
     public static List<SMaterial> getExchangeablesOf(final SMaterial material) {
         for (final List<SMaterial> materials : Recipe.EXCHANGEABLES) {
-            final int f = Collections.<SMaterial>binarySearch(materials, material);
+            final int f = Collections.binarySearch(materials, material);
             if (f < 0) {
                 continue;
             }
@@ -93,20 +92,20 @@ public abstract class Recipe<T>
         }
         return null;
     }
-    
+
     public SItem getResult() {
         return this.result;
     }
-    
+
     public boolean isUseExchangeables() {
         return this.useExchangeables;
     }
-    
+
     public void setUseExchangeables(final boolean useExchangeables) {
         this.useExchangeables = useExchangeables;
     }
-    
+
     static {
-        EXCHANGEABLES = new ArrayList<List<SMaterial>>((Collection<? extends List<SMaterial>>)Arrays.asList(Arrays.asList(SMaterial.OAK_WOOD, SMaterial.SPRUCE_WOOD, SMaterial.BIRCH_WOOD, SMaterial.JUNGLE_WOOD, SMaterial.ACACIA_WOOD, SMaterial.DARK_OAK_WOOD), Arrays.asList(SMaterial.OAK_WOOD_PLANKS, SMaterial.SPRUCE_WOOD_PLANKS, SMaterial.BIRCH_WOOD_PLANKS, SMaterial.JUNGLE_WOOD_PLANKS, SMaterial.ACACIA_WOOD_PLANKS, SMaterial.DARK_OAK_WOOD_PLANKS)));
+        EXCHANGEABLES = new ArrayList<List<SMaterial>>(Arrays.asList(Arrays.asList(SMaterial.OAK_WOOD, SMaterial.SPRUCE_WOOD, SMaterial.BIRCH_WOOD, SMaterial.JUNGLE_WOOD, SMaterial.ACACIA_WOOD, SMaterial.DARK_OAK_WOOD), Arrays.asList(SMaterial.OAK_WOOD_PLANKS, SMaterial.SPRUCE_WOOD_PLANKS, SMaterial.BIRCH_WOOD_PLANKS, SMaterial.JUNGLE_WOOD_PLANKS, SMaterial.ACACIA_WOOD_PLANKS, SMaterial.DARK_OAK_WOOD_PLANKS)));
     }
 }

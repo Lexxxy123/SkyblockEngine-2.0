@@ -9,22 +9,29 @@ import vn.giakhanhvn.skysim.skill.Skill;
 import vn.giakhanhvn.skysim.util.Groups;
 import vn.giakhanhvn.skysim.entity.SEntity;
 import vn.giakhanhvn.skysim.item.Rarity;
+
 import java.util.Collection;
 import java.util.ArrayList;
 import java.util.Collections;
+
 import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+
 import java.util.Arrays;
+
 import vn.giakhanhvn.skysim.util.Sputnik;
 import org.bukkit.ChatColor;
+
 import java.math.RoundingMode;
 import java.math.BigDecimal;
+
 import vn.giakhanhvn.skysim.item.RarityValue;
+
 import java.util.List;
+
 import vn.giakhanhvn.skysim.item.SItem;
 
-public class VoidlingsPet extends Pet
-{
+public class VoidlingsPet extends Pet {
     @Override
     public List<PetAbility> getPetAbilities(final SItem instance) {
         final RarityValue<Double> enderianMul = new RarityValue<Double>(0.1, 0.2, 0.2, 0.3, 0.3, 0.3);
@@ -38,12 +45,12 @@ public class VoidlingsPet extends Pet
             public String getName() {
                 return "Voidling's Summoner";
             }
-            
+
             @Override
             public List<String> getDescription(final SItem instance) {
-                return Arrays.<String>asList("Gives you a chance to summon " + ChatColor.DARK_PURPLE + "Voidling's", ChatColor.DARK_PURPLE + "Altars " + ChatColor.GRAY + "while killing " + ChatColor.LIGHT_PURPLE + "Voidling Extremist", Sputnik.trans("&4☠ &cRequires &5Enderman Slayer 6."));
+                return Arrays.asList("Gives you a chance to summon " + ChatColor.DARK_PURPLE + "Voidling's", ChatColor.DARK_PURPLE + "Altars " + ChatColor.GRAY + "while killing " + ChatColor.LIGHT_PURPLE + "Voidling Extremist", Sputnik.trans("&4☠ &cRequires &5Enderman Slayer 6."));
             }
-            
+
             @Override
             public void onHurt(final EntityDamageByEntityEvent e, final Entity damager) {
             }
@@ -54,13 +61,13 @@ public class VoidlingsPet extends Pet
                 public String getName() {
                     return "Ender's Stronghold";
                 }
-                
+
                 @Override
                 public List<String> getDescription(final SItem instance) {
                     final BigDecimal e = new BigDecimal(0.3 * level).setScale(1, RoundingMode.HALF_EVEN);
-                    return Arrays.<String>asList(Sputnik.trans("&7Take &a" + e.toPlainString() + "% &7less damage from ender mobs."));
+                    return Collections.singletonList(Sputnik.trans("&7Take &a" + e.toPlainString() + "% &7less damage from ender mobs."));
                 }
-                
+
                 @Override
                 public void onHurt(final EntityDamageByEntityEvent e, final Entity damager) {
                     final SEntity entity = SEntity.findSEntity(damager);
@@ -75,47 +82,47 @@ public class VoidlingsPet extends Pet
         }
         return abilities;
     }
-    
+
     @Override
     public Skill getSkill() {
         return CombatSkill.INSTANCE;
     }
-    
+
     @Override
     public String getURL() {
         return "99e01b3a35ae3be4483b6df69b7070bd6dc75b399d7e2ebbc7b8840332f7b3a0";
     }
-    
+
     @Override
     public String getDisplayName() {
         return "Voidling's Micron";
     }
-    
+
     @Override
     public GenericItemType getType() {
         return GenericItemType.PET;
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.MYTHIC;
     }
-    
+
     @Override
     public double getPerCritDamage() {
         return 0.01;
     }
-    
+
     @Override
     public double getPerStrength() {
         return 2.0;
     }
-    
+
     @Override
     public double getPerTrueDefense() {
         return 0.15;
     }
-    
+
     @Override
     public void particleBelowA(final Player p, final Location l) {
         p.spigot().playEffect(l, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);

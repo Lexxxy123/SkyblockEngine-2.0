@@ -10,12 +10,11 @@ import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.auction.AuctionEscrow;
 import vn.giakhanhvn.skysim.user.User;
 
-public class AuctionConfirmGUI extends GUI
-{
+public class AuctionConfirmGUI extends GUI {
     public AuctionConfirmGUI() {
         super("Confirm", 27);
     }
-    
+
     @Override
     public void onOpen(final GUIOpenEvent e) {
         final Player player = e.getPlayer();
@@ -32,13 +31,13 @@ public class AuctionConfirmGUI extends GUI
                 user.setAuctionEscrow(new AuctionEscrow());
                 new AuctionViewGUI(item).open(player);
             }
-            
+
             @Override
             public ItemStack getItem() {
                 final int count = escrow.getItem().getStack().getAmount();
-                return SUtil.getStack(ChatColor.GREEN + "Confirm", Material.STAINED_CLAY, (short)13, 1, ChatColor.GRAY + "Auctioning: " + ((count != 1) ? (count + "x ") : "") + escrow.getItem().getFullName(), ChatColor.GRAY + "Cost: " + ChatColor.GOLD + escrow.getCreationFee(user.isAuctionCreationBIN()) + " coins");
+                return SUtil.getStack(ChatColor.GREEN + "Confirm", Material.STAINED_CLAY, (short) 13, 1, ChatColor.GRAY + "Auctioning: " + ((count != 1) ? (count + "x ") : "") + escrow.getItem().getFullName(), ChatColor.GRAY + "Cost: " + ChatColor.GOLD + escrow.getCreationFee(user.isAuctionCreationBIN()) + " coins");
             }
-            
+
             @Override
             public int getSlot() {
                 return 11;
@@ -49,12 +48,12 @@ public class AuctionConfirmGUI extends GUI
             public void run(final InventoryClickEvent e) {
                 e.getWhoClicked().closeInventory();
             }
-            
+
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.RED + "Cancel", Material.STAINED_CLAY, (short)14, 1, new String[0]);
+                return SUtil.getStack(ChatColor.RED + "Cancel", Material.STAINED_CLAY, (short) 14, 1);
             }
-            
+
             @Override
             public int getSlot() {
                 return 15;

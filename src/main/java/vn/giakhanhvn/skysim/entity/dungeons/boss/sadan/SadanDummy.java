@@ -20,47 +20,46 @@ import org.bukkit.entity.LivingEntity;
 import vn.giakhanhvn.skysim.util.Sputnik;
 import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
 
-public class SadanDummy extends BaseZombie
-{
+public class SadanDummy extends BaseZombie {
     @Override
     public String getEntityName() {
         return Sputnik.trans("");
     }
-    
+
     @Override
     public double getEntityMaxHealth() {
         return 4.0E7;
     }
-    
+
     @Override
     public double getDamageDealt() {
         return 120000.0;
     }
-    
+
     @Override
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
         entity.teleport(new Location(entity.getWorld(), 191.5, 54.0, 266.5, 180.0f, 0.0f));
         final Location l = entity.getLocation().clone();
-        Sputnik.applyPacketGiant((Entity)entity);
-        EntityManager.noAI((Entity)entity);
-        EntityManager.noHit((Entity)entity);
-        entity.setMetadata("GiantSword", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("NoAffect", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 100);
-        EntityManager.shutTheFuckUp((Entity)entity);
-        entity.setMetadata("dummyforphase3", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("notDisplay", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+        Sputnik.applyPacketGiant(entity);
+        EntityManager.noAI(entity);
+        EntityManager.noHit(entity);
+        entity.setMetadata("GiantSword", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("NoAffect", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        EntityManager.DEFENSE_PERCENTAGE.put(entity, 100);
+        EntityManager.shutTheFuckUp(entity);
+        entity.setMetadata("dummyforphase3", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("notDisplay", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
         SUtil.delay(() -> this.t(entity), 30L);
         SUtil.delay(() -> this.helmetcolor(entity), 220L);
     }
-    
+
     @Override
     public SEntityEquipment getEntityEquipment() {
         return new SEntityEquipment(SUtil.enchant(new ItemStack(Material.DIAMOND_SWORD)), b(5385260, Material.LEATHER_HELMET), b(14751108, Material.LEATHER_CHESTPLATE), c(Material.DIAMOND_LEGGINGS), b(8991025, Material.LEATHER_BOOTS));
     }
-    
+
     public void helmetcolor(final LivingEntity e) {
-        final int[] array_colors = { 12228503, 8739418, 6897985, 6042419, 5385260 };
+        final int[] array_colors = {12228503, 8739418, 6897985, 6042419, 5385260};
         SUtil.delay(() -> e.getEquipment().setHelmet(buildColorStack(array_colors[4])), 1L);
         SUtil.delay(() -> e.getEquipment().setHelmet(buildColorStack(array_colors[3])), 20L);
         SUtil.delay(() -> e.getEquipment().setHelmet(buildColorStack(array_colors[2])), 30L);
@@ -68,7 +67,7 @@ public class SadanDummy extends BaseZombie
         SUtil.delay(() -> e.getEquipment().setHelmet(buildColorStack(array_colors[0])), 60L);
         SUtil.delay(() -> e.getEquipment().setHelmet(b(15249075, Material.LEATHER_HELMET)), 60L);
     }
-    
+
     public void t(final LivingEntity e) {
         SUtil.delay(() -> e.teleport(new Location(e.getWorld(), 191.5, 55.5, 266.5, 180.0f, 0.0f)), 1L);
         SUtil.delay(() -> e.teleport(new Location(e.getWorld(), 191.5, 57.5, 266.5, 180.0f, 0.0f)), 20L);
@@ -90,13 +89,13 @@ public class SadanDummy extends BaseZombie
         SUtil.delay(() -> this.e(e), 200L);
         SUtil.delay(() -> this.r(e), 205L);
     }
-    
+
     public void e(final LivingEntity e) {
         final Location l = e.getLocation();
         l.setYaw(60.0f);
         e.teleport(l);
     }
-    
+
     public void r(final LivingEntity e) {
         final Location l = e.getLocation();
         l.setYaw(0.0f);
@@ -114,34 +113,34 @@ public class SadanDummy extends BaseZombie
                 }
                 e.teleport(e.getLocation().add(teleportTo).multiply(1.0));
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 3L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 3L);
     }
-    
+
     @Override
     public boolean hasNameTag() {
         return false;
     }
-    
+
     @Override
     public boolean isVillager() {
         return false;
     }
-    
+
     @Override
     public boolean isBaby() {
         return false;
     }
-    
+
     @Override
     public double getXPDropped() {
         return 0.0;
     }
-    
+
     @Override
     public double getMovementSpeed() {
         return 0.0;
     }
-    
+
     public static ItemStack buildColorStack(final int hexcolor) {
         final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB(hexcolor));
         final ItemMeta itemMeta = stack.getItemMeta();
@@ -149,7 +148,7 @@ public class SadanDummy extends BaseZombie
         stack.setItemMeta(itemMeta);
         return stack;
     }
-    
+
     public static ItemStack b(final int hexcolor, final Material m) {
         final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
         final ItemMeta itemMeta = stack.getItemMeta();
@@ -157,7 +156,7 @@ public class SadanDummy extends BaseZombie
         stack.setItemMeta(itemMeta);
         return stack;
     }
-    
+
     public static ItemStack c(final Material m) {
         final ItemStack stack = new ItemStack(m);
         final ItemMeta itemMeta = stack.getItemMeta();

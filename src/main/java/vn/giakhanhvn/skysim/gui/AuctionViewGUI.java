@@ -5,21 +5,22 @@ import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.event.inventory.InventoryClickEvent;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
+
 import org.bukkit.entity.Player;
 import org.bukkit.Material;
 import org.bukkit.ChatColor;
 import vn.giakhanhvn.skysim.user.User;
 import vn.giakhanhvn.skysim.auction.AuctionItem;
 
-public class AuctionViewGUI extends GUI
-{
+public class AuctionViewGUI extends GUI {
     private final AuctionItem item;
     private final GUI ret;
     private final long bid;
-    
+
     public AuctionViewGUI(final AuctionItem item, final GUI ret, final long bid) {
         super((item.isBin() ? "BIN " : "") + "Auction View", 54);
         this.item = item;
@@ -27,15 +28,15 @@ public class AuctionViewGUI extends GUI
         this.bid = bid;
         this.fill(AuctionViewGUI.BLACK_STAINED_GLASS_PANE);
     }
-    
+
     public AuctionViewGUI(final AuctionItem item, final GUI ret) {
         this(item, ret, item.nextBid());
     }
-    
+
     public AuctionViewGUI(final AuctionItem item) {
         this(item, null);
     }
-    
+
     @Override
     public void onOpen(final GUIOpenEvent e) {
         final Player player = e.getPlayer();
@@ -46,20 +47,18 @@ public class AuctionViewGUI extends GUI
             for (final GUIItem item : this.getBINItems(player)) {
                 this.set(item);
             }
-        }
-        else {
+        } else {
             for (final GUIItem item : this.getAuctionItems(player)) {
                 this.set(item);
             }
         }
         if (this.ret != null) {
-            this.set(GUIClickableItem.createGUIOpenerItem(this.ret, player, ChatColor.GREEN + "Go Back", 49, Material.ARROW, (short)0, ChatColor.GRAY + "To " + this.ret.getTitle()));
-        }
-        else {
+            this.set(GUIClickableItem.createGUIOpenerItem(this.ret, player, ChatColor.GREEN + "Go Back", 49, Material.ARROW, (short) 0, ChatColor.GRAY + "To " + this.ret.getTitle()));
+        } else {
             this.set(GUIClickableItem.getCloseItem(49));
         }
     }
-    
+
     private List<GUIItem> getBINItems(final Player player) {
         final User user = User.getUser(player.getUniqueId());
         final boolean personal = this.item.getOwner().getUuid().equals(user.getUuid());
@@ -72,12 +71,12 @@ public class AuctionViewGUI extends GUI
                     AuctionViewGUI.this.item.claim(player);
                     player.closeInventory();
                 }
-                
+
                 @Override
                 public int getSlot() {
                     return 31;
                 }
-                
+
                 @Override
                 public ItemStack getItem() {
                     final List<String> lore = new ArrayList<String>();
@@ -85,25 +84,22 @@ public class AuctionViewGUI extends GUI
                     if (AuctionViewGUI.this.item.getBids().size() == 0) {
                         if (AuctionViewGUI.this.item.isBin()) {
                             lore.add(ChatColor.GRAY + "No one has bought your item.");
-                        }
-                        else {
+                        } else {
                             lore.add(ChatColor.GRAY + "No one has bid on your item.");
                         }
                         lore.add(ChatColor.GREEN + "You may pick it back up.");
                         lore.add(" ");
                         lore.add(ChatColor.YELLOW + "Click to pick up item!");
-                    }
-                    else {
+                    } else {
                         lore.add(ChatColor.GRAY + "Item sold to " + ChatColor.GREEN + Bukkit.getOfflinePlayer(AuctionViewGUI.this.item.getTopBidder().getUuid()));
                         lore.add(ChatColor.GRAY + "for " + ChatColor.GOLD + topBid + " coin" + ((topBid != 1L) ? "s" : "") + ChatColor.GRAY + "!");
                         lore.add(" ");
                         lore.add(ChatColor.YELLOW + "Click to collect coins!");
                     }
-                    return SUtil.getStack(ChatColor.GOLD + "Collect Auction", (AuctionViewGUI.this.item.getBids().size() != 0) ? Material.GOLD_BLOCK : Material.GOLD_NUGGET, (short)0, 1, lore);
+                    return SUtil.getStack(ChatColor.GOLD + "Collect Auction", (AuctionViewGUI.this.item.getBids().size() != 0) ? Material.GOLD_BLOCK : Material.GOLD_NUGGET, (short) 0, 1, lore);
                 }
             });
-        }
-        else {
+        } else {
             items.add(new GUIClickableItem() {
                 @Override
                 public void run(final InventoryClickEvent e) {
@@ -127,20 +123,19 @@ public class AuctionViewGUI extends GUI
                     }
                     new ConfirmBidGUI(AuctionViewGUI.this.item, AuctionViewGUI.this.bid).open(player);
                 }
-                
+
                 @Override
                 public int getSlot() {
                     return (personal && AuctionViewGUI.this.item.getBids().size() == 0) ? 29 : 31;
                 }
-                
+
                 @Override
                 public ItemStack getItem() {
                     final List<String> lore = new ArrayList<String>();
                     lore.add(" ");
                     if (AuctionViewGUI.this.item.isBin()) {
                         lore.add(ChatColor.GRAY + "Price: " + ChatColor.GOLD + SUtil.commaify(AuctionViewGUI.this.item.getStarter()) + " coin" + ((AuctionViewGUI.this.item.getStarter() != 1L) ? "s" : ""));
-                    }
-                    else {
+                    } else {
                         lore.add(ChatColor.GRAY + "New bid: " + ChatColor.GOLD + SUtil.commaify(AuctionViewGUI.this.bid) + " coin" + ((AuctionViewGUI.this.bid != 1L) ? "s" : ""));
                         final AuctionBid bid = AuctionViewGUI.this.item.getBid(user);
                         if (bid != null) {
@@ -151,21 +146,18 @@ public class AuctionViewGUI extends GUI
                     final User top = AuctionViewGUI.this.item.getTopBidder();
                     if (personal) {
                         lore.add(ChatColor.GREEN + "This is your own auction!");
-                    }
-                    else if (top != null && top.getUuid().equals(user.getUuid())) {
+                    } else if (top != null && top.getUuid().equals(user.getUuid())) {
                         lore.add(ChatColor.GREEN + "Already top bid!");
-                    }
-                    else if (user.getCoins() < AuctionViewGUI.this.bid) {
+                    } else if (user.getCoins() < AuctionViewGUI.this.bid) {
                         lore.add(ChatColor.RED + "Cannot afford bid!");
-                    }
-                    else {
+                    } else {
                         lore.add(ChatColor.YELLOW + "Click to " + (AuctionViewGUI.this.item.isBin() ? "buy" : "bid") + "!");
                     }
                     Material icon = (user.getCoins() < AuctionViewGUI.this.bid || personal) ? Material.POTATO_ITEM : Material.GOLD_NUGGET;
                     if (top != null && top.getUuid().equals(user.getUuid())) {
                         icon = Material.GOLD_BLOCK;
                     }
-                    return SUtil.getStack(ChatColor.GOLD + (AuctionViewGUI.this.item.isBin() ? "Buy Item Right Now" : "Submit Bid"), icon, (short)0, 1, lore);
+                    return SUtil.getStack(ChatColor.GOLD + (AuctionViewGUI.this.item.isBin() ? "Buy Item Right Now" : "Submit Bid"), icon, (short) 0, 1, lore);
                 }
             });
         }
@@ -183,25 +175,25 @@ public class AuctionViewGUI extends GUI
                         return;
                     }
                     player.closeInventory();
-                    player.getInventory().addItem(new ItemStack[] { AuctionViewGUI.this.item.getItem().getStack() });
+                    player.getInventory().addItem(AuctionViewGUI.this.item.getItem().getStack());
                     AuctionViewGUI.this.item.delete();
                     player.sendMessage(ChatColor.GREEN + "Your auction has been successfully cancelled!");
                 }
-                
+
                 @Override
                 public int getSlot() {
                     return 33;
                 }
-                
+
                 @Override
                 public ItemStack getItem() {
-                    return SUtil.getStack(ChatColor.RED + "Cancel Auction", Material.STAINED_CLAY, (short)14, 1, ChatColor.GRAY + "You may cancel auctions as", ChatColor.GRAY + "long as they have " + ChatColor.RED + "0" + ChatColor.GRAY + " bids!", " ", ChatColor.YELLOW + "Click to cancel auction!");
+                    return SUtil.getStack(ChatColor.RED + "Cancel Auction", Material.STAINED_CLAY, (short) 14, 1, ChatColor.GRAY + "You may cancel auctions as", ChatColor.GRAY + "long as they have " + ChatColor.RED + "0" + ChatColor.GRAY + " bids!", " ", ChatColor.YELLOW + "Click to cancel auction!");
                 }
             });
         }
         return items;
     }
-    
+
     private List<GUIItem> getAuctionItems(final Player player) {
         final User user = User.getUser(player.getUniqueId());
         final boolean personal = this.item.getOwner().getUuid().equals(user.getUuid());
@@ -214,12 +206,12 @@ public class AuctionViewGUI extends GUI
                     AuctionViewGUI.this.item.claim(player);
                     player.closeInventory();
                 }
-                
+
                 @Override
                 public int getSlot() {
                     return 29;
                 }
-                
+
                 @Override
                 public ItemStack getItem() {
                     final List<String> lore = new ArrayList<String>();
@@ -227,25 +219,22 @@ public class AuctionViewGUI extends GUI
                     if (AuctionViewGUI.this.item.getBids().size() == 0) {
                         if (AuctionViewGUI.this.item.isBin()) {
                             lore.add(ChatColor.GRAY + "No one has bought your item.");
-                        }
-                        else {
+                        } else {
                             lore.add(ChatColor.GRAY + "No one has bid on your item.");
                         }
                         lore.add(ChatColor.GREEN + "You may pick it back up.");
                         lore.add(" ");
                         lore.add(ChatColor.YELLOW + "Click to pick up item!");
-                    }
-                    else {
+                    } else {
                         lore.add(ChatColor.GRAY + "Item sold to " + ChatColor.GREEN + Bukkit.getOfflinePlayer(AuctionViewGUI.this.item.getTopBidder().getUuid()));
                         lore.add(ChatColor.GRAY + "for " + ChatColor.GOLD + topBid + " coin" + ((topBid != 1L) ? "s" : "") + ChatColor.GRAY + "!");
                         lore.add(" ");
                         lore.add(ChatColor.YELLOW + "Click to collect coins!");
                     }
-                    return SUtil.getStack(ChatColor.GOLD + "Collect Auction", (AuctionViewGUI.this.item.getBids().size() != 0) ? Material.GOLD_BLOCK : Material.GOLD_NUGGET, (short)0, 1, lore);
+                    return SUtil.getStack(ChatColor.GOLD + "Collect Auction", (AuctionViewGUI.this.item.getBids().size() != 0) ? Material.GOLD_BLOCK : Material.GOLD_NUGGET, (short) 0, 1, lore);
                 }
             });
-        }
-        else {
+        } else {
             items.add(new GUIClickableItem() {
                 @Override
                 public void run(final InventoryClickEvent e) {
@@ -269,33 +258,30 @@ public class AuctionViewGUI extends GUI
                     }
                     new ConfirmBidGUI(AuctionViewGUI.this.item, AuctionViewGUI.this.bid).open(player);
                 }
-                
+
                 @Override
                 public int getSlot() {
                     return 29;
                 }
-                
+
                 @Override
                 public ItemStack getItem() {
                     final List<String> lore = new ArrayList<String>();
                     lore.add(" ");
                     if (AuctionViewGUI.this.item.isBin()) {
                         lore.add(ChatColor.GRAY + "Price: " + ChatColor.GOLD + SUtil.commaify(AuctionViewGUI.this.item.getStarter()) + " coin" + ((AuctionViewGUI.this.item.getStarter() != 1L) ? "s" : ""));
-                    }
-                    else {
+                    } else {
                         lore.add(ChatColor.GRAY + "New bid: " + ChatColor.GOLD + SUtil.commaify(AuctionViewGUI.this.bid) + " coin" + ((AuctionViewGUI.this.bid != 1L) ? "s" : ""));
                     }
                     lore.add(" ");
                     if (personal) {
                         lore.add(ChatColor.GREEN + "This is your own auction!");
-                    }
-                    else if (user.getCoins() < AuctionViewGUI.this.bid) {
+                    } else if (user.getCoins() < AuctionViewGUI.this.bid) {
                         lore.add(ChatColor.RED + "Cannot afford purchase!");
-                    }
-                    else {
+                    } else {
                         lore.add(ChatColor.YELLOW + "Click to " + (AuctionViewGUI.this.item.isBin() ? "buy" : "bid") + "!");
                     }
-                    return SUtil.getStack(ChatColor.GOLD + (AuctionViewGUI.this.item.isBin() ? "Buy Item Right Now" : "Submit Bid"), (user.getCoins() < AuctionViewGUI.this.bid || personal) ? Material.POTATO_ITEM : Material.GOLD_NUGGET, (short)0, 1, lore);
+                    return SUtil.getStack(ChatColor.GOLD + (AuctionViewGUI.this.item.isBin() ? "Buy Item Right Now" : "Submit Bid"), (user.getCoins() < AuctionViewGUI.this.bid || personal) ? Material.POTATO_ITEM : Material.GOLD_NUGGET, (short) 0, 1, lore);
                 }
             });
         }
@@ -313,19 +299,19 @@ public class AuctionViewGUI extends GUI
                         return;
                     }
                     player.closeInventory();
-                    player.getInventory().addItem(new ItemStack[] { AuctionViewGUI.this.item.getItem().getStack() });
+                    player.getInventory().addItem(AuctionViewGUI.this.item.getItem().getStack());
                     AuctionViewGUI.this.item.delete();
                     player.sendMessage(ChatColor.GREEN + "Your auction has been successfully cancelled!");
                 }
-                
+
                 @Override
                 public int getSlot() {
                     return 31;
                 }
-                
+
                 @Override
                 public ItemStack getItem() {
-                    return SUtil.getStack(ChatColor.RED + "Cancel Auction", Material.STAINED_CLAY, (short)14, 1, ChatColor.GRAY + "You may cancel auctions as", ChatColor.GRAY + "long as they have " + ChatColor.RED + "0" + ChatColor.GRAY + " bids!", " ", ChatColor.YELLOW + "Click to cancel auction!");
+                    return SUtil.getStack(ChatColor.RED + "Cancel Auction", Material.STAINED_CLAY, (short) 14, 1, ChatColor.GRAY + "You may cancel auctions as", ChatColor.GRAY + "long as they have " + ChatColor.RED + "0" + ChatColor.GRAY + " bids!", " ", ChatColor.YELLOW + "Click to cancel auction!");
                 }
             });
         }
@@ -344,8 +330,7 @@ public class AuctionViewGUI extends GUI
                             player.sendMessage(ChatColor.RED + "Could not read this number!");
                             return null;
                         }
-                    }
-                    catch (final NumberFormatException ex) {
+                    } catch (final NumberFormatException ex) {
                         player.sendMessage(ChatColor.RED + "Could not read this number!");
                         return null;
                     }
@@ -359,20 +344,20 @@ public class AuctionViewGUI extends GUI
                     }
                     return new AuctionViewGUI(AuctionViewGUI.this.item, AuctionViewGUI.this.ret, l);
                 }
-                
+
                 @Override
                 public void run(final InventoryClickEvent e) {
                 }
-                
+
                 @Override
                 public int getSlot() {
                     return 31;
                 }
-                
+
                 @Override
                 public ItemStack getItem() {
                     final String display = ChatColor.GOLD + SUtil.commaify(AuctionViewGUI.this.bid) + " coin" + ((AuctionViewGUI.this.bid != 1L) ? "s" : "");
-                    return SUtil.getStack(ChatColor.WHITE + "Bid Amount: " + display, Material.GOLD_INGOT, (short)0, 1, ChatColor.GRAY + "You need to bid at least", display + ChatColor.GRAY + " to hold", ChatColor.GRAY + "the top bid on this", ChatColor.GRAY + "auction.", " ", ChatColor.GRAY + "The " + ChatColor.YELLOW + "top bid" + ChatColor.GRAY + " on auction", ChatColor.GRAY + "ends wins the item.", " ", ChatColor.GRAY + "If you do not win, you can", ChatColor.GRAY + "claim your bid coins back.", " ", ChatColor.YELLOW + "Click to edit amount!");
+                    return SUtil.getStack(ChatColor.WHITE + "Bid Amount: " + display, Material.GOLD_INGOT, (short) 0, 1, ChatColor.GRAY + "You need to bid at least", display + ChatColor.GRAY + " to hold", ChatColor.GRAY + "the top bid on this", ChatColor.GRAY + "auction.", " ", ChatColor.GRAY + "The " + ChatColor.YELLOW + "top bid" + ChatColor.GRAY + " on auction", ChatColor.GRAY + "ends wins the item.", " ", ChatColor.GRAY + "If you do not win, you can", ChatColor.GRAY + "claim your bid coins back.", " ", ChatColor.YELLOW + "Click to edit amount!");
                 }
             });
         }
@@ -386,8 +371,7 @@ public class AuctionViewGUI extends GUI
                 lore.add(ChatColor.GRAY + "By: " + ChatColor.GREEN + Bukkit.getOfflinePlayer(bid.getBidder()).getName());
                 lore.add(ChatColor.AQUA + SUtil.getAuctionSetupFormattedTime(bid.timeSinceBid()).toLowerCase() + " ago");
             }
-        }
-        else {
+        } else {
             lore.add(ChatColor.GRAY + "No bids have been placed on");
             lore.add(ChatColor.GRAY + "this item yet.");
             lore.add(" ");
@@ -398,10 +382,10 @@ public class AuctionViewGUI extends GUI
             public int getSlot() {
                 return 33;
             }
-            
+
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.WHITE + "Bid History", Material.MAP, (short)0, 1, lore);
+                return SUtil.getStack(ChatColor.WHITE + "Bid History", Material.MAP, (short) 0, 1, lore);
             }
         });
         return items;

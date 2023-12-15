@@ -1,6 +1,7 @@
 package vn.giakhanhvn.skysim.listener;
 
 import java.util.HashMap;
+
 import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
@@ -34,8 +35,10 @@ import org.bukkit.event.entity.EntityPortalEnterEvent;
 import vn.giakhanhvn.skysim.entity.nms.Dragon;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.block.BlockPhysicsEvent;
+
 import java.util.Iterator;
 import java.util.Collection;
+
 import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.item.SBlock;
 import vn.giakhanhvn.skysim.item.ItemOrigin;
@@ -71,16 +74,18 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.Material;
+
 import java.util.ArrayList;
+
 import org.bukkit.block.Block;
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import org.bukkit.block.BlockState;
+
 import java.util.List;
 import java.util.UUID;
 import java.util.Map;
 
-public class WorldListener extends PListener
-{
+public class WorldListener extends PListener {
     private static final Map<UUID, List<BlockState>> RESTORER;
     private static final List<UUID> ALREADY_TELEPORTING;
     public static final Map<UUID, EnumWrappers.PlayerDigType> isCM;
@@ -91,7 +96,7 @@ public class WorldListener extends PListener
     public static final Map<Block, Byte> CACHED_BLOCK_BYTE;
     public static ArrayList<Material> blb;
     public static ArrayList<Block> changed_blocks;
-    
+
     @EventHandler
     public void onCreatureSpawn(final CreatureSpawnEvent e) {
         if (e.getSpawnReason() != CreatureSpawnEvent.SpawnReason.NATURAL) {
@@ -102,7 +107,7 @@ public class WorldListener extends PListener
         }
         e.setCancelled(true);
     }
-    
+
     @EventHandler
     public void onEntityChangeBlock(final EntityChangeBlockEvent e) {
         if (e.getEntity().getType() == EntityType.ENDERMAN) {
@@ -112,7 +117,7 @@ public class WorldListener extends PListener
             e.setCancelled(true);
         }
     }
-    
+
     @EventHandler
     public void onEntityExplode(final EntityExplodeEvent e) {
         final Entity entity = e.getEntity();
@@ -120,47 +125,47 @@ public class WorldListener extends PListener
             e.blockList().clear();
         }
     }
-    
+
     @EventHandler
     public void onBlockIgnite(final BlockIgniteEvent e) {
         if (e.getIgnitingEntity() instanceof Fireball) {
             e.setCancelled(true);
         }
     }
-    
+
     @EventHandler
     public void onBlockFade(final BlockFadeEvent e) {
         if (e.getNewState().getType() == Material.DIRT || e.getNewState().getType() == Material.GRASS) {
             e.setCancelled(true);
         }
     }
-    
+
     @EventHandler
     public void onEntityDeath(final EntityDeathEvent e) {
-        final Entity entity = (Entity)e.getEntity();
+        final Entity entity = e.getEntity();
         if (!entity.hasMetadata("specEntityObject")) {
             return;
         }
         e.getDrops().clear();
     }
-    
+
     @EventHandler
     public void onCreeperIgnite(final CreeperIgniteEvent e) {
         final Creeper creeper = e.getEntity();
-        final SEntity sEntity = SEntity.findSEntity((Entity)creeper);
+        final SEntity sEntity = SEntity.findSEntity(creeper);
         if (sEntity == null) {
             return;
         }
         if (sEntity.getFunction() instanceof CreeperFunction) {
-            ((CreeperFunction)sEntity.getFunction()).onCreeperIgnite(e, sEntity);
+            ((CreeperFunction) sEntity.getFunction()).onCreeperIgnite(e, sEntity);
         }
     }
-    
+
     @EventHandler
     public void onLeafDecay(final LeavesDecayEvent e) {
         e.setCancelled(true);
     }
-    
+
     @EventHandler
     public void onBlockBreak(final BlockBreakEvent e) {
         final Block block = e.getBlock();
@@ -216,7 +221,7 @@ public class WorldListener extends PListener
                     if (type != block.getType()) {
                         e.setCancelled(true);
                         if (equiv.getStatistics() instanceof ExperienceRewardStatistics) {
-                            Skill.reward(((ExperienceRewardStatistics)equiv.getStatistics()).getRewardedSkill(), ((ExperienceRewardStatistics)equiv.getStatistics()).getRewardXP(), player);
+                            Skill.reward(((ExperienceRewardStatistics) equiv.getStatistics()).getRewardedSkill(), ((ExperienceRewardStatistics) equiv.getStatistics()).getRewardXP(), player);
                         }
                         final int level2 = Skill.getLevel(user.getSkillXP(MiningSkill.INSTANCE), MiningSkill.INSTANCE.hasSixtyLevels());
                         final double d2 = MiningSkill.INSTANCE.getDoubleDropChance(level2);
@@ -242,7 +247,7 @@ public class WorldListener extends PListener
             }
         }
         if (equiv.getStatistics() instanceof ExperienceRewardStatistics && !e.isCancelled()) {
-            Skill.reward(((ExperienceRewardStatistics)equiv.getStatistics()).getRewardedSkill(), ((ExperienceRewardStatistics)equiv.getStatistics()).getRewardXP(), player);
+            Skill.reward(((ExperienceRewardStatistics) equiv.getStatistics()).getRewardedSkill(), ((ExperienceRewardStatistics) equiv.getStatistics()).getRewardXP(), player);
         }
         final SBlock sBlock = SBlock.getBlock(e.getBlock().getLocation());
         if (sBlock != null && !e.isCancelled()) {
@@ -259,14 +264,14 @@ public class WorldListener extends PListener
         }
         block.setType(Material.AIR);
     }
-    
+
     @EventHandler
     public void onFarmlandDecay(final BlockPhysicsEvent e) {
         if (e.getChangedType() == Material.SOIL) {
             e.setCancelled(true);
         }
     }
-    
+
     @EventHandler
     public void onEntityTarget(final EntityTargetLivingEntityEvent e) {
         final Entity entity = e.getEntity();
@@ -280,7 +285,7 @@ public class WorldListener extends PListener
         }
         e.setCancelled(true);
     }
-    
+
     public void onPortalEnter(final EntityPortalEnterEvent e) {
         final Material portalType = e.getLocation().getBlock().getType();
         final Entity entity = e.getEntity();
@@ -297,47 +302,45 @@ public class WorldListener extends PListener
             SUtil.delay(() -> WorldListener.ALREADY_TELEPORTING.remove(entity.getUniqueId()), 15L);
             entity.sendMessage(ChatColor.GRAY + "Sending you to the hub...");
             entity.teleport(hub.getSpawnLocation());
-        }
-        else {
+        } else {
             if (!(entity instanceof Player)) {
                 return;
             }
             WorldListener.ALREADY_TELEPORTING.add(entity.getUniqueId());
             SUtil.delay(() -> WorldListener.ALREADY_TELEPORTING.remove(entity.getUniqueId()), 15L);
             entity.sendMessage(ChatColor.GRAY + "Sending you to your island...");
-            PlayerUtils.sendToIsland((Player)entity);
+            PlayerUtils.sendToIsland((Player) entity);
         }
     }
-    
+
     @EventHandler
     public void onPortal(final PlayerPortalEvent e) {
         e.setCancelled(true);
     }
-    
+
     @EventHandler
     public void onPortalCreate(final EntityCreatePortalEvent e) {
         e.setCancelled(true);
     }
-    
+
     @EventHandler
     public void onWeatherChange(final WeatherChangeEvent e) {
         e.setCancelled(true);
     }
-    
+
     @EventHandler
     public void onSlimeSplit(final SlimeSplitEvent e) {
         final Slime slime = e.getEntity();
-        final SEntity sEntity = SEntity.findSEntity((Entity)slime);
-        if (sEntity != null && sEntity.getStatistics() instanceof SlimeStatistics && !((SlimeStatistics)sEntity.getStatistics()).split()) {
+        final SEntity sEntity = SEntity.findSEntity(slime);
+        if (sEntity != null && sEntity.getStatistics() instanceof SlimeStatistics && !((SlimeStatistics) sEntity.getStatistics()).split()) {
             e.setCancelled(true);
         }
     }
-    
+
     private static void addToRestorer(final Block block, final Player player) {
         if (WorldListener.RESTORER.containsKey(player.getUniqueId())) {
             WorldListener.RESTORER.get(player.getUniqueId()).add(block.getState());
-        }
-        else {
+        } else {
             WorldListener.RESTORER.put(player.getUniqueId(), new ArrayList<BlockState>());
             WorldListener.RESTORER.get(player.getUniqueId()).add(block.getState());
             new BukkitRunnable() {
@@ -349,17 +352,16 @@ public class WorldListener extends PListener
                     }
                     WorldListener.RESTORER.remove(player.getUniqueId());
                 }
-            }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 1200L);
+            }.runTaskLater(SkySimEngine.getPlugin(), 1200L);
         }
     }
-    
+
     private static void extraDrops(final Collection<ItemStack> drops, final double d, final double t, final Block block) {
         for (final ItemStack drop : drops) {
             int amount = 0;
             if (SUtil.random(0.0, 1.0) < t) {
                 amount = 2;
-            }
-            else if (SUtil.random(0.0, 1.0) < d) {
+            } else if (SUtil.random(0.0, 1.0) < d) {
                 amount = 1;
             }
             if (amount == 0) {
@@ -368,7 +370,7 @@ public class WorldListener extends PListener
             block.getWorld().dropItemNaturally(block.getLocation().clone().add(0.5, 0.5, 0.5), SUtil.setStackAmount(drop, amount));
         }
     }
-    
+
     private static BukkitTask regenerateLater(final Block block, final long ticks, final RegionType type) {
         return new BukkitRunnable() {
             public void run() {
@@ -451,20 +453,20 @@ public class WorldListener extends PListener
                         break;
                 }
             }
-        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), ticks);
+        }.runTaskLater(SkySimEngine.getPlugin(), ticks);
     }
-    
+
     @EventHandler
     public void bpe(final BlockPlaceEvent e) {
         if (e.getBlock().getType() != Material.PRISMARINE) {
             return;
         }
-        e.getBlock().setMetadata("block_hardness", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)1200));
-        e.getBlock().setMetadata("block_power", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)4));
+        e.getBlock().setMetadata("block_hardness", new FixedMetadataValue(SkySimEngine.getPlugin(), 1200));
+        e.getBlock().setMetadata("block_power", new FixedMetadataValue(SkySimEngine.getPlugin(), 4));
     }
-    
+
     public static void c() {
-        SkySimEngine.getPTC().addPacketListener((PacketListener)new PacketAdapter(SkySimEngine.getPlugin(), ListenerPriority.HIGHEST, new PacketType[] { PacketType.Play.Client.BLOCK_DIG }) {
+        SkySimEngine.getPTC().addPacketListener(new PacketAdapter(SkySimEngine.getPlugin(), ListenerPriority.HIGHEST, new PacketType[]{PacketType.Play.Client.BLOCK_DIG}) {
             public void onPacketReceiving(final PacketEvent event) {
                 final PacketContainer packet = event.getPacket();
                 final EnumWrappers.PlayerDigType digType = packet.getPlayerDigTypes().getValues().get(0);
@@ -474,13 +476,13 @@ public class WorldListener extends PListener
             }
         });
     }
-    
+
     public double findDivFor(final double a) {
         final double cumB = a / 10.0 / a;
         final double cumTongHopA = a * cumB;
         return 10.0 / cumTongHopA;
     }
-    
+
     public int getPlayerMiningSpeed(final Player p) {
         if (WorldListener.miningSpeed.containsKey(p.getUniqueId())) {
             return WorldListener.miningSpeed.get(p.getUniqueId());
@@ -488,7 +490,7 @@ public class WorldListener extends PListener
         WorldListener.miningSpeed.put(p.getUniqueId(), 100);
         return 600;
     }
-    
+
     public int getPlayerBreakingPower(final Player p) {
         if (WorldListener.breakingPower.containsKey(p.getUniqueId())) {
             return WorldListener.breakingPower.get(p.getUniqueId());
@@ -496,7 +498,7 @@ public class WorldListener extends PListener
         WorldListener.breakingPower.put(p.getUniqueId(), 8);
         return 8;
     }
-    
+
     public double findMiningSpeedFor(final Player p, final Block b) {
         double finalResult = 0.0;
         double blockHardness = 15.0;
@@ -527,7 +529,7 @@ public class WorldListener extends PListener
         }
         return finalResult;
     }
-    
+
     public double findMSIS(final Player p, final Block b) {
         double finalResult = 0.0;
         double blockHardness = 100.0;
@@ -536,37 +538,31 @@ public class WorldListener extends PListener
             if (b.getData() == 3) {
                 blockPower = 4.0;
                 blockHardness = 1500.0;
-            }
-            else {
+            } else {
                 if (b.getData() != 7) {
                     return -1.0;
                 }
                 blockPower = 4.0;
                 blockHardness = 500.0;
             }
-        }
-        else if (b.getType() == Material.PRISMARINE) {
+        } else if (b.getType() == Material.PRISMARINE) {
             blockPower = 4.0;
             blockHardness = 800.0;
-        }
-        else if (b.getType() == Material.STAINED_CLAY) {
+        } else if (b.getType() == Material.STAINED_CLAY) {
             if (b.getData() != 9) {
                 return -1.0;
             }
             blockPower = 4.0;
             blockHardness = 500.0;
-        }
-        else if (b.getType() == Material.STONE) {
+        } else if (b.getType() == Material.STONE) {
             if (b.getData() == 4) {
                 blockPower = 5.0;
                 blockHardness = 2000.0;
-            }
-            else if (b.getData() == 0) {
+            } else if (b.getData() == 0) {
                 blockHardness = this.miningValueForMaterial(b.getType());
                 blockPower = 4.0;
             }
-        }
-        else {
+        } else {
             blockHardness = this.miningValueForMaterial(b.getType());
         }
         if (WorldListener.blb.contains(b.getType())) {
@@ -578,7 +574,7 @@ public class WorldListener extends PListener
         }
         return finalResult;
     }
-    
+
     public int miningValueForMaterial(final Material m) {
         switch (m) {
             case STONE:
@@ -604,7 +600,7 @@ public class WorldListener extends PListener
                 return -1;
         }
     }
-    
+
     public int breakingPowerForMaterial(final Material m) {
         switch (m) {
             case STONE:
@@ -630,17 +626,17 @@ public class WorldListener extends PListener
                 return 0;
         }
     }
-    
+
     @EventHandler
     public void placeBlockEvent(final BlockPlaceEvent e) {
         final Player player = e.getPlayer();
         for (final Player p : Bukkit.getOnlinePlayers()) {
             if (p.getWorld() == player.getWorld() && p.getLocation().distance(player.getLocation()) <= 50.0 && p != player) {
-                ((CraftPlayer)p).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)player).getHandle(), 0));
+                ((CraftPlayer) p).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) player).getHandle(), 0));
             }
         }
     }
-    
+
     static {
         RESTORER = new HashMap<UUID, List<BlockState>>();
         ALREADY_TELEPORTING = new ArrayList<UUID>();

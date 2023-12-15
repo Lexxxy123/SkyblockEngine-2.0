@@ -9,8 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 
 @CommandParameters(description = "bruhbu", aliases = "resetcb")
-public class ResetCookieCommand extends SCommand
-{
+public class ResetCookieCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         final Player player = sender.getPlayer();

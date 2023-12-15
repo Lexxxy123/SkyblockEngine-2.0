@@ -5,15 +5,15 @@ import java.sql.DriverManager;
 import java.io.IOException;
 import java.io.File;
 import java.sql.Connection;
+
 import vn.giakhanhvn.skysim.SkySimEngine;
 
-public class SQLDatabase
-{
+public class SQLDatabase {
     private static final SkySimEngine plugin;
     private static final String DATABASE_FILENAME = "database.db";
     private Connection connection;
-    private File file;
-    
+    private final File file;
+
     public SQLDatabase() {
         final File file = new File(SQLDatabase.plugin.getDataFolder(), "database.db");
         if (!file.exists()) {
@@ -21,14 +21,13 @@ public class SQLDatabase
                 file.getParentFile().mkdirs();
                 file.createNewFile();
                 SQLDatabase.plugin.saveResource("database.db", false);
-            }
-            catch (final IOException ex) {
+            } catch (final IOException ex) {
                 ex.printStackTrace();
             }
         }
         this.file = file;
     }
-    
+
     public Connection getConnection() {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -40,13 +39,12 @@ public class SQLDatabase
                 connection.prepareStatement("CREATE TABLE IF NOT EXISTS `launchers` (\n\t`region_name` TINYTEXT,\n\t`x` INT,\n\t`y` INT,\n\t`z` INT\n);").execute();
                 return connection;
             }
-        }
-        catch (final SQLException | ClassNotFoundException ex) {
+        } catch (final SQLException | ClassNotFoundException ex) {
             ex.printStackTrace();
         }
         return null;
     }
-    
+
     static {
         plugin = SkySimEngine.getPlugin();
     }

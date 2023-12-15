@@ -2,14 +2,13 @@ package vn.giakhanhvn.skysim.util;
 
 import org.bukkit.util.Vector;
 
-public class VelocityUtil
-{
+public class VelocityUtil {
     public static Vector calculateVelocity(final Vector from, final Vector to, final int heightGain) {
         final double gravity = 0.115;
         final int endGain = to.getBlockY() - from.getBlockY();
         final double horizDist = Math.sqrt(distanceSquared(from, to));
         final int gain = heightGain;
-        final double maxGain = (gain > endGain + gain) ? gain : ((double)(endGain + gain));
+        final double maxGain = (gain > endGain + gain) ? gain : ((double) (endGain + gain));
         final double a = -horizDist * horizDist / (4.0 * maxGain);
         final double b = horizDist;
         final double c = -endGain;
@@ -25,7 +24,7 @@ public class VelocityUtil
         final double vz = vh * dirz;
         return new Vector(vx, vy, vz);
     }
-    
+
     private static double distanceSquared(final Vector from, final Vector to) {
         final double dx = to.getBlockX() - from.getBlockX();
         final double dz = to.getBlockZ() - from.getBlockZ();

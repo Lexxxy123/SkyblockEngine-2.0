@@ -1,13 +1,17 @@
 package vn.giakhanhvn.skysim.item.oddities;
 
 import vn.giakhanhvn.skysim.item.SItem;
+
 import java.util.Iterator;
+
 import org.bukkit.ChatColor;
 import vn.giakhanhvn.skysim.util.SUtil;
 import vn.giakhanhvn.skysim.potion.PotionEffect;
 import vn.giakhanhvn.skysim.potion.PotionEffectType;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import vn.giakhanhvn.skysim.item.GenericItemType;
 import vn.giakhanhvn.skysim.item.Rarity;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
@@ -15,36 +19,35 @@ import vn.giakhanhvn.skysim.item.ItemData;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
 import vn.giakhanhvn.skysim.item.MaterialStatistics;
 
-public class WaterBottle implements MaterialStatistics, MaterialFunction, ItemData
-{
+public class WaterBottle implements MaterialStatistics, MaterialFunction, ItemData {
     @Override
     public NBTTagCompound getData() {
         final NBTTagCompound compound = new NBTTagCompound();
         compound.setBoolean("splash", false);
         return compound;
     }
-    
+
     @Override
     public String getDisplayName() {
         return "Water Bottle";
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.COMMON;
     }
-    
+
     @Override
     public GenericItemType getType() {
         return GenericItemType.ITEM;
     }
-    
+
     @Override
     public List<String> getDataLore(final String key, final Object value) {
         if (!key.equals("effects")) {
             return null;
         }
-        final NBTTagCompound compound = (NBTTagCompound)value;
+        final NBTTagCompound compound = (NBTTagCompound) value;
         final List<String> lore = new ArrayList<String>();
         for (final String k : compound.c()) {
             lore.add(" ");
@@ -60,7 +63,7 @@ public class WaterBottle implements MaterialStatistics, MaterialFunction, ItemDa
         }
         return lore;
     }
-    
+
     @Override
     public void onInstanceUpdate(final SItem instance) {
         int max = 0;

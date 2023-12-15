@@ -7,20 +7,25 @@ import vn.giakhanhvn.skysim.item.GenericItemType;
 import vn.giakhanhvn.skysim.item.Rarity;
 import vn.giakhanhvn.skysim.skill.CombatSkill;
 import vn.giakhanhvn.skysim.skill.Skill;
+
 import java.util.Collection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Arrays;
+
 import org.bukkit.ChatColor;
+
 import java.math.RoundingMode;
 import java.math.BigDecimal;
+
 import vn.giakhanhvn.skysim.item.RarityValue;
+
 import java.util.List;
+
 import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.item.Untradeable;
 
-public class AragornPet extends Pet implements Untradeable
-{
+public class AragornPet extends Pet implements Untradeable {
     @Override
     public List<PetAbility> getPetAbilities(final SItem instance) {
         final int level = Pet.getLevel(instance);
@@ -33,65 +38,65 @@ public class AragornPet extends Pet implements Untradeable
             public String getName() {
                 return "Skysim ownerrr";
             }
-            
+
             @Override
             public List<String> getDescription(final SItem instance) {
-                return Arrays.<String>asList(ChatColor.GRAY + "yes this is a pet");
+                return Collections.singletonList(ChatColor.GRAY + "yes this is a pet");
             }
         }));
         return abilities;
     }
-    
+
     @Override
     public Skill getSkill() {
         return CombatSkill.INSTANCE;
     }
-    
+
     @Override
     public String getURL() {
         return "46097f84a73f099c0b1e517fd385c60785c3c7dbdf5667fbb58575ad54a256a6";
     }
-    
+
     @Override
     public String getDisplayName() {
         return "Mini-Teriev";
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.LEGENDARY;
     }
-    
+
     @Override
     public GenericItemType getType() {
         return GenericItemType.PET;
     }
-    
+
     @Override
     public double getPerIntelligence() {
         return -100.0;
     }
-    
+
     @Override
     public double getPerMagicFind() {
         return 0.002;
     }
-    
+
     @Override
     public double getPerStrength() {
         return 1.0;
     }
-    
+
     @Override
     public double getPerDefense() {
         return 1.0;
     }
-    
+
     @Override
     public double getPerCritDamage() {
         return 0.0;
     }
-    
+
     @Override
     public void particleBelowA(final Player p, final Location l) {
         p.spigot().playEffect(l, Effect.FLAME, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);

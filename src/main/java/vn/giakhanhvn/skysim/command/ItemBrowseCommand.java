@@ -6,8 +6,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.ConsoleCommandSender;
 
 @CommandParameters(description = "Browse from a catalog of items.", aliases = "browseitem,browseitems,browsei,bi,ib", permission = "spt.item")
-public class ItemBrowseCommand extends SCommand
-{
+public class ItemBrowseCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (sender instanceof ConsoleCommandSender) {
@@ -16,7 +15,7 @@ public class ItemBrowseCommand extends SCommand
         final Player player = sender.getPlayer();
         String query = "";
         if (args.length >= 1) {
-            query = StringUtils.join((Object[])args);
+            query = StringUtils.join(args);
         }
         new ItemBrowserGUI(query).open(player);
     }

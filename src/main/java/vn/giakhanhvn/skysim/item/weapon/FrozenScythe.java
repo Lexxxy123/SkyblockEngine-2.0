@@ -3,7 +3,9 @@ package vn.giakhanhvn.skysim.item.weapon;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import vn.giakhanhvn.skysim.SkySimEngine;
+
 import java.util.Iterator;
+
 import org.bukkit.Location;
 import vn.giakhanhvn.skysim.listener.PlayerListener;
 import vn.giakhanhvn.skysim.util.SLog;
@@ -35,54 +37,53 @@ import vn.giakhanhvn.skysim.item.Ability;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
 import vn.giakhanhvn.skysim.item.ToolStatistics;
 
-public class FrozenScythe implements ToolStatistics, MaterialFunction, Ability
-{
+public class FrozenScythe implements ToolStatistics, MaterialFunction, Ability {
     String ACT3;
-    
+
     public FrozenScythe() {
         this.ACT3 = "true";
     }
-    
+
     @Override
     public int getBaseDamage() {
         return 80;
     }
-    
+
     @Override
     public String getDisplayName() {
         return "Frozen Scythe";
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.RARE;
     }
-    
+
     @Override
     public GenericItemType getType() {
         return GenericItemType.WEAPON;
     }
-    
+
     @Override
     public SpecificItemType getSpecificType() {
         return SpecificItemType.SWORD;
     }
-    
+
     @Override
     public String getLore() {
         return null;
     }
-    
+
     @Override
     public String getAbilityName() {
         return "Ice Bolt";
     }
-    
+
     @Override
     public String getAbilityDescription() {
         return ChatColor.translateAlternateColorCodes('&', "&7Shoots &a1 &7Ice Bolt that deals &c1,000 &7damage and slows enemies hit for &a5 &7seconds");
     }
-    
+
     @Override
     public void onAbilityUse(final Player p, final SItem sItem) {
         p.getWorld().playSound(p.getLocation(), Sound.FIREWORK_LAUNCH, 1.0f, 10.0f);
@@ -96,8 +97,8 @@ public class FrozenScythe implements ToolStatistics, MaterialFunction, Ability
         meta.setDisplayName("ice");
         item.setItemMeta(meta);
         loc = loc.add(vecTo1);
-        final Entity ent1 = p.getWorld().spawn(loc, (Class)ArmorStand.class);
-        final ArmorStand stand1 = (ArmorStand)ent1;
+        final Entity ent1 = p.getWorld().spawn(loc, (Class) ArmorStand.class);
+        final ArmorStand stand1 = (ArmorStand) ent1;
         stand1.setVisible(false);
         stand1.setArms(true);
         stand1.setGravity(false);
@@ -105,8 +106,8 @@ public class FrozenScythe implements ToolStatistics, MaterialFunction, Ability
         stand1.setSmall(true);
         item.setType(Material.PACKED_ICE);
         loc = loc.add(vecTo1);
-        final Entity ent2 = p.getWorld().spawn(loc, (Class)ArmorStand.class);
-        final ArmorStand stand2 = (ArmorStand)ent2;
+        final Entity ent2 = p.getWorld().spawn(loc, (Class) ArmorStand.class);
+        final ArmorStand stand2 = (ArmorStand) ent2;
         stand2.setVisible(false);
         stand2.setArms(true);
         stand2.setGravity(false);
@@ -114,8 +115,8 @@ public class FrozenScythe implements ToolStatistics, MaterialFunction, Ability
         stand2.setSmall(true);
         item.setType(Material.ICE);
         loc = loc.add(vecTo1);
-        final Entity ent3 = p.getWorld().spawn(loc, (Class)ArmorStand.class);
-        final ArmorStand stand3 = (ArmorStand)ent3;
+        final Entity ent3 = p.getWorld().spawn(loc, (Class) ArmorStand.class);
+        final ArmorStand stand3 = (ArmorStand) ent3;
         stand3.setVisible(false);
         stand3.setArms(true);
         stand3.setGravity(false);
@@ -123,8 +124,8 @@ public class FrozenScythe implements ToolStatistics, MaterialFunction, Ability
         stand3.setSmall(true);
         item.setType(Material.PACKED_ICE);
         loc = loc.add(vecTo1);
-        final Entity ent4 = p.getWorld().spawn(loc, (Class)ArmorStand.class);
-        final ArmorStand stand4 = (ArmorStand)ent4;
+        final Entity ent4 = p.getWorld().spawn(loc, (Class) ArmorStand.class);
+        final ArmorStand stand4 = (ArmorStand) ent4;
         stand4.setVisible(false);
         stand4.setArms(true);
         stand4.setGravity(false);
@@ -132,8 +133,8 @@ public class FrozenScythe implements ToolStatistics, MaterialFunction, Ability
         stand4.setSmall(true);
         item.setType(Material.ICE);
         loc = loc.add(vecTo1);
-        final Entity ent5 = p.getWorld().spawn(loc, (Class)ArmorStand.class);
-        final ArmorStand stand5 = (ArmorStand)ent5;
+        final Entity ent5 = p.getWorld().spawn(loc, (Class) ArmorStand.class);
+        final ArmorStand stand5 = (ArmorStand) ent5;
         stand5.setVisible(false);
         stand5.setArms(true);
         stand5.setGravity(false);
@@ -186,16 +187,15 @@ public class FrozenScythe implements ToolStatistics, MaterialFunction, Ability
                             continue;
                         }
                         final User user = User.getUser(p.getUniqueId());
-                        ((LivingEntity)entity).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 1));
+                        ((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 1));
                         final double baseDamage = Sputnik.calculateMagicDamage(entity, p, 1000, 0.3);
-                        user.damageEntityIgnoreShield((Damageable)entity, (int)baseDamage);
+                        user.damageEntityIgnoreShield((Damageable) entity, (int) baseDamage);
                         if (PlayerUtils.Debugmsg.debugmsg) {
-                            SLog.info("[DEBUG] " + p.getName() + " have dealt " + (float)baseDamage + " damage! (Frozen Scythe Ability)");
+                            SLog.info("[DEBUG] " + p.getName() + " have dealt " + (float) baseDamage + " damage! (Frozen Scythe Ability)");
                         }
                         PlayerListener.spawnDamageInd(entity, baseDamage, false);
                     }
-                }
-                else if (!stand1.isDead()) {
+                } else if (!stand1.isDead()) {
                     final Location loc = stand1.getLocation();
                     loc.setY(loc.getY() + 0.5);
                     p.getWorld().spigot().playEffect(loc, Effect.SNOW_SHOVEL, 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, 40);
@@ -203,9 +203,9 @@ public class FrozenScythe implements ToolStatistics, MaterialFunction, Ability
                     p.getWorld().spigot().playEffect(loc, Effect.SNOW_SHOVEL, 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, 40);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 1L, 0L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 1L, 0L);
     }
-    
+
     public static void throwIce(final ArmorStand stand1, final ArmorStand stand2, final ArmorStand stand3, final ArmorStand stand4, final ArmorStand stand5, final Player p, final Vector vecTo, final Vector back) {
         new BukkitRunnable() {
             public void run() {
@@ -215,14 +215,14 @@ public class FrozenScythe implements ToolStatistics, MaterialFunction, Ability
                 stand4.remove();
                 stand5.remove();
             }
-        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 80L);
+        }.runTaskLater(SkySimEngine.getPlugin(), 80L);
     }
-    
+
     @Override
     public int getAbilityCooldownTicks() {
         return 5;
     }
-    
+
     @Override
     public int getManaCost() {
         return 50;

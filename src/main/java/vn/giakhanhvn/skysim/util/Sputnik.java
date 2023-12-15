@@ -6,8 +6,10 @@ import com.xxmicloxx.NoteBlockAPI.songplayer.PositionSongPlayer;
 import vn.giakhanhvn.skysim.dungeons.BlessingChest;
 import vn.giakhanhvn.skysim.dungeons.Blessings;
 import vn.giakhanhvn.skysim.dungeons.ItemChest;
+
 import java.math.RoundingMode;
 import java.math.BigDecimal;
+
 import net.minecraft.server.v1_8_R3.Item;
 import net.minecraft.server.v1_8_R3.Vec3D;
 import net.minecraft.server.v1_8_R3.EnumAnimation;
@@ -18,7 +20,9 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import vn.giakhanhvn.skysim.command.AccessTimedCommand;
 import net.md_5.bungee.api.chat.TextComponent;
 import vn.giakhanhvn.skysim.gui.TradeMenu;
+
 import java.util.HashMap;
+
 import org.bukkit.entity.Arrow;
 import org.bukkit.event.entity.EntityDamageEvent;
 import vn.giakhanhvn.skysim.entity.dungeons.boss.sadan.SadanBossManager;
@@ -35,24 +39,34 @@ import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
 import com.sk89q.worldedit.WorldEditException;
+
 import java.io.IOException;
+
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
+
 import java.io.InputStream;
 import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
 import java.io.Closeable;
 import java.io.FileInputStream;
+
 import com.sk89q.worldedit.util.io.Closer;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
+
 import java.io.File;
+
 import org.bukkit.block.Block;
 import org.bukkit.inventory.EntityEquipment;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import me.libraryaddict.disguise.disguisetypes.MobDisguise;
 import org.bukkit.entity.EntityType;
+
 import java.lang.reflect.Method;
+
 import com.comphenix.protocol.wrappers.WrappedSignedProperty;
+
 import java.lang.reflect.InvocationTargetException;
+
 import me.libraryaddict.disguise.disguisetypes.FlagWatcher;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import net.minecraft.server.v1_8_R3.PathEntity;
@@ -62,13 +76,17 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import net.minecraft.server.v1_8_R3.EntityHuman;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftHumanEntity;
 import org.bukkit.Sound;
+
 import java.text.DecimalFormat;
+
 import vn.giakhanhvn.skysim.entity.nms.VoidgloomSeraph;
 import org.bukkit.util.Vector;
 import vn.giakhanhvn.skysim.item.pet.Pet;
 import vn.giakhanhvn.skysim.gui.PetsGUI;
+
 import java.util.List;
 import java.util.ArrayList;
+
 import org.bukkit.plugin.Plugin;
 import vn.giakhanhvn.skysim.SkySimEngine;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -94,7 +112,9 @@ import org.bukkit.entity.EnderDragonPart;
 import org.bukkit.Effect;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.Bukkit;
+
 import java.util.Iterator;
+
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
 import org.bukkit.World;
@@ -108,14 +128,16 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+
 import java.util.UUID;
+
 import vn.giakhanhvn.skysim.item.SItem;
 import org.bukkit.Server;
+
 import java.util.Map;
 import java.util.Random;
 
-public class Sputnik
-{
+public class Sputnik {
     public Random random;
     public static final Map<Server, Integer> RunThisSession;
     public static final Map<SItem, Integer> MidasStaff;
@@ -125,61 +147,61 @@ public class Sputnik
     public static final Map<UUID, Boolean> CooldownAbs;
     public static final Map<UUID, Boolean> HaveDMGReduction;
     public static final Map<Entity, Location> MAP_PARTICLE_1;
-    
+
     public Sputnik() {
         this.random = new Random();
     }
-    
+
     public static String trans(final String content) {
         return ChatColor.translateAlternateColorCodes('&', content);
     }
-    
+
     public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
-        final net.minecraft.server.v1_8_R3.Entity pl = (net.minecraft.server.v1_8_R3.Entity)((CraftZombie)e).getHandle();
+        final net.minecraft.server.v1_8_R3.Entity pl = ((CraftZombie) e).getHandle();
         pl.setLocation(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), yaw, pitch);
         final PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(pl);
-        sendPacket(e.getWorld(), (Packet)packet);
+        sendPacket(e.getWorld(), packet);
     }
-    
+
     public static void sendColoredFireWork(final Color color, final Location loc) {
         final FireworkEffect.Builder builder = FireworkEffect.builder();
         final FireworkEffect effect = builder.flicker(false).trail(false).with(FireworkEffect.Type.BURST).withColor(color).build();
-        SSU.spawn(loc, effect, new Player[0]);
+        SSU.spawn(loc, effect);
     }
-    
+
     public static void sendReportToMotherland(final String message) {
     }
-    
+
     public static void spawnEnumParticlePIW(final EnumParticle effect, final Location loc, final int arg1, final int arg2, final int arg3, final int arg4, final int arg5, final World world) {
-        final PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(effect, true, (float)loc.getX(), (float)loc.getY(), (float)loc.getZ(), (float)arg1, (float)arg2, (float)arg3, (float)arg4, arg5, new int[0]);
+        final PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(effect, true, (float) loc.getX(), (float) loc.getY(), (float) loc.getZ(), (float) arg1, (float) arg2, (float) arg3, (float) arg4, arg5);
         for (final Player online : world.getPlayers()) {
-            ((CraftPlayer)online).getHandle().playerConnection.sendPacket((Packet)packet);
+            ((CraftPlayer) online).getHandle().playerConnection.sendPacket(packet);
         }
     }
-    
+
     public static void spawnEnumParticleCSO(final EnumParticle effect, final Location loc, final int arg1, final int arg2, final int arg3, final int arg4, final int arg5, final Player player) {
-        final PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(effect, true, (float)loc.getX(), (float)loc.getY(), (float)loc.getZ(), (float)arg1, (float)arg2, (float)arg3, (float)arg4, arg5, new int[0]);
-        ((CraftPlayer)player).getHandle().playerConnection.sendPacket((Packet)packet);
+        final PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(effect, true, (float) loc.getX(), (float) loc.getY(), (float) loc.getZ(), (float) arg1, (float) arg2, (float) arg3, (float) arg4, arg5);
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
     }
-    
+
     public static void spawnEnumParticleLOP(final EnumParticle effect, final Location loc, final int arg1, final int arg2, final int arg3, final int arg4, final int arg5, final Player[] p) {
-        final PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(effect, true, (float)loc.getX(), (float)loc.getY(), (float)loc.getZ(), (float)arg1, (float)arg2, (float)arg3, (float)arg4, arg5, new int[0]);
+        final PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(effect, true, (float) loc.getX(), (float) loc.getY(), (float) loc.getZ(), (float) arg1, (float) arg2, (float) arg3, (float) arg4, arg5);
         for (final Player online : p) {
-            ((CraftPlayer)online).getHandle().playerConnection.sendPacket((Packet)packet);
+            ((CraftPlayer) online).getHandle().playerConnection.sendPacket(packet);
         }
     }
-    
+
     public static void spawnEnumParticlePIS(final EnumParticle effect, final Location loc, final int arg1, final int arg2, final int arg3, final int arg4, final int arg5) {
-        final PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(effect, true, (float)loc.getX(), (float)loc.getY(), (float)loc.getZ(), (float)arg1, (float)arg2, (float)arg3, (float)arg4, arg5, new int[0]);
+        final PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(effect, true, (float) loc.getX(), (float) loc.getY(), (float) loc.getZ(), (float) arg1, (float) arg2, (float) arg3, (float) arg4, arg5);
         for (final Player online : Bukkit.getOnlinePlayers()) {
-            ((CraftPlayer)online).getHandle().playerConnection.sendPacket((Packet)packet);
+            ((CraftPlayer) online).getHandle().playerConnection.sendPacket(packet);
         }
     }
-    
+
     public static void midasFlame(final Entity entity) {
-        final float angle_1 = ((LivingEntity)entity).getEyeLocation().getYaw() / 60.0f;
-        final Location loc1_a = ((LivingEntity)entity).getEyeLocation().add(Math.cos(angle_1), 0.0, Math.sin(angle_1));
-        final Location loc2_a = ((LivingEntity)entity).getEyeLocation().subtract(Math.cos(angle_1), 0.0, Math.sin(angle_1));
+        final float angle_1 = ((LivingEntity) entity).getEyeLocation().getYaw() / 60.0f;
+        final Location loc1_a = ((LivingEntity) entity).getEyeLocation().add(Math.cos(angle_1), 0.0, Math.sin(angle_1));
+        final Location loc2_a = ((LivingEntity) entity).getEyeLocation().subtract(Math.cos(angle_1), 0.0, Math.sin(angle_1));
         entity.getWorld().playEffect(entity.getLocation(), Effect.LAVA_POP, 3);
         entity.getWorld().playEffect(loc1_a, Effect.LAVA_POP, 3);
         entity.getWorld().playEffect(loc2_a, Effect.LAVA_POP, 3);
@@ -196,7 +218,7 @@ public class Sputnik
         entity.getWorld().playEffect(loc1_a, Effect.LAVA_POP, 3);
         entity.getWorld().playEffect(loc2_a, Effect.LAVA_POP, 3);
     }
-    
+
     public static void midasCalcDamage(final Entity entity1, final Player player, final SItem sItem) {
         String act = "True";
         if (act == "True") {
@@ -223,7 +245,7 @@ public class Sputnik
                 }
                 final User user = User.getUser(player.getUniqueId());
                 final double baseDamage = calculateMagicDamage(entity2, player, 32000, 0.3);
-                user.damageEntityIgnoreShield((Damageable)entity2, (int)baseDamage);
+                user.damageEntityIgnoreShield((Damageable) entity2, (int) baseDamage);
                 ++count;
                 PlayerListener.spawnDamageInd(entity2, baseDamage, false);
                 if (!Sputnik.MidasStaff.containsKey(sItem)) {
@@ -233,38 +255,37 @@ public class Sputnik
                     Sputnik.MidasStaffDmg.put(sItem, 0L);
                 }
                 Sputnik.MidasStaff.put(sItem, Sputnik.MidasStaff.get(sItem) + count);
-                Sputnik.MidasStaffDmg.put(sItem, (long)(Sputnik.MidasStaff.get(sItem) * baseDamage));
+                Sputnik.MidasStaffDmg.put(sItem, (long) (Sputnik.MidasStaff.get(sItem) * baseDamage));
             }
         }
     }
-    
+
     public static Integer midasCalcCounter(final Entity entity1, final Player player) {
         return 0;
     }
-    
+
     @Deprecated
     public static int makeZero() {
         return 0;
     }
-    
+
     public static void smartGiveItem(final ItemStack item, final Player p) {
         if (p.getInventory().firstEmpty() != -1) {
-            p.getInventory().addItem(new ItemStack[] { item });
-        }
-        else if (User.getUser(p.getUniqueId()) != null) {
+            p.getInventory().addItem(item);
+        } else if (User.getUser(p.getUniqueId()) != null) {
             final UserStash us = UserStash.getStash(p.getUniqueId());
             us.addItemInStash(item);
         }
     }
-    
+
     public static void GiveItem(final ItemStack item, final Player p) {
-        p.getInventory().addItem(new ItemStack[] { item });
+        p.getInventory().addItem(item);
     }
-    
+
     public static boolean isFullInv(final Player p) {
         return p.getInventory().firstEmpty() == -1;
     }
-    
+
     public static String calMagicLore(final Player p, int baseMagicDmg, final double scale) {
         if (p == null) {
             return SUtil.commaify(baseMagicDmg);
@@ -276,29 +297,27 @@ public class Sputnik
         if (helmet != null) {
             if (helmet.getType() == SMaterial.DARK_GOGGLES) {
                 baseMagicDmg += baseMagicDmg * 25 / 100;
-            }
-            else if (helmet.getType() == SMaterial.SHADOW_GOGGLES) {
+            } else if (helmet.getType() == SMaterial.SHADOW_GOGGLES) {
                 baseMagicDmg += baseMagicDmg * 35 / 100;
-            }
-            else if (helmet.getType() == SMaterial.WITHER_GOGGLES) {
+            } else if (helmet.getType() == SMaterial.WITHER_GOGGLES) {
                 baseMagicDmg += baseMagicDmg * 45 / 100;
             }
         }
         return SUtil.commaify(baseMagicDmg * (manaPool / 100 * 0.3 + 1.0));
     }
-    
+
     public static void endermanCarryBlock(final Enderman e, final Material mat) {
         e.setCarriedMaterial(new ItemStack(mat).getData());
     }
-    
+
     public static void showFakeItem(final Location loc, final ItemStack material, final Player p) {
-        final EntityItem item = new EntityItem((net.minecraft.server.v1_8_R3.World)((CraftWorld)loc.getWorld()).getHandle());
+        final EntityItem item = new EntityItem(((CraftWorld) loc.getWorld()).getHandle());
         item.setLocation(loc.getX(), loc.getY(), loc.getZ(), 0.0f, 0.0f);
         item.setItemStack(CraftItemStack.asNMSCopy(material));
-        final PacketPlayOutSpawnEntity packet = new PacketPlayOutSpawnEntity((net.minecraft.server.v1_8_R3.Entity)item, 2);
-        ((CraftPlayer)p).getHandle().playerConnection.sendPacket((Packet)packet);
+        final PacketPlayOutSpawnEntity packet = new PacketPlayOutSpawnEntity(item, 2);
+        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
     }
-    
+
     public static void summonCircle(final Entity e, final Location location, final int size) {
         final Beam beam = new Beam(location, location.add(e.getLocation().getDirection().multiply(30)));
         beam.start();
@@ -310,7 +329,7 @@ public class Sputnik
             beam.setEndingPosition(location.add(e.getLocation().getDirection().multiply(size)));
         }
     }
-    
+
     public static void entityBeam(final ArmorStand stand, final Location location1, final Player p, final Entity e) {
         final Beam beam = new Beam(stand.getLocation().clone().add(stand.getLocation().getDirection().normalize().multiply(20)), stand.getLocation().clone().add(stand.getLocation().getDirection().normalize().multiply(-20)));
         stand.setGravity(false);
@@ -328,15 +347,15 @@ public class Sputnik
                 location.setYaw(stand.getLocation().getYaw() + 2.25f);
                 stand.teleport(location);
                 Sputnik.getEntity(stand.getLocation().add(stand.getLocation().getDirection().multiply(20)), stand.getLocation().add(stand.getLocation().getDirection().multiply(-20)), p, e);
-                beam.setEndingPosition(stand.getLocation().add(stand.getLocation().getDirection().multiply(0 - Sputnik.findArgo(p.getLocation(), stand.getLocation()))));
+                beam.setEndingPosition(stand.getLocation().add(stand.getLocation().getDirection().multiply(-Sputnik.findArgo(p.getLocation(), stand.getLocation()))));
                 beam.setStartingPosition(stand.getLocation().add(stand.getLocation().getDirection().normalize().multiply(Sputnik.findArgo(p.getLocation(), stand.getLocation()))));
                 if (!beam.isActive() && !stand.isDead()) {
                     beam.update();
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
     }
-    
+
     public static int findArgo(final Location arg0, final Location arg1) {
         final double dist = arg0.distance(arg1);
         if (dist < 5.0) {
@@ -344,7 +363,7 @@ public class Sputnik
         }
         return 20;
     }
-    
+
     public static void RemoveEntityArray(final ArrayList<Entity> a) {
         for (final Entity e : a) {
             if (e != null) {
@@ -352,7 +371,7 @@ public class Sputnik
             }
         }
     }
-    
+
     public static void RemoveEntityArray(final List<Entity> a) {
         for (final Entity e : a) {
             if (e != null) {
@@ -360,7 +379,7 @@ public class Sputnik
             }
         }
     }
-    
+
     public static void createPet(final Player player) {
         final Pet.PetItem pet = User.getUser(player.getUniqueId()).getActivePet();
         final Pet petclass = User.getUser(player.getUniqueId()).getActivePetClass();
@@ -368,13 +387,13 @@ public class Sputnik
             PetsGUI.spawnFlyingHeads(player, petclass, pet.toItem().getStack());
         }
     }
-    
+
     public static void getEntity(final Location finaldestination, final Location ended, final Player player, final Entity e) {
         final Location blockLocation = finaldestination;
         final Location crystalLocation = ended;
         final Vector vector = blockLocation.clone().add(0.1, 0.0, 0.1).toVector().subtract(crystalLocation.clone().toVector());
         final double count = 25.0;
-        for (int i = 1; i <= (int)count; ++i) {
+        for (int i = 1; i <= (int) count; ++i) {
             for (final Entity entity : ended.getWorld().getNearbyEntities(crystalLocation.clone().add(vector.clone().multiply(i / count)), 0.2, 0.0, 0.2)) {
                 if (entity == player) {
                     Sputnik.IsInsideTheBeam.put(player.getUniqueId(), true);
@@ -383,7 +402,7 @@ public class Sputnik
             }
         }
     }
-    
+
     public static void drawLine(final Location point1, final Location point2, final double space) {
         final float angle_1 = point1.getYaw() / 60.0f;
         final Location loc1 = point1.add(Math.cos(angle_1), 0.0, Math.sin(angle_1));
@@ -394,12 +413,12 @@ public class Sputnik
         final Vector vector = blockLocation.clone().add(0.1, 0.0, 0.1).toVector().subtract(crystalLocation.clone().toVector());
         final double count = 13.0;
         final double length = 0.0;
-        for (int i = 1; i <= (int)count; ++i) {
+        for (int i = 1; i <= (int) count; ++i) {
             point1.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply(i / count)), Effect.COLOURED_DUST, 0, 1, 0.8627451f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
             point1.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply(i / count)), Effect.COLOURED_DUST, 0, 1, 1.0196079f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
         }
     }
-    
+
     public static void drawLineforMovingPoints(final Location point1, final Location point2, final double space, final Player p, final Integer i1uu, final Entity e) {
         final Location blockLocation = point1;
         final Location crystalLocation = point2;
@@ -410,12 +429,12 @@ public class Sputnik
         final Vector vector = blockLocation.clone().toVector().subtract(crystalLocation.clone().toVector());
         final double count = 30.0;
         final double length = 0.0;
-        for (int j = 1; j <= (int)count; ++j) {
+        for (int j = 1; j <= (int) count; ++j) {
             final Vector v = vector.clone().multiply(j / count);
             SUtil.delay(() -> point1.getWorld().spigot().playEffect(crystalLocation.clone().add(v), Effect.MAGIC_CRIT, 21, 0, 0.1f, 0.0f, 0.1f, 0.01f, 1, 30), 0L);
         }
     }
-    
+
     public static void ferocityParticle(final LivingEntity e) {
         final int side = SUtil.random(0, 1);
         final float angle_1 = e.getLocation().clone().add(0.0, 1.5, 0.0).getYaw() / 60.0f;
@@ -425,16 +444,15 @@ public class Sputnik
             final Location up = loc1.add(0.0, 1.0, 0.0);
             final Location down = loc2.add(0.0, -1.0, 0.0);
             drawLine(up, down, 0.0);
-        }
-        else {
+        } else {
             final Location up2 = loc1.add(0.0, -1.0, 0.0);
             final Location down2 = loc2.add(0.0, 1.0, 0.0);
             drawLine(up2, down2, 0.0);
         }
     }
-    
+
     public static String format(float value) {
-        final String[] arr = { "", "k", "M", "B", "T", "P", "E" };
+        final String[] arr = {"", "k", "M", "B", "T", "P", "E"};
         int index = 0;
         final float realvalue = value;
         while (value / 1000.0f >= 1.0f) {
@@ -448,13 +466,13 @@ public class Sputnik
         final String finalr = String.format("%s%s", decimalFormat.format(value), arr[index]);
         String fin = finalr.replaceAll(",", ".");
         if (realvalue <= 20000.0f && realvalue > 0.0f) {
-            fin = String.valueOf((long)Math.round(realvalue));
+            fin = String.valueOf((long) Math.round(realvalue));
         }
         return fin;
     }
-    
+
     public static String formatFull(float value) {
-        final String[] arr = { "", "k", "M", "B", "T", "P", "E" };
+        final String[] arr = {"", "k", "M", "B", "T", "P", "E"};
         int index = 0;
         final float realvalue = value;
         while (value / 1000.0f >= 1.0f) {
@@ -469,7 +487,7 @@ public class Sputnik
         }
         return fin;
     }
-    
+
     public static void createHelix(final Entity e) {
         final Location loc = e.getLocation();
         final int radius = 1;
@@ -482,15 +500,15 @@ public class Sputnik
                 for (double y = 0.0; y <= 1.5; y += 0.05) {
                     final double x = radius * Math.cos(y);
                     final double z = radius * Math.sin(y);
-                    final PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(EnumParticle.CRIT, true, (float)(loc.getX() + x), (float)(loc.getY() + y), (float)(loc.getZ() + z), 0.0f, 0.0f, 0.0f, 0.0f, 1, new int[0]);
+                    final PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(EnumParticle.CRIT, true, (float) (loc.getX() + x), (float) (loc.getY() + y), (float) (loc.getZ() + z), 0.0f, 0.0f, 0.0f, 0.0f, 1);
                     for (final Player online : e.getWorld().getPlayers()) {
-                        ((CraftPlayer)online).getHandle().playerConnection.sendPacket((Packet)packet);
+                        ((CraftPlayer) online).getHandle().playerConnection.sendPacket(packet);
                     }
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 5L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 5L);
     }
-    
+
     public static void witherShieldActive2(final Player p) {
         if (!Sputnik.HaveDMGReduction.containsKey(p.getUniqueId())) {
             Sputnik.HaveDMGReduction.put(p.getUniqueId(), false);
@@ -502,15 +520,15 @@ public class Sputnik
                 Sputnik.HaveDMGReduction.put(p.getUniqueId(), true);
                 p.playSound(p.getLocation(), Sound.ZOMBIE_REMEDY, 1.25f, 0.25f);
                 final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(p.getUniqueId());
-                final EntityHuman human = ((CraftHumanEntity)p).getHandle();
+                final EntityHuman human = ((CraftHumanEntity) p).getHandle();
                 final double critDmg = statistics.getCritDamage().addAll();
                 final double absorbsion = critDmg * 100.0 * 300.0 / 100.0;
-                final float apply = (float)Math.round(absorbsion);
+                final float apply = (float) Math.round(absorbsion);
                 SputnikPlayer.setCustomAbsorptionHP(p, apply);
                 createCircle2(p, 0.7, 1);
                 new BukkitRunnable() {
                     public void run() {
-                        final int finalHP = Math.round((float)(SputnikPlayer.getCustomAbsorptionHP(p) * 50 / 100));
+                        final int finalHP = Math.round((float) (SputnikPlayer.getCustomAbsorptionHP(p) * 50 / 100));
                         SputnikPlayer.setCustomAbsorptionHP(p, 0.0f);
                         p.setHealth(Math.min(p.getMaxHealth(), p.getHealth() + finalHP));
                         Sputnik.HaveDMGReduction.put(p.getUniqueId(), false);
@@ -518,17 +536,16 @@ public class Sputnik
                             public void run() {
                                 Sputnik.CooldownAbs.put(p.getUniqueId(), false);
                             }
-                        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 100L);
+                        }.runTaskLater(SkySimEngine.getPlugin(), 100L);
                     }
-                }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 100L);
+                }.runTaskLater(SkySimEngine.getPlugin(), 100L);
             }
-        }
-        else {
+        } else {
             Sputnik.CooldownAbs.put(p.getUniqueId(), false);
             witherShieldActive2(p);
         }
     }
-    
+
     public static void witherShieldActive(final Player p) {
         if (!Sputnik.HaveDMGReduction.containsKey(p.getUniqueId())) {
             Sputnik.HaveDMGReduction.put(p.getUniqueId(), false);
@@ -540,15 +557,15 @@ public class Sputnik
                 Sputnik.HaveDMGReduction.put(p.getUniqueId(), true);
                 p.playSound(p.getLocation(), Sound.ZOMBIE_REMEDY, 1.25f, 0.25f);
                 final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(p.getUniqueId());
-                final EntityHuman human = ((CraftHumanEntity)p).getHandle();
+                final EntityHuman human = ((CraftHumanEntity) p).getHandle();
                 final double critDmg = statistics.getCritDamage().addAll();
                 final double absorbsion = critDmg * 100.0 * 150.0 / 100.0;
-                final float apply = (float)Math.round(absorbsion);
+                final float apply = (float) Math.round(absorbsion);
                 SputnikPlayer.setCustomAbsorptionHP(p, apply);
                 createCircle(p, 0.7, 1);
                 new BukkitRunnable() {
                     public void run() {
-                        final int finalHP = Math.round((float)(SputnikPlayer.getCustomAbsorptionHP(p) * 50 / 100));
+                        final int finalHP = Math.round((float) (SputnikPlayer.getCustomAbsorptionHP(p) * 50 / 100));
                         SputnikPlayer.setCustomAbsorptionHP(p, 0.0f);
                         p.setHealth(Math.min(p.getMaxHealth(), p.getHealth() + finalHP));
                         Sputnik.HaveDMGReduction.put(p.getUniqueId(), false);
@@ -556,17 +573,16 @@ public class Sputnik
                             public void run() {
                                 Sputnik.CooldownAbs.put(p.getUniqueId(), false);
                             }
-                        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 100L);
+                        }.runTaskLater(SkySimEngine.getPlugin(), 100L);
                     }
-                }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 100L);
+                }.runTaskLater(SkySimEngine.getPlugin(), 100L);
             }
-        }
-        else {
+        } else {
             Sputnik.CooldownAbs.put(p.getUniqueId(), false);
             witherShieldActive(p);
         }
     }
-    
+
     private static void createCircle(final Player player, final double radius, final int distance) {
         final Vector dist = player.getEyeLocation().getDirection().multiply(distance);
         final Location mid = player.getEyeLocation().add(dist);
@@ -580,7 +596,7 @@ public class Sputnik
             player.getWorld().spigot().playEffect(temp, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
         }
     }
-    
+
     private static void createCircle2(final Player player, final double radius, final int distance) {
         final Vector dist = player.getEyeLocation().getDirection().multiply(distance);
         final Location mid = player.getEyeLocation().add(dist);
@@ -594,7 +610,7 @@ public class Sputnik
             player.getWorld().spigot().playEffect(temp, Effect.FLAME, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
         }
     }
-    
+
     private static Vector rotateAroundAxisX(final Vector v, double angle) {
         angle = Math.toRadians(angle);
         final double cos = Math.cos(angle);
@@ -603,7 +619,7 @@ public class Sputnik
         final double z = v.getY() * sin + v.getZ() * cos;
         return v.setY(y).setZ(z);
     }
-    
+
     private static Vector rotateAroundAxisY(final Vector v, double angle) {
         angle = -angle;
         angle = Math.toRadians(angle);
@@ -613,18 +629,18 @@ public class Sputnik
         final double z = v.getX() * -sin + v.getZ() * cos;
         return v.setX(x).setZ(z);
     }
-    
+
     public static void playActivateSound(final Player p) {
         p.playSound(p.getLocation(), Sound.GHAST_MOAN, 1.0f, 2.0f);
         p.playSound(p.getLocation(), Sound.GHAST_SCREAM2, 1.0f, 2.0f);
         SUtil.delay(() -> p.playSound(p.getLocation(), Sound.GHAST_SCREAM2, 0.5f, 1.5f), 2L);
     }
-    
+
     public static void playDeActivateSound(final Player p) {
         p.playSound(p.getLocation(), Sound.GHAST_SCREAM2, 1.0f, 1.5f);
         p.playSound(p.getLocation(), Sound.GHAST_SCREAM2, 1.0f, 1.1f);
     }
-    
+
     public static void playFuckingSoundOfVoidgloomThatTookForeverToMake(final Player p, final Entity e) {
         new BukkitRunnable() {
             public void run() {
@@ -634,20 +650,20 @@ public class Sputnik
                 }
                 for (final Entity e : p.getWorld().getNearbyEntities(p.getLocation(), 20.0, 20.0, 20.0)) {
                     if (e instanceof Player) {
-                        final Player player = (Player)e;
+                        final Player player = (Player) e;
                         player.getWorld().playSound(player.getLocation(), Sound.ZOMBIE_UNFECT, 0.1f, 0.7f);
                     }
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 1L, 5L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 1L, 5L);
     }
-    
+
     public static void moveTo(final LivingEntity entity, final Location moveTo, final float speed) {
-        final EntityLiving nmsEntity = ((CraftLivingEntity)entity).getHandle();
-        final PathEntity path = ((EntityInsentient)nmsEntity).getNavigation().a(moveTo.getX(), moveTo.getY(), moveTo.getZ());
-        ((EntityInsentient)nmsEntity).getNavigation().a(path, (double)speed);
+        final EntityLiving nmsEntity = ((CraftLivingEntity) entity).getHandle();
+        final PathEntity path = ((EntityInsentient) nmsEntity).getNavigation().a(moveTo.getX(), moveTo.getY(), moveTo.getZ());
+        ((EntityInsentient) nmsEntity).getNavigation().a(path, speed);
     }
-    
+
     public static String buildcustomString(final String entityname, final Integer level, final boolean hideLVL) {
         if (level == 0) {
             return ChatColor.RED + entityname;
@@ -658,57 +674,47 @@ public class Sputnik
         }
         return returnstring;
     }
-    
+
     public static String entityNameTag(final LivingEntity entity, String customstring) {
         String returnstring = "";
         customstring = trans(customstring);
-        final int hp = (int)entity.getMaxHealth() / 2;
-        final int hp2 = (int)entity.getHealth();
-        final int hp3 = (int)entity.getMaxHealth();
+        final int hp = (int) entity.getMaxHealth() / 2;
+        final int hp2 = (int) entity.getHealth();
+        final int hp3 = (int) entity.getMaxHealth();
         if (!VoidgloomSeraph.HIT_SHIELD.containsKey(entity)) {
             if (hp2 <= hp && hp3 < 50000 && !entity.hasMetadata("SlayerBoss")) {
                 returnstring = ChatColor.RED + customstring + " " + ChatColor.YELLOW + hp2 + ChatColor.GRAY + "/" + ChatColor.GREEN + hp3 + ChatColor.RED + "❤";
-            }
-            else if (hp2 > hp && hp3 < 50000 && !entity.hasMetadata("SlayerBoss")) {
+            } else if (hp2 > hp && hp3 < 50000 && !entity.hasMetadata("SlayerBoss")) {
                 returnstring = ChatColor.RED + customstring + " " + ChatColor.GREEN + hp2 + ChatColor.GRAY + "/" + ChatColor.GREEN + hp3 + ChatColor.RED + "❤";
-            }
-            else if (hp3 > 50000 && hp2 > hp && !entity.hasMetadata("SlayerBoss")) {
-                returnstring = ChatColor.RED + customstring + " " + ChatColor.GREEN + format((float)hp2) + ChatColor.GRAY + "/" + ChatColor.GREEN + format((float)hp3) + ChatColor.RED + "❤";
-            }
-            else if (hp3 > 50000 && hp2 <= hp && !entity.hasMetadata("SlayerBoss")) {
-                returnstring = ChatColor.RED + customstring + " " + ChatColor.YELLOW + format((float)hp2) + ChatColor.GRAY + "/" + ChatColor.GREEN + format((float)hp3) + ChatColor.RED + "❤";
-            }
-            else if (hp2 <= hp && hp3 < 50000 && entity.hasMetadata("SlayerBoss")) {
+            } else if (hp3 > 50000 && hp2 > hp && !entity.hasMetadata("SlayerBoss")) {
+                returnstring = ChatColor.RED + customstring + " " + ChatColor.GREEN + format((float) hp2) + ChatColor.GRAY + "/" + ChatColor.GREEN + format((float) hp3) + ChatColor.RED + "❤";
+            } else if (hp3 > 50000 && hp2 <= hp && !entity.hasMetadata("SlayerBoss")) {
+                returnstring = ChatColor.RED + customstring + " " + ChatColor.YELLOW + format((float) hp2) + ChatColor.GRAY + "/" + ChatColor.GREEN + format((float) hp3) + ChatColor.RED + "❤";
+            } else if (hp2 <= hp && hp3 < 50000 && entity.hasMetadata("SlayerBoss")) {
                 returnstring = ChatColor.RED + customstring + " " + ChatColor.YELLOW + hp2 + ChatColor.RED + "❤";
-            }
-            else if (hp2 > hp && hp3 < 50000 && entity.hasMetadata("SlayerBoss")) {
+            } else if (hp2 > hp && hp3 < 50000 && entity.hasMetadata("SlayerBoss")) {
                 returnstring = ChatColor.RED + customstring + " " + ChatColor.GREEN + hp2 + ChatColor.RED + "❤";
+            } else if (hp3 > 50000 && hp2 > hp && entity.hasMetadata("SlayerBoss")) {
+                returnstring = ChatColor.RED + customstring + " " + ChatColor.GREEN + format((float) hp2) + ChatColor.RED + "❤";
+            } else if (hp3 > 50000 && hp2 <= hp && entity.hasMetadata("SlayerBoss")) {
+                returnstring = ChatColor.RED + customstring + " " + ChatColor.YELLOW + format((float) hp2) + ChatColor.RED + "❤";
             }
-            else if (hp3 > 50000 && hp2 > hp && entity.hasMetadata("SlayerBoss")) {
-                returnstring = ChatColor.RED + customstring + " " + ChatColor.GREEN + format((float)hp2) + ChatColor.RED + "❤";
-            }
-            else if (hp3 > 50000 && hp2 <= hp && entity.hasMetadata("SlayerBoss")) {
-                returnstring = ChatColor.RED + customstring + " " + ChatColor.YELLOW + format((float)hp2) + ChatColor.RED + "❤";
-            }
-        }
-        else {
+        } else {
             final int hitshield = VoidgloomSeraph.HIT_SHIELD.get(entity);
             final int hitshieldmax = VoidgloomSeraph.HIT_SHIELD_MAX.get(entity);
             String defineHitShield = trans("&f&l" + hitshield + " Hits");
             if (hitshield <= hitshieldmax / 2 && hitshield > hitshieldmax * 25 / 100) {
                 defineHitShield = trans("&d&l" + hitshield + " Hits");
-            }
-            else if (hitshield <= hitshieldmax * 25 / 100 && hitshield != 1) {
+            } else if (hitshield <= hitshieldmax * 25 / 100 && hitshield != 1) {
                 defineHitShield = trans("&5&l" + hitshield + " Hits");
-            }
-            else if (hitshield == 1) {
+            } else if (hitshield == 1) {
                 defineHitShield = trans("&5&l" + hitshield + " Hit");
             }
             returnstring = ChatColor.RED + customstring + " " + defineHitShield;
         }
         return returnstring;
     }
-    
+
     public static PlayerDisguise applyPacketNPC(final Entity entity, final String skinURLorUsername, final String URL_2, final boolean isURLSkin) {
         final PlayerDisguise playerDisguise = new PlayerDisguise("");
         try {
@@ -717,15 +723,12 @@ public class Sputnik
             // todo : fix it
             try {
                 m.invoke(playerDisguise.getWatcher(), 10, 127);
-            }
-            catch (final IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            } catch (final IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
                 e.printStackTrace();
             }
-        }
-        catch (final NoSuchMethodException e) {
+        } catch (final NoSuchMethodException e) {
             e.printStackTrace();
-        }
-        catch (final SecurityException e) {
+        } catch (final SecurityException e) {
             e.printStackTrace();
         }
         playerDisguise.setShowName(false);
@@ -738,41 +741,41 @@ public class Sputnik
         playerDisguise.startDisguise();
         return playerDisguise;
     }
-    
+
     public static void applyPacketGiant(final Entity entity) {
         final MobDisguise d = new MobDisguise(EntityType.GIANT);
         d.setEntity(entity);
         d.startDisguise();
     }
-    
+
     public static void applyPacketGolem(final Entity entity) {
         final MobDisguise d = new MobDisguise(EntityType.IRON_GOLEM);
         d.setEntity(entity);
         d.startDisguise();
     }
-    
+
     public static MobDisguise applyPacketSkeleton(final Entity entity) {
         final MobDisguise d = new MobDisguise(EntityType.SKELETON);
         d.setEntity(entity);
         d.startDisguise();
         return d;
     }
-    
+
     public static void sendPacket(final World w, final Packet pk) {
         for (final Player p : w.getPlayers()) {
-            final EntityPlayer player = ((CraftPlayer)p).getHandle();
+            final EntityPlayer player = ((CraftPlayer) p).getHandle();
             player.playerConnection.sendPacket(pk);
         }
     }
-    
+
     public static float randomVector() {
-        return -0.1f + (float)(Math.random() * 0.2);
+        return -0.1f + (float) (Math.random() * 0.2);
     }
-    
+
     public static void createSphere(final Location loc) {
         new BukkitRunnable() {
             double phi = 0.0;
-            
+
             public void run() {
                 this.phi += 0.3141592653589793;
                 for (double theta = 0.0; theta <= 6.283185307179586; theta += 0.09817477042468103) {
@@ -789,35 +792,35 @@ public class Sputnik
                     }
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 0L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 0L);
     }
-    
+
     public static final float getAngle(final Vector point1, final Vector point2) {
         final double dx = point2.getX() - point1.getX();
         final double dz = point2.getZ() - point1.getZ();
-        float angle = (float)Math.toDegrees(Math.atan2(dz, dx)) - 90.0f;
+        float angle = (float) Math.toDegrees(Math.atan2(dz, dx)) - 90.0f;
         if (angle < 0.0f) {
             angle += 360.0f;
         }
         return angle;
     }
-    
+
     public static void setEyeLocation(final Entity entity, final Location location1, final Location location2) {
         entity.getLocation().setYaw(getAngle(new Vector(location1.getX(), 0.0, location1.getZ()), location2.toVector()));
     }
-    
+
     private static double distanceSquared(final Vector from, final Vector to) {
         final double dx = to.getBlockX() - from.getBlockX();
         final double dz = to.getBlockZ() - from.getBlockZ();
         return dx * dx + dz * dz;
     }
-    
+
     public static Vector calculateVelocityBlock(final Vector from, final Vector to, final int heightGain) {
         final double gravity = 0.115;
         final int endGain = to.getBlockY() - from.getBlockY();
         final double horizDist = Math.sqrt(distanceSquared(from, to));
         final int gain = heightGain;
-        final double maxGain = (gain > endGain + gain) ? gain : ((double)(endGain + gain));
+        final double maxGain = (gain > endGain + gain) ? gain : ((double) (endGain + gain));
         final double a = -horizDist * horizDist / (4.0 * maxGain);
         final double b = horizDist;
         final double c = -endGain;
@@ -833,13 +836,13 @@ public class Sputnik
         final double vz = vh * dirz;
         return new Vector(vx, vy, vz);
     }
-    
+
     public static Vector r(final Vector from, final Vector to, final int heightGain) {
         final double gravity = 0.3;
         final int endGain = to.getBlockY() - from.getBlockY();
         final double horizDist = Math.sqrt(distanceSquared(from, to));
         final int gain = heightGain;
-        final double maxGain = (gain > endGain + gain) ? gain : ((double)(endGain + gain));
+        final double maxGain = (gain > endGain + gain) ? gain : ((double) (endGain + gain));
         final double a = -horizDist * horizDist / (4.0 * maxGain);
         final double b = horizDist;
         final double c = -endGain;
@@ -855,55 +858,52 @@ public class Sputnik
         final double vz = vh * dirz;
         return new Vector(vx, vy, vz);
     }
-    
+
     public static int itemCount(final Player player, final String type) {
         int count = 0;
         final PlayerInventory inv = player.getInventory();
         for (final ItemStack is : inv.getContents()) {
-            if (is != null && SItem.isSpecItem(is) && SItem.of(is) != null && is.getItemMeta().getDisplayName().contains(type)) {
+            if (SItem.isSpecItem(is) && SItem.of(is) != null && is.getItemMeta().getDisplayName().contains(type)) {
                 count += is.getAmount();
             }
         }
         return count;
     }
-    
+
     public static void zero(final Entity killed) {
         if (!(killed instanceof LivingEntity)) {
             return;
         }
-        final EntityEquipment ep = ((LivingEntity)killed).getEquipment();
-        ep.setHelmet((ItemStack)null);
-        ep.setChestplate((ItemStack)null);
-        ep.setLeggings((ItemStack)null);
-        ep.setBoots((ItemStack)null);
-        ep.setItemInHand((ItemStack)null);
+        final EntityEquipment ep = ((LivingEntity) killed).getEquipment();
+        ep.setHelmet(null);
+        ep.setChestplate(null);
+        ep.setLeggings(null);
+        ep.setBoots(null);
+        ep.setItemInHand(null);
     }
-    
+
     public static List<Block> pasteSchematicRep(final String schematic, final boolean withAir, final float lx, final float ly, final float lz, final World w) {
         final List<Block> lb = new ArrayList<Block>();
         final File schem = new File(SkySimEngine.getPlugin().getDataFolder() + File.separator + "/schematics/" + schematic + ".schematic");
-        final com.sk89q.worldedit.world.World world = (com.sk89q.worldedit.world.World)new BukkitWorld(w);
+        final com.sk89q.worldedit.world.World world = new BukkitWorld(w);
         final Closer closer = Closer.create();
         FileInputStream fis = null;
         try {
-            fis = (FileInputStream)closer.register((Closeable)new FileInputStream(schem));
-        }
-        catch (final FileNotFoundException e3) {
+            fis = (FileInputStream) closer.register((Closeable) new FileInputStream(schem));
+        } catch (final FileNotFoundException e3) {
             e3.printStackTrace();
         }
-        final BufferedInputStream bis = (BufferedInputStream)closer.register((Closeable)new BufferedInputStream(fis));
+        final BufferedInputStream bis = (BufferedInputStream) closer.register((Closeable) new BufferedInputStream(fis));
         ClipboardReader reader = null;
         try {
-            reader = ClipboardFormat.SCHEMATIC.getReader((InputStream)bis);
-        }
-        catch (final IOException e4) {
+            reader = ClipboardFormat.SCHEMATIC.getReader(bis);
+        } catch (final IOException e4) {
             e4.printStackTrace();
         }
         Clipboard clipboard = null;
         try {
             clipboard = reader.read(world.getWorldData());
-        }
-        catch (final IOException e5) {
+        } catch (final IOException e5) {
             e5.printStackTrace();
         }
         Location minYLoc = null;
@@ -915,7 +915,7 @@ public class Sputnik
                     final com.sk89q.worldedit.Vector clipboardLoc = new com.sk89q.worldedit.Vector(minimumPoint.getBlockX() + x, minimumPoint.getBlockY() + y, minimumPoint.getBlockZ() + z);
                     final BaseBlock baseBlock = clipboard.getBlock(clipboardLoc);
                     if (baseBlock.getId() != 0) {
-                        final Location newLocation = new Location(w, (double)lx, (double)ly, (double)lz).add((double)x, (double)y, (double)z);
+                        final Location newLocation = new Location(w, lx, ly, lz).add(x, y, z);
                         final com.sk89q.worldedit.Vector loc = new com.sk89q.worldedit.Vector(newLocation.getBlockX(), newLocation.getBlockY(), newLocation.getBlockZ());
                         try {
                             world.setBlock(loc, baseBlock);
@@ -924,8 +924,7 @@ public class Sputnik
                                 minYLoc = newLocation;
                             }
                             lb.add(w.getBlockAt(newLocation));
-                        }
-                        catch (final WorldEditException e6) {
+                        } catch (final WorldEditException e6) {
                             e6.printStackTrace();
                         }
                     }
@@ -934,15 +933,14 @@ public class Sputnik
         }
         try {
             closer.close();
-        }
-        catch (final IOException e7) {
+        } catch (final IOException e7) {
             e7.printStackTrace();
         }
         return lb;
     }
-    
+
     public static boolean pasteSchematic(final String schematic, final boolean withAir, final float x, final float y, final float z, final World w) {
-        final Location location = new Location(w, (double)x, (double)y, (double)z);
+        final Location location = new Location(w, x, y, z);
         try {
             final com.sk89q.worldedit.Vector pasteLocation = new com.sk89q.worldedit.Vector(location.getX(), location.getY(), location.getZ());
             final BukkitWorld pasteWorld = new BukkitWorld(location.getWorld());
@@ -950,28 +948,25 @@ public class Sputnik
             final File schem = new File(SkySimEngine.getPlugin().getDataFolder() + File.separator + "/schematics/" + schematic + ".schematic");
             Clipboard clipboard;
             try {
-                clipboard = ClipboardFormat.SCHEMATIC.getReader((InputStream)new FileInputStream(schem)).read(pasteWorldData);
-            }
-            catch (final FileNotFoundException e) {
+                clipboard = ClipboardFormat.SCHEMATIC.getReader(new FileInputStream(schem)).read(pasteWorldData);
+            } catch (final FileNotFoundException e) {
                 e.printStackTrace();
                 return false;
-            }
-            catch (final IOException e2) {
+            } catch (final IOException e2) {
                 e2.printStackTrace();
                 return false;
             }
             final ClipboardHolder clipboardHolder = new ClipboardHolder(clipboard, pasteWorldData);
-            final EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession((LocalWorld)pasteWorld, -1);
-            final Operation operation = clipboardHolder.createPaste((Extent)editSession, pasteWorldData).to(pasteLocation).ignoreAirBlocks(!withAir).build();
+            final EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(pasteWorld, -1);
+            final Operation operation = clipboardHolder.createPaste(editSession, pasteWorldData).to(pasteLocation).ignoreAirBlocks(!withAir).build();
             Operations.complete(operation);
             return true;
-        }
-        catch (final WorldEditException ex) {
-            ((Throwable)ex).printStackTrace();
+        } catch (final WorldEditException ex) {
+            ex.printStackTrace();
             return false;
         }
     }
-    
+
     public static String formatTime(final int z) {
         final int seconds = z;
         final int p1 = seconds % 60;
@@ -982,20 +977,20 @@ public class Sputnik
         String b = String.valueOf(p2);
         String c = String.valueOf(p3);
         if (p1 < 10) {
-            a = "0" + String.valueOf(p1);
+            a = "0" + p1;
         }
         if (p2 < 10) {
-            b = "0" + String.valueOf(p2);
+            b = "0" + p2;
         }
         if (p3 < 10) {
-            c = "0" + String.valueOf(p3);
+            c = "0" + p3;
         }
         if (p2 == 0) {
             return c + "m " + a + "s";
         }
         return b + "h " + c + "m " + a + "s";
     }
-    
+
     public static int runningFloors() {
         int i = 0;
         for (final World w : Bukkit.getWorlds()) {
@@ -1005,18 +1000,17 @@ public class Sputnik
         }
         return i;
     }
-    
+
     public static int rf_() {
         int i = 0;
         if (Sputnik.RunThisSession.containsKey(Bukkit.getServer())) {
             i = Sputnik.RunThisSession.get(Bukkit.getServer());
-        }
-        else {
+        } else {
             Sputnik.RunThisSession.put(Bukkit.getServer(), 0);
         }
         return i;
     }
-    
+
     public static void startRoom(final Player player) {
         if (runningFloors() >= 5) {
             player.sendMessage(trans("&cSorry! The number of running rooms has reached 5, please try again in a moment. You can support the server so we can handle more rooms at &bhttps://store.skysim.sbs"));
@@ -1024,7 +1018,7 @@ public class Sputnik
             return;
         }
         final SkySimEngine plugin = SkySimEngine.getPlugin();
-        plugin.config.set("runMade", (Object)(plugin.config.getLong("runMade") + 1L));
+        plugin.config.set("runMade", plugin.config.getLong("runMade") + 1L);
         plugin.config.save();
         final ArrayList<Player> plist = new ArrayList<Player>();
         plist.add(player);
@@ -1035,19 +1029,19 @@ public class Sputnik
         SUtil.delay(() -> SadanBossManager.startFloor(plist), 50L);
         SUtil.delay(() -> BossMenu.ableToJoin.put(player, true), 60L);
     }
-    
+
     public static Integer dmgc(final int damage, final Player p, final Entity e) {
         final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(p.getUniqueId());
         if (statistics == null) {
             return 0;
         }
         final double defense = statistics.getDefense().addAll();
-        final int dmglater = (int)Math.round(damage - damage * (defense / (defense + 100.0)));
+        final int dmglater = (int) Math.round(damage - damage * (defense / (defense + 100.0)));
         User.getUser(p.getUniqueId()).damage(dmglater, EntityDamageEvent.DamageCause.ENTITY_ATTACK, e);
-        ((LivingEntity)p).damage(1.0E-6, (Entity)null);
+        p.damage(1.0E-6, null);
         return dmglater;
     }
-    
+
     public static double calculateMagicDamage(final Entity entity, final Player player, int baseMagicDmg, final double scale) {
         final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
         final int manaPool = SUtil.blackMagic(100.0 + statistics.getIntelligence().addAll());
@@ -1057,11 +1051,9 @@ public class Sputnik
         if (helmet != null) {
             if (helmet.getType() == SMaterial.DARK_GOGGLES) {
                 baseMagicDmg += baseMagicDmg * 25 / 100;
-            }
-            else if (helmet.getType() == SMaterial.SHADOW_GOGGLES) {
+            } else if (helmet.getType() == SMaterial.SHADOW_GOGGLES) {
                 baseMagicDmg += baseMagicDmg * 35 / 100;
-            }
-            else if (helmet.getType() == SMaterial.WITHER_GOGGLES) {
+            } else if (helmet.getType() == SMaterial.WITHER_GOGGLES) {
                 baseMagicDmg += baseMagicDmg * 45 / 100;
             }
         }
@@ -1070,7 +1062,7 @@ public class Sputnik
         if (active1 != null && pet.getDisplayName().equals("Magicivy")) {
             final Pet.PetItem active2 = user.getActivePet();
             final int level = Pet.getLevel(active2.getXp(), active2.getRarity());
-            baseMagicDmg += (int)(baseMagicDmg * (level / 100.0f));
+            baseMagicDmg += (int) (baseMagicDmg * (level / 100.0f));
         }
         double baseDamage = baseMagicDmg * (manaPool / 100 * scale + 1.0);
         if (EntityManager.DEFENSE_PERCENTAGE.containsKey(entity)) {
@@ -1082,45 +1074,45 @@ public class Sputnik
         }
         return baseDamage;
     }
-    
+
     public static PlayerUtils.DamageResult calculateNormalDamage(final Entity entity, final Player player, final int baseDamage) {
         final ItemStack weapon = player.getInventory().getItemInHand();
         final PlayerUtils.DamageResult result = PlayerUtils.getDamageDealt(weapon, player, entity, player instanceof Arrow);
         return result;
     }
-    
+
     public static void playHitShieldParticle(final Entity e) {
         new BukkitRunnable() {
             int loc = 0;
-            
+
             public void run() {
                 final ArrayList<Location> locs = getCircle(e.getLocation(), 0.5, 40);
-                e.getWorld().spigot().playEffect((Location)locs.get(this.loc), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                e.getWorld().spigot().playEffect(locs.get(this.loc), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                 ++this.loc;
                 if (this.loc == 40) {
                     this.loc = 0;
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
     }
-    
+
     public static void playSoulWell(final Entity e, final String id) {
         final HashMap<Integer, Integer> S = new HashMap<Integer, Integer>();
         Sputnik.MAP_PARTICLE_1.put(e, e.getLocation());
-        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask((Plugin)SkySimEngine.getPlugin(), (Runnable)new Runnable() {
-            Random random = new Random();
-            
+        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(SkySimEngine.getPlugin(), new Runnable() {
+            final Random random = new Random();
+
             void startSoulWell() {
                 final int num = this.random.nextInt(Integer.MAX_VALUE);
-                S.put(num, Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask((Plugin)SkySimEngine.getPlugin(), (Runnable)new Runnable() {
-                    Location height = Sputnik.MAP_PARTICLE_1.get(e);
+                S.put(num, Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(SkySimEngine.getPlugin(), new Runnable() {
+                    final Location height = Sputnik.MAP_PARTICLE_1.get(e);
                     int loc = 0;
                     int lifeSpan = 0;
-                    
+
                     @Override
                     public void run() {
                         final ArrayList<Location> locs = getCircle(this.height, 0.5, 40);
-                        Sputnik.MAP_PARTICLE_1.get(e).getWorld().spigot().playEffect((Location)locs.get(this.loc), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                        Sputnik.MAP_PARTICLE_1.get(e).getWorld().spigot().playEffect(locs.get(this.loc), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                         ++this.loc;
                         ++this.lifeSpan;
                         this.height.add(0.0, 0.045, 0.0);
@@ -1128,13 +1120,13 @@ public class Sputnik
                             this.loc = 0;
                         }
                         if (this.lifeSpan == 40) {
-                            Bukkit.getScheduler().cancelTask((int)S.get(num));
+                            Bukkit.getScheduler().cancelTask(S.get(num));
                             S.remove(num);
                         }
                     }
                 }, 0L, 1L));
             }
-            
+
             @Override
             public void run() {
                 this.startSoulWell();
@@ -1144,9 +1136,9 @@ public class Sputnik
             public void run() {
                 Sputnik.MAP_PARTICLE_1.put(e, e.getLocation());
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
     }
-    
+
     private static ArrayList<Location> getCircle(final Location center, final double radius, final int amount) {
         final World world = center.getWorld();
         final double increment = 6.283185307179586 / amount;
@@ -1159,7 +1151,7 @@ public class Sputnik
         }
         return locations;
     }
-    
+
     private static ArrayList<Location> getCircleReverse(final Location center, final double radius, final int amount) {
         final World world = center.getWorld();
         final double increment = 6.283185307179586 / amount;
@@ -1172,7 +1164,7 @@ public class Sputnik
         }
         return locations;
     }
-    
+
     public static void setTotalExperience(final Player player, final int exp) {
         if (exp < 0) {
             throw new IllegalArgumentException("Experience is negative!");
@@ -1186,19 +1178,18 @@ public class Sputnik
             amount -= expToLevel;
             if (amount >= 0) {
                 player.giveExp(expToLevel);
-            }
-            else {
+            } else {
                 amount += expToLevel;
                 player.giveExp(amount);
                 amount = 0;
             }
         }
     }
-    
+
     private static int getExpAtLevel(final Player player) {
         return getExpAtLevel(player.getLevel());
     }
-    
+
     public static int getExpAtLevel(final int level) {
         if (level > 29) {
             return 62 + (level - 30) * 7;
@@ -1208,7 +1199,7 @@ public class Sputnik
         }
         return 17;
     }
-    
+
     public static int getExpToLevel(final int level) {
         int currentLevel = 0;
         int exp = 0;
@@ -1221,22 +1212,23 @@ public class Sputnik
         }
         return exp;
     }
-    
+
     public static int getTotalExperience(final Player player) {
         int exp = Math.round(getExpAtLevel(player) * player.getExp());
-        for (int currentLevel = player.getLevel(); currentLevel > 0; --currentLevel, exp += getExpAtLevel(currentLevel)) {}
+        for (int currentLevel = player.getLevel(); currentLevel > 0; --currentLevel, exp += getExpAtLevel(currentLevel)) {
+        }
         if (exp < 0) {
             exp = Integer.MAX_VALUE;
         }
         return exp;
     }
-    
+
     public static int getExpUntilNextLevel(final Player player) {
         final int exp = Math.round(getExpAtLevel(player) * player.getExp());
         final int nextLevel = player.getLevel();
         return getExpAtLevel(nextLevel) - exp;
     }
-    
+
     public static void tradeIntitize(final Player target, final Player p) {
         if (SkySimEngine.getPlugin() != null && !SkySimEngine.getPlugin().config.getBoolean("enableTrade")) {
             p.sendMessage(trans("&cTrading has been temporary disabled!"));
@@ -1270,7 +1262,7 @@ public class Sputnik
         }
         new BukkitRunnable() {
             int t = 0;
-            
+
             public void run() {
                 ++this.t;
                 if (TradeUtil.isTrading(p) || TradeUtil.isTrading(target)) {
@@ -1287,7 +1279,7 @@ public class Sputnik
                     TradeUtil.resetTrade(target);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
         if (TradeUtil.hasRequest(p, target)) {
             p.playSound(p.getLocation(), Sound.VILLAGER_HAGGLE, 1.0f, 1.0f);
             target.playSound(target.getLocation(), Sound.VILLAGER_HAGGLE, 1.0f, 1.0f);
@@ -1301,14 +1293,14 @@ public class Sputnik
         final UUID accessKey = UUID.randomUUID();
         AccessTimedCommand.KEYS.add(accessKey);
         SUtil.delay(() -> AccessTimedCommand.KEYS.remove(accessKey), 200L);
-        message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, (BaseComponent[])new TextComponent[] { new TextComponent(ChatColor.GOLD + "Click to trade!") }));
+        message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponent[]{new TextComponent(ChatColor.GOLD + "Click to trade!")}));
         message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/attc " + accessKey + " " + p.getName()));
-        target.spigot().sendMessage((BaseComponent)message);
+        target.spigot().sendMessage(message);
         TradeUtil.requestTrade(p, target);
     }
-    
+
     public static ArmorStand spawnStaticDialougeBox(final Entity e, final Location l) {
-        final ArmorStand as = (ArmorStand)e.getWorld().spawn(l, (Class)ArmorStand.class);
+        final ArmorStand as = (ArmorStand) e.getWorld().spawn(l, (Class) ArmorStand.class);
         as.setVisible(false);
         as.setMarker(true);
         as.setCustomNameVisible(false);
@@ -1319,7 +1311,6 @@ public class Sputnik
                     SUtil.delay(() -> {
                         final Object val$as = as;
                         as.remove();
-                        return;
                     }, 0L);
                     this.cancel();
                     return;
@@ -1328,12 +1319,12 @@ public class Sputnik
                     this.cancel();
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
         return as;
     }
-    
+
     public static ArmorStand spawnStaticDialougeBox(final Entity e, final double yoffset) {
-        final ArmorStand as = (ArmorStand)e.getWorld().spawn(e.getLocation().add(0.0, yoffset, 0.0), (Class)ArmorStand.class);
+        final ArmorStand as = (ArmorStand) e.getWorld().spawn(e.getLocation().add(0.0, yoffset, 0.0), (Class) ArmorStand.class);
         as.setVisible(false);
         as.setMarker(true);
         as.setCustomNameVisible(false);
@@ -1344,7 +1335,6 @@ public class Sputnik
                     SUtil.delay(() -> {
                         final Object val$as = as;
                         as.remove();
-                        return;
                     }, 0L);
                     this.cancel();
                     return;
@@ -1353,12 +1343,12 @@ public class Sputnik
                     this.cancel();
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
         return as;
     }
-    
+
     public static ArmorStand spawnDialougeBox(final Entity e, final double yoffset) {
-        final ArmorStand as = (ArmorStand)e.getWorld().spawn(e.getLocation().add(0.0, yoffset, 0.0), (Class)ArmorStand.class);
+        final ArmorStand as = (ArmorStand) e.getWorld().spawn(e.getLocation().add(0.0, yoffset, 0.0), (Class) ArmorStand.class);
         as.setVisible(false);
         as.setMarker(true);
         as.setCustomNameVisible(false);
@@ -1369,7 +1359,6 @@ public class Sputnik
                     SUtil.delay(() -> {
                         final Object val$as = as;
                         as.remove();
-                        return;
                     }, 20L);
                     this.cancel();
                     return;
@@ -1380,10 +1369,10 @@ public class Sputnik
                 }
                 as.teleport(e.getLocation().add(0.0, yoffset, 0.0));
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
         return as;
     }
-    
+
     public static String createStarStringFrom(final SItem sitem) {
         final int amount = sitem.getDataInt("itemStar");
         if (amount <= 0) {
@@ -1404,21 +1393,19 @@ public class Sputnik
                     break;
                 }
             }
-        }
-        else {
+        } else {
             iams = amount - 5;
             for (int i = 0; i < 5; ++i) {
                 if (iams > i) {
                     sb.append(mstar);
-                }
-                else {
+                } else {
                     sb.append(star);
                 }
             }
         }
         return trans(sb.toString());
     }
-    
+
     public static String createStarStringFromAmount(final int amount) {
         if (amount <= 0) {
             return "";
@@ -1438,23 +1425,21 @@ public class Sputnik
                     break;
                 }
             }
-        }
-        else {
+        } else {
             iams = amount - 5;
             for (int i = 0; i < 5; ++i) {
                 if (iams > i) {
                     sb.append(mstar);
-                }
-                else {
+                } else {
                     sb.append(star);
                 }
             }
         }
         return trans(sb.toString());
     }
-    
+
     public static Object[] calculateDamage(final Player player, final Player damager, final ItemStack weapon, final LivingEntity damaged, final boolean isBow) {
-        final PlayerUtils.DamageResult result = PlayerUtils.getDamageDealt(weapon, player, (Entity)damaged, isBow);
+        final PlayerUtils.DamageResult result = PlayerUtils.getDamageDealt(weapon, player, damaged, isBow);
         float displayDmg = new AtomicDouble(result.getFinalDamage()).floatValue();
         if (EntityManager.DEFENSE_PERCENTAGE.containsKey(damaged)) {
             int defensepercent = EntityManager.DEFENSE_PERCENTAGE.get(damaged);
@@ -1463,30 +1448,28 @@ public class Sputnik
             }
             displayDmg -= displayDmg * defensepercent / 100.0f;
         }
-        return new Object[] { new AtomicDouble(result.getFinalDamage()).floatValue(), result.didCritDamage(), displayDmg };
+        return new Object[]{new AtomicDouble(result.getFinalDamage()).floatValue(), result.didCritDamage(), displayDmg};
     }
-    
+
     public static double calMagicDamage(final Player p, final int baseDamage, final double mult) {
         final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(p.getUniqueId());
         final int manaPool = SUtil.blackMagic(100.0 + statistics.getIntelligence().addAll());
         int baseMagicDmg1 = baseDamage;
-        baseMagicDmg1 += (int)(baseMagicDmg1 * (statistics.getAbilityDamage().addAll() / 100.0));
+        baseMagicDmg1 += (int) (baseMagicDmg1 * (statistics.getAbilityDamage().addAll() / 100.0));
         final PlayerInventory inv = p.getInventory();
         final SItem helmet = SItem.find(inv.getHelmet());
         if (helmet != null) {
             if (helmet.getType() == SMaterial.DARK_GOGGLES) {
                 baseMagicDmg1 += baseMagicDmg1 * 25 / 100;
-            }
-            else if (helmet.getType() == SMaterial.SHADOW_GOGGLES) {
+            } else if (helmet.getType() == SMaterial.SHADOW_GOGGLES) {
                 baseMagicDmg1 += baseMagicDmg1 * 35 / 100;
-            }
-            else if (helmet.getType() == SMaterial.WITHER_GOGGLES) {
+            } else if (helmet.getType() == SMaterial.WITHER_GOGGLES) {
                 baseMagicDmg1 += baseMagicDmg1 * 45 / 100;
             }
         }
         return baseMagicDmg1 * (manaPool / 100 * mult + 1.0);
     }
-    
+
     public static void sendWebhook(final String content) {
         final DiscordWebhook webhook = new DiscordWebhook("https://discord.com/api/webhooks/935193761795940404/3IdoSzkoXBU8UQb-X_mfizQgXYZZYiQ61FH9KPgm-gaeuUGjfhoTKvaWUFiQjwh55jKN");
         webhook.setUsername("SkySim Logger Assistant [v0.1-BETA]");
@@ -1494,12 +1477,11 @@ public class Sputnik
         webhook.setContent(content);
         try {
             webhook.execute();
-        }
-        catch (final IOException e) {
+        } catch (final IOException e) {
             e.printStackTrace();
         }
     }
-    
+
     public static void sendAsyncWebhook(final String content) {
         new BukkitRunnable() {
             public void run() {
@@ -1509,14 +1491,13 @@ public class Sputnik
                 webhook.setContent(content);
                 try {
                     webhook.execute();
-                }
-                catch (final IOException e) {
+                } catch (final IOException e) {
                     e.printStackTrace();
                 }
             }
-        }.runTaskAsynchronously((Plugin)SkySimEngine.getPlugin());
+        }.runTaskAsynchronously(SkySimEngine.getPlugin());
     }
-    
+
     public static void sendEatingAnimation(final LivingEntity e) {
         final net.minecraft.server.v1_8_R3.ItemStack itemstack = CraftItemStack.asNMSCopy(e.getEquipment().getItemInHand());
         final Location l = e.getLocation();
@@ -1533,16 +1514,16 @@ public class Sputnik
                 vec3d2 = vec3d2.a(-pitch * 3.141593f / 180.0f);
                 vec3d2 = vec3d2.b(-yaw * 3.141593f / 180.0f);
                 vec3d2 = vec3d2.add(l.getX(), l.getY() + 1.690000057220459, l.getZ());
-                sendPacket(e.getWorld(), (Packet)new PacketPlayOutWorldParticles(EnumParticle.ITEM_CRACK, true, (float)vec3d2.a, (float)vec3d2.b, (float)vec3d2.c, (float)vec3d.a, (float)((float)vec3d.b + 0.05), (float)vec3d.c, 0.75f, 0, new int[] { Item.getId(itemstack.getItem()), itemstack.getData() }));
+                sendPacket(e.getWorld(), new PacketPlayOutWorldParticles(EnumParticle.ITEM_CRACK, true, (float) vec3d2.a, (float) vec3d2.b, (float) vec3d2.c, (float) vec3d.a, (float) ((float) vec3d.b + 0.05), (float) vec3d.c, 0.75f, 0, new int[]{Item.getId(itemstack.getItem()), itemstack.getData()}));
             }
             e.getWorld().playSound(l, Sound.EAT, 0.5f + 0.5f * random.nextInt(2), (random.nextFloat() - random.nextFloat()) * 0.2f + 1.0f);
         }
     }
-    
+
     public static String roundComma(final float i) {
         return new BigDecimal(i).setScale(1, RoundingMode.HALF_EVEN).toPlainString();
     }
-    
+
     public static ItemChest makeChestItemLoot(final Location loc, final ItemStack type, final boolean locked, final byte rot) {
         loc.getBlock().setType(Material.CHEST);
         final Block bl = loc.getBlock();
@@ -1551,7 +1532,7 @@ public class Sputnik
         bc.setLocked(locked);
         return bc;
     }
-    
+
     public static BlessingChest makeChestBlessings(final Location loc, final Blessings type, final boolean locked, final byte rot) {
         loc.getBlock().setType(Material.CHEST);
         final Block bl = loc.getBlock();
@@ -1560,11 +1541,11 @@ public class Sputnik
         bc.setLocked(locked);
         return bc;
     }
-    
+
     public static boolean tpAbilUsable(final Player p) {
         return !p.getWorld().getName().contains("arena") || SkySimEngine.getPlugin().dimoon == null || SkySimEngine.getPlugin().dimoon.stunned;
     }
-    
+
     public static void teleport(final Player p, final Location loc) {
         if (!tpAbilUsable(p)) {
             p.sendMessage(trans("&cA Magicial Force have stopped you from using this teleport ability!"));
@@ -1572,12 +1553,12 @@ public class Sputnik
         }
         p.teleport(loc);
     }
-    
+
     public static PositionSongPlayer playNativeSound(final String filename, final int radius, final int volume, final boolean loop, final Location loc) {
         final Song song = NBSDecoder.parse(new File(SkySimEngine.getPlugin().getDataFolder() + File.separator + "/songs/" + filename + ".nbs"));
         final PositionSongPlayer esp = new PositionSongPlayer(song);
         esp.setDistance(radius);
-        esp.setVolume((byte)100);
+        esp.setVolume((byte) 100);
         esp.setLoop(loop);
         esp.setTargetLocation(loc);
         loc.getWorld().getPlayers().forEach(pl -> esp.addPlayer(pl));
@@ -1594,15 +1575,15 @@ public class Sputnik
                     }
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
         return esp;
     }
-    
+
     public static void playSound(final File filename, final int radius, final int volume, final boolean loop, final Player p, final Location loc) {
         final Song song = NBSDecoder.parse(filename);
         final PositionSongPlayer esp = new PositionSongPlayer(song);
         esp.setDistance(radius);
-        esp.setVolume((byte)100);
+        esp.setVolume((byte) 100);
         esp.setLoop(loop);
         esp.setTargetLocation(loc);
         p.getLocation().getWorld().getPlayers().forEach(pl -> esp.addPlayer(pl));
@@ -1626,9 +1607,9 @@ public class Sputnik
                     }
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
     }
-    
+
     static {
         RunThisSession = new HashMap<Server, Integer>();
         MidasStaff = new HashMap<SItem, Integer>();

@@ -1,6 +1,7 @@
 package vn.giakhanhvn.skysim.item.weapon;
 
 import java.util.Iterator;
+
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 import vn.giakhanhvn.skysim.util.SUtil;
@@ -25,7 +26,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Giant;
+
 import java.util.Set;
+
 import vn.giakhanhvn.skysim.item.SItem;
 import org.bukkit.entity.Player;
 import net.md_5.bungee.api.ChatColor;
@@ -36,65 +39,64 @@ import vn.giakhanhvn.skysim.item.Ability;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
 import vn.giakhanhvn.skysim.item.ToolStatistics;
 
-public class GiantSword implements ToolStatistics, MaterialFunction, Ability
-{
+public class GiantSword implements ToolStatistics, MaterialFunction, Ability {
     @Override
     public int getBaseDamage() {
         return 500;
     }
-    
+
     @Override
     public String getDisplayName() {
         return "Giant's Sword";
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.LEGENDARY;
     }
-    
+
     @Override
     public GenericItemType getType() {
         return GenericItemType.WEAPON;
     }
-    
+
     @Override
     public SpecificItemType getSpecificType() {
         return SpecificItemType.SWORD;
     }
-    
+
     @Override
     public String getLore() {
         return null;
     }
-    
+
     @Override
     public String getAbilityName() {
         return "Giant's Slam";
     }
-    
+
     @Override
     public String getAbilityDescription() {
         return "Slam your sword into the ground dealing " + ChatColor.RED + "100,000 " + ChatColor.GRAY + "damage to nearby enemies.";
     }
-    
+
     @Override
     public void onAbilityUse(final Player player, final SItem sItem) {
         int i = 0;
         double j = 0.0;
-        final Location location = player.getTargetBlock((Set)null, 6).getLocation();
-        final Giant sword = (Giant)player.getWorld().spawnEntity(location, EntityType.GIANT);
+        final Location location = player.getTargetBlock((Set) null, 6).getLocation();
+        final Giant sword = (Giant) player.getWorld().spawnEntity(location, EntityType.GIANT);
         sword.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 100000, 1));
-        EntityManager.noAI((Entity)sword);
-        EntityManager.noHit((Entity)sword);
-        EntityManager.shutTheFuckUp((Entity)sword);
+        EntityManager.noAI(sword);
+        EntityManager.noHit(sword);
+        EntityManager.shutTheFuckUp(sword);
         sword.setCustomName("Dinnerbone");
-        sword.setMetadata("GiantSword", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        sword.setMetadata("NoAffect", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        final ArmorStand stand = (ArmorStand)player.getWorld().spawnEntity(location, EntityType.ARMOR_STAND);
+        sword.setMetadata("GiantSword", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        sword.setMetadata("NoAffect", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        final ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(location, EntityType.ARMOR_STAND);
         stand.setVisible(false);
         stand.setGravity(true);
-        stand.setPassenger((Entity)sword);
+        stand.setPassenger(sword);
         sword.getEquipment().setItemInHand(SItem.of(SMaterial.IRON_SWORD).getStack());
         player.playSound(player.getLocation(), Sound.ANVIL_LAND, 10.0f, 0.0f);
         player.playSound(player.getLocation(), Sound.AMBIENCE_THUNDER, 0.9f, 0.35f);
@@ -119,7 +121,7 @@ public class GiantSword implements ToolStatistics, MaterialFunction, Ability
             }
             final User user = User.getUser(player.getUniqueId());
             final double baseDamage = Sputnik.calculateMagicDamage(entity, player, 100000, 0.05);
-            user.damageEntityIgnoreShield((Damageable)entity, baseDamage);
+            user.damageEntityIgnoreShield((Damageable) entity, baseDamage);
             ++i;
             j += baseDamage;
             PlayerListener.spawnDamageInd(entity, baseDamage, false);
@@ -127,8 +129,7 @@ public class GiantSword implements ToolStatistics, MaterialFunction, Ability
         if (i > 0) {
             if (i == 1) {
                 player.sendMessage(ChatColor.GRAY + "Your Implosion hit " + ChatColor.RED + i + ChatColor.GRAY + " enemy for " + ChatColor.RED + SUtil.commaify(j) + ChatColor.GRAY + " damage.");
-            }
-            else {
+            } else {
                 player.sendMessage(ChatColor.GRAY + "Your Implosion hit " + ChatColor.RED + i + ChatColor.GRAY + " enemies for " + ChatColor.RED + SUtil.commaify(j) + ChatColor.GRAY + " damage.");
             }
         }
@@ -138,14 +139,14 @@ public class GiantSword implements ToolStatistics, MaterialFunction, Ability
                 stand.remove();
                 this.cancel();
             }
-        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 135L);
+        }.runTaskLater(SkySimEngine.getPlugin(), 135L);
     }
-    
+
     @Override
     public int getAbilityCooldownTicks() {
         return 400;
     }
-    
+
     @Override
     public int getManaCost() {
         return 100;

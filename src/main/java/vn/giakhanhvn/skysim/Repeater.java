@@ -1,6 +1,7 @@
 package vn.giakhanhvn.skysim;
 
 import java.util.HashMap;
+
 import vn.giakhanhvn.skysim.item.armor.VoidlingsWardenHelmet;
 import vn.giakhanhvn.skysim.dimoon.SummoningSequence;
 import vn.giakhanhvn.skysim.slayer.SlayerQuest;
@@ -29,7 +30,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.item.SMaterial;
+
 import java.util.concurrent.atomic.AtomicInteger;
+
 import vn.giakhanhvn.skysim.util.Sputnik;
 import org.bukkit.OfflinePlayer;
 import vn.giakhanhvn.skysim.entity.dungeons.boss.sadan.SadanHuman;
@@ -46,31 +49,39 @@ import org.bukkit.World;
 import org.bukkit.Effect;
 import org.bukkit.Sound;
 import vn.giakhanhvn.skysim.entity.nms.VoidgloomSeraph;
+
 import java.util.Set;
+
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.Material;
 import vn.giakhanhvn.skysim.dungeons.Blessings;
 import org.bukkit.plugin.Plugin;
+
 import java.util.Iterator;
+
 import org.bukkit.Bukkit;
 import vn.giakhanhvn.skysim.util.SLog;
 import org.bukkit.scheduler.BukkitRunnable;
+
 import java.util.ArrayList;
+
 import vn.giakhanhvn.skysim.potion.ActivePotionEffect;
 import vn.giakhanhvn.skysim.user.User;
 import org.bukkit.scheduler.BukkitTask;
+
 import java.util.List;
+
 import net.minecraft.server.v1_8_R3.EntityFallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Entity;
 import vn.giakhanhvn.skysim.util.ManaReplacement;
 import vn.giakhanhvn.skysim.util.DefenseReplacement;
+
 import java.util.UUID;
 import java.util.Map;
 
-public class Repeater
-{
+public class Repeater {
     public static final Map<UUID, Integer> MANA_MAP;
     public static final Map<UUID, Boolean> MANA_REGEN_DEC;
     public static final Map<UUID, Boolean> SBA_MAP;
@@ -83,19 +94,18 @@ public class Repeater
     private final List<BukkitTask> tasks;
     public static int EFFECT_COUNTING;
     public static final Map<UUID, Integer> FloorLivingSec;
-    
+
     public static void cRun(final User u) {
         final List<ActivePotionEffect> apt = u.getEffects();
         if (Repeater.PTN_CACHE.containsKey(u.getUuid())) {
             if (Repeater.PTN_CACHE.get(u.getUuid()) >= apt.size()) {
                 Repeater.PTN_CACHE.put(u.getUuid(), 0);
             }
-        }
-        else {
+        } else {
             Repeater.PTN_CACHE.put(u.getUuid(), 0);
         }
     }
-    
+
     public Repeater() {
         (this.tasks = new ArrayList<BukkitTask>()).add(new BukkitRunnable() {
             public void run() {
@@ -108,7 +118,7 @@ public class Repeater
                     user.syncSavingData();
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 3000L, 3000L));
+        }.runTaskTimer(SkySimEngine.getPlugin(), 3000L, 3000L));
         this.tasks.add(new BukkitRunnable() {
             public void run() {
                 for (final User user : User.getCachedUsers()) {
@@ -117,25 +127,25 @@ public class Repeater
                     }
                 }
             }
-        }.runTaskTimerAsynchronously((Plugin)SkySimEngine.getPlugin(), 1L, 1L));
+        }.runTaskTimerAsynchronously(SkySimEngine.getPlugin(), 1L, 1L));
         this.tasks.add(new BukkitRunnable() {
             public void run() {
                 Blessings.update();
                 for (final Player player : Bukkit.getOnlinePlayers()) {
                     if (player.getItemInHand().getType() == Material.BOOK_AND_QUILL) {
-                        player.setItemInHand((ItemStack)null);
+                        player.setItemInHand(null);
                         player.sendMessage(ChatColor.RED + "This item is banned due to an exploit.");
                     }
                     Location blockLocation = player.getEyeLocation();
                     try {
-                        blockLocation = player.getTargetBlock((Set)null, 30).getLocation();
+                        blockLocation = player.getTargetBlock((Set) null, 30).getLocation();
+                    } catch (final IllegalStateException ex) {
                     }
-                    catch (final IllegalStateException ex) {}
                     final Location crystalLocation = player.getEyeLocation();
                     final Vector vector = blockLocation.clone().add(0.1, 0.0, 0.1).toVector().subtract(crystalLocation.clone().toVector());
                     final double count = 10.0;
                     final double length = 0.0;
-                    for (int i = 1; i <= (int)count; ++i) {
+                    for (int i = 1; i <= (int) count; ++i) {
                         for (final Entity entity : player.getWorld().getNearbyEntities(crystalLocation.clone().add(vector.clone().multiply(i / count)), 0.25, 0.2, 0.25)) {
                             if (entity.hasMetadata("Nukekubi") && VoidgloomSeraph.NUKEKUBI_TARGET.containsKey(entity) && VoidgloomSeraph.NUKEKUBI_TARGET.get(entity) == player) {
                                 entity.remove();
@@ -156,7 +166,7 @@ public class Repeater
                             if (e.hasMetadata("Giant_")) {
                                 for (final Entity entity2 : e.getNearbyEntities(3.0, 11.0, 3.0)) {
                                     if (entity2 instanceof Arrow) {
-                                        final Projectile arr = (Projectile)entity2;
+                                        final Projectile arr = (Projectile) entity2;
                                         if (!(arr.getShooter() instanceof Player)) {
                                             return;
                                         }
@@ -165,10 +175,10 @@ public class Repeater
                                 }
                             }
                             if (e instanceof Item) {
-                                if (((Item)e).getItemStack().getType() == Material.FLOWER_POT_ITEM) {
+                                if (((Item) e).getItemStack().getType() == Material.FLOWER_POT_ITEM) {
                                     e.remove();
                                 }
-                                if (((Item)e).getItemStack().getType() == Material.IRON_TRAPDOOR) {
+                                if (((Item) e).getItemStack().getType() == Material.IRON_TRAPDOOR) {
                                     e.remove();
                                 }
                             }
@@ -178,21 +188,20 @@ public class Repeater
                         }
                         for (final Entity e : world.getNearbyEntities(new Location(world, 191.0, 54.0, 266.0), 4.0, 11.0, 4.0)) {
                             if (e instanceof Player) {
-                                final Player player2 = (Player)e;
+                                final Player player2 = (Player) e;
                                 User.getUser(player2.getUniqueId()).kill(EntityDamageEvent.DamageCause.VOID, null);
                             }
                         }
                     }
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L));
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L));
         this.tasks.add(new BukkitRunnable() {
             public void run() {
                 for (final Player player : Bukkit.getOnlinePlayers()) {
                     if (Repeater.PTN_CACHE.containsKey(User.getUser(player.getUniqueId()).getUuid())) {
                         Repeater.PTN_CACHE.put(User.getUser(player.getUniqueId()).getUuid(), Repeater.PTN_CACHE.get(User.getUser(player.getUniqueId()).getUuid()) + 1);
-                    }
-                    else {
+                    } else {
                         Repeater.PTN_CACHE.put(User.getUser(player.getUniqueId()).getUuid(), 0);
                     }
                 }
@@ -203,7 +212,7 @@ public class Repeater
                     }
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 45L));
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 45L));
         this.tasks.add(new BukkitRunnable() {
             public void run() {
                 SkyBlockCalendar.ELAPSED += 20L;
@@ -214,15 +223,15 @@ public class Repeater
                 }
                 if (SkySimEngine.getPlugin().config.getBoolean("antiDupe.scanDuper")) {
                     for (final Player p : Bukkit.getOnlinePlayers()) {
-                        if (SkySimEngine.getEconomy().getBalance((OfflinePlayer)p) >= SkySimEngine.getPlugin().config.getLong("antiDupe.minAmount") && !p.isOp()) {
+                        if (SkySimEngine.getEconomy().getBalance(p) >= SkySimEngine.getPlugin().config.getLong("antiDupe.minAmount") && !p.isOp()) {
                             Bukkit.getOnlinePlayers().forEach(player -> player.kickPlayer(Sputnik.trans("&cA DUPER HAS BEEN FOUND! SERVER DOWN FOR MAINTENANCE!")));
                             Bukkit.getServer().setWhitelist(true);
                             if (SkySimEngine.getPlugin().config.getBoolean("antiDupe.sendToMotherland")) {
                                 new BukkitRunnable() {
                                     public void run() {
-                                        Sputnik.sendWebhook("**WE FOUND A DUPER!** Name: `" + p.getName() + "`. IP: `" + p.getAddress() + "`. Bits Amount: `" + SkySimEngine.getEconomy().getBalance((OfflinePlayer)p) + "`. **Server have been automatically switched to Maintenance Mode for safety!**");
+                                        Sputnik.sendWebhook("**WE FOUND A DUPER!** Name: `" + p.getName() + "`. IP: `" + p.getAddress() + "`. Bits Amount: `" + SkySimEngine.getEconomy().getBalance(p) + "`. **Server have been automatically switched to Maintenance Mode for safety!**");
                                     }
-                                }.runTaskAsynchronously((Plugin)SkySimEngine.getPlugin());
+                                }.runTaskAsynchronously(SkySimEngine.getPlugin());
                             }
                             if (!SkySimEngine.getPlugin().config.getBoolean("antiDupe.pingEveryone")) {
                                 continue;
@@ -231,24 +240,24 @@ public class Repeater
                                 public void run() {
                                     Sputnik.sendWebhook("@everyone");
                                 }
-                            }.runTaskAsynchronously((Plugin)SkySimEngine.getPlugin());
+                            }.runTaskAsynchronously(SkySimEngine.getPlugin());
                         }
                     }
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 20L));
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 20L));
     }
-    
+
     public void stop() {
         for (final BukkitTask task : this.tasks) {
             task.cancel();
         }
     }
-    
+
     public int runningTasks() {
         return this.tasks.size();
     }
-    
+
     public static void runPlayerTask(final Player player, final int[] counters, final List<AtomicInteger> counters2) {
         cRun(User.getUser(player.getUniqueId()));
         if (User.getUser(player.getUniqueId()).getActivePet() != null && User.getUser(player.getUniqueId()).getActivePet().getType() == SMaterial.HIDDEN_USSR_T34_TANK_PET) {
@@ -274,13 +283,12 @@ public class Repeater
         final SItem boot = SItem.find(inv1.getBoots());
         if (helm != null && chest != null && legs != null && boot != null && helm.getType() == SMaterial.SORROW_HELMET && chest.getType() == SMaterial.SORROW_CHESTPLATE && legs.getType() == SMaterial.SORROW_LEGGINGS && boot.getType() == SMaterial.SORROW_BOOTS) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 100000, 1));
-        }
-        else {
+        } else {
             player.removePotionEffect(PotionEffectType.INVISIBILITY);
         }
         if (helm != null && (helm.getType() == SMaterial.HIDDEN_USSR_HELMET || helm.getType() == SMaterial.HIDDEN_DONATOR_HELMET || helm.getType() == SMaterial.HIDDEN_DT2_HELMET)) {
             final ItemStack SSRstack = helm.getStack();
-            SSRstack.setDurability((short)SUtil.random(0, 15));
+            SSRstack.setDurability((short) SUtil.random(0, 15));
             player.getInventory().setHelmet(SSRstack);
         }
         PlayerUtils.updateP(player);
@@ -385,8 +393,7 @@ public class Repeater
                 if (hand.getType().getStatistics().getSpecificType() != SpecificItemType.BOW) {
                     inventory.setItem(8, SItem.of(SMaterial.SKYBLOCK_MENU).getStack());
                 }
-            }
-            else {
+            } else {
                 inventory.setItem(8, SItem.of(SMaterial.SKYBLOCK_MENU).getStack());
             }
         }
@@ -396,16 +403,14 @@ public class Repeater
         if (counters[0] == 2) {
             final int mana = Repeater.MANA_MAP.get(uuid);
             if (mana <= manaPool) {
-                int reg = Math.min(manaPool, Math.min(manaPool, manaPool / 50 + (int)(manaPool / 50 * statistics2.getManaRegenerationPercentBonus())));
+                int reg = Math.min(manaPool, Math.min(manaPool, manaPool / 50 + (int) (manaPool / 50 * statistics2.getManaRegenerationPercentBonus())));
                 if (Repeater.MANA_REGEN_DEC.containsKey(uuid)) {
                     if (Repeater.MANA_REGEN_DEC.get(uuid)) {
-                        reg = mana + Math.round((float)(reg / 10));
-                    }
-                    else {
+                        reg = mana + Math.round((float) (reg / 10));
+                    } else {
                         reg += mana;
                     }
-                }
-                else {
+                } else {
                     reg += mana;
                 }
                 Repeater.MANA_MAP.remove(uuid);
@@ -413,13 +418,13 @@ public class Repeater
             }
         }
         if (counters[1] == 4 && player.getHealth() <= player.getMaxHealth()) {
-            player.setHealth(Math.min(player.getMaxHealth(), player.getHealth() + 1.5 + (int)player.getMaxHealth() * 0.01 + (1.5 + (int)player.getMaxHealth() * 0.01) * statistics2.getHealthRegenerationPercentBonus()));
+            player.setHealth(Math.min(player.getMaxHealth(), player.getHealth() + 1.5 + (int) player.getMaxHealth() * 0.01 + (1.5 + (int) player.getMaxHealth() * 0.01) * statistics2.getHealthRegenerationPercentBonus()));
         }
         PlayerUtils.updateSetStatistics(player, SItem.find(inventory.getHelmet()), SItem.find(inventory.getChestplate()), SItem.find(inventory.getLeggings()), SItem.find(inventory.getBoots()), statistics2);
         final double health = statistics2.getMaxHealth().addAll();
         player.setHealthScale(Math.min(40.0, 20.0 + (health - 100.0) / 25.0));
         SputnikPlayer.updateScaledAHP(player);
-        player.setWalkSpeed(Math.min((float)(statistics2.getSpeed().addAll() / 5.0), 1.0f));
+        player.setWalkSpeed(Math.min((float) (statistics2.getSpeed().addAll() / 5.0), 1.0f));
         final int defense = SUtil.blackMagic(statistics2.getDefense().addAll());
         final float absorption = SputnikPlayer.getCustomAbsorptionHP(player);
         final ChatColor color = (absorption > 0.0f) ? ChatColor.GOLD : ChatColor.RED;
@@ -440,20 +445,15 @@ public class Repeater
         }
         if (ZSHash.Charges.get(player.getUniqueId()) == 5) {
             ZSActionBar = ChatColor.translateAlternateColorCodes('&', "     &e&lⓩⓩⓩⓩⓩ");
-        }
-        else if (ZSHash.Charges.get(player.getUniqueId()) == 4) {
+        } else if (ZSHash.Charges.get(player.getUniqueId()) == 4) {
             ZSActionBar = ChatColor.translateAlternateColorCodes('&', "     &e&lⓩⓩⓩⓩ&6&lⓄ");
-        }
-        else if (ZSHash.Charges.get(player.getUniqueId()) == 3) {
+        } else if (ZSHash.Charges.get(player.getUniqueId()) == 3) {
             ZSActionBar = ChatColor.translateAlternateColorCodes('&', "     &e&lⓩⓩⓩ&6&lⓄⓄ");
-        }
-        else if (ZSHash.Charges.get(player.getUniqueId()) == 2) {
+        } else if (ZSHash.Charges.get(player.getUniqueId()) == 2) {
             ZSActionBar = ChatColor.translateAlternateColorCodes('&', "     &e&lⓩⓩ&6&lⓄⓄⓄ");
-        }
-        else if (ZSHash.Charges.get(player.getUniqueId()) == 1) {
+        } else if (ZSHash.Charges.get(player.getUniqueId()) == 1) {
             ZSActionBar = ChatColor.translateAlternateColorCodes('&', "     &e&lⓩ&6&lⓄⓄⓄⓄ");
-        }
-        else if (ZSHash.Charges.get(player.getUniqueId()) == 0) {
+        } else if (ZSHash.Charges.get(player.getUniqueId()) == 0) {
             ZSActionBar = ChatColor.translateAlternateColorCodes('&', "     &6&lⓄⓄⓄⓄⓄ");
         }
         if (!Terminator.CountTerm.containsKey(player.getUniqueId())) {
@@ -461,14 +461,11 @@ public class Repeater
         }
         if (Terminator.CountTerm.get(player.getUniqueId()) == 0) {
             ABTerminator = "";
-        }
-        else if (Terminator.CountTerm.get(player.getUniqueId()) == 1) {
+        } else if (Terminator.CountTerm.get(player.getUniqueId()) == 1) {
             ABTerminator = Sputnik.trans("  &6T1");
-        }
-        else if (Terminator.CountTerm.get(player.getUniqueId()) == 2) {
+        } else if (Terminator.CountTerm.get(player.getUniqueId()) == 2) {
             ABTerminator = Sputnik.trans("  &6T2");
-        }
-        else if (Terminator.CountTerm.get(player.getUniqueId()) >= 3) {
+        } else if (Terminator.CountTerm.get(player.getUniqueId()) >= 3) {
             ABTerminator = Sputnik.trans("  &a&lT3!");
         }
         if (SItem.find(player.getItemInHand()) != null) {
@@ -478,48 +475,41 @@ public class Repeater
             if (SItem.find(player.getItemInHand()).getType() != SMaterial.TERMINATOR) {
                 ABTerminator = "";
             }
-        }
-        else {
+        } else {
             ZSActionBar = "";
             ABTerminator = "";
         }
         if (!player.getWorld().getName().equalsIgnoreCase("limbo")) {
-            SUtil.sendActionBar(player, color + "" + Math.round(player.getHealth() + absorption) + "/" + SUtil.blackMagic(statistics2.getMaxHealth().addAll()) + "❤" + get(player) + "     " + ((replacement == null) ? ((defense != 0) ? ("" + ChatColor.GREEN + defense + "❈ Defense" + ABTerminator + "     ") : "") : (replacement.getReplacement() + "     ")) + ((replacement2 == null) ? ((manaPool >= 0) ? ("" + ChatColor.AQUA + Repeater.MANA_MAP.get(player.getUniqueId()) + "/" + manaPool + "✎ Mana") : "") : (replacement2.getReplacement() + "")) + ZSActionBar);
-        }
-        else {
+            SUtil.sendActionBar(player, color + "" + Math.round(player.getHealth() + absorption) + "/" + SUtil.blackMagic(statistics2.getMaxHealth().addAll()) + "❤" + get(player) + "     " + ((replacement == null) ? ((defense != 0) ? ("" + ChatColor.GREEN + defense + "❈ Defense" + ABTerminator + "     ") : "") : (replacement.getReplacement() + "     ")) + ((replacement2 == null) ? ((manaPool >= 0) ? ("" + ChatColor.AQUA + Repeater.MANA_MAP.get(player.getUniqueId()) + "/" + manaPool + "✎ Mana") : "") : (replacement2.getReplacement())) + ZSActionBar);
+        } else {
             SUtil.sendActionBar(player, color + "" + ChatColor.RED + ChatColor.BOLD + "YOU ARE CURRENTLY IN THE LIMBO SERVER, USE " + ChatColor.GOLD + ChatColor.BOLD + "/HUB " + ChatColor.RED + ChatColor.BOLD + "TO WARP OUT");
         }
         statistics2.zeroAll(8);
         final ArmorSet set = SMaterial.getIncompleteArmorSet(inventory);
         if (set instanceof TickingSet) {
-            ((TickingSet)set).tick(player, SItem.find(inventory.getHelmet()), SItem.find(inventory.getChestplate()), SItem.find(inventory.getLeggings()), SItem.find(inventory.getBoots()), counters2);
+            ((TickingSet) set).tick(player, SItem.find(inventory.getHelmet()), SItem.find(inventory.getChestplate()), SItem.find(inventory.getLeggings()), SItem.find(inventory.getBoots()), counters2);
         }
         String skysim = Sputnik.trans("&e&lSKYSIM");
         final Boolean isNotCracked = Bukkit.getServer().getOnlineMode();
         if (Repeater.SBA_MAP.containsKey(uuid)) {
             if (Repeater.SBA_MAP.get(uuid)) {
                 skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYBLOCK");
-            }
-            else if (isNotCracked) {
+            } else if (isNotCracked) {
+                skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYSIM &b&lBETA");
+            } else {
                 skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYSIM &b&lBETA");
             }
-            else {
-                skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYSIM &b&lBETA");
-            }
-        }
-        else if (isNotCracked) {
+        } else if (isNotCracked) {
+            skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYSIM &b&lBETA");
+        } else {
             skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYSIM &b&lBETA");
         }
-        else {
-            skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYSIM &b&lBETA");
-        }
-        final Sidebar sidebar = new Sidebar("" + skysim, "SKYSIM");
+        final Sidebar sidebar = new Sidebar(skysim, "SKYSIM");
         String strd = SUtil.getDate();
         if (RebootServerCommand.secondMap.containsKey(Bukkit.getServer())) {
             if (RebootServerCommand.secondMap.get(Bukkit.getServer()) >= 10) {
                 strd = ChatColor.RED + "Server closing: 00:" + RebootServerCommand.secondMap.get(Bukkit.getServer());
-            }
-            else {
+            } else {
                 strd = ChatColor.RED + "Server closing: 00:0" + RebootServerCommand.secondMap.get(Bukkit.getServer());
             }
         }
@@ -527,12 +517,12 @@ public class Repeater
         sidebar.add("  ");
         sidebar.add(" " + SkyBlockCalendar.getMonthName() + " " + SUtil.ntify(SkyBlockCalendar.getDay()));
         boolean day = true;
-        int time = (int)(SkyBlockCalendar.ELAPSED % 24000L - 6000L);
+        int time = (int) (SkyBlockCalendar.ELAPSED % 24000L - 6000L);
         if (time < 0) {
             time += 24000;
         }
         int hours = 6 + time / 1000;
-        int minutes = (int)(time % ((hours - 6) * 1000.0) / 16.66666);
+        int minutes = (int) (time % ((hours - 6) * 1000.0) / 16.66666);
         final String sMin = String.valueOf(minutes);
         minutes -= Integer.parseInt(sMin.substring(sMin.length() - 1));
         if (hours >= 24) {
@@ -543,7 +533,7 @@ public class Repeater
         }
         sidebar.add(ChatColor.GRAY + " " + ((hours > 12) ? (hours - 12) : ((hours == 0) ? 12 : hours)) + ":" + SUtil.zeroed(minutes) + ((hours >= 12) ? "pm" : "am") + " " + (day ? (ChatColor.YELLOW + "☀") : (ChatColor.AQUA + "☽")));
         String location = ChatColor.GRAY + "None";
-        final Region region = Region.getRegionOfEntity((Entity)player);
+        final Region region = Region.getRegionOfEntity(player);
         if (region != null) {
             user.setLastRegion(region);
             if (region.getType().getName() != null) {
@@ -558,17 +548,13 @@ public class Repeater
         }
         if (player.getWorld().getName().equalsIgnoreCase("dragon")) {
             sidebar.add(ChatColor.GRAY + " ⏣ " + ChatColor.DARK_PURPLE + "Dragon's Nest");
-        }
-        else if (player.getWorld().getName().contains("f6")) {
+        } else if (player.getWorld().getName().contains("f6")) {
             sidebar.add(ChatColor.GRAY + " ⏣ " + ChatColor.RED + "Catacombs Demo" + ChatColor.GRAY + " (F6)");
-        }
-        else if (player.getWorld().getName().contains("arena")) {
+        } else if (player.getWorld().getName().contains("arena")) {
             sidebar.add(ChatColor.GRAY + " ⏣ " + ChatColor.RED + "Withering Ruins");
-        }
-        else if (player.getWorld().getName().contains("gisland")) {
+        } else if (player.getWorld().getName().contains("gisland")) {
             sidebar.add(ChatColor.GRAY + " ⏣ " + ChatColor.YELLOW + "Giant's Island");
-        }
-        else {
+        } else {
             sidebar.add(ChatColor.GRAY + " ⏣ " + location);
         }
         if (!player.getWorld().getName().contains("f6") && !player.getWorld().getName().equalsIgnoreCase("arena")) {
@@ -576,14 +562,12 @@ public class Repeater
             final StringBuilder coinsDisplay = new StringBuilder();
             if (user.isPermanentCoins()) {
                 coinsDisplay.append("Purse: ");
-            }
-            else if (PlayerUtils.hasItem(player, SMaterial.PIGGY_BANK) || PlayerUtils.hasItem(player, SMaterial.CRACKED_PIGGY_BANK)) {
+            } else if (PlayerUtils.hasItem(player, SMaterial.PIGGY_BANK) || PlayerUtils.hasItem(player, SMaterial.CRACKED_PIGGY_BANK)) {
                 coinsDisplay.append("Piggy: ");
-            }
-            else {
+            } else {
                 coinsDisplay.append("Purse: ");
             }
-            sidebar.add(coinsDisplay.append(ChatColor.GOLD).append(SUtil.commaify(user.getCoins())).toString() + ".0" + ChatColor.YELLOW);
+            sidebar.add(coinsDisplay.append(ChatColor.GOLD).append(SUtil.commaify(user.getCoins())) + ".0" + ChatColor.YELLOW);
             final String bits = PlaceholderAPI.setPlaceholders(player, "%royaleeconomy_balance_purse%") + " " + PlaceholderAPI.setPlaceholders(player, "%royaleeconomy_dynamic_coins%");
             sidebar.add("Bits: " + ChatColor.AQUA + bits);
             sidebar.add("   ");
@@ -593,45 +577,39 @@ public class Repeater
                 sidebar.add(quest.getType().getDisplayName());
                 if (quest.getKilled() != 0L) {
                     sidebar.add(ChatColor.GREEN + "Boss slain!");
-                }
-                else if (quest.getXp() >= quest.getType().getSpawnXP()) {
+                } else if (quest.getXp() >= quest.getType().getSpawnXP()) {
                     sidebar.add(ChatColor.YELLOW + "Slay the boss!");
-                }
-                else if (quest.getLastKilled() != null) {
+                } else if (quest.getLastKilled() != null) {
                     double xpDropped = quest.getLastKilled().getStatistics().getXPDropped();
                     if (PlayerUtils.getCookieDurationTicks(player) > 0L) {
                         xpDropped += quest.getLastKilled().getStatistics().getXPDropped() * 35.0 / 100.0;
                     }
-                    sidebar.add(ChatColor.YELLOW + " " + SUtil.commaify((int)(quest.getXp() / xpDropped)) + ChatColor.GRAY + "/" + ChatColor.RED + SUtil.commaify((int)(quest.getType().getSpawnXP() / xpDropped)) + ChatColor.GRAY + " Kills");
-                }
-                else {
-                    sidebar.add(ChatColor.GRAY + " (" + ChatColor.YELLOW + SUtil.commaify((int)quest.getXp()) + ChatColor.GRAY + "/" + ChatColor.RED + Sputnik.formatFull((float)quest.getType().getSpawnXP()) + ChatColor.GRAY + ") Combat XP");
+                    sidebar.add(ChatColor.YELLOW + " " + SUtil.commaify((int) (quest.getXp() / xpDropped)) + ChatColor.GRAY + "/" + ChatColor.RED + SUtil.commaify((int) (quest.getType().getSpawnXP() / xpDropped)) + ChatColor.GRAY + " Kills");
+                } else {
+                    sidebar.add(ChatColor.GRAY + " (" + ChatColor.YELLOW + SUtil.commaify((int) quest.getXp()) + ChatColor.GRAY + "/" + ChatColor.RED + Sputnik.formatFull((float) quest.getType().getSpawnXP()) + ChatColor.GRAY + ") Combat XP");
                 }
                 sidebar.add("    ");
             }
             if (StaticDragonManager.ACTIVE && StaticDragonManager.DRAGON != null && player.getWorld().getName().equalsIgnoreCase("dragon")) {
-                sidebar.add("Dragon HP: " + ChatColor.GREEN + SUtil.commaify((int)StaticDragonManager.DRAGON.getEntity().getHealth()) + ChatColor.RED + " ❤");
+                sidebar.add("Dragon HP: " + ChatColor.GREEN + SUtil.commaify((int) StaticDragonManager.DRAGON.getEntity().getHealth()) + ChatColor.RED + " ❤");
                 int dmgdealt;
                 if (StaticDragonManager.DRAGON.getDamageDealt().containsKey(uuid)) {
                     final double dealt = StaticDragonManager.DRAGON.getDamageDealt().get(uuid);
-                    dmgdealt = (int)Math.round(dealt);
+                    dmgdealt = (int) Math.round(dealt);
                     if (dmgdealt < 0) {
                         dmgdealt = Integer.MAX_VALUE;
                     }
-                }
-                else {
+                } else {
                     dmgdealt = 0;
                 }
                 sidebar.add("Your Damage: " + ChatColor.RED + SUtil.commaify(dmgdealt));
                 sidebar.add("     ");
             }
-        }
-        else if (player.getWorld().getName().contains("f6") && !player.getWorld().getName().equals("f6")) {
+        } else if (player.getWorld().getName().contains("f6") && !player.getWorld().getName().equals("f6")) {
             sidebar.add(ChatColor.RED + " ");
             if (Repeater.FloorLivingSec.containsKey(player.getWorld().getUID())) {
                 sidebar.add(ChatColor.translateAlternateColorCodes('&', "&fTime Elapsed: &a" + Sputnik.formatTime(Repeater.FloorLivingSec.get(player.getWorld().getUID()))));
-            }
-            else {
+            } else {
                 sidebar.add(ChatColor.translateAlternateColorCodes('&', "&fTime Elapsed: &a00m 00s"));
             }
             sidebar.add(ChatColor.translateAlternateColorCodes('&', "&fDungeon Cleared: &cN/A%"));
@@ -642,24 +620,20 @@ public class Repeater
                     String colorcode;
                     if (dungeonmate.getHealth() <= dungeonmate.getMaxHealth() / 2.0 && dungeonmate.getHealth() > dungeonmate.getMaxHealth() * 25.0 / 100.0) {
                         colorcode = "e";
-                    }
-                    else if (dungeonmate.getHealth() <= dungeonmate.getMaxHealth() * 25.0 / 100.0) {
+                    } else if (dungeonmate.getHealth() <= dungeonmate.getMaxHealth() * 25.0 / 100.0) {
                         colorcode = "c";
-                    }
-                    else {
+                    } else {
                         colorcode = "a";
                     }
-                    final String backend = " &" + colorcode + (int)dungeonmate.getHealth() + "&c❤";
+                    final String backend = " &" + colorcode + (int) dungeonmate.getHealth() + "&c❤";
                     if (dungeonmate.getName() == nameofplayer) {
                         continue;
                     }
                     sidebar.add(ChatColor.translateAlternateColorCodes('&', "&e[N/A&e] &b" + dungeonmate.getName() + backend));
                 }
-            }
-            else if (player.getWorld().getPlayers().size() == 1) {
+            } else if (player.getWorld().getPlayers().size() == 1) {
                 sidebar.add(ChatColor.DARK_GRAY + "No Teammates");
-            }
-            else if (player.getWorld().getPlayers().size() > 5) {
+            } else if (player.getWorld().getPlayers().size() > 5) {
                 sidebar.add(ChatColor.RED + "Something went wrong!");
             }
             sidebar.add(ChatColor.AQUA + "     ");
@@ -676,7 +650,7 @@ public class Repeater
             sidebar.add(Sputnik.trans("&c"));
         }
         if (player.getWorld().getName().equalsIgnoreCase("arena") && SkySimEngine.getPlugin().dimoon != null) {
-            final Set<Integer> damageSet = ((HashMultimap)Multimaps.invertFrom((Multimap)SkySimEngine.getPlugin().dimoon.getDamages(), (Multimap)HashMultimap.create())).get((Object)player.getName());
+            final Set<Integer> damageSet = ((HashMultimap) Multimaps.invertFrom((Multimap) SkySimEngine.getPlugin().dimoon.getDamages(), (Multimap) HashMultimap.create())).get(player.getName());
             final int damageDealt = damageSet.iterator().hasNext() ? damageSet.iterator().next() : 0;
             sidebar.add(Sputnik.trans("&b"));
             sidebar.add(Sputnik.trans("Dimoon Boss HP: &a" + SUtil.commaify(SkySimEngine.getPlugin().dimoon.getHealth()) + " &c❤"));
@@ -690,18 +664,15 @@ public class Repeater
         if (Repeater.SBA_MAP.containsKey(uuid)) {
             if (Repeater.SBA_MAP.get(uuid)) {
                 sidebar.add(ChatColor.YELLOW + "www.hypixel.net");
-            }
-            else {
+            } else {
                 sidebar.add(ChatColor.YELLOW + "mc.skysim.sbs");
             }
-        }
-        else {
+        } else {
             sidebar.add(ChatColor.YELLOW + "mc.skysim.sbs");
         }
         if (!player.getWorld().getName().equalsIgnoreCase("limbo") && !player.getWorld().getName().equalsIgnoreCase("dungeon")) {
             sidebar.apply(player);
-        }
-        else if (player.getWorld().getName().equalsIgnoreCase("limbo")) {
+        } else if (player.getWorld().getName().equalsIgnoreCase("limbo")) {
             final Sidebar sidebar2 = new Sidebar("" + ChatColor.YELLOW + ChatColor.BOLD + "SKYSIM " + ChatColor.RED + ChatColor.BOLD + "LIMBO", "SKYSIM1");
             sidebar2.add(ChatColor.GRAY + SUtil.getDate() + " " + ChatColor.DARK_GRAY + "mini12D7");
             sidebar2.add("     ");
@@ -716,14 +687,14 @@ public class Repeater
             sidebar2.apply(player);
         }
     }
-    
+
     public static String get(final Player p) {
         if (VoidlingsWardenHelmet.getDisplay(p) != "") {
             return " " + VoidlingsWardenHelmet.getDisplay(p);
         }
         return "";
     }
-    
+
     static {
         MANA_MAP = new HashMap<UUID, Integer>();
         MANA_REGEN_DEC = new HashMap<UUID, Boolean>();

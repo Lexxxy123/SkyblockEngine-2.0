@@ -1,8 +1,7 @@
 package vn.giakhanhvn.skysim.util;
 
-public interface ManaReplacement
-{
+public interface ManaReplacement {
     String getReplacement();
-    
+
     long getEnd();
 }

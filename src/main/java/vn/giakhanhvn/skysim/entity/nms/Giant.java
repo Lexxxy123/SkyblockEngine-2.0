@@ -14,6 +14,7 @@ import org.bukkit.Sound;
 import org.bukkit.Effect;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Arrow;
+
 import java.util.List;
 import java.util.Collections;
 import java.util.Comparator;
@@ -21,6 +22,7 @@ import java.util.Collection;
 import java.util.UUID;
 import java.util.Map;
 import java.util.ArrayList;
+
 import org.bukkit.ChatColor;
 import vn.giakhanhvn.skysim.entity.SEntityEquipment;
 import org.bukkit.potion.PotionEffect;
@@ -38,7 +40,9 @@ import org.bukkit.Material;
 import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
 import vn.giakhanhvn.skysim.entity.SEntity;
+
 import java.util.Iterator;
+
 import org.bukkit.entity.Player;
 import org.bukkit.World;
 import vn.giakhanhvn.skysim.util.Sputnik;
@@ -46,8 +50,7 @@ import vn.giakhanhvn.skysim.util.BossBar;
 import org.bukkit.entity.LivingEntity;
 import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
 
-public class Giant extends BaseZombie
-{
+public class Giant extends BaseZombie {
     private static LivingEntity e;
     private boolean laserActiveCD;
     private boolean laserActive;
@@ -58,7 +61,7 @@ public class Giant extends BaseZombie
     private boolean swordActiv;
     private boolean swordSlamCD;
     private BossBar bb;
-    
+
     public Giant() {
         this.laserActiveCD = true;
         this.laserActive = false;
@@ -69,22 +72,22 @@ public class Giant extends BaseZombie
         this.swordActiv = false;
         this.swordSlamCD = true;
     }
-    
+
     @Override
     public String getEntityName() {
         return Sputnik.trans("&4&lTerrorant");
     }
-    
+
     @Override
     public double getEntityMaxHealth() {
         return 2.0E9;
     }
-    
+
     @Override
     public double getDamageDealt() {
         return 1000000.0;
     }
-    
+
     public BossBar setBar(final World w, final String s) {
         this.bb = new BossBar(Sputnik.trans(s));
         for (final Player p : w.getPlayers()) {
@@ -92,46 +95,44 @@ public class Giant extends BaseZombie
         }
         return this.bb;
     }
-    
+
     public void removeAllBar(final World w, final BossBar b) {
         for (final Player p : w.getPlayers()) {
             b.removePlayer(p);
         }
     }
-    
+
     public void updateBar(final double percent) {
         this.bb.setProgress(percent);
     }
-    
+
     @Override
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
         Giant.e = entity;
         final BossBar boss = this.setBar(entity.getWorld(), "&4&lTerrorant");
-        ((CraftZombie)entity).setBaby(false);
+        ((CraftZombie) entity).setBaby(false);
         SUtil.delay(() -> this.shockWaveCD = false, 400L);
         SUtil.delay(() -> this.terTossCD = false, 200L);
         SUtil.delay(() -> this.laserActiveCD = false, 300L);
         SUtil.delay(() -> this.swordSlamCD = false, 100L);
         entity.getEquipment().setItemInHand(SUtil.enchant(new ItemStack(Material.DIAMOND_SWORD)));
-        Sputnik.applyPacketGiant((Entity)entity);
-        EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 60);
-        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("highername", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+        Sputnik.applyPacketGiant(entity);
+        EntityManager.DEFENSE_PERCENTAGE.put(entity, 60);
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("highername", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 if (entity.getHealth() > 0.0) {
                     Giant.this.updateBar(entity.getHealth() / entity.getMaxHealth());
-                }
-                else {
+                } else {
                     Giant.this.updateBar(9.990009990009992E-4);
                 }
-                final LivingEntity target = (LivingEntity)((CraftZombie)entity).getTarget();
+                final LivingEntity target = ((CraftZombie) entity).getTarget();
                 if (entity.isDead()) {
                     SUtil.delay(() -> {
                         final Object val$entity = entity;
                         final Object val$boss = boss;
                         Giant.this.removeAllBar(entity.getWorld(), boss);
-                        return;
                     }, 250L);
                 }
                 if (!Giant.this.laserActiveCD && !Giant.this.laserActive && SUtil.random(1, 120) <= 6 && target != null) {
@@ -153,7 +154,6 @@ public class Giant extends BaseZombie
                     SUtil.delay(() -> {
                         final Object val$entity2 = entity;
                         Giant.this.jumpAni(entity);
-                        return;
                     }, 10L);
                 }
                 if (!Giant.this.terToss && !Giant.this.terTossCD && SUtil.random(1, 150) <= 4) {
@@ -164,28 +164,28 @@ public class Giant extends BaseZombie
                     Giant.this.launchTerrain(entity);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
     }
-    
+
     @Override
     public SEntityEquipment getEntityEquipment() {
         return new SEntityEquipment(SUtil.enchant(new ItemStack(Material.DIAMOND_SWORD)), b(15249075, Material.LEATHER_HELMET), b(13565952, Material.LEATHER_CHESTPLATE), c(Material.DIAMOND_LEGGINGS), b(15132390, Material.LEATHER_BOOTS));
     }
-    
+
     @Override
     public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
         final StringBuilder message = new StringBuilder();
         message.append(ChatColor.GREEN).append(ChatColor.BOLD).append("▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n");
         message.append(ChatColor.GOLD).append(ChatColor.BOLD).append("                 ").append(sEntity.getStatistics().getEntityName().toUpperCase()).append(" DOWN!\n \n");
         final List<Map.Entry<UUID, Double>> damageDealt = new ArrayList<Map.Entry<UUID, Double>>(sEntity.getDamageDealt().entrySet());
-        damageDealt.sort((Comparator<? super Map.Entry<UUID, Double>>)Map.Entry.<Object, Comparable>comparingByValue());
+        damageDealt.sort((Comparator<? super Map.Entry<UUID, Double>>) Map.Entry.<Object, Comparable>comparingByValue());
         Collections.reverse(damageDealt);
         String name = null;
         if (damager instanceof Player) {
             name = damager.getName();
         }
-        if (damager instanceof Arrow && ((Arrow)damager).getShooter() instanceof Player) {
-            name = ((Player)((Arrow)damager).getShooter()).getName();
+        if (damager instanceof Arrow && ((Arrow) damager).getShooter() instanceof Player) {
+            name = ((Player) ((Arrow) damager).getShooter()).getName();
         }
         if (name != null) {
             message.append("            ").append(ChatColor.GREEN).append(name).append(ChatColor.GRAY).append(" dealt the final blow.\n \n");
@@ -217,7 +217,7 @@ public class Giant extends BaseZombie
                     message.append("rd");
                     break;
             }
-            message.append(" Damager").append(ChatColor.RESET).append(ChatColor.GRAY).append(" - ").append(ChatColor.GREEN).append(Bukkit.getOfflinePlayer((UUID)d.getKey()).getName()).append(ChatColor.GRAY).append(" - ").append(ChatColor.YELLOW).append(SUtil.commaify(d.getValue().intValue()));
+            message.append(" Damager").append(ChatColor.RESET).append(ChatColor.GRAY).append(" - ").append(ChatColor.GREEN).append(Bukkit.getOfflinePlayer(d.getKey()).getName()).append(ChatColor.GRAY).append(" - ").append(ChatColor.YELLOW).append(SUtil.commaify(d.getValue().intValue()));
         }
         message.append("\n \n").append("         ").append(ChatColor.RESET).append(ChatColor.YELLOW).append("Your Damage: ").append("%s").append(ChatColor.RESET).append("\n").append("             ").append(ChatColor.YELLOW).append("Runecrafting Experience: ").append(ChatColor.LIGHT_PURPLE).append("N/A").append(ChatColor.RESET).append("\n \n");
         message.append(ChatColor.GREEN).append(ChatColor.BOLD).append("▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
@@ -236,35 +236,35 @@ public class Giant extends BaseZombie
             }
         }
     }
-    
+
     @Override
     public boolean hasNameTag() {
         return false;
     }
-    
+
     @Override
     public boolean isVillager() {
         return false;
     }
-    
+
     @Override
     public boolean isBaby() {
         return false;
     }
-    
+
     @Override
     public double getXPDropped() {
         return 0.0;
     }
-    
+
     @Override
     public double getMovementSpeed() {
         return 0.3;
     }
-    
+
     public void laser(final LivingEntity e) {
-        final int[] array_colors = { 15249075, 15178658, 14907008, 14634331, 14563143 };
-        applyEffect(PotionEffectType.SLOW, (Entity)e, 240, 1);
+        final int[] array_colors = {15249075, 15178658, 14907008, 14634331, 14563143};
+        applyEffect(PotionEffectType.SLOW, e, 240, 1);
         SUtil.delay(() -> e.getEquipment().setHelmet(buildColorStack(array_colors[0])), 20L);
         SUtil.delay(() -> e.getEquipment().setHelmet(buildColorStack(array_colors[1])), 40L);
         SUtil.delay(() -> e.getEquipment().setHelmet(buildColorStack(array_colors[2])), 60L);
@@ -280,7 +280,7 @@ public class Giant extends BaseZombie
         SUtil.delay(() -> e.getEquipment().setHelmet(b(15249075, Material.LEATHER_HELMET)), 370L);
         SUtil.delay(() -> this.laserActiveCD = false, 950L);
     }
-    
+
     public void jumpAni(final LivingEntity e) {
         new BukkitRunnable() {
             public void run() {
@@ -301,48 +301,43 @@ public class Giant extends BaseZombie
                     SUtil.delay(() -> {
                         final Object val$e = e;
                         e.getWorld().playSound(e.getLocation(), Sound.EXPLODE, 10.0f, 0.0f);
-                        return;
                     }, 5L);
                     SUtil.delay(() -> {
                         final Object val$e2 = e;
                         e.getWorld().playEffect(e.getLocation().add(0.0, 0.5, 0.0), Effect.EXPLOSION_HUGE, 3);
-                        return;
                     }, 5L);
                     SUtil.delay(() -> {
                         final Object val$e3 = e;
                         e.getWorld().playEffect(e.getLocation().add(0.0, 0.5, 0.0), Effect.EXPLOSION_HUGE, 3);
-                        return;
                     }, 7L);
-                    Giant.createBlockTornado((Entity)e, e.getLocation().add(0.0, -1.0, 0.0).getBlock().getType(), e.getLocation().add(0.0, -1.0, 0.0).getBlock().getData());
+                    Giant.createBlockTornado(e, e.getLocation().add(0.0, -1.0, 0.0).getBlock().getType(), e.getLocation().add(0.0, -1.0, 0.0).getBlock().getData());
                     new BukkitRunnable() {
                         public void run() {
-                            Giant.createBlockTornado((Entity)e, e.getLocation().add(0.0, -1.0, 0.0).getBlock().getType(), e.getLocation().add(0.0, -1.0, 0.0).getBlock().getData());
+                            Giant.createBlockTornado(e, e.getLocation().add(0.0, -1.0, 0.0).getBlock().getType(), e.getLocation().add(0.0, -1.0, 0.0).getBlock().getData());
                         }
-                    }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 5L);
+                    }.runTaskLater(SkySimEngine.getPlugin(), 5L);
                     new BukkitRunnable() {
                         public void run() {
-                            Giant.createBlockTornado((Entity)e, e.getLocation().add(0.0, -2.0, 0.0).getBlock().getType(), e.getLocation().add(0.0, -2.0, 0.0).getBlock().getData());
+                            Giant.createBlockTornado(e, e.getLocation().add(0.0, -2.0, 0.0).getBlock().getType(), e.getLocation().add(0.0, -2.0, 0.0).getBlock().getData());
                         }
-                    }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 6L);
+                    }.runTaskLater(SkySimEngine.getPlugin(), 6L);
                     new BukkitRunnable() {
                         public void run() {
-                            Giant.createBlockTornado((Entity)e, e.getLocation().add(0.0, -2.0, 0.0).getBlock().getType(), e.getLocation().add(0.0, -2.0, 0.0).getBlock().getData());
+                            Giant.createBlockTornado(e, e.getLocation().add(0.0, -2.0, 0.0).getBlock().getType(), e.getLocation().add(0.0, -2.0, 0.0).getBlock().getData());
                         }
-                    }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 7L);
+                    }.runTaskLater(SkySimEngine.getPlugin(), 7L);
                     new BukkitRunnable() {
                         public void run() {
-                            Giant.createBlockTornado((Entity)e, e.getLocation().add(0.0, -1.0, 0.0).getBlock().getType(), e.getLocation().add(0.0, -1.0, 0.0).getBlock().getData());
+                            Giant.createBlockTornado(e, e.getLocation().add(0.0, -1.0, 0.0).getBlock().getType(), e.getLocation().add(0.0, -1.0, 0.0).getBlock().getData());
                         }
-                    }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 8L);
+                    }.runTaskLater(SkySimEngine.getPlugin(), 8L);
                     SUtil.delay(() -> {
                         final Object val$e4 = e;
                         e.getWorld().playSound(e.getLocation(), Sound.EXPLODE, 3.0f, 0.0f);
-                        return;
                     }, 5L);
                     SUtil.delay(() -> {
                         final Object val$e5 = e;
                         e.getWorld().playSound(e.getLocation(), Sound.EXPLODE, 3.0f, 0.0f);
-                        return;
                     }, 10L);
                     for (final Entity entities : e.getNearbyEntities(22.0, 10.0, 22.0)) {
                         final Vector vec = new Vector(0, 0, 0);
@@ -359,8 +354,7 @@ public class Giant extends BaseZombie
                             vec.setY(2.25);
                             vec.setX(0.25);
                             entities.setVelocity(vec);
-                        }
-                        else {
+                        } else {
                             vec.setY(2.5);
                             vec.setX(0.5);
                             entities.setVelocity(vec);
@@ -369,25 +363,24 @@ public class Giant extends BaseZombie
                             continue;
                         }
                         if (entities.getLocation().distance(e.getLocation()) <= 5.0) {
-                            final Player p = (Player)entities;
+                            final Player p = (Player) entities;
                             final double damage = SUtil.random(100, 300) + p.getMaxHealth() * 90.0 / 100.0;
-                            User.getUser(p.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)e);
-                            ((LivingEntity)p).damage(1.0E-6, (Entity)null);
+                            User.getUser(p.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, e);
+                            p.damage(1.0E-6, null);
                             p.sendMessage(Sputnik.trans("&7Terrorant's Shockwave Stomp have hit you for &c" + SUtil.commaify(Math.round(damage)) + " &7true damage."));
-                        }
-                        else {
-                            final Player p = (Player)entities;
+                        } else {
+                            final Player p = (Player) entities;
                             final double damage = SUtil.random(100, 300) + p.getMaxHealth() * 10.0 / 100.0;
-                            User.getUser(p.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)e);
-                            ((LivingEntity)p).damage(1.0E-6, (Entity)null);
+                            User.getUser(p.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, e);
+                            p.damage(1.0E-6, null);
                             p.sendMessage(Sputnik.trans("&7Terrorant's Shockwave Stomp have hit you for &c" + SUtil.commaify(Math.round(damage)) + " &7true damage."));
                         }
                     }
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
     }
-    
+
     public void laserAni(final LivingEntity e) {
         new BukkitRunnable() {
             public void run() {
@@ -403,12 +396,12 @@ public class Giant extends BaseZombie
                     if (!(p instanceof Player)) {
                         continue;
                     }
-                    final Player p2 = (Player)p;
+                    final Player p2 = (Player) p;
                     p2.playSound(e.getLocation(), "mob.guardian.elder.idle", 0.3f, 2.0f);
                     p2.playSound(e.getLocation(), "mob.guardian.elder.idle", 0.3f, 0.0f);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
         new BukkitRunnable() {
             public void run() {
                 if (e.isDead()) {
@@ -419,7 +412,7 @@ public class Giant extends BaseZombie
                     this.cancel();
                     return;
                 }
-                final LivingEntity target = (LivingEntity)((CraftZombie)e).getTarget();
+                final LivingEntity target = ((CraftZombie) e).getTarget();
                 final float angle_1 = e.getEyeLocation().getYaw() / 60.0f;
                 final Location loc1 = e.getEyeLocation().add(Math.cos(angle_1), 0.0, Math.sin(angle_1));
                 final Location loc2 = e.getEyeLocation().subtract(Math.cos(angle_1), 0.0, Math.sin(angle_1));
@@ -437,7 +430,7 @@ public class Giant extends BaseZombie
                     Giant.drawLine(loc2, en2, 0.0);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 5L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 5L);
         new BukkitRunnable() {
             public void run() {
                 if (e.isDead()) {
@@ -450,13 +443,13 @@ public class Giant extends BaseZombie
                 }
                 for (final Entity entity : e.getNearbyEntities(4.0, 10.0, 4.0)) {
                     if (entity instanceof Player) {
-                        final double damage = SUtil.random(100, 150) + ((LivingEntity)entity).getMaxHealth() * 5.0 / 100.0;
-                        User.getUser(entity.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)e);
-                        ((Player)entity).sendMessage(Sputnik.trans("&7Terrorant's Laser Heat have hit you for &c" + SUtil.commaify(Math.round(damage)) + " &7true damage! Move away from it!"));
-                        ((LivingEntity)entity).damage(1.0E-6, (Entity)null);
+                        final double damage = SUtil.random(100, 150) + ((LivingEntity) entity).getMaxHealth() * 5.0 / 100.0;
+                        User.getUser(entity.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, e);
+                        entity.sendMessage(Sputnik.trans("&7Terrorant's Laser Heat have hit you for &c" + SUtil.commaify(Math.round(damage)) + " &7true damage! Move away from it!"));
+                        ((LivingEntity) entity).damage(1.0E-6, null);
                     }
                 }
-                final LivingEntity target = (LivingEntity)((CraftZombie)e).getTarget();
+                final LivingEntity target = ((CraftZombie) e).getTarget();
                 final float angle_1 = e.getEyeLocation().getYaw() / 60.0f;
                 final Location loc1 = e.getEyeLocation().add(Math.cos(angle_1), 0.0, Math.sin(angle_1));
                 final Location loc2 = e.getEyeLocation().subtract(Math.cos(angle_1), 0.0, Math.sin(angle_1));
@@ -474,9 +467,9 @@ public class Giant extends BaseZombie
                     Giant.getEntity(loc2, en2, e);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 20L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 20L);
     }
-    
+
     public void launchTerrain(final LivingEntity e) {
         new BukkitRunnable() {
             public void run() {
@@ -489,14 +482,14 @@ public class Giant extends BaseZombie
                     this.cancel();
                     return;
                 }
-                final LivingEntity t = (LivingEntity)((CraftZombie)e).getTarget();
+                final LivingEntity t = ((CraftZombie) e).getTarget();
                 if (t != null) {
-                    Giant.this.throwTerrain(e, (Entity)t);
+                    Giant.this.throwTerrain(e, t);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 30L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 30L);
     }
-    
+
     public static ItemStack buildColorStack(final int hexcolor) {
         final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB(hexcolor));
         final ItemMeta itemMeta = stack.getItemMeta();
@@ -504,7 +497,7 @@ public class Giant extends BaseZombie
         stack.setItemMeta(itemMeta);
         return stack;
     }
-    
+
     public static ItemStack b(final int hexcolor, final Material m) {
         final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
         final ItemMeta itemMeta = stack.getItemMeta();
@@ -512,7 +505,7 @@ public class Giant extends BaseZombie
         stack.setItemMeta(itemMeta);
         return stack;
     }
-    
+
     public static ItemStack c(final Material m) {
         final ItemStack stack = new ItemStack(m);
         final ItemMeta itemMeta = stack.getItemMeta();
@@ -520,47 +513,47 @@ public class Giant extends BaseZombie
         stack.setItemMeta(itemMeta);
         return stack;
     }
-    
+
     public static void drawLine(final Location point1, final Location point2, final double space) {
         final Location blockLocation = point1;
         final Location crystalLocation = point2;
         final Vector vector = blockLocation.clone().add(0.1, 0.0, 0.1).toVector().subtract(crystalLocation.clone().toVector());
         final double count = 90.0;
-        for (int i = 1; i <= (int)count; ++i) {
+        for (int i = 1; i <= (int) count; ++i) {
             point1.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply(i / count)), Effect.COLOURED_DUST, 0, 1, 0.8627451f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
             point1.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply(i / count)), Effect.COLOURED_DUST, 0, 1, 1.0196079f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
         }
     }
-    
+
     public static void getEntity(final Location finaldestination, final Location ended, final LivingEntity e) {
         final Location blockLocation = finaldestination;
         final Location crystalLocation = ended;
         final Vector vector = blockLocation.clone().add(0.1, 0.1, 0.1).toVector().subtract(crystalLocation.clone().toVector());
         final double count = 90.0;
-        for (int i = 1; i <= (int)count; ++i) {
+        for (int i = 1; i <= (int) count; ++i) {
             for (final Entity entity : ended.getWorld().getNearbyEntities(crystalLocation.clone().add(vector.clone().multiply(i / count)), 0.17, 0.0, 0.17)) {
                 if (entity instanceof Player) {
-                    final Player p = (Player)entity;
-                    final double damage = SUtil.random(200, 700) + p.getMaxHealth() * 1.0 / 100.0;
-                    User.getUser(p.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)e);
-                    ((LivingEntity)p).damage(1.0E-6, (Entity)null);
+                    final Player p = (Player) entity;
+                    final double damage = SUtil.random(200, 700) + p.getMaxHealth() / 100.0;
+                    User.getUser(p.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, e);
+                    p.damage(1.0E-6, null);
                     p.sendMessage(Sputnik.trans("&7Terrorant's Laser Eye have hit you for &c" + SUtil.commaify(Math.round(damage)) + " &7true damage."));
                     return;
                 }
             }
         }
     }
-    
+
     public static void applyEffect(final PotionEffectType e, final Entity en, final int ticks, final int amp) {
-        ((LivingEntity)en).addPotionEffect(new PotionEffect(e, ticks, amp));
+        ((LivingEntity) en).addPotionEffect(new PotionEffect(e, ticks, amp));
     }
-    
+
     public static void createBlockTornado(final Entity e, final Material mat, final byte id) {
         for (int i = 0; i <= 30; ++i) {
             final int random = SUtil.random(0, 3);
             double range = 0.0;
             final Location loc = e.getLocation().clone();
-            loc.setYaw((float)SUtil.random(0, 360));
+            loc.setYaw((float) SUtil.random(0, 360));
             if (random == 1) {
                 range = 0.6;
             }
@@ -575,14 +568,14 @@ public class Giant extends BaseZombie
             BlockFallAPI.sendVelocityBlock(e.getLocation(), mat, id, e.getWorld(), 70, vec);
         }
     }
-    
+
     public static void damagePlayer(final Player p) {
         final double damage = SUtil.random(200, 700) + p.getMaxHealth() * 25.0 / 100.0;
-        User.getUser(p.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)Giant.e);
-        ((LivingEntity)p).damage(1.0E-6, (Entity)null);
+        User.getUser(p.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, Giant.e);
+        p.damage(1.0E-6, null);
         p.sendMessage(Sputnik.trans("&7Terrorant's Terrain Toss have hit you for &c" + SUtil.commaify(Math.round(damage)) + " &7true damage."));
     }
-    
+
     public void throwTerrain(final LivingEntity e, final Entity target) {
         final Block b = target.getLocation().getBlock();
         final World world = e.getWorld();
@@ -593,8 +586,8 @@ public class Giant extends BaseZombie
         final List<Material> launchTypes = new ArrayList<Material>();
         for (int length = -1; length < 2; ++length) {
             for (int height = -1; height < 2; ++height) {
-                final Location loc = startBlock.clone().add((double)length, 0.0, (double)height);
-                final Location end = b.getLocation().clone().add((double)length, 0.0, (double)height);
+                final Location loc = startBlock.clone().add(length, 0.0, height);
+                final Location end = b.getLocation().clone().add(length, 0.0, height);
                 locationList.add(loc);
                 endList.add(end);
             }
@@ -626,20 +619,19 @@ public class Giant extends BaseZombie
             }
             launchTypes.add(mat);
             blockTypes.add(block.getBlock().getType());
-            return;
         });
         locationList.forEach(location -> {
             final Material material = launchTypes.get(locationList.indexOf(location));
             final Location origin = location.clone().add(0.0, 7.0, 0.0);
             final int pos = locationList.indexOf(location);
             final Location endPos = endList.get(pos);
-            final FallingBlock block2 = world.spawnFallingBlock(origin, material, (byte)blockData);
+            final FallingBlock block2 = world.spawnFallingBlock(origin, material, blockData);
             block2.setDropItem(false);
-            block2.setMetadata("t", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+            block2.setMetadata("t", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
             block2.setVelocity(Sputnik.calculateVelocityBlock(origin.toVector(), endPos.toVector(), 3));
         });
     }
-    
+
     public static void playLaserSound(final Player p, final Entity e) {
         new BukkitRunnable() {
             public void run() {
@@ -650,32 +642,32 @@ public class Giant extends BaseZombie
                 p.playSound(p.getLocation(), "mob.guardian.elder.idle", 0.3f, 2.0f);
                 p.playSound(p.getLocation(), "mob.guardian.elder.idle", 0.3f, 0.0f);
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
     }
-    
+
     public void swordSlamAC(final LivingEntity e, final LivingEntity tar) {
-        applyEffect(PotionEffectType.SLOW, (Entity)e, 60, 4);
+        applyEffect(PotionEffectType.SLOW, e, 60, 4);
         SUtil.delay(() -> this.swordSlamF(e, tar), 60L);
     }
-    
+
     public void swordSlamF(final LivingEntity e, final LivingEntity tar) {
         final Vector vec = new Vector(0, 0, 0);
         vec.setY(2);
         e.setVelocity(vec);
         SUtil.delay(() -> this.swordSlam(e, tar), 30L);
     }
-    
+
     public void swordSlam(final LivingEntity e, final LivingEntity player) {
-        e.getEquipment().setItemInHand((ItemStack)null);
-        final org.bukkit.entity.Giant armorStand = (org.bukkit.entity.Giant)player.getWorld().spawn(e.getLocation().add(0.0, 5.0, 0.0), (Class)org.bukkit.entity.Giant.class);
+        e.getEquipment().setItemInHand(null);
+        final org.bukkit.entity.Giant armorStand = (org.bukkit.entity.Giant) player.getWorld().spawn(e.getLocation().add(0.0, 5.0, 0.0), (Class) org.bukkit.entity.Giant.class);
         armorStand.getEquipment().setItemInHand(SUtil.enchant(new ItemStack(Material.DIAMOND_SWORD)));
-        Sputnik.applyPacketGiant((Entity)armorStand);
+        Sputnik.applyPacketGiant(armorStand);
         armorStand.setCustomName("Dinnerbone");
-        armorStand.setMetadata("GiantSword", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        armorStand.setMetadata("NoAffect", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        EntityManager.Woosh((LivingEntity)armorStand);
-        EntityManager.noHit((Entity)armorStand);
-        EntityManager.shutTheFuckUp((Entity)armorStand);
+        armorStand.setMetadata("GiantSword", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        armorStand.setMetadata("NoAffect", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        EntityManager.Woosh(armorStand);
+        EntityManager.noHit(armorStand);
+        EntityManager.shutTheFuckUp(armorStand);
         final Location firstLocation = e.getLocation().add(0.0, 5.0, 0.0);
         final Location secondLocation = player.getLocation();
         final Vector from = firstLocation.toVector();
@@ -694,19 +686,19 @@ public class Giant extends BaseZombie
                     Giant.this.swordActiv = false;
                     SUtil.delay(() -> Giant.this.swordSlamCD = false, 450L);
                     armorStand.remove();
-                    final org.bukkit.entity.Giant sword = (org.bukkit.entity.Giant)e.getWorld().spawnEntity(armorStand.getLocation(), EntityType.GIANT);
-                    Sputnik.applyPacketGiant((Entity)sword);
+                    final org.bukkit.entity.Giant sword = (org.bukkit.entity.Giant) e.getWorld().spawnEntity(armorStand.getLocation(), EntityType.GIANT);
+                    Sputnik.applyPacketGiant(sword);
                     sword.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 100000, 1));
-                    EntityManager.noAI((Entity)sword);
-                    EntityManager.noHit((Entity)sword);
-                    EntityManager.shutTheFuckUp((Entity)sword);
+                    EntityManager.noAI(sword);
+                    EntityManager.noHit(sword);
+                    EntityManager.shutTheFuckUp(sword);
                     sword.setCustomName("Dinnerbone");
-                    sword.setMetadata("GiantSword", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-                    sword.setMetadata("NoAffect", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-                    final ArmorStand stand = (ArmorStand)player.getWorld().spawnEntity(armorStand.getLocation(), EntityType.ARMOR_STAND);
+                    sword.setMetadata("GiantSword", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+                    sword.setMetadata("NoAffect", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+                    final ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(armorStand.getLocation(), EntityType.ARMOR_STAND);
                     stand.setVisible(false);
                     stand.setGravity(true);
-                    stand.setPassenger((Entity)sword);
+                    stand.setPassenger(sword);
                     sword.getEquipment().setItemInHand(SUtil.enchant(new ItemStack(Material.DIAMOND_SWORD)));
                     e.getWorld().playSound(player.getLocation(), Sound.ANVIL_LAND, 1.0f, 0.0f);
                     e.getWorld().playSound(player.getLocation(), Sound.AMBIENCE_THUNDER, 1.0f, 0.35f);
@@ -724,17 +716,16 @@ public class Giant extends BaseZombie
                             continue;
                         }
                         if (entities.getLocation().add(sword.getLocation().getDirection().multiply(3)).distance(sword.getLocation()) > 1.0) {
-                            final Player p = (Player)entities;
+                            final Player p = (Player) entities;
                             final double damage = SUtil.random(100, 300) + p.getMaxHealth() * 35.0 / 100.0;
-                            User.getUser(p.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)e);
-                            ((LivingEntity)p).damage(1.0E-6, (Entity)null);
+                            User.getUser(p.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, e);
+                            p.damage(1.0E-6, null);
                             p.sendMessage(Sputnik.trans("&7Terrorant's &d&lSword Slam&7 have hit you for &c" + SUtil.commaify(Math.round(damage)) + " &7true damage."));
-                        }
-                        else {
-                            final Player p = (Player)entities;
+                        } else {
+                            final Player p = (Player) entities;
                             final double damage = SUtil.random(100, 300) + p.getMaxHealth() * 90.0 / 100.0;
-                            User.getUser(p.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)e);
-                            ((LivingEntity)p).damage(1.0E-6, (Entity)null);
+                            User.getUser(p.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, e);
+                            p.damage(1.0E-6, null);
                             p.sendMessage(Sputnik.trans("&7Terrorant's &d&lSword Slam&7 have hit you for &c" + SUtil.commaify(Math.round(damage)) + " &7true damage."));
                         }
                     }
@@ -746,6 +737,6 @@ public class Giant extends BaseZombie
                     }, 60L);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
     }
 }

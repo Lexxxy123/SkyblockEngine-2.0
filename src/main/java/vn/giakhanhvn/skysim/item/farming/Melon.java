@@ -7,28 +7,27 @@ import vn.giakhanhvn.skysim.skill.Skill;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
 import vn.giakhanhvn.skysim.item.ExperienceRewardStatistics;
 
-public class Melon implements ExperienceRewardStatistics, MaterialFunction
-{
+public class Melon implements ExperienceRewardStatistics, MaterialFunction {
     @Override
     public double getRewardXP() {
         return 4.0;
     }
-    
+
     @Override
     public Skill getRewardedSkill() {
         return FarmingSkill.INSTANCE;
     }
-    
+
     @Override
     public String getDisplayName() {
         return "Melon";
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.COMMON;
     }
-    
+
     @Override
     public GenericItemType getType() {
         return GenericItemType.ITEM;

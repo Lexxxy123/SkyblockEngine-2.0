@@ -15,11 +15,10 @@ import vn.giakhanhvn.skysim.item.ShapedRecipe;
 import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.util.PaginationList;
 
-public class RecipeBookListGUI extends GUI
-{
+public class RecipeBookListGUI extends GUI {
     private static final int[] INTERIOR;
-    
-    public RecipeBookListGUI(String query, int page , Player player) {
+
+    public RecipeBookListGUI(String query, int page, Player player) {
         super("Recipe Book", 54);
         this.border(RecipeBookListGUI.BLACK_STAINED_GLASS_PANE);
         if (player == null) return;
@@ -39,10 +38,10 @@ public class RecipeBookListGUI extends GUI
             this.set(new GUIClickableItem() {
                 @Override
                 public void run(final InventoryClickEvent e) {
-                    new RecipeBookListGUI(finalPage - 1).open((Player)e.getWhoClicked());
-                    ((Player)e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.NOTE_PIANO, 1.0f, 1.0f);
+                    new RecipeBookListGUI(finalPage - 1).open((Player) e.getWhoClicked());
+                    ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.NOTE_PIANO, 1.0f, 1.0f);
                 }
-                
+
                 @Override
                 public int getSlot() {
                     return 45;
@@ -58,15 +57,15 @@ public class RecipeBookListGUI extends GUI
             this.set(new GUIClickableItem() {
                 @Override
                 public void run(final InventoryClickEvent e) {
-                    new RecipeBookListGUI(finalPage + 1).open((Player)e.getWhoClicked());
-                    ((Player)e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.NOTE_PIANO, 1.0f, 1.0f);
+                    new RecipeBookListGUI(finalPage + 1).open((Player) e.getWhoClicked());
+                    ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.NOTE_PIANO, 1.0f, 1.0f);
                 }
-                
+
                 @Override
                 public int getSlot() {
                     return 53;
                 }
-                
+
                 @Override
                 public ItemStack getItem() {
                     return SUtil.createNamedItemStack(Material.ARROW, ChatColor.GRAY + "Next Page");
@@ -84,16 +83,16 @@ public class RecipeBookListGUI extends GUI
             this.set(new GUIClickableItem() {
                 @Override
                 public void run(final InventoryClickEvent e) {
-                    final Player player = (Player)e.getWhoClicked();
+                    final Player player = (Player) e.getWhoClicked();
                     player.playSound(player.getLocation(), Sound.NOTE_PLING, 1.0f, 2.0f);
                     new RecipeBookGUI(sItem).open(player);
                 }
-                
+
                 @Override
                 public int getSlot() {
                     return slot;
                 }
-                
+
                 @Override
                 public ItemStack getItem() {
                     return sItem.getStack();
@@ -101,30 +100,31 @@ public class RecipeBookListGUI extends GUI
             });
         }
     }
-    
+
     @Override
     public void onOpen(final GUIOpenEvent e) {
         final Player player = e.getPlayer();
 
         this.set(GUIClickableItem.createGUIOpenerItem(GUIType.SKYBLOCK_MENU, player, ChatColor.GREEN + "Go Back", 48, Material.ARROW, ChatColor.GRAY + "To SkySim Menu"));
     }
-    
-    public RecipeBookListGUI(final String query , Player player) {
-        this(query, 1 , player);
+
+    public RecipeBookListGUI(final String query, Player player) {
+        this(query, 1, player);
     }
-    
+
     public RecipeBookListGUI(final int page) {
-        this("", page , null);
+        this("", page, null);
     }
-    
+
     public RecipeBookListGUI() {
-        this("" , 1 , null);
+        this("", 1, null);
     }
+
     public RecipeBookListGUI(Player player) {
-        this("" , 1 , player);
+        this("", 1, player);
     }
-    
+
     static {
-        INTERIOR = new int[] { 10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43 };
+        INTERIOR = new int[]{10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43};
     }
 }

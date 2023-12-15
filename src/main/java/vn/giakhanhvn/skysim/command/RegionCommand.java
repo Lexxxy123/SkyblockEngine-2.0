@@ -2,18 +2,19 @@ package vn.giakhanhvn.skysim.command;
 
 import java.util.HashMap;
 import java.util.Iterator;
+
 import vn.giakhanhvn.skysim.region.Region;
 import org.bukkit.ChatColor;
 import vn.giakhanhvn.skysim.region.RegionType;
 import vn.giakhanhvn.skysim.region.RegionGenerator;
 import org.bukkit.command.CommandSender;
+
 import java.util.Map;
 
 @CommandParameters(description = "Manage world regions.", usage = "/<command> [create <name> <type> | update <name> [type] | delete <name>]", aliases = "reg", permission = "spt.region")
-public class RegionCommand extends SCommand
-{
+public class RegionCommand extends SCommand {
     public static Map<CommandSender, RegionGenerator> REGION_GENERATION_MAP;
-    
+
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (args.length == 3) {
@@ -42,8 +43,7 @@ public class RegionCommand extends SCommand
             }
             region.delete();
             this.send("Deleted region \"" + name + "\" successfully.");
-        }
-        else if (args.length == 2 || args.length == 3) {
+        } else if (args.length == 2 || args.length == 3) {
             final String name = args[1];
             final Region region = Region.get(name);
             if (region == null) {
@@ -59,8 +59,7 @@ public class RegionCommand extends SCommand
             RegionCommand.REGION_GENERATION_MAP.put(sender.getSender(), new RegionGenerator("update", name, type2));
             this.send("Updating \"" + name + "\"");
             this.send(ChatColor.DARK_AQUA + "Click the first corner of your region.");
-        }
-        else {
+        } else {
             if (args.length != 0) {
                 throw new CommandArgumentException();
             }
@@ -71,7 +70,7 @@ public class RegionCommand extends SCommand
             this.send(result.toString());
         }
     }
-    
+
     static {
         RegionCommand.REGION_GENERATION_MAP = new HashMap<CommandSender, RegionGenerator>();
     }

@@ -1,6 +1,7 @@
 package vn.giakhanhvn.skysim.item.oddities;
 
 import java.util.ArrayList;
+
 import vn.giakhanhvn.skysim.item.GenericItemType;
 import vn.giakhanhvn.skysim.item.Rarity;
 import org.bukkit.plugin.Plugin;
@@ -12,15 +13,16 @@ import org.bukkit.ChatColor;
 import vn.giakhanhvn.skysim.util.Sputnik;
 import org.bukkit.event.player.PlayerFishEvent;
 import vn.giakhanhvn.skysim.item.SItem;
+
 import java.util.UUID;
 import java.util.List;
+
 import vn.giakhanhvn.skysim.item.FishingRodFunction;
 import vn.giakhanhvn.skysim.item.MaterialStatistics;
 
-public class GrapplingHook implements MaterialStatistics, FishingRodFunction
-{
+public class GrapplingHook implements MaterialStatistics, FishingRodFunction {
     private static final List<UUID> COOLDOWN;
-    
+
     @Override
     public void onFish(final SItem instance, final PlayerFishEvent e) {
         final PlayerFishEvent.State state = e.getState();
@@ -43,30 +45,30 @@ public class GrapplingHook implements MaterialStatistics, FishingRodFunction
                 public void run() {
                     GrapplingHook.COOLDOWN.remove(player.getUniqueId());
                 }
-            }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 40L);
+            }.runTaskLater(SkySimEngine.getPlugin(), 40L);
         }
     }
-    
+
     @Override
     public String getDisplayName() {
         return "Grappling Hook";
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.UNCOMMON;
     }
-    
+
     @Override
     public GenericItemType getType() {
         return GenericItemType.ITEM;
     }
-    
+
     @Override
     public String getLore() {
         return "Travel around in style using this Grappling Hook. 2 Second Cooldown";
     }
-    
+
     static {
         COOLDOWN = new ArrayList<UUID>();
     }

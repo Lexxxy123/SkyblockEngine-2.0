@@ -1,6 +1,7 @@
 package vn.giakhanhvn.skysim.util;
 
 import java.util.HashMap;
+
 import org.bukkit.plugin.Plugin;
 import vn.giakhanhvn.skysim.SkySimEngine;
 import vn.giakhanhvn.skysim.gui.GUI;
@@ -20,21 +21,24 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutBlockChange;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import vn.giakhanhvn.skysim.gui.GUISignItem;
+
 import java.util.Map;
+
 import vn.giakhanhvn.skysim.user.User;
+
 import java.util.UUID;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-public class SignInput
-{
-    private Player player;
+public class SignInput {
+    private final Player player;
     private Location signLoc;
-    private int timeoutSec;
-    private UUID tradeUUID;
-    private User user;
+    private final int timeoutSec;
+    private final UUID tradeUUID;
+    private final User user;
     public static final Map<UUID, GUISignItem> SIGN_INPUT_QUERY;
-    
+
     public SignInput(final Player p, final String[] text, final int timeoutSec, final UUID tradeUUID) {
         this.player = p;
         this.timeoutSec = timeoutSec;
@@ -42,27 +46,27 @@ public class SignInput
         this.user = User.getUser(p.getUniqueId());
         this.openSign(text);
     }
-    
+
     public void openSign(final String[] strings) {
         (this.signLoc = this.player.getLocation()).setY(1.0);
         final BlockPosition p = new BlockPosition(this.signLoc.getBlockX(), this.signLoc.getBlockY(), this.signLoc.getBlockZ());
-        final PacketPlayOutBlockChange blockPacket = new PacketPlayOutBlockChange((World)((CraftWorld)this.signLoc.getWorld()).getHandle(), p);
+        final PacketPlayOutBlockChange blockPacket = new PacketPlayOutBlockChange(((CraftWorld) this.signLoc.getWorld()).getHandle(), p);
         blockPacket.block = Blocks.STANDING_SIGN.getBlockData();
         final IChatBaseComponent[] lines = new IChatBaseComponent[4];
         for (int i = 0; i < 4; ++i) {
-            lines[i] = (IChatBaseComponent)new ChatComponentText(strings[i]);
+            lines[i] = new ChatComponentText(strings[i]);
         }
-        final PacketPlayOutUpdateSign sign = new PacketPlayOutUpdateSign((World)((CraftWorld)this.signLoc.getWorld()).getHandle(), p, lines);
+        final PacketPlayOutUpdateSign sign = new PacketPlayOutUpdateSign(((CraftWorld) this.signLoc.getWorld()).getHandle(), p, lines);
         final PacketPlayOutOpenSignEditor packet = new PacketPlayOutOpenSignEditor(p);
-        ((CraftPlayer)this.player).getHandle().playerConnection.sendPacket((Packet)blockPacket);
-        ((CraftPlayer)this.player).getHandle().playerConnection.sendPacket((Packet)sign);
-        ((CraftPlayer)this.player).getHandle().playerConnection.sendPacket((Packet)packet);
+        ((CraftPlayer) this.player).getHandle().playerConnection.sendPacket(blockPacket);
+        ((CraftPlayer) this.player).getHandle().playerConnection.sendPacket(sign);
+        ((CraftPlayer) this.player).getHandle().playerConnection.sendPacket(packet);
         this.user.setWaitingForSign(true);
         this.user.setCompletedSign(false);
         this.user.setSignContent(null);
         new BukkitRunnable() {
             int i = 0;
-            
+
             public void run() {
                 ++this.i;
                 if (TradeMenu.tradeClose.containsKey(SignInput.this.tradeUUID)) {
@@ -103,9 +107,9 @@ public class SignInput
                     SignInput.this.user.setCompletedSign(false);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
     }
-    
+
     static {
         SIGN_INPUT_QUERY = new HashMap<UUID, GUISignItem>();
     }

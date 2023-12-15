@@ -4,23 +4,21 @@ import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
 
-public abstract class ResolverAbstract<T>
-{
+public abstract class ResolverAbstract<T> {
     protected final Map<ResolverQuery, T> resolvedObjects;
-    
+
     public ResolverAbstract() {
         this.resolvedObjects = new ConcurrentHashMap<ResolverQuery, T>();
     }
-    
+
     protected T resolveSilent(final ResolverQuery... queries) {
         try {
             return this.resolve(queries);
-        }
-        catch (final Exception e) {
+        } catch (final Exception e) {
             return null;
         }
     }
-    
+
     protected T resolve(final ResolverQuery... queries) throws ReflectiveOperationException {
         if (queries == null || queries.length <= 0) {
             throw new IllegalArgumentException("Given possibilities are empty");
@@ -36,17 +34,16 @@ public abstract class ResolverAbstract<T>
                 final T resolved = this.resolveObject(query);
                 this.resolvedObjects.put(query, resolved);
                 return resolved;
-            }
-            catch (final ReflectiveOperationException e) {
+            } catch (final ReflectiveOperationException e) {
                 ++i;
                 continue;
             }
         }
-        throw this.notFoundException(Arrays.<ResolverQuery>asList(queries).toString());
+        throw this.notFoundException(Arrays.asList(queries).toString());
     }
-    
+
     protected abstract T resolveObject(final ResolverQuery p0) throws ReflectiveOperationException;
-    
+
     protected ReflectiveOperationException notFoundException(final String joinedNames) {
         return new ReflectiveOperationException("Objects could not be resolved: " + joinedNames);
     }

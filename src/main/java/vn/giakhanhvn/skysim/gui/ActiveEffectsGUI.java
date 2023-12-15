@@ -1,37 +1,35 @@
 package vn.giakhanhvn.skysim.gui;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+
 import org.bukkit.plugin.Plugin;
 import vn.giakhanhvn.skysim.SkySimEngine;
 import org.bukkit.scheduler.BukkitRunnable;
-import java.util.ArrayList;
-import java.util.Arrays;
+
 import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import java.util.Collection;
+
 import vn.giakhanhvn.skysim.potion.ActivePotionEffect;
 import vn.giakhanhvn.skysim.util.PaginationList;
 import vn.giakhanhvn.skysim.user.User;
 
-public class ActiveEffectsGUI extends GUI
-{
+public class ActiveEffectsGUI extends GUI {
     private static final int[] INTERIOR;
     private int page;
-    
+
     public ActiveEffectsGUI(final int page) {
         super("Active Effects", 54);
         this.page = page;
     }
-    
+
     public ActiveEffectsGUI() {
         this(1);
     }
-    
+
     @Override
     public void onOpen(final GUIOpenEvent e) {
         final Player player = e.getPlayer();
@@ -48,14 +46,14 @@ public class ActiveEffectsGUI extends GUI
             this.set(new GUIClickableItem() {
                 @Override
                 public void run(final InventoryClickEvent e) {
-                    new ActiveEffectsGUI(finalPage - 1).open((Player)e.getWhoClicked());
+                    new ActiveEffectsGUI(finalPage - 1).open((Player) e.getWhoClicked());
                 }
-                
+
                 @Override
                 public int getSlot() {
                     return 45;
                 }
-                
+
                 @Override
                 public ItemStack getItem() {
                     return SUtil.createNamedItemStack(Material.ARROW, ChatColor.GRAY + "Go Back");
@@ -66,21 +64,21 @@ public class ActiveEffectsGUI extends GUI
             this.set(new GUIClickableItem() {
                 @Override
                 public void run(final InventoryClickEvent e) {
-                    new ActiveEffectsGUI(finalPage + 1).open((Player)e.getWhoClicked());
+                    new ActiveEffectsGUI(finalPage + 1).open((Player) e.getWhoClicked());
                 }
-                
+
                 @Override
                 public int getSlot() {
                     return 53;
                 }
-                
+
                 @Override
                 public ItemStack getItem() {
                     return SUtil.createNamedItemStack(Material.ARROW, ChatColor.GRAY + "Next Page");
                 }
             });
         }
-        this.set(4, SUtil.getStack(ChatColor.GREEN + "Active Effects", Material.POTION, (short)0, 1, ChatColor.GRAY + "View and manage all of your", ChatColor.GRAY + "active potion effects.", " ", ChatColor.GRAY + "Drink Potions or splash them", ChatColor.GRAY + "on the ground to buff yourself!", " ", ChatColor.GRAY + "Currently Active: " + ChatColor.YELLOW + user.getEffects().size()));
+        this.set(4, SUtil.getStack(ChatColor.GREEN + "Active Effects", Material.POTION, (short) 0, 1, ChatColor.GRAY + "View and manage all of your", ChatColor.GRAY + "active potion effects.", " ", ChatColor.GRAY + "Drink Potions or splash them", ChatColor.GRAY + "on the ground to buff yourself!", " ", ChatColor.GRAY + "Currently Active: " + ChatColor.YELLOW + user.getEffects().size()));
         this.set(GUIClickableItem.createGUIOpenerItem(GUIType.SKYBLOCK_MENU, player, ChatColor.GREEN + "Go Back", 48, Material.ARROW, ChatColor.GRAY + "To SkySim Menu"));
         this.set(GUIClickableItem.getCloseItem(49));
         final List<ActivePotionEffect> p = paged.getPage(this.page);
@@ -90,7 +88,7 @@ public class ActiveEffectsGUI extends GUI
         for (int i = 0; i < p.size(); ++i) {
             final int slot = ActiveEffectsGUI.INTERIOR[i];
             final ActivePotionEffect effect = p.get(i);
-            final List<String> lore = new ArrayList<String>(Arrays.<String>asList(" "));
+            final List<String> lore = new ArrayList<String>(Collections.singletonList(" "));
             for (final String line : SUtil.splitByWordAndLength(effect.getEffect().getDescription(), 20, "\\s")) {
                 lore.add(ChatColor.GRAY + line);
             }
@@ -107,10 +105,10 @@ public class ActiveEffectsGUI extends GUI
                 }
                 new ActiveEffectsGUI(ActiveEffectsGUI.this.page).open(player);
             }
-        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 20L);
+        }.runTaskLater(SkySimEngine.getPlugin(), 20L);
     }
-    
+
     static {
-        INTERIOR = new int[] { 10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43 };
+        INTERIOR = new int[]{10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43};
     }
 }

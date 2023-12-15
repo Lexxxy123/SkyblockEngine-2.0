@@ -2,9 +2,12 @@ package vn.giakhanhvn.skysim.item.armor;
 
 import java.util.HashMap;
 import java.util.Iterator;
+
 import net.md_5.bungee.api.ChatColor;
+
 import java.math.RoundingMode;
 import java.math.BigDecimal;
+
 import org.bukkit.entity.Damageable;
 import vn.giakhanhvn.skysim.listener.PlayerListener;
 import vn.giakhanhvn.skysim.skill.Skill;
@@ -13,7 +16,9 @@ import org.bukkit.entity.EnderDragonPart;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+
 import java.util.List;
+
 import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.ArmorStand;
@@ -26,22 +31,23 @@ import vn.giakhanhvn.skysim.SkySimEngine;
 import vn.giakhanhvn.skysim.util.EntityManager;
 import vn.giakhanhvn.skysim.util.Groups;
 import vn.giakhanhvn.skysim.item.SItem;
+
 import java.util.UUID;
 import java.util.Map;
+
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Wither;
 import org.bukkit.entity.Player;
 
-public class Witherborn
-{
-    private Player p;
-    private int size;
+public class Witherborn {
+    private final Player p;
+    private final int size;
     private Wither w;
     private boolean isTargetting;
     public Entity withersTarget;
     public static final Map<UUID, Witherborn> WITHER_MAP;
     public static final Map<UUID, Boolean> WITHER_COOLDOWN;
-    
+
     public Witherborn(final Player p) {
         this.size = 790;
         this.isTargetting = false;
@@ -50,7 +56,7 @@ public class Witherborn
         this.isTargetting = false;
         Witherborn.WITHER_MAP.put(p.getUniqueId(), this);
     }
-    
+
     public boolean checkCondition() {
         final SItem helm = SItem.find(this.p.getInventory().getHelmet());
         final SItem chest = SItem.find(this.p.getInventory().getChestplate());
@@ -68,16 +74,16 @@ public class Witherborn
         this.w.remove();
         return false;
     }
-    
+
     public void spawnWither() {
-        final Wither w = (Wither)this.p.getWorld().spawn(this.p.getLocation(), (Class)Wither.class);
-        EntityManager.noAI((Entity)w);
-        EntityManager.setNBTTag((Entity)w, "Invul", this.size);
-        EntityManager.noHit((Entity)w);
-        EntityManager.shutTheFuckUp((Entity)w);
-        w.setMetadata("GiantSword", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)0));
-        w.setMetadata("NoAffect", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)0));
-        w.setMetadata("Ire", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)0));
+        final Wither w = (Wither) this.p.getWorld().spawn(this.p.getLocation(), (Class) Wither.class);
+        EntityManager.noAI(w);
+        EntityManager.setNBTTag(w, "Invul", this.size);
+        EntityManager.noHit(w);
+        EntityManager.shutTheFuckUp(w);
+        w.setMetadata("GiantSword", new FixedMetadataValue(SkySimEngine.getPlugin(), 0));
+        w.setMetadata("NoAffect", new FixedMetadataValue(SkySimEngine.getPlugin(), 0));
+        w.setMetadata("Ire", new FixedMetadataValue(SkySimEngine.getPlugin(), 0));
         this.w = w;
         new BukkitRunnable() {
             public void run() {
@@ -94,15 +100,15 @@ public class Witherborn
                     er.removeIf(en -> en instanceof Villager);
                     er.removeIf(en -> en.isDead());
                     if (er.size() > 0) {
-                        final LivingEntity le = (LivingEntity)er.get(SUtil.random(0, er.size() - 1));
-                        Witherborn.this.setWithersTarget((Entity)le);
+                        final LivingEntity le = (LivingEntity) er.get(SUtil.random(0, er.size() - 1));
+                        Witherborn.this.setWithersTarget(le);
                     }
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 100L, 100L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 100L, 100L);
         new BukkitRunnable() {
             float cout = Witherborn.this.p.getLocation().getYaw();
-            
+
             public void run() {
                 if (!Witherborn.this.p.isOnline() || w.isDead() || Witherborn.getWitherbornInstance(Witherborn.this.p) == null) {
                     w.remove();
@@ -114,12 +120,11 @@ public class Witherborn
                 if (Witherborn.this.withersTarget != null) {
                     if (Witherborn.this.withersTarget instanceof LivingEntity) {
                         if (!Witherborn.this.isTargetting) {
-                            final LivingEntity r1 = (LivingEntity)Witherborn.this.withersTarget;
-                            Witherborn.this.selfSacrificeHeroAction(w, (Entity)r1);
+                            final LivingEntity r1 = (LivingEntity) Witherborn.this.withersTarget;
+                            Witherborn.this.selfSacrificeHeroAction(w, r1);
                             Witherborn.this.isTargetting = true;
                         }
-                    }
-                    else {
+                    } else {
                         Witherborn.this.withersTarget = null;
                     }
                 }
@@ -132,9 +137,9 @@ public class Witherborn
                 }
                 this.cout += 7.0f;
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 2L, 2L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 2L, 2L);
     }
-    
+
     public void selfSacrificeHeroAction(final Wither w, final Entity e) {
         new BukkitRunnable() {
             public void run() {
@@ -162,7 +167,6 @@ public class Witherborn
                             a.spawnWither();
                         }
                         Witherborn.WITHER_COOLDOWN.put(Witherborn.this.p.getUniqueId(), false);
-                        return;
                     }, 600L);
                     w.remove();
                     int j = 0;
@@ -200,15 +204,14 @@ public class Witherborn
                             find -= find * defensepercent / 100.0;
                         }
                         PlayerListener.spawnDamageInd(entity, find, false);
-                        User.getUser(Witherborn.this.p.getUniqueId()).damageEntityIgnoreShield((Damageable)entity, find);
+                        User.getUser(Witherborn.this.p.getUniqueId()).damageEntityIgnoreShield((Damageable) entity, find);
                         d += find;
                     }
                     d = new BigDecimal(d).setScale(1, RoundingMode.HALF_EVEN).doubleValue();
                     if (j > 0) {
                         if (j == 1) {
                             Witherborn.this.p.sendMessage(ChatColor.GRAY + "Your Witherborn hit " + ChatColor.RED + j + ChatColor.GRAY + " enemy for " + ChatColor.RED + SUtil.commaify(d) + ChatColor.GRAY + " damage.");
-                        }
-                        else {
+                        } else {
                             Witherborn.this.p.sendMessage(ChatColor.GRAY + "Your Witherborn hit " + ChatColor.RED + j + ChatColor.GRAY + " enemies for " + ChatColor.RED + SUtil.commaify(d) + ChatColor.GRAY + " damage.");
                         }
                     }
@@ -218,21 +221,21 @@ public class Witherborn
                 w.teleport(r);
                 w.teleport(w.getLocation().add(w.getLocation().getDirection().normalize().multiply(0.3)));
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 2L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 2L, 1L);
     }
-    
+
     public static Witherborn getWitherbornInstance(final Player p) {
         return Witherborn.WITHER_MAP.get(p.getUniqueId());
     }
-    
+
     public Entity getWithersTarget() {
         return this.withersTarget;
     }
-    
+
     public void setWithersTarget(final Entity withersTarget) {
         this.withersTarget = withersTarget;
     }
-    
+
     static {
         WITHER_MAP = new HashMap<UUID, Witherborn>();
         WITHER_COOLDOWN = new HashMap<UUID, Boolean>();

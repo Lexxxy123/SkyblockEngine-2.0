@@ -7,28 +7,27 @@ import vn.giakhanhvn.skysim.skill.Skill;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
 import vn.giakhanhvn.skysim.item.ExperienceRewardStatistics;
 
-public class CocoaBeans implements ExperienceRewardStatistics, MaterialFunction
-{
+public class CocoaBeans implements ExperienceRewardStatistics, MaterialFunction {
     @Override
     public double getRewardXP() {
         return 2.0;
     }
-    
+
     @Override
     public Skill getRewardedSkill() {
         return FarmingSkill.INSTANCE;
     }
-    
+
     @Override
     public String getDisplayName() {
         return "Cocoa Beans";
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.COMMON;
     }
-    
+
     @Override
     public GenericItemType getType() {
         return GenericItemType.ITEM;

@@ -1,10 +1,15 @@
 package vn.giakhanhvn.skysim.item.weapon;
 
 import java.util.Collection;
+
 import org.bukkit.inventory.PlayerInventory;
+
 import java.util.Iterator;
+
 import org.bukkit.Location;
+
 import java.text.DecimalFormat;
+
 import vn.giakhanhvn.skysim.util.SLog;
 import org.bukkit.ChatColor;
 import vn.giakhanhvn.skysim.entity.SEntityType;
@@ -25,7 +30,9 @@ import vn.giakhanhvn.skysim.user.PlayerStatistics;
 import org.bukkit.Effect;
 import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
+
 import java.util.ArrayList;
+
 import org.bukkit.util.Vector;
 import org.bukkit.entity.Entity;
 import vn.giakhanhvn.skysim.util.EntityManager;
@@ -44,84 +51,83 @@ import vn.giakhanhvn.skysim.item.Ability;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
 import vn.giakhanhvn.skysim.item.ToolStatistics;
 
-public class SpiritSceptre implements ToolStatistics, MaterialFunction, Ability
-{
+public class SpiritSceptre implements ToolStatistics, MaterialFunction, Ability {
     String ACT3;
-    
+
     public SpiritSceptre() {
         this.ACT3 = "true";
     }
-    
+
     @Override
     public int getBaseDamage() {
         return 210;
     }
-    
+
     @Override
     public double getBaseStrength() {
         return 60.0;
     }
-    
+
     @Override
     public double getBaseCritChance() {
         return 1.0;
     }
-    
+
     @Override
     public double getBaseCritDamage() {
         return 0.5;
     }
-    
+
     @Override
     public String getDisplayName() {
         return "Spirit Sceptre";
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.LEGENDARY;
     }
-    
+
     @Override
     public GenericItemType getType() {
         return GenericItemType.WEAPON;
     }
-    
+
     @Override
     public SpecificItemType getSpecificType() {
         return SpecificItemType.SWORD;
     }
-    
+
     @Override
     public String getLore() {
         return null;
     }
-    
+
     @Override
     public String getAbilityName() {
         return "IDK UWU";
     }
-    
+
     @Override
     public String getAbilityDescription() {
         return "IDK uwu";
     }
-    
+
     @Override
     public void onAbilityUse(final Player player1, final SItem sItem) {
         final Location throwLoc = player1.getLocation().add(0.0, 1.5, 0.0);
         final Vector throwVec = player1.getLocation().add(player1.getLocation().getDirection().multiply(10)).toVector().subtract(player1.getLocation().toVector()).normalize().multiply(1.2);
-        final Bat armorStand1 = (Bat)player1.getWorld().spawnEntity(throwLoc, EntityType.BAT);
-        armorStand1.setMetadata("GiantSword", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        EntityManager.noHit((Entity)armorStand1);
-        EntityManager.shutTheFuckUp((Entity)armorStand1);
+        final Bat armorStand1 = (Bat) player1.getWorld().spawnEntity(throwLoc, EntityType.BAT);
+        armorStand1.setMetadata("GiantSword", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        EntityManager.noHit(armorStand1);
+        EntityManager.shutTheFuckUp(armorStand1);
         final Player bukkitPlayer = player1.getPlayer();
         final Vector teleportTo = bukkitPlayer.getLocation().getDirection().normalize().multiply(1);
-        final Vector[] previousVector = { throwVec };
+        final Vector[] previousVector = {throwVec};
         final Collection<Entity> damaged = new ArrayList<Entity>();
         new BukkitRunnable() {
             private int run = -1;
-            
+
             public void run() {
                 final int i;
                 final int ran = i = 0;
@@ -145,8 +151,7 @@ public class SpiritSceptre implements ToolStatistics, MaterialFunction, Ability
                 if (i < 13) {
                     final int angle = i * 20 + num;
                     final boolean back = false;
-                }
-                else {
+                } else {
                     final int angle = i * 20 - num;
                     final boolean back = true;
                 }
@@ -160,8 +165,7 @@ public class SpiritSceptre implements ToolStatistics, MaterialFunction, Ability
                 if (i % 2 == 0 && i < 13) {
                     armorStand1.teleport(armorStand1.getLocation().add(teleportTo).multiply(1.0));
                     armorStand1.teleport(armorStand1.getLocation().add(teleportTo).multiply(1.0));
-                }
-                else if (i % 2 == 0) {
+                } else if (i % 2 == 0) {
                     armorStand1.teleport(armorStand1.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                     armorStand1.teleport(armorStand1.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                 }
@@ -171,18 +175,16 @@ public class SpiritSceptre implements ToolStatistics, MaterialFunction, Ability
                     for (final Entity e : armorStand1.getNearbyEntities(5.0, 5.0, 5.0)) {
                         SpiritSceptre.this.ACT3 = "false";
                         if (e instanceof Damageable && e != player1.getPlayer()) {
-                            final Damageable entity = (Damageable)e;
+                            final Damageable entity = (Damageable) e;
                             int baseMagicDmg = 2000;
                             final PlayerInventory inv = player1.getInventory();
                             final SItem helmet = SItem.find(inv.getHelmet());
                             if (helmet != null) {
                                 if (helmet.getType() == SMaterial.DARK_GOGGLES) {
                                     baseMagicDmg += baseMagicDmg * 25 / 100;
-                                }
-                                else if (helmet.getType() == SMaterial.SHADOW_GOGGLES) {
+                                } else if (helmet.getType() == SMaterial.SHADOW_GOGGLES) {
                                     baseMagicDmg += baseMagicDmg * 35 / 100;
-                                }
-                                else if (helmet.getType() == SMaterial.WITHER_GOGGLES) {
+                                } else if (helmet.getType() == SMaterial.WITHER_GOGGLES) {
                                     baseMagicDmg += baseMagicDmg * 45 / 100;
                                 }
                             }
@@ -190,7 +192,7 @@ public class SpiritSceptre implements ToolStatistics, MaterialFunction, Ability
                             if (entity instanceof Player && !entity.hasMetadata("NPC")) {
                                 continue;
                             }
-                            final SEntity sbEntity = SEntity.findSEntity((Entity)entity);
+                            final SEntity sbEntity = SEntity.findSEntity(entity);
                             for (final Entity entity2 : armorStand1.getWorld().getNearbyEntities(armorStand1.getLocation().add(armorStand1.getLocation().getDirection().multiply(1.0)), 5.0, 5.0, 5.0)) {
                                 if (entity2.isDead()) {
                                     continue;
@@ -208,12 +210,12 @@ public class SpiritSceptre implements ToolStatistics, MaterialFunction, Ability
                                     continue;
                                 }
                                 final User user = User.getUser(player1.getUniqueId());
-                                final ArmorStand stand3 = (ArmorStand)new SEntity(entity2.getLocation().clone().add(SUtil.random(-1.5, 1.5), 1.0, SUtil.random(-1.5, 1.5)), SEntityType.UNCOLLIDABLE_ARMOR_STAND).getEntity();
-                                stand3.setCustomName("" + ChatColor.GRAY + (int)finalDamage);
+                                final ArmorStand stand3 = (ArmorStand) new SEntity(entity2.getLocation().clone().add(SUtil.random(-1.5, 1.5), 1.0, SUtil.random(-1.5, 1.5)), SEntityType.UNCOLLIDABLE_ARMOR_STAND).getEntity();
+                                stand3.setCustomName("" + ChatColor.GRAY + (int) finalDamage);
                                 stand3.setCustomNameVisible(true);
                                 stand3.setGravity(false);
                                 stand3.setVisible(false);
-                                user.damageEntity((Damageable)entity2, finalDamage);
+                                user.damageEntity((Damageable) entity2, finalDamage);
                                 if (PlayerUtils.Debugmsg.debugmsg) {
                                     SLog.info("[DEBUG] " + player1.getName() + " have dealt " + finalDamage + " (Bat Wand Ability)");
                                 }
@@ -223,7 +225,7 @@ public class SpiritSceptre implements ToolStatistics, MaterialFunction, Ability
                                         stand3.remove();
                                         this.cancel();
                                     }
-                                }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 30L);
+                                }.runTaskLater(SkySimEngine.getPlugin(), 30L);
                                 break;
                             }
                             break;
@@ -239,11 +241,9 @@ public class SpiritSceptre implements ToolStatistics, MaterialFunction, Ability
                 if (helmet != null) {
                     if (helmet.getType() == SMaterial.DARK_GOGGLES) {
                         baseMagicDmg2 += baseMagicDmg2 * 25 / 100;
-                    }
-                    else if (helmet.getType() == SMaterial.SHADOW_GOGGLES) {
+                    } else if (helmet.getType() == SMaterial.SHADOW_GOGGLES) {
                         baseMagicDmg2 += baseMagicDmg2 * 35 / 100;
-                    }
-                    else if (helmet.getType() == SMaterial.WITHER_GOGGLES) {
+                    } else if (helmet.getType() == SMaterial.WITHER_GOGGLES) {
                         baseMagicDmg2 += baseMagicDmg2 * 45 / 100;
                     }
                 }
@@ -269,33 +269,31 @@ public class SpiritSceptre implements ToolStatistics, MaterialFunction, Ability
                     final String AllDmgReal = df.format(AllDmg);
                     if (count1 > 1) {
                         player1.sendMessage(ChatColor.GRAY + "Your Spirit Sceptre hit " + ChatColor.RED + count1 + ChatColor.GRAY + " enemies for " + ChatColor.RED + AllDmgReal + ChatColor.GRAY + " damage.");
-                    }
-                    else if (count1 == 1) {
+                    } else if (count1 == 1) {
                         player1.sendMessage(ChatColor.GRAY + "Your Spirit Sceptre hit " + ChatColor.RED + count1 + ChatColor.GRAY + " enemy for " + ChatColor.RED + AllDmgReal + ChatColor.GRAY + " damage.");
-                    }
-                    else {
+                    } else {
                         player1.sendMessage(ChatColor.GRAY + "Your Spirit Sceptre hit " + ChatColor.RED + count1 + ChatColor.GRAY + " enemies for " + ChatColor.RED + AllDmgReal + ChatColor.GRAY + " damage.");
                     }
                     if (PlayerUtils.Debugmsg.debugmsg) {
-                        SLog.info("[DEBUG] " + player1.getName() + " have dealt " + (float)baseDamage1 + " for each enemies and hit total of " + count1 + " enemies, for a total of " + AllDmg + " damage! (Spirit Sceptre ability)");
+                        SLog.info("[DEBUG] " + player1.getName() + " have dealt " + (float) baseDamage1 + " for each enemies and hit total of " + count1 + " enemies, for a total of " + AllDmg + " damage! (Spirit Sceptre ability)");
                     }
                     count1 = 0;
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 1L, 2L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 1L, 2L);
         new BukkitRunnable() {
             public void run() {
                 armorStand1.remove();
                 this.cancel();
             }
-        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 150L);
+        }.runTaskLater(SkySimEngine.getPlugin(), 150L);
     }
-    
+
     @Override
     public int getAbilityCooldownTicks() {
         return 0;
     }
-    
+
     @Override
     public int getManaCost() {
         return 150;

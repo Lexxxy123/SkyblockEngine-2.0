@@ -8,12 +8,11 @@ import vn.giakhanhvn.skysim.user.User;
 import org.bukkit.Material;
 import org.bukkit.ChatColor;
 
-public class DepositGUI extends GUI
-{
+public class DepositGUI extends GUI {
     public DepositGUI() {
         super("Bank Deposit", 36);
     }
-    
+
     @Override
     public void onOpen(final GUIOpenEvent e) {
         this.fill(DepositGUI.BLACK_STAINED_GLASS_PANE);
@@ -30,15 +29,15 @@ public class DepositGUI extends GUI
                 player.sendMessage(ChatColor.GREEN + "You have deposited " + ChatColor.GOLD + SUtil.commaify(coins) + " coins" + ChatColor.GREEN + "! You now have " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()) + " coins " + ChatColor.GREEN + "in your account!");
                 GUIType.BANKER.getGUI().open(player);
             }
-            
+
             @Override
             public int getSlot() {
                 return 11;
             }
-            
+
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.GREEN + "Your whole purse", Material.CHEST, (short)0, 64, ChatColor.DARK_GRAY + "Bank deposit", " ", ChatColor.GRAY + "Current balance: " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()), ChatColor.GRAY + "Amount to deposit: " + ChatColor.GOLD + SUtil.commaify(user.getCoins()), " ", ChatColor.YELLOW + "Click to deposit coins!");
+                return SUtil.getStack(ChatColor.GREEN + "Your whole purse", Material.CHEST, (short) 0, 64, ChatColor.DARK_GRAY + "Bank deposit", " ", ChatColor.GRAY + "Current balance: " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()), ChatColor.GRAY + "Amount to deposit: " + ChatColor.GOLD + SUtil.commaify(user.getCoins()), " ", ChatColor.YELLOW + "Click to deposit coins!");
             }
         });
         this.set(new GUIClickableItem() {
@@ -51,15 +50,15 @@ public class DepositGUI extends GUI
                 player.sendMessage(ChatColor.GREEN + "You have deposited " + ChatColor.GOLD + SUtil.commaify(coins) + " coins" + ChatColor.GREEN + "! You now have " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()) + " coins " + ChatColor.GREEN + "in your account!");
                 GUIType.BANKER.getGUI().open(player);
             }
-            
+
             @Override
             public int getSlot() {
                 return 13;
             }
-            
+
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.GREEN + "Half your purse", Material.CHEST, (short)0, 32, ChatColor.DARK_GRAY + "Bank deposit", " ", ChatColor.GRAY + "Current balance: " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()), ChatColor.GRAY + "Amount to deposit: " + ChatColor.GOLD + SUtil.commaify(user.getCoins() / 2L), " ", ChatColor.YELLOW + "Click to deposit coins!");
+                return SUtil.getStack(ChatColor.GREEN + "Half your purse", Material.CHEST, (short) 0, 32, ChatColor.DARK_GRAY + "Bank deposit", " ", ChatColor.GRAY + "Current balance: " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()), ChatColor.GRAY + "Amount to deposit: " + ChatColor.GOLD + SUtil.commaify(user.getCoins() / 2L), " ", ChatColor.YELLOW + "Click to deposit coins!");
             }
         });
         this.set(new GUIQueryItem() {
@@ -79,26 +78,25 @@ public class DepositGUI extends GUI
                     user.addBankCoins(coins);
                     user.save();
                     player.sendMessage(ChatColor.GREEN + "You have deposited " + ChatColor.GOLD + SUtil.commaify(coins) + " coins" + ChatColor.GREEN + "! You now have " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()) + " coins " + ChatColor.GREEN + "in your account!");
-                }
-                catch (final NumberFormatException ex) {
+                } catch (final NumberFormatException ex) {
                     player.sendMessage(ChatColor.RED + "That is not a valid number!");
                     return null;
                 }
                 return new BankerGUI();
             }
-            
+
             @Override
             public void run(final InventoryClickEvent e) {
             }
-            
+
             @Override
             public int getSlot() {
                 return 15;
             }
-            
+
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.GREEN + "Specific amount", Material.SIGN, (short)0, 1, ChatColor.GRAY + "Current balance: " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()), " ", ChatColor.YELLOW + "Click to deposit coins!");
+                return SUtil.getStack(ChatColor.GREEN + "Specific amount", Material.SIGN, (short) 0, 1, ChatColor.GRAY + "Current balance: " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()), " ", ChatColor.YELLOW + "Click to deposit coins!");
             }
         });
     }

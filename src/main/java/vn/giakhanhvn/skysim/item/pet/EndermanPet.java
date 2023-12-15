@@ -8,23 +8,30 @@ import vn.giakhanhvn.skysim.skill.CombatSkill;
 import vn.giakhanhvn.skysim.skill.Skill;
 import com.google.common.util.concurrent.AtomicDouble;
 import vn.giakhanhvn.skysim.item.Rarity;
+
 import java.util.Collection;
 import java.util.ArrayList;
 import java.util.Collections;
+
 import vn.giakhanhvn.skysim.util.Groups;
 import vn.giakhanhvn.skysim.entity.SEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+
 import java.util.Arrays;
+
 import org.bukkit.ChatColor;
+
 import java.math.RoundingMode;
 import java.math.BigDecimal;
+
 import vn.giakhanhvn.skysim.item.RarityValue;
+
 import java.util.List;
+
 import vn.giakhanhvn.skysim.item.SItem;
 
-public class EndermanPet extends Pet
-{
+public class EndermanPet extends Pet {
     @Override
     public List<PetAbility> getPetAbilities(final SItem instance) {
         final RarityValue<Double> enderianMul = new RarityValue<Double>(0.1, 0.2, 0.2, 0.3, 0.3, 0.3);
@@ -38,12 +45,12 @@ public class EndermanPet extends Pet
             public String getName() {
                 return "Enderian";
             }
-            
+
             @Override
             public List<String> getDescription(final SItem instance) {
-                return Arrays.<String>asList("Take " + ChatColor.GREEN + enderian.toPlainString() + "%" + ChatColor.GRAY + " less damage", "from end monsters");
+                return Arrays.asList("Take " + ChatColor.GREEN + enderian.toPlainString() + "%" + ChatColor.GRAY + " less damage", "from end monsters");
             }
-            
+
             @Override
             public void onHurt(final EntityDamageByEntityEvent e, final Entity damager) {
                 final SEntity entity = SEntity.findSEntity(damager);
@@ -61,10 +68,10 @@ public class EndermanPet extends Pet
                 public String getName() {
                     return "Teleport Savvy";
                 }
-                
+
                 @Override
                 public List<String> getDescription(final SItem instance) {
-                    return Arrays.<String>asList("Buffs the Aspect of the End", "ability granting " + ChatColor.GREEN + savvy.toPlainString() + ChatColor.GRAY + " weapon", "damage for 5s on use");
+                    return Arrays.asList("Buffs the Aspect of the End", "ability granting " + ChatColor.GREEN + savvy.toPlainString() + ChatColor.GRAY + " weapon", "damage for 5s on use");
                 }
             });
         }
@@ -74,12 +81,12 @@ public class EndermanPet extends Pet
                 public String getName() {
                     return "Zealot Madness";
                 }
-                
+
                 @Override
                 public List<String> getDescription(final SItem instance) {
-                    return Arrays.<String>asList("Increases your odds to find a", "special Zealot by " + ChatColor.GREEN + zealot.toPlainString() + "%");
+                    return Arrays.asList("Increases your odds to find a", "special Zealot by " + ChatColor.GREEN + zealot.toPlainString() + "%");
                 }
-                
+
                 @Override
                 public void onZealotAttempt(final AtomicDouble chance) {
                     chance.set(chance.get() - chance.get() * zealot.doubleValue());
@@ -88,32 +95,32 @@ public class EndermanPet extends Pet
         }
         return abilities;
     }
-    
+
     @Override
     public Skill getSkill() {
         return CombatSkill.INSTANCE;
     }
-    
+
     @Override
     public String getURL() {
         return "6eab75eaa5c9f2c43a0d23cfdce35f4df632e9815001850377385f7b2f039ce1";
     }
-    
+
     @Override
     public String getDisplayName() {
         return "Enderman";
     }
-    
+
     @Override
     public GenericItemType getType() {
         return GenericItemType.PET;
     }
-    
+
     @Override
     public double getPerCritDamage() {
         return 0.0075;
     }
-    
+
     @Override
     public void particleBelowA(final Player p, final Location l) {
         p.spigot().playEffect(l, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);

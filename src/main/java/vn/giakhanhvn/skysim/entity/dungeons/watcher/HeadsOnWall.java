@@ -1,13 +1,12 @@
 package vn.giakhanhvn.skysim.entity.dungeons.watcher;
 
-public class HeadsOnWall
-{
+public class HeadsOnWall {
     public String skullTexture;
     public String stype;
     public String value;
     public String signature;
     public boolean arg0;
-    
+
     public HeadsOnWall(final EnumWatcherType ew) {
         this.arg0 = false;
         switch (ew) {

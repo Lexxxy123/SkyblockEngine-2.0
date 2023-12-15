@@ -8,8 +8,7 @@ import vn.giakhanhvn.skysim.item.SItem;
 import org.bukkit.command.ConsoleCommandSender;
 
 @CommandParameters(description = "Recombobulate an item from Spec.", aliases = "recom", permission = "spt.item")
-public class RecombobulateCommand extends SCommand
-{
+public class RecombobulateCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (args.length != 0) {

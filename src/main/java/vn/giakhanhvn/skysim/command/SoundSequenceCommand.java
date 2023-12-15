@@ -6,8 +6,7 @@ import vn.giakhanhvn.skysim.sequence.SoundSequenceType;
 import org.bukkit.command.ConsoleCommandSender;
 
 @CommandParameters(description = "Play a sound sequence.", usage = "/<command> <sequence>")
-public class SoundSequenceCommand extends SCommand
-{
+public class SoundSequenceCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (args.length != 1) {

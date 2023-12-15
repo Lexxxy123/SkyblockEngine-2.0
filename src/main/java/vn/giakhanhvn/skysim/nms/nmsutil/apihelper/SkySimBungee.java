@@ -8,23 +8,23 @@ import com.google.common.collect.Iterables;
 import org.bukkit.Bukkit;
 import com.google.common.io.ByteStreams;
 import org.bukkit.entity.Player;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class SkySimBungee
-{
-    private String channel;
-    private List<String> servers;
-    
+public class SkySimBungee {
+    private final String channel;
+    private final List<String> servers;
+
     public SkySimBungee(final String channel) {
         this.servers = new ArrayList<String>();
         this.channel = channel;
     }
-    
+
     public static SkySimBungee getNewBungee() {
         return new SkySimBungee("BungeeCord");
     }
-    
+
     public void sendData(final Player p, final String subchannel, final String args) {
         Player sender = null;
         final ByteArrayDataOutput out = ByteStreams.newDataOutput();
@@ -33,16 +33,14 @@ public class SkySimBungee
             out.writeUTF(args);
         }
         if (p == null) {
-            sender = (Player)Iterables.getFirst((Iterable)Bukkit.getOnlinePlayers(), (Object)null);
-        }
-        else {
+            sender = (Player) Iterables.getFirst(Bukkit.getOnlinePlayers(), (Object) null);
+        } else {
             sender = p;
         }
         if (sender != null) {
-            sender.sendPluginMessage((Plugin)SkySimEngine.getPlugin(), this.channel, out.toByteArray());
-        }
-        else {
-            SLog.warn((Object)"Player object mustn't be null!");
+            sender.sendPluginMessage(SkySimEngine.getPlugin(), this.channel, out.toByteArray());
+        } else {
+            SLog.warn("Player object mustn't be null!");
         }
     }
 }

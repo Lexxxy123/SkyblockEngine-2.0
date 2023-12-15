@@ -11,8 +11,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.ChatColor;
 
 @CommandParameters(description = "Adds an enchantment from Spec to the specified item.", aliases = "meb", permission = "spt.item")
-public class MembersEnchantCommand extends SCommand
-{
+public class MembersEnchantCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (args.length != 2) {
@@ -106,10 +105,10 @@ public class MembersEnchantCommand extends SCommand
         }
         final SItem eBook = SItem.of(SMaterial.ENCHANTED_BOOK);
         eBook.addEnchantment(type, i);
-        player.getInventory().addItem(new ItemStack[] { eBook.getStack() });
+        player.getInventory().addItem(eBook.getStack());
         this.send(Sputnik.trans("&aYou have been given the &dEnchanted Book &awith &9" + type.getName() + " &9" + SUtil.toRomanNumeral(i) + " &aon it. Use an Anvil to apply it to your items."));
     }
-    
+
     public void stop() {
         this.send("");
     }

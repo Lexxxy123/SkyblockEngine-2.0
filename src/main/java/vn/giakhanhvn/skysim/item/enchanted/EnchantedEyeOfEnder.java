@@ -5,23 +5,22 @@ import vn.giakhanhvn.skysim.item.Rarity;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
 import vn.giakhanhvn.skysim.item.MaterialStatistics;
 
-public class EnchantedEyeOfEnder implements MaterialStatistics, MaterialFunction
-{
+public class EnchantedEyeOfEnder implements MaterialStatistics, MaterialFunction {
     @Override
     public String getDisplayName() {
         return "Enchanted Eye of Ender";
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.UNCOMMON;
     }
-    
+
     @Override
     public GenericItemType getType() {
         return GenericItemType.ITEM;
     }
-    
+
     @Override
     public boolean isEnchanted() {
         return true;

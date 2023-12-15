@@ -97,17 +97,22 @@ import vn.giakhanhvn.skysim.command.SkySimEngineCommand;
 import org.bukkit.block.Block;
 import vn.giakhanhvn.skysim.entity.nms.VoidgloomSeraph;
 import vn.giakhanhvn.skysim.entity.StaticDragonManager;
-import java.util.Iterator;
+
+import java.util.*;
 import java.lang.reflect.Field;
+
 import vn.giakhanhvn.skysim.dimoon.DimoonLootTable;
-import java.util.Collection;
-import java.util.ArrayList;
+
 import vn.giakhanhvn.skysim.dimoon.DimoonLootItem;
 import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
 import vn.giakhanhvn.skysim.item.Rarity;
+
 import java.io.IOException;
+
 import com.google.common.io.Files;
+
 import java.io.File;
+
 import vn.giakhanhvn.skysim.dimoon.listeners.BlockListener;
 import vn.giakhanhvn.skysim.dimoon.listeners.EntityListener;
 import org.bukkit.event.Listener;
@@ -117,7 +122,7 @@ import vn.giakhanhvn.skysim.listener.WorldListener;
 import com.comphenix.protocol.ProtocolLibrary;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.ItemStack;
-import java.util.Map;
+
 import vn.giakhanhvn.skysim.util.Groups;
 import vn.giakhanhvn.skysim.item.SItem;
 import org.bukkit.inventory.ShapedRecipe;
@@ -137,8 +142,7 @@ import vn.giakhanhvn.skysim.nms.nmsutil.apihelper.APIManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import vn.giakhanhvn.skysim.util.SLog;
-import java.util.Arrays;
-import java.util.List;
+
 import vn.giakhanhvn.skysim.command.CommandLoader;
 import vn.giakhanhvn.skysim.sql.SQLWorldData;
 import vn.giakhanhvn.skysim.sql.SQLRegionData;
@@ -157,18 +161,17 @@ import vn.giakhanhvn.skysim.util.BungeeChannel;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class SkySimEngine extends JavaPlugin implements PluginMessageListener, BungeeChannel.ForwardConsumer
-{
+public class SkySimEngine extends JavaPlugin implements PluginMessageListener, BungeeChannel.ForwardConsumer {
     public static MultiverseCore core;
     private static ProtocolManager protocolManager;
     private static Economy econ;
     private static SkySimEngine plugin;
-    private PacketHelper packetInj;
+    private final PacketHelper packetInj;
     public Arena arena;
     public Dimoon dimoon;
     public SummoningSequence sq;
     public boolean altarCooldown;
-    private ServerVersion serverVersion;
+    private final ServerVersion serverVersion;
     public static EffectManager effectManager;
     private static SkySimEngine instance;
     public Config config;
@@ -185,7 +188,7 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
     private BungeeChannel bc;
     private String serverName;
     public List<String> bannedUUID;
-    
+
     public SkySimEngine() {
         this.packetInj = new PacketHelper();
         this.arena = null;
@@ -194,23 +197,23 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
         this.altarCooldown = false;
         this.serverVersion = new ServerVersion("beta", 0, 7, 2, 0);
         this.serverName = "Loading...";
-        this.bannedUUID = Arrays.<String>asList("");
+        this.bannedUUID = Collections.singletonList("");
     }
-    
+
     public static SkySimEngine getPlugin() {
         return SkySimEngine.plugin;
     }
-    
+
     public void onLoad() {
         SLog.info("Loading Bukkit-serializable classes...");
         this.loadSerializableClasses();
     }
-    
+
     public void onEnable() {
         try {
-            this.getServer().getMessenger().registerOutgoingPluginChannel((Plugin)this, "BungeeCord");
-            this.getServer().getMessenger().registerIncomingPluginChannel((Plugin)this, "BungeeCord", (PluginMessageListener)this);
-            this.bc = new BungeeChannel((Plugin)this);
+            this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+            this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", this);
+            this.bc = new BungeeChannel(this);
             this.setupEconomy();
             if (Bukkit.getPluginManager().getPlugin("SputnikSkySim") == null) {
                 SLog.severe("===================================");
@@ -219,9 +222,8 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
                 SLog.severe("SputnikSkySim not found, disabling this plugin");
                 SLog.severe("for safety!");
                 SLog.severe("===================================");
-                Bukkit.getPluginManager().disablePlugin((Plugin)this);
-            }
-            else {
+                Bukkit.getPluginManager().disablePlugin(this);
+            } else {
                 SLog.info("===================================");
                 SLog.info("SKYSIM ENGINE - MADE BY GIAKHANHVN");
                 SLog.info(" ");
@@ -242,9 +244,8 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
                 try {
                     final Field f = Bukkit.getServer().getClass().getDeclaredField("commandMap");
                     f.setAccessible(true);
-                    this.commandMap = (CommandMap)f.get(Bukkit.getServer());
-                }
-                catch (final IllegalAccessException | NoSuchFieldException e) {
+                    this.commandMap = (CommandMap) f.get(Bukkit.getServer());
+                } catch (final IllegalAccessException | NoSuchFieldException e) {
                     SLog.severe("Couldn't load command map: ");
                     e.printStackTrace();
                 }
@@ -254,10 +255,10 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
                 this.worldData = new SQLWorldData();
                 this.cl = new CommandLoader();
                 SLog.info("Begin Protocol injection... (SkySimProtocol v0.6.2)");
-                APIManager.registerAPI(this.packetInj, (Plugin)this);
+                APIManager.registerAPI(this.packetInj, this);
                 if (!this.packetInj.injected) {
                     this.getLogger().warning("[FATAL ERROR] Protocol Injection failed. Disabling the plugin for safety...");
-                    Bukkit.getPluginManager().disablePlugin((Plugin)this);
+                    Bukkit.getPluginManager().disablePlugin(this);
                     return;
                 }
                 SLog.info("Injecting...");
@@ -279,7 +280,7 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
                 SLog.info("Establishing player regions...");
                 Region.cacheRegions();
                 SLog.info("Loading auction items from disk...");
-                SkySimEngine.effectManager = new EffectManager((Plugin)this);
+                SkySimEngine.effectManager = new EffectManager(this);
                 AuctionItem.loadAuctionsFromDisk();
                 SkyBlockCalendar.ELAPSED = SkySimEngine.plugin.config.getLong("timeElapsed");
                 SLog.info("Synchronizing world time with calendar time and removing world entities...");
@@ -290,17 +291,16 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
                         }
                         entity.remove();
                     }
-                    int time = (int)(SkyBlockCalendar.ELAPSED % 24000L - 6000L);
+                    int time = (int) (SkyBlockCalendar.ELAPSED % 24000L - 6000L);
                     if (time < 0) {
                         time += 24000;
                     }
-                    world.setTime((long)time);
+                    world.setTime(time);
                 }
                 SLog.info("Loading items...");
                 try {
                     Class.forName("vn.giakhanhvn.skysim.item.SMaterial");
-                }
-                catch (final ClassNotFoundException e2) {
+                } catch (final ClassNotFoundException e2) {
                     e2.printStackTrace();
                 }
                 for (final SMaterial material : SMaterial.values()) {
@@ -317,31 +317,30 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
                     }
                     final Material result = recipe.getResult().getType();
                     if (recipe instanceof ShapedRecipe) {
-                        final ShapedRecipe shaped = (ShapedRecipe)recipe;
+                        final ShapedRecipe shaped = (ShapedRecipe) recipe;
                         final vn.giakhanhvn.skysim.item.ShapedRecipe specShaped = new vn.giakhanhvn.skysim.item.ShapedRecipe(SItem.convert(shaped.getResult()), Groups.EXCHANGEABLE_RECIPE_RESULTS.contains(result)).shape(shaped.getShape());
                         for (final Map.Entry<Character, ItemStack> entry : shaped.getIngredientMap().entrySet()) {
                             if (entry.getValue() == null) {
                                 continue;
                             }
                             final ItemStack stack = entry.getValue();
-                            specShaped.set(entry.getKey(), SMaterial.getSpecEquivalent(stack.getType(), stack.getDurability()), stack.getAmount() , true);
+                            specShaped.set(entry.getKey(), SMaterial.getSpecEquivalent(stack.getType(), stack.getDurability()), stack.getAmount(), true);
                         }
                     }
                     if (!(recipe instanceof ShapelessRecipe)) {
                         continue;
                     }
-                    final ShapelessRecipe shapeless = (ShapelessRecipe)recipe;
+                    final ShapelessRecipe shapeless = (ShapelessRecipe) recipe;
                     final vn.giakhanhvn.skysim.item.ShapelessRecipe specShapeless = new vn.giakhanhvn.skysim.item.ShapelessRecipe(SItem.convert(shapeless.getResult()), Groups.EXCHANGEABLE_RECIPE_RESULTS.contains(result));
                     for (final ItemStack stack2 : shapeless.getIngredientList()) {
-                        specShapeless.add(SMaterial.getSpecEquivalent(stack2.getType(), stack2.getDurability()), stack2.getAmount() , true);
+                        specShapeless.add(SMaterial.getSpecEquivalent(stack2.getType(), stack2.getDurability()), stack2.getAmount(), true);
                     }
                 }
                 SLog.info("Hooking SkySimEngine to PlaceholderAPI and registering...");
                 if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
                     new placeholding().register();
                     SLog.info("Hooked to PAPI successfully!");
-                }
-                else {
+                } else {
                     SLog.info("ERROR! PlaceholderAPI plugin does not exist, disabing placeholder request!");
                 }
                 SkySimEngine.protocolManager = ProtocolLibrary.getProtocolManager();
@@ -364,16 +363,15 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
                 SLog.info("===================================");
                 this.sq = new SummoningSequence(Bukkit.getWorld("arena"));
                 Bukkit.getWorld("arena").setAutoSave(false);
-                this.getServer().getPluginManager().registerEvents((Listener)new PlayerListener(), (Plugin)this);
-                this.getServer().getPluginManager().registerEvents((Listener)new EntityListener(), (Plugin)this);
-                this.getServer().getPluginManager().registerEvents((Listener)new BlockListener(), (Plugin)this);
+                this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+                this.getServer().getPluginManager().registerEvents(new EntityListener(), this);
+                this.getServer().getPluginManager().registerEvents(new BlockListener(), this);
                 final File file = new File(this.getDataFolder(), "parkours");
                 if (!file.exists()) {
                     try {
                         Files.createParentDirs(file);
                         file.mkdir();
-                    }
-                    catch (final IOException e3) {
+                    } catch (final IOException e3) {
                         throw new RuntimeException(e3);
                     }
                 }
@@ -387,18 +385,17 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
                 chimera6.addEnchantment(EnchantmentType.CHIMERA, 6);
                 final SItem tbits = SItem.of(SMaterial.ENCHANTED_BOOK);
                 tbits.addEnchantment(EnchantmentType.TURBO_GEM, 1);
-                DimoonLootTable.highQualitylootTable = new ArrayList<DimoonLootItem>(Arrays.<DimoonLootItem>asList(new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOONIZARY_DAGGER), 400, 1100), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_EXCRARION), 310, 1000), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_HELMET), 290, 700), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_CHESTPLATE), 340, 900), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_LEGGINGS), 330, 800), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_BOOTS), 220, 500), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_QUANTUMFLUX_POWER_ORB), 310, 900), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_ARCHIVY), 370, 1000), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_MAGICIVY), 370, 1000), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GOLDEN_TIGER_2022), 320, 900), new DimoonLootItem(gtigerm, 300, 1000), new DimoonLootItem(lucki8, 170, 700), new DimoonLootItem(vicious15, 100, 600), new DimoonLootItem(chimera6, 260, 700), new DimoonLootItem(tbits, 210, 700)));
+                DimoonLootTable.highQualitylootTable = new ArrayList<DimoonLootItem>(Arrays.asList(new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOONIZARY_DAGGER), 400, 1100), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_EXCRARION), 310, 1000), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_HELMET), 290, 700), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_CHESTPLATE), 340, 900), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_LEGGINGS), 330, 800), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_BOOTS), 220, 500), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_QUANTUMFLUX_POWER_ORB), 310, 900), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_ARCHIVY), 370, 1000), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_MAGICIVY), 370, 1000), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GOLDEN_TIGER_2022), 320, 900), new DimoonLootItem(gtigerm, 300, 1000), new DimoonLootItem(lucki8, 170, 700), new DimoonLootItem(vicious15, 100, 600), new DimoonLootItem(chimera6, 260, 700), new DimoonLootItem(tbits, 210, 700)));
                 final SItem lucki9 = SItem.of(SMaterial.ENCHANTED_BOOK);
                 lucki9.addEnchantment(EnchantmentType.LUCKINESS, 6);
-                DimoonLootTable.lowQualitylootTable = new ArrayList<DimoonLootItem>(Arrays.<DimoonLootItem>asList(new DimoonLootItem(lucki9, 20, 150), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOON_GEM), 20, 100), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOON_FRAG), 1, 1, 0, true)));
+                DimoonLootTable.lowQualitylootTable = new ArrayList<DimoonLootItem>(Arrays.asList(new DimoonLootItem(lucki9, 20, 150), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOON_GEM), 20, 100), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOON_FRAG), 1, 1, 0, true)));
                 Arena.cleanArena();
             }
-        }
-        catch (final Throwable $ex) {
+        } catch (final Throwable $ex) {
             throw $ex;
         }
     }
-    
+
     public void onDisable() {
         SLog.info("Killing all non-human entities...");
         for (final World world : Bukkit.getWorlds()) {
@@ -420,11 +417,11 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
             for (final Map.Entry<Entity, Block> entry : VoidgloomSeraph.CACHED_BLOCK.entrySet()) {
                 final Entity stand = entry.getKey();
                 if (stand != null && VoidgloomSeraph.CACHED_BLOCK.containsKey(stand) && VoidgloomSeraph.CACHED_BLOCK_ID.containsKey(stand) && VoidgloomSeraph.CACHED_BLOCK_DATA.containsKey(stand)) {
-                    VoidgloomSeraph.CACHED_BLOCK.get(stand).getLocation().getBlock().setTypeIdAndData((int)VoidgloomSeraph.CACHED_BLOCK_ID.get(stand), (byte)VoidgloomSeraph.CACHED_BLOCK_DATA.get(stand), true);
+                    VoidgloomSeraph.CACHED_BLOCK.get(stand).getLocation().getBlock().setTypeIdAndData(VoidgloomSeraph.CACHED_BLOCK_ID.get(stand), VoidgloomSeraph.CACHED_BLOCK_DATA.get(stand), true);
                 }
             }
-            this.getServer().getMessenger().unregisterOutgoingPluginChannel((Plugin)this);
-            this.getServer().getMessenger().unregisterIncomingPluginChannel((Plugin)this);
+            this.getServer().getMessenger().unregisterOutgoingPluginChannel(this);
+            this.getServer().getMessenger().unregisterIncomingPluginChannel(this);
             SLog.info("Stopping entity spawners...");
             EntitySpawner.stopSpawnerTask();
             SLog.info("Ending Dragons fight... (If one is currently active)");
@@ -443,11 +440,11 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
         SLog.info("PLUGIN DISABLED!");
         SLog.info("===================================");
     }
-    
+
     public static ProtocolManager getPTC() {
         return SkySimEngine.protocolManager;
     }
-    
+
     public void unloadBlocks() {
         if (WorldListener.changed_blocks.isEmpty()) {
             return;
@@ -464,7 +461,7 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
             }
         }
     }
-    
+
     private void loadCommands() {
         this.cl.register(new SkySimEngineCommand());
         this.cl.register(new RegionCommand());
@@ -527,7 +524,7 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
         this.cl.register(new PickupStashCommand());
         this.cl.register(new StackMyDimoon());
     }
-    
+
     private void loadListeners() {
         new vn.giakhanhvn.skysim.listener.BlockListener();
         new vn.giakhanhvn.skysim.listener.PlayerListener();
@@ -537,7 +534,7 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
         new PacketListener();
         new WorldListener();
     }
-    
+
     private void startPopulators() {
         new EntityPopulator(5, 10, 200L, SEntityType.ENCHANTED_DIAMOND_SKELETON, RegionType.OBSIDIAN_SANCTUARY).start();
         new EntityPopulator(5, 10, 200L, SEntityType.ENCHANTED_DIAMOND_ZOMBIE, RegionType.OBSIDIAN_SANCTUARY).start();
@@ -572,25 +569,25 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
         new EntityPopulator(5, 15, 200L, SEntityType.HOWLING_SPIRIT, RegionType.HOWLING_CAVE).start();
         new EntityPopulator(5, 15, 200L, SEntityType.PACK_SPIRIT, RegionType.HOWLING_CAVE).start();
     }
-    
+
     private void loadSerializableClasses() {
-        ConfigurationSerialization.registerClass((Class)SlayerQuest.class, "SlayerQuest");
-        ConfigurationSerialization.registerClass((Class)Pet.PetItem.class, "PetItem");
-        ConfigurationSerialization.registerClass((Class)SItem.class, "SItem");
-        ConfigurationSerialization.registerClass((Class)AuctionSettings.class, "AuctionSettings");
-        ConfigurationSerialization.registerClass((Class)AuctionEscrow.class, "AuctionEscrow");
-        ConfigurationSerialization.registerClass((Class)SerialNBTTagCompound.class, "SerialNBTTagCompound");
-        ConfigurationSerialization.registerClass((Class)AuctionBid.class, "AuctionBid");
+        ConfigurationSerialization.registerClass(SlayerQuest.class, "SlayerQuest");
+        ConfigurationSerialization.registerClass(Pet.PetItem.class, "PetItem");
+        ConfigurationSerialization.registerClass(SItem.class, "SItem");
+        ConfigurationSerialization.registerClass(AuctionSettings.class, "AuctionSettings");
+        ConfigurationSerialization.registerClass(AuctionEscrow.class, "AuctionEscrow");
+        ConfigurationSerialization.registerClass(SerialNBTTagCompound.class, "SerialNBTTagCompound");
+        ConfigurationSerialization.registerClass(AuctionBid.class, "AuctionBid");
     }
-    
+
     public static SkySimEngine getInstance() {
         return SkySimEngine.instance;
     }
-    
+
     public void fixTheEnd() {
         SLog.info("No Tasks");
     }
-    
+
     public void beginLoopA() {
         new BukkitRunnable() {
             public void run() {
@@ -598,47 +595,47 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
                     p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 1000000, 255));
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.plugin, 0L, 1L);
+        }.runTaskTimer(SkySimEngine.plugin, 0L, 1L);
     }
-    
+
     private boolean setupEconomy() {
         if (this.getServer().getPluginManager().getPlugin("Vault") == null) {
             return false;
         }
-        final RegisteredServiceProvider<Economy> rsp = (RegisteredServiceProvider<Economy>)this.getServer().getServicesManager().getRegistration((Class)Economy.class);
+        final RegisteredServiceProvider<Economy> rsp = (RegisteredServiceProvider<Economy>) this.getServer().getServicesManager().getRegistration((Class) Economy.class);
         if (rsp == null) {
             return false;
         }
-        SkySimEngine.econ = (Economy)rsp.getProvider();
+        SkySimEngine.econ = rsp.getProvider();
         return SkySimEngine.econ != null;
     }
-    
+
     private void registerPacketListener() {
         PacketHelper.addPacketHandler(new PacketHandler() {
             @Override
             public void onReceive(final ReceivedPacket packet) {
                 final PacketReceiveServerSideEvent ev = new PacketReceiveServerSideEvent(packet);
-                Bukkit.getPluginManager().callEvent((Event)ev);
+                Bukkit.getPluginManager().callEvent(ev);
             }
-            
+
             @Override
             public void onSend(final SentPacket packet) {
                 final PacketSentServerSideEvent ev = new PacketSentServerSideEvent(packet);
-                Bukkit.getPluginManager().callEvent((Event)ev);
+                Bukkit.getPluginManager().callEvent(ev);
             }
         });
     }
-    
+
     private void registerPingListener() {
         PingAPI.registerListener(new PingListener() {
             @Override
             public void onPing(final PingEvent event) {
                 final SkySimServerPingEvent e = new SkySimServerPingEvent(event);
-                Bukkit.getPluginManager().callEvent((Event)e);
+                Bukkit.getPluginManager().callEvent(e);
             }
         });
     }
-    
+
     public static Player findPlayerByIPAddress(final String ip) {
         for (final Player p : Bukkit.getOnlinePlayers()) {
             if (p.getAddress().toString().contains(ip)) {
@@ -647,50 +644,50 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
         }
         return null;
     }
-    
+
     public static Economy getEconomy() {
         return SkySimEngine.econ;
     }
-    
+
     public void async(final Runnable runnable) {
         new BukkitRunnable() {
             public void run() {
                 runnable.run();
             }
-        }.runTaskAsynchronously((Plugin)SkySimEngine.plugin);
+        }.runTaskAsynchronously(SkySimEngine.plugin);
     }
-    
+
     public BukkitTask syncLoop(final Runnable runnable, final int i0, final int i1) {
         return new BukkitRunnable() {
             public void run() {
                 runnable.run();
             }
-        }.runTaskTimer((Plugin)SkySimEngine.plugin, (long)i0, (long)i1);
+        }.runTaskTimer(SkySimEngine.plugin, i0, i1);
     }
-    
+
     public BukkitTask asyncLoop(final Runnable runnable, final int i0, final int i1) {
         return new BukkitRunnable() {
             public void run() {
                 runnable.run();
             }
-        }.runTaskTimerAsynchronously((Plugin)SkySimEngine.plugin, (long)i0, (long)i1);
+        }.runTaskTimerAsynchronously(SkySimEngine.plugin, i0, i1);
     }
-    
+
     public void onPluginMessageReceived(final String channel, final Player player, final byte[] message) {
         final PluginMessageReceived e = new PluginMessageReceived(new WrappedPluginMessage(channel, player, message));
-        Bukkit.getPluginManager().callEvent((Event)e);
+        Bukkit.getPluginManager().callEvent(e);
     }
-    
+
     public void updateServerName(final Player player) {
         SkySimBungee.getNewBungee().sendData(player, "GetServer", null);
     }
-    
+
     public void updateServerPlayerCount() {
         if (Bukkit.getOnlinePlayers().size() > 0) {
             SkySimBungee.getNewBungee().sendData(null, "PlayerCount", "ALL");
         }
     }
-    
+
     public void accept(final String channel, final Player player, final byte[] data) {
         if (channel == "savePlayerData") {
             SLog.info("YES IT WORK");
@@ -700,33 +697,33 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
             }
         }
     }
-    
+
     public ServerVersion getServerVersion() {
         return this.serverVersion;
     }
-    
+
     public int getOnlinePlayerAcrossServers() {
         return this.onlinePlayerAcrossServers;
     }
-    
+
     public void setOnlinePlayerAcrossServers(final int onlinePlayerAcrossServers) {
         this.onlinePlayerAcrossServers = onlinePlayerAcrossServers;
     }
-    
+
     public BungeeChannel getBc() {
         return this.bc;
     }
-    
+
     public String getServerName() {
         return this.serverName;
     }
-    
+
     public void setServerName(final String serverName) {
         this.serverName = serverName;
     }
-    
+
     static {
-        SkySimEngine.core = (MultiverseCore)Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
+        SkySimEngine.core = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
         SkySimEngine.econ = null;
     }
 }

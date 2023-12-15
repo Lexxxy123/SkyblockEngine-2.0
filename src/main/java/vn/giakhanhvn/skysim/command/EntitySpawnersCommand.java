@@ -1,6 +1,7 @@
 package vn.giakhanhvn.skysim.command;
 
 import java.util.List;
+
 import org.bukkit.entity.Player;
 import org.bukkit.ChatColor;
 import vn.giakhanhvn.skysim.entity.SEntityType;
@@ -9,8 +10,7 @@ import vn.giakhanhvn.skysim.entity.EntitySpawner;
 import org.bukkit.command.ConsoleCommandSender;
 
 @CommandParameters(description = "Manage entity spawners.", usage = "/<command> [create <type> | delete <index>]", aliases = "entityspawner,es,spawner,spawners", permission = "spt.entity")
-public class EntitySpawnersCommand extends SCommand
-{
+public class EntitySpawnersCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (sender instanceof ConsoleCommandSender) {

@@ -13,7 +13,9 @@ import com.google.common.util.concurrent.AtomicDouble;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import vn.giakhanhvn.skysim.entity.SEntityEquipment;
+
 import java.util.Iterator;
+
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
@@ -42,31 +44,30 @@ import org.bukkit.entity.LivingEntity;
 import vn.giakhanhvn.skysim.util.Sputnik;
 import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
 
-public class WatcherLivid extends BaseZombie
-{
+public class WatcherLivid extends BaseZombie {
     @Override
     public String getEntityName() {
         return Sputnik.trans("&4&lMaster Livid");
     }
-    
+
     @Override
     public double getEntityMaxHealth() {
         return 9.5E8;
     }
-    
+
     @Override
     public double getDamageDealt() {
         return 6000000.0;
     }
-    
+
     @Override
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
         final HeadsOnWall h = new HeadsOnWall(EnumWatcherType.LIVID);
-        final PlayerDisguise p = Sputnik.applyPacketNPC((Entity)entity, h.value, h.signature, true);
-        EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 87);
-        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("LD", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("WATCHER_E", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+        final PlayerDisguise p = Sputnik.applyPacketNPC(entity, h.value, h.signature, true);
+        EntityManager.DEFENSE_PERCENTAGE.put(entity, 87);
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("WATCHER_E", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
         p.setReplaceSounds(true);
         new BukkitRunnable() {
             public void run() {
@@ -74,14 +75,13 @@ public class WatcherLivid extends BaseZombie
                     this.cancel();
                     return;
                 }
-                if (((CraftZombie)entity).getTarget() != null) {
+                if (((CraftZombie) entity).getTarget() != null) {
                     entity.getEquipment().setItemInHand(SItem.of(SMaterial.LIVID_DAGGER).getStack());
                     p.getWatcher().setRightClicking(true);
-                    WatcherLivid.this.throwThickAssBone((Entity)entity);
+                    WatcherLivid.this.throwThickAssBone(entity);
                     SUtil.delay(() -> {
                         final Object val$p = p;
                         p.getWatcher().setRightClicking(false);
-                        return;
                     }, 10L);
                     SUtil.delay(() -> {
                         final Object val$entity = entity;
@@ -89,7 +89,7 @@ public class WatcherLivid extends BaseZombie
                     }, 30L);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 150L, 150L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 150L, 150L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -97,37 +97,36 @@ public class WatcherLivid extends BaseZombie
                     return;
                 }
                 for (int j = 0; j < 5; ++j) {
-                    entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 0.1, 0.0), Effect.WITCH_MAGIC, 0, 1, (float)SUtil.random(-1, 1), (float)SUtil.random(-1, 2), (float)SUtil.random(-1, 1), 0.0f, 1, 20);
+                    entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 0.1, 0.0), Effect.WITCH_MAGIC, 0, 1, (float) SUtil.random(-1, 1), (float) SUtil.random(-1, 2), (float) SUtil.random(-1, 1), 0.0f, 1, 20);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 10L, 10L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 10L, 10L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
-                if (((CraftZombie)entity).getTarget() != null) {
-                    final Location lc = ((CraftZombie)entity).getTarget().getLocation();
+                if (((CraftZombie) entity).getTarget() != null) {
+                    final Location lc = ((CraftZombie) entity).getTarget().getLocation();
                     entity.getEquipment().setItemInHand(SItem.of(SMaterial.SHADOW_FURY).getStack());
                     p.getWatcher().setRightClicking(true);
                     SUtil.delay(() -> {
                         final Object val$p = p;
                         p.getWatcher().setRightClicking(false);
-                        return;
                     }, 10L);
-                    ((CraftZombie)entity).getTarget().getWorld().playSound(((CraftZombie)entity).getTarget().getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 1.0f);
-                    ((CraftZombie)entity).getHandle().setPositionRotation(lc.getX(), lc.getY(), lc.getZ(), lc.getYaw(), lc.getPitch());
+                    ((CraftZombie) entity).getTarget().getWorld().playSound(((CraftZombie) entity).getTarget().getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 1.0f);
+                    ((CraftZombie) entity).getHandle().setPositionRotation(lc.getX(), lc.getY(), lc.getZ(), lc.getYaw(), lc.getPitch());
                     for (int j = 0; j < 20; ++j) {
-                        entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 1.75, 0.0), Effect.LARGE_SMOKE, 0, 1, (float)SUtil.random(-1, 1), (float)SUtil.random(-1, 2), (float)SUtil.random(-1, 1), 0.0f, 1, 20);
-                        entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 1.75, 0.0), Effect.WITCH_MAGIC, 0, 1, (float)SUtil.random(-1, 1), (float)SUtil.random(-1, 2), (float)SUtil.random(-1, 1), 0.0f, 1, 20);
+                        entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 1.75, 0.0), Effect.LARGE_SMOKE, 0, 1, (float) SUtil.random(-1, 1), (float) SUtil.random(-1, 2), (float) SUtil.random(-1, 1), 0.0f, 1, 20);
+                        entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 1.75, 0.0), Effect.WITCH_MAGIC, 0, 1, (float) SUtil.random(-1, 1), (float) SUtil.random(-1, 2), (float) SUtil.random(-1, 1), 0.0f, 1, 20);
                     }
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 220L, 220L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 220L, 220L);
         new BukkitRunnable() {
             public void run() {
-                final EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
+                final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
@@ -136,7 +135,7 @@ public class WatcherLivid extends BaseZombie
                     if (!(entities instanceof Player)) {
                         continue;
                     }
-                    final Player target = (Player)entities;
+                    final Player target = (Player) entities;
                     if (target.getGameMode() == GameMode.CREATIVE) {
                         continue;
                     }
@@ -154,81 +153,81 @@ public class WatcherLivid extends BaseZombie
                     }
                     entity.teleport(entity.getLocation().setDirection(target.getLocation().subtract(entities.getLocation()).toVector()));
                     for (final Player players : Bukkit.getOnlinePlayers()) {
-                        ((CraftPlayer)players).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)entity).getHandle(), 0));
+                        ((CraftPlayer) players).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) entity).getHandle(), 0));
                     }
-                    nms.r((net.minecraft.server.v1_8_R3.Entity)((CraftPlayer)target).getHandle());
+                    nms.r(((CraftPlayer) target).getHandle());
                     break;
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 3L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 3L);
     }
-    
+
     @Override
     public SEntityEquipment getEntityEquipment() {
         return new SEntityEquipment(SItem.of(SMaterial.DIAMOND_SWORD).getStack(), null, null, null, null);
     }
-    
+
     @Override
     public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
-        final Entity en = (Entity)sEntity.getEntity();
+        final Entity en = sEntity.getEntity();
         final Vector v = new Vector(0, 0, 0);
         SUtil.delay(() -> en.setVelocity(v), 1L);
     }
-    
+
     @Override
     public void onAttack(final EntityDamageByEntityEvent e) {
         if (SUtil.random(0, 5) == 1) {
-            ((LivingEntity)e.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40, 5));
+            ((LivingEntity) e.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40, 5));
         }
     }
-    
+
     @Override
     public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
     }
-    
+
     @Override
     public boolean isBaby() {
         return false;
     }
-    
+
     @Override
     public boolean hasNameTag() {
         return false;
     }
-    
+
     @Override
     public boolean isVillager() {
         return false;
     }
-    
+
     @Override
     public double getXPDropped() {
         return 304.0;
     }
-    
+
     @Override
     public double getMovementSpeed() {
         return 0.4;
     }
-    
+
     @Override
     public int mobLevel() {
         return 540;
     }
-    
+
     public void throwThickAssBone(final Entity e) {
         final Vector throwVec = e.getLocation().add(e.getLocation().getDirection().multiply(10)).toVector().subtract(e.getLocation().toVector()).normalize().multiply(1.2);
         final Location throwLoc = e.getLocation().add(0.0, 0.5, 0.0);
-        final ArmorStand armorStand1 = (ArmorStand)e.getWorld().spawnEntity(throwLoc, EntityType.ARMOR_STAND);
+        final ArmorStand armorStand1 = (ArmorStand) e.getWorld().spawnEntity(throwLoc, EntityType.ARMOR_STAND);
         armorStand1.getEquipment().setItemInHand(SItem.of(SMaterial.LIVID_DAGGER).getStack());
         armorStand1.setGravity(false);
         armorStand1.setVisible(false);
         armorStand1.setMarker(true);
         final Vector teleportTo = e.getLocation().getDirection().normalize().multiply(1);
-        final Vector[] previousVector = { throwVec };
+        final Vector[] previousVector = {throwVec};
         new BukkitRunnable() {
             private int run = -1;
-            
+
             public void run() {
                 final int i;
                 final int ran = i = 0;
@@ -240,7 +239,7 @@ public class WatcherLivid extends BaseZombie
                     return;
                 }
                 for (int j = 0; j < 10; ++j) {
-                    armorStand1.getWorld().spigot().playEffect(armorStand1.getLocation().clone().add(0.0, 1.75, 0.0), Effect.CRIT, 0, 1, (float)SUtil.random(-0.5, 0.5), (float)SUtil.random(0.0, 0.5), (float)SUtil.random(-0.5, 0.5), 0.0f, 1, 20);
+                    armorStand1.getWorld().spigot().playEffect(armorStand1.getLocation().clone().add(0.0, 1.75, 0.0), Effect.CRIT, 0, 1, (float) SUtil.random(-0.5, 0.5), (float) SUtil.random(0.0, 0.5), (float) SUtil.random(-0.5, 0.5), 0.0f, 1, 20);
                 }
                 final Location locof = armorStand1.getLocation();
                 locof.setY(locof.getY() + 1.0);
@@ -257,8 +256,7 @@ public class WatcherLivid extends BaseZombie
                 if (i < 13) {
                     final int angle = i * 20 + num;
                     final boolean back = false;
-                }
-                else {
+                } else {
                     final int angle = i * 20 - num;
                     final boolean back = true;
                 }
@@ -270,14 +268,13 @@ public class WatcherLivid extends BaseZombie
                 if (i % 2 == 0 && i < 13) {
                     armorStand1.teleport(armorStand1.getLocation().add(teleportTo).multiply(1.0));
                     armorStand1.teleport(armorStand1.getLocation().add(teleportTo).multiply(1.0));
-                }
-                else if (i % 2 == 0) {
+                } else if (i % 2 == 0) {
                     armorStand1.teleport(armorStand1.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                     armorStand1.teleport(armorStand1.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                 }
                 for (final Entity en : armorStand1.getNearbyEntities(1.0, 1.0, 1.0)) {
                     if (en instanceof Player) {
-                        final Player p = (Player)en;
+                        final Player p = (Player) en;
                         p.getWorld().playSound(p.getLocation(), Sound.ITEM_BREAK, 1.0f, 1.0f);
                         User.getUser(p.getUniqueId()).damage(p.getMaxHealth() * 25.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, e);
                         p.damage(1.0E-5);
@@ -287,10 +284,10 @@ public class WatcherLivid extends BaseZombie
                     }
                 }
             }
-            
+
             public synchronized void cancel() throws IllegalStateException {
                 super.cancel();
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
     }
 }

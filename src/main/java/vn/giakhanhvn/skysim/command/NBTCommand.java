@@ -1,6 +1,7 @@
 package vn.giakhanhvn.skysim.command;
 
 import java.util.Iterator;
+
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import net.minecraft.server.v1_8_R3.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -10,8 +11,7 @@ import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.command.ConsoleCommandSender;
 
 @CommandParameters(description = "Gets the NBT of your current item.", permission = "spt.item")
-public class NBTCommand extends SCommand
-{
+public class NBTCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (args.length != 0) {

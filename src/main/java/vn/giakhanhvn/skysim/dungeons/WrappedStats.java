@@ -1,16 +1,15 @@
 package vn.giakhanhvn.skysim.dungeons;
 
-public class WrappedStats
-{
-    private float health;
-    private float healthRegen;
-    private float strength;
-    private float critDamage;
-    private float intelligence;
-    private float speed;
-    private float defense;
-    private float[] defaultArray;
-    
+public class WrappedStats {
+    private final float health;
+    private final float healthRegen;
+    private final float strength;
+    private final float critDamage;
+    private final float intelligence;
+    private final float speed;
+    private final float defense;
+    private final float[] defaultArray;
+
     public WrappedStats(final float[] z) {
         this.health = z[0];
         this.healthRegen = z[1];
@@ -21,35 +20,35 @@ public class WrappedStats
         this.defense = z[6];
         this.defaultArray = z;
     }
-    
+
     public float getHealth() {
         return this.health;
     }
-    
+
     public float getHealthRegen() {
         return this.healthRegen;
     }
-    
+
     public float getStrength() {
         return this.strength;
     }
-    
+
     public float getCritDamage() {
         return this.critDamage;
     }
-    
+
     public float getIntelligence() {
         return this.intelligence;
     }
-    
+
     public float getSpeed() {
         return this.speed;
     }
-    
+
     public float getDefense() {
         return this.defense;
     }
-    
+
     public float[] getDefaultArray() {
         return this.defaultArray;
     }

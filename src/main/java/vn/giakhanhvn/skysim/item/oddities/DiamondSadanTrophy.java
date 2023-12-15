@@ -1,6 +1,7 @@
 package vn.giakhanhvn.skysim.item.oddities;
 
 import java.util.Iterator;
+
 import vn.giakhanhvn.skysim.user.PlayerUtils;
 import vn.giakhanhvn.skysim.user.PlayerStatistics;
 import org.bukkit.plugin.Plugin;
@@ -9,7 +10,9 @@ import org.bukkit.Effect;
 import org.bukkit.scheduler.BukkitRunnable;
 import vn.giakhanhvn.skysim.potion.PotionEffectType;
 import vn.giakhanhvn.skysim.potion.PotionEffect;
+
 import java.util.ArrayList;
+
 import vn.giakhanhvn.skysim.util.SUtil;
 import vn.giakhanhvn.skysim.user.User;
 import vn.giakhanhvn.skysim.item.SItem;
@@ -22,74 +25,73 @@ import vn.giakhanhvn.skysim.item.Ability;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
 import vn.giakhanhvn.skysim.item.SkullStatistics;
 
-public class DiamondSadanTrophy implements SkullStatistics, MaterialFunction, Ability, Ownable
-{
+public class DiamondSadanTrophy implements SkullStatistics, MaterialFunction, Ability, Ownable {
     private boolean bool;
-    
+
     public DiamondSadanTrophy() {
         this.bool = true;
     }
-    
+
     @Override
     public String getURL() {
         return "62e5ff38849a677e51a9acb7bc6c398af973ae218a0312352ae060c79609d86";
     }
-    
+
     @Override
     public String getDisplayName() {
         return "Diamond Sadan Trophy";
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.SPECIAL;
     }
-    
+
     @Override
     public GenericItemType getType() {
         return GenericItemType.ITEM;
     }
-    
+
     @Override
     public String getAbilityName() {
         return "Ancient's Bless";
     }
-    
+
     @Override
     public String getAbilityDescription() {
         return Sputnik.trans("&7Cast a blessing spell which will give you &91 hour &7of &ceven more &coverpowered &7potion effects");
     }
-    
+
     @Override
     public int getAbilityCooldownTicks() {
         return 72000;
     }
-    
+
     @Override
     public int getManaCost() {
         return -1;
     }
-    
+
     @Override
     public boolean displayUsage() {
         return true;
     }
-    
+
     @Override
     public boolean isStackable() {
         return false;
     }
-    
+
     @Override
     public boolean requirementsUse(final Player player, final SItem sItem) {
         return User.getUser(player.getUniqueId()).getBCollection() < 1000L;
     }
-    
+
     @Override
     public String getAbilityReq() {
         return "&cYou need at least 1,000 Sadan Kills to use this item!";
     }
-    
+
     @Override
     public void onAbilityUse(final Player player, final SItem sItem) {
         SUtil.delay(() -> this.bool = false, 35L);
@@ -146,7 +148,7 @@ public class DiamondSadanTrophy implements SkullStatistics, MaterialFunction, Ab
                 player.getWorld().playEffect(player.getLocation().add(0.0, 1.0, 0.0), Effect.WITCH_MAGIC, 0);
                 player.getWorld().playEffect(player.getLocation().add(0.0, 1.0, 0.0), Effect.WITCH_MAGIC, 0);
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
         for (final PotionEffect effect : effects) {
             user.removePotionEffect(effect.getType());
             PlayerUtils.updatePotionEffects(user, PlayerUtils.STATISTICS_CACHE.get(user.getUuid()));

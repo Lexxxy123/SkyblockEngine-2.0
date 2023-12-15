@@ -3,19 +3,24 @@ package vn.giakhanhvn.skysim.item.pet;
 import vn.giakhanhvn.skysim.item.GenericItemType;
 import vn.giakhanhvn.skysim.skill.CombatSkill;
 import vn.giakhanhvn.skysim.skill.Skill;
+
 import java.util.Collection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Arrays;
+
 import org.bukkit.ChatColor;
+
 import java.math.RoundingMode;
 import java.math.BigDecimal;
+
 import vn.giakhanhvn.skysim.item.RarityValue;
+
 import java.util.List;
+
 import vn.giakhanhvn.skysim.item.SItem;
 
-public class GungaPet extends Pet
-{
+public class GungaPet extends Pet {
     @Override
     public List<PetAbility> getPetAbilities(final SItem instance) {
         final int level = Pet.getLevel(instance);
@@ -28,50 +33,50 @@ public class GungaPet extends Pet
             public String getName() {
                 return "Ig this is yours now";
             }
-            
+
             @Override
             public List<String> getDescription(final SItem instance) {
-                return Arrays.<String>asList(ChatColor.RED + "nulled lol");
+                return Collections.singletonList(ChatColor.RED + "nulled lol");
             }
         }));
         return abilities;
     }
-    
+
     @Override
     public Skill getSkill() {
         return CombatSkill.INSTANCE;
     }
-    
+
     @Override
     public String getURL() {
         return "";
     }
-    
+
     @Override
     public String getDisplayName() {
         return "null";
     }
-    
+
     @Override
     public GenericItemType getType() {
         return GenericItemType.PET;
     }
-    
+
     @Override
     public double getPerIntelligence() {
         return 0.0;
     }
-    
+
     @Override
     public double getPerMagicFind() {
         return 0.0;
     }
-    
+
     @Override
     public double getPerDefense() {
         return 0.0;
     }
-    
+
     @Override
     public double getPerCritDamage() {
         return 0.0;

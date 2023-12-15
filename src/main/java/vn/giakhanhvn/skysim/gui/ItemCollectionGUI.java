@@ -1,14 +1,19 @@
 package vn.giakhanhvn.skysim.gui;
 
 import java.util.Iterator;
+
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.event.inventory.InventoryClickEvent;
+
 import java.util.List;
+
 import vn.giakhanhvn.skysim.collection.ItemCollectionReward;
+
 import java.util.Collection;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import vn.giakhanhvn.skysim.collection.ItemCollectionRewards;
 import org.bukkit.Material;
 import vn.giakhanhvn.skysim.util.SUtil;
@@ -16,15 +21,14 @@ import org.bukkit.ChatColor;
 import vn.giakhanhvn.skysim.user.User;
 import vn.giakhanhvn.skysim.collection.ItemCollection;
 
-public class ItemCollectionGUI extends GUI
-{
+public class ItemCollectionGUI extends GUI {
     private final ItemCollection collection;
-    
+
     public ItemCollectionGUI(final ItemCollection collection) {
         super(collection.getName() + " Collection", 54);
         this.collection = collection;
     }
-    
+
     @Override
     public void onOpen(final GUIOpenEvent e) {
         this.fill(ItemCollectionGUI.BLACK_STAINED_GLASS_PANE);
@@ -34,7 +38,7 @@ public class ItemCollectionGUI extends GUI
         final int tier = this.collection.getTier(amount);
         this.set(4, SUtil.getStack(ChatColor.YELLOW + this.collection.getName() + " " + SUtil.toRomanNumeral(tier), this.collection.getMaterial().getCraftMaterial(), this.collection.getData(), 1, ChatColor.GRAY + "View all your " + this.collection.getName() + " Collection", ChatColor.GRAY + "progress and rewards!", " ", ChatColor.GRAY + "Total Collected: " + ChatColor.YELLOW + SUtil.commaify(amount)));
         this.set(GUIClickableItem.getCloseItem(49));
-        this.set(GUIClickableItem.createGUIOpenerItem(new CategoryCollectionGUI(this.collection.getCategory()), player, ChatColor.GREEN + "Go Back", 48, Material.ARROW, (short)0, ChatColor.GRAY + "To " + this.collection.getCategory().getName() + " Collection"));
+        this.set(GUIClickableItem.createGUIOpenerItem(new CategoryCollectionGUI(this.collection.getCategory()), player, ChatColor.GREEN + "Go Back", 48, Material.ARROW, (short) 0, ChatColor.GRAY + "To " + this.collection.getCategory().getName() + " Collection"));
         for (int i = 0, slot = 18; i < this.collection.getRewards().size(); ++i, ++slot) {
             final int t = i + 1;
             if (t == 28) {
@@ -55,7 +59,7 @@ public class ItemCollectionGUI extends GUI
                 }
                 final ChatColor finalColor = color;
                 final short finalData = data;
-                final List<String> lore = new ArrayList<String>(Arrays.<String>asList(" ", SUtil.createProgressText("Progress", amount, rewards.getRequirement()), SUtil.createLineProgressBar(20, ChatColor.DARK_GREEN, amount, rewards.getRequirement()), " "));
+                final List<String> lore = new ArrayList<String>(Arrays.asList(" ", SUtil.createProgressText("Progress", amount, rewards.getRequirement()), SUtil.createLineProgressBar(20, ChatColor.DARK_GREEN, amount, rewards.getRequirement()), " "));
                 if (rewards.size() != 0) {
                     lore.add(ChatColor.GRAY + "Reward" + ((rewards.size() != 1) ? "s" : "") + ":");
                     for (final ItemCollectionReward reward : rewards) {
@@ -68,12 +72,12 @@ public class ItemCollectionGUI extends GUI
                     @Override
                     public void run(final InventoryClickEvent e) {
                     }
-                    
+
                     @Override
                     public int getSlot() {
                         return finalSlot;
                     }
-                    
+
                     @Override
                     public ItemStack getItem() {
                         return SUtil.getStack(finalColor + ItemCollectionGUI.this.collection.getName() + " " + SUtil.toRomanNumeral(t), Material.STAINED_GLASS_PANE, finalData, t, lore);

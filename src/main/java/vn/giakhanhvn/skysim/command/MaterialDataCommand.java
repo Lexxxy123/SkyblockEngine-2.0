@@ -6,8 +6,7 @@ import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 
 @CommandParameters(description = "Change the material data of an item.", aliases = "mdata,matdata,md", permission = "spt.item")
-public class MaterialDataCommand extends SCommand
-{
+public class MaterialDataCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (args.length != 1) {

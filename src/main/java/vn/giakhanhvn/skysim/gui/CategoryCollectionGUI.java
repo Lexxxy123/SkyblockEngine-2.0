@@ -1,39 +1,45 @@
 package vn.giakhanhvn.skysim.gui;
 
 import java.util.Iterator;
+
 import vn.giakhanhvn.skysim.collection.ItemCollectionRewards;
+
 import java.util.List;
+
 import vn.giakhanhvn.skysim.collection.ItemCollectionReward;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+
 import java.util.Collection;
+
 import vn.giakhanhvn.skysim.collection.ItemCollection;
 import vn.giakhanhvn.skysim.util.PaginationList;
 import vn.giakhanhvn.skysim.user.User;
 import vn.giakhanhvn.skysim.collection.ItemCollectionCategory;
 
-public class CategoryCollectionGUI extends GUI
-{
+public class CategoryCollectionGUI extends GUI {
     private static final int[] INTERIOR;
     private final ItemCollectionCategory category;
     private int page;
-    
+
     public CategoryCollectionGUI(final ItemCollectionCategory category, final int page) {
         super(category.getName() + " Collection", 54);
         this.category = category;
         this.page = page;
     }
-    
+
     public CategoryCollectionGUI(final ItemCollectionCategory category) {
         this(category, 1);
     }
-    
+
     @Override
     public void onOpen(final GUIOpenEvent e) {
         final Player player = e.getPlayer();
@@ -49,14 +55,14 @@ public class CategoryCollectionGUI extends GUI
             this.set(new GUIClickableItem() {
                 @Override
                 public void run(final InventoryClickEvent e) {
-                    new CategoryCollectionGUI(CategoryCollectionGUI.this.category, finalPage - 1).open((Player)e.getWhoClicked());
+                    new CategoryCollectionGUI(CategoryCollectionGUI.this.category, finalPage - 1).open((Player) e.getWhoClicked());
                 }
-                
+
                 @Override
                 public int getSlot() {
                     return 45;
                 }
-                
+
                 @Override
                 public ItemStack getItem() {
                     return SUtil.createNamedItemStack(Material.ARROW, ChatColor.GRAY + "<-");
@@ -67,14 +73,14 @@ public class CategoryCollectionGUI extends GUI
             this.set(new GUIClickableItem() {
                 @Override
                 public void run(final InventoryClickEvent e) {
-                    new CategoryCollectionGUI(CategoryCollectionGUI.this.category, finalPage + 1).open((Player)e.getWhoClicked());
+                    new CategoryCollectionGUI(CategoryCollectionGUI.this.category, finalPage + 1).open((Player) e.getWhoClicked());
                 }
-                
+
                 @Override
                 public int getSlot() {
                     return 53;
                 }
-                
+
                 @Override
                 public ItemStack getItem() {
                     return SUtil.createNamedItemStack(Material.ARROW, ChatColor.GRAY + "->");
@@ -92,7 +98,7 @@ public class CategoryCollectionGUI extends GUI
             final ItemCollection collection = p.get(i);
             final int amount = user.getCollection(collection);
             if (amount != 0) {
-                final List<String> lore = new ArrayList<String>(Arrays.<String>asList(ChatColor.GRAY + "View all your " + collection.getName() + " Collection", ChatColor.GRAY + "progress and rewards!", " "));
+                final List<String> lore = new ArrayList<String>(Arrays.asList(ChatColor.GRAY + "View all your " + collection.getName() + " Collection", ChatColor.GRAY + "progress and rewards!", " "));
                 final int tier = collection.getTier(amount);
                 final int next = tier + 1;
                 final int nextReq = collection.getRequirementForTier(next);
@@ -116,25 +122,24 @@ public class CategoryCollectionGUI extends GUI
                     public void run(final InventoryClickEvent e) {
                         new ItemCollectionGUI(collection).open(player);
                     }
-                    
+
                     @Override
                     public int getSlot() {
                         return slot;
                     }
-                    
+
                     @Override
                     public ItemStack getItem() {
                         return SUtil.getStack(ChatColor.YELLOW + collection.getName() + ((tier != 0) ? (" " + SUtil.toRomanNumeral(tier)) : ""), collection.getMaterial().getCraftMaterial(), collection.getData(), 1, lore);
                     }
                 });
-            }
-            else {
-                this.set(slot, SUtil.getStack(ChatColor.RED + collection.getName(), Material.INK_SACK, (short)8, 1, ChatColor.GRAY + "Find this item to add it to your", ChatColor.GRAY + "collection and unlock collection", ChatColor.GRAY + "rewards!"));
+            } else {
+                this.set(slot, SUtil.getStack(ChatColor.RED + collection.getName(), Material.INK_SACK, (short) 8, 1, ChatColor.GRAY + "Find this item to add it to your", ChatColor.GRAY + "collection and unlock collection", ChatColor.GRAY + "rewards!"));
             }
         }
     }
-    
+
     static {
-        INTERIOR = new int[] { 10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43 };
+        INTERIOR = new int[]{10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43};
     }
 }

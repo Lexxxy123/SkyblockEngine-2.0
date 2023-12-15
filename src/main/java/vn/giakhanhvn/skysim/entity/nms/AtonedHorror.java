@@ -1,15 +1,21 @@
 package vn.giakhanhvn.skysim.entity.nms;
 
 import org.bukkit.block.Block;
+
 import java.util.Iterator;
+
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
 import vn.giakhanhvn.skysim.entity.EntityDropType;
+
 import java.util.ArrayList;
+
 import vn.giakhanhvn.skysim.entity.EntityDrop;
+
 import java.util.List;
+
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.Color;
 import org.bukkit.inventory.ItemStack;
@@ -45,20 +51,21 @@ import org.bukkit.entity.Zombie;
 import net.minecraft.server.v1_8_R3.World;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+
 import java.util.UUID;
+
 import vn.giakhanhvn.skysim.entity.SEntity;
 import org.bukkit.Location;
 import vn.giakhanhvn.skysim.entity.ZombieStatistics;
 import vn.giakhanhvn.skysim.entity.EntityFunction;
 import net.minecraft.server.v1_8_R3.EntityZombie;
 
-public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunction, ZombieStatistics, SlayerBoss
-{
+public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunction, ZombieStatistics, SlayerBoss {
     private static final TieredValue<Double> MAX_HEALTH_VALUES;
     private static final TieredValue<Double> DAMAGE_VALUES;
     private static final TieredValue<Double> SPEED_VALUES;
     private final int tier;
-    private boolean enraged;
+    private final boolean enraged;
     private int circlus;
     private boolean boomboom;
     private boolean getloc;
@@ -69,9 +76,9 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
     private SEntity hologram_name;
     private SEntity armorStand1;
     private final UUID spawnerUUID;
-    
+
     public AtonedHorror(final Integer tier, final UUID spawnerUUID) {
-        super((World)((CraftWorld)Bukkit.getPlayer(spawnerUUID).getWorld()).getHandle());
+        super(((CraftWorld) Bukkit.getPlayer(spawnerUUID).getWorld()).getHandle());
         this.tier = tier;
         this.boomboom = false;
         this.Cooldown = true;
@@ -80,7 +87,7 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
         this.end = System.currentTimeMillis() + 180000L;
         this.spawnerUUID = spawnerUUID;
     }
-    
+
     public AtonedHorror(final World world) {
         super(world);
         this.tier = 1;
@@ -91,14 +98,14 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
         this.end = System.currentTimeMillis() + 180000L;
         this.spawnerUUID = UUID.randomUUID();
     }
-    
+
     public void t_() {
         super.t_();
         final Player player = Bukkit.getPlayer(this.spawnerUUID);
         if (player == null) {
             return;
         }
-        if (((Zombie)this.bukkitEntity).getWorld() == player.getWorld() && this.getBukkitEntity().getLocation().distance(player.getLocation()) >= 35.0 && SUtil.random(0, 10) == 0) {
+        if (((Zombie) this.bukkitEntity).getWorld() == player.getWorld() && this.getBukkitEntity().getLocation().distance(player.getLocation()) >= 35.0 && SUtil.random(0, 10) == 0) {
             if (this.boomboom) {
                 return;
             }
@@ -106,23 +113,23 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
         }
         if (System.currentTimeMillis() > this.end) {
             User.getUser(player.getUniqueId()).failSlayerQuest();
-            ((Zombie)this.bukkitEntity).remove();
+            ((Zombie) this.bukkitEntity).remove();
             this.hologram.remove();
             return;
         }
         final net.minecraft.server.v1_8_R3.Entity entity = this.getBukkitEntity().getHandle();
         final double height = entity.getBoundingBox().e - entity.getBoundingBox().b;
         this.hologram_name.getEntity().teleport(this.getBukkitEntity().getLocation().clone().add(0.0, height, 0.0));
-        this.hologram_name.getEntity().setCustomName(Sputnik.trans(Sputnik.entityNameTag((LivingEntity)this.getBukkitEntity(), Sputnik.buildcustomString(this.getEntityName(), 0, true))));
+        this.hologram_name.getEntity().setCustomName(Sputnik.trans(Sputnik.entityNameTag((LivingEntity) this.getBukkitEntity(), Sputnik.buildcustomString(this.getEntityName(), 0, true))));
         this.hologram.getEntity().teleport(this.getBukkitEntity().getLocation().clone().add(0.0, 2.3, 0.0));
         if (!this.boomboom) {
             this.hologram.getEntity().setCustomName(ChatColor.RED + SUtil.getFormattedTime(this.end - System.currentTimeMillis(), 1000));
         }
-        ((Zombie)this.bukkitEntity).setTarget((LivingEntity)player);
-        this.getBukkitEntity().getWorld().spigot().playEffect(this.getBukkitEntity().getLocation(), Effect.FIREWORKS_SPARK, 0, 1, (float)SUtil.random(-1.0, 1.0), 1.0f, (float)SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
-        this.getBukkitEntity().getWorld().spigot().playEffect(this.getBukkitEntity().getLocation(), Effect.SPELL, 0, 1, (float)SUtil.random(-1.0, 1.0), 1.0f, (float)SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
+        ((Zombie) this.bukkitEntity).setTarget(player);
+        this.getBukkitEntity().getWorld().spigot().playEffect(this.getBukkitEntity().getLocation(), Effect.FIREWORKS_SPARK, 0, 1, (float) SUtil.random(-1.0, 1.0), 1.0f, (float) SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
+        this.getBukkitEntity().getWorld().spigot().playEffect(this.getBukkitEntity().getLocation(), Effect.SPELL, 0, 1, (float) SUtil.random(-1.0, 1.0), 1.0f, (float) SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
         if (this.boomboom) {
-            this.getBukkitEntity().getWorld().spigot().playEffect(this.getBukkitEntity().getLocation(), Effect.VILLAGER_THUNDERCLOUD, 0, 1, (float)SUtil.random(0.0, 1.0), 1.0f, (float)SUtil.random(0.0, 1.0), 0.0f, 1, 100);
+            this.getBukkitEntity().getWorld().spigot().playEffect(this.getBukkitEntity().getLocation(), Effect.VILLAGER_THUNDERCLOUD, 0, 1, (float) SUtil.random(0.0, 1.0), 1.0f, (float) SUtil.random(0.0, 1.0), 0.0f, 1, 100);
         }
         if (this.boomboom) {
             this.getBukkitEntity().teleport(this.flog);
@@ -138,7 +145,7 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
         if (this.tier >= 1 && !this.boomboom && SUtil.random(0, 100) == 2 && !this.Cooldown) {
             this.boomboom = true;
             this.circlus = 1;
-            this.tptoground((Entity)this.getBukkitEntity());
+            this.tptoground(this.getBukkitEntity());
             this.flog = this.getBukkitEntity().getLocation().clone().add(0.0, 0.0, 0.0);
             this.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).setValue(0.0);
             this.hologram.getEntity().setCustomName(ChatColor.WHITE + "Boom: " + ChatColor.RED + "05");
@@ -164,7 +171,7 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
             SUtil.delay(() -> this.hologram.getEntity().setCustomName(ChatColor.WHITE + "Boom! " + ChatColor.RED + "02"), 60L);
             SUtil.delay(() -> this.hologram.getEntity().setCustomName(ChatColor.WHITE + "Boom! " + ChatColor.RED + "01"), 80L);
             SUtil.delay(() -> this.hologram.getEntity().setCustomName(ChatColor.WHITE + "Boom! " + ChatColor.RED + "00"), 100L);
-            SUtil.delay(() -> this.boom((Entity)this.bukkitEntity), 105L);
+            SUtil.delay(() -> this.boom(this.bukkitEntity), 105L);
             SUtil.delay(() -> this.boomboom = false, 120L);
             SUtil.delay(() -> this.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).setValue(this.getMovementSpeed()), 121L);
             SUtil.delay(() -> this.hologram.getEntity().setCustomName(ChatColor.RED + SUtil.getFormattedTime(this.end - System.currentTimeMillis(), 1000)), 122L);
@@ -175,36 +182,36 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
                         AtonedHorror.this.Cooldown = false;
                     }
                 }
-            }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 400L), 124L);
+            }.runTaskLater(SkySimEngine.getPlugin(), 400L), 124L);
         }
     }
-    
+
     public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
         if (e.getDamager() instanceof Arrow) {
             e.setCancelled(true);
             return;
         }
-        final Entity en = (Entity)sEntity.getEntity();
+        final Entity en = sEntity.getEntity();
         final Vector v = new Vector(0, 0, 0);
         SUtil.delay(() -> en.setVelocity(v), 1L);
     }
-    
+
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
-        EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 70);
-        entity.setMetadata("BOSS_OWNER_" + Bukkit.getPlayer(this.getSpawnerUUID()).getUniqueId().toString(), (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+        EntityManager.DEFENSE_PERCENTAGE.put(entity, 70);
+        entity.setMetadata("BOSS_OWNER_" + Bukkit.getPlayer(this.getSpawnerUUID()).getUniqueId().toString(), new FixedMetadataValue(SkySimEngine.getPlugin(), true));
         SUtil.delay(() -> this.Cooldown = false, 350L);
         this.hologram = new SEntity(entity.getLocation().add(0.0, 2.3, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND);
-        entity.setMetadata("NoAffect", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        ((ArmorStand)this.hologram.getEntity()).setVisible(false);
-        ((ArmorStand)this.hologram.getEntity()).setGravity(false);
+        entity.setMetadata("NoAffect", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        ((ArmorStand) this.hologram.getEntity()).setVisible(false);
+        ((ArmorStand) this.hologram.getEntity()).setGravity(false);
         this.hologram.getEntity().setCustomNameVisible(true);
-        entity.setMetadata("notDisplay", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+        entity.setMetadata("notDisplay", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
         this.hologram_name = new SEntity(entity.getLocation().add(0.0, 2.0, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND);
-        ((ArmorStand)this.hologram_name.getEntity()).setVisible(false);
+        ((ArmorStand) this.hologram_name.getEntity()).setVisible(false);
         final net.minecraft.server.v1_8_R3.Entity e = this.getBukkitEntity().getHandle();
         final double height = e.getBoundingBox().e - e.getBoundingBox().b;
-        ((ArmorStand)this.hologram_name.getEntity()).setGravity(false);
+        ((ArmorStand) this.hologram_name.getEntity()).setGravity(false);
         this.hologram_name.getEntity().setCustomNameVisible(true);
         new BukkitRunnable() {
             public void run() {
@@ -214,7 +221,7 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
                     this.cancel();
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
         if (this.tier >= 1) {
             new BukkitRunnable() {
                 public void run() {
@@ -234,7 +241,7 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
                         return;
                     }
                     final Vector playersVector = AtonedHorror.this.createS(player).toVector();
-                    final ArmorStand armorStand1 = (ArmorStand)entity.getWorld().spawnEntity(entity.getLocation().add(0.0, 1.5, 0.0), EntityType.ARMOR_STAND);
+                    final ArmorStand armorStand1 = (ArmorStand) entity.getWorld().spawnEntity(entity.getLocation().add(0.0, 1.5, 0.0), EntityType.ARMOR_STAND);
                     armorStand1.getEquipment().setHelmet(SItem.of(SMaterial.TNT).getStack());
                     armorStand1.setGravity(true);
                     armorStand1.setVisible(false);
@@ -243,13 +250,13 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
                     final Vector vectorBetween = playersVector.subtract(mobsVector);
                     vectorBetween.divide(new Vector(10, 10, 10));
                     vectorBetween.add(new Vector(0.0, 0.3, 0.0));
-                    final int id = Bukkit.getScheduler().scheduleSyncRepeatingTask((Plugin)SkySimEngine.getPlugin(), () -> armorStand1.setVelocity(vectorBetween), 2L, 2L);
-                    Bukkit.getScheduler().scheduleSyncDelayedTask((Plugin)SkySimEngine.getPlugin(), () -> Bukkit.getScheduler().cancelTask(id), 8L);
-                    armorStand1.setMetadata("BoomBoomAtoned", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-                    final EntityLiving nms = ((CraftLivingEntity)armorStand1).getHandle();
-                    AtonedHorror.this.aA((Entity)armorStand1);
+                    final int id = Bukkit.getScheduler().scheduleSyncRepeatingTask(SkySimEngine.getPlugin(), () -> armorStand1.setVelocity(vectorBetween), 2L, 2L);
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(SkySimEngine.getPlugin(), () -> Bukkit.getScheduler().cancelTask(id), 8L);
+                    armorStand1.setMetadata("BoomBoomAtoned", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+                    final EntityLiving nms = ((CraftLivingEntity) armorStand1).getHandle();
+                    AtonedHorror.this.aA(armorStand1);
                 }
-            }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 20L, 40L);
+            }.runTaskTimer(SkySimEngine.getPlugin(), 20L, 40L);
         }
         if (this.tier >= 1) {
             new BukkitRunnable() {
@@ -261,48 +268,47 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
                     if (entity.getNoDamageTicks() == 0 && !AtonedHorror.this.boomboom && entity.getHealth() != entity.getMaxHealth()) {
                         if (entity.getHealth() + 55000.0 >= entity.getMaxHealth()) {
                             entity.setHealth(entity.getMaxHealth());
-                        }
-                        else {
+                        } else {
                             entity.setHealth(entity.getHealth() + 55000.0);
                         }
                     }
                 }
-            }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 20L, 10L);
+            }.runTaskTimer(SkySimEngine.getPlugin(), 20L, 10L);
         }
     }
-    
+
     public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
         this.hologram.remove();
         SUtil.delay(() -> this.hologram_name.remove(), 20L);
     }
-    
+
     public String getEntityName() {
         return ChatColor.RED + "☠ " + ChatColor.WHITE + "Atoned Horror";
     }
-    
+
     public double getEntityMaxHealth() {
         return AtonedHorror.MAX_HEALTH_VALUES.getByNumber(this.tier);
     }
-    
+
     public double getDamageDealt() {
         return AtonedHorror.DAMAGE_VALUES.getByNumber(this.tier) * 1.1;
     }
-    
+
     public double getMovementSpeed() {
         return AtonedHorror.SPEED_VALUES.getByNumber(this.tier);
     }
-    
+
     public SEntityEquipment getEntityEquipment() {
         return new SEntityEquipment(SUtil.enchant(new ItemStack(Material.IRON_SWORD)), SItem.of(SMaterial.ATONED_HEAD).getStack(), SUtil.enchant(new ItemStack(Material.DIAMOND_CHESTPLATE)), SUtil.enchant(SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_LEGGINGS), Color.fromRGB(16777215))), SUtil.enchant(SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_BOOTS), Color.fromRGB(16777215))));
     }
-    
+
     public LivingEntity spawn(final Location location) {
-        this.world = (World)((CraftWorld)location.getWorld()).getHandle();
+        this.world = ((CraftWorld) location.getWorld()).getHandle();
         this.setPosition(location.getX(), location.getY(), location.getZ());
-        this.world.addEntity((net.minecraft.server.v1_8_R3.Entity)this, CreatureSpawnEvent.SpawnReason.CUSTOM);
-        return (LivingEntity)this.getBukkitEntity();
+        this.world.addEntity(this, CreatureSpawnEvent.SpawnReason.CUSTOM);
+        return (LivingEntity) this.getBukkitEntity();
     }
-    
+
     public List<EntityDrop> drops() {
         final List<EntityDrop> drops = new ArrayList<EntityDrop>();
         int revFlesh = SUtil.random(1, 3);
@@ -338,23 +344,23 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
         }
         return drops;
     }
-    
+
     public double getXPDropped() {
         return 2000.0;
     }
-    
+
     public boolean isBaby() {
         return false;
     }
-    
+
     public boolean isVillager() {
         return false;
     }
-    
+
     public UUID getSpawnerUUID() {
         return this.spawnerUUID;
     }
-    
+
     public void boom(final Entity entity) {
         if (entity.isDead()) {
             return;
@@ -363,25 +369,24 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
         entity.getWorld().playEffect(entity.getLocation(), Effect.EXPLOSION_HUGE, 3);
         entity.getWorld().playEffect(entity.getLocation(), Effect.EXPLOSION_HUGE, 3);
         SUtil.lightningLater(entity.getLocation(), true, 1L);
-        SUtil.lightningLater(entity.getLocation().add((double)SUtil.random(-7, 7), 0.0, (double)SUtil.random(-7, 7)), true, 1L);
-        SUtil.lightningLater(entity.getLocation().add((double)SUtil.random(-7, 7), 0.0, (double)SUtil.random(-7, 7)), true, 2L);
-        SUtil.lightningLater(entity.getLocation().add((double)SUtil.random(-7, 7), 0.0, (double)SUtil.random(-7, 7)), true, 3L);
-        SUtil.lightningLater(entity.getLocation().add((double)SUtil.random(-7, 7), 0.0, (double)SUtil.random(-7, 7)), true, 4L);
+        SUtil.lightningLater(entity.getLocation().add(SUtil.random(-7, 7), 0.0, SUtil.random(-7, 7)), true, 1L);
+        SUtil.lightningLater(entity.getLocation().add(SUtil.random(-7, 7), 0.0, SUtil.random(-7, 7)), true, 2L);
+        SUtil.lightningLater(entity.getLocation().add(SUtil.random(-7, 7), 0.0, SUtil.random(-7, 7)), true, 3L);
+        SUtil.lightningLater(entity.getLocation().add(SUtil.random(-7, 7), 0.0, SUtil.random(-7, 7)), true, 4L);
         for (final Entity e : entity.getNearbyEntities(7.0, 7.0, 7.0)) {
             if (e instanceof LivingEntity && !e.hasMetadata("NoAffect")) {
                 e.getWorld().playSound(e.getLocation(), Sound.EXPLODE, 1.0f, 1.0f);
                 e.getWorld().playEffect(e.getLocation(), Effect.EXPLOSION_LARGE, 3);
                 SUtil.lightningLater(e.getLocation(), true, 1L);
-                if (e instanceof Player && ((Player)e).getGameMode() != GameMode.CREATIVE && ((Player)e).getGameMode() != GameMode.SPECTATOR) {
+                if (e instanceof Player && ((Player) e).getGameMode() != GameMode.CREATIVE && ((Player) e).getGameMode() != GameMode.SPECTATOR) {
                     User.getUser(e.getUniqueId()).kill(EntityDamageEvent.DamageCause.ENTITY_ATTACK, entity);
-                }
-                else {
-                    ((LivingEntity)e).damage(((LivingEntity)e).getHealth(), e);
+                } else {
+                    ((LivingEntity) e).damage(((LivingEntity) e).getHealth(), e);
                 }
             }
         }
     }
-    
+
     public Location createS(final Player player) {
         final Location loc = player.getLocation();
         final double xl = loc.getX();
@@ -396,7 +401,7 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
         }
         return this.getBlockLoc(this.getBlockLoc(loc.getBlock().getLocation().clone())).clone().add(0.0, 0.0, 0.0);
     }
-    
+
     public void getBlockAt(final Player player) {
         final Location returnloc = null;
         final Location loc = player.getLocation();
@@ -404,38 +409,39 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
         final double yl = loc.getY();
         final double zl = loc.getZ();
         final Location location = new Location(player.getWorld(), xl, yl, zl);
-        for (int y = location.getBlockY(); y > 0 && location.subtract(0.0, 1.0, 0.0).getBlock().getType() == Material.AIR; --y) {}
+        for (int y = location.getBlockY(); y > 0 && location.subtract(0.0, 1.0, 0.0).getBlock().getType() == Material.AIR; --y) {
+        }
     }
-    
+
     public void test(final Location loc) {
         final Location l = this.getBlockLoc(loc.getBlock().getLocation().clone());
-        this.createClay(l.clone(), (byte)14);
-        this.createClay(l.clone().add(0.0, 0.0, 1.0), (byte)14);
-        this.createClay(l.clone().add(1.0, 0.0, 0.0), (byte)14);
-        this.createClay(l.clone().add(0.0, 0.0, -1.0), (byte)14);
-        this.createClay(l.clone().add(-1.0, 0.0, 0.0), (byte)14);
-        this.createClay(l.clone().add(0.0, 0.0, -2.0), (byte)0);
-        this.createClay(l.clone().add(1.0, 0.0, -1.0), (byte)0);
-        this.createClay(l.clone().add(2.0, 0.0, 0.0), (byte)0);
-        this.createClay(l.clone().add(1.0, 0.0, 1.0), (byte)0);
-        this.createClay(l.clone().add(0.0, 0.0, 2.0), (byte)0);
-        this.createClay(l.clone().add(-1.0, 0.0, 1.0), (byte)0);
-        this.createClay(l.clone().add(-2.0, 0.0, 0.0), (byte)0);
-        this.createClay(l.clone().add(-1.0, 0.0, -1.0), (byte)0);
-        this.createClay(l.clone().add(1.0, 0.0, -2.0), (byte)8);
-        this.createClay(l.clone().add(2.0, 0.0, -1.0), (byte)8);
-        this.createClay(l.clone().add(2.0, 0.0, 1.0), (byte)8);
-        this.createClay(l.clone().add(1.0, 0.0, 2.0), (byte)8);
-        this.createClay(l.clone().add(-1.0, 0.0, 2.0), (byte)8);
-        this.createClay(l.clone().add(-2.0, 0.0, 1.0), (byte)8);
-        this.createClay(l.clone().add(-2.0, 0.0, -1.0), (byte)8);
-        this.createClay(l.clone().add(-1.0, 0.0, -2.0), (byte)8);
+        this.createClay(l.clone(), (byte) 14);
+        this.createClay(l.clone().add(0.0, 0.0, 1.0), (byte) 14);
+        this.createClay(l.clone().add(1.0, 0.0, 0.0), (byte) 14);
+        this.createClay(l.clone().add(0.0, 0.0, -1.0), (byte) 14);
+        this.createClay(l.clone().add(-1.0, 0.0, 0.0), (byte) 14);
+        this.createClay(l.clone().add(0.0, 0.0, -2.0), (byte) 0);
+        this.createClay(l.clone().add(1.0, 0.0, -1.0), (byte) 0);
+        this.createClay(l.clone().add(2.0, 0.0, 0.0), (byte) 0);
+        this.createClay(l.clone().add(1.0, 0.0, 1.0), (byte) 0);
+        this.createClay(l.clone().add(0.0, 0.0, 2.0), (byte) 0);
+        this.createClay(l.clone().add(-1.0, 0.0, 1.0), (byte) 0);
+        this.createClay(l.clone().add(-2.0, 0.0, 0.0), (byte) 0);
+        this.createClay(l.clone().add(-1.0, 0.0, -1.0), (byte) 0);
+        this.createClay(l.clone().add(1.0, 0.0, -2.0), (byte) 8);
+        this.createClay(l.clone().add(2.0, 0.0, -1.0), (byte) 8);
+        this.createClay(l.clone().add(2.0, 0.0, 1.0), (byte) 8);
+        this.createClay(l.clone().add(1.0, 0.0, 2.0), (byte) 8);
+        this.createClay(l.clone().add(-1.0, 0.0, 2.0), (byte) 8);
+        this.createClay(l.clone().add(-2.0, 0.0, 1.0), (byte) 8);
+        this.createClay(l.clone().add(-2.0, 0.0, -1.0), (byte) 8);
+        this.createClay(l.clone().add(-1.0, 0.0, -2.0), (byte) 8);
     }
-    
+
     public void createClay(final Location loc, final byte color) {
         final Block cacheBlock = loc.getBlock();
         for (final Player p : loc.getWorld().getPlayers()) {
-            if (cacheBlock.getType().equals((Object)Material.AIR)) {
+            if (cacheBlock.getType().equals(Material.AIR)) {
                 final Location cacheLocation = cacheBlock.getLocation().clone();
                 for (int y = cacheLocation.getBlockY(); y > 0; --y) {
                     if (cacheLocation.subtract(0.0, 1.0, 0.0).getBlock().getType() != Material.AIR) {
@@ -444,8 +450,7 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
                         break;
                     }
                 }
-            }
-            else if (cacheBlock.getType() != Material.AIR && cacheBlock.getLocation().add(0.0, 1.0, 0.0).getBlock().getType() != Material.AIR) {
+            } else if (cacheBlock.getType() != Material.AIR && cacheBlock.getLocation().add(0.0, 1.0, 0.0).getBlock().getType() != Material.AIR) {
                 final Location cacheLocation = cacheBlock.getLocation().clone();
                 for (int y = cacheLocation.getBlockY(); y > 0; ++y) {
                     if (cacheLocation.add(0.0, 1.0, 0.0).getBlock().getType() != Material.AIR) {
@@ -454,36 +459,31 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
                         break;
                     }
                 }
-            }
-            else {
+            } else {
                 this.sendPacketBlock(loc, color, p);
                 SUtil.delay(() -> loc.getBlock().getState().update(), 30L);
             }
         }
     }
-    
+
     public void sendPacketBlock(final Location loc, final byte color, final Player p) {
         if (loc.getBlock().getType().toString().toUpperCase().contains("STAIR")) {
             if (color == 14) {
                 p.sendBlockChange(loc, Material.ACACIA_STAIRS, loc.getBlock().getState().getData().getData());
-            }
-            else {
+            } else {
                 p.sendBlockChange(loc, Material.QUARTZ_STAIRS, loc.getBlock().getState().getData().getData());
             }
-        }
-        else if (loc.getBlock().getType().toString().toUpperCase().contains("SLAB") || loc.getBlock().getType().toString().toUpperCase().contains("STEP")) {
+        } else if (loc.getBlock().getType().toString().toUpperCase().contains("SLAB") || loc.getBlock().getType().toString().toUpperCase().contains("STEP")) {
             if (color == 14) {
-                p.sendBlockChange(loc, Material.WOOD_STEP, (byte)4);
+                p.sendBlockChange(loc, Material.WOOD_STEP, (byte) 4);
+            } else {
+                p.sendBlockChange(loc, Material.STEP, (byte) 7);
             }
-            else {
-                p.sendBlockChange(loc, Material.STEP, (byte)7);
-            }
-        }
-        else {
+        } else {
             p.sendBlockChange(loc, Material.STAINED_CLAY, color);
         }
     }
-    
+
     public Location getBlockLoc(final Location l) {
         double x = l.getX() + 0.5;
         double z = l.getZ() + 0.5;
@@ -496,7 +496,7 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
         final Location loc = new Location(l.getWorld(), x, l.getY(), z);
         return loc;
     }
-    
+
     public void tptoground(final Entity e) {
         final Location loc = e.getLocation();
         final double xl = loc.getX();
@@ -510,7 +510,7 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
             }
         }
     }
-    
+
     public void cylinder(final Location loc, final int r) {
         final int cx = loc.getBlockX();
         final int cy = loc.getBlockY();
@@ -520,13 +520,13 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
         for (int x = cx - r; x <= cx + r; ++x) {
             for (int z = cz - r; z <= cz + r; ++z) {
                 if ((cx - x) * (cx - x) + (cz - z) * (cz - z) <= rSquared) {
-                    final Location l = new Location(w, (double)x, (double)cy, (double)z);
+                    final Location l = new Location(w, x, cy, z);
                     this.sendPacketBedrock(l);
                 }
             }
         }
     }
-    
+
     public void cylinderReset(final Location loc, final int r) {
         final int cx = loc.getBlockX();
         final int cy = loc.getBlockY();
@@ -536,17 +536,17 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
         for (int x = cx - r; x <= cx + r; ++x) {
             for (int z = cz - r; z <= cz + r; ++z) {
                 if ((cx - x) * (cx - x) + (cz - z) * (cz - z) <= rSquared) {
-                    final Location l = new Location(w, (double)x, (double)cy, (double)z);
+                    final Location l = new Location(w, x, cy, z);
                     l.getBlock().getState().update();
                 }
             }
         }
     }
-    
+
     public void createBedrock(final Location loc) {
         final Block cacheBlock = loc.getBlock();
         for (final Player p : loc.getWorld().getPlayers()) {
-            if (cacheBlock.getType().equals((Object)Material.AIR)) {
+            if (cacheBlock.getType().equals(Material.AIR)) {
                 final Location cacheLocation = cacheBlock.getLocation().clone();
                 for (int y = cacheLocation.getBlockY(); y > 0; --y) {
                     if (cacheLocation.subtract(0.0, 1.0, 0.0).getBlock().getType() != Material.AIR) {
@@ -554,8 +554,7 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
                         break;
                     }
                 }
-            }
-            else if (cacheBlock.getType() != Material.AIR && cacheBlock.getLocation().add(0.0, 1.0, 0.0).getBlock().getType() != Material.AIR) {
+            } else if (cacheBlock.getType() != Material.AIR && cacheBlock.getLocation().add(0.0, 1.0, 0.0).getBlock().getType() != Material.AIR) {
                 final Location cacheLocation = cacheBlock.getLocation().clone();
                 for (int y = cacheLocation.getBlockY(); y > 0; ++y) {
                     if (cacheLocation.add(0.0, 1.0, 0.0).getBlock().getType() != Material.AIR) {
@@ -563,40 +562,37 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
                         break;
                     }
                 }
-            }
-            else {
+            } else {
                 this.sendPacketBedrock(loc);
             }
         }
     }
-    
+
     public void sendPacket(final org.bukkit.World w, final Location l) {
         for (final Player p : w.getPlayers()) {
-            p.sendBlockChange(l, Material.BEDROCK, (byte)0);
+            p.sendBlockChange(l, Material.BEDROCK, (byte) 0);
         }
     }
-    
+
     public void sendPacketBedrock(final Location loc) {
         if (loc.getBlock().getType() == Material.AIR) {
             return;
         }
         if (loc.getBlock().getType().toString().toUpperCase().contains("STAIR")) {
             this.send(loc, Material.NETHER_BRICK_STAIRS, loc.getBlock().getState().getData().getData(), loc.getWorld());
-        }
-        else if (loc.getBlock().getType().toString().toUpperCase().contains("SLAB") || loc.getBlock().getType().toString().toUpperCase().contains("STEP")) {
-            this.send(loc, Material.STEP, (byte)6, loc.getWorld());
-        }
-        else {
+        } else if (loc.getBlock().getType().toString().toUpperCase().contains("SLAB") || loc.getBlock().getType().toString().toUpperCase().contains("STEP")) {
+            this.send(loc, Material.STEP, (byte) 6, loc.getWorld());
+        } else {
             this.sendPacket(loc.getWorld(), loc);
         }
     }
-    
+
     public void send(final Location loc, final Material mat, final byte data, final org.bukkit.World w) {
         for (final Player p : w.getPlayers()) {
             p.sendBlockChange(loc, mat, data);
         }
     }
-    
+
     public void aA(final Entity entity) {
         new BukkitRunnable() {
             public void run() {
@@ -609,24 +605,23 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
                     for (final Entity e : entity.getNearbyEntities(4.0, 3.0, 4.0)) {
                         if (e instanceof LivingEntity && !e.hasMetadata("NoAffect")) {
                             if (e instanceof Player) {
-                                User.getUser(e.getUniqueId()).damage(((Player)e).getMaxHealth() * 10.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, entity);
-                                ((LivingEntity)e).damage(0.1, entity);
-                            }
-                            else {
-                                ((LivingEntity)e).damage((double)SUtil.random(0, 10), entity);
+                                User.getUser(e.getUniqueId()).damage(((Player) e).getMaxHealth() * 10.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, entity);
+                                ((LivingEntity) e).damage(0.1, entity);
+                            } else {
+                                ((LivingEntity) e).damage(SUtil.random(0, 10), entity);
                             }
                         }
                     }
                     entity.remove();
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
     }
-    
+
     public int getTier() {
         return this.tier;
     }
-    
+
     static {
         MAX_HEALTH_VALUES = new TieredValue<Double>(1.0E8, 1.0E8, 1.0E8, 1.0E8);
         DAMAGE_VALUES = new TieredValue<Double>(1500000.0, 1500000.0, 1500000.0, 1500000.0);

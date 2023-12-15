@@ -6,8 +6,7 @@ import org.bukkit.Effect;
 import org.bukkit.command.ConsoleCommandSender;
 
 @CommandParameters(description = "Play a Bukkit enum sound.", usage = "/playenumsound <sound>")
-public class PlayEnumEffectCommand extends SCommand
-{
+public class PlayEnumEffectCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (args.length < 1 || args.length > 2) {
@@ -23,7 +22,7 @@ public class PlayEnumEffectCommand extends SCommand
             count = Integer.parseInt(args[1]);
         }
         for (int i = 0; i < count; ++i) {
-            player.getWorld().playEffect(player.getLocation(), effect, (Object)effect.getData());
+            player.getWorld().playEffect(player.getLocation(), effect, (Object) effect.getData());
         }
         player.sendMessage(ChatColor.GRAY + "Played " + effect.name() + ".");
     }

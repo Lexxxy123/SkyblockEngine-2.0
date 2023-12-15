@@ -1,26 +1,31 @@
 package vn.giakhanhvn.skysim.gui;
 
 import java.util.HashMap;
+
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.OfflinePlayer;
 import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.plugin.Plugin;
 import vn.giakhanhvn.skysim.SkySimEngine;
+
 import java.util.Iterator;
+
 import vn.giakhanhvn.skysim.sequence.SoundSequenceType;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
+
 import java.util.List;
+
 import vn.giakhanhvn.skysim.util.Sputnik;
 import vn.giakhanhvn.skysim.user.User;
 import org.bukkit.scheduler.BukkitRunnable;
 import vn.giakhanhvn.skysim.util.TradeUtil;
 import org.bukkit.entity.Player;
+
 import java.util.UUID;
 import java.util.Map;
 
-public class TradeMenu
-{
+public class TradeMenu {
     public static final Map<UUID, Boolean> tradeClose;
     public static final Map<UUID, Player> tradeClosePlayerName;
     public static final Map<UUID, Integer> tradeP1Countdown;
@@ -30,16 +35,16 @@ public class TradeMenu
     public static final Map<UUID, Boolean> successTrade;
     public static final Map<UUID, Boolean> player1TradeUUID;
     public static final Map<UUID, Boolean> player2TradeUUID;
-    private Player p1;
-    private Player p2;
-    private UUID tradeUUID;
-    
+    private final Player p1;
+    private final Player p2;
+    private final UUID tradeUUID;
+
     public TradeMenu(final Player player1, final Player player2, final UUID uuid) {
         this.p1 = player1;
         this.p2 = player2;
         this.tradeUUID = uuid;
     }
-    
+
     public static void triggerCloseEvent(final UUID tradeUUID, final boolean isSuccess, final Player player) {
         if (TradeMenu.tradeClose.containsKey(tradeUUID)) {
             return;
@@ -47,13 +52,12 @@ public class TradeMenu
         if (!isSuccess) {
             TradeMenu.tradeClose.put(tradeUUID, isSuccess);
             TradeMenu.tradeClosePlayerName.put(tradeUUID, player);
-        }
-        else {
+        } else {
             TradeMenu.tradeClose.put(tradeUUID, isSuccess);
             TradeMenu.tradeClosePlayerName.put(tradeUUID, player);
         }
     }
-    
+
     public void open() {
         if (this.p1.getUniqueId() == this.p2.getUniqueId()) {
             return;
@@ -69,8 +73,7 @@ public class TradeMenu
                 if (!TradeMenu.this.p1.isOnline() || !TradeMenu.this.p2.isOnline()) {
                     if (!TradeMenu.this.p1.isOnline()) {
                         TradeMenu.triggerCloseEvent(TradeMenu.this.tradeUUID, false, TradeMenu.this.p1);
-                    }
-                    else if (!TradeMenu.this.p2.isOnline()) {
+                    } else if (!TradeMenu.this.p2.isOnline()) {
                         TradeMenu.triggerCloseEvent(TradeMenu.this.tradeUUID, false, TradeMenu.this.p2);
                     }
                 }
@@ -83,15 +86,13 @@ public class TradeMenu
                             TradeMenu.this.p1.sendMessage(Sputnik.trans("&cYou cancelled the trade!"));
                             TradeMenu.this.p2.sendMessage(Sputnik.trans("&b" + TradeMenu.this.p1.getName() + " &ccancelled the trade!"));
                             TradeMenu.this.p2.closeInventory();
-                        }
-                        else {
+                        } else {
                             TradeMenu.this.p2.sendMessage(Sputnik.trans("&cYou cancelled the trade!"));
                             TradeMenu.this.p1.sendMessage(Sputnik.trans("&b" + TradeMenu.this.p2.getName() + " &ccancelled the trade!"));
                             TradeMenu.this.p1.closeInventory();
                         }
                         TradeMenu.this.clean();
-                    }
-                    else if (TradeMenu.successTrade.containsKey(TradeMenu.this.tradeUUID)) {
+                    } else if (TradeMenu.successTrade.containsKey(TradeMenu.this.tradeUUID)) {
                         if (TradeMenu.successTrade.get(TradeMenu.this.tradeUUID)) {
                             final List<ItemStack> itemlist1 = TradeGUI.itemOfferP1.get(TradeMenu.this.tradeUUID);
                             final List<ItemStack> itemlist2 = TradeGUI.itemOfferP2.get(TradeMenu.this.tradeUUID);
@@ -105,16 +106,14 @@ public class TradeMenu
                         for (final ItemStack itemRece : itemlist1) {
                             if (!CraftItemStack.asNMSCopy(itemRece).getTag().hasKey("data_bits")) {
                                 sb1.append("\n &a&l+ &8" + itemRece.getAmount() + "x &r" + itemRece.getItemMeta().getDisplayName());
-                            }
-                            else {
+                            } else {
                                 sb1.append("\n &a&l+ &8" + itemRece.getItemMeta().getDisplayName());
                             }
                         }
                         for (final ItemStack itemTaken : itemlist2) {
                             if (!CraftItemStack.asNMSCopy(itemTaken).getTag().hasKey("data_bits")) {
                                 sb1.append("\n &c&l- &8" + itemTaken.getAmount() + "x &r" + itemTaken.getItemMeta().getDisplayName());
-                            }
-                            else {
+                            } else {
                                 sb1.append("\n &c&l- &8" + itemTaken.getItemMeta().getDisplayName());
                             }
                         }
@@ -124,16 +123,14 @@ public class TradeMenu
                         for (final ItemStack itemRece2 : itemlist2) {
                             if (!CraftItemStack.asNMSCopy(itemRece2).getTag().hasKey("data_bits")) {
                                 sb2.append("\n &a&l+ &8" + itemRece2.getAmount() + "x &r" + itemRece2.getItemMeta().getDisplayName());
-                            }
-                            else {
+                            } else {
                                 sb2.append("\n &a&l+ &8" + itemRece2.getItemMeta().getDisplayName());
                             }
                         }
                         for (final ItemStack itemTaken2 : itemlist1) {
                             if (!CraftItemStack.asNMSCopy(itemTaken2).getTag().hasKey("data_bits")) {
                                 sb2.append("\n &c&l- &8" + itemTaken2.getAmount() + "x &r" + itemTaken2.getItemMeta().getDisplayName());
-                            }
-                            else {
+                            } else {
                                 sb2.append("\n &c&l- &8" + itemTaken2.getItemMeta().getDisplayName());
                             }
                         }
@@ -151,9 +148,9 @@ public class TradeMenu
                     TradeMenu.this.returnToAllPlayers(TradeMenu.this.p1, TradeMenu.this.p2);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
     }
-    
+
     public void clean() {
         SUtil.delay(() -> {
             TradeMenu.player1TradeUUID.remove(this.p1.getUniqueId());
@@ -172,38 +169,36 @@ public class TradeMenu
             TradeUtil.trading.put(this.p2.getUniqueId(), false);
         }, 2L);
     }
-    
+
     public void returnToAllPlayers(final Player player1, final Player player2) {
         for (final ItemStack i : TradeGUI.itemOfferP1.get(this.tradeUUID)) {
             final net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(i);
             if (!nmsStack.getTag().hasKey("data_bits")) {
                 Sputnik.smartGiveItem(i, player1);
-            }
-            else {
+            } else {
                 final Economy econ = SkySimEngine.getEconomy();
-                econ.depositPlayer((OfflinePlayer)player1, (double)nmsStack.getTag().getLong("data_bits"));
+                econ.depositPlayer(player1, (double) nmsStack.getTag().getLong("data_bits"));
             }
         }
         for (final ItemStack i : TradeGUI.itemOfferP2.get(this.tradeUUID)) {
             final net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(i);
             if (!nmsStack.getTag().hasKey("data_bits")) {
                 Sputnik.smartGiveItem(i, player2);
-            }
-            else {
+            } else {
                 final Economy econ = SkySimEngine.getEconomy();
-                econ.depositPlayer((OfflinePlayer)player2, (double)nmsStack.getTag().getLong("data_bits"));
+                econ.depositPlayer(player2, (double) nmsStack.getTag().getLong("data_bits"));
             }
         }
     }
-    
+
     public Player getP1() {
         return this.p1;
     }
-    
+
     public Player getP2() {
         return this.p2;
     }
-    
+
     static {
         tradeClose = new HashMap<UUID, Boolean>();
         tradeClosePlayerName = new HashMap<UUID, Player>();

@@ -3,7 +3,9 @@ package vn.giakhanhvn.skysim.item.enchanting;
 import vn.giakhanhvn.skysim.item.ShapedRecipe;
 import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
 import vn.giakhanhvn.skysim.item.SMaterial;
+
 import java.util.Iterator;
+
 import vn.giakhanhvn.skysim.enchantment.Enchantment;
 import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.item.GenericItemType;
@@ -13,35 +15,34 @@ import vn.giakhanhvn.skysim.item.Enchantable;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
 import vn.giakhanhvn.skysim.item.MaterialStatistics;
 
-public class EnchantedBook implements MaterialStatistics, MaterialFunction, Enchantable
-{
+public class EnchantedBook implements MaterialStatistics, MaterialFunction, Enchantable {
     private static final MaterialQuantifiable PAPER_16;
-    
+
     @Override
     public String getDisplayName() {
         return "Enchanted Book";
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.COMMON;
     }
-    
+
     @Override
     public boolean isStackable() {
         return false;
     }
-    
+
     @Override
     public String getLore() {
         return "Use this on an item in an Anvil to apply it!";
     }
-    
+
     @Override
     public GenericItemType getType() {
         return GenericItemType.ITEM;
     }
-    
+
     @Override
     public void onInstanceUpdate(final SItem instance) {
         int max = 1;
@@ -77,7 +78,7 @@ public class EnchantedBook implements MaterialStatistics, MaterialFunction, Ench
                 break;
         }
     }
-    
+
     @Override
     public void load() {
         final SItem sitem = SItem.of(SMaterial.ENCHANTED_BOOK);
@@ -94,7 +95,7 @@ public class EnchantedBook implements MaterialStatistics, MaterialFunction, Ench
         recipe.set('8', SMaterial.HIDDEN_DIMOON_FRAG, 8);
         recipe.set('9', SMaterial.HIDDEN_DIMOON_FRAG, 8);
     }
-    
+
     static {
         PAPER_16 = new MaterialQuantifiable(SMaterial.PAPER, 16);
     }

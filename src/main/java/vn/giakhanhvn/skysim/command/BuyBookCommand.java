@@ -8,8 +8,7 @@ import org.bukkit.ChatColor;
 import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
 
 @CommandParameters(description = "", aliases = "purc", permission = "sse.cc")
-public class BuyBookCommand extends SCommand
-{
+public class BuyBookCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         final Player player = sender.getPlayer();
@@ -23,8 +22,7 @@ public class BuyBookCommand extends SCommand
             final SItem eBook = SItem.of(SMaterial.ENCHANTED_BOOK);
             eBook.addEnchantment(type, i);
             Sputnik.smartGiveItem(eBook.getStack(), player);
-        }
-        else {
+        } else {
             this.send(ChatColor.RED + "Unknown Command.");
         }
     }

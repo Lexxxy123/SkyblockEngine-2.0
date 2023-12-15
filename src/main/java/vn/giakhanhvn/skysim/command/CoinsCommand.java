@@ -6,8 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 
 @CommandParameters(description = "Modify your coin amount.", permission = "spt.balance")
-public class CoinsCommand extends SCommand
-{
+public class CoinsCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (args.length != 0 && args.length != 2) {

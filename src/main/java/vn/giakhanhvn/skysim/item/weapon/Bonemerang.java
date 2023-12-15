@@ -1,6 +1,7 @@
 package vn.giakhanhvn.skysim.item.weapon;
 
 import java.util.Iterator;
+
 import org.bukkit.Location;
 import vn.giakhanhvn.skysim.util.FerocityCalculation;
 import vn.giakhanhvn.skysim.listener.PlayerListener;
@@ -17,13 +18,17 @@ import vn.giakhanhvn.skysim.SkySimEngine;
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import vn.giakhanhvn.skysim.user.User;
+
 import java.util.List;
+
 import org.bukkit.util.Vector;
 import org.bukkit.inventory.ItemStack;
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.entity.Entity;
+
 import java.util.ArrayList;
+
 import org.bukkit.util.EulerAngle;
 import vn.giakhanhvn.skysim.item.SMaterial;
 import org.bukkit.entity.EntityType;
@@ -43,61 +48,60 @@ import vn.giakhanhvn.skysim.item.Ability;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
 import vn.giakhanhvn.skysim.item.ToolStatistics;
 
-public class Bonemerang implements ToolStatistics, MaterialFunction, Ability
-{
+public class Bonemerang implements ToolStatistics, MaterialFunction, Ability {
     String Activable;
     private int slotThrew;
-    
+
     public Bonemerang() {
         this.Activable = "true";
         this.slotThrew = 0;
     }
-    
+
     @Override
     public int getBaseDamage() {
         return 270;
     }
-    
+
     @Override
     public double getBaseStrength() {
         return 130.0;
     }
-    
+
     @Override
     public String getDisplayName() {
         return "Bonemerang";
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.LEGENDARY;
     }
-    
+
     @Override
     public GenericItemType getType() {
         return GenericItemType.RANGED_WEAPON;
     }
-    
+
     @Override
     public SpecificItemType getSpecificType() {
         return SpecificItemType.BOW;
     }
-    
+
     @Override
     public String getLore() {
         return null;
     }
-    
+
     @Override
     public String getAbilityName() {
         return "Swing";
     }
-    
+
     @Override
     public String getAbilityDescription() {
         return "Throw bone a short distance, dealing the damage an arrow would.                      Deals " + ChatColor.RED + "double" + ChatColor.GRAY + " damage when coming back. Pierces up to " + ChatColor.YELLOW + "10" + ChatColor.GRAY + " foes.";
     }
-    
+
     @Override
     public void onAbilityUse(final Player player, final SItem sItem) {
         if (player.getInventory().getItemInHand().toString().contains("GHAST_TEAR")) {
@@ -108,7 +112,7 @@ public class Bonemerang implements ToolStatistics, MaterialFunction, Ability
         final ItemStack item = player.getInventory().getItemInHand();
         final net.minecraft.server.v1_8_R3.ItemStack tagStack = CraftItemStack.asNMSCopy(item);
         final NBTTagCompound tagCompound = tagStack.hasTag() ? tagStack.getTag() : new NBTTagCompound();
-        tagCompound.set("ejectedBonemerang", (NBTBase)new NBTTagInt(0));
+        tagCompound.set("ejectedBonemerang", new NBTTagInt(0));
         tagStack.setTag(tagCompound);
         this.releaseBone(player, item, slot);
         final ItemStack bone = player.getInventory().getItemInHand();
@@ -116,7 +120,7 @@ public class Bonemerang implements ToolStatistics, MaterialFunction, Ability
         player.playSound(player.getLocation(), Sound.SKELETON_HURT, 3.0f, 2.0f);
         if (this.Activable == "true") {
             final Player bukkitPlayer = player.getPlayer();
-            final ArmorStand stand = (ArmorStand)bukkitPlayer.getWorld().spawnEntity(bukkitPlayer.getLocation().add(0.0, 0.7, 0.0), EntityType.ARMOR_STAND);
+            final ArmorStand stand = (ArmorStand) bukkitPlayer.getWorld().spawnEntity(bukkitPlayer.getLocation().add(0.0, 0.7, 0.0), EntityType.ARMOR_STAND);
             final Vector teleportTo = bukkitPlayer.getLocation().getDirection().normalize().multiply(1);
             stand.setVisible(false);
             stand.setGravity(false);
@@ -129,9 +133,9 @@ public class Bonemerang implements ToolStatistics, MaterialFunction, Ability
             final List<Entity> backBone = new ArrayList<Entity>();
             new BukkitRunnable() {
                 public int ran = 0;
-                int slot1 = player.getInventory().getHeldItemSlot();
-                NBTItem nbtItem = new NBTItem(player.getInventory().getItem(this.slot1));
-                
+                final int slot1 = player.getInventory().getHeldItemSlot();
+                final NBTItem nbtItem = new NBTItem(player.getInventory().getItem(this.slot1));
+
                 public void run() {
                     ++this.ran;
                     final int slot1 = player.getInventory().getHeldItemSlot();
@@ -150,8 +154,7 @@ public class Bonemerang implements ToolStatistics, MaterialFunction, Ability
                     if (i < 13) {
                         angle = i * 20 + num;
                         back = false;
-                    }
-                    else {
+                    } else {
                         angle = i * 20 - num;
                         back = true;
                         loc = player.getLocation();
@@ -166,7 +169,7 @@ public class Bonemerang implements ToolStatistics, MaterialFunction, Ability
                         stand.getWorld().playEffect(stand.getLocation(), Effect.EXPLOSION, 1);
                         stand.getWorld().playEffect(stand.getLocation(), Effect.EXPLOSION, 1);
                         stand.remove();
-                        new BukkitRunnable(){
+                        new BukkitRunnable() {
 
                             public void run() {
                                 if (nbtItem.hasKey("ejectedBonemerang").booleanValue()) {
@@ -174,7 +177,7 @@ public class Bonemerang implements ToolStatistics, MaterialFunction, Ability
                                 }
                                 this.cancel();
                             }
-                        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 30L);
+                        }.runTaskLater(SkySimEngine.getPlugin(), 30L);
                         this.cancel();
                         return;
                     }
@@ -182,15 +185,14 @@ public class Bonemerang implements ToolStatistics, MaterialFunction, Ability
                     if (i % 2 == 0 && i < 13) {
                         stand.teleport(stand.getLocation().add(teleportTo).multiply(1.0));
                         stand.teleport(stand.getLocation().add(teleportTo).multiply(1.0));
-                    }
-                    else if (i % 2 == 0) {
+                    } else if (i % 2 == 0) {
                         stand.getWorld().spigot().playEffect(stand.getEyeLocation().add(0.0, 1.0, 0.0).clone().add(SUtil.random(-0.5, 0.5), 0.0, SUtil.random(-0.5, 0.5)), Effect.FLYING_GLYPH, 24, 1, 0.0f, 0.0f, 0.0f, 1.0f, 0, 64);
                         stand.teleport(stand.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                         stand.teleport(stand.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                     }
                     for (final Entity e : stand.getNearbyEntities(1.0, 1.0, 1.0)) {
                         if (e instanceof LivingEntity && e != player.getPlayer()) {
-                            final Damageable entity = (Damageable)e;
+                            final Damageable entity = (Damageable) e;
                             if (!back && goBone.contains(e)) {
                                 continue;
                             }
@@ -226,8 +228,8 @@ public class Bonemerang implements ToolStatistics, MaterialFunction, Ability
                             if (user.toBukkitPlayer().getInventory().getHeldItemSlot() != Bonemerang.this.slotThrew) {
                                 user.setBoneToZeroDamage(true);
                             }
-                            final Object[] atp = Sputnik.calculateDamage(player, player, sItem.getStack(), (LivingEntity)entity, true);
-                            double finalDamage1 = (float)atp[0] * (back ? 2 : 1) * decr;
+                            final Object[] atp = Sputnik.calculateDamage(player, player, sItem.getStack(), (LivingEntity) entity, true);
+                            double finalDamage1 = (float) atp[0] * (back ? 2 : 1) * decr;
                             double rm = 100.0;
                             if (User.getUser(player.getUniqueId()).isBoneToZeroDamage()) {
                                 rm = 5.0;
@@ -235,12 +237,11 @@ public class Bonemerang implements ToolStatistics, MaterialFunction, Ability
                             finalDamage1 = finalDamage1 * rm / 100.0;
                             if (!back) {
                                 goBone.add(e);
-                            }
-                            else {
+                            } else {
                                 backBone.add(e);
                             }
-                            PlayerListener.spawnDamageInd((Entity)entity, (float)atp[2] * (back ? 2 : 1) * decr * rm / 100.0, (boolean)atp[1]);
-                            FerocityCalculation.activeFerocityTimes(player, (LivingEntity)entity, (int)finalDamage1, (boolean)atp[1]);
+                            PlayerListener.spawnDamageInd(entity, (float) atp[2] * (back ? 2 : 1) * decr * rm / 100.0, (boolean) atp[1]);
+                            FerocityCalculation.activeFerocityTimes(player, (LivingEntity) entity, (int) finalDamage1, (boolean) atp[1]);
                             user.damageEntity(entity, finalDamage1);
                             if (back) {
                                 User.getUser(player.getUniqueId()).setBoneToZeroDamage(true);
@@ -249,51 +250,51 @@ public class Bonemerang implements ToolStatistics, MaterialFunction, Ability
                                 public void run() {
                                     this.cancel();
                                 }
-                            }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 30L);
+                            }.runTaskLater(SkySimEngine.getPlugin(), 30L);
                         }
                     }
                 }
-            }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 1L, 1L);
+            }.runTaskTimer(SkySimEngine.getPlugin(), 1L, 1L);
         }
     }
-    
+
     public void releaseBone(final Player player, final ItemStack stack, final Integer slot) {
         final net.minecraft.server.v1_8_R3.ItemStack tagStack = CraftItemStack.asNMSCopy(stack);
         final NBTTagCompound tagCompound = tagStack.hasTag() ? tagStack.getTag() : new NBTTagCompound();
-        tagCompound.set("ejectedBonemerang", (NBTBase)new NBTTagInt(1));
+        tagCompound.set("ejectedBonemerang", new NBTTagInt(1));
         tagStack.setTag(tagCompound);
         final ItemStack itemStack = CraftItemStack.asBukkitCopy(tagStack);
         if (tagStack.getTag().getInt("ejectedBonemerang") == 1) {
             itemStack.setType(Material.GHAST_TEAR);
-            player.getInventory().setItem((int)slot, itemStack);
+            player.getInventory().setItem(slot, itemStack);
         }
     }
-    
+
     public void returnBone(final Player player, final ItemStack stack, final Integer slot) {
         final net.minecraft.server.v1_8_R3.ItemStack tagStack = CraftItemStack.asNMSCopy(stack);
         final NBTTagCompound tagCompound = tagStack.hasTag() ? tagStack.getTag() : new NBTTagCompound();
-        tagCompound.set("ejectedBonemerang", (NBTBase)new NBTTagInt(0));
+        tagCompound.set("ejectedBonemerang", new NBTTagInt(0));
         tagStack.setTag(tagCompound);
-        final SItem sitem = SItem.find(player.getInventory().getItem((int)slot));
+        final SItem sitem = SItem.find(player.getInventory().getItem(slot));
         if (sitem != null && sitem.getType() == SMaterial.BONEMERANG && sitem.getDataString("uuid").equals(SItem.find(stack).getDataString("uuid"))) {
             final ItemStack itemStack = CraftItemStack.asBukkitCopy(tagStack);
             if (tagStack.getTag().getInt("ejectedBonemerang") == 0) {
                 itemStack.setType(Material.BONE);
-                player.getInventory().setItem((int)slot, itemStack);
+                player.getInventory().setItem(slot, itemStack);
             }
         }
     }
-    
+
     @Override
     public int getAbilityCooldownTicks() {
         return 0;
     }
-    
+
     @Override
     public boolean isStackable() {
         return false;
     }
-    
+
     @Override
     public int getManaCost() {
         return 0;

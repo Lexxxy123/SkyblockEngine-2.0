@@ -5,19 +5,27 @@ import com.google.common.io.ByteArrayDataInput;
 import vn.giakhanhvn.skysim.nms.packetevents.WrappedPluginMessage;
 import com.google.common.io.ByteStreams;
 import vn.giakhanhvn.skysim.nms.packetevents.PluginMessageReceived;
+
 import java.util.List;
+
 import vn.giakhanhvn.skysim.nms.pingrep.PingReply;
 import vn.giakhanhvn.skysim.command.RebootServerCommand;
+
 import java.util.ArrayList;
+
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import vn.giakhanhvn.skysim.nms.packetevents.SkySimServerPingEvent;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
+
 import java.util.UUID;
+
 import vn.giakhanhvn.skysim.user.User;
 import net.minecraft.server.v1_8_R3.PacketPlayInUpdateSign;
 import org.bukkit.plugin.Plugin;
+
 import java.io.IOException;
+
 import vn.giakhanhvn.skysim.util.DiscordWebhook;
 import org.bukkit.scheduler.BukkitRunnable;
 import vn.giakhanhvn.skysim.util.Sputnik;
@@ -30,13 +38,12 @@ import vn.giakhanhvn.skysim.SkySimEngine;
 import net.minecraft.server.v1_8_R3.PacketPlayInCustomPayload;
 import vn.giakhanhvn.skysim.nms.packetevents.PacketReceiveServerSideEvent;
 
-public class PacketListener extends PListener
-{
+public class PacketListener extends PListener {
     @EventHandler
     public void onBookCrashPacket(final PacketReceiveServerSideEvent event) {
         final ReceivedPacket packet = event.getWrappedPacket();
         if (packet.getPacket() instanceof PacketPlayInCustomPayload) {
-            final String packetType = ((PacketPlayInCustomPayload)packet.getPacket()).a();
+            final String packetType = ((PacketPlayInCustomPayload) packet.getPacket()).a();
             if (packetType.toLowerCase().contains("bedit") || packetType.toLowerCase().contains("bsign")) {
                 packet.setCancelled(true);
                 final Player p = SkySimEngine.findPlayerByIPAddress(packet.getChannel().getRemoteAddress().toString());
@@ -46,7 +53,7 @@ public class PacketListener extends PListener
             }
         }
         if (packet.getPacket() instanceof PacketPlayInSetCreativeSlot) {
-            final PacketPlayInSetCreativeSlot pks = (PacketPlayInSetCreativeSlot)packet.getPacket();
+            final PacketPlayInSetCreativeSlot pks = (PacketPlayInSetCreativeSlot) packet.getPacket();
             final Player p = packet.getPlayer();
             if (p != null && p.getGameMode() != GameMode.CREATIVE) {
                 packet.setCancelled(true);
@@ -54,7 +61,7 @@ public class PacketListener extends PListener
             }
         }
     }
-    
+
     void punish(final Player p) {
         p.sendMessage(Sputnik.trans("&cHey kiddo, you want to crash the server huh? Nice try idiot, your IP address has been logged, enjoy!"));
         new BukkitRunnable() {
@@ -65,14 +72,13 @@ public class PacketListener extends PListener
                 webhook.setContent("**We caught a crasher!** His/her IP is `" + p.getAddress() + "` with username `" + p.getName() + "`");
                 try {
                     webhook.execute();
-                }
-                catch (final IOException e) {
+                } catch (final IOException e) {
                     e.printStackTrace();
                 }
             }
-        }.runTaskAsynchronously((Plugin)SkySimEngine.getPlugin());
+        }.runTaskAsynchronously(SkySimEngine.getPlugin());
     }
-    
+
     @EventHandler
     public void signInputListener(final PacketReceiveServerSideEvent event) {
         final ReceivedPacket packet = event.getWrappedPacket();
@@ -81,7 +87,7 @@ public class PacketListener extends PListener
                 return;
             }
             final UUID p = packet.getPlayer().getUniqueId();
-            final IChatBaseComponent[] ic = ((PacketPlayInUpdateSign)packet.getPacket()).b();
+            final IChatBaseComponent[] ic = ((PacketPlayInUpdateSign) packet.getPacket()).b();
             final User u = User.getUser(p);
             if (u != null && u.isWaitingForSign() && !u.isCompletedSign()) {
                 u.setSignContent(ic[0].getText());
@@ -89,7 +95,7 @@ public class PacketListener extends PListener
             }
         }
     }
-    
+
     @EventHandler
     void onPing(final SkySimServerPingEvent e) {
         final PingReply pr = e.getPingReply();
@@ -111,8 +117,7 @@ public class PacketListener extends PListener
             sample.add(Sputnik.trans("&cPowered by &6SkySim Engine&c"));
             pr.setPlayerSample(sample);
             pr.setProtocolName(ChatColor.DARK_RED + "SkySimEngine 1.8.x - 1.17");
-        }
-        else {
+        } else {
             pr.setProtocolName(ChatColor.RED + "⚠ Restarting Soon!");
             final List<String> sample = new ArrayList<String>();
             sample.add(Sputnik.trans("&4⚠ &cThis server instance is performing a"));
@@ -125,7 +130,7 @@ public class PacketListener extends PListener
         pr.setMOTD(Sputnik.trans("             &aSkySim Network &c[1.8-1.17]&r\n  &c&lDIMOON & GIANTS ISLAND! &8➜ &a&lNOW LIVE!"));
         pr.setMaxPlayers(50);
     }
-    
+
     @EventHandler
     public void onPluginChannel2(final PluginMessageReceived e) {
         final WrappedPluginMessage w = e.getWrappedPluginMessage();
@@ -140,7 +145,7 @@ public class PacketListener extends PListener
             in.readInt();
         }
     }
-    
+
     @EventHandler
     public void onPluginChannel(final PluginMessageReceived e) {
         final WrappedPluginMessage w = e.getWrappedPluginMessage();

@@ -2,9 +2,12 @@ package vn.giakhanhvn.skysim;
 
 import java.util.HashMap;
 import java.util.List;
+
 import vn.giakhanhvn.skysim.potion.ActivePotionEffect;
+
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import org.bukkit.inventory.ItemStack;
 import vn.giakhanhvn.skysim.item.pet.Pet;
 import vn.giakhanhvn.skysim.skill.Skill;
@@ -18,30 +21,31 @@ import vn.giakhanhvn.skysim.user.PlayerUtils;
 import vn.giakhanhvn.skysim.user.PlayerStatistics;
 import vn.giakhanhvn.skysim.user.User;
 import org.bukkit.OfflinePlayer;
+
 import java.util.UUID;
 import java.util.Map;
+
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
-public class placeholding extends PlaceholderExpansion
-{
+public class placeholding extends PlaceholderExpansion {
     public static final Map<UUID, String> PTE_CACHE;
-    
+
     public boolean canRegister() {
         return true;
     }
-    
+
     public String getAuthor() {
         return "GiaKhanhVN";
     }
-    
+
     public String getIdentifier() {
         return "skysim";
     }
-    
+
     public String getVersion() {
         return "0.1.6";
     }
-    
+
     public String onRequest(final OfflinePlayer player, final String identifier) {
         final UUID uuid = player.getUniqueId();
         final User user = User.getUser(player.getUniqueId());
@@ -52,10 +56,10 @@ public class placeholding extends PlaceholderExpansion
         }
         if (player.isOnline()) {
             if (identifier.equals("defense")) {
-                return String.valueOf(SUtil.commaify(statistics.getDefense().addAll().intValue()));
+                return SUtil.commaify(statistics.getDefense().addAll().intValue());
             }
             if (identifier.equals("strength")) {
-                return String.valueOf(SUtil.commaify(statistics.getStrength().addAll().intValue()));
+                return SUtil.commaify(statistics.getStrength().addAll().intValue());
             }
             if (identifier.equals("speed")) {
                 return String.valueOf((statistics.getSpeed().addAll() * 100.0));
@@ -67,19 +71,19 @@ public class placeholding extends PlaceholderExpansion
                 return String.valueOf((statistics.getCritDamage().addAll() * 100.0));
             }
             if (identifier.equals("int")) {
-                return String.valueOf(SUtil.commaify(statistics.getIntelligence().addAll().intValue()));
+                return SUtil.commaify(statistics.getIntelligence().addAll().intValue());
             }
             if (identifier.equals("coins")) {
                 return String.valueOf(user.getCoins());
             }
             if (identifier.equals("ferocity")) {
-                return String.valueOf(SUtil.commaify(statistics.getFerocity().addAll().intValue()));
+                return SUtil.commaify(statistics.getFerocity().addAll().intValue());
             }
             if (identifier.equals("atkSpeed")) {
                 return String.valueOf(SUtil.commaify(Math.min(100.0, statistics.getAttackSpeed().addAll())));
             }
             if (identifier.equals("abilityDamage")) {
-                return String.valueOf(SUtil.commaify(statistics.getAbilityDamage().addAll().intValue()));
+                return SUtil.commaify(statistics.getAbilityDamage().addAll().intValue());
             }
             if (identifier.equals("pet")) {
                 return this.findPet(player);
@@ -101,8 +105,7 @@ public class placeholding extends PlaceholderExpansion
                 }
                 sb.append(item.getRarity().getBoldedColor() + item.getRarity().getDisplay());
                 return sb.toString();
-            }
-            else if (identifier.equals("pet_texture")) {
+            } else if (identifier.equals("pet_texture")) {
                 final Pet pet2 = this.findPetClassA(player);
                 if (pet2 == null) {
                     return "Steve";
@@ -110,8 +113,7 @@ public class placeholding extends PlaceholderExpansion
                 final String URL = "{\"textures\":{\"SKIN\":{\"url\":\"http://textures.minecraft.net/texture/" + pet2.getURL() + "\"}}}";
                 final String encodedString = Base64.encodeBase64String(URL.getBytes());
                 return encodedString;
-            }
-            else {
+            } else {
                 if (identifier.equals("potion")) {
                     return this.getEffectLoop(player);
                 }
@@ -132,14 +134,12 @@ public class placeholding extends PlaceholderExpansion
                         return ChatColor.YELLOW + " ✪";
                     }
                     return "";
-                }
-                else if (identifier.equals("cb_status")) {
+                } else if (identifier.equals("cb_status")) {
                     if (PlayerUtils.getCookieDurationTicks(player.getPlayer()) > 0L) {
                         return SUtil.getFormattedTimeToDay(PlayerUtils.getCookieDurationTicks(player.getPlayer()));
                     }
                     return ChatColor.RED + "Not actived!";
-                }
-                else {
+                } else {
                     if (identifier.equals("combatlevel")) {
                         final Skill skill = CombatSkill.INSTANCE;
                         final double xp = (skill != null) ? user.getSkillXP(skill) : 0.0;
@@ -154,8 +154,7 @@ public class placeholding extends PlaceholderExpansion
                             return "true";
                         }
                         return "false";
-                    }
-                    else if (identifier.equals("dragonlvl")) {
+                    } else if (identifier.equals("dragonlvl")) {
                         final Skill skill = CombatSkill.INSTANCE;
                         final double xp = (skill != null) ? user.getSkillXP(skill) : 0.0;
                         final int level = (skill != null) ? Skill.getLevel(xp, skill.hasSixtyLevels()) : 0;
@@ -172,7 +171,7 @@ public class placeholding extends PlaceholderExpansion
         }
         return null;
     }
-    
+
     public String findPet(final OfflinePlayer player) {
         final Pet.PetItem active = User.getUser(player.getUniqueId()).getActivePet();
         final Pet petclass = User.getUser(player.getUniqueId()).getActivePetClass();
@@ -183,7 +182,7 @@ public class placeholding extends PlaceholderExpansion
         }
         return displayname;
     }
-    
+
     public Pet.PetItem findPetClass(final OfflinePlayer player) {
         final Pet.PetItem active = User.getUser(player.getUniqueId()).getActivePet();
         final Pet petclass = User.getUser(player.getUniqueId()).getActivePetClass();
@@ -193,7 +192,7 @@ public class placeholding extends PlaceholderExpansion
         }
         return null;
     }
-    
+
     public Pet findPetClassA(final OfflinePlayer player) {
         final Pet.PetItem active = User.getUser(player.getUniqueId()).getActivePet();
         final Pet petclass = User.getUser(player.getUniqueId()).getActivePetClass();
@@ -203,7 +202,7 @@ public class placeholding extends PlaceholderExpansion
         }
         return null;
     }
-    
+
     public String getEffectLoop(final OfflinePlayer player) {
         String returnString = Sputnik.trans(" &7No active effects. Drink Potions or splash \nthem to the ground to buff yourself.");
         final User user = User.getUser(player.getUniqueId());
@@ -216,16 +215,16 @@ public class placeholding extends PlaceholderExpansion
         }
         return returnString;
     }
-    
+
     public String a(final User user, final List<ActivePotionEffect> pte) {
         final ActivePotionEffect effect = pte.get(Math.min(pte.size(), Repeater.PTN_CACHE.get(user.getUuid())));
-        placeholding.PTE_CACHE.put(user.getUuid(), "" + effect.getEffect().getType().getName() + " " + SUtil.toRomanNumeral(effect.getEffect().getLevel()) + " " + ChatColor.WHITE + effect.getRemainingDisplay());
+        placeholding.PTE_CACHE.put(user.getUuid(), effect.getEffect().getType().getName() + " " + SUtil.toRomanNumeral(effect.getEffect().getLevel()) + " " + ChatColor.WHITE + effect.getRemainingDisplay());
         if (placeholding.PTE_CACHE.containsKey(user.getUuid())) {
             return placeholding.PTE_CACHE.get(user.getUuid());
         }
         return "";
     }
-    
+
     static {
         PTE_CACHE = new HashMap<UUID, String>();
     }

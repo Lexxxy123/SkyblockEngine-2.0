@@ -7,23 +7,22 @@ import vn.giakhanhvn.skysim.item.ItemData;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
 import vn.giakhanhvn.skysim.item.MaterialStatistics;
 
-public class Bouncer implements MaterialStatistics, MaterialFunction, ItemData
-{
+public class Bouncer implements MaterialStatistics, MaterialFunction, ItemData {
     @Override
     public String getDisplayName() {
         return "Bouncer";
     }
-    
+
     @Override
     public Rarity getRarity() {
         return Rarity.EXCLUSIVE;
     }
-    
+
     @Override
     public GenericItemType getType() {
         return GenericItemType.BLOCK;
     }
-    
+
     @Override
     public NBTTagCompound getData() {
         final NBTTagCompound compound = new NBTTagCompound();

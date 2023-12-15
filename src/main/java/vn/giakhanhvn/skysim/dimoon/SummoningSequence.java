@@ -5,7 +5,9 @@ import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.item.SMaterial;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.entity.Player;
+
 import java.util.List;
+
 import org.bukkit.util.Vector;
 import org.bukkit.Material;
 import vn.giakhanhvn.skysim.util.BlockFallAPI;
@@ -19,31 +21,31 @@ import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.World;
 import vn.giakhanhvn.skysim.SkySimEngine;
+
 import java.util.UUID;
 
-public class SummoningSequence
-{
+public class SummoningSequence {
     public UUID[] __qch__;
     double[] di;
     double[] em;
     double[] gl;
     double[] rb;
     public static double[] wl;
-    private SkySimEngine plugin;
+    private final SkySimEngine plugin;
     private boolean acE;
     private boolean acD;
     private boolean acR;
     private boolean acG;
     private boolean bossSpawning;
     private boolean bossSpawned;
-    private World w;
-    
+    private final World w;
+
     public SummoningSequence(final World w) {
         this.__qch__ = new UUID[8];
-        this.di = new double[] { 234735.5, 191.0, 236483.5 };
-        this.em = new double[] { 234666.5, 191.0, 236549.5 };
-        this.gl = new double[] { 234600.5, 191.0, 236480.5 };
-        this.rb = new double[] { 234672.5, 191.0, 236414.5 };
+        this.di = new double[]{234735.5, 191.0, 236483.5};
+        this.em = new double[]{234666.5, 191.0, 236549.5};
+        this.gl = new double[]{234600.5, 191.0, 236480.5};
+        this.rb = new double[]{234672.5, 191.0, 236414.5};
         this.plugin = SkySimEngine.getPlugin();
         this.acE = false;
         this.acD = false;
@@ -75,7 +77,7 @@ public class SummoningSequence
                     SummoningSequence.this.gemParticle(new Location(w, SummoningSequence.this.di[0], SummoningSequence.this.di[1] + 1.0, SummoningSequence.this.di[2]), 58.0f, 222.0f, 216.0f);
                 }
             }
-        }.runTaskTimer((Plugin)this.plugin, 0L, 1L);
+        }.runTaskTimer(this.plugin, 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 if (SummoningSequence.this.bossSpawned) {
@@ -95,9 +97,9 @@ public class SummoningSequence
                     SummoningSequence.this.activeBeam(new Location(w, SummoningSequence.this.di[0], SummoningSequence.this.di[1] + 1.0, SummoningSequence.this.di[2]), new Location(w, SummoningSequence.wl[0], SummoningSequence.wl[1] + 1.0, SummoningSequence.wl[2]), 58.0f, 222.0f, 216.0f);
                 }
             }
-        }.runTaskTimerAsynchronously((Plugin)this.plugin, 0L, 6L);
+        }.runTaskTimerAsynchronously(this.plugin, 0L, 6L);
     }
-    
+
     void play() {
         SUtil.broadcastWorld(Sputnik.trans("&b✬&c✬&e✬&a✬ &cAll the crystals have been activated, Dimoon's &4cursed seal &cis slowly tearing down, Brace yourselves!"), this.w);
         new Location(this.w, SummoningSequence.wl[0], SummoningSequence.wl[1] + 1.0, SummoningSequence.wl[2]).getWorld().playSound(new Location(this.w, SummoningSequence.wl[0], SummoningSequence.wl[1] + 1.0, SummoningSequence.wl[2]), Sound.WITHER_SPAWN, 50.0f, 0.7f);
@@ -107,11 +109,10 @@ public class SummoningSequence
                 this.playBossSpawnAnimation();
                 this.w.strikeLightningEffect(new Location(this.w, SummoningSequence.wl[0], SummoningSequence.wl[1] + 1.0, SummoningSequence.wl[2]));
             }, 90L);
-            return;
         }, 40L);
         new BukkitRunnable() {
             int i = 0;
-            
+
             public void run() {
                 ++this.i;
                 if (this.i > 0) {
@@ -123,9 +124,9 @@ public class SummoningSequence
                     SummoningSequence.this.w.spigot().playEffect(new Location(SummoningSequence.this.w, SummoningSequence.wl[0], SummoningSequence.wl[1] + 1.0, SummoningSequence.wl[2]).clone().add(SUtil.random(-0.5, 0.5), SUtil.random(0.0, 1.0), SUtil.random(-0.5, 0.5)), Effect.POTION_SWIRL, 0, 1, 0.68235296f, 0.1882353f, 0.6901961f, 1.0f, 0, 640);
                 }
             }
-        }.runTaskTimerAsynchronously((Plugin)this.plugin, 0L, 1L);
+        }.runTaskTimerAsynchronously(this.plugin, 0L, 1L);
     }
-    
+
     void playBossSpawnAnimation() {
         this.w.playEffect(new Location(this.w, SummoningSequence.wl[0], SummoningSequence.wl[1] + 1.0, SummoningSequence.wl[2]), Effect.EXPLOSION_HUGE, 0);
         this.w.playEffect(new Location(this.w, SummoningSequence.wl[0], SummoningSequence.wl[1] + 1.0, SummoningSequence.wl[2]), Effect.EXPLOSION_HUGE, 0);
@@ -139,21 +140,20 @@ public class SummoningSequence
                 }
                 final Location startPoint = new Location(SummoningSequence.this.w, SummoningSequence.wl[0] - 2.5, SummoningSequence.wl[1] + 1.0, SummoningSequence.wl[2] - 2.52);
                 for (int i = 0; i < 30; ++i) {
-                    startPoint.getWorld().spigot().playEffect(startPoint.clone().add((double)SUtil.random(-5, 5), (double)SUtil.random(0, 5), (double)SUtil.random(-5, 5)), Effect.COLOURED_DUST, 0, 1, 0.2901961f, 0.81960785f, 0.11372549f, 1.0f, 0, 640);
-                    startPoint.getWorld().spigot().playEffect(startPoint.clone().add((double)SUtil.random(-5, 5), (double)SUtil.random(0, 5), (double)SUtil.random(-5, 5)), Effect.COLOURED_DUST, 0, 1, 0.83137256f, 0.18039216f, 0.14901961f, 1.0f, 0, 640);
-                    startPoint.getWorld().spigot().playEffect(startPoint.clone().add((double)SUtil.random(-5, 5), (double)SUtil.random(0, 5), (double)SUtil.random(-5, 5)), Effect.COLOURED_DUST, 0, 1, 0.87058824f, 0.8039216f, 0.22745098f, 1.0f, 0, 640);
-                    startPoint.getWorld().spigot().playEffect(startPoint.clone().add((double)SUtil.random(-5, 5), (double)SUtil.random(0, 5), (double)SUtil.random(-5, 5)), Effect.COLOURED_DUST, 0, 1, 0.22745098f, 0.87058824f, 0.84705883f, 1.0f, 0, 640);
-                    startPoint.getWorld().spigot().playEffect(startPoint.clone().add((double)SUtil.random(-5, 5), (double)SUtil.random(0, 5), (double)SUtil.random(-5, 5)), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                    startPoint.getWorld().spigot().playEffect(startPoint.clone().add(SUtil.random(-5, 5), SUtil.random(0, 5), SUtil.random(-5, 5)), Effect.COLOURED_DUST, 0, 1, 0.2901961f, 0.81960785f, 0.11372549f, 1.0f, 0, 640);
+                    startPoint.getWorld().spigot().playEffect(startPoint.clone().add(SUtil.random(-5, 5), SUtil.random(0, 5), SUtil.random(-5, 5)), Effect.COLOURED_DUST, 0, 1, 0.83137256f, 0.18039216f, 0.14901961f, 1.0f, 0, 640);
+                    startPoint.getWorld().spigot().playEffect(startPoint.clone().add(SUtil.random(-5, 5), SUtil.random(0, 5), SUtil.random(-5, 5)), Effect.COLOURED_DUST, 0, 1, 0.87058824f, 0.8039216f, 0.22745098f, 1.0f, 0, 640);
+                    startPoint.getWorld().spigot().playEffect(startPoint.clone().add(SUtil.random(-5, 5), SUtil.random(0, 5), SUtil.random(-5, 5)), Effect.COLOURED_DUST, 0, 1, 0.22745098f, 0.87058824f, 0.84705883f, 1.0f, 0, 640);
+                    startPoint.getWorld().spigot().playEffect(startPoint.clone().add(SUtil.random(-5, 5), SUtil.random(0, 5), SUtil.random(-5, 5)), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                 }
             }
-        }.runTaskTimer((Plugin)this.plugin, 0L, 15L);
+        }.runTaskTimer(this.plugin, 0L, 15L);
         SUtil.delay(() -> {
             Sputnik.pasteSchematicRep("egg1", true, 234666.0f, 155.0f, 236479.0f, this.w);
             this.w.playEffect(new Location(this.w, SummoningSequence.wl[0], SummoningSequence.wl[1] + 1.0, SummoningSequence.wl[2]), Effect.EXPLOSION_HUGE, 0);
             this.w.playEffect(new Location(this.w, SummoningSequence.wl[0], SummoningSequence.wl[1] + 1.0, SummoningSequence.wl[2]), Effect.EXPLOSION_HUGE, 0);
             this.w.playSound(new Location(this.w, SummoningSequence.wl[0], SummoningSequence.wl[1] + 1.0, SummoningSequence.wl[2]), Sound.EXPLODE, 10.0f, 0.0f);
             this.w.playSound(new Location(this.w, SummoningSequence.wl[0], SummoningSequence.wl[1] + 1.0, SummoningSequence.wl[2]), Sound.WITHER_DEATH, 10.0f, 2.0f);
-            return;
         }, 10L);
         SUtil.delay(() -> {
             Sputnik.pasteSchematicRep("egg2", true, 234666.0f, 155.0f, 236479.0f, this.w);
@@ -161,7 +161,6 @@ public class SummoningSequence
             this.w.playEffect(new Location(this.w, SummoningSequence.wl[0], SummoningSequence.wl[1] + 1.0, SummoningSequence.wl[2]), Effect.EXPLOSION_HUGE, 0);
             this.w.playSound(new Location(this.w, SummoningSequence.wl[0], SummoningSequence.wl[1] + 1.0, SummoningSequence.wl[2]), Sound.EXPLODE, 10.0f, 0.0f);
             this.w.playSound(new Location(this.w, SummoningSequence.wl[0], SummoningSequence.wl[1] + 1.0, SummoningSequence.wl[2]), Sound.WITHER_DEATH, 10.0f, 2.0f);
-            return;
         }, 110L);
         SUtil.delay(() -> {
             this.w.playEffect(new Location(this.w, SummoningSequence.wl[0], SummoningSequence.wl[1] + 1.0, SummoningSequence.wl[2]), Effect.EXPLOSION_HUGE, 0);
@@ -178,7 +177,7 @@ public class SummoningSequence
                     final int random = SUtil.random(0, 3);
                     double range = 0.0;
                     final Location loc = new Location(this.w, SummoningSequence.wl[0], SummoningSequence.wl[1] + 1.0, SummoningSequence.wl[2]);
-                    loc.setYaw((float)SUtil.random(0, 360));
+                    loc.setYaw((float) SUtil.random(0, 360));
                     if (random == 1) {
                         range = 0.8;
                     }
@@ -207,31 +206,30 @@ public class SummoningSequence
             }, 100L);
         }, 210L);
     }
-    
+
     void activeBeam(final Location startPoint, final Location endPoint, final float r, final float g, final float b) {
         final Location blockLocation = endPoint;
         final Location crystalLocation = startPoint;
         final Vector vector = blockLocation.clone().toVector().subtract(crystalLocation.clone().toVector());
         for (int count = 120, i = 1; i <= count; ++i) {
-            startPoint.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply(i / (double)count)), Effect.COLOURED_DUST, 0, 1, r / 255.0f, g / 255.0f, b / 255.0f, 1.0f, 0, 640);
-            startPoint.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply(i / (double)count)), Effect.COLOURED_DUST, 0, 1, r / 255.0f, g / 255.0f, b / 255.0f, 1.0f, 0, 640);
+            startPoint.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply(i / (double) count)), Effect.COLOURED_DUST, 0, 1, r / 255.0f, g / 255.0f, b / 255.0f, 1.0f, 0, 640);
+            startPoint.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply(i / (double) count)), Effect.COLOURED_DUST, 0, 1, r / 255.0f, g / 255.0f, b / 255.0f, 1.0f, 0, 640);
         }
     }
-    
+
     void gemParticle(final Location startPoint, final float r, final float g, final float b) {
         startPoint.add(0.0, -3.0, 0.0);
         for (int i = 0; i < 30; ++i) {
-            startPoint.getWorld().spigot().playEffect(startPoint.clone().add(SUtil.random(-2.5, 2.5), (double)SUtil.random(-6, 3), SUtil.random(-2.5, 2.5)), Effect.COLOURED_DUST, 0, 1, r / 255.0f, g / 255.0f, b / 255.0f, 1.0f, 0, 640);
+            startPoint.getWorld().spigot().playEffect(startPoint.clone().add(SUtil.random(-2.5, 2.5), SUtil.random(-6, 3), SUtil.random(-2.5, 2.5)), Effect.COLOURED_DUST, 0, 1, r / 255.0f, g / 255.0f, b / 255.0f, 1.0f, 0, 640);
         }
     }
-    
+
     void checkSlots() {
         if (this.acD != (this.__qch__[0] != null && this.__qch__[1] != null)) {
             if (!this.acD) {
                 this.w.playSound(new Location(this.w, SummoningSequence.wl[0], SummoningSequence.wl[1] + 1.0, SummoningSequence.wl[2]), Sound.ZOMBIE_UNFECT, 10.0f, 1.2f);
                 SUtil.broadcastWorld(Sputnik.trans("&b✬ Sapphire Crystal &ehave been empowered and activated!"), this.w);
-            }
-            else {
+            } else {
                 SUtil.broadcastWorld(Sputnik.trans("&b✬ Sapphire Crystal &ede-activated!"), this.w);
             }
         }
@@ -239,8 +237,7 @@ public class SummoningSequence
             if (!this.acR) {
                 this.w.playSound(new Location(this.w, SummoningSequence.wl[0], SummoningSequence.wl[1] + 1.0, SummoningSequence.wl[2]), Sound.ZOMBIE_UNFECT, 10.0f, 1.2f);
                 SUtil.broadcastWorld(Sputnik.trans("&c✬ Ruby Crystal &ehave been empowered and activated!"), this.w);
-            }
-            else {
+            } else {
                 SUtil.broadcastWorld(Sputnik.trans("&c✬ Ruby Crystal &ede-activated!"), this.w);
             }
         }
@@ -248,8 +245,7 @@ public class SummoningSequence
             if (!this.acE) {
                 this.w.playSound(new Location(this.w, SummoningSequence.wl[0], SummoningSequence.wl[1] + 1.0, SummoningSequence.wl[2]), Sound.ZOMBIE_UNFECT, 10.0f, 1.2f);
                 SUtil.broadcastWorld(Sputnik.trans("&a✬ Jade Crystal &ehave been empowered and activated!"), this.w);
-            }
-            else {
+            } else {
                 SUtil.broadcastWorld(Sputnik.trans("&a✬ Jade Crystal &ede-activated!"), this.w);
             }
         }
@@ -257,8 +253,7 @@ public class SummoningSequence
             if (!this.acG) {
                 SUtil.broadcastWorld(Sputnik.trans("&6✬ Topaz Crystal &ehave been empowered and activated!"), this.w);
                 this.w.playSound(new Location(this.w, SummoningSequence.wl[0], SummoningSequence.wl[1] + 1.0, SummoningSequence.wl[2]), Sound.ZOMBIE_UNFECT, 10.0f, 1.2f);
-            }
-            else {
+            } else {
                 SUtil.broadcastWorld(Sputnik.trans("&6✬ Topaz Crystal &ede-activated!"), this.w);
             }
         }
@@ -267,7 +262,7 @@ public class SummoningSequence
         this.acG = (this.__qch__[4] != null && this.__qch__[5] != null);
         this.acR = (this.__qch__[6] != null && this.__qch__[7] != null);
     }
-    
+
     public void interactCatalyst(final Player p, final int slot, final boolean rightClick) {
         if (this.haveCatal(p) && SkySimEngine.getPlugin().altarCooldown) {
             p.playSound(p.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 2.0f);
@@ -285,17 +280,15 @@ public class SummoningSequence
             this.checkSlots();
             if (this.haveCatal(p) && this.__qch__[slot] == null) {
                 this.__qch__[slot] = p.getUniqueId();
-                p.setItemInHand((ItemStack)null);
+                p.setItemInHand(null);
                 p.playSound(p.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 2.0f);
                 p.sendMessage(Sputnik.trans("&4☬ &cYou placed a &aCatalyst&c!"));
                 SUtil.broadcastWorld(Sputnik.trans("&4☬ &b" + p.getName() + " &cplaced a Catalyst! &7(&e" + this.catalystInTheAltar() + "&7/&a8&7)"), p.getWorld());
                 this.checkSlots();
-            }
-            else if (this.haveCatal(p) && this.__qch__[slot] != null) {
+            } else if (this.haveCatal(p) && this.__qch__[slot] != null) {
                 p.playSound(p.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 0.0f);
                 p.sendMessage(Sputnik.trans("&cThis slot is already occupied!"));
-            }
-            else if (this.__qch__[slot] != null) {
+            } else if (this.__qch__[slot] != null) {
                 this.checkSlots();
                 if (this.__qch__[slot] == p.getUniqueId()) {
                     this.__qch__[slot] = null;
@@ -304,8 +297,7 @@ public class SummoningSequence
                     Sputnik.smartGiveItem(SItem.of(SMaterial.HIDDEN_DIMOON_GEM).getStack(), p);
                     this.countDown(p);
                     this.checkSlots();
-                }
-                else {
+                } else {
                     p.playSound(p.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 0.0f);
                     p.sendMessage(Sputnik.trans("&cThis is not your &aCatalyst&c, duh."));
                 }
@@ -313,7 +305,7 @@ public class SummoningSequence
             }
         }
     }
-    
+
     public void pickupAllCatalysts(final Player p) {
         for (int i = 0; i < this.__qch__.length; ++i) {
             if (this.__qch__[i] == p.getUniqueId()) {
@@ -323,7 +315,7 @@ public class SummoningSequence
         }
         this.checkSlots();
     }
-    
+
     public int catalystInTheAltar() {
         int j = 0;
         for (int i = 0; i < this.__qch__.length; ++i) {
@@ -331,15 +323,15 @@ public class SummoningSequence
         }
         return j;
     }
-    
+
     boolean haveCatal(final Player p) {
         return this.getItemInHand(p) != null && this.getItemInHand(p).getType() == SMaterial.HIDDEN_DIMOON_GEM;
     }
-    
+
     SItem getItemInHand(final Player p) {
         return SItem.find(p.getItemInHand());
     }
-    
+
     void countDown(final Player p) {
         User.getUser(p.getUniqueId()).setCooldownAltar(15);
         new BukkitRunnable() {
@@ -351,58 +343,58 @@ public class SummoningSequence
                 }
                 User.getUser(p.getUniqueId()).setCooldownAltar(User.getUser(p.getUniqueId()).getCooldownAltar() - 1);
             }
-        }.runTaskTimerAsynchronously((Plugin)this.plugin, 0L, 20L);
+        }.runTaskTimerAsynchronously(this.plugin, 0L, 20L);
     }
-    
+
     public void setAcE(final boolean acE) {
         this.acE = acE;
     }
-    
+
     public boolean isAcE() {
         return this.acE;
     }
-    
+
     public void setAcD(final boolean acD) {
         this.acD = acD;
     }
-    
+
     public boolean isAcD() {
         return this.acD;
     }
-    
+
     public void setAcR(final boolean acR) {
         this.acR = acR;
     }
-    
+
     public boolean isAcR() {
         return this.acR;
     }
-    
+
     public void setAcG(final boolean acG) {
         this.acG = acG;
     }
-    
+
     public boolean isAcG() {
         return this.acG;
     }
-    
+
     public void setBossSpawning(final boolean bossSpawning) {
         this.bossSpawning = bossSpawning;
     }
-    
+
     public boolean isBossSpawning() {
         return this.bossSpawning;
     }
-    
+
     public void setBossSpawned(final boolean bossSpawned) {
         this.bossSpawned = bossSpawned;
     }
-    
+
     public boolean isBossSpawned() {
         return this.bossSpawned;
     }
-    
+
     static {
-        SummoningSequence.wl = new double[] { 234668.5, 154.0, 236481.5 };
+        SummoningSequence.wl = new double[]{234668.5, 154.0, 236481.5};
     }
 }

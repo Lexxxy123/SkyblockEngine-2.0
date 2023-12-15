@@ -4,17 +4,23 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.entity.Item;
 import vn.giakhanhvn.skysim.entity.SEntityType;
+
 import java.util.Arrays;
+
 import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.item.SMaterial;
 import org.bukkit.entity.Arrow;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Collection;
+
 import vn.giakhanhvn.skysim.entity.KillEnderCrystal;
+
 import java.util.Map;
 import java.util.UUID;
 import java.util.HashMap;
+
 import vn.giakhanhvn.skysim.entity.StaticDragonManager;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -25,15 +31,19 @@ import vn.giakhanhvn.skysim.user.User;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 import vn.giakhanhvn.skysim.SkySimEngine;
+
 import java.util.List;
 import java.util.ArrayList;
+
 import org.bukkit.scheduler.BukkitRunnable;
 import vn.giakhanhvn.skysim.entity.SEntity;
 import org.bukkit.Location;
 import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.util.Vector;
 import org.bukkit.entity.LivingEntity;
+
 import java.util.Iterator;
+
 import org.bukkit.entity.Player;
 import org.bukkit.ChatColor;
 import vn.giakhanhvn.skysim.entity.dungeons.watcher.GlobalBossBar;
@@ -45,8 +55,7 @@ import vn.giakhanhvn.skysim.entity.EntityStatistics;
 import vn.giakhanhvn.skysim.entity.EntityFunction;
 import net.minecraft.server.v1_8_R3.EntityEnderDragon;
 
-public abstract class Dragon extends EntityEnderDragon implements SNMSEntity, EntityFunction, EntityStatistics
-{
+public abstract class Dragon extends EntityEnderDragon implements SNMSEntity, EntityFunction, EntityStatistics {
     public static final long DEFAULT_ATTACK_COOLDOWN = 300L;
     public static final Range DEFAULT_DAMAGE_DEGREE_RANGE;
     public static final double DEFAULT_SPEED_MODIFIER = 1.4;
@@ -66,7 +75,7 @@ public abstract class Dragon extends EntityEnderDragon implements SNMSEntity, En
     }
 
     protected Dragon(final double speedModifier, final Range<Double> damageDegree, final long attackCooldown) {
-        this(((CraftWorld)Bukkit.getWorlds().get(0)).getHandle(), speedModifier, damageDegree, attackCooldown);
+        this(((CraftWorld) Bukkit.getWorlds().get(0)).getHandle(), speedModifier, damageDegree, attackCooldown);
     }
 
     public double getXPDropped() {
@@ -109,7 +118,7 @@ public abstract class Dragon extends EntityEnderDragon implements SNMSEntity, En
         entity.setVelocity(entity.getLocation().getDirection().clone().multiply(-1.0).multiply(this.speedModifier).setY(this.yD));
         return true;
     }
-    
+
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
         final GlobalBossBar bb = this.setBar(entity.getWorld());
         new BukkitRunnable() {
@@ -118,7 +127,7 @@ public abstract class Dragon extends EntityEnderDragon implements SNMSEntity, En
                     Dragon.this.updateBar(1.0E-4f, bb);
                     SUtil.delay(() -> {
                         final ArrayList<Player> plist = new ArrayList<Player>();
-                        final Iterator<Player> iterator =  bb.players.iterator();;
+                        final Iterator<Player> iterator = bb.players.iterator();
                         while (iterator.hasNext()) {
                             final Player p = iterator.next();
                             plist.add(p);
@@ -126,14 +135,13 @@ public abstract class Dragon extends EntityEnderDragon implements SNMSEntity, En
                         plist.forEach(pl -> bb.removePlayer(pl));
                         bb.setProgress(0.0);
                         bb.cancel();
-                        return;
                     }, 400L);
                     this.cancel();
                     return;
                 }
-                Dragon.this.updateBar((float)(entity.getHealth() / entity.getMaxHealth()), bb);
+                Dragon.this.updateBar((float) (entity.getHealth() / entity.getMaxHealth()), bb);
             }
-        }.runTaskTimerAsynchronously((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimerAsynchronously(SkySimEngine.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -153,23 +161,22 @@ public abstract class Dragon extends EntityEnderDragon implements SNMSEntity, En
                                 }
                                 for (final Entity e : entity.getNearbyEntities(200.0, 200.0, 200.0)) {
                                     e.getWorld().strikeLightningEffect(e.getLocation());
-                                    final double r = SUtil.random((double)Dragon.this.damageDegree.getMinimum(), (double)Dragon.this.damageDegree.getMaximum());
+                                    final double r = SUtil.random(Dragon.this.damageDegree.getMinimum(), Dragon.this.damageDegree.getMaximum());
                                     if (!(e instanceof LivingEntity)) {
                                         continue;
                                     }
-                                    final LivingEntity le = (LivingEntity)e;
-                                    final int damage = (int)(le.getMaxHealth() * r);
+                                    final LivingEntity le = (LivingEntity) e;
+                                    final int damage = (int) (le.getMaxHealth() * r);
                                     if (le instanceof Player) {
-                                        User.getUser(le.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)entity);
-                                    }
-                                    else {
-                                        le.damage((double)damage);
+                                        User.getUser(le.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, entity);
+                                    } else {
+                                        le.damage(damage);
                                     }
                                     e.sendMessage(ChatColor.DARK_PURPLE + "☬ " + ChatColor.RED + Dragon.this.getEntityName() + ChatColor.LIGHT_PURPLE + " used " + ChatColor.YELLOW + "Lightning Strike" + ChatColor.LIGHT_PURPLE + " on you for " + ChatColor.RED + damage + " damage.");
                                 }
                                 Dragon.this.frozen = false;
                             }
-                        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 50L);
+                        }.runTaskLater(SkySimEngine.getPlugin(), 50L);
                         return;
                     case 1: {
                         Dragon.this.frozen = true;
@@ -184,13 +191,10 @@ public abstract class Dragon extends EntityEnderDragon implements SNMSEntity, En
                             SUtil.runIntervalForTicks(() -> {
                                 final Object val$entity = entity;
                                 if (entity.isDead()) {
-                                    return;
-                                }
-                                else {
+                                } else {
                                     for (int j = 0; j < 15; ++j) {
                                         entity.getWorld().spigot().playEffect(entity.getEyeLocation().subtract(0.0, 8.0, 0.0).add(entity.getLocation().getDirection().multiply(-8.0)).add(SUtil.random(-0.5, 0.5), SUtil.random(-0.5, 0.5), SUtil.random(-0.5, 0.5)), Effect.FLAME, 0, 1, 0.0f, 0.0f, 0.0f, 0.0f, 1, 50);
                                     }
-                                    return;
                                 }
                             }, 5L, 140L);
                             final float fn = SUtil.getLookAtYaw(near.getLocation().toVector());
@@ -200,7 +204,7 @@ public abstract class Dragon extends EntityEnderDragon implements SNMSEntity, En
                                         final Object val$entity = entity;
                                         final Object val$fn = fn;
                                         if (!entity.isDead()) {
-                                            if ((int)fn != (int)entity.getLocation().getYaw()) {
+                                            if ((int) fn != (int) entity.getLocation().getYaw()) {
                                                 final Location location = entity.getLocation().clone();
                                                 location.setYaw(entity.getLocation().clone().getYaw() + 1.0f);
                                                 entity.teleport(location);
@@ -208,7 +212,7 @@ public abstract class Dragon extends EntityEnderDragon implements SNMSEntity, En
                                         }
                                     }, 1L, 120L);
                                 }
-                            }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 20L);
+                            }.runTaskLater(SkySimEngine.getPlugin(), 20L);
                             new BukkitRunnable() {
                                 public void run() {
                                     SUtil.runIntervalForTicks(() -> {
@@ -216,24 +220,24 @@ public abstract class Dragon extends EntityEnderDragon implements SNMSEntity, En
                                         final Object val$sEntity = sEntity;
                                         final Object val$finalNear = finalNear;
                                         if (!entity.isDead()) {
-                                            final Fireball fireball = (Fireball)entity.getWorld().spawn(entity.getEyeLocation().subtract(0.0, 8.0, 0.0).add(entity.getLocation().getDirection().multiply(-10.0)), (Class)Fireball.class);
-                                            fireball.setMetadata("dragon", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)sEntity));
+                                            final Fireball fireball = (Fireball) entity.getWorld().spawn(entity.getEyeLocation().subtract(0.0, 8.0, 0.0).add(entity.getLocation().getDirection().multiply(-10.0)), (Class) Fireball.class);
+                                            fireball.setMetadata("dragon", new FixedMetadataValue(SkySimEngine.getPlugin(), sEntity));
                                             fireball.setDirection(finalNear.getLocation().getDirection().multiply(-1.0).normalize());
                                         }
                                     }, 5L, 60L);
                                 }
-                            }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 80L);
+                            }.runTaskLater(SkySimEngine.getPlugin(), 80L);
                         }
                         new BukkitRunnable() {
                             public void run() {
                                 Dragon.this.frozen = false;
                             }
-                        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 140L);
+                        }.runTaskLater(SkySimEngine.getPlugin(), 140L);
                     }
                     default:
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 100L, this.attackCooldown);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 100L, this.attackCooldown);
     }
 
     public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
@@ -244,14 +248,14 @@ public abstract class Dragon extends EntityEnderDragon implements SNMSEntity, En
         message.append(ChatColor.GREEN).append(ChatColor.BOLD).append("▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n");
         message.append(ChatColor.GOLD).append(ChatColor.BOLD).append("                 ").append(sEntity.getStatistics().getEntityName().toUpperCase()).append(" DOWN!\n \n");
         final List<Map.Entry<UUID, Double>> damageDealt = new ArrayList<Map.Entry<UUID, Double>>(sEntity.getDamageDealt().entrySet());
-        damageDealt.sort((Comparator<? super Map.Entry<UUID, Double>>)Map.Entry.<Object, Comparable>comparingByValue());
+        damageDealt.sort((Comparator<? super Map.Entry<UUID, Double>>) Map.Entry.<Object, Comparable>comparingByValue());
         Collections.reverse(damageDealt);
         String name = null;
         if (damager instanceof Player) {
             name = damager.getName();
         }
-        if (damager instanceof Arrow && ((Arrow)damager).getShooter() instanceof Player) {
-            name = ((Player)((Arrow)damager).getShooter()).getName();
+        if (damager instanceof Arrow && ((Arrow) damager).getShooter() instanceof Player) {
+            name = ((Player) ((Arrow) damager).getShooter()).getName();
         }
         if (name != null) {
             message.append("            ").append(ChatColor.GREEN).append(name).append(ChatColor.GRAY).append(" dealt the final blow.\n \n");
@@ -283,7 +287,7 @@ public abstract class Dragon extends EntityEnderDragon implements SNMSEntity, En
                     message.append("rd");
                     break;
             }
-            message.append(" Damager").append(ChatColor.RESET).append(ChatColor.GRAY).append(" - ").append(ChatColor.GREEN).append(Bukkit.getOfflinePlayer((UUID)d.getKey()).getName()).append(ChatColor.GRAY).append(" - ").append(ChatColor.YELLOW).append(SUtil.commaify(d.getValue().intValue()));
+            message.append(" Damager").append(ChatColor.RESET).append(ChatColor.GRAY).append(" - ").append(ChatColor.GREEN).append(Bukkit.getOfflinePlayer(d.getKey()).getName()).append(ChatColor.GRAY).append(" - ").append(ChatColor.YELLOW).append(SUtil.commaify(d.getValue().intValue()));
         }
         message.append("\n \n").append("         ").append(ChatColor.RESET).append(ChatColor.YELLOW).append("Your Damage: ").append("%s").append(ChatColor.RESET).append("\n").append("             ").append(ChatColor.YELLOW).append("Runecrafting Experience: ").append(ChatColor.LIGHT_PURPLE).append("N/A").append(ChatColor.RESET).append("\n \n");
         message.append(ChatColor.GREEN).append(ChatColor.BOLD).append("▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
@@ -305,7 +309,7 @@ public abstract class Dragon extends EntityEnderDragon implements SNMSEntity, En
             public void run() {
                 for (int i = 0; i < damageDealt.size(); ++i) {
                     final Map.Entry<UUID, Double> d = damageDealt.get(i);
-                    final Player player = Bukkit.getPlayer((UUID)d.getKey());
+                    final Player player = Bukkit.getPlayer(d.getKey());
                     if (player != null) {
                         int weight = 0;
                         if (eyes.containsKey(player.getUniqueId())) {
@@ -331,13 +335,13 @@ public abstract class Dragon extends EntityEnderDragon implements SNMSEntity, En
                         }
                         final List<DragonDrop> possibleMajorDrops = new ArrayList<DragonDrop>();
                         final SEntityType type = sEntity.getSpecType();
-                        SUtil.<DragonDrop>addIf(new DragonDrop(SMaterial.ASPECT_OF_THE_DRAGONS, 450), possibleMajorDrops, weight >= 450);
-                        SUtil.<DragonDrop>addIf(new DragonDrop(SMaterial.ENDER_DRAGON_PET, 450), possibleMajorDrops, weight >= 450);
-                        SUtil.<DragonDrop>addIf(new DragonDrop(SMaterial.ENDER_DRAGON_PET2, 450), possibleMajorDrops, weight >= 450);
-                        SUtil.<DragonDrop>addIf(new DragonDrop(SMaterial.VagueEntityMaterial.HELMET, 400, type), possibleMajorDrops, weight >= 400);
-                        SUtil.<DragonDrop>addIf(new DragonDrop(SMaterial.VagueEntityMaterial.CHESTPLATE, 325, type), possibleMajorDrops, weight >= 325);
-                        SUtil.<DragonDrop>addIf(new DragonDrop(SMaterial.VagueEntityMaterial.LEGGINGS, 350, type), possibleMajorDrops, weight >= 350);
-                        SUtil.<DragonDrop>addIf(new DragonDrop(SMaterial.VagueEntityMaterial.BOOTS, 300, type), possibleMajorDrops, weight >= 300);
+                        SUtil.addIf(new DragonDrop(SMaterial.ASPECT_OF_THE_DRAGONS, 450), possibleMajorDrops, weight >= 450);
+                        SUtil.addIf(new DragonDrop(SMaterial.ENDER_DRAGON_PET, 450), possibleMajorDrops, weight >= 450);
+                        SUtil.addIf(new DragonDrop(SMaterial.ENDER_DRAGON_PET2, 450), possibleMajorDrops, weight >= 450);
+                        SUtil.addIf(new DragonDrop(SMaterial.VagueEntityMaterial.HELMET, 400, type), possibleMajorDrops, weight >= 400);
+                        SUtil.addIf(new DragonDrop(SMaterial.VagueEntityMaterial.CHESTPLATE, 325, type), possibleMajorDrops, weight >= 325);
+                        SUtil.addIf(new DragonDrop(SMaterial.VagueEntityMaterial.LEGGINGS, 350, type), possibleMajorDrops, weight >= 350);
+                        SUtil.addIf(new DragonDrop(SMaterial.VagueEntityMaterial.BOOTS, 300, type), possibleMajorDrops, weight >= 300);
                         int remainingWeight = weight;
                         if (possibleMajorDrops.size() > 0) {
                             final DragonDrop drop = possibleMajorDrops.get(SUtil.random(0, possibleMajorDrops.size() - 1));
@@ -347,22 +351,22 @@ public abstract class Dragon extends EntityEnderDragon implements SNMSEntity, En
                                 final SItem sItem = SItem.of(majorDrop);
                                 if (!sItem.getFullName().equals("§6Ender Dragon") && !sItem.getFullName().equals("§5Ender Dragon")) {
                                     final Item item = SUtil.spawnPersonalItem(sItem.getStack(), killed.getLocation(), player);
-                                    item.setMetadata("obtained", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+                                    item.setMetadata("obtained", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
                                     item.setCustomNameVisible(true);
                                     item.setCustomName(item.getItemStack().getAmount() + "x " + sItem.getFullName());
-                                }
-                                else {
+                                } else {
                                     final Item item = SUtil.spawnPersonalItem(sItem.getStack(), killed.getLocation(), player);
-                                    item.setMetadata("obtained", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+                                    item.setMetadata("obtained", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
                                     item.setCustomNameVisible(true);
                                     item.setCustomName(item.getItemStack().getAmount() + "x " + ChatColor.GRAY + "[Lvl 1] " + sItem.getFullName());
                                 }
                             }
                         }
-                        final List<DragonDrop> minorDrops = new ArrayList<DragonDrop>(Arrays.<DragonDrop>asList(new DragonDrop(SMaterial.ENDER_PEARL, 0), new DragonDrop(SMaterial.ENCHANTED_ENDER_PEARL, 0)));
-                        SUtil.<DragonDrop>addIf(new DragonDrop(SMaterial.VagueEntityMaterial.FRAGMENT, 22, type), minorDrops, weight >= 22);
+                        final List<DragonDrop> minorDrops = new ArrayList<DragonDrop>(Arrays.asList(new DragonDrop(SMaterial.ENDER_PEARL, 0), new DragonDrop(SMaterial.ENCHANTED_ENDER_PEARL, 0)));
+                        SUtil.addIf(new DragonDrop(SMaterial.VagueEntityMaterial.FRAGMENT, 22, type), minorDrops, weight >= 22);
                         int frags;
-                        for (frags = 0; remainingWeight >= 22; remainingWeight -= 22, ++frags) {}
+                        for (frags = 0; remainingWeight >= 22; remainingWeight -= 22, ++frags) {
+                        }
                         for (final DragonDrop minorDrop : minorDrops) {
                             final SItem sItem2 = SItem.of(minorDrop.getMaterial());
                             if (minorDrop.getMaterial() == null) {
@@ -372,8 +376,7 @@ public abstract class Dragon extends EntityEnderDragon implements SNMSEntity, En
                                 final Item item2 = SUtil.spawnPersonalItem(SUtil.setStackAmount(sItem2.getStack(), frags), killed.getLocation(), player);
                                 item2.setCustomNameVisible(true);
                                 item2.setCustomName(item2.getItemStack().getAmount() + "x " + sItem2.getFullName());
-                            }
-                            else {
+                            } else {
                                 final Item item2 = SUtil.spawnPersonalItem(SUtil.setStackAmount(sItem2.getStack(), SUtil.random(5, 10)), killed.getLocation(), player);
                                 item2.setCustomNameVisible(true);
                                 item2.setCustomName(item2.getItemStack().getAmount() + "x " + sItem2.getFullName());
@@ -382,23 +385,22 @@ public abstract class Dragon extends EntityEnderDragon implements SNMSEntity, En
                     }
                 }
             }
-        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 200L);
+        }.runTaskLater(SkySimEngine.getPlugin(), 200L);
     }
 
     public LivingEntity spawn(final Location location) {
-        this.world = (World)((CraftWorld)location.getWorld()).getHandle();
+        this.world = ((CraftWorld) location.getWorld()).getHandle();
         this.setPosition(location.getX(), location.getY(), location.getZ());
-        this.world.addEntity((net.minecraft.server.v1_8_R3.Entity)this, CreatureSpawnEvent.SpawnReason.CUSTOM);
-        return (LivingEntity)this.getBukkitEntity();
+        this.world.addEntity(this, CreatureSpawnEvent.SpawnReason.CUSTOM);
+        return (LivingEntity) this.getBukkitEntity();
     }
 
     public void onAttack(final EntityDamageByEntityEvent e) {
         final int d = SUtil.random(354, 902);
         if (e.getEntity() instanceof Player) {
             User.getUser(e.getEntity().getUniqueId()).damage(d, e.getCause(), e.getDamager());
-        }
-        else if (e.getEntity() instanceof LivingEntity) {
-            ((LivingEntity)e.getEntity()).damage((double)d);
+        } else if (e.getEntity() instanceof LivingEntity) {
+            ((LivingEntity) e.getEntity()).damage(d);
         }
         e.getEntity().setVelocity(e.getEntity().getVelocity().multiply(8.0));
         e.getEntity().sendMessage(ChatColor.DARK_PURPLE + "☬ " + ChatColor.RED + this.getEntityName() + ChatColor.LIGHT_PURPLE + " used " + ChatColor.YELLOW + "Rush" + ChatColor.LIGHT_PURPLE + " on you for " + ChatColor.RED + d + " damage.");
@@ -425,11 +427,10 @@ public abstract class Dragon extends EntityEnderDragon implements SNMSEntity, En
     }
 
     static {
-        DEFAULT_DAMAGE_DEGREE_RANGE = Range.between((Comparable)0.3, (Comparable)0.7);
+        DEFAULT_DAMAGE_DEGREE_RANGE = Range.between((Comparable) 0.3, (Comparable) 0.7);
     }
 
-    private static class DragonDrop
-    {
+    private static class DragonDrop {
         private final SMaterial material;
         private final SMaterial.VagueEntityMaterial vagueEntityMaterial;
         private final int weight;

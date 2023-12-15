@@ -1,15 +1,16 @@
 package vn.giakhanhvn.skysim.command;
 
 import org.bukkit.entity.Player;
+
 import java.io.IOException;
+
 import vn.giakhanhvn.skysim.user.User;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 
 @CommandParameters(description = "bruhbu", aliases = "datarec")
-public class InvRecovery extends SCommand
-{
+public class InvRecovery extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         final Player player = sender.getPlayer();
@@ -32,8 +33,7 @@ public class InvRecovery extends SCommand
                 user2.loadPlayerData();
                 user.send("&aSuccess!");
                 user2.send("&eData Recovered, now disconnect and join back.");
-            }
-            catch (final IllegalArgumentException | IOException e) {
+            } catch (final IllegalArgumentException | IOException e) {
                 e.printStackTrace();
                 user.send("&cError! Check Console!");
             }

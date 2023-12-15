@@ -7,10 +7,9 @@ import vn.giakhanhvn.skysim.user.User;
 
 import java.util.Objects;
 
-public class ItemCollectionRecipeReward extends ItemCollectionReward
-{
+public class ItemCollectionRecipeReward extends ItemCollectionReward {
     private final SMaterial material;
-    
+
     public ItemCollectionRecipeReward(final SMaterial material) {
         super(Type.RECIPE);
         this.material = material;
@@ -43,7 +42,7 @@ public class ItemCollectionRecipeReward extends ItemCollectionReward
             user.getUnlockedRecipes().add(sItem.getDisplayName());
         }
     }
-    
+
     @Override
     public String toRewardString() {
         return ChatColor.GRAY + this.material.getDisplayName(this.material.getData()) + ChatColor.GRAY + " Recipe";

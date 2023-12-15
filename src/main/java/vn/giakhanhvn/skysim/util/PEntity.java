@@ -2,7 +2,9 @@ package vn.giakhanhvn.skysim.util;
 
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
 import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntityLiving;
+
 import java.util.Iterator;
+
 import vn.giakhanhvn.skysim.user.User;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -12,15 +14,18 @@ import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 import vn.giakhanhvn.skysim.SkySimEngine;
 import org.bukkit.Bukkit;
+
 import java.util.ArrayList;
+
 import org.bukkit.scheduler.BukkitTask;
 import net.minecraft.server.v1_8_R3.Packet;
 import org.bukkit.entity.Player;
+
 import java.util.List;
+
 import net.minecraft.server.v1_8_R3.Entity;
 
-public class PEntity
-{
+public class PEntity {
     Entity entity;
     List<Player> players;
     Packet spawn;
@@ -33,22 +38,22 @@ public class PEntity
     double y;
     double z;
     public PEntity manager;
-    
+
     public PEntity(final Entity e) {
         this.entity = e;
         this.players = new ArrayList<Player>();
         this.updateSpawnPacket();
         PEntity.managers.add(this);
-        this.tickTask = Bukkit.getScheduler().runTaskTimer((Plugin)SkySimEngine.getPlugin(), () -> this.tick(), 1L, 5L);
+        this.tickTask = Bukkit.getScheduler().runTaskTimer(SkySimEngine.getPlugin(), () -> this.tick(), 1L, 5L);
     }
-    
+
     public PEntity(final Location location) {
     }
-    
+
     public void setShowPermission(final String permission) {
         this.permission = permission;
     }
-    
+
     public void addSpawnPacket(final Packet packet) {
         if (this.spawnPackets == null) {
             this.spawnPackets = new ArrayList<Packet>();
@@ -56,13 +61,11 @@ public class PEntity
         this.spawnPackets.add(packet);
         this.sendCustomPacket(packet);
     }
-    
+
     public void removeSpawnPacket(final Packet packet) {
-        if (this.spawnPackets.contains(packet)) {
-            this.spawnPackets.remove(packet);
-        }
+        this.spawnPackets.remove(packet);
     }
-    
+
     public boolean updateLocation() {
         if (this.players.isEmpty()) {
             return false;
@@ -73,26 +76,26 @@ public class PEntity
         this.x = this.entity.locX;
         this.y = this.entity.locY;
         this.z = this.entity.locZ;
-        final PacketPlayOutEntityTeleport teleport = new PacketPlayOutEntityTeleport((Entity)this.entity);
+        final PacketPlayOutEntityTeleport teleport = new PacketPlayOutEntityTeleport(this.entity);
         for (int i = 0; i < this.players.size(); ++i) {
             final Player next = this.players.get(i);
-            ((CraftPlayer)next).getHandle().playerConnection.sendPacket((Packet)teleport);
+            ((CraftPlayer) next).getHandle().playerConnection.sendPacket(teleport);
         }
         return true;
     }
-    
+
     public boolean playAnimation(final int anim) {
         if (this.players.isEmpty()) {
             return false;
         }
-        final PacketPlayOutAnimation teleport = new PacketPlayOutAnimation((Entity)this.entity, anim);
+        final PacketPlayOutAnimation teleport = new PacketPlayOutAnimation(this.entity, anim);
         for (int i = 0; i < this.players.size(); ++i) {
             final Player next = this.players.get(i);
-            ((CraftPlayer)next).getHandle().playerConnection.sendPacket((Packet)teleport);
+            ((CraftPlayer) next).getHandle().playerConnection.sendPacket(teleport);
         }
         return true;
     }
-    
+
     public void tick() {
         final List<Player> newPlayers = new ArrayList<Player>();
         this.updateSpawnPacket();
@@ -104,8 +107,7 @@ public class PEntity
                     }
                     this.players.remove(p);
                     newPlayers.add(p);
-                }
-                else {
+                } else {
                     if (!this.sendSpawnPacket(p)) {
                         continue;
                     }
@@ -118,68 +120,64 @@ public class PEntity
         }
         this.players = newPlayers;
     }
-    
+
     public void destroy() {
         this.hide();
         this.tickTask.cancel();
-        if (PEntity.managers.contains(this)) {
-            PEntity.managers.remove(this);
-        }
+        PEntity.managers.remove(this);
     }
-    
+
     public void hide() {
         for (int i = 0; i < this.players.size(); ++i) {
             final Player next = this.players.get(i);
             this.sendDestroyPacket(next);
         }
     }
-    
+
     protected void updateSpawnPacket() {
-        this.spawn = (Packet)new PacketPlayOutSpawnEntityLiving((EntityLiving)this.entity);
+        this.spawn = new PacketPlayOutSpawnEntityLiving((EntityLiving) this.entity);
     }
-    
+
     public List<Player> getPlayers() {
         return this.players;
     }
-    
+
     public void spawn() {
         for (final Player next : this.players) {
             this.sendSpawnPacket(next);
         }
     }
-    
+
     public void sendCustomPacket(final Packet packet) {
         for (final Player p : this.players) {
-            ((CraftPlayer)p).getHandle().playerConnection.sendPacket(packet);
+            ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
         }
     }
-    
+
     protected boolean sendSpawnPacket(final Player player) {
         if (this.permission != null && !User.getUser(player.getUniqueId()).hasPermission(this.permission)) {
             this.players.remove(player);
             return false;
         }
-        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(this.spawn);
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(this.spawn);
         if (this.spawnPackets != null) {
             for (final Packet packet : this.spawnPackets) {
-                ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
+                ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
             }
         }
         return true;
     }
-    
+
     protected void sendDestroyPacket(final Player player) {
-        ((CraftPlayer)player).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutEntityDestroy(new int[] { this.entity.getId() }));
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(new int[]{this.entity.getId()}));
     }
-    
+
     public static void removePlayer(final Player player) {
         for (final PEntity manager : PEntity.managers) {
-            if (manager.players.contains(player)) {
-                manager.players.remove(player);
-            }
+            manager.players.remove(player);
         }
     }
-    
+
     static {
         PEntity.managers = new ArrayList<PEntity>();
     }

@@ -1,6 +1,7 @@
 package vn.giakhanhvn.skysim.dungeons;
 
 import java.util.HashMap;
+
 import org.bukkit.Sound;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -22,31 +23,32 @@ import vn.giakhanhvn.skysim.user.PlayerStatistics;
 import vn.giakhanhvn.skysim.user.TemporaryStats;
 import vn.giakhanhvn.skysim.user.User;
 import org.bukkit.entity.Player;
+
 import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.List;
 import java.util.Map;
+
 import vn.giakhanhvn.skysim.SkySimEngine;
 import org.bukkit.World;
 
-public class Blessings
-{
-    private BlessingType type;
+public class Blessings {
+    private final BlessingType type;
     private int level;
     private double buffPercent;
-    private World world;
+    private final World world;
     public static final SkySimEngine sse;
     public static final Map<World, List<Blessings>> BLESSINGS_MAP;
     public static final Map<UUID, float[]> STAT_MAP;
-    
+
     public Blessings(final BlessingType type, final int level, final World operatedWorld) {
         this.level = 1;
         this.type = type;
         this.world = operatedWorld;
         this.level = level;
     }
-    
+
     public void active() {
         final World operatedWorld = this.world;
         if (Blessings.BLESSINGS_MAP.containsKey(operatedWorld)) {
@@ -57,20 +59,19 @@ public class Blessings
                 }
             }
             Blessings.BLESSINGS_MAP.get(operatedWorld).add(this);
-        }
-        else {
+        } else {
             Blessings.BLESSINGS_MAP.put(operatedWorld, new ArrayList<Blessings>());
             Blessings.BLESSINGS_MAP.get(operatedWorld).add(this);
         }
     }
-    
+
     public static List<Blessings> getFrom(final World w) {
         if (Blessings.BLESSINGS_MAP.containsKey(w)) {
             return Blessings.BLESSINGS_MAP.get(w);
         }
         return null;
     }
-    
+
     public void remove() {
         Blessings.BLESSINGS_MAP.get(this.world).remove(this);
         for (final Player p : this.world.getPlayers()) {
@@ -81,14 +82,13 @@ public class Blessings
             }
             if (TemporaryStats.getFromPlayer(u.toBukkitPlayer()) != null) {
                 ts = TemporaryStats.getFromPlayer(u.toBukkitPlayer());
-            }
-            else {
+            } else {
                 ts = new TemporaryStats(User.getUser(u.toBukkitPlayer().getUniqueId()));
             }
             ts.cleanStats();
         }
     }
-    
+
     public static void resetForWorld(final World w) {
         Blessings.BLESSINGS_MAP.remove(w);
         for (final Player p : w.getPlayers()) {
@@ -99,27 +99,25 @@ public class Blessings
             }
             if (TemporaryStats.getFromPlayer(u.toBukkitPlayer()) != null) {
                 ts = TemporaryStats.getFromPlayer(u.toBukkitPlayer());
-            }
-            else {
+            } else {
                 ts = new TemporaryStats(User.getUser(u.toBukkitPlayer().getUniqueId()));
             }
             ts.cleanStats();
         }
     }
-    
+
     public WrappedStats getBlessingStats(final User u) {
         TemporaryStats ts = null;
         if (TemporaryStats.getFromPlayer(u.toBukkitPlayer()) != null) {
             ts = TemporaryStats.getFromPlayer(u.toBukkitPlayer());
-        }
-        else {
+        } else {
             ts = new TemporaryStats(User.getUser(u.toBukkitPlayer().getUniqueId()));
         }
         ts.cleanStats();
         final float[] statsarray = this.calculate(User.getUser(u.getUuid()));
         return new WrappedStats(statsarray);
     }
-    
+
     private float[] calculate(final User u) {
         final float[] stats = new float[7];
         if (u == null) {
@@ -130,40 +128,36 @@ public class Blessings
         final double fic = this.level * 2.0 * 1.2;
         if (this.type == BlessingType.LIFE_BLESSINGS) {
             final double stat = statistics.getMaxHealth().addAll();
-            stats[0] = (float)(1.2 * (stat * pci + fic - stat));
-            stats[1] = (float)(this.level / 100);
-        }
-        else if (this.type == BlessingType.POWER_BLESSINGS) {
+            stats[0] = (float) (1.2 * (stat * pci + fic - stat));
+            stats[1] = (float) (this.level / 100);
+        } else if (this.type == BlessingType.POWER_BLESSINGS) {
             final double stat_1 = statistics.getStrength().addAll();
-            stats[2] = (float)(1.2 * (stat_1 * pci + fic - stat_1));
+            stats[2] = (float) (1.2 * (stat_1 * pci + fic - stat_1));
             final double stat_2 = statistics.getCritDamage().addAll() * 100.0;
-            stats[3] = (float)(1.2 * (stat_2 * pci + fic - stat_2)) / 100.0f;
-        }
-        else if (this.type == BlessingType.WISDOM_BLESSINGS) {
+            stats[3] = (float) (1.2 * (stat_2 * pci + fic - stat_2)) / 100.0f;
+        } else if (this.type == BlessingType.WISDOM_BLESSINGS) {
             final double stat_1 = statistics.getIntelligence().addAll();
-            stats[4] = (float)(1.2 * (stat_1 * pci + fic - stat_1));
+            stats[4] = (float) (1.2 * (stat_1 * pci + fic - stat_1));
             final double stat_2 = statistics.getSpeed().addAll() * 100.0;
-            stats[5] = (float)(1.2 * (stat_2 * pci + fic - stat_2)) / 100.0f;
-        }
-        else if (this.type == BlessingType.STONE_BLESSINGS) {
+            stats[5] = (float) (1.2 * (stat_2 * pci + fic - stat_2)) / 100.0f;
+        } else if (this.type == BlessingType.STONE_BLESSINGS) {
             final double stat_1 = statistics.getDefense().addAll();
-            stats[6] = (float)(1.2 * (stat_1 * pci + fic - stat_1));
+            stats[6] = (float) (1.2 * (stat_1 * pci + fic - stat_1));
             final double stat_2 = statistics.getStrength().addAll();
-            stats[2] = (float)(1.2 * (stat_2 * pci + fic - stat_2));
-        }
-        else {
+            stats[2] = (float) (1.2 * (stat_2 * pci + fic - stat_2));
+        } else {
             final double stat_1 = statistics.getDefense().addAll();
-            stats[6] = (float)(stat_1 + 1.2 * (stat_1 * pci + fic - stat_1));
+            stats[6] = (float) (stat_1 + 1.2 * (stat_1 * pci + fic - stat_1));
             final double stat_2 = statistics.getStrength().addAll();
-            stats[2] = (float)(stat_2 + 1.2 * (stat_2 * pci + fic - stat_2));
+            stats[2] = (float) (stat_2 + 1.2 * (stat_2 * pci + fic - stat_2));
             final double stat2 = statistics.getMaxHealth().addAll();
-            stats[0] = (float)(stat2 + 1.2 * (stat2 * pci + fic - stat2));
+            stats[0] = (float) (stat2 + 1.2 * (stat2 * pci + fic - stat2));
             final double stat_3 = statistics.getIntelligence().addAll();
-            stats[4] = (float)(stat_3 + 1.2 * (stat_3 * pci + fic - stat_3));
+            stats[4] = (float) (stat_3 + 1.2 * (stat_3 * pci + fic - stat_3));
         }
         return stats;
     }
-    
+
     public String toText() {
         final String n = SUtil.toRomanNumeral(this.level);
         switch (this.type) {
@@ -181,13 +175,13 @@ public class Blessings
                 return "Blessing " + n;
         }
     }
-    
+
     public static void update() {
         sse.async(() -> {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 World w = p.getWorld();
-                if (User.getUser(p.getUniqueId()) == null || !BLESSINGS_MAP.containsKey((Object)w)) continue;
-                List<Blessings> bls = BLESSINGS_MAP.get((Object)w);
+                if (User.getUser(p.getUniqueId()) == null || !BLESSINGS_MAP.containsKey(w)) continue;
+                List<Blessings> bls = BLESSINGS_MAP.get(w);
                 TemporaryStats ts = null;
                 ts = TemporaryStats.getFromPlayer(p) != null ? TemporaryStats.getFromPlayer(p) : new TemporaryStats(User.getUser(p.getUniqueId()));
                 float def = 0.0f;
@@ -220,17 +214,15 @@ public class Blessings
             }
         });
     }
-    
+
     public String buildPickupMessage(final User targetUser, final User picker) {
         final Blessings type = this;
         final StringBuilder sb = new StringBuilder();
         if (picker == null) {
             sb.append(Sputnik.trans("&6&lDUNGEON BUFF! &fA &d" + type.toText() + "&f have been picked up!\n"));
-        }
-        else if (targetUser.getUuid() == picker.getUuid()) {
+        } else if (targetUser.getUuid() == picker.getUuid()) {
             sb.append(Sputnik.trans("&6&lDUNGEON BUFF! &fYou found a &d" + type.toText() + "&f!\n"));
-        }
-        else {
+        } else {
             sb.append(Sputnik.trans("&6&lDUNGEON BUFF! &b" + picker.toBukkitPlayer().getName() + " &ffound a &d" + type.toText() + "&f!\n"));
         }
         sb.append(Sputnik.trans("   &7Granted you "));
@@ -253,19 +245,19 @@ public class Blessings
         }
         return sb.toString();
     }
-    
+
     public static void openBlessingChest(final Block chest, final Blessings bless, final Player e) {
         final Location loc = chest.getLocation().add(0.5, 0.0, 0.5);
         final SEntity sEntity = new SEntity(loc.clone().add(0.0, -1.0, 0.0), SEntityType.VELOCITY_ARMOR_STAND);
-        final ArmorStand drop = (ArmorStand)sEntity.getEntity();
+        final ArmorStand drop = (ArmorStand) sEntity.getEntity();
         drop.setVisible(false);
         drop.setCustomNameVisible(false);
-        drop.setMetadata("ss_drop", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        drop.getEquipment().setHelmet(SUtil.getSkullURLStack("asadas", "e93e2068617872c542ecda1d27df4ece91c699907bf327c4ddb85309412d3939", 1, new String[0]));
-        final ArmorStand as = Sputnik.spawnStaticDialougeBox((Entity)drop, loc.clone().add(0.0, 1.65, 0.0));
+        drop.setMetadata("ss_drop", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        drop.getEquipment().setHelmet(SUtil.getSkullURLStack("asadas", "e93e2068617872c542ecda1d27df4ece91c699907bf327c4ddb85309412d3939", 1));
+        final ArmorStand as = Sputnik.spawnStaticDialougeBox(drop, loc.clone().add(0.0, 1.65, 0.0));
         as.setCustomName(Sputnik.trans("&d" + bless.toText()));
         as.setCustomNameVisible(false);
-        as.setMetadata("ss_drop", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+        as.setMetadata("ss_drop", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
         drop.setVelocity(new Vector(0.0, 0.058, 0.0));
         SUtil.delay(() -> drop.remove(), 150L);
         SUtil.delay(() -> {
@@ -290,7 +282,7 @@ public class Blessings
                 final Vector velClone = drop.getVelocity().clone();
                 drop.setVelocity(new Vector(0.0, (velClone.getY() < 0.0) ? 0.045 : -0.045, 0.0));
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 20L, 20L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 20L, 20L);
         new BukkitRunnable() {
             public void run() {
                 if (drop.isDead()) {
@@ -302,7 +294,7 @@ public class Blessings
                 l.setYaw(l.getYaw() + 5.0f);
                 drop.teleport(l);
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 if (drop.isDead()) {
@@ -312,20 +304,20 @@ public class Blessings
                 }
                 drop.getWorld().spigot().playEffect(drop.getLocation().clone().add(0.0, 1.5, 0.0), Effect.CLOUD, 21, 0, 0.3f, 0.0f, 0.3f, 0.01f, 1, 30);
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
     }
-    
+
     public static void dropBlessingPickable(final Location loc, final Blessings bless) {
         final SEntity sEntity = new SEntity(loc.clone().add(0.0, -0.8, 0.0), SEntityType.VELOCITY_ARMOR_STAND);
-        final ArmorStand drop = (ArmorStand)sEntity.getEntity();
+        final ArmorStand drop = (ArmorStand) sEntity.getEntity();
         drop.setVisible(false);
         drop.setCustomNameVisible(false);
-        drop.setMetadata("ss_drop", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        drop.getEquipment().setHelmet(SUtil.getSkullURLStack("asadas", "e93e2068617872c542ecda1d27df4ece91c699907bf327c4ddb85309412d3939", 1, new String[0]));
-        final ArmorStand as = Sputnik.spawnStaticDialougeBox((Entity)drop, 2.35);
+        drop.setMetadata("ss_drop", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        drop.getEquipment().setHelmet(SUtil.getSkullURLStack("asadas", "e93e2068617872c542ecda1d27df4ece91c699907bf327c4ddb85309412d3939", 1));
+        final ArmorStand as = Sputnik.spawnStaticDialougeBox(drop, 2.35);
         as.setCustomName(Sputnik.trans("&d" + bless.toText()));
         as.setCustomNameVisible(true);
-        as.setMetadata("ss_drop", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+        as.setMetadata("ss_drop", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
         drop.setVelocity(new Vector(0.0, 0.03, 0.0));
         SUtil.delay(() -> {
             if (!drop.isDead()) {
@@ -336,7 +328,6 @@ public class Blessings
                 }
                 drop.remove();
             }
-            return;
         }, 2000L);
         new BukkitRunnable() {
             public void run() {
@@ -348,7 +339,7 @@ public class Blessings
                 final Vector velClone = drop.getVelocity().clone();
                 drop.setVelocity(new Vector(0.0, (velClone.getY() < 0.0) ? 0.035 : -0.035, 0.0));
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 25L, 25L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 25L, 25L);
         new BukkitRunnable() {
             public void run() {
                 if (drop.isDead()) {
@@ -363,10 +354,10 @@ public class Blessings
                 final Location l = drop.getLocation();
                 l.setYaw(l.getYaw() + 2.5f);
                 drop.teleport(l);
-                l.getWorld().spigot().playEffect(drop.getLocation().add(0.0, 1.0, 0.0), Effect.FIREWORKS_SPARK, 0, 1, (float)SUtil.random(-1.0, 1.0), 1.0f, (float)SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
+                l.getWorld().spigot().playEffect(drop.getLocation().add(0.0, 1.0, 0.0), Effect.FIREWORKS_SPARK, 0, 1, (float) SUtil.random(-1.0, 1.0), 1.0f, (float) SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
                 for (final Entity e : drop.getNearbyEntities(0.07, 0.07, 0.07)) {
                     if (e instanceof Player) {
-                        final User u = User.getUser(((Player)e).getUniqueId());
+                        final User u = User.getUser(e.getUniqueId());
                         if (u == null) {
                             continue;
                         }
@@ -384,21 +375,21 @@ public class Blessings
                     }
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
     }
-    
+
     public BlessingType getType() {
         return this.type;
     }
-    
+
     public int getLevel() {
         return this.level;
     }
-    
+
     public void setLevel(final int level) {
         this.level = level;
     }
-    
+
     static {
         sse = SkySimEngine.getPlugin();
         BLESSINGS_MAP = new HashMap<World, List<Blessings>>();

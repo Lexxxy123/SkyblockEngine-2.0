@@ -1,14 +1,15 @@
 package vn.giakhanhvn.skysim.user;
 
 import java.util.HashMap;
+
 import org.bukkit.entity.Player;
 import org.bukkit.Bukkit;
+
 import java.util.Map;
 import java.util.UUID;
 
-public class TemporaryStats
-{
-    private User targettedUser;
+public class TemporaryStats {
+    private final User targettedUser;
     public float health;
     public float defense;
     public float strength;
@@ -24,7 +25,7 @@ public class TemporaryStats
     public float damageBonus;
     public UUID uuid;
     public static Map<UUID, TemporaryStats> TEMP_CACHE;
-    
+
     public TemporaryStats(final User targettedUser) {
         this.targettedUser = targettedUser;
         this.uuid = targettedUser.getUuid();
@@ -42,27 +43,23 @@ public class TemporaryStats
         this.ferocity = 0.0f;
         TemporaryStats.TEMP_CACHE.put(this.targettedUser.getUuid(), this);
     }
-    
+
     public void cleanUp() {
-        if (TemporaryStats.TEMP_CACHE.containsKey(this.uuid)) {
-            TemporaryStats.TEMP_CACHE.remove(this.uuid);
-        }
+        TemporaryStats.TEMP_CACHE.remove(this.uuid);
         if (Bukkit.getPlayer(this.targettedUser.getUuid()) != null) {
             final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(this.targettedUser.getUuid());
             statistics.zeroAll(152);
         }
     }
-    
+
     public static void cleanStats(final UUID uuid) {
-        if (TemporaryStats.TEMP_CACHE.containsKey(uuid)) {
-            TemporaryStats.TEMP_CACHE.remove(uuid);
-        }
+        TemporaryStats.TEMP_CACHE.remove(uuid);
         if (Bukkit.getPlayer(uuid) != null) {
             final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(uuid);
             statistics.zeroAll(152);
         }
     }
-    
+
     public void cleanStats() {
         if (Bukkit.getPlayer(this.uuid) != null && PlayerUtils.STATISTICS_CACHE.get(this.uuid) != null) {
             final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(this.uuid);
@@ -81,7 +78,7 @@ public class TemporaryStats
             statistics.zeroAll(152);
         }
     }
-    
+
     public void update() {
         if (Bukkit.getPlayer(this.targettedUser.getUuid()) == null) {
             this.cleanUp();
@@ -89,138 +86,138 @@ public class TemporaryStats
         }
         final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(this.targettedUser.getUuid());
         statistics.zeroAll(152);
-        statistics.getMaxHealth().set(152, Double.valueOf((double)this.health));
-        statistics.getDefense().set(152, Double.valueOf((double)this.defense));
-        statistics.getStrength().set(152, Double.valueOf((double)this.strength));
-        statistics.getCritChance().set(152, Double.valueOf((double)this.critChance));
-        statistics.getCritDamage().set(152, Double.valueOf((double)this.critDamage));
-        statistics.getIntelligence().set(152, Double.valueOf((double)this.intelligence));
-        statistics.getFerocity().set(152, Double.valueOf((double)this.ferocity));
-        statistics.getMagicFind().set(152, Double.valueOf((double)this.magicFind));
-        statistics.getSpeed().set(152, Double.valueOf((double)this.speed));
-        statistics.getTrueDefense().set(152, Double.valueOf((double)this.trueDefense));
-        statistics.getAttackSpeed().set(152, Double.valueOf((double)this.attackSpeed));
-        statistics.getAbilityDamage().set(152, Double.valueOf((double)this.abilityDamage));
+        statistics.getMaxHealth().set(152, Double.valueOf(this.health));
+        statistics.getDefense().set(152, Double.valueOf(this.defense));
+        statistics.getStrength().set(152, Double.valueOf(this.strength));
+        statistics.getCritChance().set(152, Double.valueOf(this.critChance));
+        statistics.getCritDamage().set(152, Double.valueOf(this.critDamage));
+        statistics.getIntelligence().set(152, Double.valueOf(this.intelligence));
+        statistics.getFerocity().set(152, Double.valueOf(this.ferocity));
+        statistics.getMagicFind().set(152, Double.valueOf(this.magicFind));
+        statistics.getSpeed().set(152, Double.valueOf(this.speed));
+        statistics.getTrueDefense().set(152, Double.valueOf(this.trueDefense));
+        statistics.getAttackSpeed().set(152, Double.valueOf(this.attackSpeed));
+        statistics.getAbilityDamage().set(152, Double.valueOf(this.abilityDamage));
     }
-    
+
     public static TemporaryStats getFromPlayer(final Player p) {
         if (TemporaryStats.TEMP_CACHE.containsKey(p.getUniqueId())) {
             return TemporaryStats.TEMP_CACHE.get(p.getUniqueId());
         }
         return null;
     }
-    
+
     public static TemporaryStats getFromPlayer(final UUID u) {
         if (TemporaryStats.TEMP_CACHE.containsKey(u)) {
             return TemporaryStats.TEMP_CACHE.get(u);
         }
         return null;
     }
-    
+
     public void setHealth(final float health) {
         this.health = health;
     }
-    
+
     public float getHealth() {
         return this.health;
     }
-    
+
     public void setDefense(final float defense) {
         this.defense = defense;
     }
-    
+
     public float getDefense() {
         return this.defense;
     }
-    
+
     public void setStrength(final float strength) {
         this.strength = strength;
     }
-    
+
     public float getStrength() {
         return this.strength;
     }
-    
+
     public void setSpeed(final float speed) {
         this.speed = speed;
     }
-    
+
     public float getSpeed() {
         return this.speed;
     }
-    
+
     public void setCritChance(final float critChance) {
         this.critChance = critChance;
     }
-    
+
     public float getCritChance() {
         return this.critChance;
     }
-    
+
     public void setCritDamage(final float critDamage) {
         this.critDamage = critDamage;
     }
-    
+
     public float getCritDamage() {
         return this.critDamage;
     }
-    
+
     public void setIntelligence(final float intelligence) {
         this.intelligence = intelligence;
     }
-    
+
     public float getIntelligence() {
         return this.intelligence;
     }
-    
+
     public void setFerocity(final float ferocity) {
         this.ferocity = ferocity;
     }
-    
+
     public float getFerocity() {
         return this.ferocity;
     }
-    
+
     public void setAttackSpeed(final float attackSpeed) {
         this.attackSpeed = attackSpeed;
     }
-    
+
     public float getAttackSpeed() {
         return this.attackSpeed;
     }
-    
+
     public void setAbilityDamage(final float abilityDamage) {
         this.abilityDamage = abilityDamage;
     }
-    
+
     public float getAbilityDamage() {
         return this.abilityDamage;
     }
-    
+
     public void setTrueDefense(final float trueDefense) {
         this.trueDefense = trueDefense;
     }
-    
+
     public float getTrueDefense() {
         return this.trueDefense;
     }
-    
+
     public void setMagicFind(final float magicFind) {
         this.magicFind = magicFind;
     }
-    
+
     public float getMagicFind() {
         return this.magicFind;
     }
-    
+
     public void setDamageBonus(final float damageBonus) {
         this.damageBonus = damageBonus;
     }
-    
+
     public float getDamageBonus() {
         return this.damageBonus;
     }
-    
+
     static {
         TemporaryStats.TEMP_CACHE = new HashMap<UUID, TemporaryStats>();
     }

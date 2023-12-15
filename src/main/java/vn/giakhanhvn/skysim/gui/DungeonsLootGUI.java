@@ -7,16 +7,15 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.block.Block;
 
-public class DungeonsLootGUI extends GUI
-{
-    private Block bl;
-    
+public class DungeonsLootGUI extends GUI {
+    private final Block bl;
+
     public DungeonsLootGUI(final ItemStack loot, final Block loc) {
         super("Chest", 27);
         this.bl = loc;
         this.set(13, loot, true);
     }
-    
+
     @Override
     public void onClose(final InventoryCloseEvent e) {
         final ItemStack[] se = e.getInventory().getContents();
@@ -26,17 +25,16 @@ public class DungeonsLootGUI extends GUI
             }
         }
     }
-    
+
     @Override
     public void onBottomClick(final InventoryClickEvent e) {
         if (e.getAction() != InventoryAction.PLACE_ALL) {
             e.setCancelled(true);
-        }
-        else {
+        } else {
             SUtil.delay(() -> e.getWhoClicked().closeInventory(), 2L);
         }
     }
-    
+
     @Override
     public void onTopClick(final InventoryClickEvent e) {
         if (e.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {

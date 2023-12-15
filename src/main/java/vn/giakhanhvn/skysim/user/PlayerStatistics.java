@@ -4,14 +4,18 @@ import org.bukkit.plugin.Plugin;
 import vn.giakhanhvn.skysim.SkySimEngine;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
+
 import java.util.HashMap;
+
 import org.bukkit.scheduler.BukkitTask;
+
 import java.util.Map;
+
 import vn.giakhanhvn.skysim.item.armor.ArmorSet;
+
 import java.util.UUID;
 
-public class PlayerStatistics
-{
+public class PlayerStatistics {
     private final UUID uuid;
     private final DoublePlayerStatistic maxHealth;
     private final DoublePlayerStatistic defense;
@@ -28,8 +32,8 @@ public class PlayerStatistics
     private double healthRegenerationPercentBonus;
     private double manaRegenerationPercentBonus;
     private ArmorSet armorSet;
-    private Map<Integer, BukkitTask> itemTicker;
-    
+    private final Map<Integer, BukkitTask> itemTicker;
+
     public PlayerStatistics(final UUID uuid, final DoublePlayerStatistic maxHealth, final DoublePlayerStatistic defense, final DoublePlayerStatistic strength, final DoublePlayerStatistic speed, final DoublePlayerStatistic critChance, final DoublePlayerStatistic critDamage, final DoublePlayerStatistic magicFind, final DoublePlayerStatistic intelligence, final DoublePlayerStatistic trueDefense, final DoublePlayerStatistic ferocity, final DoublePlayerStatistic abilityDamage, final DoublePlayerStatistic attackSpeed, final double healthRegenerationPercentBonus, final double manaRegenerationPercentBonus, final ArmorSet armorSet) {
         this.uuid = uuid;
         this.maxHealth = maxHealth;
@@ -49,7 +53,7 @@ public class PlayerStatistics
         this.armorSet = armorSet;
         this.itemTicker = new HashMap<Integer, BukkitTask>();
     }
-    
+
     public void tickItem(final int slot, final long interval, final Runnable runnable) {
         this.itemTicker.put(slot, new BukkitRunnable() {
             public void run() {
@@ -59,16 +63,16 @@ public class PlayerStatistics
                 }
                 runnable.run();
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, interval));
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, interval));
     }
-    
+
     public void cancelTickingItem(final int slot) {
         if (this.itemTicker.containsKey(slot)) {
             this.itemTicker.get(slot).cancel();
         }
         this.itemTicker.remove(slot);
     }
-    
+
     public void zeroAll(final int slot) {
         this.maxHealth.zero(slot);
         this.defense.zero(slot);
@@ -84,110 +88,110 @@ public class PlayerStatistics
         this.attackSpeed.zero(slot);
         this.cancelTickingItem(slot);
     }
-    
+
     @Override
     public String toString() {
         return this.maxHealth.addAll() + ", " + this.defense.addAll() + ", " + this.strength.addAll() + ", " + this.speed.addAll() + ", " + this.critChance.addAll() + ", " + this.critDamage.addAll() + ", " + this.magicFind.addAll() + ", " + this.intelligence.addAll() + ", " + this.ferocity.addAll() + ", " + this.abilityDamage.addAll() + ", " + this.attackSpeed.addAll();
     }
-    
+
     public void boostManaRegeneration(final double percent, final long ticks) {
         this.manaRegenerationPercentBonus += percent;
         new BukkitRunnable() {
             public void run() {
                 PlayerStatistics.this.manaRegenerationPercentBonus -= percent;
             }
-        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), ticks);
+        }.runTaskLater(SkySimEngine.getPlugin(), ticks);
     }
-    
+
     public void boostHealthRegeneration(final double percent, final long ticks) {
         this.healthRegenerationPercentBonus += percent;
         new BukkitRunnable() {
             public void run() {
                 PlayerStatistics.this.healthRegenerationPercentBonus -= percent;
             }
-        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), ticks);
+        }.runTaskLater(SkySimEngine.getPlugin(), ticks);
     }
-    
+
     public static PlayerStatistics blank(final UUID uuid) {
         return new PlayerStatistics(uuid, new DoublePlayerStatistic(100.0), new DoublePlayerStatistic(), new DoublePlayerStatistic(), new DoublePlayerStatistic(1.0), new DoublePlayerStatistic(0.3), new DoublePlayerStatistic(0.5), new DoublePlayerStatistic(), new DoublePlayerStatistic(), new DoublePlayerStatistic(), new DoublePlayerStatistic(), new DoublePlayerStatistic(), new DoublePlayerStatistic(), 0.0, 0.0, null);
     }
-    
+
     public UUID getUuid() {
         return this.uuid;
     }
-    
+
     public DoublePlayerStatistic getMaxHealth() {
         return this.maxHealth;
     }
-    
+
     public DoublePlayerStatistic getDefense() {
         return this.defense;
     }
-    
+
     public DoublePlayerStatistic getStrength() {
         return this.strength;
     }
-    
+
     public DoublePlayerStatistic getSpeed() {
         return this.speed;
     }
-    
+
     public DoublePlayerStatistic getCritChance() {
         return this.critChance;
     }
-    
+
     public DoublePlayerStatistic getCritDamage() {
         return this.critDamage;
     }
-    
+
     public DoublePlayerStatistic getMagicFind() {
         return this.magicFind;
     }
-    
+
     public DoublePlayerStatistic getFerocity() {
         return this.ferocity;
     }
-    
+
     public DoublePlayerStatistic getAbilityDamage() {
         return this.abilityDamage;
     }
-    
+
     public DoublePlayerStatistic getAttackSpeed() {
         return this.attackSpeed;
     }
-    
+
     public DoublePlayerStatistic getIntelligence() {
         return this.intelligence;
     }
-    
+
     public DoublePlayerStatistic getTrueDefense() {
         return this.trueDefense;
     }
-    
+
     public double getHealthRegenerationPercentBonus() {
         return this.healthRegenerationPercentBonus;
     }
-    
+
     public double getManaRegenerationPercentBonus() {
         return this.manaRegenerationPercentBonus;
     }
-    
+
     public ArmorSet getArmorSet() {
         return this.armorSet;
     }
-    
+
     public Map<Integer, BukkitTask> getItemTicker() {
         return this.itemTicker;
     }
-    
+
     public void setHealthRegenerationPercentBonus(final double healthRegenerationPercentBonus) {
         this.healthRegenerationPercentBonus = healthRegenerationPercentBonus;
     }
-    
+
     public void setManaRegenerationPercentBonus(final double manaRegenerationPercentBonus) {
         this.manaRegenerationPercentBonus = manaRegenerationPercentBonus;
     }
-    
+
     public void setArmorSet(final ArmorSet armorSet) {
         this.armorSet = armorSet;
     }

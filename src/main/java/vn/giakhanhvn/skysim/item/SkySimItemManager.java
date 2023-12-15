@@ -1,5 +1,4 @@
 package vn.giakhanhvn.skysim.item;
 
-public class SkySimItemManager
-{
+public class SkySimItemManager {
 }

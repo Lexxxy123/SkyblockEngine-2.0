@@ -8,8 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 
 @CommandParameters(description = "Modifies the rarity of an item.", aliases = "rar", permission = "spt.item")
-public class SpecRarityCommand extends SCommand
-{
+public class SpecRarityCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (args.length > 1) {

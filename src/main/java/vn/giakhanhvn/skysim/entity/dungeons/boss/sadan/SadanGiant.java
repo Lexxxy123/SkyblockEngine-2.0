@@ -27,9 +27,13 @@ import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.Bukkit;
+
 import java.util.List;
+
 import org.bukkit.util.Vector;
+
 import java.util.ArrayList;
+
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
@@ -45,7 +49,9 @@ import net.minecraft.server.v1_8_R3.GenericAttributes;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
 import vn.giakhanhvn.skysim.entity.SEntity;
+
 import java.util.Iterator;
+
 import org.bukkit.entity.Player;
 import org.bukkit.World;
 import vn.giakhanhvn.skysim.util.Sputnik;
@@ -53,8 +59,7 @@ import vn.giakhanhvn.skysim.entity.dungeons.watcher.GlobalBossBar;
 import org.bukkit.entity.LivingEntity;
 import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
 
-public class SadanGiant extends BaseZombie
-{
+public class SadanGiant extends BaseZombie {
     private static LivingEntity e;
     private boolean laserActiveCD;
     private boolean laserActive;
@@ -65,7 +70,7 @@ public class SadanGiant extends BaseZombie
     private boolean swordActiv;
     private boolean swordSlamCD;
     private GlobalBossBar bb;
-    
+
     public SadanGiant() {
         this.laserActiveCD = true;
         this.laserActive = false;
@@ -76,22 +81,22 @@ public class SadanGiant extends BaseZombie
         this.swordActiv = false;
         this.swordSlamCD = true;
     }
-    
+
     @Override
     public String getEntityName() {
         return Sputnik.trans("&c&lSadan");
     }
-    
+
     @Override
     public double getEntityMaxHealth() {
         return 4.0E7;
     }
-    
+
     @Override
     public double getDamageDealt() {
         return 55000.0;
     }
-    
+
     public GlobalBossBar setBar(final World w, final String s) {
         this.bb = new GlobalBossBar(Sputnik.trans(s), w);
         for (final Player p : w.getPlayers()) {
@@ -99,11 +104,11 @@ public class SadanGiant extends BaseZombie
         }
         return this.bb;
     }
-    
+
     public void updateBar(final double percent) {
         this.bb.setProgress(percent);
     }
-    
+
     @Override
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
         if (entity.getWorld().getPlayers().size() == 0) {
@@ -111,38 +116,37 @@ public class SadanGiant extends BaseZombie
         }
         final GlobalBossBar boss = this.setBar(entity.getWorld(), Sputnik.trans("&c&lSadan"));
         SadanGiant.e = entity;
-        ((CraftZombie)entity).setBaby(false);
-        final AttributeInstance followRange = ((CraftLivingEntity)entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
+        ((CraftZombie) entity).setBaby(false);
+        final AttributeInstance followRange = ((CraftLivingEntity) entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
         followRange.setValue(500.0);
         final Player p = entity.getWorld().getPlayers().get(SUtil.random(0, entity.getWorld().getPlayers().size() - 1));
         if (p != null && p.getGameMode() != GameMode.SPECTATOR && p.getGameMode() != GameMode.CREATIVE) {
-            ((CraftZombie)entity).setTarget((LivingEntity)p);
+            ((CraftZombie) entity).setTarget(p);
         }
         SUtil.delay(() -> this.shockWaveCD = false, 120L);
         SUtil.delay(() -> this.terTossCD = false, 100L);
         SUtil.delay(() -> this.laserActiveCD = false, 1L);
         SUtil.delay(() -> this.swordSlamCD = false, 40L);
         entity.getEquipment().setItemInHand(SUtil.enchant(new ItemStack(Material.DIAMOND_SWORD)));
-        Sputnik.applyPacketGiant((Entity)entity);
-        EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 55);
-        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("highername", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("Boss", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("Giant_", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+        Sputnik.applyPacketGiant(entity);
+        EntityManager.DEFENSE_PERCENTAGE.put(entity, 55);
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("highername", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("Boss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("Giant_", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
-                final LivingEntity target = (LivingEntity)((CraftZombie)entity).getTarget();
+                final LivingEntity target = ((CraftZombie) entity).getTarget();
                 if (entity.getHealth() > 0.0) {
                     SadanGiant.this.updateBar(entity.getHealth() / entity.getMaxHealth());
-                }
-                else {
+                } else {
                     SadanGiant.this.updateBar(9.990009990009992E-4);
                 }
                 if (entity.isDead()) {
                     SUtil.delay(() -> {
                         final ArrayList<Player> plist = new ArrayList<Player>();
 
-                        final Iterator<Player> iterator =SadanGiant.this.bb.players.iterator();;
+                        final Iterator<Player> iterator = SadanGiant.this.bb.players.iterator();
                         while (iterator.hasNext()) {
                             final Player p = iterator.next();
                             plist.add(p);
@@ -150,7 +154,6 @@ public class SadanGiant extends BaseZombie
                         plist.forEach(pl -> SadanGiant.this.bb.removePlayer(pl));
                         SadanGiant.this.bb.setProgress(0.0);
                         SadanGiant.this.bb.cancel();
-                        return;
                     }, 250L);
                     this.cancel();
                     return;
@@ -174,7 +177,6 @@ public class SadanGiant extends BaseZombie
                     SUtil.delay(() -> {
                         final Object val$entity = entity;
                         SadanGiant.this.jumpAni(entity);
-                        return;
                     }, 10L);
                 }
                 if (!SadanGiant.this.terToss && !SadanGiant.this.terTossCD && SUtil.random(1, 150) <= 4 && target != null) {
@@ -184,10 +186,10 @@ public class SadanGiant extends BaseZombie
                     SadanGiant.this.launchTerrain(entity);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
-                final EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
+                final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
@@ -196,7 +198,7 @@ public class SadanGiant extends BaseZombie
                     if (!(entities instanceof Player)) {
                         continue;
                     }
-                    final Player target = (Player)entities;
+                    final Player target = (Player) entities;
                     if (target.getGameMode() == GameMode.CREATIVE) {
                         continue;
                     }
@@ -208,20 +210,20 @@ public class SadanGiant extends BaseZombie
                     }
                     entity.teleport(entity.getLocation().setDirection(target.getLocation().toVector().subtract(target.getLocation().toVector())));
                     for (final Player players : Bukkit.getOnlinePlayers()) {
-                        ((CraftPlayer)players).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)entity).getHandle(), 0));
+                        ((CraftPlayer) players).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) entity).getHandle(), 0));
                     }
-                    nms.r((net.minecraft.server.v1_8_R3.Entity)((CraftPlayer)target).getHandle());
+                    nms.r(((CraftPlayer) target).getHandle());
                     break;
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 8L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 8L);
     }
-    
+
     @Override
     public SEntityEquipment getEntityEquipment() {
         return new SEntityEquipment(SUtil.enchant(new ItemStack(Material.DIAMOND_SWORD)), b(12228503, Material.LEATHER_HELMET), b(14751108, Material.LEATHER_CHESTPLATE), c(Material.DIAMOND_LEGGINGS), b(8991025, Material.LEATHER_BOOTS));
     }
-    
+
     @Override
     public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
         Sputnik.zero(killed);
@@ -237,15 +239,15 @@ public class SadanGiant extends BaseZombie
                     this.cancel();
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
         for (final Player p : killed.getWorld().getPlayers()) {
             final User user = User.getUser(p.getUniqueId());
             user.addBCollection(1);
         }
         this.aA(killed.getWorld());
         final EntityPlayer a = DeadBodyMaker.spawn(killed.getLocation());
-        final ArmorStand as = (ArmorStand)killed.getWorld().spawn(killed.getLocation().clone().add(0.0, -0.2, 0.0), (Class)ArmorStand.class);
-        final ArmorStand as2 = (ArmorStand)killed.getWorld().spawn(killed.getLocation().add(0.0, 0.1, 0.0), (Class)ArmorStand.class);
+        final ArmorStand as = (ArmorStand) killed.getWorld().spawn(killed.getLocation().clone().add(0.0, -0.2, 0.0), (Class) ArmorStand.class);
+        final ArmorStand as2 = (ArmorStand) killed.getWorld().spawn(killed.getLocation().add(0.0, 0.1, 0.0), (Class) ArmorStand.class);
         as.setVisible(false);
         as.setGravity(false);
         as.setCustomNameVisible(true);
@@ -262,43 +264,42 @@ public class SadanGiant extends BaseZombie
                 SUtil.delay(() -> {
                     final Object val$as2 = as2;
                     as2.setCustomNameVisible(false);
-                    return;
                 }, 60L);
                 SUtil.delay(() -> {
                     final Object val$as3 = as2;
                     as2.setCustomName("");
                 }, 60L);
             }
-        }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 35L);
+        }.runTaskLater(SkySimEngine.getPlugin(), 35L);
     }
-    
+
     @Override
     public boolean hasNameTag() {
         return false;
     }
-    
+
     @Override
     public boolean isVillager() {
         return false;
     }
-    
+
     @Override
     public boolean isBaby() {
         return false;
     }
-    
+
     @Override
     public double getXPDropped() {
         return 0.0;
     }
-    
+
     @Override
     public double getMovementSpeed() {
         return 0.35;
     }
-    
+
     public void laser(final LivingEntity e) {
-        final int[] array_colors = { 12228503, 8739418, 6897985, 6042419, 5385260 };
+        final int[] array_colors = {12228503, 8739418, 6897985, 6042419, 5385260};
         SUtil.delay(() -> e.getEquipment().setHelmet(buildColorStack(array_colors[0])), 20L);
         SUtil.delay(() -> e.getEquipment().setHelmet(buildColorStack(array_colors[1])), 40L);
         SUtil.delay(() -> e.getEquipment().setHelmet(buildColorStack(array_colors[2])), 60L);
@@ -314,7 +315,7 @@ public class SadanGiant extends BaseZombie
         SUtil.delay(() -> e.getEquipment().setHelmet(b(15249075, Material.LEATHER_HELMET)), 370L);
         SUtil.delay(() -> this.laserActiveCD = false, 650L);
     }
-    
+
     public void aA(final World world) {
         for (final Entity entity : world.getEntities()) {
             if (entity instanceof HumanEntity) {
@@ -323,7 +324,7 @@ public class SadanGiant extends BaseZombie
             entity.remove();
         }
     }
-    
+
     public void jumpAni(final LivingEntity e) {
         new BukkitRunnable() {
             public void run() {
@@ -344,7 +345,6 @@ public class SadanGiant extends BaseZombie
                     SUtil.delay(() -> {
                         final Object val$e = e;
                         e.getWorld().playSound(e.getLocation(), Sound.EXPLODE, 10.0f, 0.0f);
-                        return;
                     }, 5L);
                     for (final Entity entities : e.getNearbyEntities(15.0, 10.0, 15.0)) {
                         final Vector vec = new Vector(0, 0, 0);
@@ -361,19 +361,18 @@ public class SadanGiant extends BaseZombie
                             continue;
                         }
                         if (entities.getLocation().distance(e.getLocation()) <= 5.0) {
-                            final Player p = (Player)entities;
-                            p.sendMessage(Sputnik.trans("&c&lThe Giant One &chit you with &eStomp &cfor " + SUtil.commaify(Math.round(SadanFunction.dmgc(40000, p, (Entity)e))) + " &cdamage."));
-                        }
-                        else {
-                            final Player p = (Player)entities;
-                            p.sendMessage(Sputnik.trans("&c&lThe Giant One &chit you with &eStomp &cfor " + SUtil.commaify(Math.round(SadanFunction.dmgc(30000, p, (Entity)e))) + " &cdamage."));
+                            final Player p = (Player) entities;
+                            p.sendMessage(Sputnik.trans("&c&lThe Giant One &chit you with &eStomp &cfor " + SUtil.commaify(Math.round(SadanFunction.dmgc(40000, p, e))) + " &cdamage."));
+                        } else {
+                            final Player p = (Player) entities;
+                            p.sendMessage(Sputnik.trans("&c&lThe Giant One &chit you with &eStomp &cfor " + SUtil.commaify(Math.round(SadanFunction.dmgc(30000, p, e))) + " &cdamage."));
                         }
                     }
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
     }
-    
+
     public void laserAni(final LivingEntity e) {
         new BukkitRunnable() {
             public void run() {
@@ -385,7 +384,7 @@ public class SadanGiant extends BaseZombie
                     this.cancel();
                     return;
                 }
-                final LivingEntity target = (LivingEntity)((CraftZombie)e).getTarget();
+                final LivingEntity target = ((CraftZombie) e).getTarget();
                 final float angle_1 = e.getEyeLocation().getYaw() / 60.0f;
                 final Location loc1 = e.getEyeLocation().add(Math.cos(angle_1), 0.0, Math.sin(angle_1));
                 final Location loc2 = e.getEyeLocation().subtract(Math.cos(angle_1), 0.0, Math.sin(angle_1));
@@ -403,7 +402,7 @@ public class SadanGiant extends BaseZombie
                     SadanGiant.drawLine(loc2, en2, 0.0);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 5L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 5L);
         new BukkitRunnable() {
             public void run() {
                 if (e.isDead()) {
@@ -414,7 +413,7 @@ public class SadanGiant extends BaseZombie
                     this.cancel();
                     return;
                 }
-                final LivingEntity target = (LivingEntity)((CraftZombie)e).getTarget();
+                final LivingEntity target = ((CraftZombie) e).getTarget();
                 final float angle_1 = e.getEyeLocation().getYaw() / 60.0f;
                 final Location loc1 = e.getEyeLocation().add(Math.cos(angle_1), 0.0, Math.sin(angle_1));
                 final Location loc2 = e.getEyeLocation().subtract(Math.cos(angle_1), 0.0, Math.sin(angle_1));
@@ -432,9 +431,9 @@ public class SadanGiant extends BaseZombie
                     SadanGiant.getEntity(loc2, en2, e);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 10L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 10L);
     }
-    
+
     public void launchTerrain(final LivingEntity e) {
         new BukkitRunnable() {
             public void run() {
@@ -447,14 +446,14 @@ public class SadanGiant extends BaseZombie
                     this.cancel();
                     return;
                 }
-                final LivingEntity t = (LivingEntity)((CraftZombie)e).getTarget();
+                final LivingEntity t = ((CraftZombie) e).getTarget();
                 if (t != null) {
-                    SadanGiant.this.throwTerrain(e, (Entity)t);
+                    SadanGiant.this.throwTerrain(e, t);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 30L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 30L);
     }
-    
+
     public static ItemStack buildColorStack(final int hexcolor) {
         final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB(hexcolor));
         final ItemMeta itemMeta = stack.getItemMeta();
@@ -462,7 +461,7 @@ public class SadanGiant extends BaseZombie
         stack.setItemMeta(itemMeta);
         return stack;
     }
-    
+
     public static ItemStack b(final int hexcolor, final Material m) {
         final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
         final ItemMeta itemMeta = stack.getItemMeta();
@@ -470,7 +469,7 @@ public class SadanGiant extends BaseZombie
         stack.setItemMeta(itemMeta);
         return stack;
     }
-    
+
     public static ItemStack c(final Material m) {
         final ItemStack stack = new ItemStack(m);
         final ItemMeta itemMeta = stack.getItemMeta();
@@ -478,48 +477,48 @@ public class SadanGiant extends BaseZombie
         stack.setItemMeta(itemMeta);
         return stack;
     }
-    
+
     public static void drawLine(final Location point1, final Location point2, final double space) {
         final Location blockLocation = point1;
         final Location crystalLocation = point2;
         final Vector vector = blockLocation.clone().add(0.1, 0.0, 0.1).toVector().subtract(crystalLocation.clone().toVector());
         final double count = 90.0;
-        for (int i = 1; i <= (int)count; ++i) {
+        for (int i = 1; i <= (int) count; ++i) {
             point1.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply(i / count)), Effect.COLOURED_DUST, 0, 1, 0.8627451f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
             point1.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply(i / count)), Effect.COLOURED_DUST, 0, 1, 1.0196079f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
         }
     }
-    
+
     public static void getEntity(final Location finaldestination, final Location ended, final LivingEntity e) {
         final Location blockLocation = finaldestination;
         final Location crystalLocation = ended;
         final Vector vector = blockLocation.clone().add(0.1, 0.1, 0.1).toVector().subtract(crystalLocation.clone().toVector());
         final double count = 90.0;
-        for (int i = 1; i <= (int)count; ++i) {
+        for (int i = 1; i <= (int) count; ++i) {
             for (final Entity entity : ended.getWorld().getNearbyEntities(crystalLocation.clone().add(vector.clone().multiply(i / count)), 0.17, 0.0, 0.17)) {
                 if (entity instanceof Player) {
-                    final Player p = (Player)entity;
+                    final Player p = (Player) entity;
                     p.getWorld().playEffect(p.getLocation().clone().add(0.0, 2.2, 0.0), Effect.LAVA_POP, 10);
                     p.getWorld().playEffect(p.getLocation().clone().add(0.0, 2.2, 0.0), Effect.LAVA_POP, 10);
                     p.getWorld().playEffect(p.getLocation().clone().add(0.0, 2.2, 0.0), Effect.LAVA_POP, 10);
                     p.getWorld().playEffect(p.getLocation().clone().add(0.0, 2.2, 0.0), Effect.LAVA_POP, 10);
-                    p.sendMessage(Sputnik.trans("&c&lThe Giant One &chit you with &eLaser Eyes &cfor " + SUtil.commaify(Math.round(SadanFunction.dmgc(16000, p, (Entity)e))) + " &cdamage."));
+                    p.sendMessage(Sputnik.trans("&c&lThe Giant One &chit you with &eLaser Eyes &cfor " + SUtil.commaify(Math.round(SadanFunction.dmgc(16000, p, e))) + " &cdamage."));
                     return;
                 }
             }
         }
     }
-    
+
     public static void applyEffect(final PotionEffectType e, final Entity en, final int ticks, final int amp) {
-        ((LivingEntity)en).addPotionEffect(new PotionEffect(e, ticks, amp));
+        ((LivingEntity) en).addPotionEffect(new PotionEffect(e, ticks, amp));
     }
-    
+
     public static void createBlockTornado(final Entity e, final Material mat, final byte id) {
         for (int i = 0; i <= 30; ++i) {
             final int random = SUtil.random(0, 3);
             double range = 0.0;
             final Location loc = e.getLocation().clone();
-            loc.setYaw((float)SUtil.random(0, 360));
+            loc.setYaw((float) SUtil.random(0, 360));
             if (random == 1) {
                 range = 0.6;
             }
@@ -534,11 +533,11 @@ public class SadanGiant extends BaseZombie
             BlockFallAPI.sendVelocityBlock(e.getLocation(), mat, id, e.getWorld(), 70, vec);
         }
     }
-    
+
     public static void damagePlayer(final Player p) {
-        p.sendMessage(Sputnik.trans("&c&lThe Giant One &chit you with &eBoulder Toss &cfor " + SUtil.commaify(SadanFunction.dmgc(30000, p, (Entity)SadanGiant.e)) + " &cdamage."));
+        p.sendMessage(Sputnik.trans("&c&lThe Giant One &chit you with &eBoulder Toss &cfor " + SUtil.commaify(SadanFunction.dmgc(30000, p, SadanGiant.e)) + " &cdamage."));
     }
-    
+
     public void throwTerrain(final LivingEntity e, final Entity target) {
         final Block b = target.getLocation().getBlock();
         final World world = e.getWorld();
@@ -549,8 +548,8 @@ public class SadanGiant extends BaseZombie
         final List<Material> launchTypes = new ArrayList<Material>();
         for (int length = -1; length < 2; ++length) {
             for (int height = -1; height < 2; ++height) {
-                final Location loc = startBlock.clone().add((double)length, 0.0, (double)height);
-                final Location end = b.getLocation().clone().add((double)length, 0.0, (double)height);
+                final Location loc = startBlock.clone().add(length, 0.0, height);
+                final Location end = b.getLocation().clone().add(length, 0.0, height);
                 locationList.add(loc);
                 endList.add(end);
             }
@@ -582,20 +581,19 @@ public class SadanGiant extends BaseZombie
             }
             launchTypes.add(mat);
             blockTypes.add(block.getBlock().getType());
-            return;
         });
         locationList.forEach(location -> {
             final Material material = launchTypes.get(locationList.indexOf(location));
             final Location origin = location.clone().add(0.0, 7.0, 0.0);
             final int pos = locationList.indexOf(location);
             final Location endPos = endList.get(pos);
-            final FallingBlock block2 = world.spawnFallingBlock(origin, material, (byte)blockData);
+            final FallingBlock block2 = world.spawnFallingBlock(origin, material, blockData);
             block2.setDropItem(false);
-            block2.setMetadata("f", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+            block2.setMetadata("f", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
             block2.setVelocity(Sputnik.calculateVelocityBlock(origin.toVector(), endPos.toVector(), 3));
         });
     }
-    
+
     public static void playLaserSound(final Player p, final Entity e) {
         new BukkitRunnable() {
             public void run() {
@@ -603,44 +601,44 @@ public class SadanGiant extends BaseZombie
                     this.cancel();
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
     }
-    
+
     public void swordSlamAC(final LivingEntity e, final LivingEntity tar) {
         SUtil.delay(() -> this.swordSlamF(e, tar), 40L);
     }
-    
+
     public void swordSlamF(final LivingEntity e, final LivingEntity tar) {
         SUtil.delay(() -> this.swordSlam(e, tar), 30L);
     }
-    
+
     public void swordSlam(final LivingEntity e, final LivingEntity player) {
         if (e.isDead()) {
             return;
         }
-        e.getEquipment().setItemInHand((ItemStack)null);
-        final Giant armorStand = (Giant)player.getWorld().spawn(e.getLocation().add(0.0, 12.0, 0.0), (Class)Giant.class);
+        e.getEquipment().setItemInHand(null);
+        final Giant armorStand = (Giant) player.getWorld().spawn(e.getLocation().add(0.0, 12.0, 0.0), (Class) Giant.class);
         armorStand.getEquipment().setItemInHand(SUtil.enchant(new ItemStack(Material.DIAMOND_SWORD)));
-        Sputnik.applyPacketGiant((Entity)armorStand);
+        Sputnik.applyPacketGiant(armorStand);
         armorStand.setCustomName("Dinnerbone");
-        armorStand.setMetadata("GiantSword", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        armorStand.setMetadata("NoAffect", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        EntityManager.Woosh((LivingEntity)armorStand);
-        EntityManager.noHit((Entity)armorStand);
-        EntityManager.shutTheFuckUp((Entity)armorStand);
+        armorStand.setMetadata("GiantSword", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        armorStand.setMetadata("NoAffect", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        EntityManager.Woosh(armorStand);
+        EntityManager.noHit(armorStand);
+        EntityManager.shutTheFuckUp(armorStand);
         final Location firstLocation = e.getLocation().add(0.0, 12.0, 0.0);
-        final EntityLiving nms = ((CraftLivingEntity)e).getHandle();
+        final EntityLiving nms = ((CraftLivingEntity) e).getHandle();
         for (final Player players : Bukkit.getOnlinePlayers()) {
-            ((CraftPlayer)players).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)e).getHandle(), 0));
+            ((CraftPlayer) players).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) e).getHandle(), 0));
         }
-        nms.r(((CraftEntity)e).getHandle());
+        nms.r(((CraftEntity) e).getHandle());
         final Location secondLocation = player.getLocation();
         final Vector mobsVector = firstLocation.toVector();
         final Vector vectorBetween = secondLocation.toVector().subtract(mobsVector);
         vectorBetween.divide(new Vector(10, 10, 10));
         vectorBetween.add(new Vector(0, 0, 0));
-        final int id = Bukkit.getScheduler().scheduleSyncRepeatingTask((Plugin)SkySimEngine.getPlugin(), () -> armorStand.setVelocity(vectorBetween), 10L, 10L);
-        Bukkit.getScheduler().scheduleSyncDelayedTask((Plugin)SkySimEngine.getPlugin(), () -> Bukkit.getScheduler().cancelTask(id), 40L);
+        final int id = Bukkit.getScheduler().scheduleSyncRepeatingTask(SkySimEngine.getPlugin(), () -> armorStand.setVelocity(vectorBetween), 10L, 10L);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(SkySimEngine.getPlugin(), () -> Bukkit.getScheduler().cancelTask(id), 40L);
         new BukkitRunnable() {
             public void run() {
                 if (!SadanGiant.this.swordActiv) {
@@ -651,19 +649,19 @@ public class SadanGiant extends BaseZombie
                     SadanGiant.this.swordActiv = false;
                     SUtil.delay(() -> SadanGiant.this.swordSlamCD = false, 300L);
                     armorStand.remove();
-                    final Giant sword = (Giant)e.getWorld().spawnEntity(armorStand.getLocation(), EntityType.GIANT);
-                    Sputnik.applyPacketGiant((Entity)sword);
+                    final Giant sword = (Giant) e.getWorld().spawnEntity(armorStand.getLocation(), EntityType.GIANT);
+                    Sputnik.applyPacketGiant(sword);
                     sword.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 100000, 1));
-                    EntityManager.noAI((Entity)sword);
-                    EntityManager.noHit((Entity)sword);
-                    EntityManager.shutTheFuckUp((Entity)sword);
+                    EntityManager.noAI(sword);
+                    EntityManager.noHit(sword);
+                    EntityManager.shutTheFuckUp(sword);
                     sword.setCustomName("Dinnerbone");
-                    sword.setMetadata("GiantSword", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-                    sword.setMetadata("NoAffect", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-                    final ArmorStand stand = (ArmorStand)player.getWorld().spawnEntity(armorStand.getLocation(), EntityType.ARMOR_STAND);
+                    sword.setMetadata("GiantSword", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+                    sword.setMetadata("NoAffect", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+                    final ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(armorStand.getLocation(), EntityType.ARMOR_STAND);
                     stand.setVisible(false);
                     stand.setGravity(true);
-                    stand.setPassenger((Entity)sword);
+                    stand.setPassenger(sword);
                     sword.getEquipment().setItemInHand(SUtil.enchant(new ItemStack(Material.DIAMOND_SWORD)));
                     e.getWorld().playSound(player.getLocation(), Sound.ANVIL_LAND, 1.0f, 0.0f);
                     e.getWorld().playSound(player.getLocation(), Sound.AMBIENCE_THUNDER, 1.0f, 0.35f);
@@ -681,12 +679,11 @@ public class SadanGiant extends BaseZombie
                             continue;
                         }
                         if (entities.getLocation().add(sword.getLocation().getDirection().multiply(3)).distance(sword.getLocation()) > 1.0) {
-                            final Player p = (Player)entities;
-                            p.sendMessage(Sputnik.trans("&c&lThe Giant One &chit you with &eSword of 10,000 Truths &cfor " + SUtil.commaify(SadanFunction.dmgc(50000, p, (Entity)e)) + " &cdamage."));
-                        }
-                        else {
-                            final Player p = (Player)entities;
-                            p.sendMessage(Sputnik.trans("&c&lThe Giant One &chit you with &eSword of 10,000 Truths &cfor " + SUtil.commaify(SadanFunction.dmgc(55000, p, (Entity)e)) + " &cdamage."));
+                            final Player p = (Player) entities;
+                            p.sendMessage(Sputnik.trans("&c&lThe Giant One &chit you with &eSword of 10,000 Truths &cfor " + SUtil.commaify(SadanFunction.dmgc(50000, p, e)) + " &cdamage."));
+                        } else {
+                            final Player p = (Player) entities;
+                            p.sendMessage(Sputnik.trans("&c&lThe Giant One &chit you with &eSword of 10,000 Truths &cfor " + SUtil.commaify(SadanFunction.dmgc(55000, p, e)) + " &cdamage."));
                         }
                     }
                     SUtil.delay(() -> sword.remove(), 35L);
@@ -697,9 +694,9 @@ public class SadanGiant extends BaseZombie
                     }, 35L);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
     }
-    
+
     @Override
     public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
         e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ENDERDRAGON_HIT, 1.0f, 0.3f);

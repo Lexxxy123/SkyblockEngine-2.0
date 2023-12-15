@@ -1,7 +1,9 @@
 package vn.giakhanhvn.skysim.entity.dungeons.minibosses;
 
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityTeleport;
+
 import java.util.List;
+
 import org.bukkit.entity.EntityType;
 import de.slikey.effectlib.util.ParticleEffect;
 import de.slikey.effectlib.effect.ConeEffect;
@@ -21,7 +23,9 @@ import org.bukkit.util.Vector;
 import net.minecraft.server.v1_8_R3.MathHelper;
 import net.minecraft.server.v1_8_R3.MobEffectList;
 import net.minecraft.server.v1_8_R3.EntityLiving;
+
 import java.util.Iterator;
+
 import org.bukkit.event.entity.EntityDamageEvent;
 import vn.giakhanhvn.skysim.user.User;
 import vn.giakhanhvn.skysim.user.PlayerUtils;
@@ -57,14 +61,13 @@ import org.bukkit.entity.LivingEntity;
 import vn.giakhanhvn.skysim.util.Sputnik;
 import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
 
-public class FrozenAdv extends BaseZombie
-{
+public class FrozenAdv extends BaseZombie {
     private boolean isEating;
     private boolean isBowing;
     private boolean EatingCooldown;
     private boolean CDDR;
     private boolean CDLA;
-    
+
     public FrozenAdv() {
         this.isEating = false;
         this.isBowing = false;
@@ -72,33 +75,33 @@ public class FrozenAdv extends BaseZombie
         this.CDDR = false;
         this.CDLA = false;
     }
-    
+
     @Override
     public String getEntityName() {
         return Sputnik.trans("&d&lFrozen Adventurer");
     }
-    
+
     @Override
     public double getEntityMaxHealth() {
         return 7.0E8;
     }
-    
+
     @Override
     public double getDamageDealt() {
         return 6000000.0;
     }
-    
+
     @Override
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
-        ((CraftZombie)entity).setBaby(false);
-        final AttributeInstance followRange = ((CraftLivingEntity)entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
+        ((CraftZombie) entity).setBaby(false);
+        final AttributeInstance followRange = ((CraftLivingEntity) entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
         followRange.setValue(40.0);
-        final PlayerDisguise pl = Sputnik.applyPacketNPC((Entity)entity, "ewogICJ0aW1lc3RhbXAiIDogMTYwMTUyOTc4ODY1OSwKICAicHJvZmlsZUlkIiA6ICIyMWUzNjdkNzI1Y2Y0ZTNiYjI2OTJjNGEzMDBhNGRlYiIsCiAgInByb2ZpbGVOYW1lIiA6ICJHZXlzZXJNQyIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS8zZGVlNTAxODFkYmMzMzZkMGQ5MDM1ZjYyMjQ0OGM0M2RhYTdmZGI1ZDdjYWFhOTFmNjdiM2JjNjQ4NmMzMjEwIgogICAgfQogIH0KfQ==", "i0cF74RyF/YAl8m2VathjBpRKlY93rrqnBx/fZPwzaXhL+KLGGhGEJc0SPSzDqpQDXXQKeMO2qKQwDsIbXrNQT0TUMzjFObzPznx5LVNrjZIs9xYpOyh6olmPOxKb8S/5DKKIbtm1ZfejK4KFLuz1OP4idcgPf+xzhoXsPfX8KdbWXoTu192zQ/L6lo0N2dAMzjz6ymELXkpl05gruONtSF01OjcyvVL80lWR5YyecoycxqFPpVXOhxAYYa2PoircLwMg2Vtmkck0/u0gniDt3EEkZkQ44CjT/9bxjf4LEkeHMdnXkt/KYaTk934/eSgr8dL6zlU7v/IyX6Jn3vceQQz9XF04Q+COBsxfjvExc7/Awti+8OJASCvlWoBHL2jqQbXDKXk/OJgjh6F8rPECljiqrdfmEC+W3lM/mc8WBX1KheHtiZiMlyYPOZQ4hCdCJoiHi+jxIhV56UVvu911lhsyRB4ovyb6JWqty/9ztN8spEA4Mxk0xIcK7aVJ3nb8XrfCsMRC17oAwd6W79qSGKxmLJxTg25w+HJ1Sj4JRrLcD4Ix505ptLAdyGdd17xr5oXZ7G4cT3vm19sR1SqPYuyjHV9S1eJBtJAo7kFhFcoAKGBp8MdHXZ4MTZPZZSXdOwPGcYavANN7NA3EPecvfqBUCh9e3IhXJOP70Huv5A=", true);
+        final PlayerDisguise pl = Sputnik.applyPacketNPC(entity, "ewogICJ0aW1lc3RhbXAiIDogMTYwMTUyOTc4ODY1OSwKICAicHJvZmlsZUlkIiA6ICIyMWUzNjdkNzI1Y2Y0ZTNiYjI2OTJjNGEzMDBhNGRlYiIsCiAgInByb2ZpbGVOYW1lIiA6ICJHZXlzZXJNQyIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS8zZGVlNTAxODFkYmMzMzZkMGQ5MDM1ZjYyMjQ0OGM0M2RhYTdmZGI1ZDdjYWFhOTFmNjdiM2JjNjQ4NmMzMjEwIgogICAgfQogIH0KfQ==", "i0cF74RyF/YAl8m2VathjBpRKlY93rrqnBx/fZPwzaXhL+KLGGhGEJc0SPSzDqpQDXXQKeMO2qKQwDsIbXrNQT0TUMzjFObzPznx5LVNrjZIs9xYpOyh6olmPOxKb8S/5DKKIbtm1ZfejK4KFLuz1OP4idcgPf+xzhoXsPfX8KdbWXoTu192zQ/L6lo0N2dAMzjz6ymELXkpl05gruONtSF01OjcyvVL80lWR5YyecoycxqFPpVXOhxAYYa2PoircLwMg2Vtmkck0/u0gniDt3EEkZkQ44CjT/9bxjf4LEkeHMdnXkt/KYaTk934/eSgr8dL6zlU7v/IyX6Jn3vceQQz9XF04Q+COBsxfjvExc7/Awti+8OJASCvlWoBHL2jqQbXDKXk/OJgjh6F8rPECljiqrdfmEC+W3lM/mc8WBX1KheHtiZiMlyYPOZQ4hCdCJoiHi+jxIhV56UVvu911lhsyRB4ovyb6JWqty/9ztN8spEA4Mxk0xIcK7aVJ3nb8XrfCsMRC17oAwd6W79qSGKxmLJxTg25w+HJ1Sj4JRrLcD4Ix505ptLAdyGdd17xr5oXZ7G4cT3vm19sR1SqPYuyjHV9S1eJBtJAo7kFhFcoAKGBp8MdHXZ4MTZPZZSXdOwPGcYavANN7NA3EPecvfqBUCh9e3IhXJOP70Huv5A=", true);
         final PlayerWatcher skywatch = pl.getWatcher();
-        final LivingEntity target = (LivingEntity)((CraftZombie)entity).getTarget();
-        EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 87);
-        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-        entity.setMetadata("LD", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
+        final LivingEntity target = ((CraftZombie) entity).getTarget();
+        EntityManager.DEFENSE_PERCENTAGE.put(entity, 87);
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -111,7 +114,7 @@ public class FrozenAdv extends BaseZombie
                     Sputnik.sendEatingAnimation(entity);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 4L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 4L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -119,17 +122,17 @@ public class FrozenAdv extends BaseZombie
                     return;
                 }
                 for (int i = 0; i < 20; ++i) {
-                    entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 0.25, 0.0), Effect.FLAME, 0, 1, (float)SUtil.random(-0.5, 0.5), (float)SUtil.random(0.0, 1.5), (float)SUtil.random(-0.5, 0.5), 0.0f, 1, 20);
+                    entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 0.25, 0.0), Effect.FLAME, 0, 1, (float) SUtil.random(-0.5, 0.5), (float) SUtil.random(0.0, 1.5), (float) SUtil.random(-0.5, 0.5), 0.0f, 1, 20);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 20L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 20L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
-                if (entity.getHealth() < entity.getMaxHealth() * 1.0 / 2.0 && !FrozenAdv.this.EatingCooldown && !FrozenAdv.this.isEating) {
+                if (entity.getHealth() < entity.getMaxHealth() / 2.0 && !FrozenAdv.this.EatingCooldown && !FrozenAdv.this.isEating) {
                     FrozenAdv.this.EatingCooldown = true;
                     entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 65, 4));
                     FrozenAdv.this.isBowing = false;
@@ -151,36 +154,33 @@ public class FrozenAdv extends BaseZombie
                                 final Object val$entity = entity;
                                 if (!FrozenAdv.this.isBowing) {
                                     entity.getEquipment().setItemInHand(SUtil.enchant(SItem.of(SMaterial.ICE_WAND).getStack()));
-                                }
-                                else {
+                                } else {
                                     entity.getEquipment().setItemInHand(SItem.of(SMaterial.BOW).getStack());
                                 }
-                                return;
                             }, 5L);
                             SUtil.delay(() -> FrozenAdv.this.EatingCooldown = false, SUtil.random(600, 800));
                         }
-                    }.runTaskLater((Plugin)SkySimEngine.getPlugin(), 60L);
+                    }.runTaskLater(SkySimEngine.getPlugin(), 60L);
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 10L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 10L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
-                    Sputnik.zero((Entity)entity);
+                    Sputnik.zero(entity);
                     this.cancel();
                     return;
                 }
-                final LivingEntity target1 = (LivingEntity)((CraftZombie)entity).getTarget();
+                final LivingEntity target1 = ((CraftZombie) entity).getTarget();
                 if (target1 != null) {
                     if (target1.getLocation().distance(entity.getLocation()) >= 6.0 && target1.getLocation().distance(entity.getLocation()) < 16.0) {
                         entity.teleport(entity.getLocation().setDirection(target1.getLocation().toVector().subtract(entity.getLocation().toVector())));
-                        FrozenAdv.sendHeadRotation((Entity)entity, entity.getLocation().getYaw(), entity.getLocation().getPitch());
+                        FrozenAdv.sendHeadRotation(entity, entity.getLocation().getYaw(), entity.getLocation().getPitch());
                     }
                     if ((target1.getLocation().distance(entity.getLocation()) < 6.0 || target1.getLocation().distance(entity.getLocation()) > 16.0) && !FrozenAdv.this.isEating) {
                         SUtil.delay(() -> {
                             final Object val$entity = entity;
                             entity.getEquipment().setItemInHand(SUtil.enchant(SItem.of(SMaterial.ICE_WAND).getStack()));
-                            return;
                         }, 0L);
                         FrozenAdv.this.isBowing = false;
                     }
@@ -194,7 +194,7 @@ public class FrozenAdv extends BaseZombie
                             int atkCharge = 20;
                             double bowPower = 2.2;
                             boolean crit = true;
-                            
+
                             public void run() {
                                 if (target1.getLocation().distance(entity.getLocation()) <= 10.0) {
                                     this.atkCharge = 10;
@@ -227,12 +227,11 @@ public class FrozenAdv extends BaseZombie
                                     final Location location = entity.getEyeLocation().add(entity.getEyeLocation().getDirection().toLocation(entity.getWorld()));
                                     final Location l = location.clone();
                                     l.setYaw(location.getYaw());
-                                    final Arrow arr = entity.getWorld().spawnArrow(l, l.getDirection(), (float)this.bowPower, 1.6f);
-                                    arr.setShooter((ProjectileSource)entity);
+                                    final Arrow arr = entity.getWorld().spawnArrow(l, l.getDirection(), (float) this.bowPower, 1.6f);
+                                    arr.setShooter(entity);
                                     if (!this.crit) {
                                         arr.setCritical(SUtil.random(0, 1) == 1);
-                                    }
-                                    else {
+                                    } else {
                                         arr.setCritical(true);
                                     }
                                     skywatch.setRightClicking(false);
@@ -240,11 +239,11 @@ public class FrozenAdv extends BaseZombie
                                     FrozenAdv.this.isBowing = false;
                                 }
                             }
-                        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+                        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
                     }
                     if (target1.getLocation().distance(entity.getLocation()) <= 10.0 && !FrozenAdv.this.isBowing && !FrozenAdv.this.isEating && SUtil.random(0, 100) < 10 && !FrozenAdv.this.CDLA) {
                         FrozenAdv.this.CDLA = true;
-                        FrozenAdv.this.lightningPlayer((Entity)entity);
+                        FrozenAdv.this.lightningPlayer(entity);
                         SUtil.delay(() -> FrozenAdv.this.CDLA = false, 300L);
                     }
                     if (target1.getLocation().distance(entity.getLocation()) <= 5.0 && !FrozenAdv.this.isBowing && !FrozenAdv.this.isEating) {
@@ -260,21 +259,19 @@ public class FrozenAdv extends BaseZombie
                         entity.getLocation().getWorld().playSound(entity.getLocation(), Sound.ENDERDRAGON_GROWL, 1.0f, 1.0f);
                         for (final Entity e : target1.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1)), 3.0, 3.0, 3.0)) {
                             if (e instanceof Player) {
-                                final Player player = (Player)e;
-                                ((LivingEntity)player).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 20));
+                                final Player player = (Player) e;
+                                player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 20));
                                 double b = 0.0;
                                 for (int i = 0; i < 2; ++i) {
                                     final int d;
                                     if ((d = i) == 0) {
                                         b = 0.2;
-                                    }
-                                    else if (i == 1) {
+                                    } else if (i == 1) {
                                         b = 0.4;
-                                    }
-                                    else if (i == 2) {
+                                    } else if (i == 2) {
                                         b = 0.6;
                                     }
-                                    final ArmorStand stands = (ArmorStand)player.getWorld().spawn(player.getLocation().add(0.0, b + 1.0, 0.0), (Class)ArmorStand.class);
+                                    final ArmorStand stands = (ArmorStand) player.getWorld().spawn(player.getLocation().add(0.0, b + 1.0, 0.0), (Class) ArmorStand.class);
                                     stands.setCustomNameVisible(false);
                                     stands.setVisible(false);
                                     stands.setArms(true);
@@ -284,44 +281,41 @@ public class FrozenAdv extends BaseZombie
                                     stands.getEquipment().setItemInHand(new ItemStack(Material.PACKED_ICE));
                                     SUtil.delay(() -> {
                                         stands.remove();
-                                        player.removeMetadata("frozen", (Plugin)SkySimEngine.getPlugin());
-                                        return;
+                                        player.removeMetadata("frozen", SkySimEngine.getPlugin());
                                     }, 100L);
                                     new BukkitRunnable() {
                                         public void run() {
                                             double c = 0.0;
                                             if (d == 0) {
                                                 c = 0.2;
-                                            }
-                                            else if (d == 1) {
+                                            } else if (d == 1) {
                                                 c = 0.4;
-                                            }
-                                            else if (d == 2) {
+                                            } else if (d == 2) {
                                                 c = 0.6;
                                             }
                                             if (stands.isDead()) {
-                                                ((LivingEntity)player).removePotionEffect(PotionEffectType.SLOW);
-                                                player.removeMetadata("frozen", (Plugin)SkySimEngine.getPlugin());
+                                                player.removePotionEffect(PotionEffectType.SLOW);
+                                                player.removeMetadata("frozen", SkySimEngine.getPlugin());
                                                 this.cancel();
                                                 return;
                                             }
                                             if (player.isDead() || entity.isDead()) {
                                                 stands.remove();
-                                                player.removeMetadata("frozen", (Plugin)SkySimEngine.getPlugin());
+                                                player.removeMetadata("frozen", SkySimEngine.getPlugin());
                                             }
                                             stands.teleport(player.getLocation().add(0.0, c + 1.0, 0.0));
                                         }
-                                    }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 1L);
+                                    }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
                                 }
                                 final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
                                 if (statistics == null) {
                                     return;
                                 }
                                 final double defense = statistics.getDefense().addAll();
-                                final int dmglater = (int)Math.round(FrozenAdv.this.getDamageDealt() * 3.0 - FrozenAdv.this.getDamageDealt() * 3.0 * (defense / (defense + 100.0)));
-                                User.getUser(player.getUniqueId()).damage(dmglater, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)entity);
-                                player.setMetadata("frozen", (MetadataValue)new FixedMetadataValue((Plugin)SkySimEngine.getPlugin(), (Object)true));
-                                ((LivingEntity)e).damage(1.0E-6, (Entity)null);
+                                final int dmglater = (int) Math.round(FrozenAdv.this.getDamageDealt() * 3.0 - FrozenAdv.this.getDamageDealt() * 3.0 * (defense / (defense + 100.0)));
+                                User.getUser(player.getUniqueId()).damage(dmglater, EntityDamageEvent.DamageCause.ENTITY_ATTACK, entity);
+                                player.setMetadata("frozen", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+                                ((LivingEntity) e).damage(1.0E-6, null);
                             }
                         }
                         SUtil.delay(() -> {
@@ -329,21 +323,19 @@ public class FrozenAdv extends BaseZombie
                             if (!FrozenAdv.this.isBowing) {
                                 skywatch.setRightClicking(false);
                             }
-                            return;
                         }, 20L);
                         SUtil.delay(() -> FrozenAdv.this.CDDR = false, 200L);
                     }
-                }
-                else if (!FrozenAdv.this.isEating) {
+                } else if (!FrozenAdv.this.isEating) {
                     FrozenAdv.this.isBowing = false;
                     entity.getEquipment().setItemInHand(SUtil.enchant(SItem.of(SMaterial.ICE_WAND).getStack()));
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
         new BukkitRunnable() {
             Location loc = entity.getLocation();
-            final EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
-            
+            final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
+
             public void run() {
                 if (entity.isDead()) {
                     this.cancel();
@@ -356,13 +348,13 @@ public class FrozenAdv extends BaseZombie
                 if (entity.hasMetadata("frozen")) {
                     return;
                 }
-                if (((CraftZombie)entity).getTarget() == null) {
+                if (((CraftZombie) entity).getTarget() == null) {
                     return;
                 }
-                if (((CraftZombie)entity).getTarget().getWorld() != entity.getWorld()) {
+                if (((CraftZombie) entity).getTarget().getWorld() != entity.getWorld()) {
                     return;
                 }
-                if (((CraftZombie)entity).getTarget().getLocation().distance(entity.getLocation()) <= 4.0 || FrozenAdv.this.isEating || FrozenAdv.this.isBowing) {
+                if (((CraftZombie) entity).getTarget().getLocation().distance(entity.getLocation()) <= 4.0 || FrozenAdv.this.isEating || FrozenAdv.this.isBowing) {
                     return;
                 }
                 if (this.loc.distance(loc2) >= 0.2) {
@@ -386,10 +378,10 @@ public class FrozenAdv extends BaseZombie
                 }
                 this.nms.setSprinting(false);
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 7L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 7L);
         new BukkitRunnable() {
             public void run() {
-                final EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
+                final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
@@ -404,7 +396,7 @@ public class FrozenAdv extends BaseZombie
                     if (!(entities instanceof Player)) {
                         continue;
                     }
-                    final Player target = (Player)entities;
+                    final Player target = (Player) entities;
                     if (target.getGameMode() == GameMode.CREATIVE) {
                         continue;
                     }
@@ -422,27 +414,27 @@ public class FrozenAdv extends BaseZombie
                     }
                     entity.teleport(entity.getLocation().setDirection(target.getLocation().subtract(entities.getLocation()).toVector()));
                     for (final Player players : Bukkit.getOnlinePlayers()) {
-                        ((CraftPlayer)players).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)entity).getHandle(), 0));
+                        ((CraftPlayer) players).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) entity).getHandle(), 0));
                     }
-                    nms.r((net.minecraft.server.v1_8_R3.Entity)((CraftPlayer)target).getHandle());
+                    nms.r(((CraftPlayer) target).getHandle());
                     break;
                 }
             }
-        }.runTaskTimer((Plugin)SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
     }
-    
+
     @Override
     public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
-        final Entity en = (Entity)sEntity.getEntity();
+        final Entity en = sEntity.getEntity();
         final Vector v = new Vector(0, 0, 0);
         SUtil.delay(() -> en.setVelocity(v), 1L);
     }
-    
+
     @Override
     public SEntityEquipment getEntityEquipment() {
         return new SEntityEquipment(SUtil.enchant(SItem.of(SMaterial.ICE_WAND).getStack()), SUtil.enchant(SUtil.getSkullURLStack("Frozen Blaze Helmet", "55a13bb48e3595b55de8dd6943fc38db5235371278c695bd453e49a0999", 1, "")), SUtil.enchant(st(10541807, Material.LEATHER_CHESTPLATE, "Frozen Blaze Chestplate")), SUtil.enchant(st(10541807, Material.LEATHER_LEGGINGS, "Frozen Blaze Leggings")), SUtil.enchant(st(10541807, Material.LEATHER_BOOTS, "Frozen Blaze Boots")));
     }
-    
+
     public static ItemStack st(final int hexcolor, final Material m, final String name) {
         final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
         final ItemMeta itemMeta = stack.getItemMeta();
@@ -451,32 +443,32 @@ public class FrozenAdv extends BaseZombie
         stack.setItemMeta(itemMeta);
         return stack;
     }
-    
+
     @Override
     public boolean isBaby() {
         return false;
     }
-    
+
     @Override
     public boolean hasNameTag() {
         return false;
     }
-    
+
     @Override
     public boolean isVillager() {
         return false;
     }
-    
+
     @Override
     public double getXPDropped() {
         return 0.0;
     }
-    
+
     @Override
     public double getMovementSpeed() {
         return 0.25;
     }
-    
+
     public void playPar(final Location l) {
         final ConeEffect Effect = new ConeEffect(SkySimEngine.effectManager);
         Effect.setLocation(l.clone().add(l.getDirection().normalize().multiply(-0.25)).add(0.0, -0.1, 0.0));
@@ -489,7 +481,7 @@ public class FrozenAdv extends BaseZombie
         Effect.iterations = 5;
         Effect.start();
     }
-    
+
     public void lightningPlayer(final Entity en) {
         final List<Entity> a = en.getNearbyEntities(10.0, 10.0, 10.0);
         a.removeIf(entity -> entity.getType() != EntityType.PLAYER);
@@ -500,17 +492,17 @@ public class FrozenAdv extends BaseZombie
         }
         for (final Entity e : en.getNearbyEntities(10.0, 10.0, 10.0)) {
             if (e instanceof Player) {
-                final Player p = (Player)e;
+                final Player p = (Player) e;
                 p.getWorld().strikeLightningEffect(p.getLocation());
                 User.getUser(p.getUniqueId()).damage(p.getMaxHealth() * 10.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, e);
             }
         }
     }
-    
+
     public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
-        final net.minecraft.server.v1_8_R3.Entity pl = (net.minecraft.server.v1_8_R3.Entity)((CraftZombie)e).getHandle();
+        final net.minecraft.server.v1_8_R3.Entity pl = ((CraftZombie) e).getHandle();
         pl.setLocation(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), yaw, pitch);
         final PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(pl);
-        Sputnik.sendPacket(e.getWorld(), (Packet)packet);
+        Sputnik.sendPacket(e.getWorld(), packet);
     }
 }
