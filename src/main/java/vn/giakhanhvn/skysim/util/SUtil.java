@@ -977,6 +977,9 @@ public class SUtil {
             }
         }.runTaskLater(SkySimEngine.getPlugin(), delay);
     }
+    public static double square(double val) {
+        return val * val;
+    }
 
     public static GameProfile createGameProfile(String url) {
         GameProfile profile = new GameProfile(UUID.randomUUID(), null);

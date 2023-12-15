@@ -41,6 +41,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.entity.Damageable;
 import org.bukkit.projectiles.ProjectileSource;
 import vn.giakhanhvn.skysim.item.Ability;
+import vn.giakhanhvn.skysim.nms.packetevents.PacketReader;
+import vn.giakhanhvn.skysim.npc.SkyblockNPC;
+import vn.giakhanhvn.skysim.npc.SkyblockNPCManager;
 import vn.giakhanhvn.skysim.util.FerocityCalculation;
 import vn.giakhanhvn.skysim.item.accessory.AccessoryFunction;
 import vn.giakhanhvn.skysim.item.bow.BowFunction;
@@ -167,6 +170,7 @@ public class PlayerListener extends PListener {
                 SkySimEngine.getPlugin().updateServerName(player);
             }
         }, 10L);
+
         SUtil.delay(() -> {
             PlayerUtils.USER_SESSION_ID.put(player.getUniqueId(), UUID.randomUUID());
             PlayerUtils.COOKIE_DURATION_CACHE.remove(player.getUniqueId());
@@ -300,7 +304,10 @@ public class PlayerListener extends PListener {
             final Location l = new Location(Bukkit.getWorld("world"), -2.5, 70.0, -68.5, 180.0f, 0.0f);
             player.teleport(l);
         }, 1L);
+        new PacketReader().injectPlayer(player);
+
     }
+
 
     @EventHandler
     public void chunkLoad(final ChunkLoadEvent e) {
@@ -1432,6 +1439,47 @@ public class PlayerListener extends PListener {
     public void ans(final BlockPlaceEvent e) {
         if (e.getPlayer().getWorld().getName().contains("arena") && e.getPlayer().getGameMode() != GameMode.CREATIVE) {
             e.setCancelled(true);
+        }
+    }
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event){
+        Player player = event.getPlayer();
+        for (SkyblockNPC skyblockNPC : SkyblockNPCManager.getNPCS()){
+            if (skyblockNPC.isShown(player))
+                skyblockNPC.hideFrom(player);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerTeleport(PlayerTeleportEvent event) {
+        Player player = event.getPlayer();
+        World toWorld = event.getTo().getWorld();
+        World fromWorld = event.getFrom().getWorld();
+        if (!toWorld.equals(fromWorld)) {
+            for (SkyblockNPC npc : SkyblockNPCManager.getNPCS()) {
+                if (npc.getWorld().equals(toWorld)) {
+                    SUtil.delay(() -> npc.showTo(player) , 20);  // delay to let world load properly
+                } else if (npc.isShown(player) && npc.getWorld().equals(fromWorld)) {
+                    npc.hideFrom(player);
+                }
+            }
+        }
+    }
+
+
+
+    @EventHandler
+    public void onMove(PlayerMoveEvent event) {   // handle auto hide and show
+        Player player = event.getPlayer();
+        Location from = event.getFrom();
+        Location to = event.getTo();
+        for (SkyblockNPC skyblockNPC : SkyblockNPCManager.getNPCS()) {
+            if (!skyblockNPC.getWorld().equals(player.getWorld())) continue;
+            if (!skyblockNPC.isShown(player) && skyblockNPC.inRangeOf(player)) {
+                skyblockNPC.showTo(player);
+            } else if (skyblockNPC.isShown(player) && !skyblockNPC.inRangeOf(player)) {
+                skyblockNPC.hideFrom(player);
+            }
         }
     }
 

@@ -143,6 +143,9 @@ public class User {
     private Region lastRegion;
     private final Map<SMaterial, Integer> quiver;
     private final List<ActivePotionEffect> effects;
+
+    @Getter
+    private List<String> talked_npcs;
     private double farmingXP;
     private boolean boneToZeroDamage;
     private boolean cooldownAPI;
@@ -197,6 +200,7 @@ public class User {
         this.islandX = null;
         this.islandZ = null;
         this.lastRegion = null;
+        this.talked_npcs = new ArrayList<>();
         this.quiver = new HashMap<SMaterial, Integer>();
         this.effects = new ArrayList<ActivePotionEffect>();
         this.unlockedRecipes = new ArrayList<>();
@@ -297,6 +301,9 @@ public class User {
         }
         if (config.contains("unlockedRecipes")) {
             this.unlockedRecipes = (List<String>) this.config.getList("unlockedRecipes");
+        }
+        if (config.contains("talked_npcs")){
+            this.talked_npcs = (List<String>) config.getList("talked_npcs");
         }
         this.auctionSettings = (AuctionSettings) this.config.get("auction.settings");
         if (this.auctionSettings == null) {
@@ -417,8 +424,9 @@ public class User {
         this.config.set("xp.slayer.voidgloomSeraph", this.slayerXP[3]);
         this.config.set("permanentCoins", this.permanentCoins);
         this.config.set("slayer.quest", this.slayerQuest);
-        this.config.set("unlockedRecipes", this.unlockedRecipes);
         this.config.set("pets", this.pets);
+        this.config.set("unlockedRecipes", this.unlockedRecipes);
+        this.config.set("talked_npcs" , talked_npcs);
         this.config.set("auction.settings", this.auctionSettings);
         this.config.set("auction.creationBIN", this.auctionCreationBIN);
         this.config.set("auction.escrow", this.auctionEscrow);

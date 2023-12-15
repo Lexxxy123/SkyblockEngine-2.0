@@ -1,5 +1,9 @@
 package vn.giakhanhvn.skysim;
 
+import lombok.Getter;
+import org.reflections.Reflections;
+import vn.giakhanhvn.skysim.npc.SkyblockNPC;
+import vn.giakhanhvn.skysim.npc.SkyblockNPCManager;
 import vn.giakhanhvn.skysim.user.User;
 import vn.giakhanhvn.skysim.nms.nmsutil.apihelper.SkySimBungee;
 import vn.giakhanhvn.skysim.nms.packetevents.PluginMessageReceived;
@@ -175,6 +179,8 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
     public static EffectManager effectManager;
     private static SkySimEngine instance;
     public Config config;
+
+
     public Config heads;
     public Config blocks;
     public Config spawners;
@@ -214,6 +220,7 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
             this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
             this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", this);
             this.bc = new BungeeChannel(this);
+
             this.setupEconomy();
             if (Bukkit.getPluginManager().getPlugin("SputnikSkySim") == null) {
                 SLog.severe("===================================");
@@ -279,6 +286,8 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
                 EntitySpawner.startSpawnerTask();
                 SLog.info("Establishing player regions...");
                 Region.cacheRegions();
+                SLog.info("Loading NPCS...");
+                registerNPCS();
                 SLog.info("Loading auction items from disk...");
                 SkySimEngine.effectManager = new EffectManager(this);
                 AuctionItem.loadAuctionsFromDisk();
@@ -440,6 +449,22 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
         SLog.info("PLUGIN DISABLED!");
         SLog.info("===================================");
     }
+
+    private void registerNPCS()
+    {
+        Reflections reflections = new Reflections("vn.giakhanhvn.skysim.npc");
+        for (Class<? extends SkyblockNPC> npcClazz : reflections.getSubTypesOf(SkyblockNPC.class)){
+            try {
+                npcClazz.getDeclaredConstructor().newInstance();
+            }catch (Exception ex){
+                ex.printStackTrace();
+
+            }
+        }
+        SLog.info("Loaded " + SkyblockNPCManager.getNPCS().size() + " npcs");
+
+    }
+
 
     public static ProtocolManager getPTC() {
         return SkySimEngine.protocolManager;
