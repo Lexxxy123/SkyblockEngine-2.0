@@ -161,9 +161,9 @@ public class CraftingTableGUI extends GUI implements BlockBasedGUI {
                         SUtil.border(inventory, gui, SUtil.createColoredStainedGlassPane((short) 5, ChatColor.RESET + " "), 45, 48, true, false);
                         SUtil.border(inventory, gui, SUtil.createColoredStainedGlassPane((short) 5, ChatColor.RESET + " "), 50, 53, true, false);
                     }
-                }.runTaskLater(SkySimEngine.getPlugin(), 1L);
+                }.runTaskLaterAsynchronously(SkySimEngine.getPlugin(), 1L);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimerAsynchronously(SkySimEngine.getPlugin(), 0L, 1L);
     }
 
     @Override

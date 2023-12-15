@@ -135,6 +135,7 @@ public class User {
     private List<ItemStack> stashedItems;
     private int cooldownAltar;
     private boolean headShot;
+    private static final boolean multiServer = false;
     private boolean playingSong;
     private boolean inDanger;
     private Double islandX;
@@ -494,6 +495,7 @@ public class User {
     }
 
     public void loadPlayerData() throws IllegalArgumentException, IOException {
+        if (!multiServer) return;
         final Player player = Bukkit.getPlayer(this.uuid);
         if (this.config.getString("database.inventory") != null) {
             player.getInventory().setContents(BukkitSerializeClass.itemStackArrayFromBase64(this.config.getString("database.inventory")));
@@ -551,6 +553,7 @@ public class User {
     }
 
     public void saveAllVanillaInstances() {
+        if (!multiServer) return;
         if (Bukkit.getPlayer(this.uuid) == null) {
             return;
         }
