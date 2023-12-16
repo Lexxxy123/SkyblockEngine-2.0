@@ -31,13 +31,5 @@ public class NecronHandle implements MaterialStatistics, MaterialFunction {
         return false;
     }
 
-    @Override
-    public long getValue() {
-        return 200000000L;
-    }
 
-    @Override
-    public long getPrice() {
-        return 200000000L;
-    }
 }

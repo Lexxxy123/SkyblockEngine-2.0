@@ -41,14 +41,6 @@ public interface MaterialStatistics {
         return true;
     }
 
-    default long getPrice() {
-        return 1L;
-    }
-
-    default long getValue() {
-        return 1L;
-    }
-
     default ItemCategory getCategory() {
         return ItemCategory.TOOLS_MISC;
     }

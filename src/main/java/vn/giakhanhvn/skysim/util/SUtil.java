@@ -6,6 +6,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ListIterator;
 
+import vn.giakhanhvn.skysim.merchant.MerchantItemHandler;
 import vn.giakhanhvn.skysim.potion.PotionEffect;
 import vn.giakhanhvn.skysim.potion.PotionColor;
 import vn.giakhanhvn.skysim.item.Rarity;
@@ -979,6 +980,14 @@ public class SUtil {
     }
     public static double square(double val) {
         return val * val;
+    }
+    public static SItem toShopItem(SMaterial smaterial , int amount , Long price , Long value){
+        SItem item = SItem.of(smaterial);
+        item.getStack().setAmount(amount);
+        item.setPrice(price);
+        item.setItemValue(value);
+        MerchantItemHandler.ITEMS.put(smaterial , item);
+        return item;
     }
 
     public static GameProfile createGameProfile(String url) {

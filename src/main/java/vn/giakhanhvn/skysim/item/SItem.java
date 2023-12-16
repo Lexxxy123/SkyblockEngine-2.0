@@ -139,6 +139,32 @@ public class SItem implements Cloneable, ConfigurationSerializable {
         return removeIf;
     }
 
+    public Long getPrice() {
+        if (!data.hasKey("price")) {
+            return null;
+        } else {
+            return data.getLong("price");
+        }
+    }
+
+    public Long getItemValue() {
+        if (!data.hasKey("itemValue")) {
+            return null;
+        } else {
+            return data.getLong("itemValue");
+        }
+    }
+
+    public void setItemValue(Long value) {
+        data.setLong("itemValue", value);
+        update();
+    }
+
+    public void setPrice(Long value) {
+        data.setLong("price", value);
+        update();
+    }
+
     public boolean hasEnchantment(final EnchantmentType type) {
         if (!this.isEnchantable()) {
             return false;

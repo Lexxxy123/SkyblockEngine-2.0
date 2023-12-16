@@ -1,7 +1,9 @@
 package vn.giakhanhvn.skysim;
 
 import lombok.Getter;
+import org.bukkit.ChatColor;
 import org.reflections.Reflections;
+import vn.giakhanhvn.skysim.merchant.MerchantItemHandler;
 import vn.giakhanhvn.skysim.npc.SkyblockNPC;
 import vn.giakhanhvn.skysim.npc.SkyblockNPCManager;
 import vn.giakhanhvn.skysim.user.User;
@@ -291,6 +293,8 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
                 SLog.info("Loading auction items from disk...");
                 SkySimEngine.effectManager = new EffectManager(this);
                 AuctionItem.loadAuctionsFromDisk();
+                SLog.info("Loading merchants prices...");
+                MerchantItemHandler.init();
                 SkyBlockCalendar.ELAPSED = SkySimEngine.plugin.config.getLong("timeElapsed");
                 SLog.info("Synchronizing world time with calendar time and removing world entities...");
                 for (final World world : Bukkit.getWorlds()) {
@@ -461,7 +465,7 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
 
             }
         }
-        SLog.info("Loaded " + SkyblockNPCManager.getNPCS().size() + " npcs");
+        SLog.info(ChatColor.GREEN + "Successfully loaded " + ChatColor.YELLOW + SkyblockNPCManager.getNPCS().size() + ChatColor.GREEN + " NPCs");
 
     }
 

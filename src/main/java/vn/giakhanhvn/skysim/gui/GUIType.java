@@ -1,5 +1,6 @@
 package vn.giakhanhvn.skysim.gui;
 
+import vn.giakhanhvn.skysim.merchant.FarmMerchantGUI;
 import vn.giakhanhvn.skysim.util.SUtil;
 
 public enum GUIType {
