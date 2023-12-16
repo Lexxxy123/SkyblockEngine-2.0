@@ -1,23 +1,14 @@
 package vn.giakhanhvn.skysim.item.oddities;
 
-import vn.giakhanhvn.skysim.item.SItem;
-
-import java.util.Iterator;
-
+import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.item.*;
 import vn.giakhanhvn.skysim.potion.PotionEffect;
 import vn.giakhanhvn.skysim.potion.PotionEffectType;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import net.minecraft.server.v1_8_R3.NBTTagCompound;
-import vn.giakhanhvn.skysim.item.ItemData;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.MaterialStatistics;
 
 public class WaterBottle implements MaterialStatistics, MaterialFunction, ItemData {
     @Override

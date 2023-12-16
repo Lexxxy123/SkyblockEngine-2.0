@@ -1,9 +1,9 @@
 package vn.giakhanhvn.skysim.command;
 
-import org.bukkit.entity.Player;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 
 @CommandParameters(description = "Play a Bukkit enum sound.", usage = "/playenumsound <sound>")
 public class PlayEnumSoundCommand extends SCommand {

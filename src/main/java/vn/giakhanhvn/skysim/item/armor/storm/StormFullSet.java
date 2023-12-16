@@ -1,9 +1,9 @@
 package vn.giakhanhvn.skysim.item.armor.storm;
 
-import vn.giakhanhvn.skysim.item.PlayerBoostStatistics;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.item.MaterialStatistics;
-import net.md_5.bungee.api.ChatColor;
+import vn.giakhanhvn.skysim.item.PlayerBoostStatistics;
 import vn.giakhanhvn.skysim.item.armor.ArmorSet;
 
 public class StormFullSet implements ArmorSet {

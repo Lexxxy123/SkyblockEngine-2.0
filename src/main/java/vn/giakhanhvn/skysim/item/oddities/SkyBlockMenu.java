@@ -1,16 +1,11 @@
 package vn.giakhanhvn.skysim.item.oddities;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import vn.giakhanhvn.skysim.item.SItem;
-import vn.giakhanhvn.skysim.gui.GUIType;
 import org.bukkit.event.player.PlayerInteractEvent;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.item.Untradeable;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.MaterialStatistics;
+import vn.giakhanhvn.skysim.gui.GUIType;
+import vn.giakhanhvn.skysim.item.*;
 
 public class SkyBlockMenu implements MaterialStatistics, MaterialFunction, Untradeable {
     @Override

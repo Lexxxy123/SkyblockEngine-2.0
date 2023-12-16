@@ -1,20 +1,18 @@
 package vn.giakhanhvn.skysim.item.armor.miner;
 
-import vn.giakhanhvn.skysim.user.DoublePlayerStatistic;
-import vn.giakhanhvn.skysim.util.Groups;
-import org.bukkit.entity.Entity;
-import vn.giakhanhvn.skysim.region.Region;
-import vn.giakhanhvn.skysim.listener.PlayerListener;
-import vn.giakhanhvn.skysim.user.PlayerUtils;
-import vn.giakhanhvn.skysim.user.PlayerStatistics;
-
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.List;
-
-import vn.giakhanhvn.skysim.item.SItem;
 import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.item.MaterialStatistics;
+import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.item.armor.TickingSet;
+import vn.giakhanhvn.skysim.listener.PlayerListener;
+import vn.giakhanhvn.skysim.region.Region;
+import vn.giakhanhvn.skysim.user.DoublePlayerStatistic;
+import vn.giakhanhvn.skysim.user.PlayerStatistics;
+import vn.giakhanhvn.skysim.user.PlayerUtils;
+import vn.giakhanhvn.skysim.util.Groups;
+
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MinerSet implements TickingSet {
     @Override

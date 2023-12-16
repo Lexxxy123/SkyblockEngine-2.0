@@ -1,9 +1,9 @@
 package vn.giakhanhvn.skysim.skill;
 
-import vn.giakhanhvn.skysim.user.PlayerUtils;
-import vn.giakhanhvn.skysim.user.PlayerStatistics;
-import vn.giakhanhvn.skysim.user.User;
 import org.bukkit.ChatColor;
+import vn.giakhanhvn.skysim.user.PlayerStatistics;
+import vn.giakhanhvn.skysim.user.PlayerUtils;
+import vn.giakhanhvn.skysim.user.User;
 
 import java.util.Arrays;
 import java.util.List;

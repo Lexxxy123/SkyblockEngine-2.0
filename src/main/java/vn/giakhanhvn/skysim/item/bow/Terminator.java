@@ -1,64 +1,30 @@
 package vn.giakhanhvn.skysim.item.bow;
 
-import java.util.HashMap;
-
 import com.google.common.util.concurrent.AtomicDouble;
-import org.bukkit.inventory.PlayerInventory;
-
-import java.util.Iterator;
-
-import org.bukkit.util.Vector;
-import org.bukkit.Effect;
-import vn.giakhanhvn.skysim.listener.PlayerListener;
-import org.bukkit.entity.Damageable;
-import vn.giakhanhvn.skysim.util.EntityManager;
-import vn.giakhanhvn.skysim.item.weapon.EdibleMace;
-import org.bukkit.entity.ItemFrame;
-import org.bukkit.entity.Item;
-import vn.giakhanhvn.skysim.skill.Skill;
-import vn.giakhanhvn.skysim.item.PlayerBoostStatistics;
-import vn.giakhanhvn.skysim.entity.SEntity;
-import vn.giakhanhvn.skysim.util.Groups;
-import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
-import vn.giakhanhvn.skysim.enchantment.Enchantment;
-import vn.giakhanhvn.skysim.item.SMaterial;
-import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.EnderDragonPart;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Entity;
 import net.md_5.bungee.api.ChatColor;
-import vn.giakhanhvn.skysim.util.ManaReplacement;
-import vn.giakhanhvn.skysim.Repeater;
-
-import java.util.Set;
-
-import vn.giakhanhvn.skysim.util.Sputnik;
-import org.bukkit.event.entity.EntityShootBowEvent;
-import vn.giakhanhvn.skysim.item.SItem;
-import org.bukkit.entity.Arrow;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.user.PlayerUtils;
-import vn.giakhanhvn.skysim.user.PlayerStatistics;
-import org.bukkit.projectiles.ProjectileSource;
-import org.bukkit.Sound;
-import vn.giakhanhvn.skysim.util.InventoryUpdate;
+import org.bukkit.*;
+import org.bukkit.entity.*;
 import org.bukkit.event.block.Action;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.util.Vector;
+import vn.giakhanhvn.skysim.Repeater;
+import vn.giakhanhvn.skysim.enchantment.Enchantment;
+import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
+import vn.giakhanhvn.skysim.item.*;
+import vn.giakhanhvn.skysim.item.weapon.EdibleMace;
+import vn.giakhanhvn.skysim.listener.PlayerListener;
+import vn.giakhanhvn.skysim.skill.Skill;
+import vn.giakhanhvn.skysim.user.PlayerStatistics;
+import vn.giakhanhvn.skysim.user.PlayerUtils;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.*;
 
-import java.util.UUID;
+import java.util.HashMap;
 import java.util.Map;
-
-import vn.giakhanhvn.skysim.item.Ability;
-import vn.giakhanhvn.skysim.item.ToolStatistics;
+import java.util.Set;
+import java.util.UUID;
 
 public class Terminator implements ToolStatistics, BowFunction, Ability {
     public static final Map<UUID, Integer> CountTerm;

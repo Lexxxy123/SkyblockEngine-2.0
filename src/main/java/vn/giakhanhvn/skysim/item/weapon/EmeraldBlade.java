@@ -1,26 +1,16 @@
 package vn.giakhanhvn.skysim.item.weapon;
 
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
-import org.bukkit.entity.Player;
-
-import java.util.Collections;
-
-import vn.giakhanhvn.skysim.user.User;
 import org.bukkit.Bukkit;
-
-import java.util.UUID;
-import java.util.Arrays;
-
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.item.*;
+import vn.giakhanhvn.skysim.user.User;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.Ownable;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.ToolStatistics;
+import java.util.UUID;
 
 public class EmeraldBlade implements ToolStatistics, MaterialFunction, Ownable {
     @Override

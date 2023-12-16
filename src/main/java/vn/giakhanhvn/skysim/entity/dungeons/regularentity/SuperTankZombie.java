@@ -1,22 +1,19 @@
 package vn.giakhanhvn.skysim.entity.dungeons.regularentity;
 
+import org.bukkit.Color;
+import org.bukkit.Material;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.entity.Entity;
-import vn.giakhanhvn.skysim.util.EntityManager;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.metadata.FixedMetadataValue;
 import vn.giakhanhvn.skysim.SkySimEngine;
-import vn.giakhanhvn.skysim.entity.SEntity;
-import org.bukkit.entity.LivingEntity;
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.Color;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.Material;
-import vn.giakhanhvn.skysim.entity.SEntityEquipment;
-import vn.giakhanhvn.skysim.entity.EntityStatistics;
 import vn.giakhanhvn.skysim.entity.EntityFunction;
+import vn.giakhanhvn.skysim.entity.EntityStatistics;
+import vn.giakhanhvn.skysim.entity.SEntity;
+import vn.giakhanhvn.skysim.entity.SEntityEquipment;
+import vn.giakhanhvn.skysim.util.EntityManager;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 public class SuperTankZombie implements EntityFunction, EntityStatistics {
     @Override

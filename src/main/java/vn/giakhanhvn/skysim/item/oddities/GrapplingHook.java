@@ -1,24 +1,17 @@
 package vn.giakhanhvn.skysim.item.oddities;
 
-import java.util.ArrayList;
-
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.GameMode;
 import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.util.Sputnik;
+import org.bukkit.GameMode;
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerFishEvent;
-import vn.giakhanhvn.skysim.item.SItem;
+import org.bukkit.scheduler.BukkitRunnable;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.item.*;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
-import java.util.UUID;
+import java.util.ArrayList;
 import java.util.List;
-
-import vn.giakhanhvn.skysim.item.FishingRodFunction;
-import vn.giakhanhvn.skysim.item.MaterialStatistics;
+import java.util.UUID;
 
 public class GrapplingHook implements MaterialStatistics, FishingRodFunction {
     private static final List<UUID> COOLDOWN;

@@ -1,51 +1,31 @@
 package vn.giakhanhvn.skysim.item.pet;
 
-import java.util.HashMap;
-import java.util.Iterator;
-
+import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.*;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.Material;
 import org.bukkit.util.EulerAngle;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.util.Vector;
 import vn.giakhanhvn.skysim.SkySimEngine;
-import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.EnderDragonPart;
-import org.bukkit.entity.EnderDragon;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.Sound;
-import org.bukkit.Effect;
-import org.bukkit.Location;
 import vn.giakhanhvn.skysim.item.GenericItemType;
+import vn.giakhanhvn.skysim.item.Rarity;
+import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.skill.CombatSkill;
 import vn.giakhanhvn.skysim.skill.Skill;
-import org.bukkit.util.Vector;
+import vn.giakhanhvn.skysim.user.User;
 import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.entity.Entity;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import vn.giakhanhvn.skysim.item.Rarity;
-
-import java.util.Collection;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Arrays;
-
 import vn.giakhanhvn.skysim.util.Sputnik;
 
-import java.math.RoundingMode;
 import java.math.BigDecimal;
-import java.util.List;
-
-import vn.giakhanhvn.skysim.item.SItem;
-import org.bukkit.entity.Player;
-
-import java.util.Map;
+import java.math.RoundingMode;
+import java.util.*;
 
 public class MagicivyPet extends Pet {
     public static final Map<Player, Boolean> COOLDOWN;

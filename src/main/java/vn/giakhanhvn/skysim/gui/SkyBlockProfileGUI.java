@@ -1,18 +1,18 @@
 package vn.giakhanhvn.skysim.gui;
 
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.util.FerocityCalculation;
-import vn.giakhanhvn.skysim.skill.Skill;
-import vn.giakhanhvn.skysim.user.User;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import org.bukkit.DyeColor;
-import org.bukkit.material.Dye;
-import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.user.PlayerUtils;
-import vn.giakhanhvn.skysim.user.PlayerStatistics;
-import org.bukkit.Material;
 import org.bukkit.ChatColor;
+import org.bukkit.DyeColor;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Dye;
+import vn.giakhanhvn.skysim.skill.Skill;
+import vn.giakhanhvn.skysim.user.PlayerStatistics;
+import vn.giakhanhvn.skysim.user.PlayerUtils;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.FerocityCalculation;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 public class SkyBlockProfileGUI extends GUI {
     public SkyBlockProfileGUI() {

@@ -1,13 +1,11 @@
 package vn.giakhanhvn.skysim.util;
 
 import net.minecraft.server.v1_8_R3.NBTBase;
+import net.minecraft.server.v1_8_R3.NBTTagCompound;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Iterator;
-
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import net.minecraft.server.v1_8_R3.NBTTagCompound;
 
 public class SerialNBTTagCompound extends NBTTagCompound implements ConfigurationSerializable {
     public SerialNBTTagCompound() {

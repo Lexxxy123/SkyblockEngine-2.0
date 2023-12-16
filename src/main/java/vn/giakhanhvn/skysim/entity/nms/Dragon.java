@@ -1,59 +1,29 @@
 package vn.giakhanhvn.skysim.entity.nms;
 
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.entity.Item;
-import vn.giakhanhvn.skysim.entity.SEntityType;
-
-import java.util.Arrays;
-
-import vn.giakhanhvn.skysim.item.SItem;
-import vn.giakhanhvn.skysim.item.SMaterial;
-import org.bukkit.entity.Arrow;
-
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Collection;
-
-import vn.giakhanhvn.skysim.entity.KillEnderCrystal;
-
-import java.util.Map;
-import java.util.UUID;
-import java.util.HashMap;
-
-import vn.giakhanhvn.skysim.entity.StaticDragonManager;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.entity.Fireball;
-import org.bukkit.Effect;
-import org.bukkit.event.entity.EntityDamageEvent;
-import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.entity.Entity;
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-
-import java.util.List;
-import java.util.ArrayList;
-
-import org.bukkit.scheduler.BukkitRunnable;
-import vn.giakhanhvn.skysim.entity.SEntity;
-import org.bukkit.Location;
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.util.Vector;
-import org.bukkit.entity.LivingEntity;
-
-import java.util.Iterator;
-
-import org.bukkit.entity.Player;
-import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.entity.dungeons.watcher.GlobalBossBar;
-import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import net.minecraft.server.v1_8_R3.EntityEnderDragon;
 import net.minecraft.server.v1_8_R3.World;
 import org.apache.commons.lang3.Range;
-import vn.giakhanhvn.skysim.entity.EntityStatistics;
-import vn.giakhanhvn.skysim.entity.EntityFunction;
-import net.minecraft.server.v1_8_R3.EntityEnderDragon;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.entity.*;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.entity.*;
+import vn.giakhanhvn.skysim.entity.dungeons.watcher.GlobalBossBar;
+import vn.giakhanhvn.skysim.item.SItem;
+import vn.giakhanhvn.skysim.item.SMaterial;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
+
+import java.util.*;
 
 public abstract class Dragon extends EntityEnderDragon implements SNMSEntity, EntityFunction, EntityStatistics {
     public static final long DEFAULT_ATTACK_COOLDOWN = 300L;

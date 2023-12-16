@@ -1,9 +1,9 @@
 package vn.giakhanhvn.skysim.command;
 
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.gui.ItemBrowserGUI;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.gui.ItemBrowserGUI;
 
 @CommandParameters(description = "Browse from a catalog of items.", aliases = "browseitem,browseitems,browsei,bi,ib", permission = "spt.item")
 public class ItemBrowseCommand extends SCommand {

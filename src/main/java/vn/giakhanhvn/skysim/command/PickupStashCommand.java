@@ -1,7 +1,7 @@
 package vn.giakhanhvn.skysim.command;
 
-import vn.giakhanhvn.skysim.user.UserStash;
 import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.user.UserStash;
 
 @CommandParameters(description = "Adds an enchantment from Spec to the specified item.", aliases = "pickupstash", permission = "spt.item")
 public class PickupStashCommand extends SCommand {

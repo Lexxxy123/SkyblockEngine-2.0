@@ -1,19 +1,8 @@
 package vn.giakhanhvn.skysim.item.enchanting;
 
-import vn.giakhanhvn.skysim.item.ShapedRecipe;
-import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
-import vn.giakhanhvn.skysim.item.SMaterial;
-
-import java.util.Iterator;
-
 import vn.giakhanhvn.skysim.enchantment.Enchantment;
-import vn.giakhanhvn.skysim.item.SItem;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.MaterialQuantifiable;
-import vn.giakhanhvn.skysim.item.Enchantable;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.MaterialStatistics;
+import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
+import vn.giakhanhvn.skysim.item.*;
 
 public class EnchantedBook implements MaterialStatistics, MaterialFunction, Enchantable {
     private static final MaterialQuantifiable PAPER_16;

@@ -1,21 +1,10 @@
 package vn.giakhanhvn.skysim.item.bow;
 
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.LivingEntity;
 import com.google.common.util.concurrent.AtomicDouble;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
 import org.bukkit.Location;
-import org.bukkit.projectiles.ProjectileSource;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityShootBowEvent;
-import vn.giakhanhvn.skysim.item.SItem;
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.AbilityActivation;
-import vn.giakhanhvn.skysim.item.Ability;
-import vn.giakhanhvn.skysim.item.ToolStatistics;
+import vn.giakhanhvn.skysim.item.*;
 
 public class HurricaneBow implements ToolStatistics, BowFunction, Ability {
     @Override

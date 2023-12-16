@@ -1,124 +1,68 @@
 package vn.giakhanhvn.skysim.user;
 
+import com.google.common.util.concurrent.AtomicDouble;
+import de.tr7zw.nbtapi.NBTItem;
 import lombok.Getter;
 import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import vn.giakhanhvn.skysim.item.PlayerBoostStatistics;
-import vn.giakhanhvn.skysim.enchantment.Enchantment;
-import vn.giakhanhvn.skysim.reforge.Reforge;
-import vn.giakhanhvn.skysim.dungeons.ItemSerial;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.reforge.ReforgeType;
-
-import java.util.Collection;
-import java.nio.file.Path;
-import java.nio.file.Files;
-import java.nio.file.CopyOption;
-import java.nio.file.Paths;
-import java.util.Random;
-
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import net.minecraft.server.v1_8_R3.EntityPlayer;
-
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-
-import vn.giakhanhvn.skysim.auction.AuctionBid;
-import vn.giakhanhvn.skysim.auction.AuctionItem;
-import org.bukkit.Location;
-import org.bukkit.block.Block;
-import org.bukkit.metadata.MetadataValue;
-import vn.giakhanhvn.skysim.entity.SEntity;
-import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.World;
-import vn.giakhanhvn.skysim.entity.dungeons.boss.sadan.SadanHuman;
-import vn.giakhanhvn.skysim.entity.dungeons.boss.sadan.SadanFunction;
-import org.bukkit.entity.HumanEntity;
-import org.bukkit.util.Vector;
-import net.minecraft.server.v1_8_R3.EntityHuman;
-import vn.giakhanhvn.skysim.listener.PlayerListener;
-import vn.giakhanhvn.skysim.util.SputnikPlayer;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftHumanEntity;
-import org.bukkit.GameMode;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.entity.Arrow;
-import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
-import org.bukkit.entity.EnderDragon;
-import com.google.common.util.concurrent.AtomicDouble;
-import vn.giakhanhvn.skysim.util.EntityManager;
-import org.bukkit.entity.EntityType;
-import vn.giakhanhvn.skysim.entity.nms.VoidgloomSeraph;
-import org.bukkit.entity.Damageable;
-import vn.giakhanhvn.skysim.dimoon.Dimoon;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Entity;
-import vn.giakhanhvn.skysim.util.SLog;
-import vn.giakhanhvn.skysim.slayer.SlayerBossType;
-import vn.giakhanhvn.skysim.skill.BerserkSkill;
-import vn.giakhanhvn.skysim.skill.MageSkill;
-import vn.giakhanhvn.skysim.skill.HealerSkill;
-import vn.giakhanhvn.skysim.skill.TankSkill;
-import vn.giakhanhvn.skysim.skill.ArcherSkill;
-import vn.giakhanhvn.skysim.skill.CatacombsSkill;
-import vn.giakhanhvn.skysim.skill.EnchantingSkill;
-import vn.giakhanhvn.skysim.skill.ForagingSkill;
-import vn.giakhanhvn.skysim.skill.CombatSkill;
-import vn.giakhanhvn.skysim.skill.MiningSkill;
-import vn.giakhanhvn.skysim.skill.FarmingSkill;
-import vn.giakhanhvn.skysim.skill.Skill;
-import vn.giakhanhvn.skysim.item.SItem;
-import vn.giakhanhvn.skysim.collection.ItemCollectionRewards;
-import vn.giakhanhvn.skysim.collection.ItemCollectionReward;
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.ChatColor;
-import org.bukkit.Sound;
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.OfflinePlayer;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.util.BukkitSerializeClass;
-import de.tr7zw.nbtapi.NBTItem;
-
-import java.util.Arrays;
-
-import org.bukkit.inventory.PlayerInventory;
+import net.minecraft.server.v1_8_R3.EntityHuman;
+import net.minecraft.server.v1_8_R3.EntityPlayer;
+import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftHumanEntity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.entity.*;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.gui.PetsGUI;
-import vn.giakhanhvn.skysim.Repeater;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.Iterator;
-
+import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.Vector;
+import vn.giakhanhvn.skysim.Repeater;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.auction.AuctionBid;
+import vn.giakhanhvn.skysim.auction.AuctionEscrow;
+import vn.giakhanhvn.skysim.auction.AuctionItem;
+import vn.giakhanhvn.skysim.collection.ItemCollection;
+import vn.giakhanhvn.skysim.collection.ItemCollectionReward;
+import vn.giakhanhvn.skysim.collection.ItemCollectionRewards;
+import vn.giakhanhvn.skysim.config.Config;
+import vn.giakhanhvn.skysim.dimoon.Dimoon;
+import vn.giakhanhvn.skysim.dungeons.ItemSerial;
+import vn.giakhanhvn.skysim.enchantment.Enchantment;
+import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
+import vn.giakhanhvn.skysim.entity.SEntity;
+import vn.giakhanhvn.skysim.entity.dungeons.boss.sadan.SadanFunction;
+import vn.giakhanhvn.skysim.entity.dungeons.boss.sadan.SadanHuman;
+import vn.giakhanhvn.skysim.entity.nms.VoidgloomSeraph;
+import vn.giakhanhvn.skysim.gui.PetsGUI;
+import vn.giakhanhvn.skysim.item.GenericItemType;
+import vn.giakhanhvn.skysim.item.PlayerBoostStatistics;
+import vn.giakhanhvn.skysim.item.SItem;
+import vn.giakhanhvn.skysim.item.SMaterial;
+import vn.giakhanhvn.skysim.item.pet.Pet;
+import vn.giakhanhvn.skysim.listener.PlayerListener;
+import vn.giakhanhvn.skysim.potion.ActivePotionEffect;
 import vn.giakhanhvn.skysim.potion.PotionEffect;
 import vn.giakhanhvn.skysim.potion.PotionEffectType;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.ArrayList;
-
-import vn.giakhanhvn.skysim.auction.AuctionEscrow;
-import vn.giakhanhvn.skysim.item.pet.Pet;
-import vn.giakhanhvn.skysim.slayer.SlayerQuest;
-import vn.giakhanhvn.skysim.potion.ActivePotionEffect;
-import vn.giakhanhvn.skysim.item.SMaterial;
+import vn.giakhanhvn.skysim.reforge.Reforge;
+import vn.giakhanhvn.skysim.reforge.ReforgeType;
 import vn.giakhanhvn.skysim.region.Region;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.List;
-
-import vn.giakhanhvn.skysim.collection.ItemCollection;
-import vn.giakhanhvn.skysim.config.Config;
+import vn.giakhanhvn.skysim.skill.*;
+import vn.giakhanhvn.skysim.slayer.SlayerBossType;
+import vn.giakhanhvn.skysim.slayer.SlayerQuest;
+import vn.giakhanhvn.skysim.util.*;
 
 import java.io.File;
-
-import vn.giakhanhvn.skysim.SkySimEngine;
-
-import java.util.UUID;
-import java.util.Map;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class User {
     public static final int ISLAND_SIZE = 125;
@@ -303,7 +247,9 @@ public class User {
             this.unlockedRecipes = (List<String>) this.config.getList("unlockedRecipes");
         }
         if (config.contains("talked_npcs")){
-            this.talked_npcs = (List<String>) config.getList("talked_npcs");
+            SLog.info("Loading talked npc for " + Bukkit.getPlayer(uuid).getName());
+            this.talked_npcs = (List<String>) this.config.getList("talked_npcs");
+            if (!talked_npcs.isEmpty()) SLog.info("Loaded talked npc for " + Bukkit.getPlayer(uuid).getName());
         }
         this.auctionSettings = (AuctionSettings) this.config.get("auction.settings");
         if (this.auctionSettings == null) {
@@ -426,7 +372,7 @@ public class User {
         this.config.set("slayer.quest", this.slayerQuest);
         this.config.set("pets", this.pets);
         this.config.set("unlockedRecipes", this.unlockedRecipes);
-        this.config.set("talked_npcs" , talked_npcs);
+        this.config.set("talked_npcs" , this.talked_npcs);
         this.config.set("auction.settings", this.auctionSettings);
         this.config.set("auction.creationBIN", this.auctionCreationBIN);
         this.config.set("auction.escrow", this.auctionEscrow);

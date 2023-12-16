@@ -1,23 +1,17 @@
 package vn.giakhanhvn.skysim.entity;
 
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
 import org.bukkit.Location;
-
-import java.util.Iterator;
-
-import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.region.Region;
+import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.region.Region;
+import vn.giakhanhvn.skysim.region.RegionType;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 import java.util.ArrayList;
-
-import org.bukkit.scheduler.BukkitTask;
-import vn.giakhanhvn.skysim.region.RegionType;
-import org.bukkit.World;
-
-import java.util.function.Predicate;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class EntityPopulator {
     private static final List<EntityPopulator> POPULATORS;

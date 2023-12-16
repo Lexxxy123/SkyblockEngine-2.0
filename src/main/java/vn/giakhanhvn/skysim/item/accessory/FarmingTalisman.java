@@ -1,15 +1,13 @@
 package vn.giakhanhvn.skysim.item.accessory;
 
+import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.item.GenericItemType;
 import vn.giakhanhvn.skysim.item.PlayerBoostStatistics;
-import vn.giakhanhvn.skysim.user.PlayerUtils;
-import vn.giakhanhvn.skysim.user.PlayerStatistics;
-import vn.giakhanhvn.skysim.region.RegionType;
-import org.bukkit.entity.Entity;
-import vn.giakhanhvn.skysim.region.Region;
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.item.Rarity;
+import vn.giakhanhvn.skysim.item.SItem;
+import vn.giakhanhvn.skysim.region.Region;
+import vn.giakhanhvn.skysim.region.RegionType;
+import vn.giakhanhvn.skysim.user.PlayerUtils;
 
 public class FarmingTalisman implements AccessoryStatistics, AccessoryFunction {
     @Override

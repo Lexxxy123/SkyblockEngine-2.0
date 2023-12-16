@@ -1,51 +1,31 @@
 package vn.giakhanhvn.skysim.entity.nms;
 
+import com.google.common.util.concurrent.AtomicDouble;
+import net.minecraft.server.v1_8_R3.Entity;
+import net.minecraft.server.v1_8_R3.EntityWolf;
+import net.minecraft.server.v1_8_R3.GenericAttributes;
+import net.minecraft.server.v1_8_R3.World;
+import org.bukkit.*;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.entity.*;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.scheduler.BukkitRunnable;
+import vn.giakhanhvn.skysim.SkySimEngine;
 import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
-import vn.giakhanhvn.skysim.entity.EntityDropType;
+import vn.giakhanhvn.skysim.entity.*;
+import vn.giakhanhvn.skysim.entity.wolf.WolfStatistics;
 import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.item.SMaterial;
-import vn.giakhanhvn.skysim.entity.EntityDrop;
-import org.bukkit.entity.Arrow;
-import com.google.common.util.concurrent.AtomicDouble;
-import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.Location;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-
-import java.util.Iterator;
-
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.entity.ArmorStand;
-import vn.giakhanhvn.skysim.entity.SEntityType;
-import org.bukkit.Sound;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.metadata.FixedMetadataValue;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import net.minecraft.server.v1_8_R3.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.Effect;
-import net.minecraft.server.v1_8_R3.GenericAttributes;
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.entity.Wolf;
 import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 import java.util.ArrayList;
-
-import net.minecraft.server.v1_8_R3.World;
-import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
-
 import java.util.List;
 import java.util.UUID;
-
-import vn.giakhanhvn.skysim.entity.SEntity;
-import vn.giakhanhvn.skysim.entity.wolf.WolfStatistics;
-import vn.giakhanhvn.skysim.entity.EntityFunction;
-import net.minecraft.server.v1_8_R3.EntityWolf;
 
 public class SvenPackmaster extends EntityWolf implements SNMSEntity, EntityFunction, WolfStatistics, SlayerBoss {
     private static final TieredValue<Double> MAX_HEALTH_VALUES;

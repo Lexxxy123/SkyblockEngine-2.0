@@ -1,106 +1,55 @@
 package vn.giakhanhvn.skysim.item;
 
-import java.util.HashMap;
-
-import org.bukkit.event.entity.EntityDeathEvent;
-import vn.giakhanhvn.skysim.entity.dungeons.boss.sadan.SadanGiant;
-import vn.giakhanhvn.skysim.entity.dungeons.boss.sadan.JollyPinkGiant;
-import org.bukkit.event.entity.EntityChangeBlockEvent;
-import org.bukkit.event.Event;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.entity.Enderman;
-import org.bukkit.entity.Arrow;
-import org.bukkit.event.entity.ProjectileHitEvent;
-import vn.giakhanhvn.skysim.item.armor.Witherborn;
-import org.bukkit.event.player.PlayerFishEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import vn.giakhanhvn.skysim.collection.ItemCollection;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
-import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.block.BlockState;
-import org.bukkit.entity.EntityType;
-import org.bukkit.block.Block;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import vn.giakhanhvn.skysim.entity.StaticDragonManager;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.EventPriority;
-import org.bukkit.Bukkit;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.inventory.InventoryAction;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerToggleSneakEvent;
-import org.bukkit.GameMode;
-import org.bukkit.event.player.PlayerToggleFlightEvent;
-import org.bukkit.inventory.Inventory;
-import net.minecraft.server.v1_8_R3.NBTBase;
+import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
-import vn.giakhanhvn.skysim.item.storage.Storage;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.util.Vector;
-import org.bukkit.Location;
-import org.bukkit.Effect;
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.entity.Damageable;
-import vn.giakhanhvn.skysim.entity.SEntity;
-import vn.giakhanhvn.skysim.entity.SEntityType;
-import vn.giakhanhvn.skysim.item.weapon.EdibleMace;
-import org.bukkit.entity.ItemFrame;
-import org.bukkit.entity.Item;
-import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.skill.Skill;
-import vn.giakhanhvn.skysim.util.Groups;
-import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
-import vn.giakhanhvn.skysim.enchantment.Enchantment;
-import vn.giakhanhvn.skysim.user.PlayerStatistics;
-import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.EnderDragonPart;
-
-import java.util.Set;
-
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.Material;
-import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
+import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-
-import java.util.Iterator;
-
-import vn.giakhanhvn.skysim.util.Sputnik;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.entity.Entity;
-import org.bukkit.event.entity.PotionSplashEvent;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
-
-import java.util.UUID;
-
-import vn.giakhanhvn.skysim.util.ManaReplacement;
-import org.bukkit.Sound;
-import net.md_5.bungee.api.ChatColor;
-import vn.giakhanhvn.skysim.util.DefenseReplacement;
-import vn.giakhanhvn.skysim.Repeater;
-import vn.giakhanhvn.skysim.user.PlayerUtils;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.entity.Player;
-
-import java.util.Map;
-
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.*;
+import org.bukkit.event.inventory.InventoryAction;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
+import vn.giakhanhvn.skysim.Repeater;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.collection.ItemCollection;
+import vn.giakhanhvn.skysim.enchantment.Enchantment;
+import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
+import vn.giakhanhvn.skysim.entity.SEntity;
+import vn.giakhanhvn.skysim.entity.SEntityType;
+import vn.giakhanhvn.skysim.entity.StaticDragonManager;
+import vn.giakhanhvn.skysim.entity.dungeons.boss.sadan.JollyPinkGiant;
+import vn.giakhanhvn.skysim.entity.dungeons.boss.sadan.SadanGiant;
+import vn.giakhanhvn.skysim.item.armor.Witherborn;
+import vn.giakhanhvn.skysim.item.storage.Storage;
+import vn.giakhanhvn.skysim.item.weapon.EdibleMace;
 import vn.giakhanhvn.skysim.listener.PListener;
+import vn.giakhanhvn.skysim.skill.Skill;
+import vn.giakhanhvn.skysim.user.PlayerStatistics;
+import vn.giakhanhvn.skysim.user.PlayerUtils;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.*;
+
+import java.util.*;
 
 public class ItemListener extends PListener {
     public static final Map<Player, String> Classes;

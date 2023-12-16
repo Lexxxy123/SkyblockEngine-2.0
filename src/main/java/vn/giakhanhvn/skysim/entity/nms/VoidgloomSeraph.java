@@ -1,73 +1,38 @@
 package vn.giakhanhvn.skysim.entity.nms;
 
-import java.util.HashMap;
-
-import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.entity.Creature;
-import org.bukkit.util.EulerAngle;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.Iterator;
-
-import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
-import vn.giakhanhvn.skysim.entity.EntityDropType;
-import vn.giakhanhvn.skysim.entity.EntityDrop;
-import org.bukkit.event.entity.CreatureSpawnEvent;
 import com.google.common.util.concurrent.AtomicDouble;
+import net.minecraft.server.v1_8_R3.World;
+import net.minecraft.server.v1_8_R3.*;
+import org.bukkit.Material;
+import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEnderman;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.*;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import vn.giakhanhvn.skysim.entity.SEntityType;
-import org.bukkit.entity.LivingEntity;
-import vn.giakhanhvn.skysim.util.EntityManager;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.util.Vector;
-import org.bukkit.Location;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.EulerAngle;
+import org.bukkit.util.Vector;
+import vn.giakhanhvn.skysim.Repeater;
 import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.ChatColor;
+import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
+import vn.giakhanhvn.skysim.entity.*;
+import vn.giakhanhvn.skysim.entity.end.EndermanStatistics;
 import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.item.SMaterial;
-import org.bukkit.entity.EntityType;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.Sound;
 import vn.giakhanhvn.skysim.user.User;
-import vn.giakhanhvn.skysim.util.Sputnik;
 import vn.giakhanhvn.skysim.util.BlockFallAPI;
-import net.minecraft.server.v1_8_R3.EntityFallingBlock;
-import vn.giakhanhvn.skysim.Repeater;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.Material;
-import org.bukkit.Effect;
+import vn.giakhanhvn.skysim.util.EntityManager;
 import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.entity.Enderman;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEnderman;
-import net.minecraft.server.v1_8_R3.PathfinderGoalRandomLookaround;
-import net.minecraft.server.v1_8_R3.EntityCreature;
-import net.minecraft.server.v1_8_R3.PathfinderGoalRandomStroll;
-import net.minecraft.server.v1_8_R3.PathfinderGoal;
-import net.minecraft.server.v1_8_R3.EntityInsentient;
-import net.minecraft.server.v1_8_R3.PathfinderGoalFloat;
-import net.minecraft.server.v1_8_R3.World;
-import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
-import org.bukkit.block.Block;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
-import java.util.List;
-import java.util.ArrayList;
-
-import vn.giakhanhvn.skysim.entity.SEntity;
-
-import java.util.UUID;
-
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Entity;
-
-import java.util.Map;
-
-import vn.giakhanhvn.skysim.entity.end.EndermanStatistics;
-import vn.giakhanhvn.skysim.entity.EntityFunction;
-import net.minecraft.server.v1_8_R3.EntityEnderman;
+import java.util.*;
 
 public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, EntityFunction, SlayerBoss, EndermanStatistics {
     private static final TieredValue<Double> MAX_HEALTH_VALUES;

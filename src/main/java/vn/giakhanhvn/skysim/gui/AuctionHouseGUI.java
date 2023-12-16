@@ -1,19 +1,16 @@
 package vn.giakhanhvn.skysim.gui;
 
-import java.util.Iterator;
-
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 import vn.giakhanhvn.skysim.auction.AuctionItem;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.Material;
-import org.bukkit.ChatColor;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.user.User;
 
 public class AuctionHouseGUI extends GUI {
     public AuctionHouseGUI() {

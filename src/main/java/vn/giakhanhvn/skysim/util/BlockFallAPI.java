@@ -1,21 +1,16 @@
 package vn.giakhanhvn.skysim.util;
 
+import net.minecraft.server.v1_8_R3.EntityFallingBlock;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
-
-import java.util.Iterator;
-
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityVelocity;
-import net.minecraft.server.v1_8_R3.Packet;
+import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntity;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import net.minecraft.server.v1_8_R3.Entity;
-import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntity;
-import net.minecraft.server.v1_8_R3.EntityFallingBlock;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.util.Vector;
-import org.bukkit.World;
-import org.bukkit.Material;
-import org.bukkit.Location;
 
 public class BlockFallAPI {
     public static void sendVelocityBlock(final Location loc, final Material mat, final byte data, final World players, final Integer delay, final Vector vec) {

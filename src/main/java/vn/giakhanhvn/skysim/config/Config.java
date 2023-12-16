@@ -1,12 +1,9 @@
 package vn.giakhanhvn.skysim.config;
 
-import org.bukkit.configuration.ConfigurationOptions;
-import org.bukkit.configuration.MemoryConfigurationOptions;
+import org.bukkit.configuration.file.YamlConfiguration;
+import vn.giakhanhvn.skysim.SkySimEngine;
 
 import java.io.File;
-
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Config extends YamlConfiguration {
     private final SkySimEngine plugin;

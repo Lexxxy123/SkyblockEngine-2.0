@@ -1,10 +1,9 @@
 package vn.giakhanhvn.skysim.user;
 
-import java.util.HashMap;
-
-import org.bukkit.entity.Player;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 

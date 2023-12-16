@@ -1,26 +1,17 @@
 package vn.giakhanhvn.skysim.item.weapon;
 
-import java.util.Iterator;
-
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.Repeater;
+import vn.giakhanhvn.skysim.ZSHash;
+import vn.giakhanhvn.skysim.item.*;
+import vn.giakhanhvn.skysim.user.PlayerUtils;
 import vn.giakhanhvn.skysim.util.DefenseReplacement;
 import vn.giakhanhvn.skysim.util.ManaReplacement;
-import vn.giakhanhvn.skysim.Repeater;
-import org.bukkit.Sound;
 import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.user.PlayerUtils;
-import vn.giakhanhvn.skysim.user.PlayerStatistics;
-import vn.giakhanhvn.skysim.ZSHash;
-import vn.giakhanhvn.skysim.item.SItem;
-import org.bukkit.entity.Player;
-import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.Ability;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.ToolStatistics;
 
 public class FloridZombieSword implements ToolStatistics, MaterialFunction, Ability {
     @Override

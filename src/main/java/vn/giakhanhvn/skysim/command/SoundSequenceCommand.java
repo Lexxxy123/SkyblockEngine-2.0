@@ -1,9 +1,9 @@
 package vn.giakhanhvn.skysim.command;
 
-import org.bukkit.entity.Player;
 import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.sequence.SoundSequenceType;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.sequence.SoundSequenceType;
 
 @CommandParameters(description = "Play a sound sequence.", usage = "/<command> <sequence>")
 public class SoundSequenceCommand extends SCommand {

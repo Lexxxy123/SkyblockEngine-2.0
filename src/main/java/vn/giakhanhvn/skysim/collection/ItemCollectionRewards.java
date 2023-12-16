@@ -1,8 +1,7 @@
 package vn.giakhanhvn.skysim.collection;
 
-import java.util.Collection;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ItemCollectionRewards extends ArrayList<ItemCollectionReward> {
     private final int requirement;

@@ -1,11 +1,10 @@
 package vn.giakhanhvn.skysim.extra.beam;
 
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
 import com.google.common.base.Preconditions;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.entity.Player;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import vn.giakhanhvn.skysim.SkySimEngine;
 
 import java.util.UUID;
 

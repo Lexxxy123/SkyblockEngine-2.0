@@ -1,27 +1,18 @@
 package vn.giakhanhvn.skysim.item.weapon;
 
-import java.util.HashMap;
-
+import org.bukkit.ChatColor;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.Repeater;
+import vn.giakhanhvn.skysim.item.*;
+import vn.giakhanhvn.skysim.user.PlayerUtils;
 import vn.giakhanhvn.skysim.util.DefenseReplacement;
 import vn.giakhanhvn.skysim.util.ManaReplacement;
-import vn.giakhanhvn.skysim.Repeater;
-import org.bukkit.Sound;
 import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.user.PlayerUtils;
-import vn.giakhanhvn.skysim.user.PlayerStatistics;
-import vn.giakhanhvn.skysim.item.SItem;
-import org.bukkit.entity.Player;
-import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
 
-import java.util.UUID;
+import java.util.HashMap;
 import java.util.Map;
-
-import vn.giakhanhvn.skysim.item.Ability;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.ToolStatistics;
+import java.util.UUID;
 
 public class EdibleMace implements ToolStatistics, MaterialFunction, Ability {
     public static final Map<UUID, Boolean> edibleMace;

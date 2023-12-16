@@ -1,35 +1,19 @@
 package vn.giakhanhvn.skysim.util;
 
 import com.google.common.collect.Iterables;
-
-import java.util.Collection;
-import java.util.ArrayDeque;
-
 import com.google.common.io.ByteArrayDataInput;
-
-import java.util.Arrays;
-import java.net.InetSocketAddress;
-import java.util.List;
-
 import com.google.common.io.ByteArrayDataOutput;
-import org.bukkit.entity.Player;
 import com.google.common.io.ByteStreams;
-
-import java.util.function.BiFunction;
-
-import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.Bukkit;
-
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.Queue;
-import java.util.Map;
-
-import org.bukkit.plugin.messaging.PluginMessageListener;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.messaging.Messenger;
+import org.bukkit.plugin.messaging.PluginMessageListener;
 
-import java.util.WeakHashMap;
+import java.net.InetSocketAddress;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.BiFunction;
 
 public class BungeeChannel {
     private static WeakHashMap<Plugin, BungeeChannel> registeredInstances;

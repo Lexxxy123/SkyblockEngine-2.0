@@ -1,52 +1,31 @@
 package vn.giakhanhvn.skysim.dimoon.listeners;
 
-import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.entity.ArmorStand;
-
-import java.util.UUID;
-
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.Effect;
-import vn.giakhanhvn.skysim.dimoon.Altar;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.Bukkit;
-import org.bukkit.event.player.PlayerChangedWorldEvent;
-import vn.giakhanhvn.skysim.item.SItem;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import org.bukkit.Material;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.*;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.scheduler.BukkitRunnable;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.dimoon.Altar;
+import vn.giakhanhvn.skysim.dimoon.Arena;
+import vn.giakhanhvn.skysim.dimoon.Dimoon;
+import vn.giakhanhvn.skysim.dimoon.utils.Utils;
+import vn.giakhanhvn.skysim.item.SItem;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 import java.io.IOException;
-
-import vn.giakhanhvn.skysim.dimoon.Arena;
-
-import java.util.Iterator;
-
-import org.bukkit.Sound;
-import vn.giakhanhvn.skysim.dimoon.utils.Utils;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.Location;
-import org.bukkit.entity.Entity;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.Note;
-import org.bukkit.Instrument;
-import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.GameMode;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.EventHandler;
-import vn.giakhanhvn.skysim.dimoon.Dimoon;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.Listener;
+import java.util.UUID;
 
 public class PlayerListener implements Listener {
     @EventHandler

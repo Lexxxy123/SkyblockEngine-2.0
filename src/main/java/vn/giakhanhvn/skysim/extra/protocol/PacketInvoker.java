@@ -1,41 +1,28 @@
 package vn.giakhanhvn.skysim.extra.protocol;
 
-import net.minecraft.server.v1_8_R3.Packet;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
+import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
-import org.bukkit.World;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.scheduler.BukkitRunnable;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
 import vn.giakhanhvn.skysim.entity.SEntity;
 import vn.giakhanhvn.skysim.entity.SEntityType;
-import vn.giakhanhvn.skysim.slayer.SlayerQuest;
-import org.bukkit.entity.Item;
-
-import java.util.Iterator;
-
-import org.bukkit.event.entity.EntityDamageEvent;
-import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.OfflinePlayer;
 import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
-import org.bukkit.entity.Entity;
-import org.bukkit.scheduler.BukkitRunnable;
 import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.item.SMaterial;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.metadata.FixedMetadataValue;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.Sound;
-import org.bukkit.Effect;
-import org.bukkit.entity.ArmorStand;
-import vn.giakhanhvn.skysim.util.Sputnik;
+import vn.giakhanhvn.skysim.slayer.SlayerQuest;
+import vn.giakhanhvn.skysim.user.User;
 import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 public class PacketInvoker {
     public static void dropChest(final Player owner, final Location loc) {

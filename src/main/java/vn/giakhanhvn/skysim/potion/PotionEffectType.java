@@ -1,25 +1,18 @@
 package vn.giakhanhvn.skysim.potion;
 
 import org.bukkit.ChatColor;
-
-import java.util.HashMap;
-
-import vn.giakhanhvn.skysim.user.PlayerUtils;
+import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.Repeater;
-
-import java.util.List;
-
+import vn.giakhanhvn.skysim.user.PlayerStatistics;
+import vn.giakhanhvn.skysim.user.PlayerUtils;
 import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
+import vn.giakhanhvn.skysim.util.TriConsumer;
 
 import java.util.Arrays;
-
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.user.PlayerStatistics;
-import vn.giakhanhvn.skysim.util.TriConsumer;
-import org.bukkit.entity.Player;
-
-import java.util.function.BiConsumer;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 public class PotionEffectType {
     private static final Map<String, PotionEffectType> POTION_EFFECT_TYPE_CACHE = new HashMap<String, PotionEffectType>();

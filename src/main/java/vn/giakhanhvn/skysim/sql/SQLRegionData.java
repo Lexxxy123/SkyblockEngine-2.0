@@ -1,18 +1,16 @@
 package vn.giakhanhvn.skysim.sql;
 
+import org.bukkit.Location;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.region.Region;
+import vn.giakhanhvn.skysim.region.RegionType;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import vn.giakhanhvn.skysim.region.RegionType;
-import org.bukkit.Location;
-import vn.giakhanhvn.skysim.region.Region;
-
-import java.sql.ResultSet;
-import java.sql.PreparedStatement;
-import java.sql.Connection;
-import java.sql.SQLException;
-
-import vn.giakhanhvn.skysim.SkySimEngine;
 
 public class SQLRegionData {
     private static final SkySimEngine plugin;

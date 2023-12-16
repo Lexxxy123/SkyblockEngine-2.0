@@ -1,49 +1,27 @@
 package vn.giakhanhvn.skysim.item.weapon;
 
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-
-import java.util.Iterator;
-
-import org.bukkit.Location;
-
-import java.math.RoundingMode;
-import java.math.BigDecimal;
-
-import org.bukkit.Sound;
-import vn.giakhanhvn.skysim.util.FerocityCalculation;
-import vn.giakhanhvn.skysim.listener.PlayerListener;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.user.User;
-import vn.giakhanhvn.skysim.util.Groups;
-import org.bukkit.entity.ItemFrame;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.EnderDragonPart;
-import org.bukkit.entity.Damageable;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.util.EulerAngle;
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.Effect;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
-import vn.giakhanhvn.skysim.item.SMaterial;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.ArmorStand;
-import net.minecraft.server.v1_8_R3.Packet;
-import net.minecraft.server.v1_8_R3.Entity;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
+import org.bukkit.ChatColor;
+import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import vn.giakhanhvn.skysim.item.SItem;
-import org.bukkit.entity.Player;
-import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.Ability;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.ToolStatistics;
+import org.bukkit.entity.*;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.EulerAngle;
+import org.bukkit.util.Vector;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.item.*;
+import vn.giakhanhvn.skysim.listener.PlayerListener;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.FerocityCalculation;
+import vn.giakhanhvn.skysim.util.Groups;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class LividDagger implements ToolStatistics, MaterialFunction, Ability {
     String ACT3;

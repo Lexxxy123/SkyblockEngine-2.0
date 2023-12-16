@@ -1,17 +1,16 @@
 package vn.giakhanhvn.skysim.dimoon.listeners;
 
-import org.bukkit.entity.Entity;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.EventHandler;
-import org.bukkit.util.Vector;
-import org.bukkit.entity.LivingEntity;
-import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.Effect;
-import org.bukkit.Sound;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.FallingBlock;
-import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.util.Vector;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 public class EntityListener implements Listener {
     @EventHandler

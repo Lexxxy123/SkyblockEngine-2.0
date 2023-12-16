@@ -1,46 +1,27 @@
 package vn.giakhanhvn.skysim.item.weapon;
 
-import java.util.HashMap;
-
-import net.minecraft.server.v1_8_R3.NBTTagCompound;
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-
-import java.util.Iterator;
-
-import org.bukkit.Material;
-import net.minecraft.server.v1_8_R3.Packet;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
 import net.minecraft.server.v1_8_R3.EnumParticle;
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.entity.Damageable;
-import vn.giakhanhvn.skysim.util.FerocityCalculation;
-import vn.giakhanhvn.skysim.listener.PlayerListener;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.ExperienceOrb;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Entity;
-import org.bukkit.util.Vector;
+import net.minecraft.server.v1_8_R3.NBTTagCompound;
+import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
 import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.Material;
 import org.bukkit.Sound;
-import vn.giakhanhvn.skysim.item.SItem;
-import org.bukkit.entity.Player;
+import org.bukkit.World;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.entity.*;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.item.*;
+import vn.giakhanhvn.skysim.listener.PlayerListener;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.FerocityCalculation;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
-
-import vn.giakhanhvn.skysim.item.Ownable;
-import vn.giakhanhvn.skysim.item.Ability;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.ToolStatistics;
+import java.util.UUID;
 
 public class SoulWhip implements ToolStatistics, MaterialFunction, Ability, Ownable {
     public static final Map<UUID, Boolean> cd;

@@ -1,35 +1,29 @@
 package vn.giakhanhvn.skysim.gui;
 
-import vn.giakhanhvn.skysim.item.pet.Pet;
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-
-import java.util.Arrays;
-
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.List;
-import java.util.ArrayList;
-
-import org.bukkit.Color;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-import vn.giakhanhvn.skysim.SkyBlockCalendar;
-import org.bukkit.Sound;
-import vn.giakhanhvn.skysim.collection.ItemCollectionCategory;
-import vn.giakhanhvn.skysim.collection.ItemCollection;
-import org.bukkit.inventory.InventoryView;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.Repeater;
-import org.bukkit.Material;
-import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.ChatColor;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.Color;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.user.PlayerUtils;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.InventoryView;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.scheduler.BukkitRunnable;
+import vn.giakhanhvn.skysim.Repeater;
+import vn.giakhanhvn.skysim.SkyBlockCalendar;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.collection.ItemCollection;
+import vn.giakhanhvn.skysim.item.pet.Pet;
 import vn.giakhanhvn.skysim.user.PlayerStatistics;
+import vn.giakhanhvn.skysim.user.PlayerUtils;
 import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class SkyBlockMenuGUI extends GUI {
     public SkyBlockMenuGUI() {

@@ -1,20 +1,11 @@
 package vn.giakhanhvn.skysim.enchantment;
 
-import vn.giakhanhvn.skysim.util.Sputnik;
 import org.bukkit.ChatColor;
-
-import java.util.HashMap;
-import java.util.Collection;
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-
-import java.util.List;
-
 import org.bukkit.enchantments.Enchantment;
+import vn.giakhanhvn.skysim.item.SpecificItemType;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
-import java.util.Map;
+import java.util.*;
 
 public class EnchantmentType {
     private static final Map<String, EnchantmentType> ENCHANTMENT_TYPE_CACHE;

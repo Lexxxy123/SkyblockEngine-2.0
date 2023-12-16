@@ -1,9 +1,9 @@
 package vn.giakhanhvn.skysim.item.bow;
 
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.GenericItemType;
 import net.md_5.bungee.api.ChatColor;
+import vn.giakhanhvn.skysim.item.GenericItemType;
 import vn.giakhanhvn.skysim.item.Rarity;
+import vn.giakhanhvn.skysim.item.SpecificItemType;
 import vn.giakhanhvn.skysim.item.ToolStatistics;
 
 public class DeathBow implements ToolStatistics, BowFunction {

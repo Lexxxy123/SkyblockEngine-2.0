@@ -1,28 +1,18 @@
 package vn.giakhanhvn.skysim.gui;
 
-import java.util.Iterator;
-import java.util.List;
-
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+import vn.giakhanhvn.skysim.skill.*;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
 import vn.giakhanhvn.skysim.util.Sputnik;
 
 import java.util.ArrayList;
-
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.ChatColor;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import vn.giakhanhvn.skysim.user.User;
-import vn.giakhanhvn.skysim.skill.EnchantingSkill;
-import vn.giakhanhvn.skysim.skill.FarmingSkill;
-import vn.giakhanhvn.skysim.skill.ForagingSkill;
-import vn.giakhanhvn.skysim.skill.MiningSkill;
-import vn.giakhanhvn.skysim.skill.CombatSkill;
-import org.bukkit.entity.Player;
-import org.bukkit.Material;
-
+import java.util.List;
 import java.util.UUID;
-
-import vn.giakhanhvn.skysim.skill.Skill;
 
 public class SkillDetails extends GUI {
     private final Skill skill;

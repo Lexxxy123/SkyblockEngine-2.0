@@ -1,10 +1,10 @@
 package vn.giakhanhvn.skysim.util;
 
-import java.util.Random;
-
 import org.bukkit.World;
-import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.WorldCreator;
+import org.bukkit.generator.ChunkGenerator;
+
+import java.util.Random;
 
 public class BlankWorldCreator extends WorldCreator {
     public BlankWorldCreator(final String name) {

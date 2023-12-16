@@ -1,14 +1,10 @@
 package vn.giakhanhvn.skysim.sequence;
 
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.Effect;
-import org.bukkit.entity.Entity;
-
-import java.util.Iterator;
-
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.scheduler.BukkitRunnable;
+import vn.giakhanhvn.skysim.SkySimEngine;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,29 +1,18 @@
 package vn.giakhanhvn.skysim.item.oddities;
 
-import java.util.Iterator;
-
-import vn.giakhanhvn.skysim.user.PlayerUtils;
-import vn.giakhanhvn.skysim.user.PlayerStatistics;
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
 import org.bukkit.Effect;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import vn.giakhanhvn.skysim.potion.PotionEffectType;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.item.*;
 import vn.giakhanhvn.skysim.potion.PotionEffect;
+import vn.giakhanhvn.skysim.potion.PotionEffectType;
+import vn.giakhanhvn.skysim.user.PlayerUtils;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 import java.util.ArrayList;
-
-import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.user.User;
-import vn.giakhanhvn.skysim.item.SItem;
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.Ownable;
-import vn.giakhanhvn.skysim.item.Ability;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.SkullStatistics;
 
 public class DiamondSadanTrophy implements SkullStatistics, MaterialFunction, Ability, Ownable {
     private boolean bool;

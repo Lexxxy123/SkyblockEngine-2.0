@@ -3,10 +3,9 @@ package vn.giakhanhvn.skysim.item.pet;
 import com.google.common.util.concurrent.AtomicDouble;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import vn.giakhanhvn.skysim.item.SItem;
 
 import java.util.List;
-
-import vn.giakhanhvn.skysim.item.SItem;
 
 public interface PetAbility {
     String getName();

@@ -1,14 +1,12 @@
 package vn.giakhanhvn.skysim.command;
 
-import java.util.HashMap;
-import java.util.Iterator;
-
-import vn.giakhanhvn.skysim.region.Region;
 import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.region.RegionType;
-import vn.giakhanhvn.skysim.region.RegionGenerator;
 import org.bukkit.command.CommandSender;
+import vn.giakhanhvn.skysim.region.Region;
+import vn.giakhanhvn.skysim.region.RegionGenerator;
+import vn.giakhanhvn.skysim.region.RegionType;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @CommandParameters(description = "Manage world regions.", usage = "/<command> [create <name> <type> | update <name> [type] | delete <name>]", aliases = "reg", permission = "spt.region")

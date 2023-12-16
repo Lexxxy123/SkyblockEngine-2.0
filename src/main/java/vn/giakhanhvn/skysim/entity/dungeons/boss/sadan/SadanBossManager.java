@@ -1,21 +1,17 @@
 package vn.giakhanhvn.skysim.entity.dungeons.boss.sadan;
 
-import vn.giakhanhvn.skysim.util.SLog;
-import org.bukkit.entity.Entity;
-
-import java.util.Iterator;
-
-import org.bukkit.World;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
-import vn.giakhanhvn.skysim.entity.SEntityType;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.SkySimEngine;
 import vn.giakhanhvn.skysim.entity.SEntity;
-import org.bukkit.command.CommandSender;
+import vn.giakhanhvn.skysim.entity.SEntityType;
+import vn.giakhanhvn.skysim.util.SLog;
 import vn.giakhanhvn.skysim.util.SUtil;
 import vn.giakhanhvn.skysim.util.Sputnik;
-import org.bukkit.Location;
-import org.bukkit.Bukkit;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 

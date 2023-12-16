@@ -1,7 +1,7 @@
 package vn.giakhanhvn.skysim.command;
 
-import org.bukkit.entity.Player;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.Repeater;
 
 @CommandParameters(description = "Spec test command.", aliases = "db:tsr")

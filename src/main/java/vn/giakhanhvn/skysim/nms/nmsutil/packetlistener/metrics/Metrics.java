@@ -1,39 +1,23 @@
 package vn.giakhanhvn.skysim.nms.nmsutil.packetlistener.metrics;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Locale;
-import java.util.Map;
-import java.util.HashMap;
-import java.io.OutputStream;
-import java.util.zip.GZIPOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.net.URL;
-import javax.net.ssl.HttpsURLConnection;
-import java.util.logging.Level;
-import java.lang.reflect.InvocationTargetException;
-
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.ServicePriority;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.util.TimerTask;
-import java.util.Timer;
-import java.util.Iterator;
-
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.ServicePriority;
-import org.bukkit.Bukkit;
-
-import java.io.IOException;
-import java.util.UUID;
-
-import org.bukkit.configuration.file.YamlConfiguration;
-
+import javax.net.ssl.HttpsURLConnection;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.plugin.java.JavaPlugin;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.zip.GZIPOutputStream;
 
 public class Metrics {
     public static final int B_STATS_VERSION = 1;

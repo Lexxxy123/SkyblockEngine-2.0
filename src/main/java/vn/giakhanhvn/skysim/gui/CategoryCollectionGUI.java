@@ -1,29 +1,21 @@
 package vn.giakhanhvn.skysim.gui;
 
-import java.util.Iterator;
-
-import vn.giakhanhvn.skysim.collection.ItemCollectionRewards;
-
-import java.util.List;
-
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+import vn.giakhanhvn.skysim.collection.ItemCollection;
+import vn.giakhanhvn.skysim.collection.ItemCollectionCategory;
 import vn.giakhanhvn.skysim.collection.ItemCollectionReward;
+import vn.giakhanhvn.skysim.collection.ItemCollectionRewards;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.PaginationList;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
-
-import java.util.Collection;
-
-import vn.giakhanhvn.skysim.collection.ItemCollection;
-import vn.giakhanhvn.skysim.util.PaginationList;
-import vn.giakhanhvn.skysim.user.User;
-import vn.giakhanhvn.skysim.collection.ItemCollectionCategory;
+import java.util.List;
 
 public class CategoryCollectionGUI extends GUI {
     private static final int[] INTERIOR;

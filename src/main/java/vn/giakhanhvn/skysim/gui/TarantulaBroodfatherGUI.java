@@ -1,15 +1,15 @@
 package vn.giakhanhvn.skysim.gui;
 
-import org.bukkit.entity.EntityType;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.inventory.ItemStack;
-import vn.giakhanhvn.skysim.user.User;
-import vn.giakhanhvn.skysim.slayer.SlayerBossType;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.entity.Player;
-import org.bukkit.Material;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+import vn.giakhanhvn.skysim.slayer.SlayerBossType;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 public class TarantulaBroodfatherGUI extends GUI {
     public TarantulaBroodfatherGUI() {

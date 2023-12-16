@@ -1,19 +1,18 @@
 package vn.giakhanhvn.skysim.dimoon.abilities;
 
-import org.bukkit.plugin.Plugin;
-import org.bukkit.event.entity.EntityDamageEvent;
-import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.user.User;
-import vn.giakhanhvn.skysim.SkySimEngine;
 import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
-import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import org.bukkit.Sound;
+import vn.giakhanhvn.skysim.SkySimEngine;
 import vn.giakhanhvn.skysim.dimoon.Dimoon;
-import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 public class WitherBullet implements Ability {
     @Override

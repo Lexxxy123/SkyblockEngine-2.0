@@ -1,41 +1,21 @@
 package vn.giakhanhvn.skysim.item.weapon;
 
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-
-import java.util.Iterator;
-
-import org.bukkit.Location;
-import vn.giakhanhvn.skysim.listener.PlayerListener;
-import vn.giakhanhvn.skysim.util.SLog;
-import vn.giakhanhvn.skysim.user.PlayerUtils;
-import org.bukkit.entity.Damageable;
-import vn.giakhanhvn.skysim.util.Sputnik;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.EnderDragonPart;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Entity;
-import org.bukkit.Effect;
-import org.bukkit.util.Vector;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import vn.giakhanhvn.skysim.item.SItem;
-import org.bukkit.entity.Player;
-import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.Ability;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.ToolStatistics;
+import org.bukkit.util.Vector;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.item.*;
+import vn.giakhanhvn.skysim.listener.PlayerListener;
+import vn.giakhanhvn.skysim.user.PlayerUtils;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SLog;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 public class FrozenScythe implements ToolStatistics, MaterialFunction, Ability {
     String ACT3;

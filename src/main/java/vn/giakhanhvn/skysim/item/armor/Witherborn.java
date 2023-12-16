@@ -1,43 +1,27 @@
 package vn.giakhanhvn.skysim.item.armor;
 
-import java.util.HashMap;
-import java.util.Iterator;
-
 import net.md_5.bungee.api.ChatColor;
-
-import java.math.RoundingMode;
-import java.math.BigDecimal;
-
-import org.bukkit.entity.Damageable;
-import vn.giakhanhvn.skysim.listener.PlayerListener;
-import vn.giakhanhvn.skysim.skill.Skill;
-import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.entity.EnderDragonPart;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Sound;
-
-import java.util.List;
-
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.entity.*;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.scheduler.BukkitRunnable;
 import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.item.SItem;
+import vn.giakhanhvn.skysim.listener.PlayerListener;
+import vn.giakhanhvn.skysim.skill.Skill;
+import vn.giakhanhvn.skysim.user.User;
 import vn.giakhanhvn.skysim.util.EntityManager;
 import vn.giakhanhvn.skysim.util.Groups;
-import vn.giakhanhvn.skysim.item.SItem;
+import vn.giakhanhvn.skysim.util.SUtil;
 
-import java.util.UUID;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Wither;
-import org.bukkit.entity.Player;
+import java.util.UUID;
 
 public class Witherborn {
     private final Player p;

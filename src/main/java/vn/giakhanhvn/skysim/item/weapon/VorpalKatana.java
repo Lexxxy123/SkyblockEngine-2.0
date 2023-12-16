@@ -1,27 +1,17 @@
 package vn.giakhanhvn.skysim.item.weapon;
 
-import vn.giakhanhvn.skysim.item.SMaterial;
-import org.bukkit.Material;
-import net.minecraft.server.v1_8_R3.NBTBase;
-import net.minecraft.server.v1_8_R3.NBTTagInt;
+import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
+import net.minecraft.server.v1_8_R3.NBTTagInt;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
-import vn.giakhanhvn.skysim.item.AbilityActivation;
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.item.*;
 import vn.giakhanhvn.skysim.util.FerocityCalculation;
 import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.item.SItem;
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import net.md_5.bungee.api.ChatColor;
-import vn.giakhanhvn.skysim.item.Ability;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.ToolStatistics;
 
 public class VorpalKatana implements ToolStatistics, MaterialFunction, Ability {
     @Override

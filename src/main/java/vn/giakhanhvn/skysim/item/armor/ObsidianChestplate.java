@@ -1,24 +1,15 @@
 package vn.giakhanhvn.skysim.item.armor;
 
-import java.util.Iterator;
-
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import vn.giakhanhvn.skysim.item.SMaterial;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.item.*;
+import vn.giakhanhvn.skysim.user.PlayerStatistics;
+import vn.giakhanhvn.skysim.user.PlayerUtils;
 
 import java.util.Map;
-
-import org.bukkit.Material;
-import vn.giakhanhvn.skysim.user.PlayerUtils;
-import vn.giakhanhvn.skysim.user.PlayerStatistics;
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.item.SItem;
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.TickingMaterial;
 
 public class ObsidianChestplate implements LeatherArmorStatistics, TickingMaterial {
     @Override

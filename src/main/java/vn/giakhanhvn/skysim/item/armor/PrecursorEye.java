@@ -1,53 +1,26 @@
 package vn.giakhanhvn.skysim.item.armor;
 
-import java.util.HashMap;
-import java.util.Iterator;
-
-import org.bukkit.util.Vector;
-import org.bukkit.Location;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Effect;
-import vn.giakhanhvn.skysim.util.EntityManager;
+import org.bukkit.Location;
+import org.bukkit.Sound;
+import org.bukkit.entity.*;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
+import vn.giakhanhvn.skysim.Repeater;
+import vn.giakhanhvn.skysim.SkySimEngine;
 import vn.giakhanhvn.skysim.entity.SEntity;
 import vn.giakhanhvn.skysim.entity.SEntityType;
-import vn.giakhanhvn.skysim.util.SLog;
-import org.bukkit.entity.Damageable;
+import vn.giakhanhvn.skysim.item.*;
 import vn.giakhanhvn.skysim.skill.Skill;
-import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.EnderDragonPart;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Entity;
-import vn.giakhanhvn.skysim.util.DefenseReplacement;
-import vn.giakhanhvn.skysim.util.ManaReplacement;
-import vn.giakhanhvn.skysim.Repeater;
-import org.bukkit.Sound;
-import vn.giakhanhvn.skysim.util.SUtil;
 import vn.giakhanhvn.skysim.user.PlayerUtils;
-import vn.giakhanhvn.skysim.user.PlayerStatistics;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.*;
 
-import java.util.Set;
-
-import vn.giakhanhvn.skysim.item.SMaterial;
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.scheduler.BukkitRunnable;
-import vn.giakhanhvn.skysim.item.SItem;
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.item.AbilityActivation;
-import net.md_5.bungee.api.ChatColor;
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-
-import java.util.UUID;
+import java.util.HashMap;
 import java.util.Map;
-
-import vn.giakhanhvn.skysim.item.TickingMaterial;
-import vn.giakhanhvn.skysim.item.Ability;
-import vn.giakhanhvn.skysim.item.ToolStatistics;
-import vn.giakhanhvn.skysim.item.SkullStatistics;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
+import java.util.Set;
+import java.util.UUID;
 
 public class PrecursorEye implements MaterialFunction, SkullStatistics, ToolStatistics, Ability, TickingMaterial {
     public static final Map<UUID, Boolean> PrecursorLaser;

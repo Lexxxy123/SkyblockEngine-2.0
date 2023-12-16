@@ -1,39 +1,25 @@
 package vn.giakhanhvn.skysim.item.orb;
 
-import java.util.HashMap;
-
+import org.bukkit.ChatColor;
 import org.bukkit.Effect;
-import org.bukkit.World;
-
-import java.util.Iterator;
-
-import org.bukkit.entity.Entity;
 import org.bukkit.Location;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.World;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
-import vn.giakhanhvn.skysim.SkySimEngine;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import vn.giakhanhvn.skysim.item.SMaterial;
-import vn.giakhanhvn.skysim.util.SUtil;
-
-import java.util.concurrent.atomic.AtomicInteger;
-
+import vn.giakhanhvn.skysim.SkySimEngine;
 import vn.giakhanhvn.skysim.entity.SEntity;
 import vn.giakhanhvn.skysim.entity.SEntityType;
-import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.item.SItem;
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import org.bukkit.entity.ArmorStand;
+import vn.giakhanhvn.skysim.item.*;
+import vn.giakhanhvn.skysim.util.SUtil;
 
-import java.util.UUID;
+import java.util.HashMap;
 import java.util.Map;
-
-import vn.giakhanhvn.skysim.item.Ability;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.SkullStatistics;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class PowerOrb implements SkullStatistics, MaterialFunction, Ability, OrbBuff {
     private static final Map<UUID, ArmorStand> USING_POWER_ORB_MAP;

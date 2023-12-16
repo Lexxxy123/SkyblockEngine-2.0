@@ -1,19 +1,12 @@
 package vn.giakhanhvn.skysim.item.oddities;
 
-import java.util.Collections;
-
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.ChatColor;
-
-import java.util.List;
-
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
-import vn.giakhanhvn.skysim.item.SItem;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.ItemData;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.SkullStatistics;
+import org.bukkit.ChatColor;
+import vn.giakhanhvn.skysim.item.*;
+import vn.giakhanhvn.skysim.util.SUtil;
+
+import java.util.Collections;
+import java.util.List;
 
 public class BagOfCoins implements SkullStatistics, MaterialFunction, ItemData {
     @Override

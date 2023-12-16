@@ -1,35 +1,27 @@
 package vn.giakhanhvn.skysim.item.pet;
 
+import com.google.common.util.concurrent.AtomicDouble;
+import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import vn.giakhanhvn.skysim.entity.SEntity;
 import vn.giakhanhvn.skysim.item.GenericItemType;
+import vn.giakhanhvn.skysim.item.Rarity;
+import vn.giakhanhvn.skysim.item.RarityValue;
+import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.skill.CombatSkill;
 import vn.giakhanhvn.skysim.skill.Skill;
-import com.google.common.util.concurrent.AtomicDouble;
-import vn.giakhanhvn.skysim.item.Rarity;
-
-import java.util.Collection;
-import java.util.ArrayList;
-import java.util.Collections;
-
 import vn.giakhanhvn.skysim.util.Groups;
-import vn.giakhanhvn.skysim.entity.SEntity;
-import org.bukkit.entity.Entity;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-import java.util.Arrays;
-
-import org.bukkit.ChatColor;
-
-import java.math.RoundingMode;
 import java.math.BigDecimal;
-
-import vn.giakhanhvn.skysim.item.RarityValue;
-
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-
-import vn.giakhanhvn.skysim.item.SItem;
 
 public class EndermanPet extends Pet {
     @Override

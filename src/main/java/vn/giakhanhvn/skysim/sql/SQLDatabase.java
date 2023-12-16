@@ -1,12 +1,12 @@
 package vn.giakhanhvn.skysim.sql;
 
-import java.sql.SQLException;
-import java.sql.DriverManager;
-import java.io.IOException;
-import java.io.File;
-import java.sql.Connection;
-
 import vn.giakhanhvn.skysim.SkySimEngine;
+
+import java.io.File;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class SQLDatabase {
     private static final SkySimEngine plugin;

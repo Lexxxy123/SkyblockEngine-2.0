@@ -1,8 +1,5 @@
 package vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver;
 
-import java.lang.reflect.Member;
-
-import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.wrapper.WrapperAbstract;
 import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.wrapper.ConstructorWrapper;
 import vn.giakhanhvn.skysim.nms.nmsutil.reflection.util.AccessUtil;
 

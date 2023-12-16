@@ -2,8 +2,8 @@ package vn.giakhanhvn.skysim.util;
 
 import org.bukkit.entity.Player;
 
-import java.util.UUID;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class TradeUtil {
     private static HashMap<UUID, UUID> tradeReq;

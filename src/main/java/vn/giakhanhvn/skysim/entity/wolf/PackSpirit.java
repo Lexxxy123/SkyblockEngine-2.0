@@ -1,14 +1,12 @@
 package vn.giakhanhvn.skysim.entity.wolf;
 
-import java.util.Arrays;
-
+import net.md_5.bungee.api.ChatColor;
+import vn.giakhanhvn.skysim.entity.EntityDrop;
 import vn.giakhanhvn.skysim.entity.EntityDropType;
 import vn.giakhanhvn.skysim.item.SMaterial;
-import vn.giakhanhvn.skysim.entity.EntityDrop;
 
+import java.util.Arrays;
 import java.util.List;
-
-import net.md_5.bungee.api.ChatColor;
 
 public class PackSpirit extends BaseWolf {
     @Override

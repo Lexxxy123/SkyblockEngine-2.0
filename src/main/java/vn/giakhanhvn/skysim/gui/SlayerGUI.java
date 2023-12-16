@@ -1,17 +1,17 @@
 package vn.giakhanhvn.skysim.gui;
 
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.user.PlayerUtils;
-import vn.giakhanhvn.skysim.slayer.SlayerBossType;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+import vn.giakhanhvn.skysim.slayer.SlayerBossType;
 import vn.giakhanhvn.skysim.slayer.SlayerQuest;
+import vn.giakhanhvn.skysim.user.PlayerUtils;
 import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 public class SlayerGUI extends GUI {
     public SlayerGUI() {

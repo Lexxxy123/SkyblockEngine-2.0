@@ -1,9 +1,9 @@
 package vn.giakhanhvn.skysim.item.oddities;
 
-import vn.giakhanhvn.skysim.item.GenericItemType;
 import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.item.Rarity;
+import vn.giakhanhvn.skysim.item.GenericItemType;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
+import vn.giakhanhvn.skysim.item.Rarity;
 import vn.giakhanhvn.skysim.item.SkullStatistics;
 
 public class SummoningEye implements SkullStatistics, MaterialFunction {

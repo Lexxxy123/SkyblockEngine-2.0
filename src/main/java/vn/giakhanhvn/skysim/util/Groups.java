@@ -1,14 +1,13 @@
 package vn.giakhanhvn.skysim.util;
 
-import java.util.Arrays;
-
-import vn.giakhanhvn.skysim.entity.SEntityType;
-import org.bukkit.entity.EntityType;
-import vn.giakhanhvn.skysim.region.RegionType;
-import vn.giakhanhvn.skysim.item.SMaterial;
-import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
+import org.bukkit.event.inventory.InventoryAction;
+import vn.giakhanhvn.skysim.entity.SEntityType;
+import vn.giakhanhvn.skysim.item.SMaterial;
+import vn.giakhanhvn.skysim.region.RegionType;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

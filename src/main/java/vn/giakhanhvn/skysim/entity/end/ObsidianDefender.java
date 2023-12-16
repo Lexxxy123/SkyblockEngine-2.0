@@ -1,31 +1,23 @@
 package vn.giakhanhvn.skysim.entity.end;
 
+import net.minecraft.server.v1_8_R3.GenericAttributes;
+import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftSkeleton;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftSkeleton;
-import net.minecraft.server.v1_8_R3.GenericAttributes;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
-import vn.giakhanhvn.skysim.entity.SEntity;
-import org.bukkit.entity.LivingEntity;
-import vn.giakhanhvn.skysim.entity.SEntityEquipment;
-
-import java.util.Arrays;
-
+import vn.giakhanhvn.skysim.entity.*;
 import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.item.SMaterial;
-import vn.giakhanhvn.skysim.entity.EntityDropType;
-import org.bukkit.inventory.ItemStack;
 import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.Material;
-import vn.giakhanhvn.skysim.entity.EntityDrop;
 
+import java.util.Arrays;
 import java.util.List;
-
-import vn.giakhanhvn.skysim.entity.EntityStatistics;
-import vn.giakhanhvn.skysim.entity.EntityFunction;
 
 public class ObsidianDefender implements EntityFunction, EntityStatistics {
     @Override

@@ -1,9 +1,9 @@
 package vn.giakhanhvn.skysim.extra.beam;
 
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.extra.protocol.PacketFactory1_8_R3;
 import com.google.common.base.Preconditions;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.extra.protocol.PacketFactory1_8_R3;
 import vn.giakhanhvn.skysim.extra.protocol.WrappedBeamPacket;
 
 public class LocationTargetBeam {

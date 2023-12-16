@@ -1,28 +1,26 @@
 package vn.giakhanhvn.skysim.entity.dungeons;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import vn.giakhanhvn.skysim.entity.SEntityEquipment;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.metadata.FixedMetadataValue;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import vn.giakhanhvn.skysim.util.EntityManager;
-import org.bukkit.entity.Entity;
-import vn.giakhanhvn.skysim.util.Sputnik;
 import net.minecraft.server.v1_8_R3.GenericAttributes;
+import org.bukkit.Color;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
-import vn.giakhanhvn.skysim.entity.SEntity;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.inventory.meta.ItemMeta;
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.Color;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.Material;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.entity.SEntity;
+import vn.giakhanhvn.skysim.entity.SEntityEquipment;
 import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
+import vn.giakhanhvn.skysim.util.EntityManager;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 public class TestObject extends BaseZombie {
     private final boolean isEating;

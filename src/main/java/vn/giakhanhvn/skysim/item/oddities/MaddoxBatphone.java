@@ -1,28 +1,20 @@
 package vn.giakhanhvn.skysim.item.oddities;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import net.md_5.bungee.api.chat.ClickEvent;
-import vn.giakhanhvn.skysim.command.BatphoneCommand;
-import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import vn.giakhanhvn.skysim.sequence.SoundSequenceType;
-import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
-import vn.giakhanhvn.skysim.item.SItem;
 import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
+import vn.giakhanhvn.skysim.command.BatphoneCommand;
+import vn.giakhanhvn.skysim.item.*;
+import vn.giakhanhvn.skysim.sequence.SoundSequenceType;
+import vn.giakhanhvn.skysim.util.SUtil;
 
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
-import vn.giakhanhvn.skysim.item.Ability;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.SkullStatistics;
+import java.util.UUID;
 
 public class MaddoxBatphone implements SkullStatistics, MaterialFunction, Ability {
     private static final List<String> SUCCESSFUL_RESPONSES;

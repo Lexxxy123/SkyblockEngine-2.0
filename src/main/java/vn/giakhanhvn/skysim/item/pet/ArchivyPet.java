@@ -1,52 +1,28 @@
 package vn.giakhanhvn.skysim.item.pet;
 
-import java.util.HashMap;
-import java.util.Iterator;
-
-import org.bukkit.entity.Damageable;
-import vn.giakhanhvn.skysim.util.EntityManager;
-import org.bukkit.entity.ItemFrame;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.EnderDragonPart;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.Material;
-import org.bukkit.scheduler.BukkitRunnable;
-import vn.giakhanhvn.skysim.listener.PlayerListener;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.Sound;
 import org.bukkit.Effect;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.*;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
+import vn.giakhanhvn.skysim.SkySimEngine;
 import vn.giakhanhvn.skysim.item.GenericItemType;
+import vn.giakhanhvn.skysim.item.Rarity;
+import vn.giakhanhvn.skysim.item.SItem;
+import vn.giakhanhvn.skysim.listener.PlayerListener;
 import vn.giakhanhvn.skysim.skill.CombatSkill;
 import vn.giakhanhvn.skysim.skill.Skill;
-import org.bukkit.util.Vector;
-import org.bukkit.entity.Entity;
 import vn.giakhanhvn.skysim.user.User;
-import vn.giakhanhvn.skysim.item.Rarity;
-
-import java.util.Collection;
-import java.util.ArrayList;
-import java.util.Collections;
-
-import org.bukkit.entity.Arrow;
+import vn.giakhanhvn.skysim.util.EntityManager;
 import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-
-import java.util.Arrays;
-
 import vn.giakhanhvn.skysim.util.Sputnik;
 
-import java.math.RoundingMode;
 import java.math.BigDecimal;
-import java.util.List;
-
-import vn.giakhanhvn.skysim.item.SItem;
-import org.bukkit.entity.Player;
-
-import java.util.Map;
+import java.math.RoundingMode;
+import java.util.*;
 
 public class ArchivyPet extends Pet {
     public static final Map<Player, Boolean> COOLDOWN;

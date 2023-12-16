@@ -1,25 +1,22 @@
 package vn.giakhanhvn.skysim.gui;
 
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.InventoryView;
-
-import java.util.List;
-import java.util.Arrays;
-
-import org.bukkit.scheduler.BukkitRunnable;
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.Sound;
-import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.InventoryView;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
+import vn.giakhanhvn.skysim.SkySimEngine;
 import vn.giakhanhvn.skysim.user.PlayerUtils;
 import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
+
+import java.util.Arrays;
 
 public class CookieGUI extends GUI {
     public CookieGUI(final String query, final int page) {

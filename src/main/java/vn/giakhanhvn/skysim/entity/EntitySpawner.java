@@ -1,23 +1,16 @@
 package vn.giakhanhvn.skysim.entity;
 
-import org.bukkit.plugin.Plugin;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.config.Config;
 
 import java.util.ArrayList;
-
-import org.bukkit.Bukkit;
-
 import java.util.Iterator;
-
-import vn.giakhanhvn.skysim.config.Config;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.Location;
-
-import java.util.UUID;
-
-import org.bukkit.scheduler.BukkitTask;
-
 import java.util.List;
+import java.util.UUID;
 
 public class EntitySpawner {
     private static final List<EntitySpawner> SPAWNER_CACHE;

@@ -1,30 +1,19 @@
 package vn.giakhanhvn.skysim.entity.dungeons.regularentity;
 
-import vn.giakhanhvn.skysim.entity.SEntityEquipment;
-
-import java.util.Arrays;
-
-import vn.giakhanhvn.skysim.item.SMaterial;
-import vn.giakhanhvn.skysim.entity.EntityDropType;
-import org.bukkit.inventory.ItemStack;
-import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.Material;
-import vn.giakhanhvn.skysim.entity.EntityDrop;
-
-import java.util.List;
-
-import org.bukkit.entity.Entity;
-import vn.giakhanhvn.skysim.util.EntityManager;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
-import vn.giakhanhvn.skysim.SkySimEngine;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import vn.giakhanhvn.skysim.entity.SEntity;
-import org.bukkit.entity.LivingEntity;
-import vn.giakhanhvn.skysim.entity.EntityStatistics;
-import vn.giakhanhvn.skysim.entity.EntityFunction;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.entity.*;
+import vn.giakhanhvn.skysim.item.SMaterial;
+import vn.giakhanhvn.skysim.util.EntityManager;
+import vn.giakhanhvn.skysim.util.SUtil;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class Sniper implements EntityFunction, EntityStatistics {
     @Override

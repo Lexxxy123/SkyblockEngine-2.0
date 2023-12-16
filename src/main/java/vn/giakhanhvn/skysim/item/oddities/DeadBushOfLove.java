@@ -2,9 +2,9 @@ package vn.giakhanhvn.skysim.item.oddities;
 
 import net.md_5.bungee.api.ChatColor;
 import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
 import vn.giakhanhvn.skysim.item.MaterialStatistics;
+import vn.giakhanhvn.skysim.item.Rarity;
 
 public class DeadBushOfLove implements MaterialStatistics, MaterialFunction {
     @Override

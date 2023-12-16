@@ -1,19 +1,17 @@
 package vn.giakhanhvn.skysim.entity.zombie;
 
-import java.util.Collections;
-
+import org.bukkit.Color;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import vn.giakhanhvn.skysim.entity.EntityDrop;
 import vn.giakhanhvn.skysim.entity.EntityDropType;
+import vn.giakhanhvn.skysim.entity.SEntityEquipment;
 import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.item.SMaterial;
-import vn.giakhanhvn.skysim.entity.EntityDrop;
-
-import java.util.List;
-
-import org.bukkit.Color;
 import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.Material;
-import vn.giakhanhvn.skysim.entity.SEntityEquipment;
+
+import java.util.Collections;
+import java.util.List;
 
 public class AtonedChampion extends BaseZombie {
     @Override

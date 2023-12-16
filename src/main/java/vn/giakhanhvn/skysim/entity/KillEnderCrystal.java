@@ -1,10 +1,8 @@
 package vn.giakhanhvn.skysim.entity;
 
-import java.util.Iterator;
-
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Entity;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 
 public final class KillEnderCrystal {
     public static void killEC(final World world) {

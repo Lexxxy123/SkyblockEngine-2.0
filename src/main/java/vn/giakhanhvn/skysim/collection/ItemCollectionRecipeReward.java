@@ -5,8 +5,6 @@ import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.item.*;
 import vn.giakhanhvn.skysim.user.User;
 
-import java.util.Objects;
-
 public class ItemCollectionRecipeReward extends ItemCollectionReward {
     private final SMaterial material;
 

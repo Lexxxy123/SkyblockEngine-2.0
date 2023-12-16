@@ -1,9 +1,9 @@
 package vn.giakhanhvn.skysim.util;
 
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.entity.Player;
-import org.bukkit.OfflinePlayer;
 
 public class SkySimAPI {
     public static void requestPlayerAPI(final OfflinePlayer player) {

@@ -1,8 +1,7 @@
 package vn.giakhanhvn.skysim.merchant;
 
-import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.item.SMaterial;
 import vn.giakhanhvn.skysim.item.SItem;
+import vn.giakhanhvn.skysim.item.SMaterial;
 
 public class FarmMerchantGUI extends ShopGUI {
     private static final SItem[] ITEMS = new SItem[]{

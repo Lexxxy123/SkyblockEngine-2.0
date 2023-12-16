@@ -1,19 +1,10 @@
 package vn.giakhanhvn.skysim.item.weapon;
 
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-
-import java.util.Iterator;
-
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.Location;
-import vn.giakhanhvn.skysim.item.SItem;
 import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.item.Ability;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.ToolStatistics;
+import vn.giakhanhvn.skysim.item.*;
 
 public class TestItemAbi implements ToolStatistics, MaterialFunction, Ability {
     @Override

@@ -1,27 +1,22 @@
 package vn.giakhanhvn.skysim.gui;
 
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import vn.giakhanhvn.skysim.item.pet.Pet;
-import vn.giakhanhvn.skysim.item.SItem;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.List;
-
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.item.SItem;
+import vn.giakhanhvn.skysim.item.pet.Pet;
+import vn.giakhanhvn.skysim.placeholding;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 import java.util.ArrayList;
-
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.placeholding;
-import org.bukkit.inventory.ItemStack;
-import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.entity.Player;
+import java.util.List;
 
 public class ProfileViewerGUI extends GUI {
     public Player p;

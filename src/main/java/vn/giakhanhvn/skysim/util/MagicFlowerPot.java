@@ -1,13 +1,13 @@
 package vn.giakhanhvn.skysim.util;
 
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import net.minecraft.server.v1_8_R3.BlockPosition;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import net.minecraft.server.v1_8_R3.TileEntityFlowerPot;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.Material;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.inventory.ItemStack;
 
 public class MagicFlowerPot {
     public static final boolean changePot(final Block flowerPot, final boolean refreshChunk, final ArmorStand s) {

@@ -1,18 +1,16 @@
 package vn.giakhanhvn.skysim.command;
 
-import java.util.Iterator;
-
-import vn.giakhanhvn.skysim.user.User;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.enchantment.Enchantment;
-import vn.giakhanhvn.skysim.util.Sputnik;
 import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
-import vn.giakhanhvn.skysim.item.SMaterial;
 import vn.giakhanhvn.skysim.item.GenericItemType;
-import org.bukkit.ChatColor;
-import org.bukkit.command.ConsoleCommandSender;
 import vn.giakhanhvn.skysim.item.SItem;
+import vn.giakhanhvn.skysim.item.SMaterial;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 @CommandParameters(description = "Adds an enchantment from Spec to the specified item.", aliases = "rench", permission = "spt.item")
 public class RemoveEnchantCommand extends SCommand {

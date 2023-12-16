@@ -1,32 +1,20 @@
 package vn.giakhanhvn.skysim.gui;
 
-import vn.giakhanhvn.skysim.auction.AuctionBid;
-
-import java.util.stream.Stream;
-import java.util.Collection;
-import java.util.Collections;
-
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.Material;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+import vn.giakhanhvn.skysim.auction.AuctionBid;
+import vn.giakhanhvn.skysim.auction.AuctionItem;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 import java.util.ArrayList;
-
-import org.bukkit.inventory.ItemStack;
-
-import java.util.Iterator;
-
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.entity.Player;
-
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-
-import vn.giakhanhvn.skysim.auction.AuctionItem;
-
+import java.util.Collections;
 import java.util.List;
-
-import vn.giakhanhvn.skysim.user.User;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ManageAuctionsGUI extends GUI {
     private static final int[] INTERIOR;

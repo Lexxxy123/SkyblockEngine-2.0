@@ -1,19 +1,18 @@
 package vn.giakhanhvn.skysim.gui;
 
-import java.util.List;
-import java.util.Iterator;
-
-import vn.giakhanhvn.skysim.user.User;
-import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import vn.giakhanhvn.skysim.item.ShapedRecipe;
+import org.bukkit.inventory.ItemStack;
 import vn.giakhanhvn.skysim.item.SItem;
+import vn.giakhanhvn.skysim.item.ShapedRecipe;
+import vn.giakhanhvn.skysim.user.User;
 import vn.giakhanhvn.skysim.util.PaginationList;
+import vn.giakhanhvn.skysim.util.SUtil;
+
+import java.util.List;
 
 public class RecipeBookListGUI extends GUI {
     private static final int[] INTERIOR;

@@ -1,23 +1,20 @@
 package vn.giakhanhvn.skysim.nms.nmsutil.packetlistener;
 
-import vn.giakhanhvn.skysim.nms.nmsutil.packetlistener.handler.SentPacket;
-import vn.giakhanhvn.skysim.nms.nmsutil.packetlistener.channel.ChannelWrapper;
-import vn.giakhanhvn.skysim.nms.nmsutil.packetlistener.handler.ReceivedPacket;
-import org.bukkit.event.Cancellable;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerJoinEvent;
-import vn.giakhanhvn.skysim.nms.nmsutil.packetlistener.handler.PacketHandler;
-
-import java.util.Iterator;
-
-import org.bukkit.entity.Player;
 import org.bukkit.Bukkit;
-import vn.giakhanhvn.skysim.nms.nmsutil.apihelper.APIManager;
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.util.SLog;
-import vn.giakhanhvn.skysim.nms.nmsutil.apihelper.API;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.plugin.Plugin;
+import vn.giakhanhvn.skysim.nms.nmsutil.apihelper.API;
+import vn.giakhanhvn.skysim.nms.nmsutil.apihelper.APIManager;
+import vn.giakhanhvn.skysim.nms.nmsutil.packetlistener.channel.ChannelWrapper;
+import vn.giakhanhvn.skysim.nms.nmsutil.packetlistener.handler.PacketHandler;
+import vn.giakhanhvn.skysim.nms.nmsutil.packetlistener.handler.ReceivedPacket;
+import vn.giakhanhvn.skysim.nms.nmsutil.packetlistener.handler.SentPacket;
+import vn.giakhanhvn.skysim.util.SLog;
 
 public class PacketHelper implements IPacketListener, Listener, API {
     private ChannelInjector channelInjector;

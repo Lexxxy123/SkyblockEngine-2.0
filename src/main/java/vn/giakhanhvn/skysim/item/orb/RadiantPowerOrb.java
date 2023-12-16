@@ -1,10 +1,10 @@
 package vn.giakhanhvn.skysim.item.orb;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.item.Rarity;
-import org.bukkit.ChatColor;
 
 public class RadiantPowerOrb extends PowerOrb {
     @Override

@@ -1,13 +1,11 @@
 package vn.giakhanhvn.skysim.command;
 
-import java.util.Iterator;
-
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.entity.Player;
 import org.bukkit.Bukkit;
-import vn.giakhanhvn.skysim.util.SLog;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SLog;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 @CommandParameters(description = "Spec test command.", aliases = "fsd")
 public class SaveDataCommand extends SCommand {

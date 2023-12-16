@@ -1,12 +1,12 @@
 package vn.giakhanhvn.skysim.command;
 
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.potion.PotionEffect;
-import vn.giakhanhvn.skysim.potion.PotionEffectType;
-import vn.giakhanhvn.skysim.item.SItem;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import vn.giakhanhvn.skysim.item.SItem;
+import vn.giakhanhvn.skysim.potion.PotionEffect;
+import vn.giakhanhvn.skysim.potion.PotionEffectType;
 
 @CommandParameters(description = "Adds an potion from Spec to the specified item.", aliases = "spot", permission = "spt.item")
 public class SpecPotionCommand extends SCommand {

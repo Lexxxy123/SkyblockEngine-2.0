@@ -1,8 +1,8 @@
 package vn.giakhanhvn.skysim.item.armor.minichad;
 
 import vn.giakhanhvn.skysim.item.MaterialStatistics;
-import vn.giakhanhvn.skysim.util.Sputnik;
 import vn.giakhanhvn.skysim.item.armor.ArmorSet;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 public class MinichadSet implements ArmorSet {
     @Override

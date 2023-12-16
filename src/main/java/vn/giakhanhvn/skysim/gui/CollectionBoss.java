@@ -1,20 +1,19 @@
 package vn.giakhanhvn.skysim.gui;
 
-import java.util.HashMap;
-
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.Material;
-import org.bukkit.ChatColor;
 import org.bukkit.Bukkit;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import vn.giakhanhvn.skysim.user.PlayerUtils;
-import vn.giakhanhvn.skysim.user.PlayerStatistics;
-import vn.giakhanhvn.skysim.user.User;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+import vn.giakhanhvn.skysim.user.PlayerStatistics;
+import vn.giakhanhvn.skysim.user.PlayerUtils;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class CollectionBoss extends GUI {

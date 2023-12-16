@@ -1,21 +1,15 @@
 package vn.giakhanhvn.skysim.item.storage;
 
-import java.util.HashMap;
-
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.event.player.PlayerInteractEvent;
+import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
+import vn.giakhanhvn.skysim.item.*;
 
-import java.util.UUID;
+import java.util.HashMap;
 import java.util.Map;
-
-import vn.giakhanhvn.skysim.item.Untradeable;
-import vn.giakhanhvn.skysim.item.ItemData;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.MaterialStatistics;
+import java.util.UUID;
 
 public abstract class Storage implements MaterialStatistics, MaterialFunction, ItemData, Untradeable {
     private static final Map<UUID, Inventory> OPENED_STORAGE_UNITS;

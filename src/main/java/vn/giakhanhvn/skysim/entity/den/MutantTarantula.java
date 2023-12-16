@@ -1,26 +1,20 @@
 package vn.giakhanhvn.skysim.entity.den;
 
-import java.util.Collections;
-
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.entity.EntityDrop;
 import vn.giakhanhvn.skysim.entity.EntityDropType;
-import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.entity.SEntity;
 import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.item.SMaterial;
-import vn.giakhanhvn.skysim.entity.EntityDrop;
+import vn.giakhanhvn.skysim.util.SUtil;
 
+import java.util.Collections;
 import java.util.List;
-
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-
-import java.util.Iterator;
-
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Entity;
-import org.bukkit.scheduler.BukkitRunnable;
-import vn.giakhanhvn.skysim.entity.SEntity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.ChatColor;
 
 public class MutantTarantula extends BaseSpider {
     @Override

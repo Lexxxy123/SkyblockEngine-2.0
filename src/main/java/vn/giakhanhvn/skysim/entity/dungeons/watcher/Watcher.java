@@ -1,66 +1,32 @@
 package vn.giakhanhvn.skysim.entity.dungeons.watcher;
 
-import java.util.HashMap;
-
-import vn.giakhanhvn.skysim.entity.SEntityType;
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
+import net.md_5.bungee.api.ChatColor;
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntityTeleport;
+import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftArmorStand;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.EulerAngle;
+import org.bukkit.util.Vector;
+import vn.giakhanhvn.skysim.SkySimEngine;
 import vn.giakhanhvn.skysim.entity.SEntity;
-import org.bukkit.Sound;
+import vn.giakhanhvn.skysim.entity.SEntityType;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 import java.lang.reflect.Field;
-
-import org.bukkit.inventory.meta.ItemMeta;
-import com.mojang.authlib.properties.Property;
-
-import java.util.Base64;
-
-import com.mojang.authlib.GameProfile;
-
-import java.util.UUID;
-
-import org.bukkit.inventory.meta.SkullMeta;
-import net.md_5.bungee.api.ChatColor;
-import org.bukkit.util.Vector;
-import org.bukkit.event.entity.EntityDamageEvent;
-import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.Effect;
-
-import java.util.Random;
-
-import net.minecraft.server.v1_8_R3.Packet;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntityTeleport;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftArmorStand;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.EulerAngle;
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.entity.Entity;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.metadata.FixedMetadataValue;
-
-import java.util.Collections;
-import java.util.Collection;
-import java.util.Arrays;
-
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-
-import java.util.Iterator;
-
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.entity.Player;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.Location;
-import org.bukkit.World;
-
-import java.util.Map;
-
-import org.bukkit.event.Listener;
+import java.util.*;
 
 public class Watcher implements Listener {
     private static final Map<World, Watcher> WATCHER_CACHE;

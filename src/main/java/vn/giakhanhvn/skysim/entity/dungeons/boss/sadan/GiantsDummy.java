@@ -1,20 +1,17 @@
 package vn.giakhanhvn.skysim.entity.dungeons.boss.sadan;
 
-import org.bukkit.inventory.meta.ItemMeta;
-import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import vn.giakhanhvn.skysim.SkySimEngine;
-import vn.giakhanhvn.skysim.util.EntityManager;
-import org.bukkit.entity.Entity;
 import vn.giakhanhvn.skysim.entity.SEntity;
-import org.bukkit.entity.LivingEntity;
-import vn.giakhanhvn.skysim.util.Sputnik;
 import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
+import vn.giakhanhvn.skysim.util.EntityManager;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 public class GiantsDummy extends BaseZombie {
     @Override

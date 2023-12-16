@@ -1,10 +1,10 @@
 package vn.giakhanhvn.skysim.auction;
 
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 public class AuctionBid implements ConfigurationSerializable {
     private UUID bidder;

@@ -1,15 +1,14 @@
 package vn.giakhanhvn.skysim.entity.end;
 
 import org.bukkit.Location;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.entity.EntityFunction;
+import vn.giakhanhvn.skysim.entity.SEntity;
 import vn.giakhanhvn.skysim.entity.SEntityType;
 import vn.giakhanhvn.skysim.slayer.SlayerQuest;
-import vn.giakhanhvn.skysim.util.SUtil;
 import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Entity;
-import vn.giakhanhvn.skysim.entity.SEntity;
-import vn.giakhanhvn.skysim.entity.EntityFunction;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 public abstract class BaseEnderman implements EndermanStatistics, EntityFunction {
     @Override

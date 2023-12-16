@@ -1,39 +1,21 @@
 package vn.giakhanhvn.skysim.item.weapon;
 
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-
-import java.util.Iterator;
-
-import net.minecraft.server.v1_8_R3.Packet;
+import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
+import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import vn.giakhanhvn.skysim.util.FerocityCalculation;
-import vn.giakhanhvn.skysim.listener.PlayerListener;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import org.bukkit.entity.LivingEntity;
-import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.Sound;
-
-import java.util.List;
-
+import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Damageable;
-import org.bukkit.entity.Entity;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.item.*;
+import vn.giakhanhvn.skysim.listener.PlayerListener;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.FerocityCalculation;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 import java.util.ArrayList;
-
-import vn.giakhanhvn.skysim.item.SItem;
-import org.bukkit.entity.Player;
-import net.md_5.bungee.api.ChatColor;
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.Ability;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.ToolStatistics;
+import java.util.List;
 
 public class ShadowFury implements ToolStatistics, MaterialFunction, Ability {
     @Override

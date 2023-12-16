@@ -1,8 +1,8 @@
 package vn.giakhanhvn.skysim.command;
 
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.command.ConsoleCommandSender;
 
 @CommandParameters(description = "Spec test command.", aliases = "setf6c")
 public class SpecTestCommand extends SCommand {

@@ -1,10 +1,6 @@
 package vn.giakhanhvn.skysim.item.armor.vanilla.diamond;
 
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.ToolStatistics;
+import vn.giakhanhvn.skysim.item.*;
 
 public class DiamondChestplate implements ToolStatistics, MaterialFunction {
     @Override

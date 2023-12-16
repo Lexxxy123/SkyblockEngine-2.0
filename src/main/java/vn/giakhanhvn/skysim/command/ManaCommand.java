@@ -1,11 +1,11 @@
 package vn.giakhanhvn.skysim.command;
 
-import java.util.UUID;
-
-import org.bukkit.entity.Player;
 import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.Repeater;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.Repeater;
+
+import java.util.UUID;
 
 @CommandParameters(description = "Modify your mana amount.", permission = "spt.item")
 public class ManaCommand extends SCommand {

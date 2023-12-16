@@ -1,29 +1,18 @@
 package vn.giakhanhvn.skysim.item.pet;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
+import vn.giakhanhvn.skysim.item.*;
 import vn.giakhanhvn.skysim.skill.CombatSkill;
 import vn.giakhanhvn.skysim.skill.Skill;
 
-import java.util.Collection;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Arrays;
-
-import org.bukkit.ChatColor;
-
-import java.math.RoundingMode;
-import java.math.BigDecimal;
-
-import vn.giakhanhvn.skysim.item.RarityValue;
-
 import java.util.List;
-
-import vn.giakhanhvn.skysim.item.SItem;
-import vn.giakhanhvn.skysim.item.Untradeable;
 
 public class ChimmyPet extends Pet implements Untradeable {
     @Override

@@ -1,31 +1,17 @@
 package vn.giakhanhvn.skysim.entity;
 
-import java.util.HashMap;
-
+import com.google.common.util.concurrent.AtomicDouble;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftSkeleton;
+import org.bukkit.entity.*;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import vn.giakhanhvn.skysim.util.Sputnik;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.entity.Skeleton;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftSkeleton;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.LivingEntity;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
-import java.util.List;
-
-import com.google.common.util.concurrent.AtomicDouble;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-
-import java.util.UUID;
-import java.util.ArrayList;
-
-import org.bukkit.entity.Entity;
-
-import java.util.Map;
+import java.util.*;
 
 public interface EntityFunction {
     Map<Entity, ArrayList<UUID>> FIRST_STRIKE_MAP = new HashMap<Entity, ArrayList<UUID>>();

@@ -1,33 +1,26 @@
 package vn.giakhanhvn.skysim.item.bow;
 
-import java.util.HashMap;
-
-import org.bukkit.event.entity.EntityShootBowEvent;
-import org.bukkit.entity.Arrow;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import vn.giakhanhvn.skysim.enchantment.Enchantment;
+import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
+import vn.giakhanhvn.skysim.item.*;
+import vn.giakhanhvn.skysim.user.PlayerStatistics;
+import vn.giakhanhvn.skysim.user.PlayerUtils;
+import vn.giakhanhvn.skysim.util.InventoryUpdate;
 import vn.giakhanhvn.skysim.util.SLog;
 import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.user.PlayerUtils;
-import vn.giakhanhvn.skysim.user.PlayerStatistics;
-import org.bukkit.projectiles.ProjectileSource;
-import org.bukkit.Sound;
-import vn.giakhanhvn.skysim.util.InventoryUpdate;
-import org.bukkit.event.block.Action;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
-import vn.giakhanhvn.skysim.item.SItem;
-import org.bukkit.event.player.PlayerInteractEvent;
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
 
-import java.util.UUID;
+import java.util.HashMap;
 import java.util.Map;
-
-import vn.giakhanhvn.skysim.item.ToolStatistics;
+import java.util.UUID;
 
 public class JujuShortBow implements ToolStatistics, BowFunction {
     public static final Map<UUID, Boolean> USABLE_JUJU;

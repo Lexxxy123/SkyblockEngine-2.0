@@ -1,11 +1,11 @@
 package vn.giakhanhvn.skysim.command;
 
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
-import vn.giakhanhvn.skysim.item.SItem;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
+import vn.giakhanhvn.skysim.item.SItem;
 
 @CommandParameters(description = "Adds an enchantment from Spec to the specified item.", aliases = "sench", permission = "spt.item")
 public class SpecEnchantmentCommand extends SCommand {

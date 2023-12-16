@@ -1,27 +1,22 @@
 package vn.giakhanhvn.skysim.gui;
 
-import java.util.List;
-import java.util.Collections;
-
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.util.SUtil;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import vn.giakhanhvn.skysim.item.ItemCategory;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+import vn.giakhanhvn.skysim.auction.AuctionItem;
+import vn.giakhanhvn.skysim.item.ItemCategory;
+import vn.giakhanhvn.skysim.item.Rarity;
 import vn.giakhanhvn.skysim.user.AuctionSettings;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.PaginationList;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
-
-import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.util.PaginationList;
-import vn.giakhanhvn.skysim.auction.AuctionItem;
-
-import java.util.Collection;
-
-import vn.giakhanhvn.skysim.user.User;
 
 public class AuctionsBrowserGUI extends GUI {
     private static final int[] INTERIOR;

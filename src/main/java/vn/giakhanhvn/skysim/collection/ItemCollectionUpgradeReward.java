@@ -1,7 +1,7 @@
 package vn.giakhanhvn.skysim.collection;
 
-import org.bukkit.entity.Player;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 public class ItemCollectionUpgradeReward extends ItemCollectionReward {
     private final String name;

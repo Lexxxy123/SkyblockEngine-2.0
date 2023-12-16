@@ -1,27 +1,22 @@
 package vn.giakhanhvn.skysim.entity.wolf;
 
+import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Wolf;
+import org.bukkit.scheduler.BukkitRunnable;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.entity.EntityFunction;
+import vn.giakhanhvn.skysim.entity.SEntity;
 import vn.giakhanhvn.skysim.entity.SEntityType;
 import vn.giakhanhvn.skysim.slayer.SlayerQuest;
 import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Wolf;
 import vn.giakhanhvn.skysim.util.SUtil;
 
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-
-import org.bukkit.GameMode;
-
 import java.util.List;
-
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-import vn.giakhanhvn.skysim.entity.SEntity;
-import org.bukkit.entity.LivingEntity;
-import vn.giakhanhvn.skysim.entity.EntityFunction;
+import java.util.stream.Collectors;
 
 public abstract class BaseWolf implements WolfStatistics, EntityFunction {
     private LivingEntity target;

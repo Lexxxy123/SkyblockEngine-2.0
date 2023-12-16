@@ -1,40 +1,23 @@
 package vn.giakhanhvn.skysim.item.weapon;
 
-import org.bukkit.Effect;
-import org.bukkit.util.Vector;
-
-import java.util.Iterator;
-
-import org.bukkit.Location;
-import vn.giakhanhvn.skysim.util.SUtil;
-import net.minecraft.server.v1_8_R3.Packet;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
+import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R3.EnumParticle;
-import org.bukkit.Sound;
-import vn.giakhanhvn.skysim.listener.PlayerListener;
-import org.bukkit.entity.Damageable;
-import vn.giakhanhvn.skysim.util.EntityManager;
-import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.EnderDragonPart;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Entity;
-import vn.giakhanhvn.skysim.util.Sputnik;
+import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
+import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.entity.*;
+import org.bukkit.util.Vector;
+import vn.giakhanhvn.skysim.item.*;
+import vn.giakhanhvn.skysim.listener.PlayerListener;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.EntityManager;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 import java.util.Set;
-
-import vn.giakhanhvn.skysim.item.SItem;
-import org.bukkit.entity.Player;
-import net.md_5.bungee.api.ChatColor;
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.Ability;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.ToolStatistics;
 
 public class Hyperion implements ToolStatistics, MaterialFunction, Ability {
     @Override

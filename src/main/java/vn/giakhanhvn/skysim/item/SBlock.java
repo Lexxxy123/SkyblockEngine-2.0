@@ -1,12 +1,10 @@
 package vn.giakhanhvn.skysim.item;
 
-import java.util.Iterator;
-
-import org.bukkit.configuration.ConfigurationSection;
-import vn.giakhanhvn.skysim.util.SUtil;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 public class SBlock {
     protected static final SkySimEngine plugin;

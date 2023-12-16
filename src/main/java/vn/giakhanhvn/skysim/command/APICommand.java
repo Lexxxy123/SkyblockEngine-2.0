@@ -1,22 +1,20 @@
 package vn.giakhanhvn.skysim.command;
 
-import javax.xml.bind.DatatypeConverter;
-import java.util.Base64;
-import java.security.MessageDigest;
-import java.util.UUID;
-
-import org.bukkit.entity.Player;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
 import vn.giakhanhvn.skysim.util.Sputnik;
 
+import javax.xml.bind.DatatypeConverter;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.user.User;
+import java.util.Base64;
+import java.util.UUID;
 
 @CommandParameters(description = "", aliases = "api", permission = "")
 public class APICommand extends SCommand {

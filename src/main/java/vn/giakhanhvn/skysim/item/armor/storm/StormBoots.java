@@ -1,10 +1,10 @@
 package vn.giakhanhvn.skysim.item.armor.storm;
 
-import vn.giakhanhvn.skysim.item.SpecificItemType;
 import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.armor.LeatherArmorStatistics;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
+import vn.giakhanhvn.skysim.item.Rarity;
+import vn.giakhanhvn.skysim.item.SpecificItemType;
+import vn.giakhanhvn.skysim.item.armor.LeatherArmorStatistics;
 
 public class StormBoots implements MaterialFunction, LeatherArmorStatistics {
     @Override

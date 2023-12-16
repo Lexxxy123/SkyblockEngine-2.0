@@ -1,51 +1,27 @@
 package vn.giakhanhvn.skysim.item.weapon;
 
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
-import vn.giakhanhvn.skysim.item.ShapedRecipe;
-import vn.giakhanhvn.skysim.item.SMaterial;
 import org.bukkit.Effect;
-
-import java.util.Random;
-import java.util.List;
-
-import vn.giakhanhvn.skysim.util.BlockFallAPI;
-import org.bukkit.util.Vector;
-import org.bukkit.block.Block;
-
-import java.util.Collection;
-import java.util.ArrayList;
-
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-
-import java.util.Iterator;
-
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
+import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
+import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.entity.EnderDragon;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.EnderDragonPart;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Entity;
-import org.bukkit.Location;
-import vn.giakhanhvn.skysim.util.SUtil;
+import org.bukkit.util.Vector;
 import vn.giakhanhvn.skysim.Repeater;
-import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.item.*;
 import vn.giakhanhvn.skysim.slayer.SlayerBossType;
-import vn.giakhanhvn.skysim.item.SItem;
-import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.BlockFallAPI;
+import vn.giakhanhvn.skysim.util.SUtil;
 import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.item.AbilityActivation;
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.Ownable;
-import vn.giakhanhvn.skysim.item.Ability;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.WandStatistics;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class GyrokineticWand implements WandStatistics, MaterialFunction, Ability, Ownable {
     @Override

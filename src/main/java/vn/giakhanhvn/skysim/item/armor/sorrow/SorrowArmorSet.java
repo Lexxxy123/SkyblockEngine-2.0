@@ -1,12 +1,12 @@
 package vn.giakhanhvn.skysim.item.armor.sorrow;
 
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.List;
-
-import vn.giakhanhvn.skysim.item.SItem;
 import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.item.MaterialStatistics;
+import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.item.armor.TickingSet;
+
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SorrowArmorSet implements TickingSet {
     @Override

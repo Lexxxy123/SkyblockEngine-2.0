@@ -1,11 +1,9 @@
 package vn.giakhanhvn.skysim.sequence;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import org.bukkit.entity.Entity;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AnimationSequenceType {

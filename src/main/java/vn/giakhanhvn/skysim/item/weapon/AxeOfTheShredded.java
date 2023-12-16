@@ -1,58 +1,25 @@
 package vn.giakhanhvn.skysim.item.weapon;
 
-import java.util.HashMap;
-
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-
-import java.util.Iterator;
-
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import vn.giakhanhvn.skysim.util.FerocityCalculation;
-import vn.giakhanhvn.skysim.listener.PlayerListener;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.user.User;
-import vn.giakhanhvn.skysim.util.Groups;
-import org.bukkit.entity.ItemFrame;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.EnderDragonPart;
-import org.bukkit.entity.Damageable;
-import org.bukkit.entity.Entity;
-import org.bukkit.util.EulerAngle;
 import org.bukkit.Material;
-
-import java.util.List;
-
-import org.bukkit.scheduler.BukkitRunnable;
-import vn.giakhanhvn.skysim.util.SLog;
-import org.bukkit.util.Vector;
-import vn.giakhanhvn.skysim.item.SMaterial;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.ArmorStand;
-import vn.giakhanhvn.skysim.util.DefenseReplacement;
-import vn.giakhanhvn.skysim.util.ManaReplacement;
-import vn.giakhanhvn.skysim.Repeater;
 import org.bukkit.Sound;
-import vn.giakhanhvn.skysim.util.SUtil;
+import org.bukkit.entity.*;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.EulerAngle;
+import org.bukkit.util.Vector;
+import vn.giakhanhvn.skysim.Repeater;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.item.*;
+import vn.giakhanhvn.skysim.listener.PlayerListener;
 import vn.giakhanhvn.skysim.user.PlayerUtils;
-import vn.giakhanhvn.skysim.user.PlayerStatistics;
-import org.bukkit.entity.LivingEntity;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.*;
 
 import java.util.ArrayList;
-
-import vn.giakhanhvn.skysim.item.SItem;
-import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import org.bukkit.entity.Player;
-
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import vn.giakhanhvn.skysim.item.Ability;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.ToolStatistics;
 
 public class AxeOfTheShredded implements ToolStatistics, MaterialFunction, Ability {
     private static final Map<Player, Integer> axeThrows;

@@ -1,13 +1,13 @@
 package vn.giakhanhvn.skysim.gui;
 
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.Material;
 import org.bukkit.ChatColor;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.Sound;
 import org.bukkit.Location;
-import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 public class LiftGUI extends GUI {
     public LiftGUI() {

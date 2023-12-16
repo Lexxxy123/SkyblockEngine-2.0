@@ -1,8 +1,8 @@
 package vn.giakhanhvn.skysim.item.dragon.superior;
 
 import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
+import vn.giakhanhvn.skysim.item.Rarity;
 import vn.giakhanhvn.skysim.item.SkullStatistics;
 
 public class SuperiorDragonFragment implements SkullStatistics, MaterialFunction {

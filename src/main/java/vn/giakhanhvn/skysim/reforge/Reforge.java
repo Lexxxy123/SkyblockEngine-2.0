@@ -1,12 +1,10 @@
 package vn.giakhanhvn.skysim.reforge;
 
-import java.util.Arrays;
-
 import vn.giakhanhvn.skysim.item.GenericItemType;
-
-import java.util.List;
-
 import vn.giakhanhvn.skysim.item.RarityValue;
+
+import java.util.Arrays;
+import java.util.List;
 
 public interface Reforge {
     String getName();

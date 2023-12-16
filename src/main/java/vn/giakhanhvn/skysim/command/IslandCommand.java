@@ -1,8 +1,8 @@
 package vn.giakhanhvn.skysim.command;
 
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.user.PlayerUtils;
-import org.bukkit.command.ConsoleCommandSender;
 
 @CommandParameters(description = "go to or create your island", aliases = "is")
 public class IslandCommand extends SCommand {

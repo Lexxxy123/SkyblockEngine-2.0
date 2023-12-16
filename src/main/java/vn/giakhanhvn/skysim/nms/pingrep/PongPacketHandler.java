@@ -1,10 +1,10 @@
 package vn.giakhanhvn.skysim.nms.pingrep;
 
-import java.lang.reflect.Method;
+import net.minecraft.server.v1_8_R3.PacketStatusOutPong;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-
-import net.minecraft.server.v1_8_R3.PacketStatusOutPong;
+import java.lang.reflect.Method;
 
 public class PongPacketHandler extends PongPacket {
     public PongPacketHandler(final PingEvent reply) {

@@ -1,19 +1,17 @@
 package vn.giakhanhvn.skysim.util;
 
-import java.util.HashMap;
-
-import org.bukkit.entity.Entity;
-import vn.giakhanhvn.skysim.listener.PlayerListener;
-import vn.giakhanhvn.skysim.entity.nms.VoidgloomSeraph;
-import org.bukkit.entity.Enderman;
 import org.bukkit.entity.EnderDragon;
-import vn.giakhanhvn.skysim.user.PlayerUtils;
-import vn.giakhanhvn.skysim.user.PlayerStatistics;
+import org.bukkit.entity.Enderman;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.entity.nms.VoidgloomSeraph;
+import vn.giakhanhvn.skysim.listener.PlayerListener;
+import vn.giakhanhvn.skysim.user.PlayerStatistics;
+import vn.giakhanhvn.skysim.user.PlayerUtils;
 
-import java.util.UUID;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class FerocityCalculation {
     public static final Map<UUID, Integer> ONE_TYPE_FEROCITY_BONUS_ENDERMAN;

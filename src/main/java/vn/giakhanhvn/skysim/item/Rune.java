@@ -1,7 +1,7 @@
 package vn.giakhanhvn.skysim.item;
 
-import vn.giakhanhvn.skysim.util.SUtil;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 public interface Rune extends SkullStatistics, MaterialFunction, ItemData {
     default NBTTagCompound getData() {

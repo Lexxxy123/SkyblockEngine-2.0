@@ -1,9 +1,9 @@
 package vn.giakhanhvn.skysim.entity.den;
 
-import vn.giakhanhvn.skysim.entity.SEntityType;
-import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.entity.Entity;
 import vn.giakhanhvn.skysim.entity.SEntity;
+import vn.giakhanhvn.skysim.entity.SEntityType;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 public class BroodMother extends BaseSpider {
     @Override

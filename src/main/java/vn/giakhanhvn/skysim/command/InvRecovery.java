@@ -1,13 +1,12 @@
 package vn.giakhanhvn.skysim.command;
 
-import org.bukkit.entity.Player;
-
-import java.io.IOException;
-
-import vn.giakhanhvn.skysim.user.User;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.user.User;
+
+import java.io.IOException;
 
 @CommandParameters(description = "bruhbu", aliases = "datarec")
 public class InvRecovery extends SCommand {

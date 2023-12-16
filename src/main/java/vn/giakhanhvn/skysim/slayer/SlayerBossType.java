@@ -1,19 +1,14 @@
 package vn.giakhanhvn.skysim.slayer;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
+import vn.giakhanhvn.skysim.entity.SEntityType;
+import vn.giakhanhvn.skysim.util.SUtil;
 import vn.giakhanhvn.skysim.util.Sputnik;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-
-import org.bukkit.entity.EntityType;
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.ChatColor;
-
 import java.util.Arrays;
-
-import vn.giakhanhvn.skysim.entity.SEntityType;
-
 import java.util.List;
 
 public class SlayerBossType {

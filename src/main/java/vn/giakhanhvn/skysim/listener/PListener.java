@@ -1,8 +1,7 @@
 package vn.giakhanhvn.skysim.listener;
 
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
 import org.bukkit.event.Listener;
+import vn.giakhanhvn.skysim.SkySimEngine;
 
 public class PListener implements Listener {
     private static int amount;

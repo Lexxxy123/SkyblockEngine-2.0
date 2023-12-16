@@ -1,16 +1,14 @@
 package vn.giakhanhvn.skysim.command;
 
-import java.util.Iterator;
-
 import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.user.User;
 import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 import java.util.Map;
+import java.util.UUID;
 
 @CommandParameters(description = "Modify your coin amount.", usage = "", aliases = "ss")
 public class ServerCommand extends SCommand {

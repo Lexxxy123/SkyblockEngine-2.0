@@ -1,22 +1,16 @@
 package vn.giakhanhvn.skysim.nms.nmsutil.apihelper;
 
-import java.util.HashMap;
-
-import vn.giakhanhvn.skysim.nms.nmsutil.apihelper.exception.MissingHostException;
-
-import java.util.HashSet;
-import java.util.Iterator;
-
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
-import vn.giakhanhvn.skysim.nms.nmsutil.apihelper.exception.APIRegistrationException;
-
-import java.util.logging.Logger;
-
 import org.bukkit.plugin.Plugin;
+import vn.giakhanhvn.skysim.nms.nmsutil.apihelper.exception.APIRegistrationException;
+import vn.giakhanhvn.skysim.nms.nmsutil.apihelper.exception.MissingHostException;
 
-import java.util.Set;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.logging.Logger;
 
 public class APIManager {
     private static final Map<API, RegisteredAPI> HOST_MAP;

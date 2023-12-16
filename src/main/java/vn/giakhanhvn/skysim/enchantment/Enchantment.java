@@ -1,14 +1,13 @@
 package vn.giakhanhvn.skysim.enchantment;
 
-import java.util.Iterator;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import vn.giakhanhvn.skysim.util.SUtil;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Enchantment implements ConfigurationSerializable {
     private final EnchantmentType type;

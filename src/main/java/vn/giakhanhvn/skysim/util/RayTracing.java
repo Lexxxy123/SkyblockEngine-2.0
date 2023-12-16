@@ -2,11 +2,9 @@ package vn.giakhanhvn.skysim.util;
 
 import org.bukkit.Effect;
 import org.bukkit.World;
-
-import java.util.Iterator;
-import java.util.ArrayList;
-
 import org.bukkit.util.Vector;
+
+import java.util.ArrayList;
 
 public class RayTracing {
     Vector origin;

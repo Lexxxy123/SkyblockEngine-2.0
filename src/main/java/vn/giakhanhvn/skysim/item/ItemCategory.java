@@ -1,8 +1,8 @@
 package vn.giakhanhvn.skysim.item;
 
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.ChatColor;
+import org.bukkit.inventory.ItemStack;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 public enum ItemCategory {
     WEAPONS("Weapons", ChatColor.GOLD, (short) 1),

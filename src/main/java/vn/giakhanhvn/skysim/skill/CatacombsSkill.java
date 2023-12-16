@@ -1,8 +1,8 @@
 package vn.giakhanhvn.skysim.skill;
 
 import vn.giakhanhvn.skysim.user.User;
-import vn.giakhanhvn.skysim.util.Sputnik;
 import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 import java.util.Arrays;
 import java.util.List;

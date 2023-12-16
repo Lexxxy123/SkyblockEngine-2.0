@@ -1,71 +1,28 @@
 package vn.giakhanhvn.skysim.dimoon;
 
-import java.util.UUID;
-
+import com.google.common.collect.*;
+import com.xxmicloxx.NoteBlockAPI.songplayer.PositionSongPlayer;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
+import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
-import org.bukkit.World;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.dimoon.abilities.Void;
+import vn.giakhanhvn.skysim.dimoon.abilities.*;
+import vn.giakhanhvn.skysim.dimoon.listeners.PlayerListener;
+import vn.giakhanhvn.skysim.dimoon.utils.Utils;
+import vn.giakhanhvn.skysim.entity.dungeons.watcher.GlobalBossBar;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.EntityManager;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 import java.io.IOException;
-
-import org.bukkit.inventory.ItemStack;
-
-import java.util.Set;
-
-import org.bukkit.Effect;
-import org.bukkit.GameMode;
-import vn.giakhanhvn.skysim.dimoon.listeners.PlayerListener;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
-import com.google.common.collect.HashMultimap;
-import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.user.User;
-import vn.giakhanhvn.skysim.entity.dungeons.watcher.GlobalBossBar;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.metadata.FixedMetadataValue;
-import vn.giakhanhvn.skysim.util.EntityManager;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import org.bukkit.entity.EntityType;
-import org.bukkit.Location;
-import org.bukkit.Bukkit;
-
-import java.util.TreeMap;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Comparator;
-
-import com.google.common.collect.Ordering;
-
-import java.util.Arrays;
-
-import vn.giakhanhvn.skysim.dimoon.abilities.Healing;
-import vn.giakhanhvn.skysim.dimoon.abilities.Void;
-import vn.giakhanhvn.skysim.dimoon.abilities.FireRain;
-import vn.giakhanhvn.skysim.dimoon.abilities.WitherBullet;
-import vn.giakhanhvn.skysim.dimoon.abilities.WindForce;
-
-import java.util.Iterator;
-
-import org.bukkit.entity.Entity;
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.Sound;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.dimoon.utils.Utils;
-import org.bukkit.scheduler.BukkitRunnable;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.scheduler.BukkitTask;
-
-import java.util.Map;
-
-import com.google.common.collect.TreeMultimap;
-import com.xxmicloxx.NoteBlockAPI.songplayer.PositionSongPlayer;
-import vn.giakhanhvn.skysim.dimoon.abilities.Ability;
-
-import java.util.List;
-
-import org.bukkit.entity.LivingEntity;
+import java.util.*;
 
 public class Dimoon {
     public static final int MAX_HEALTH = 100000;

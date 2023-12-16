@@ -1,15 +1,14 @@
 package vn.giakhanhvn.skysim.entity.nms;
 
-import net.minecraft.server.v1_8_R3.Entity;
-import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.Location;
-import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import net.minecraft.server.v1_8_R3.EntityArmorStand;
 import net.minecraft.server.v1_8_R3.World;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import vn.giakhanhvn.skysim.entity.EntityFunction;
 import vn.giakhanhvn.skysim.entity.EntityStatistics;
-import net.minecraft.server.v1_8_R3.EntityArmorStand;
 
 public class UncollidableArmorStand extends EntityArmorStand implements EntityStatistics, EntityFunction, SNMSEntity {
     public UncollidableArmorStand(final World world) {

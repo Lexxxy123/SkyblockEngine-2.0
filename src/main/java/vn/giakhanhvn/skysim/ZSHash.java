@@ -1,8 +1,8 @@
 package vn.giakhanhvn.skysim;
 
 import java.util.HashMap;
-import java.util.UUID;
 import java.util.Map;
+import java.util.UUID;
 
 public class ZSHash {
     public static final Map<UUID, Integer> Charges;

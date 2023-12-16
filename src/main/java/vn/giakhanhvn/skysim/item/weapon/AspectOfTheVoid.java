@@ -1,24 +1,15 @@
 package vn.giakhanhvn.skysim.item.weapon;
 
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Location;
-import vn.giakhanhvn.skysim.item.PlayerBoostStatistics;
-import vn.giakhanhvn.skysim.user.PlayerUtils;
-import vn.giakhanhvn.skysim.user.PlayerStatistics;
-import org.bukkit.Sound;
-import vn.giakhanhvn.skysim.util.Sputnik;
 import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.item.*;
+import vn.giakhanhvn.skysim.user.PlayerUtils;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 import java.util.Set;
-
-import vn.giakhanhvn.skysim.item.SItem;
-import org.bukkit.entity.Player;
-import net.md_5.bungee.api.ChatColor;
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.Ability;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.ToolStatistics;
 
 public class AspectOfTheVoid implements ToolStatistics, MaterialFunction, Ability {
     @Override

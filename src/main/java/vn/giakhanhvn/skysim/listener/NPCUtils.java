@@ -1,11 +1,10 @@
 package vn.giakhanhvn.skysim.listener;
 
-import java.util.HashMap;
-
-import vn.giakhanhvn.skysim.util.SLog;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.entity.Entity;
+import vn.giakhanhvn.skysim.util.SLog;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class NPCUtils {

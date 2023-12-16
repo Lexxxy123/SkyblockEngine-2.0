@@ -1,8 +1,8 @@
 package vn.giakhanhvn.skysim.item;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import org.bukkit.entity.Player;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 

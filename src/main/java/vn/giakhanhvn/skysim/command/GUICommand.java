@@ -1,9 +1,9 @@
 package vn.giakhanhvn.skysim.command;
 
-import vn.giakhanhvn.skysim.gui.GUI;
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.gui.GUIType;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.gui.GUI;
+import vn.giakhanhvn.skysim.gui.GUIType;
 
 @CommandParameters(description = "Opens a GUI.", permission = "spt.gui.edit")
 public class GUICommand extends SCommand {

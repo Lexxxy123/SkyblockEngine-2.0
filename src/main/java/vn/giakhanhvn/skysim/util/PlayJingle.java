@@ -1,19 +1,15 @@
 package vn.giakhanhvn.skysim.util;
 
-import java.util.Iterator;
-
 import com.xxmicloxx.NoteBlockAPI.model.Song;
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.entity.dungeons.boss.sadan.SadanHuman;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.entity.Player;
 import com.xxmicloxx.NoteBlockAPI.songplayer.PositionSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.entity.dungeons.boss.sadan.SadanHuman;
 
 import java.io.File;
-
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.Location;
 
 public class PlayJingle {
     public static void play(final SkySimSong eff, final byte volume, final Location loc, final int radius) {

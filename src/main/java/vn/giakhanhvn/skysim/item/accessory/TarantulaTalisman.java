@@ -1,17 +1,16 @@
 package vn.giakhanhvn.skysim.item.accessory;
 
-import java.util.HashMap;
-
 import com.google.common.util.concurrent.AtomicDouble;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.item.SItem;
-import vn.giakhanhvn.skysim.item.SpecificItemType;
 import vn.giakhanhvn.skysim.item.GenericItemType;
 import vn.giakhanhvn.skysim.item.Rarity;
+import vn.giakhanhvn.skysim.item.SItem;
+import vn.giakhanhvn.skysim.item.SpecificItemType;
 
-import java.util.UUID;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class TarantulaTalisman implements AccessoryStatistics, AccessoryFunction {
     private static final Map<UUID, Integer> HITS;

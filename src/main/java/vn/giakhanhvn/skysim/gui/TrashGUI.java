@@ -1,13 +1,13 @@
 package vn.giakhanhvn.skysim.gui;
 
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.Material;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.Sound;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 public class TrashGUI extends GUI {
     public TrashGUI(final String query, final int page) {

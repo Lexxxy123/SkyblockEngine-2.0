@@ -1,84 +1,52 @@
 package vn.giakhanhvn.skysim.user;
 
-import java.util.*;
-
-import vn.giakhanhvn.skysim.gui.SlayerGUI;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.MaterialStatistics;
-import vn.giakhanhvn.skysim.extra.protocol.PacketInvoker;
-import vn.giakhanhvn.skysim.slayer.SlayerBossType;
-
-import vn.giakhanhvn.skysim.entity.EntityDropType;
-import vn.giakhanhvn.skysim.util.SLog;
-import vn.giakhanhvn.skysim.entity.EntityDrop;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.metadata.FixedMetadataValue;
-import vn.giakhanhvn.skysim.slayer.SlayerQuest;
-import vn.giakhanhvn.skysim.entity.nms.SlayerBoss;
-import vn.giakhanhvn.skysim.skill.CombatSkill;
-import vn.giakhanhvn.skysim.entity.dungeons.watcher.Watcher;
 import com.google.common.util.concurrent.AtomicDouble;
+import net.milkbowl.vault.economy.Economy;
+import org.bukkit.*;
+import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.scheduler.BukkitRunnable;
+import vn.giakhanhvn.skysim.Repeater;
+import vn.giakhanhvn.skysim.SkySimEngine;
 import vn.giakhanhvn.skysim.config.Config;
-import org.bukkit.World;
-import org.bukkit.Location;
+import vn.giakhanhvn.skysim.dungeons.ItemSerial;
+import vn.giakhanhvn.skysim.enchantment.Enchantment;
+import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
+import vn.giakhanhvn.skysim.entity.EntityDrop;
+import vn.giakhanhvn.skysim.entity.EntityDropType;
+import vn.giakhanhvn.skysim.entity.EntityFunction;
+import vn.giakhanhvn.skysim.entity.SEntity;
+import vn.giakhanhvn.skysim.entity.dungeons.watcher.Watcher;
+import vn.giakhanhvn.skysim.entity.nms.SlayerBoss;
+import vn.giakhanhvn.skysim.extra.protocol.PacketInvoker;
+import vn.giakhanhvn.skysim.gui.SlayerGUI;
+import vn.giakhanhvn.skysim.item.*;
+import vn.giakhanhvn.skysim.item.accessory.AccessoryFunction;
+import vn.giakhanhvn.skysim.item.armor.ArmorSet;
+import vn.giakhanhvn.skysim.item.armor.VoidlingsWardenHelmet;
+import vn.giakhanhvn.skysim.item.armor.gigachad.GigachadSet;
+import vn.giakhanhvn.skysim.item.armor.minichad.MinichadSet;
+import vn.giakhanhvn.skysim.item.pet.Pet;
+import vn.giakhanhvn.skysim.item.weapon.EdibleMace;
+import vn.giakhanhvn.skysim.listener.PlayerListener;
+import vn.giakhanhvn.skysim.potion.ActivePotionEffect;
+import vn.giakhanhvn.skysim.potion.PotionEffectType;
+import vn.giakhanhvn.skysim.reforge.Reforge;
+import vn.giakhanhvn.skysim.skill.CombatSkill;
+import vn.giakhanhvn.skysim.skill.Skill;
+import vn.giakhanhvn.skysim.slayer.SlayerBossType;
+import vn.giakhanhvn.skysim.slayer.SlayerQuest;
+import vn.giakhanhvn.skysim.util.*;
 
 import java.io.File;
-
-import vn.giakhanhvn.skysim.util.BlankWorldCreator;
-
-import vn.giakhanhvn.skysim.util.ManaReplacement;
-
-import vn.giakhanhvn.skysim.item.Ability;
-import vn.giakhanhvn.skysim.util.DefenseReplacement;
-import vn.giakhanhvn.skysim.Repeater;
-import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.item.AbilityActivation;
-import org.bukkit.Effect;
-import org.bukkit.Sound;
-import vn.giakhanhvn.skysim.item.armor.VoidlingsWardenHelmet;
-import vn.giakhanhvn.skysim.entity.EntityFunction;
-import vn.giakhanhvn.skysim.item.weapon.EdibleMace;
-import vn.giakhanhvn.skysim.skill.Skill;
-import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.potion.PotionEffectType;
-import vn.giakhanhvn.skysim.listener.PlayerListener;
-import org.bukkit.Material;
-import org.bukkit.block.BlockFace;
-import vn.giakhanhvn.skysim.util.Groups;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
-import vn.giakhanhvn.skysim.potion.ActivePotionEffect;
-import org.bukkit.inventory.ItemStack;
-import vn.giakhanhvn.skysim.item.accessory.AccessoryFunction;
-
-import vn.giakhanhvn.skysim.item.armor.ArmorSet;
-import vn.giakhanhvn.skysim.item.armor.minichad.MinichadSet;
-import vn.giakhanhvn.skysim.item.armor.gigachad.GigachadSet;
-import net.milkbowl.vault.economy.Economy;
-import org.bukkit.OfflinePlayer;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.TickingMaterial;
-import org.bukkit.entity.Entity;
-
-import org.bukkit.entity.EntityType;
-import vn.giakhanhvn.skysim.enchantment.Enchantment;
-import vn.giakhanhvn.skysim.item.PlayerBoostStatistics;
-import vn.giakhanhvn.skysim.dungeons.ItemSerial;
-import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
-import vn.giakhanhvn.skysim.reforge.Reforge;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.pet.Pet;
-import org.bukkit.Bukkit;
-import org.bukkit.inventory.PlayerInventory;
-
-import vn.giakhanhvn.skysim.item.SItem;
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.entity.SEntity;
-import vn.giakhanhvn.skysim.item.SMaterial;
+import java.util.*;
 
 public final class PlayerUtils {
     public static final Map<UUID, Boolean> AUTO_SLAYER;

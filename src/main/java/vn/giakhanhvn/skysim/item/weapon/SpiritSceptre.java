@@ -1,55 +1,29 @@
 package vn.giakhanhvn.skysim.item.weapon;
 
-import java.util.Collection;
-
-import org.bukkit.inventory.PlayerInventory;
-
-import java.util.Iterator;
-
+import org.bukkit.ChatColor;
+import org.bukkit.Effect;
 import org.bukkit.Location;
+import org.bukkit.Sound;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.entity.SEntity;
+import vn.giakhanhvn.skysim.entity.SEntityType;
+import vn.giakhanhvn.skysim.item.*;
+import vn.giakhanhvn.skysim.user.PlayerStatistics;
+import vn.giakhanhvn.skysim.user.PlayerUtils;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.EntityManager;
+import vn.giakhanhvn.skysim.util.Groups;
+import vn.giakhanhvn.skysim.util.SLog;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 import java.text.DecimalFormat;
-
-import vn.giakhanhvn.skysim.util.SLog;
-import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.entity.SEntityType;
-import vn.giakhanhvn.skysim.user.User;
-import vn.giakhanhvn.skysim.util.Groups;
-import org.bukkit.entity.ItemFrame;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.EnderDragonPart;
-import org.bukkit.entity.LivingEntity;
-import vn.giakhanhvn.skysim.entity.SEntity;
-import vn.giakhanhvn.skysim.item.SMaterial;
-import org.bukkit.entity.Damageable;
-import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.user.PlayerUtils;
-import vn.giakhanhvn.skysim.user.PlayerStatistics;
-import org.bukkit.Effect;
-import org.bukkit.Sound;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import java.util.ArrayList;
-
-import org.bukkit.util.Vector;
-import org.bukkit.entity.Entity;
-import vn.giakhanhvn.skysim.util.EntityManager;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.metadata.FixedMetadataValue;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Bat;
-import vn.giakhanhvn.skysim.item.SItem;
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.Ability;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.ToolStatistics;
+import java.util.Collection;
 
 public class SpiritSceptre implements ToolStatistics, MaterialFunction, Ability {
     String ACT3;

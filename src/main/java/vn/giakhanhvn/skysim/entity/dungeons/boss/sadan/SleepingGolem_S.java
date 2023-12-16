@@ -1,18 +1,16 @@
 package vn.giakhanhvn.skysim.entity.dungeons.boss.sadan;
 
-import vn.giakhanhvn.skysim.entity.SEntityType;
 import org.bukkit.Location;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.metadata.FixedMetadataValue;
 import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.entity.Entity;
-import vn.giakhanhvn.skysim.util.EntityManager;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
 import vn.giakhanhvn.skysim.entity.SEntity;
-import org.bukkit.entity.LivingEntity;
-import vn.giakhanhvn.skysim.util.Sputnik;
+import vn.giakhanhvn.skysim.entity.SEntityType;
 import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
+import vn.giakhanhvn.skysim.util.EntityManager;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 public class SleepingGolem_S extends BaseZombie {
     @Override

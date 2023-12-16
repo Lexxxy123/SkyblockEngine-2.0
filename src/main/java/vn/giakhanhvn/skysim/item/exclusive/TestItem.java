@@ -1,10 +1,6 @@
 package vn.giakhanhvn.skysim.item.exclusive;
 
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.Enchantable;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.SkullStatistics;
+import vn.giakhanhvn.skysim.item.*;
 
 public class TestItem implements SkullStatistics, MaterialFunction, Enchantable {
     @Override

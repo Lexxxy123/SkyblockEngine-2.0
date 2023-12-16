@@ -1,19 +1,14 @@
 package vn.giakhanhvn.skysim.entity;
 
-import java.util.HashMap;
-
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Block;
-
-import java.util.Iterator;
-
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import vn.giakhanhvn.skysim.SkySimEngine;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 import java.util.Map;
+import java.util.UUID;
 
 public final class StaticDragonManager {
     public static boolean ACTIVE;

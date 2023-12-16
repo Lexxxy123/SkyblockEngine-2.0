@@ -1,15 +1,13 @@
 package vn.giakhanhvn.skysim.item.accessory;
 
-import java.util.Arrays;
-
 import org.bukkit.ChatColor;
-
-import java.util.List;
-
-import vn.giakhanhvn.skysim.item.SpecificItemType;
 import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
+import vn.giakhanhvn.skysim.item.Rarity;
+import vn.giakhanhvn.skysim.item.SpecificItemType;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class CrackedPiggyBank implements AccessoryStatistics, MaterialFunction {
     @Override

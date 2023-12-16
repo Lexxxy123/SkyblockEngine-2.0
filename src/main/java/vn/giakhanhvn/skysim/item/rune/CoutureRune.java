@@ -1,10 +1,10 @@
 package vn.giakhanhvn.skysim.item.rune;
 
-import vn.giakhanhvn.skysim.item.SpecificItemType;
+import org.bukkit.ChatColor;
 import vn.giakhanhvn.skysim.item.GenericItemType;
 import vn.giakhanhvn.skysim.item.Rarity;
-import org.bukkit.ChatColor;
 import vn.giakhanhvn.skysim.item.Rune;
+import vn.giakhanhvn.skysim.item.SpecificItemType;
 
 public class CoutureRune implements Rune {
     @Override

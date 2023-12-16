@@ -1,10 +1,8 @@
 package vn.giakhanhvn.skysim.skill;
 
-import java.util.ArrayList;
-
 import vn.giakhanhvn.skysim.user.User;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 

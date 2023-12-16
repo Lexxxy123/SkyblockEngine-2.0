@@ -1,12 +1,11 @@
 package vn.giakhanhvn.skysim.entity.den;
 
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import vn.giakhanhvn.skysim.util.SUtil;
+import org.bukkit.scheduler.BukkitRunnable;
+import vn.giakhanhvn.skysim.SkySimEngine;
 import vn.giakhanhvn.skysim.entity.EntityFunction;
 import vn.giakhanhvn.skysim.entity.SlimeStatistics;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 public class SpidersDenSlime implements SlimeStatistics, EntityFunction {
     @Override

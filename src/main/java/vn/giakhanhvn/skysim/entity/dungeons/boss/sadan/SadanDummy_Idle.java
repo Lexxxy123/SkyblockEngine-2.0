@@ -1,22 +1,19 @@
 package vn.giakhanhvn.skysim.entity.dungeons.boss.sadan;
 
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.Color;
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.Location;
 import org.bukkit.Material;
-import vn.giakhanhvn.skysim.entity.SEntityEquipment;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import vn.giakhanhvn.skysim.SkySimEngine;
-import vn.giakhanhvn.skysim.util.EntityManager;
-import org.bukkit.entity.Entity;
-import org.bukkit.Location;
 import vn.giakhanhvn.skysim.entity.SEntity;
-import org.bukkit.entity.LivingEntity;
-import vn.giakhanhvn.skysim.util.Sputnik;
+import vn.giakhanhvn.skysim.entity.SEntityEquipment;
 import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
+import vn.giakhanhvn.skysim.util.EntityManager;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 public class SadanDummy_Idle extends BaseZombie {
     @Override

@@ -1,54 +1,25 @@
 package vn.giakhanhvn.skysim.entity.nms;
 
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.FallingBlock;
+import org.bukkit.*;
 import org.bukkit.block.Block;
-import vn.giakhanhvn.skysim.util.BlockFallAPI;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.Color;
-import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
+import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageEvent;
-import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.Sound;
-import org.bukkit.Effect;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Arrow;
-
-import java.util.List;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Collection;
-import java.util.UUID;
-import java.util.Map;
-import java.util.ArrayList;
-
-import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.entity.SEntityEquipment;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.util.Vector;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.util.Vector;
 import vn.giakhanhvn.skysim.SkySimEngine;
-import vn.giakhanhvn.skysim.util.EntityManager;
-import org.bukkit.entity.Entity;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.Material;
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
 import vn.giakhanhvn.skysim.entity.SEntity;
-
-import java.util.Iterator;
-
-import org.bukkit.entity.Player;
-import org.bukkit.World;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.util.BossBar;
-import org.bukkit.entity.LivingEntity;
+import vn.giakhanhvn.skysim.entity.SEntityEquipment;
 import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.*;
+
+import java.util.*;
 
 public class Giant extends BaseZombie {
     private static LivingEntity e;

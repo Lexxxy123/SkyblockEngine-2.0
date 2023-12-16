@@ -1,10 +1,10 @@
 package vn.giakhanhvn.skysim.item.oddities;
 
 import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.item.Rarity;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
+import vn.giakhanhvn.skysim.item.Rarity;
 import vn.giakhanhvn.skysim.item.SkullStatistics;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 public class DimoonCatalyst implements SkullStatistics, MaterialFunction {
     @Override

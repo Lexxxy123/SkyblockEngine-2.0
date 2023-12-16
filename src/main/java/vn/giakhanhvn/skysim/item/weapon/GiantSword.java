@@ -1,43 +1,23 @@
 package vn.giakhanhvn.skysim.item.weapon;
 
-import java.util.Iterator;
-
-import org.bukkit.Location;
-import org.bukkit.scheduler.BukkitRunnable;
-import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.listener.PlayerListener;
-import org.bukkit.entity.Damageable;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.EnderDragonPart;
-import org.bukkit.entity.LivingEntity;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.Sound;
-import vn.giakhanhvn.skysim.item.SMaterial;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.entity.*;
 import org.bukkit.metadata.FixedMetadataValue;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.entity.Entity;
-import vn.giakhanhvn.skysim.util.EntityManager;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Giant;
+import org.bukkit.scheduler.BukkitRunnable;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.item.*;
+import vn.giakhanhvn.skysim.listener.PlayerListener;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.EntityManager;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 import java.util.Set;
-
-import vn.giakhanhvn.skysim.item.SItem;
-import org.bukkit.entity.Player;
-import net.md_5.bungee.api.ChatColor;
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.Ability;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.ToolStatistics;
 
 public class GiantSword implements ToolStatistics, MaterialFunction, Ability {
     @Override

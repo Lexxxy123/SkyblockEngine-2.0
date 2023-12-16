@@ -1,18 +1,15 @@
 package vn.giakhanhvn.skysim.gui;
 
-import java.util.Iterator;
-import java.util.Collection;
-
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.collection.ItemCollectionCategory;
-import org.bukkit.Material;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.collection.ItemCollection;
-
-import java.util.concurrent.atomic.AtomicInteger;
-
+import vn.giakhanhvn.skysim.collection.ItemCollectionCategory;
 import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
+
+import java.util.Collection;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class CollectionMenuGUI extends GUI {
     public CollectionMenuGUI() {

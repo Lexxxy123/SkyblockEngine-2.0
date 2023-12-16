@@ -1,25 +1,21 @@
 package vn.giakhanhvn.skysim.entity.nms;
 
-import net.minecraft.server.v1_8_R3.Entity;
-import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.entity.LivingEntity;
+import net.minecraft.server.v1_8_R3.EntityCreeper;
+import net.minecraft.server.v1_8_R3.World;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.entity.Creeper;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.scheduler.BukkitRunnable;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.entity.EntityStatistics;
 import vn.giakhanhvn.skysim.entity.SEntity;
+import vn.giakhanhvn.skysim.entity.caverns.CreeperFunction;
+import vn.giakhanhvn.skysim.event.CreeperIgniteEvent;
 
 import java.lang.reflect.Field;
-
-import org.bukkit.event.Event;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import vn.giakhanhvn.skysim.event.CreeperIgniteEvent;
-import org.bukkit.entity.Creeper;
-import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
-import net.minecraft.server.v1_8_R3.World;
-import vn.giakhanhvn.skysim.entity.caverns.CreeperFunction;
-import vn.giakhanhvn.skysim.entity.EntityStatistics;
-import net.minecraft.server.v1_8_R3.EntityCreeper;
 
 public class SneakyCreeper extends EntityCreeper implements EntityStatistics, SNMSEntity, CreeperFunction {
     public SneakyCreeper(final World world) {

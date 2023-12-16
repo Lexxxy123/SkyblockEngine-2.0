@@ -1,9 +1,9 @@
 package vn.giakhanhvn.skysim.command;
 
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.entity.dungeons.boss.sadan.SadanBossManager;
-import org.bukkit.Bukkit;
 import vn.giakhanhvn.skysim.util.Sputnik;
 
 @CommandParameters(description = "Spec test command.", aliases = "fed")

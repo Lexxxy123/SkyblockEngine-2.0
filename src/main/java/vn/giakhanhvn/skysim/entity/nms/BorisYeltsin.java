@@ -1,46 +1,37 @@
 package vn.giakhanhvn.skysim.entity.nms;
 
-import java.util.HashMap;
-
-import de.slikey.effectlib.util.ParticleEffect;
-import de.slikey.effectlib.effect.ConeEffect;
-import org.bukkit.Location;
-import org.bukkit.inventory.ItemStack;
-import vn.giakhanhvn.skysim.entity.SEntityEquipment;
-import org.bukkit.util.Vector;
 import com.google.common.util.concurrent.AtomicDouble;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher;
+import de.slikey.effectlib.effect.ConeEffect;
+import de.slikey.effectlib.util.ParticleEffect;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
-
-import java.util.Iterator;
-
+import me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher;
 import net.minecraft.server.v1_8_R3.EntityLiving;
-import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.Bukkit;
-import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.GameMode;
-import org.bukkit.entity.Player;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.metadata.FixedMetadataValue;
-import vn.giakhanhvn.skysim.util.EntityManager;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.entity.ArmorStand;
+import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
-import vn.giakhanhvn.skysim.entity.SEntity;
-import org.bukkit.entity.LivingEntity;
-import vn.giakhanhvn.skysim.util.Sputnik;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
-
-import java.util.Map;
-
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.entity.SEntity;
+import vn.giakhanhvn.skysim.entity.SEntityEquipment;
 import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
+import vn.giakhanhvn.skysim.util.EntityManager;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class BorisYeltsin extends BaseZombie {
     public static final Map<Entity, String> DIALOUGE_BOSS;

@@ -1,10 +1,6 @@
 package vn.giakhanhvn.skysim.item.oddities;
 
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.SkullStatistics;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.MaterialStatistics;
+import vn.giakhanhvn.skysim.item.*;
 
 public class JudgementCore implements MaterialStatistics, MaterialFunction, SkullStatistics {
     @Override

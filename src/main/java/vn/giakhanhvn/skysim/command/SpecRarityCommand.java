@@ -1,11 +1,11 @@
 package vn.giakhanhvn.skysim.command;
 
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.SItem;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import vn.giakhanhvn.skysim.item.Rarity;
+import vn.giakhanhvn.skysim.item.SItem;
 
 @CommandParameters(description = "Modifies the rarity of an item.", aliases = "rar", permission = "spt.item")
 public class SpecRarityCommand extends SCommand {

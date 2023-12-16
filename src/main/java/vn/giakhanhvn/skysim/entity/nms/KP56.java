@@ -1,12 +1,11 @@
 package vn.giakhanhvn.skysim.entity.nms;
 
-import net.minecraft.server.v1_8_R3.EntityLiving;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.Location;
-import org.bukkit.entity.Entity;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
+import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 
 public class KP56 extends CraftPlayer implements SNMSEntity {
     private int iq;

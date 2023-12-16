@@ -1,10 +1,10 @@
 package vn.giakhanhvn.skysim.item.accessory;
 
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.item.SpecificItemType;
 import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
+import vn.giakhanhvn.skysim.item.Rarity;
+import vn.giakhanhvn.skysim.item.SpecificItemType;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 public class PerfectTalisman implements AccessoryStatistics, MaterialFunction {
     @Override

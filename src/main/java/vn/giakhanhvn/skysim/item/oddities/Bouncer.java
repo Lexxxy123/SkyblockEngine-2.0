@@ -1,11 +1,7 @@
 package vn.giakhanhvn.skysim.item.oddities;
 
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.ItemData;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.MaterialStatistics;
+import vn.giakhanhvn.skysim.item.*;
 
 public class Bouncer implements MaterialStatistics, MaterialFunction, ItemData {
     @Override

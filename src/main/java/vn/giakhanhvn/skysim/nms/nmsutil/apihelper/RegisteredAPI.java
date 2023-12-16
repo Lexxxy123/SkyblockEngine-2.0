@@ -1,14 +1,10 @@
 package vn.giakhanhvn.skysim.nms.nmsutil.apihelper;
 
-import java.util.Iterator;
-
-import vn.giakhanhvn.skysim.nms.nmsutil.apihelper.exception.MissingHostException;
+import org.bukkit.plugin.Plugin;
 import vn.giakhanhvn.skysim.nms.nmsutil.apihelper.exception.HostRegistrationException;
+import vn.giakhanhvn.skysim.nms.nmsutil.apihelper.exception.MissingHostException;
 
 import java.util.HashSet;
-
-import org.bukkit.plugin.Plugin;
-
 import java.util.Set;
 
 public class RegisteredAPI {

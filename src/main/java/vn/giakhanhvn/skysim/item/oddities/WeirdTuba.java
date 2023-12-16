@@ -1,20 +1,11 @@
 package vn.giakhanhvn.skysim.item.oddities;
 
-import java.util.Iterator;
-
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Entity;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.PlayerBoostStatistics;
-import vn.giakhanhvn.skysim.user.PlayerUtils;
-import vn.giakhanhvn.skysim.user.PlayerStatistics;
 import org.bukkit.Sound;
-import vn.giakhanhvn.skysim.item.SItem;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.item.Ability;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.MaterialStatistics;
+import vn.giakhanhvn.skysim.item.*;
+import vn.giakhanhvn.skysim.user.PlayerUtils;
 
 public class WeirdTuba implements MaterialStatistics, MaterialFunction, Ability {
     @Override

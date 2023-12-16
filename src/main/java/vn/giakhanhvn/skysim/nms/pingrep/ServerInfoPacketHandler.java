@@ -1,26 +1,20 @@
 package vn.giakhanhvn.skysim.nms.pingrep;
 
+import com.mojang.authlib.GameProfile;
+import io.netty.channel.ChannelHandlerContext;
+import net.minecraft.server.v1_8_R3.ChatComponentText;
+import net.minecraft.server.v1_8_R3.IChatBaseComponent;
+import net.minecraft.server.v1_8_R3.PacketStatusOutServerInfo;
+import net.minecraft.server.v1_8_R3.ServerPing;
+import org.bukkit.craftbukkit.v1_8_R3.util.CraftIconCache;
 import vn.giakhanhvn.skysim.nms.pingrep.reflect.ReflectUtils;
 
-import java.util.ArrayList;
-
-import io.netty.channel.ChannelHandlerContext;
-
-import java.util.List;
-
-import org.bukkit.craftbukkit.v1_8_R3.util.CraftIconCache;
-import net.minecraft.server.v1_8_R3.IChatBaseComponent;
-import net.minecraft.server.v1_8_R3.ChatComponentText;
-import net.minecraft.server.v1_8_R3.ServerPing;
-
-import java.util.UUID;
-
-import com.mojang.authlib.GameProfile;
-import net.minecraft.server.v1_8_R3.PacketStatusOutServerInfo;
-
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class ServerInfoPacketHandler extends ServerInfoPacket {
     private static final Field SERVER_PING_FIELD;

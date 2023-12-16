@@ -1,9 +1,7 @@
 package vn.giakhanhvn.skysim.user;
 
-import java.util.Iterator;
-import java.util.Collection;
-import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class IntegerPlayerStatistic implements PlayerStatistic<Integer> {
     private final int defaultValue;

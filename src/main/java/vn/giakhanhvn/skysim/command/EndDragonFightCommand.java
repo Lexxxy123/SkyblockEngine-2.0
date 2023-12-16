@@ -1,14 +1,12 @@
 package vn.giakhanhvn.skysim.command;
 
-import java.util.Iterator;
-
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Entity;
-import org.bukkit.World;
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.entity.StaticDragonManager;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 @CommandParameters(description = "bruhbu", aliases = "edf")
 public class EndDragonFightCommand extends SCommand {

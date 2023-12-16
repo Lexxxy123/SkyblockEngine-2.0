@@ -1,11 +1,11 @@
 package vn.giakhanhvn.skysim.gui;
 
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.Material;
 import org.bukkit.ChatColor;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 import vn.giakhanhvn.skysim.slayer.SlayerBossType;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 public class SlayerConfirmGUI extends GUI {
     public SlayerConfirmGUI(final SlayerBossType type, final Runnable onConfirm) {

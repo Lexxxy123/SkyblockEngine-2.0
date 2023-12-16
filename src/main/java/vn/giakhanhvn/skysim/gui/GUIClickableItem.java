@@ -1,11 +1,11 @@
 package vn.giakhanhvn.skysim.gui;
 
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 public interface GUIClickableItem extends GUIItem {
     void run(final InventoryClickEvent p0);

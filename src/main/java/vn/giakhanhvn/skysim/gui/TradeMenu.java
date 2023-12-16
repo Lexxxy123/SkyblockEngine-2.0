@@ -1,29 +1,21 @@
 package vn.giakhanhvn.skysim.gui;
 
-import java.util.HashMap;
-
 import net.milkbowl.vault.economy.Economy;
-import org.bukkit.OfflinePlayer;
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-
-import java.util.Iterator;
-
-import vn.giakhanhvn.skysim.sequence.SoundSequenceType;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.List;
-
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.scheduler.BukkitRunnable;
-import vn.giakhanhvn.skysim.util.TradeUtil;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.sequence.SoundSequenceType;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
+import vn.giakhanhvn.skysim.util.TradeUtil;
 
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class TradeMenu {
     public static final Map<UUID, Boolean> tradeClose;

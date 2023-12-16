@@ -1,48 +1,32 @@
 package vn.giakhanhvn.skysim.entity.dungeons.watcher;
 
+import com.google.common.util.concurrent.AtomicDouble;
+import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
+import net.minecraft.server.v1_8_R3.EntityLiving;
+import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
+import org.bukkit.*;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
+import org.bukkit.entity.*;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.util.EulerAngle;
-import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.ArmorStand;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
-import com.google.common.util.concurrent.AtomicDouble;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.inventory.ItemStack;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.entity.SEntity;
 import vn.giakhanhvn.skysim.entity.SEntityEquipment;
-
-import java.util.Iterator;
-
-import net.minecraft.server.v1_8_R3.EntityLiving;
-import net.minecraft.server.v1_8_R3.Packet;
-import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.entity.Player;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
-import org.bukkit.Location;
-import org.bukkit.Sound;
-import org.bukkit.Effect;
-import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
 import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.item.SMaterial;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
-import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.metadata.FixedMetadataValue;
-import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.user.User;
 import vn.giakhanhvn.skysim.util.EntityManager;
-import org.bukkit.entity.Entity;
-import vn.giakhanhvn.skysim.entity.SEntity;
-import org.bukkit.entity.LivingEntity;
+import vn.giakhanhvn.skysim.util.SUtil;
 import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
 
 public class WatcherLivid extends BaseZombie {
     @Override

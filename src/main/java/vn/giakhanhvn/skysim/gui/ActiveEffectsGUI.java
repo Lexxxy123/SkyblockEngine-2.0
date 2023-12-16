@@ -1,21 +1,20 @@
 package vn.giakhanhvn.skysim.gui;
 
-import java.util.*;
-
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+import vn.giakhanhvn.skysim.SkySimEngine;
 import vn.giakhanhvn.skysim.potion.ActivePotionEffect;
-import vn.giakhanhvn.skysim.util.PaginationList;
 import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.PaginationList;
+import vn.giakhanhvn.skysim.util.SUtil;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class ActiveEffectsGUI extends GUI {
     private static final int[] INTERIOR;

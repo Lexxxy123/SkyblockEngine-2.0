@@ -1,31 +1,22 @@
 package vn.giakhanhvn.skysim;
 
-import java.util.HashMap;
-import java.util.List;
-
-import vn.giakhanhvn.skysim.potion.ActivePotionEffect;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import org.bukkit.inventory.ItemStack;
-import vn.giakhanhvn.skysim.item.pet.Pet;
-import vn.giakhanhvn.skysim.skill.Skill;
-import vn.giakhanhvn.skysim.skill.CombatSkill;
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.codec.binary.Base64;
-import vn.giakhanhvn.skysim.item.SItem;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.user.PlayerUtils;
-import vn.giakhanhvn.skysim.user.PlayerStatistics;
-import vn.giakhanhvn.skysim.user.User;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.inventory.ItemStack;
+import vn.giakhanhvn.skysim.item.SItem;
+import vn.giakhanhvn.skysim.item.pet.Pet;
+import vn.giakhanhvn.skysim.potion.ActivePotionEffect;
+import vn.giakhanhvn.skysim.skill.CombatSkill;
+import vn.giakhanhvn.skysim.skill.Skill;
+import vn.giakhanhvn.skysim.user.PlayerStatistics;
+import vn.giakhanhvn.skysim.user.PlayerUtils;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
-import java.util.UUID;
-import java.util.Map;
-
-import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import java.util.*;
 
 public class placeholding extends PlaceholderExpansion {
     public static final Map<UUID, String> PTE_CACHE;

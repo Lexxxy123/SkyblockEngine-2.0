@@ -1,9 +1,9 @@
 package vn.giakhanhvn.skysim.gui;
 
-import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 public interface GUIItem {
     int getSlot();

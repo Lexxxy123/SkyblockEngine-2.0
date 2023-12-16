@@ -1,17 +1,14 @@
 package vn.giakhanhvn.skysim.entity.dungeons;
 
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.plugin.Plugin;
+import me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.metadata.FixedMetadataValue;
 import vn.giakhanhvn.skysim.SkySimEngine;
-import vn.giakhanhvn.skysim.util.EntityManager;
-import org.bukkit.entity.Entity;
-import vn.giakhanhvn.skysim.util.Sputnik;
 import vn.giakhanhvn.skysim.entity.SEntity;
-import org.bukkit.entity.LivingEntity;
-import me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher;
 import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
+import vn.giakhanhvn.skysim.util.EntityManager;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 public class NPCMobsAI extends BaseZombie {
     private PlayerWatcher watcher;

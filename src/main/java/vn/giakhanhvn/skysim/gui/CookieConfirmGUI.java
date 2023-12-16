@@ -1,19 +1,18 @@
 package vn.giakhanhvn.skysim.gui;
 
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.Effect;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.Material;
 import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.user.PlayerUtils;
+import org.bukkit.Effect;
+import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.user.User;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.user.PlayerUtils;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 public class CookieConfirmGUI extends GUI {
     String[] suffix;

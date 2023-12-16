@@ -1,41 +1,20 @@
 package vn.giakhanhvn.skysim.item.pet;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import vn.giakhanhvn.skysim.item.SMaterial;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-
-import java.util.Arrays;
-
+import net.minecraft.server.v1_8_R3.NBTTagCompound;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 import org.bukkit.Sound;
-import org.bukkit.inventory.ItemStack;
-import vn.giakhanhvn.skysim.user.User;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.ChatColor;
-
-import java.util.ArrayList;
-
+import vn.giakhanhvn.skysim.item.*;
 import vn.giakhanhvn.skysim.skill.Skill;
-import vn.giakhanhvn.skysim.item.SItem;
-import net.minecraft.server.v1_8_R3.NBTTagCompound;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
 
-import java.util.Iterator;
+import java.util.*;
 import java.util.function.Consumer;
-
-import vn.giakhanhvn.skysim.item.Rarity;
-
-import java.util.List;
-
-import vn.giakhanhvn.skysim.item.ItemData;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.LoreableMaterialStatistics;
-import vn.giakhanhvn.skysim.item.SkullStatistics;
 
 public abstract class Pet implements SkullStatistics, LoreableMaterialStatistics, MaterialFunction, ItemData {
     protected static final List<Integer> COMMON_XP_GOALS;

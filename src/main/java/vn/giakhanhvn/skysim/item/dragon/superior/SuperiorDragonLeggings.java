@@ -1,10 +1,10 @@
 package vn.giakhanhvn.skysim.item.dragon.superior;
 
-import vn.giakhanhvn.skysim.item.SpecificItemType;
 import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.armor.LeatherArmorStatistics;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
+import vn.giakhanhvn.skysim.item.Rarity;
+import vn.giakhanhvn.skysim.item.SpecificItemType;
+import vn.giakhanhvn.skysim.item.armor.LeatherArmorStatistics;
 
 public class SuperiorDragonLeggings implements MaterialFunction, LeatherArmorStatistics {
     @Override

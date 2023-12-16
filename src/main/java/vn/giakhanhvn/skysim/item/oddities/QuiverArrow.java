@@ -1,11 +1,7 @@
 package vn.giakhanhvn.skysim.item.oddities;
 
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
 import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.item.Untradeable;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.MaterialStatistics;
+import vn.giakhanhvn.skysim.item.*;
 
 public class QuiverArrow implements MaterialStatistics, MaterialFunction, Untradeable {
     @Override

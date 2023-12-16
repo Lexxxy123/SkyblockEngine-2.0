@@ -1,34 +1,17 @@
 package vn.giakhanhvn.skysim.region;
 
-import java.util.HashMap;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import java.util.function.Predicate;
-
-import org.bukkit.entity.Player;
-
-import java.util.Arrays;
-
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.World;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.Collection;
-import java.util.ArrayList;
-
-import org.bukkit.entity.Entity;
-import org.bukkit.block.BlockState;
-
-import java.util.List;
-
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.util.SUtil;
 
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Region {
     private static final Map<String, Region> REGION_CACHE;

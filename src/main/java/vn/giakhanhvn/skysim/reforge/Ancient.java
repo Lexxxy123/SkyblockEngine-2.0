@@ -1,12 +1,10 @@
 package vn.giakhanhvn.skysim.reforge;
 
-import java.util.Collections;
-
 import vn.giakhanhvn.skysim.item.GenericItemType;
-
-import java.util.List;
-
 import vn.giakhanhvn.skysim.item.RarityValue;
+
+import java.util.Collections;
+import java.util.List;
 
 public class Ancient implements Reforge {
     @Override

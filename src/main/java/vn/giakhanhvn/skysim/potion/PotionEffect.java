@@ -1,9 +1,6 @@
 package vn.giakhanhvn.skysim.potion;
 
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
-
-import java.util.List;
-
 import vn.giakhanhvn.skysim.util.SUtil;
 
 import java.util.Arrays;

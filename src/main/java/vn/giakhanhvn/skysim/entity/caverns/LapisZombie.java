@@ -1,19 +1,13 @@
 package vn.giakhanhvn.skysim.entity.caverns;
 
-import java.util.Arrays;
-
-import vn.giakhanhvn.skysim.entity.EntityDropType;
-import vn.giakhanhvn.skysim.entity.EntityDrop;
-
-import java.util.List;
-
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import vn.giakhanhvn.skysim.entity.*;
 import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.item.SMaterial;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.Material;
-import vn.giakhanhvn.skysim.entity.SEntityEquipment;
-import vn.giakhanhvn.skysim.entity.EntityStatistics;
-import vn.giakhanhvn.skysim.entity.EntityFunction;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class LapisZombie implements EntityFunction, EntityStatistics {
     @Override

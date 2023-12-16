@@ -1,8 +1,8 @@
 package vn.giakhanhvn.skysim.entity.den;
 
-import vn.giakhanhvn.skysim.entity.SEntityType;
 import org.bukkit.entity.Entity;
 import vn.giakhanhvn.skysim.entity.SEntity;
+import vn.giakhanhvn.skysim.entity.SEntityType;
 
 public class SplitterSpider extends BaseSpider {
     @Override

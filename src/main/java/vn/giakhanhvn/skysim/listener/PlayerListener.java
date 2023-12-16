@@ -1,142 +1,66 @@
 package vn.giakhanhvn.skysim.listener;
 
-import java.util.Collection;
-
-import org.bukkit.event.block.BlockPlaceEvent;
-import vn.giakhanhvn.skysim.extra.beam.Beam;
-import vn.giakhanhvn.skysim.entity.dungeons.watcher.Watcher;
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
-import net.minecraft.server.v1_8_R3.EntityLiving;
-import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntityLiving;
-import net.minecraft.server.v1_8_R3.EntityArmorStand;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
-import org.bukkit.entity.Skeleton;
+import com.google.common.util.concurrent.AtomicDouble;
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
+import net.minecraft.server.v1_8_R3.*;
+import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.event.entity.EntityRegainHealthEvent;
-import org.bukkit.entity.Fireball;
-import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
-import vn.giakhanhvn.skysim.command.RebootServerCommand;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import vn.giakhanhvn.skysim.dungeons.ItemChest;
-import net.minecraft.server.v1_8_R3.Packet;
+import org.bukkit.*;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import net.minecraft.server.v1_8_R3.Block;
-import net.minecraft.server.v1_8_R3.PacketPlayOutBlockAction;
-import net.minecraft.server.v1_8_R3.Blocks;
-import net.minecraft.server.v1_8_R3.BlockPosition;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.*;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.*;
+import org.bukkit.event.player.*;
+import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.projectiles.ProjectileSource;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
+import vn.giakhanhvn.skysim.Repeater;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.command.RebootServerCommand;
 import vn.giakhanhvn.skysim.dungeons.BlessingChest;
-
-import java.util.Set;
-
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
+import vn.giakhanhvn.skysim.dungeons.Blessings;
+import vn.giakhanhvn.skysim.dungeons.ItemChest;
 import vn.giakhanhvn.skysim.enchantment.Enchantment;
 import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
-import org.bukkit.event.entity.EntityShootBowEvent;
-import org.bukkit.Material;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.entity.Damageable;
-import org.bukkit.projectiles.ProjectileSource;
+import vn.giakhanhvn.skysim.entity.SEntity;
+import vn.giakhanhvn.skysim.entity.dungeons.watcher.Watcher;
+import vn.giakhanhvn.skysim.entity.nms.VoidgloomSeraph;
+import vn.giakhanhvn.skysim.extra.beam.Beam;
+import vn.giakhanhvn.skysim.gui.PetsGUI;
+import vn.giakhanhvn.skysim.gui.ProfileViewerGUI;
 import vn.giakhanhvn.skysim.item.Ability;
+import vn.giakhanhvn.skysim.item.SBlock;
+import vn.giakhanhvn.skysim.item.SItem;
+import vn.giakhanhvn.skysim.item.SMaterial;
+import vn.giakhanhvn.skysim.item.accessory.AccessoryFunction;
+import vn.giakhanhvn.skysim.item.armor.PrecursorEye;
+import vn.giakhanhvn.skysim.item.armor.VoidlingsWardenHelmet;
+import vn.giakhanhvn.skysim.item.bow.BowFunction;
+import vn.giakhanhvn.skysim.item.pet.Pet;
+import vn.giakhanhvn.skysim.item.pet.PetAbility;
 import vn.giakhanhvn.skysim.nms.packetevents.PacketReader;
 import vn.giakhanhvn.skysim.npc.SkyblockNPC;
 import vn.giakhanhvn.skysim.npc.SkyblockNPCManager;
-import vn.giakhanhvn.skysim.util.FerocityCalculation;
-import vn.giakhanhvn.skysim.item.accessory.AccessoryFunction;
-import vn.giakhanhvn.skysim.item.bow.BowFunction;
-import vn.giakhanhvn.skysim.util.EntityManager;
-import org.bukkit.entity.EnderDragon;
-import com.google.common.util.concurrent.AtomicDouble;
-import vn.giakhanhvn.skysim.item.pet.PetAbility;
-import org.bukkit.entity.Projectile;
-import org.bukkit.util.Vector;
-import vn.giakhanhvn.skysim.entity.SEntity;
-import org.bukkit.entity.WitherSkull;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.entity.FishHook;
-import org.bukkit.Sound;
-import vn.giakhanhvn.skysim.entity.nms.VoidgloomSeraph;
-import org.bukkit.Effect;
-import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.entity.Arrow;
-import org.bukkit.event.EventPriority;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.LivingEntity;
-import vn.giakhanhvn.skysim.gui.ProfileViewerGUI;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.entity.EntityType;
-import org.bukkit.event.entity.EntityTeleportEvent;
-import org.bukkit.event.player.PlayerChangedWorldEvent;
-import vn.giakhanhvn.skysim.dungeons.Blessings;
-import org.bukkit.ChatColor;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.world.ChunkLoadEvent;
-import vn.giakhanhvn.skysim.item.pet.Pet;
+import vn.giakhanhvn.skysim.skill.Skill;
 import vn.giakhanhvn.skysim.slayer.SlayerQuest;
-
-import java.util.Iterator;
-
-import org.bukkit.Location;
-import org.bukkit.Bukkit;
-import vn.giakhanhvn.skysim.user.TemporaryStats;
-
-import java.util.List;
-import java.lang.reflect.Field;
-
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import com.mojang.authlib.properties.Property;
-import vn.giakhanhvn.skysim.item.armor.VoidlingsWardenHelmet;
-
-import java.util.Base64;
-
-import com.mojang.authlib.GameProfile;
-import org.bukkit.inventory.meta.SkullMeta;
-import vn.giakhanhvn.skysim.item.SMaterial;
-import vn.giakhanhvn.skysim.item.SItem;
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.user.UserStash;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.ArrayList;
-
-import vn.giakhanhvn.skysim.entity.SEntityType;
-import vn.giakhanhvn.skysim.util.SputnikPlayer;
+import vn.giakhanhvn.skysim.user.*;
+import vn.giakhanhvn.skysim.util.*;
 
 import java.io.IOException;
-
-import vn.giakhanhvn.skysim.util.SLog;
-import vn.giakhanhvn.skysim.skill.Skill;
-import vn.giakhanhvn.skysim.item.armor.PrecursorEye;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import vn.giakhanhvn.skysim.gui.PetsGUI;
-import vn.giakhanhvn.skysim.Repeater;
-import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.EventHandler;
-import org.bukkit.entity.Entity;
-import org.bukkit.event.entity.EntityDamageEvent;
-import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.GameMode;
-import vn.giakhanhvn.skysim.item.SBlock;
-import vn.giakhanhvn.skysim.user.PlayerUtils;
-import vn.giakhanhvn.skysim.user.PlayerStatistics;
-import org.bukkit.event.player.PlayerMoveEvent;
-
-import java.util.HashMap;
-
-import org.bukkit.entity.Player;
-
-import java.util.UUID;
-import java.util.Map;
+import java.lang.reflect.Field;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class PlayerListener extends PListener {
     private static final Map<UUID, BowShooting> BOW_MAP;

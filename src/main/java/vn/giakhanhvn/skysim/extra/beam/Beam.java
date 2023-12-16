@@ -1,22 +1,16 @@
 package vn.giakhanhvn.skysim.extra.beam;
 
-import org.bukkit.entity.Player;
-
-import java.util.Iterator;
-
+import com.google.common.base.Preconditions;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import vn.giakhanhvn.skysim.SkySimEngine;
 
 import java.util.HashSet;
-
-import com.google.common.base.Preconditions;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.UUID;
+import java.util.Iterator;
 import java.util.Set;
-
-import org.bukkit.Location;
+import java.util.UUID;
 
 public class Beam {
     private final String worldname;

@@ -1,11 +1,11 @@
 package vn.giakhanhvn.skysim.entity.wolf;
 
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Wolf;
 import vn.giakhanhvn.skysim.entity.SEntity;
-import org.bukkit.entity.LivingEntity;
 import vn.giakhanhvn.skysim.entity.nms.SvenPackmaster;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 
 public class SvenPup extends BaseWolf {
     private final double health;

@@ -1,11 +1,7 @@
 package vn.giakhanhvn.skysim.item.weapon;
 
-import vn.giakhanhvn.skysim.item.SpecificItemType;
 import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.ToolStatistics;
+import vn.giakhanhvn.skysim.item.*;
 
 public class PrismarineBlade implements ToolStatistics, MaterialFunction {
     @Override

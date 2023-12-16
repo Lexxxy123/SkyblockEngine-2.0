@@ -1,8 +1,8 @@
 package vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver;
 
 import java.util.Arrays;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class ResolverAbstract<T> {
     protected final Map<ResolverQuery, T> resolvedObjects;

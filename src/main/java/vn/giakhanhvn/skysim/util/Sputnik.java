@@ -1,141 +1,77 @@
 package vn.giakhanhvn.skysim.util;
 
+import com.comphenix.protocol.wrappers.WrappedSignedProperty;
+import com.google.common.util.concurrent.AtomicDouble;
+import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldedit.WorldEditException;
+import com.sk89q.worldedit.blocks.BaseBlock;
+import com.sk89q.worldedit.bukkit.BukkitWorld;
+import com.sk89q.worldedit.extent.clipboard.Clipboard;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
+import com.sk89q.worldedit.function.operation.Operation;
+import com.sk89q.worldedit.function.operation.Operations;
+import com.sk89q.worldedit.session.ClipboardHolder;
+import com.sk89q.worldedit.util.io.Closer;
+import com.sk89q.worldedit.world.registry.WorldData;
 import com.xxmicloxx.NoteBlockAPI.model.Song;
-import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import com.xxmicloxx.NoteBlockAPI.songplayer.PositionSongPlayer;
+import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
+import me.libraryaddict.disguise.disguisetypes.FlagWatcher;
+import me.libraryaddict.disguise.disguisetypes.MobDisguise;
+import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.minecraft.server.v1_8_R3.Item;
+import net.minecraft.server.v1_8_R3.*;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftHumanEntity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.*;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.inventory.EntityEquipment;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.command.AccessTimedCommand;
 import vn.giakhanhvn.skysim.dungeons.BlessingChest;
 import vn.giakhanhvn.skysim.dungeons.Blessings;
 import vn.giakhanhvn.skysim.dungeons.ItemChest;
-
-import java.math.RoundingMode;
-import java.math.BigDecimal;
-
-import net.minecraft.server.v1_8_R3.Item;
-import net.minecraft.server.v1_8_R3.Vec3D;
-import net.minecraft.server.v1_8_R3.EnumAnimation;
-import com.google.common.util.concurrent.AtomicDouble;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.HoverEvent;
-import vn.giakhanhvn.skysim.command.AccessTimedCommand;
-import net.md_5.bungee.api.chat.TextComponent;
-import vn.giakhanhvn.skysim.gui.TradeMenu;
-
-import java.util.HashMap;
-
-import org.bukkit.entity.Arrow;
-import org.bukkit.event.entity.EntityDamageEvent;
 import vn.giakhanhvn.skysim.entity.dungeons.boss.sadan.SadanBossManager;
-import vn.giakhanhvn.skysim.gui.BossMenu;
-import com.sk89q.worldedit.function.operation.Operation;
-import com.sk89q.worldedit.EditSession;
-import com.sk89q.worldedit.world.registry.WorldData;
-import com.sk89q.worldedit.function.operation.Operations;
-import com.sk89q.worldedit.extent.Extent;
-import com.sk89q.worldedit.LocalWorld;
-import com.sk89q.worldedit.WorldEdit;
-import com.sk89q.worldedit.session.ClipboardHolder;
-import com.sk89q.worldedit.blocks.BaseBlock;
-import com.sk89q.worldedit.extent.clipboard.Clipboard;
-import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
-import com.sk89q.worldedit.WorldEditException;
-
-import java.io.IOException;
-
-import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
-
-import java.io.InputStream;
-import java.io.BufferedInputStream;
-import java.io.FileNotFoundException;
-import java.io.Closeable;
-import java.io.FileInputStream;
-
-import com.sk89q.worldedit.util.io.Closer;
-import com.sk89q.worldedit.bukkit.BukkitWorld;
-
-import java.io.File;
-
-import org.bukkit.block.Block;
-import org.bukkit.inventory.EntityEquipment;
-import net.minecraft.server.v1_8_R3.EntityPlayer;
-import me.libraryaddict.disguise.disguisetypes.MobDisguise;
-import org.bukkit.entity.EntityType;
-
-import java.lang.reflect.Method;
-
-import com.comphenix.protocol.wrappers.WrappedSignedProperty;
-
-import java.lang.reflect.InvocationTargetException;
-
-import me.libraryaddict.disguise.disguisetypes.FlagWatcher;
-import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
-import net.minecraft.server.v1_8_R3.PathEntity;
-import net.minecraft.server.v1_8_R3.EntityLiving;
-import net.minecraft.server.v1_8_R3.EntityInsentient;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
-import net.minecraft.server.v1_8_R3.EntityHuman;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftHumanEntity;
-import org.bukkit.Sound;
-
-import java.text.DecimalFormat;
-
 import vn.giakhanhvn.skysim.entity.nms.VoidgloomSeraph;
-import org.bukkit.util.Vector;
-import vn.giakhanhvn.skysim.item.pet.Pet;
-import vn.giakhanhvn.skysim.gui.PetsGUI;
-
-import java.util.List;
-import java.util.ArrayList;
-
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.scheduler.BukkitRunnable;
 import vn.giakhanhvn.skysim.extra.beam.Beam;
-import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntity;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
-import net.minecraft.server.v1_8_R3.EntityItem;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
-import org.bukkit.Material;
-import org.bukkit.entity.Enderman;
-import org.bukkit.inventory.PlayerInventory;
-import vn.giakhanhvn.skysim.item.SMaterial;
-import vn.giakhanhvn.skysim.user.PlayerUtils;
-import vn.giakhanhvn.skysim.user.PlayerStatistics;
-import vn.giakhanhvn.skysim.user.UserStash;
-import org.bukkit.inventory.ItemStack;
-import vn.giakhanhvn.skysim.listener.PlayerListener;
-import org.bukkit.entity.Damageable;
-import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.EnderDragonPart;
-import org.bukkit.Effect;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.Bukkit;
-
-import java.util.Iterator;
-
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
-import org.bukkit.World;
-import net.minecraft.server.v1_8_R3.EnumParticle;
-import org.bukkit.entity.Player;
-import org.bukkit.FireworkEffect;
-import org.bukkit.Color;
-import net.minecraft.server.v1_8_R3.Packet;
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntityTeleport;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
-import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.entity.Entity;
-
-import java.util.UUID;
-
+import vn.giakhanhvn.skysim.gui.BossMenu;
+import vn.giakhanhvn.skysim.gui.PetsGUI;
+import vn.giakhanhvn.skysim.gui.TradeMenu;
 import vn.giakhanhvn.skysim.item.SItem;
-import org.bukkit.Server;
+import vn.giakhanhvn.skysim.item.SMaterial;
+import vn.giakhanhvn.skysim.item.pet.Pet;
+import vn.giakhanhvn.skysim.listener.PlayerListener;
+import vn.giakhanhvn.skysim.user.PlayerStatistics;
+import vn.giakhanhvn.skysim.user.PlayerUtils;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.user.UserStash;
 
-import java.util.Map;
-import java.util.Random;
+import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.util.*;
 
 public class Sputnik {
     public Random random;

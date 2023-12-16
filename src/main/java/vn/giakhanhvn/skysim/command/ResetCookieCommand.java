@@ -1,12 +1,12 @@
 package vn.giakhanhvn.skysim.command;
 
-import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.user.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.user.PlayerUtils;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 @CommandParameters(description = "bruhbu", aliases = "resetcb")
 public class ResetCookieCommand extends SCommand {

@@ -1,11 +1,11 @@
 package vn.giakhanhvn.skysim.gui;
 
-import vn.giakhanhvn.skysim.util.SUtil;
+import org.bukkit.block.Block;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.block.Block;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 public class DungeonsLootGUI extends GUI {
     private final Block bl;

@@ -1,21 +1,19 @@
 package vn.giakhanhvn.skysim.entity.caverns;
 
-import java.util.Arrays;
-
-import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
-import vn.giakhanhvn.skysim.enchantment.Enchantment;
-import vn.giakhanhvn.skysim.item.SItem;
-import vn.giakhanhvn.skysim.entity.EntityDropType;
-import vn.giakhanhvn.skysim.item.SMaterial;
-import vn.giakhanhvn.skysim.entity.EntityDrop;
-
-import java.util.List;
-
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import vn.giakhanhvn.skysim.enchantment.Enchantment;
+import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
+import vn.giakhanhvn.skysim.entity.EntityDrop;
+import vn.giakhanhvn.skysim.entity.EntityDropType;
 import vn.giakhanhvn.skysim.entity.SEntityEquipment;
 import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
+import vn.giakhanhvn.skysim.item.SItem;
+import vn.giakhanhvn.skysim.item.SMaterial;
+import vn.giakhanhvn.skysim.util.SUtil;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class EnchantedDiamondZombie extends BaseZombie {
     @Override

@@ -1,9 +1,9 @@
 package vn.giakhanhvn.skysim.nms.pingrep;
 
+import org.bukkit.Bukkit;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-
-import org.bukkit.Bukkit;
 
 public class PingEvent {
     private final PingReply reply;

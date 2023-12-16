@@ -1,14 +1,11 @@
 package vn.giakhanhvn.skysim.entity.dungeons;
 
-import org.bukkit.entity.Entity;
-import vn.giakhanhvn.skysim.util.EntityManager;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.metadata.FixedMetadataValue;
 import vn.giakhanhvn.skysim.SkySimEngine;
 import vn.giakhanhvn.skysim.entity.SEntity;
-import org.bukkit.entity.LivingEntity;
 import vn.giakhanhvn.skysim.entity.end.BaseEnderman;
+import vn.giakhanhvn.skysim.util.EntityManager;
 
 public class Fels extends BaseEnderman {
     @Override

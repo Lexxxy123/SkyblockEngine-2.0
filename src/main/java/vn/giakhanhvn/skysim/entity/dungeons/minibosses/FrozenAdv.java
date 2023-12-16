@@ -1,65 +1,42 @@
 package vn.giakhanhvn.skysim.entity.dungeons.minibosses;
 
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntityTeleport;
-
-import java.util.List;
-
-import org.bukkit.entity.EntityType;
-import de.slikey.effectlib.util.ParticleEffect;
-import de.slikey.effectlib.effect.ConeEffect;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.Color;
-import vn.giakhanhvn.skysim.entity.SEntityEquipment;
 import com.google.common.util.concurrent.AtomicDouble;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import de.slikey.effectlib.effect.ConeEffect;
+import de.slikey.effectlib.util.ParticleEffect;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
-import net.minecraft.server.v1_8_R3.AttributeInstance;
-import net.minecraft.server.v1_8_R3.Packet;
-import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.util.Vector;
-import net.minecraft.server.v1_8_R3.MathHelper;
-import net.minecraft.server.v1_8_R3.MobEffectList;
-import net.minecraft.server.v1_8_R3.EntityLiving;
-
-import java.util.Iterator;
-
-import org.bukkit.event.entity.EntityDamageEvent;
-import vn.giakhanhvn.skysim.user.User;
-import vn.giakhanhvn.skysim.user.PlayerUtils;
-import vn.giakhanhvn.skysim.user.PlayerStatistics;
-import org.bukkit.util.EulerAngle;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Arrow;
-import org.bukkit.Location;
-import org.bukkit.projectiles.ProjectileSource;
 import me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher;
-import vn.giakhanhvn.skysim.item.SItem;
-import vn.giakhanhvn.skysim.item.SMaterial;
-import org.bukkit.Sound;
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.Effect;
-import org.bukkit.inventory.ItemStack;
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Material;
+import org.bukkit.*;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.*;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.util.EulerAngle;
+import org.bukkit.util.Vector;
 import vn.giakhanhvn.skysim.SkySimEngine;
-import vn.giakhanhvn.skysim.util.EntityManager;
-import org.bukkit.entity.Entity;
-import net.minecraft.server.v1_8_R3.GenericAttributes;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
 import vn.giakhanhvn.skysim.entity.SEntity;
-import org.bukkit.entity.LivingEntity;
-import vn.giakhanhvn.skysim.util.Sputnik;
+import vn.giakhanhvn.skysim.entity.SEntityEquipment;
 import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
+import vn.giakhanhvn.skysim.item.SItem;
+import vn.giakhanhvn.skysim.item.SMaterial;
+import vn.giakhanhvn.skysim.user.PlayerStatistics;
+import vn.giakhanhvn.skysim.user.PlayerUtils;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.EntityManager;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
+
+import java.util.List;
 
 public class FrozenAdv extends BaseZombie {
     private boolean isEating;

@@ -1,24 +1,19 @@
 package vn.giakhanhvn.skysim.item.pet;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.item.GenericItemType;
+import vn.giakhanhvn.skysim.item.Rarity;
+import vn.giakhanhvn.skysim.item.RarityValue;
+import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.skill.CombatSkill;
 import vn.giakhanhvn.skysim.skill.Skill;
-import vn.giakhanhvn.skysim.item.Rarity;
 
-import java.util.Collection;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Arrays;
-
-import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.item.RarityValue;
-
 import java.util.List;
-
-import vn.giakhanhvn.skysim.item.SItem;
 
 public class BlackCat extends Pet {
     @Override

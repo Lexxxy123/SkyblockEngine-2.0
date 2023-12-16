@@ -1,22 +1,20 @@
 package vn.giakhanhvn.skysim.slayer;
 
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.World;
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.Effect;
 import com.google.common.util.concurrent.AtomicDouble;
-import vn.giakhanhvn.skysim.sequence.SoundSequenceType;
-import org.bukkit.entity.Entity;
+import org.bukkit.Effect;
 import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.entity.Entity;
+import org.bukkit.scheduler.BukkitRunnable;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.entity.SEntity;
+import vn.giakhanhvn.skysim.entity.SEntityType;
+import vn.giakhanhvn.skysim.sequence.SoundSequenceType;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import vn.giakhanhvn.skysim.entity.SEntity;
-import vn.giakhanhvn.skysim.entity.SEntityType;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 public class SlayerQuest implements ConfigurationSerializable {
     private final SlayerBossType type;

@@ -1,8 +1,8 @@
 package vn.giakhanhvn.skysim.item.armor.gigachad;
 
 import vn.giakhanhvn.skysim.item.MaterialStatistics;
-import vn.giakhanhvn.skysim.util.Sputnik;
 import vn.giakhanhvn.skysim.item.armor.ArmorSet;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 public class GigachadSet implements ArmorSet {
     @Override

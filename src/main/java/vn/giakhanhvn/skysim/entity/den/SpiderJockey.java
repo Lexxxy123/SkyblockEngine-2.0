@@ -2,8 +2,8 @@ package vn.giakhanhvn.skysim.entity.den;
 
 import vn.giakhanhvn.skysim.entity.EntityFunction;
 import vn.giakhanhvn.skysim.entity.EntityStatistics;
-import vn.giakhanhvn.skysim.entity.SEntityType;
 import vn.giakhanhvn.skysim.entity.JockeyStatistics;
+import vn.giakhanhvn.skysim.entity.SEntityType;
 
 public class SpiderJockey extends BaseSpider implements JockeyStatistics {
     @Override

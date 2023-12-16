@@ -1,10 +1,10 @@
 package vn.giakhanhvn.skysim.extra.protocol;
 
-import java.lang.reflect.InvocationTargetException;
-
 import com.comphenix.protocol.ProtocolLibrary;
-import org.bukkit.entity.Player;
 import com.comphenix.protocol.events.PacketContainer;
+import org.bukkit.entity.Player;
+
+import java.lang.reflect.InvocationTargetException;
 
 public class WrappedBeamPacket {
     private final PacketContainer handle;

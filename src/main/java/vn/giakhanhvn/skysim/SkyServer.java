@@ -1,18 +1,13 @@
 package vn.giakhanhvn.skysim;
 
-import java.util.Iterator;
-import java.util.ArrayList;
-
+import org.bukkit.Bukkit;
+import org.bukkit.Server;
+import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.user.User;
 
-import java.util.List;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
+import java.util.ArrayList;
 import java.util.Collection;
-
-import org.bukkit.Server;
+import java.util.List;
 
 public class SkyServer {
     private final Server server;

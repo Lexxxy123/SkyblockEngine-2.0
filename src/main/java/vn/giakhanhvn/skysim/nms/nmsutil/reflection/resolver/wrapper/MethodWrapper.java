@@ -1,10 +1,10 @@
 package vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.wrapper;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.lang.reflect.Method;
 
 public class MethodWrapper<R> extends WrapperAbstract {
     private final Method method;

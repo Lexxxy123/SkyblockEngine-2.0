@@ -1,10 +1,8 @@
 package vn.giakhanhvn.skysim.command;
 
-import java.util.Iterator;
-
-import vn.giakhanhvn.skysim.skill.Skill;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
+import vn.giakhanhvn.skysim.skill.Skill;
 
 @CommandParameters(description = "Shows your skills.", aliases = "skill", permission = "spt.skills")
 public class SkillsCommand extends SCommand {

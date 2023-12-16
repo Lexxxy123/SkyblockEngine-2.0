@@ -1,20 +1,15 @@
 package vn.giakhanhvn.skysim.nms.nmsutil.packetlistener.handler;
 
-import java.lang.reflect.Field;
-
-import vn.giakhanhvn.skysim.nms.nmsutil.reflection.util.AccessUtil;
-import vn.giakhanhvn.skysim.nms.nmsutil.reflection.minecraft.Minecraft;
 import org.bukkit.entity.Player;
-
-import java.util.Collection;
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.MethodResolver;
+import vn.giakhanhvn.skysim.nms.nmsutil.reflection.minecraft.Minecraft;
 import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.FieldResolver;
+import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.MethodResolver;
 import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.minecraft.NMSClassResolver;
+import vn.giakhanhvn.skysim.nms.nmsutil.reflection.util.AccessUtil;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class PacketHandler {

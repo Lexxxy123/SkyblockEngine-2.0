@@ -1,51 +1,30 @@
 package vn.giakhanhvn.skysim.dimoon;
 
-import org.bukkit.Bukkit;
-import vn.giakhanhvn.skysim.entity.SEntityType;
-import vn.giakhanhvn.skysim.entity.SEntity;
-import org.bukkit.Effect;
-import org.bukkit.entity.Entity;
-import com.sk89q.worldedit.blocks.BaseBlock;
-import com.sk89q.worldedit.extent.clipboard.Clipboard;
-import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
-import com.sk89q.worldedit.world.World;
-
-import java.util.Iterator;
-
-import org.bukkit.plugin.Plugin;
-
-import java.io.IOException;
-
-import org.bukkit.scheduler.BukkitRunnable;
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.Location;
-
-import java.util.Collection;
-
-import com.sk89q.worldedit.WorldEditException;
-import org.bukkit.Material;
 import com.sk89q.worldedit.Vector;
-import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
-
-import java.io.InputStream;
-import java.io.BufferedInputStream;
-import java.io.Closeable;
-import java.io.FileInputStream;
-
-import com.sk89q.worldedit.util.io.Closer;
+import com.sk89q.worldedit.WorldEditException;
+import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.dimoon.utils.Utils;
-import org.bukkit.Sound;
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.SkySimEngine;
-
-import java.io.File;
-import java.util.ArrayList;
-
-import org.bukkit.scheduler.BukkitTask;
+import com.sk89q.worldedit.extent.clipboard.Clipboard;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
+import com.sk89q.worldedit.util.io.Closer;
+import com.sk89q.worldedit.world.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.dimoon.utils.Utils;
+import vn.giakhanhvn.skysim.entity.SEntity;
+import vn.giakhanhvn.skysim.entity.SEntityType;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Arena {

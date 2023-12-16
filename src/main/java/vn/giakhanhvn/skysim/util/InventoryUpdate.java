@@ -1,7 +1,7 @@
 package vn.giakhanhvn.skysim.util;
 
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 public class InventoryUpdate {

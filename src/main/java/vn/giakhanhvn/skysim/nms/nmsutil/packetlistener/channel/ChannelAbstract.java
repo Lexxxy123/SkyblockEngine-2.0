@@ -1,30 +1,20 @@
 package vn.giakhanhvn.skysim.nms.nmsutil.packetlistener.channel;
 
-import vn.giakhanhvn.skysim.nms.nmsutil.packetlistener.Cancellable;
-
-import java.util.Iterator;
-import java.util.Collections;
-
-import vn.giakhanhvn.skysim.nms.nmsutil.reflection.util.AccessUtil;
-
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import java.util.concurrent.Executors;
-
+import vn.giakhanhvn.skysim.nms.nmsutil.packetlistener.Cancellable;
 import vn.giakhanhvn.skysim.nms.nmsutil.packetlistener.IPacketListener;
-
-import java.util.concurrent.Executor;
-import java.lang.reflect.Method;
-
+import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.FieldResolver;
 import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.MethodResolver;
+import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.minecraft.NMSClassResolver;
+import vn.giakhanhvn.skysim.nms.nmsutil.reflection.util.AccessUtil;
 
 import java.lang.reflect.Field;
-
-import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.FieldResolver;
-import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.minecraft.NMSClassResolver;
+import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public abstract class ChannelAbstract {
     protected static final NMSClassResolver nmsClassResolver;

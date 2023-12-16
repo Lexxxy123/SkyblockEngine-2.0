@@ -1,28 +1,22 @@
 package vn.giakhanhvn.skysim.nms.pingrep;
 
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.server.ServerListPingEvent;
-
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
-import java.util.NoSuchElementException;
-
-import io.netty.channel.ChannelHandler;
-import vn.giakhanhvn.skysim.nms.pingrep.reflect.ReflectUtils;
 import io.netty.channel.Channel;
+import net.minecraft.server.v1_8_R3.MinecraftServer;
 import net.minecraft.server.v1_8_R3.NetworkManager;
 import net.minecraft.server.v1_8_R3.ServerConnection;
-
-import java.lang.reflect.Field;
-import java.util.Collections;
-
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
-
-import java.util.List;
-
-import net.minecraft.server.v1_8_R3.MinecraftServer;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.server.ServerListPingEvent;
+import vn.giakhanhvn.skysim.nms.pingrep.reflect.ReflectUtils;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 public class PingInjector implements Listener {
     private MinecraftServer server;

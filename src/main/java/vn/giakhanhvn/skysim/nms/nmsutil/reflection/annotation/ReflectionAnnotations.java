@@ -1,19 +1,18 @@
 package vn.giakhanhvn.skysim.nms.nmsutil.reflection.annotation;
 
-import java.util.Collections;
-import java.util.regex.Matcher;
-import java.util.ArrayList;
-import java.lang.annotation.Annotation;
-import java.util.List;
-
-import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.wrapper.MethodWrapper;
-import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.MethodResolver;
-import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.wrapper.FieldWrapper;
-import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.FieldResolver;
-import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.wrapper.ClassWrapper;
 import vn.giakhanhvn.skysim.nms.nmsutil.reflection.minecraft.Minecraft;
 import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.ClassResolver;
+import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.FieldResolver;
+import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.MethodResolver;
+import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.wrapper.ClassWrapper;
+import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.wrapper.FieldWrapper;
+import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.wrapper.MethodWrapper;
 
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ReflectionAnnotations {

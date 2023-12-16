@@ -1,15 +1,9 @@
 package vn.giakhanhvn.skysim.item.oddities;
 
-import vn.giakhanhvn.skysim.gui.CookieConfirmGUI;
-import vn.giakhanhvn.skysim.item.SItem;
 import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.gui.CookieConfirmGUI;
+import vn.giakhanhvn.skysim.item.*;
 import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.Untradeable;
-import vn.giakhanhvn.skysim.item.Ability;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.MaterialStatistics;
 
 public class BoosterCookie implements MaterialStatistics, MaterialFunction, Ability, Untradeable {
     @Override

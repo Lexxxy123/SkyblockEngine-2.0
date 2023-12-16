@@ -1,10 +1,8 @@
 package vn.giakhanhvn.skysim.entity.end;
 
-import java.util.Arrays;
-
+import vn.giakhanhvn.skysim.entity.EntityDrop;
 import vn.giakhanhvn.skysim.entity.EntityDropType;
 import vn.giakhanhvn.skysim.item.SMaterial;
-import vn.giakhanhvn.skysim.entity.EntityDrop;
 
 import java.util.Collections;
 import java.util.List;

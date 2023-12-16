@@ -1,12 +1,12 @@
 package vn.giakhanhvn.skysim.command;
 
-import vn.giakhanhvn.skysim.reforge.Reforge;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.reforge.ReforgeType;
-import vn.giakhanhvn.skysim.item.SItem;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import vn.giakhanhvn.skysim.item.SItem;
+import vn.giakhanhvn.skysim.reforge.Reforge;
+import vn.giakhanhvn.skysim.reforge.ReforgeType;
 
 @CommandParameters(description = "Reforge an item from Spec.", aliases = "sref", permission = "spt.item")
 public class SpecReforgeCommand extends SCommand {

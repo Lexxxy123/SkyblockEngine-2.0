@@ -1,25 +1,20 @@
 package vn.giakhanhvn.skysim.gui;
 
-import vn.giakhanhvn.skysim.item.*;
-import org.bukkit.inventory.InventoryView;
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
 import org.bukkit.ChatColor;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.Map;
-import java.util.Iterator;
-
+import org.bukkit.Material;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.item.*;
 import vn.giakhanhvn.skysim.user.User;
 import vn.giakhanhvn.skysim.util.SUtil;
 
-import java.util.List;
 import java.util.ArrayList;
-
-import org.bukkit.Material;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemStack;
+import java.util.List;
+import java.util.Map;
 
 public class CraftingTableGUI extends GUI implements BlockBasedGUI {
     private static final ItemStack RECIPE_REQUIRED;

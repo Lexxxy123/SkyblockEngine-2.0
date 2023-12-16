@@ -1,37 +1,28 @@
 package vn.giakhanhvn.skysim.command;
 
-import vn.giakhanhvn.skysim.collection.ItemCollection;
-import vn.giakhanhvn.skysim.dimoon.DimoonLootItem;
-
-import java.util.List;
-import java.util.Iterator;
-
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.util.SUtil;
-
-import java.io.File;
-
-import vn.giakhanhvn.skysim.gui.ConfirmWitherRuins;
-import vn.giakhanhvn.skysim.dimoon.DimoonLootTable;
-import vn.giakhanhvn.skysim.dimoon.Arena;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.user.User;
-import vn.giakhanhvn.skysim.dungeons.Blessings;
-import vn.giakhanhvn.skysim.dungeons.BlessingType;
-import org.bukkit.inventory.ItemStack;
-import vn.giakhanhvn.skysim.user.UserStash;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import vn.giakhanhvn.skysim.extra.protocol.PacketInvoker;
-import vn.giakhanhvn.skysim.entity.SEntityType;
-import vn.giakhanhvn.skysim.entity.SEntity;
-import vn.giakhanhvn.skysim.item.SItem;
-import vn.giakhanhvn.skysim.dungeons.ItemSerial;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.collection.ItemCollection;
+import vn.giakhanhvn.skysim.dimoon.Arena;
+import vn.giakhanhvn.skysim.dimoon.DimoonLootTable;
+import vn.giakhanhvn.skysim.dungeons.BlessingType;
+import vn.giakhanhvn.skysim.dungeons.Blessings;
+import vn.giakhanhvn.skysim.dungeons.ItemSerial;
 import vn.giakhanhvn.skysim.entity.dungeons.watcher.Watcher;
-import org.bukkit.Location;
-import org.bukkit.ChatColor;
+import vn.giakhanhvn.skysim.extra.protocol.PacketInvoker;
+import vn.giakhanhvn.skysim.gui.ConfirmWitherRuins;
+import vn.giakhanhvn.skysim.item.SItem;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.user.UserStash;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
+
+import java.io.File;
 
 @CommandParameters(description = "Modify your absorption amount.", permission = "spt.player")
 public class SSTest extends SCommand {

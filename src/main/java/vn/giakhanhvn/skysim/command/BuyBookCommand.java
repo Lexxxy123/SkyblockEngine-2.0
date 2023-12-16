@@ -1,11 +1,11 @@
 package vn.giakhanhvn.skysim.command;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.util.Sputnik;
+import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
 import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.item.SMaterial;
-import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 @CommandParameters(description = "", aliases = "purc", permission = "sse.cc")
 public class BuyBookCommand extends SCommand {

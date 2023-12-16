@@ -1,9 +1,9 @@
 package vn.giakhanhvn.skysim.item.enchanted;
 
-import vn.giakhanhvn.skysim.item.ShapelessRecipe;
 import vn.giakhanhvn.skysim.item.MaterialQuantifiable;
-import vn.giakhanhvn.skysim.item.SMaterial;
 import vn.giakhanhvn.skysim.item.MaterialStatistics;
+import vn.giakhanhvn.skysim.item.SMaterial;
+import vn.giakhanhvn.skysim.item.ShapelessRecipe;
 
 public interface EnchantedMaterialStatistics extends MaterialStatistics {
     SMaterial getCraftingMaterial();

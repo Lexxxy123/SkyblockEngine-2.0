@@ -1,14 +1,13 @@
 package vn.giakhanhvn.skysim.command;
 
-import java.util.ArrayList;
-
-import org.bukkit.entity.Player;
-import org.bukkit.Sound;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 
-import java.util.UUID;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @CommandParameters(description = "Hidden command.", aliases = "attc")
 public class AccessTimedCommand extends SCommand {

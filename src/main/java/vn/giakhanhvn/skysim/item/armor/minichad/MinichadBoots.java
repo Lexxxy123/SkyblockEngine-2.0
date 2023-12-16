@@ -1,12 +1,7 @@
 package vn.giakhanhvn.skysim.item.armor.minichad;
 
-import vn.giakhanhvn.skysim.item.ShapedRecipe;
-import vn.giakhanhvn.skysim.item.SMaterial;
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
+import vn.giakhanhvn.skysim.item.*;
 import vn.giakhanhvn.skysim.item.armor.LeatherArmorStatistics;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
 
 public class MinichadBoots implements MaterialFunction, LeatherArmorStatistics {
     @Override

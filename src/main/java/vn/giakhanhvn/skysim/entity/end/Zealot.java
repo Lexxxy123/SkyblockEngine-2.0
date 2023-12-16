@@ -1,31 +1,22 @@
 package vn.giakhanhvn.skysim.entity.end;
 
+import com.google.common.util.concurrent.AtomicDouble;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
-
-import java.util.Collections;
-
+import vn.giakhanhvn.skysim.entity.*;
 import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.item.SMaterial;
-import vn.giakhanhvn.skysim.entity.EntityFunction;
-import vn.giakhanhvn.skysim.item.pet.PetAbility;
 import vn.giakhanhvn.skysim.item.pet.Pet;
-import vn.giakhanhvn.skysim.entity.SEntityType;
-import org.bukkit.ChatColor;
-import org.bukkit.Sound;
-import com.google.common.util.concurrent.AtomicDouble;
 import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Entity;
-import vn.giakhanhvn.skysim.entity.SEntity;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 import java.util.Arrays;
-
-import vn.giakhanhvn.skysim.entity.EntityDropType;
-import org.bukkit.inventory.ItemStack;
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.Material;
-import vn.giakhanhvn.skysim.entity.EntityDrop;
-
+import java.util.Collections;
 import java.util.List;
 
 public class Zealot extends BaseEnderman {

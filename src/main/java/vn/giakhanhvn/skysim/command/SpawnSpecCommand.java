@@ -1,12 +1,11 @@
 package vn.giakhanhvn.skysim.command;
 
-import org.bukkit.entity.Player;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.entity.Entity;
-import vn.giakhanhvn.skysim.entity.SEntity;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.entity.SEntityType;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.entity.SEntity;
+import vn.giakhanhvn.skysim.entity.SEntityType;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 @CommandParameters(description = "Spawn a mob from Spec.", aliases = "scm", permission = "spt.spawn")
 public class SpawnSpecCommand extends SCommand {

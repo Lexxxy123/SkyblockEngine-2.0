@@ -1,21 +1,17 @@
 package vn.giakhanhvn.skysim.nms.nmsutil.packetlistener.channel;
 
-import java.net.SocketAddress;
-
-import vn.giakhanhvn.skysim.nms.nmsutil.packetlistener.Cancellable;
-import io.netty.channel.ChannelPromise;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelDuplexHandler;
-
-import java.util.ArrayList;
-
-import vn.giakhanhvn.skysim.nms.nmsutil.reflection.minecraft.Minecraft;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelDuplexHandler;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelPromise;
 import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.nms.nmsutil.packetlistener.Cancellable;
 import vn.giakhanhvn.skysim.nms.nmsutil.packetlistener.IPacketListener;
+import vn.giakhanhvn.skysim.nms.nmsutil.reflection.minecraft.Minecraft;
 
 import java.lang.reflect.Field;
+import java.net.SocketAddress;
+import java.util.ArrayList;
 
 public class INCChannel extends ChannelAbstract {
     private static final Field channelField;

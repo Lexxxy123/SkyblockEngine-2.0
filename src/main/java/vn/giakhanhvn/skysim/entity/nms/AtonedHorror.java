@@ -1,64 +1,35 @@
 package vn.giakhanhvn.skysim.entity.nms;
 
-import org.bukkit.block.Block;
-
-import java.util.Iterator;
-
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.GameMode;
-import org.bukkit.Sound;
-import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
-import vn.giakhanhvn.skysim.entity.EntityDropType;
-
-import java.util.ArrayList;
-
-import vn.giakhanhvn.skysim.entity.EntityDrop;
-
-import java.util.List;
-
-import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.Color;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.Material;
-import vn.giakhanhvn.skysim.entity.SEntityEquipment;
+import com.google.common.util.concurrent.AtomicDouble;
 import net.minecraft.server.v1_8_R3.EntityLiving;
+import net.minecraft.server.v1_8_R3.EntityZombie;
+import net.minecraft.server.v1_8_R3.GenericAttributes;
+import net.minecraft.server.v1_8_R3.World;
+import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
+import org.bukkit.entity.*;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
+import vn.giakhanhvn.skysim.entity.*;
 import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.item.SMaterial;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.ArmorStand;
-import vn.giakhanhvn.skysim.entity.SEntityType;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.metadata.FixedMetadataValue;
-import vn.giakhanhvn.skysim.util.EntityManager;
-import org.bukkit.util.Vector;
-import org.bukkit.entity.Arrow;
-import com.google.common.util.concurrent.AtomicDouble;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.scheduler.BukkitRunnable;
-import net.minecraft.server.v1_8_R3.GenericAttributes;
-import org.bukkit.entity.Entity;
-import org.bukkit.Effect;
-import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import org.bukkit.entity.LivingEntity;
 import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.EntityManager;
 import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.entity.Zombie;
-import net.minecraft.server.v1_8_R3.World;
-import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
-
-import vn.giakhanhvn.skysim.entity.SEntity;
-import org.bukkit.Location;
-import vn.giakhanhvn.skysim.entity.ZombieStatistics;
-import vn.giakhanhvn.skysim.entity.EntityFunction;
-import net.minecraft.server.v1_8_R3.EntityZombie;
 
 public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunction, ZombieStatistics, SlayerBoss {
     private static final TieredValue<Double> MAX_HEALTH_VALUES;

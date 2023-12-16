@@ -1,16 +1,15 @@
 package vn.giakhanhvn.skysim.gui;
 
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.Location;
 import org.bukkit.Bukkit;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import org.bukkit.OfflinePlayer;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+import vn.giakhanhvn.skysim.SkySimEngine;
 import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 public class ConfirmWitherRuins extends GUI {
     public ConfirmWitherRuins() {

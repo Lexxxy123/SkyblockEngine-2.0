@@ -1,14 +1,10 @@
 package vn.giakhanhvn.skysim.dimoon;
 
-import java.util.Iterator;
-import java.util.Arrays;
-
+import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.util.SUtil;
 
 import java.util.ArrayList;
-
-import org.bukkit.entity.Player;
-
+import java.util.Arrays;
 import java.util.List;
 
 public class DimoonLootTable {

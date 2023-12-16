@@ -1,7 +1,7 @@
 package vn.giakhanhvn.skysim.listener;
 
-import org.bukkit.event.EventHandler;
 import org.bukkit.ChatColor;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.server.ServerListPingEvent;
 
 public class ServerPingListener extends PListener {

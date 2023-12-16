@@ -1,41 +1,26 @@
 package vn.giakhanhvn.skysim.entity;
 
-import org.bukkit.entity.Creature;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.EntityEquipment;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.entity.Skeleton;
-import org.bukkit.entity.Wolf;
-import vn.giakhanhvn.skysim.entity.wolf.WolfStatistics;
-import org.bukkit.entity.Zombie;
-import org.bukkit.entity.Ageable;
-import org.bukkit.material.MaterialData;
-import org.bukkit.Material;
-import org.bukkit.entity.Enderman;
-import vn.giakhanhvn.skysim.entity.end.EndermanStatistics;
-import org.bukkit.entity.Slime;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import net.minecraft.server.v1_8_R3.GenericAttributes;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
+import org.bukkit.entity.Ageable;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.EntityEquipment;
+import org.bukkit.material.MaterialData;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.entity.end.EndermanStatistics;
+import vn.giakhanhvn.skysim.entity.nms.SNMSEntity;
+import vn.giakhanhvn.skysim.entity.wolf.WolfStatistics;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 import java.util.HashMap;
-
-import vn.giakhanhvn.skysim.entity.nms.SNMSEntity;
-import org.bukkit.Location;
-import org.bukkit.scheduler.BukkitTask;
-
-import java.util.UUID;
-
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Entity;
-
 import java.util.Map;
-
-import vn.giakhanhvn.skysim.SkySimEngine;
+import java.util.UUID;
 
 public class SEntity {
     private static final SkySimEngine plugin;

@@ -1,42 +1,34 @@
 package vn.giakhanhvn.skysim.listener;
 
-import vn.giakhanhvn.skysim.util.SLog;
 import com.google.common.io.ByteArrayDataInput;
-import vn.giakhanhvn.skysim.nms.packetevents.WrappedPluginMessage;
 import com.google.common.io.ByteStreams;
-import vn.giakhanhvn.skysim.nms.packetevents.PluginMessageReceived;
-
-import java.util.List;
-
-import vn.giakhanhvn.skysim.nms.pingrep.PingReply;
-import vn.giakhanhvn.skysim.command.RebootServerCommand;
-
-import java.util.ArrayList;
-
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
-import vn.giakhanhvn.skysim.nms.packetevents.SkySimServerPingEvent;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
-
-import java.util.UUID;
-
-import vn.giakhanhvn.skysim.user.User;
+import net.minecraft.server.v1_8_R3.PacketPlayInCustomPayload;
+import net.minecraft.server.v1_8_R3.PacketPlayInSetCreativeSlot;
 import net.minecraft.server.v1_8_R3.PacketPlayInUpdateSign;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.scheduler.BukkitRunnable;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.command.RebootServerCommand;
+import vn.giakhanhvn.skysim.nms.nmsutil.packetlistener.handler.ReceivedPacket;
+import vn.giakhanhvn.skysim.nms.packetevents.PacketReceiveServerSideEvent;
+import vn.giakhanhvn.skysim.nms.packetevents.PluginMessageReceived;
+import vn.giakhanhvn.skysim.nms.packetevents.SkySimServerPingEvent;
+import vn.giakhanhvn.skysim.nms.packetevents.WrappedPluginMessage;
+import vn.giakhanhvn.skysim.nms.pingrep.PingReply;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.DiscordWebhook;
+import vn.giakhanhvn.skysim.util.SLog;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 import java.io.IOException;
-
-import vn.giakhanhvn.skysim.util.DiscordWebhook;
-import org.bukkit.scheduler.BukkitRunnable;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import org.bukkit.event.EventHandler;
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.nms.nmsutil.packetlistener.handler.ReceivedPacket;
-import org.bukkit.GameMode;
-import net.minecraft.server.v1_8_R3.PacketPlayInSetCreativeSlot;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import net.minecraft.server.v1_8_R3.PacketPlayInCustomPayload;
-import vn.giakhanhvn.skysim.nms.packetevents.PacketReceiveServerSideEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class PacketListener extends PListener {
     @EventHandler

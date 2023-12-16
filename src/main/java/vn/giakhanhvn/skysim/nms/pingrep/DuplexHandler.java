@@ -1,12 +1,10 @@
 package vn.giakhanhvn.skysim.nms.pingrep;
 
-import java.util.Iterator;
-
+import io.netty.channel.ChannelDuplexHandler;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelPromise;
 import net.minecraft.server.v1_8_R3.PacketStatusOutPong;
 import net.minecraft.server.v1_8_R3.PacketStatusOutServerInfo;
-import io.netty.channel.ChannelPromise;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelDuplexHandler;
 
 public class DuplexHandler extends ChannelDuplexHandler {
     private PingEvent event;

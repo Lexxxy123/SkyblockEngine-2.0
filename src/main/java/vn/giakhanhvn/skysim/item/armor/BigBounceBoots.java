@@ -1,15 +1,8 @@
 package vn.giakhanhvn.skysim.item.armor;
 
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.SItem;
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.item.AbilityActivation;
 import net.md_5.bungee.api.ChatColor;
-import vn.giakhanhvn.skysim.item.Ability;
-import vn.giakhanhvn.skysim.item.FlightStatistics;
-import vn.giakhanhvn.skysim.item.TickingMaterial;
+import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.item.*;
 
 public class BigBounceBoots implements LeatherArmorStatistics, TickingMaterial, FlightStatistics, Ability {
     @Override

@@ -1,15 +1,12 @@
 package vn.giakhanhvn.skysim.user;
 
-import java.util.List;
-import java.util.Collection;
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import org.bukkit.inventory.ItemStack;
-import vn.giakhanhvn.skysim.util.Sputnik;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.inventory.ItemStack;
 import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class UserStash {

@@ -1,18 +1,17 @@
 package vn.giakhanhvn.skysim.entity.skeleton;
 
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.Location;
-import vn.giakhanhvn.skysim.entity.SEntityType;
 import org.bukkit.Effect;
-import org.bukkit.entity.Item;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
-import vn.giakhanhvn.skysim.entity.SEntity;
+import org.bukkit.entity.Item;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+import vn.giakhanhvn.skysim.SkySimEngine;
 import vn.giakhanhvn.skysim.entity.EntityFunction;
 import vn.giakhanhvn.skysim.entity.EntityStatistics;
+import vn.giakhanhvn.skysim.entity.SEntity;
+import vn.giakhanhvn.skysim.entity.SEntityType;
 
 public class HighLevelSkeleton implements EntityStatistics, EntityFunction {
     @Override

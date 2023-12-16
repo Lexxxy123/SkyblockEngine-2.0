@@ -1,36 +1,25 @@
 package vn.giakhanhvn.skysim.entity.dungeons.boss.sadan;
 
-import org.bukkit.OfflinePlayer;
-import vn.giakhanhvn.skysim.Repeater;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import org.bukkit.event.entity.EntityDamageEvent;
-import vn.giakhanhvn.skysim.user.User;
-import vn.giakhanhvn.skysim.user.PlayerUtils;
-import vn.giakhanhvn.skysim.user.PlayerStatistics;
-import org.bukkit.entity.Player;
-
-import java.util.Iterator;
-
-import org.bukkit.Effect;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.Color;
-import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.metadata.FixedMetadataValue;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
+import vn.giakhanhvn.skysim.Repeater;
+import vn.giakhanhvn.skysim.SkySimEngine;
 import vn.giakhanhvn.skysim.entity.SEntity;
 import vn.giakhanhvn.skysim.entity.SEntityType;
-import org.bukkit.Location;
-import org.bukkit.World;
+import vn.giakhanhvn.skysim.user.PlayerStatistics;
+import vn.giakhanhvn.skysim.user.PlayerUtils;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 import java.util.Random;
-
-import vn.giakhanhvn.skysim.util.SUtil;
 
 public class SadanFunction {
     public static String generateRandom() {

@@ -1,29 +1,22 @@
 package vn.giakhanhvn.skysim.entity.insentient;
 
-import org.bukkit.block.BlockState;
-
-import java.util.Iterator;
-import java.util.List;
-
+import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.entity.SEntity;
+import vn.giakhanhvn.skysim.entity.nms.VelocityArmorStand;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 import java.util.ArrayList;
-
-import org.bukkit.Material;
-import org.bukkit.Location;
-import org.bukkit.Effect;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.metadata.FixedMetadataValue;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.util.Vector;
-import vn.giakhanhvn.skysim.item.SMaterial;
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.entity.ArmorStand;
-import vn.giakhanhvn.skysim.entity.SEntity;
-import org.bukkit.entity.LivingEntity;
-import vn.giakhanhvn.skysim.entity.nms.VelocityArmorStand;
+import java.util.List;
 
 public abstract class FloatingCrystal extends VelocityArmorStand {
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {

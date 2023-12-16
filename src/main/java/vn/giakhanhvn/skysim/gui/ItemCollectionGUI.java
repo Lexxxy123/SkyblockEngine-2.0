@@ -1,25 +1,19 @@
 package vn.giakhanhvn.skysim.gui;
 
-import java.util.Iterator;
-
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.event.inventory.InventoryClickEvent;
-
-import java.util.List;
-
+import org.bukkit.inventory.ItemStack;
+import vn.giakhanhvn.skysim.collection.ItemCollection;
 import vn.giakhanhvn.skysim.collection.ItemCollectionReward;
+import vn.giakhanhvn.skysim.collection.ItemCollectionRewards;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
 
-import java.util.Collection;
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import vn.giakhanhvn.skysim.collection.ItemCollectionRewards;
-import org.bukkit.Material;
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.user.User;
-import vn.giakhanhvn.skysim.collection.ItemCollection;
+import java.util.List;
 
 public class ItemCollectionGUI extends GUI {
     private final ItemCollection collection;

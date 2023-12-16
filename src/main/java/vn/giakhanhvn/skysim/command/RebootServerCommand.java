@@ -1,20 +1,16 @@
 package vn.giakhanhvn.skysim.command;
 
-import java.util.HashMap;
-import java.util.Iterator;
-
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.scheduler.BukkitRunnable;
-import vn.giakhanhvn.skysim.util.Sputnik;
+import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
+import org.bukkit.Server;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.command.CommandSender;
-import org.bukkit.Bukkit;
-import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Server;
+import org.bukkit.scheduler.BukkitRunnable;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @CommandParameters(description = "Spec test command.", aliases = "rebootserver")

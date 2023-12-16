@@ -1,15 +1,14 @@
 package vn.giakhanhvn.skysim.command;
 
-import java.util.ArrayList;
-
-import vn.giakhanhvn.skysim.gui.GUI;
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.gui.GUIType;
-import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.item.oddities.MaddoxBatphone;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.gui.GUI;
+import vn.giakhanhvn.skysim.gui.GUIType;
+import vn.giakhanhvn.skysim.item.oddities.MaddoxBatphone;
+import vn.giakhanhvn.skysim.util.SUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 

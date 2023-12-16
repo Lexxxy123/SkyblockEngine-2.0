@@ -1,29 +1,16 @@
 package vn.giakhanhvn.skysim.item.weapon;
 
-import vn.giakhanhvn.skysim.item.ShapedRecipe;
-import vn.giakhanhvn.skysim.item.SMaterial;
-import org.bukkit.Location;
-import vn.giakhanhvn.skysim.item.PlayerBoostStatistics;
-import vn.giakhanhvn.skysim.user.PlayerUtils;
-import vn.giakhanhvn.skysim.user.PlayerStatistics;
-import org.bukkit.Sound;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import org.bukkit.Material;
-
-import java.util.Set;
-
-import vn.giakhanhvn.skysim.item.SItem;
-import org.bukkit.entity.Player;
 import net.md_5.bungee.api.ChatColor;
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.item.*;
+import vn.giakhanhvn.skysim.user.PlayerUtils;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 import java.math.BigDecimal;
-
-import vn.giakhanhvn.skysim.item.Ability;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.ToolStatistics;
+import java.util.Set;
 
 public class AspectOfTheEnd implements ToolStatistics, MaterialFunction, Ability {
     public BigDecimal a;

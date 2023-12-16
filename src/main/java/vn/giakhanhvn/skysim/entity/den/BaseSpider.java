@@ -1,24 +1,16 @@
 package vn.giakhanhvn.skysim.entity.den;
 
-import java.util.Arrays;
-
-import vn.giakhanhvn.skysim.entity.EntityDropType;
-import vn.giakhanhvn.skysim.item.SMaterial;
-import vn.giakhanhvn.skysim.entity.EntityDrop;
-
-import java.util.List;
-
 import org.bukkit.Location;
-import org.bukkit.entity.LivingEntity;
-import vn.giakhanhvn.skysim.entity.SEntityType;
-import vn.giakhanhvn.skysim.slayer.SlayerQuest;
-import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.entity.Player;
 import org.bukkit.entity.Entity;
-import vn.giakhanhvn.skysim.entity.SEntity;
-import vn.giakhanhvn.skysim.entity.EntityFunction;
-import vn.giakhanhvn.skysim.entity.EntityStatistics;
+import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.entity.*;
+import vn.giakhanhvn.skysim.item.SMaterial;
+import vn.giakhanhvn.skysim.slayer.SlayerQuest;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
+
+import java.util.Arrays;
+import java.util.List;
 
 public abstract class BaseSpider implements EntityStatistics, EntityFunction {
     @Override

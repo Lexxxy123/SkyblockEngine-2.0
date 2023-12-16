@@ -1,9 +1,9 @@
 package vn.giakhanhvn.skysim.command;
 
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.entity.Player;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 @CommandParameters(description = "Change the material data of an item.", aliases = "mdata,matdata,md", permission = "spt.item")
 public class MaterialDataCommand extends SCommand {

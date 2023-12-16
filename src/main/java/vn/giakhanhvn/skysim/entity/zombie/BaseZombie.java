@@ -1,16 +1,15 @@
 package vn.giakhanhvn.skysim.entity.zombie;
 
 import org.bukkit.Location;
-import org.bukkit.entity.LivingEntity;
-import vn.giakhanhvn.skysim.entity.SEntityType;
-import vn.giakhanhvn.skysim.slayer.SlayerQuest;
-import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.entity.Player;
 import org.bukkit.entity.Entity;
-import vn.giakhanhvn.skysim.entity.SEntity;
+import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.entity.EntityFunction;
+import vn.giakhanhvn.skysim.entity.SEntity;
+import vn.giakhanhvn.skysim.entity.SEntityType;
 import vn.giakhanhvn.skysim.entity.ZombieStatistics;
+import vn.giakhanhvn.skysim.slayer.SlayerQuest;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 public abstract class BaseZombie implements ZombieStatistics, EntityFunction {
     @Override

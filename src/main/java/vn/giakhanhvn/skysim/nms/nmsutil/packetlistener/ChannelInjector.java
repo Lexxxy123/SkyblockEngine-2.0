@@ -1,17 +1,13 @@
 package vn.giakhanhvn.skysim.nms.nmsutil.packetlistener;
 
 import org.bukkit.entity.Player;
-
-import java.lang.reflect.InvocationTargetException;
-
-import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.ConstructorResolver;
-
-import java.util.Iterator;
-import java.util.List;
-import java.util.ArrayList;
-
 import vn.giakhanhvn.skysim.nms.nmsutil.packetlistener.channel.ChannelAbstract;
 import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.ClassResolver;
+import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.ConstructorResolver;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChannelInjector {
     private static final ClassResolver CLASS_RESOLVER;

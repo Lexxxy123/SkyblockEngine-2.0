@@ -1,9 +1,9 @@
 package vn.giakhanhvn.skysim.item.enchanted;
 
 import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
 import vn.giakhanhvn.skysim.item.MaterialStatistics;
+import vn.giakhanhvn.skysim.item.Rarity;
 
 public class EnchantedEyeOfEnder implements MaterialStatistics, MaterialFunction {
     @Override

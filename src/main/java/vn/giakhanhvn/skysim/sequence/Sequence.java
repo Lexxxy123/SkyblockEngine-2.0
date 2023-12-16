@@ -1,7 +1,7 @@
 package vn.giakhanhvn.skysim.sequence;
 
-import org.bukkit.entity.Entity;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 
 public interface Sequence {
     void play(final Location p0);

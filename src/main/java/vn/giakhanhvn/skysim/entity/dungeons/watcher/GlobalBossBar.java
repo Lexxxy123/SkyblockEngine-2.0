@@ -1,36 +1,18 @@
 package vn.giakhanhvn.skysim.entity.dungeons.watcher;
 
-import net.minecraft.server.v1_8_R3.Entity;
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntityTeleport;
-
-import java.util.Iterator;
-
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntityMetadata;
-
-import java.util.Map;
-
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Location;
-import net.minecraft.server.v1_8_R3.Packet;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import net.minecraft.server.v1_8_R3.EntityLiving;
-import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntityLiving;
+import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import vn.giakhanhvn.skysim.SkySimEngine;
 
 import java.util.ArrayList;
-
-import org.bukkit.World;
-
-import java.util.List;
-
-import net.minecraft.server.v1_8_R3.EntityWither;
-import org.bukkit.entity.Player;
-
 import java.util.HashMap;
-
-import org.bukkit.scheduler.BukkitRunnable;
+import java.util.List;
+import java.util.Map;
 
 public class GlobalBossBar extends BukkitRunnable {
     private String title;

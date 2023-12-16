@@ -1,13 +1,13 @@
 package vn.giakhanhvn.skysim.item.armor.eleganttux;
 
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.List;
-
-import vn.giakhanhvn.skysim.item.SItem;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.item.MaterialStatistics;
-import net.md_5.bungee.api.ChatColor;
+import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.item.armor.TickingSet;
+
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ElegantTuxedo implements TickingSet {
     @Override

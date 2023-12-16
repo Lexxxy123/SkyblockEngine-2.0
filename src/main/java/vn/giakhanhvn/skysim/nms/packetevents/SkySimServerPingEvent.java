@@ -1,10 +1,10 @@
 package vn.giakhanhvn.skysim.nms.packetevents;
 
-import vn.giakhanhvn.skysim.nms.pingrep.PingReply;
-import vn.giakhanhvn.skysim.nms.pingrep.PingEvent;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
+import org.bukkit.event.HandlerList;
+import vn.giakhanhvn.skysim.nms.pingrep.PingEvent;
+import vn.giakhanhvn.skysim.nms.pingrep.PingReply;
 
 public class SkySimServerPingEvent extends Event implements Cancellable {
     private static final HandlerList handlers;

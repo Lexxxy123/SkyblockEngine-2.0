@@ -1,13 +1,13 @@
 package vn.giakhanhvn.skysim.item.exclusive;
 
-import vn.giakhanhvn.skysim.entity.SEntityType;
 import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.entity.SEntity;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import vn.giakhanhvn.skysim.item.Rarity;
+import vn.giakhanhvn.skysim.entity.SEntity;
+import vn.giakhanhvn.skysim.entity.SEntityType;
 import vn.giakhanhvn.skysim.item.GenericItemType;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
+import vn.giakhanhvn.skysim.item.Rarity;
 import vn.giakhanhvn.skysim.item.SkullStatistics;
 
 public abstract class FloatingCrystal implements SkullStatistics, MaterialFunction {

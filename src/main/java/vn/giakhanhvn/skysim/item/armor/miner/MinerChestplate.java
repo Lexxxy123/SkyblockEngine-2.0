@@ -1,9 +1,9 @@
 package vn.giakhanhvn.skysim.item.armor.miner;
 
-import vn.giakhanhvn.skysim.item.SpecificItemType;
 import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
 import vn.giakhanhvn.skysim.item.MaterialFunction;
+import vn.giakhanhvn.skysim.item.Rarity;
+import vn.giakhanhvn.skysim.item.SpecificItemType;
 import vn.giakhanhvn.skysim.item.armor.LeatherArmorStatistics;
 
 public class MinerChestplate implements LeatherArmorStatistics, MaterialFunction {

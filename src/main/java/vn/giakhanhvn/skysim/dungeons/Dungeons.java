@@ -1,22 +1,13 @@
 package vn.giakhanhvn.skysim.dungeons;
 
-import java.util.HashMap;
-
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.entity.SEntity;
 import vn.giakhanhvn.skysim.entity.SEntityType;
-import org.bukkit.Location;
 import vn.giakhanhvn.skysim.util.SLog;
 
-import java.util.ArrayList;
-import java.util.UUID;
-
-import org.bukkit.entity.Player;
-
-import java.util.List;
-
-import org.bukkit.World;
-
-import java.util.Map;
+import java.util.*;
 
 public class Dungeons {
     private static Map<World, Dungeons> DUNGEONS_CACHE;

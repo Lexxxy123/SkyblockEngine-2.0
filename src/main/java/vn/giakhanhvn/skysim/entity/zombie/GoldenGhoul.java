@@ -1,18 +1,16 @@
 package vn.giakhanhvn.skysim.entity.zombie;
 
-import java.util.Arrays;
-
-import vn.giakhanhvn.skysim.item.SMaterial;
-import vn.giakhanhvn.skysim.entity.EntityDropType;
-import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.entity.EntityDrop;
-
-import java.util.List;
-
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.Material;
-import vn.giakhanhvn.skysim.entity.SEntityEquipment;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import vn.giakhanhvn.skysim.entity.EntityDrop;
+import vn.giakhanhvn.skysim.entity.EntityDropType;
+import vn.giakhanhvn.skysim.entity.SEntityEquipment;
+import vn.giakhanhvn.skysim.item.SMaterial;
+import vn.giakhanhvn.skysim.util.SUtil;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class GoldenGhoul extends BaseZombie {
     @Override

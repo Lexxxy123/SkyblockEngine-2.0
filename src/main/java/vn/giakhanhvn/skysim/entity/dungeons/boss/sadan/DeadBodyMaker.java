@@ -1,51 +1,23 @@
 package vn.giakhanhvn.skysim.entity.dungeons.boss.sadan;
 
-import net.minecraft.server.v1_8_R3.PlayerConnection;
-import net.minecraft.server.v1_8_R3.Scoreboard;
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
+import net.md_5.bungee.api.ChatColor;
+import net.minecraft.server.v1_8_R3.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.scoreboard.CraftScoreboard;
 import org.bukkit.craftbukkit.v1_8_R3.scoreboard.CraftScoreboardManager;
-
-import java.util.Iterator;
-
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntity;
-import vn.giakhanhvn.skysim.util.SUtil;
-import net.minecraft.server.v1_8_R3.PacketPlayOutBed;
-
-import java.util.Collections;
-
-import net.minecraft.server.v1_8_R3.PacketPlayOutScoreboardTeam;
-import net.minecraft.server.v1_8_R3.EntityHuman;
-import net.minecraft.server.v1_8_R3.PacketPlayOutNamedEntitySpawn;
-import net.minecraft.server.v1_8_R3.Packet;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import net.md_5.bungee.api.ChatColor;
-import net.minecraft.server.v1_8_R3.ScoreboardTeamBase;
-import net.minecraft.server.v1_8_R3.ScoreboardTeam;
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntityMetadata;
-import net.minecraft.server.v1_8_R3.DataWatcher;
-import net.minecraft.server.v1_8_R3.PacketPlayOutPlayerInfo;
-import net.minecraft.server.v1_8_R3.Entity;
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntityTeleport;
-import net.minecraft.server.v1_8_R3.BlockPosition;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 import java.util.Collection;
-
-import net.minecraft.server.v1_8_R3.WorldServer;
-import net.minecraft.server.v1_8_R3.MinecraftServer;
-import net.minecraft.server.v1_8_R3.EntityPlayer;
-import net.minecraft.server.v1_8_R3.World;
-import net.minecraft.server.v1_8_R3.PlayerInteractManager;
-import com.mojang.authlib.properties.Property;
-import com.mojang.authlib.GameProfile;
-
+import java.util.Collections;
 import java.util.UUID;
-
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
-import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
-import org.bukkit.Location;
 
 public final class DeadBodyMaker {
     private static final byte PLAYER_SLEEP_HEIGHT_FIX = 1;

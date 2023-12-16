@@ -1,48 +1,30 @@
 package vn.giakhanhvn.skysim.item;
 
-import java.util.Arrays;
-
-import org.bukkit.Sound;
-import org.bukkit.Location;
-
-import java.util.Set;
-
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.util.SerialNBTTagCompound;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import net.minecraft.server.v1_8_R3.Item;
-import org.bukkit.Color;
-import vn.giakhanhvn.skysim.item.armor.LeatherArmorStatistics;
-import org.bukkit.Material;
-
-import java.util.UUID;
-
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.reforge.ReforgeType;
-import vn.giakhanhvn.skysim.reforge.Reforge;
-import vn.giakhanhvn.skysim.potion.PotionColor;
-import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.potion.PotionEffectType;
-import vn.giakhanhvn.skysim.potion.PotionEffect;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import net.minecraft.server.v1_8_R3.NBTBase;
-import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.ItemFlag;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.List;
-
+import org.bukkit.Color;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
+import vn.giakhanhvn.skysim.item.armor.LeatherArmorStatistics;
+import vn.giakhanhvn.skysim.potion.PotionColor;
+import vn.giakhanhvn.skysim.potion.PotionEffect;
+import vn.giakhanhvn.skysim.potion.PotionEffectType;
+import vn.giakhanhvn.skysim.reforge.Reforge;
+import vn.giakhanhvn.skysim.reforge.ReforgeType;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.SerialNBTTagCompound;
+import vn.giakhanhvn.skysim.util.Sputnik;
+
+import java.util.*;
 
 public class SItem implements Cloneable, ConfigurationSerializable {
     private static final List<String> GLOBAL_NBT_TAGS;

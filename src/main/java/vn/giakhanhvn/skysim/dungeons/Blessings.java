@@ -1,37 +1,24 @@
 package vn.giakhanhvn.skysim.dungeons;
 
-import java.util.HashMap;
-
-import org.bukkit.Sound;
-import org.bukkit.Effect;
-import org.bukkit.Location;
+import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import org.bukkit.entity.Entity;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.entity.ArmorStand;
+import vn.giakhanhvn.skysim.SkySimEngine;
 import vn.giakhanhvn.skysim.entity.SEntity;
 import vn.giakhanhvn.skysim.entity.SEntityType;
-import org.bukkit.block.Block;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import org.bukkit.Bukkit;
-import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.user.PlayerUtils;
 import vn.giakhanhvn.skysim.user.PlayerStatistics;
+import vn.giakhanhvn.skysim.user.PlayerUtils;
 import vn.giakhanhvn.skysim.user.TemporaryStats;
 import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
-import java.util.Iterator;
-import java.util.ArrayList;
-import java.util.UUID;
-import java.util.List;
-import java.util.Map;
-
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.World;
+import java.util.*;
 
 public class Blessings {
     private final BlessingType type;

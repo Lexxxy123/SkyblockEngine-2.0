@@ -1,14 +1,12 @@
 package vn.giakhanhvn.skysim.user;
 
 import org.bukkit.Location;
-
-import java.util.ArrayList;
-
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 
-import java.util.UUID;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class PetsFollow {
     public static HashMap<UUID, PetsFollow> pets;

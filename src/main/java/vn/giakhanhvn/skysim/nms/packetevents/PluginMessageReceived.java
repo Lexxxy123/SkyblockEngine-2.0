@@ -1,7 +1,7 @@
 package vn.giakhanhvn.skysim.nms.packetevents;
 
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Event;
+import org.bukkit.event.HandlerList;
 
 public class PluginMessageReceived extends Event {
     private static final HandlerList handlers;

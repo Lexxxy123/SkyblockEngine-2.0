@@ -1,18 +1,13 @@
 package vn.giakhanhvn.skysim.user;
 
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.HashMap;
-
 import org.bukkit.scheduler.BukkitTask;
-
-import java.util.Map;
-
+import vn.giakhanhvn.skysim.SkySimEngine;
 import vn.giakhanhvn.skysim.item.armor.ArmorSet;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class PlayerStatistics {

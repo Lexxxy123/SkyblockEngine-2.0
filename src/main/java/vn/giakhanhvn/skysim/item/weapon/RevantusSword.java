@@ -1,13 +1,7 @@
 package vn.giakhanhvn.skysim.item.weapon;
 
-import vn.giakhanhvn.skysim.item.ShapedRecipe;
-import vn.giakhanhvn.skysim.item.SMaterial;
+import vn.giakhanhvn.skysim.item.*;
 import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.ToolStatistics;
 
 public class RevantusSword implements ToolStatistics, MaterialFunction {
     @Override

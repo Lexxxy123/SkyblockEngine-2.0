@@ -1,85 +1,45 @@
 package vn.giakhanhvn.skysim;
 
-import java.util.HashMap;
-
-import vn.giakhanhvn.skysim.item.armor.VoidlingsWardenHelmet;
-import vn.giakhanhvn.skysim.dimoon.SummoningSequence;
-import vn.giakhanhvn.skysim.slayer.SlayerQuest;
-import vn.giakhanhvn.skysim.item.armor.ArmorSet;
-import org.bukkit.inventory.PlayerInventory;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
-import com.google.common.collect.HashMultimap;
-import vn.giakhanhvn.skysim.entity.StaticDragonManager;
 import me.clip.placeholderapi.PlaceholderAPI;
-import vn.giakhanhvn.skysim.region.Region;
-import vn.giakhanhvn.skysim.command.RebootServerCommand;
-import vn.giakhanhvn.skysim.sidebar.Sidebar;
-import vn.giakhanhvn.skysim.item.armor.TickingSet;
-import vn.giakhanhvn.skysim.item.bow.Terminator;
-import vn.giakhanhvn.skysim.util.SputnikPlayer;
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.ItemListener;
-import vn.giakhanhvn.skysim.user.PlayerStatistics;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
-import vn.giakhanhvn.skysim.enchantment.Enchantment;
-import vn.giakhanhvn.skysim.util.InventoryUpdate;
-import vn.giakhanhvn.skysim.user.PlayerUtils;
+import net.minecraft.server.v1_8_R3.EntityFallingBlock;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import vn.giakhanhvn.skysim.item.SItem;
-import vn.giakhanhvn.skysim.item.SMaterial;
-
-import java.util.concurrent.atomic.AtomicInteger;
-
-import vn.giakhanhvn.skysim.util.Sputnik;
-import org.bukkit.OfflinePlayer;
-import vn.giakhanhvn.skysim.entity.dungeons.boss.sadan.SadanHuman;
-import vn.giakhanhvn.skysim.entity.dungeons.boss.sadan.SadanBossManager;
-import org.bukkit.util.Vector;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.Location;
-import org.bukkit.entity.Chicken;
-import org.bukkit.entity.Item;
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.Arrow;
-import org.bukkit.World;
-import org.bukkit.Effect;
-import org.bukkit.Sound;
-import vn.giakhanhvn.skysim.entity.nms.VoidgloomSeraph;
-
-import java.util.Set;
-
-import org.bukkit.ChatColor;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.Material;
-import vn.giakhanhvn.skysim.dungeons.Blessings;
-import org.bukkit.plugin.Plugin;
-
-import java.util.Iterator;
-
-import org.bukkit.Bukkit;
-import vn.giakhanhvn.skysim.util.SLog;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.ArrayList;
-
-import vn.giakhanhvn.skysim.potion.ActivePotionEffect;
-import vn.giakhanhvn.skysim.user.User;
 import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.Vector;
+import vn.giakhanhvn.skysim.command.RebootServerCommand;
+import vn.giakhanhvn.skysim.dimoon.SummoningSequence;
+import vn.giakhanhvn.skysim.dungeons.Blessings;
+import vn.giakhanhvn.skysim.enchantment.Enchantment;
+import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
+import vn.giakhanhvn.skysim.entity.StaticDragonManager;
+import vn.giakhanhvn.skysim.entity.dungeons.boss.sadan.SadanBossManager;
+import vn.giakhanhvn.skysim.entity.dungeons.boss.sadan.SadanHuman;
+import vn.giakhanhvn.skysim.entity.nms.VoidgloomSeraph;
+import vn.giakhanhvn.skysim.item.*;
+import vn.giakhanhvn.skysim.item.armor.ArmorSet;
+import vn.giakhanhvn.skysim.item.armor.TickingSet;
+import vn.giakhanhvn.skysim.item.armor.VoidlingsWardenHelmet;
+import vn.giakhanhvn.skysim.item.bow.Terminator;
+import vn.giakhanhvn.skysim.potion.ActivePotionEffect;
+import vn.giakhanhvn.skysim.region.Region;
+import vn.giakhanhvn.skysim.sidebar.Sidebar;
+import vn.giakhanhvn.skysim.slayer.SlayerQuest;
+import vn.giakhanhvn.skysim.user.PlayerStatistics;
+import vn.giakhanhvn.skysim.user.PlayerUtils;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.*;
 
-import java.util.List;
-
-import net.minecraft.server.v1_8_R3.EntityFallingBlock;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Entity;
-import vn.giakhanhvn.skysim.util.ManaReplacement;
-import vn.giakhanhvn.skysim.util.DefenseReplacement;
-
-import java.util.UUID;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Repeater {
     public static final Map<UUID, Integer> MANA_MAP;

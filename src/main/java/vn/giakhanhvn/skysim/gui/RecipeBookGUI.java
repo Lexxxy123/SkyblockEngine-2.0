@@ -1,21 +1,17 @@
 package vn.giakhanhvn.skysim.gui;
 
-import vn.giakhanhvn.skysim.item.MaterialQuantifiable;
-
-import java.util.Iterator;
-
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.item.SMaterial;
 import org.bukkit.inventory.ItemStack;
+import vn.giakhanhvn.skysim.item.MaterialQuantifiable;
+import vn.giakhanhvn.skysim.item.SItem;
+import vn.giakhanhvn.skysim.item.SMaterial;
 import vn.giakhanhvn.skysim.item.ShapedRecipe;
 import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 import java.util.Arrays;
-
-import org.bukkit.Material;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.item.SItem;
 
 public class RecipeBookGUI extends GUI {
     private static final int[] CRAFT_SLOTS;

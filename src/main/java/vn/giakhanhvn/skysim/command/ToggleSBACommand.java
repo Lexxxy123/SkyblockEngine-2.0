@@ -1,10 +1,10 @@
 package vn.giakhanhvn.skysim.command;
 
-import java.util.UUID;
-
 import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.util.Sputnik;
 import vn.giakhanhvn.skysim.Repeater;
+import vn.giakhanhvn.skysim.util.Sputnik;
+
+import java.util.UUID;
 
 @CommandParameters(description = "Spec test command.", aliases = "tsba")
 public class ToggleSBACommand extends SCommand {

@@ -1,13 +1,12 @@
 package vn.giakhanhvn.skysim.util;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.security.Key;
-import javax.crypto.spec.DESedeKeySpec;
-import javax.crypto.SecretKey;
 import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.DESedeKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.security.spec.KeySpec;
+import java.util.Base64;
 
 public class SkyEncryption {
     private static final String UNICODE_FORMAT = "UTF8";

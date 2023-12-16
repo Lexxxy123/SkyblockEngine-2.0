@@ -1,43 +1,24 @@
 package vn.giakhanhvn.skysim.auction;
 
-import java.util.HashMap;
-import java.util.stream.Stream;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import java.util.concurrent.CompletableFuture;
-
-import vn.giakhanhvn.skysim.user.AuctionSettings;
-import org.bukkit.OfflinePlayer;
-
-import java.util.Collection;
-import java.util.Collections;
-
-import org.bukkit.inventory.meta.ItemMeta;
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.ChatColor;
 import org.bukkit.Bukkit;
-
-import java.util.function.Predicate;
-import java.util.Objects;
-
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.user.User;
-
-import java.util.Iterator;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import vn.giakhanhvn.skysim.item.SItem;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import vn.giakhanhvn.skysim.SkySimEngine;
 import vn.giakhanhvn.skysim.config.Config;
+import vn.giakhanhvn.skysim.item.SItem;
+import vn.giakhanhvn.skysim.user.AuctionSettings;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 import java.io.File;
-
-import vn.giakhanhvn.skysim.SkySimEngine;
-
-import java.util.UUID;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class AuctionItem {
     private static final Map<UUID, AuctionItem> AUCTION_ITEM_CACHE;

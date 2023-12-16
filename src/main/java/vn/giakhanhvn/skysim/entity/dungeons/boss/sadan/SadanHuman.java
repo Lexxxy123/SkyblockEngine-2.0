@@ -1,50 +1,30 @@
 package vn.giakhanhvn.skysim.entity.dungeons.boss.sadan;
 
-import java.util.HashMap;
-
-import org.bukkit.Sound;
-import org.bukkit.util.Vector;
-import vn.giakhanhvn.skysim.entity.SEntityType;
-import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.util.PlayJingle;
-import org.bukkit.inventory.ItemStack;
-import vn.giakhanhvn.skysim.entity.SEntityEquipment;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.metadata.FixedMetadataValue;
-import vn.giakhanhvn.skysim.util.EntityManager;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
-
-import java.util.List;
-import java.util.ArrayList;
-
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.scheduler.BukkitRunnable;
-import vn.giakhanhvn.skysim.Repeater;
-import org.bukkit.Location;
-import vn.giakhanhvn.skysim.user.User;
 import org.bukkit.Bukkit;
-import vn.giakhanhvn.skysim.entity.SEntity;
-import org.bukkit.entity.LivingEntity;
-import vn.giakhanhvn.skysim.util.BossBar;
-
-import java.util.Iterator;
-
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.entity.dungeons.watcher.GlobalBossBar;
+import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.World;
-
-import java.util.UUID;
-
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
-
-import java.util.Map;
-
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.Vector;
+import vn.giakhanhvn.skysim.Repeater;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.entity.SEntity;
+import vn.giakhanhvn.skysim.entity.SEntityEquipment;
+import vn.giakhanhvn.skysim.entity.SEntityType;
+import vn.giakhanhvn.skysim.entity.dungeons.watcher.GlobalBossBar;
 import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.*;
+
+import java.util.*;
 
 public class SadanHuman extends BaseZombie {
     private final double y;

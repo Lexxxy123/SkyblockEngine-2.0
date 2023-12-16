@@ -1,11 +1,10 @@
 package vn.giakhanhvn.skysim.entity.wolf;
 
-import java.util.Collections;
-
+import vn.giakhanhvn.skysim.entity.EntityDrop;
 import vn.giakhanhvn.skysim.entity.EntityDropType;
 import vn.giakhanhvn.skysim.item.SMaterial;
-import vn.giakhanhvn.skysim.entity.EntityDrop;
 
+import java.util.Collections;
 import java.util.List;
 
 public class PackEnforcer extends BaseWolf {

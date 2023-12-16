@@ -1,33 +1,27 @@
 package vn.giakhanhvn.skysim.entity.zombie;
 
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.Material;
-import vn.giakhanhvn.skysim.entity.SEntityEquipment;
-
-import java.util.Arrays;
-
-import vn.giakhanhvn.skysim.entity.EntityDropType;
-import vn.giakhanhvn.skysim.item.SMaterial;
-import vn.giakhanhvn.skysim.entity.EntityDrop;
-
-import java.util.List;
-
-import me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
+import me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher;
+import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
-import vn.giakhanhvn.skysim.util.EntityManager;
-import org.bukkit.entity.Entity;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.metadata.FixedMetadataValue;
-import vn.giakhanhvn.skysim.SkySimEngine;
 import net.minecraft.server.v1_8_R3.GenericAttributes;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
-import vn.giakhanhvn.skysim.entity.SEntity;
 import org.bukkit.entity.LivingEntity;
-import net.md_5.bungee.api.ChatColor;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.entity.EntityDrop;
+import vn.giakhanhvn.skysim.entity.EntityDropType;
+import vn.giakhanhvn.skysim.entity.SEntity;
+import vn.giakhanhvn.skysim.entity.SEntityEquipment;
+import vn.giakhanhvn.skysim.item.SMaterial;
+import vn.giakhanhvn.skysim.util.EntityManager;
+import vn.giakhanhvn.skysim.util.Sputnik;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class DiamondGoblinzine extends BaseZombie {
     @Override

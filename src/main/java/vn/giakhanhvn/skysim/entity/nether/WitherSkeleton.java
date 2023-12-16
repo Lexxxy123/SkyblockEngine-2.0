@@ -1,17 +1,15 @@
 package vn.giakhanhvn.skysim.entity.nether;
 
-import java.util.Arrays;
-
-import vn.giakhanhvn.skysim.item.SMaterial;
-import vn.giakhanhvn.skysim.entity.EntityDropType;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import vn.giakhanhvn.skysim.entity.EntityDrop;
-
-import java.util.List;
-
+import vn.giakhanhvn.skysim.entity.EntityDropType;
 import vn.giakhanhvn.skysim.entity.EntityFunction;
 import vn.giakhanhvn.skysim.entity.SkeletonStatistics;
+import vn.giakhanhvn.skysim.item.SMaterial;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class WitherSkeleton implements SkeletonStatistics, EntityFunction {
     @Override

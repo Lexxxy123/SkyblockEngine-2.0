@@ -1,12 +1,10 @@
 package vn.giakhanhvn.skysim.command;
 
-import java.util.Iterator;
-
-import org.bukkit.World;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Entity;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 
 @CommandParameters(description = "Gets the NBT of your current item.", aliases = "kam", permission = "spt.item")
 public class KillAllMobs extends SCommand {

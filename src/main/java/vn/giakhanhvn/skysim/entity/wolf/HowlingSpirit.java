@@ -1,11 +1,10 @@
 package vn.giakhanhvn.skysim.entity.wolf;
 
-import java.util.Arrays;
-
+import vn.giakhanhvn.skysim.entity.EntityDrop;
 import vn.giakhanhvn.skysim.entity.EntityDropType;
 import vn.giakhanhvn.skysim.item.SMaterial;
-import vn.giakhanhvn.skysim.entity.EntityDrop;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class HowlingSpirit extends BaseWolf {

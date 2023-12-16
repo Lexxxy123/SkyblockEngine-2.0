@@ -1,9 +1,9 @@
 package vn.giakhanhvn.skysim.command;
 
+import org.bukkit.command.ConsoleCommandSender;
+import vn.giakhanhvn.skysim.collection.ItemCollection;
 import vn.giakhanhvn.skysim.user.User;
 import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.collection.ItemCollection;
-import org.bukkit.command.ConsoleCommandSender;
 
 @CommandParameters(description = "Modify your collections.", permission = "spt.collection")
 public class CollectionsCommand extends SCommand {

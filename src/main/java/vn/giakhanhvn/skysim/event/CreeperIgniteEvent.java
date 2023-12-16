@@ -1,9 +1,8 @@
 package vn.giakhanhvn.skysim.event;
 
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Creeper;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Cancellable;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.EntityEvent;
 
 public class CreeperIgniteEvent extends EntityEvent implements Cancellable {

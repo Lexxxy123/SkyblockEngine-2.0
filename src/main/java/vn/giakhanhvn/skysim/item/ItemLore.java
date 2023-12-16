@@ -1,32 +1,23 @@
 package vn.giakhanhvn.skysim.item;
 
-import vn.giakhanhvn.skysim.dungeons.ItemSerial;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
-import vn.giakhanhvn.skysim.item.orb.OrbBuff;
-import vn.giakhanhvn.skysim.item.armor.ArmorSet;
-
-import java.util.Iterator;
-
-import vn.giakhanhvn.skysim.slayer.SlayerBossType;
-
-import java.util.Collection;
-
-import vn.giakhanhvn.skysim.enchantment.Enchantment;
-import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.Bukkit;
-
-import java.util.UUID;
-
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.dungeons.ItemSerial;
+import vn.giakhanhvn.skysim.enchantment.Enchantment;
+import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
+import vn.giakhanhvn.skysim.item.armor.ArmorSet;
+import vn.giakhanhvn.skysim.item.orb.OrbBuff;
 import vn.giakhanhvn.skysim.reforge.Reforge;
+import vn.giakhanhvn.skysim.slayer.SlayerBossType;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.entity.Player;
+import java.util.UUID;
 
 public class ItemLore {
     private static final String SSE_ID;

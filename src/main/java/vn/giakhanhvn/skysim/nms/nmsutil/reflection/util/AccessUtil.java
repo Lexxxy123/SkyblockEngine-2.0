@@ -1,8 +1,8 @@
 package vn.giakhanhvn.skysim.nms.nmsutil.reflection.util;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 public abstract class AccessUtil {
     public static Field setAccessible(final Field field) throws ReflectiveOperationException {

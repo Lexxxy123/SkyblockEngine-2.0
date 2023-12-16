@@ -1,8 +1,8 @@
 package vn.giakhanhvn.skysim.item;
 
-import java.util.List;
-
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
+
+import java.util.List;
 
 public interface ItemData {
     NBTTagCompound getData();

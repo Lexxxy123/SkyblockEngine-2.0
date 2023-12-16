@@ -1,38 +1,17 @@
 package vn.giakhanhvn.skysim.item.weapon;
 
-import java.util.Iterator;
-
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import vn.giakhanhvn.skysim.listener.PlayerListener;
-import org.bukkit.entity.Damageable;
-import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.EnderDragonPart;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Entity;
-import vn.giakhanhvn.skysim.util.SSU;
-import org.bukkit.FireworkEffect;
-import org.bukkit.Material;
-import org.bukkit.util.Vector;
-import org.bukkit.Location;
+import org.bukkit.*;
+import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
-import vn.giakhanhvn.skysim.item.SMaterial;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.Color;
+import org.bukkit.util.Vector;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.item.*;
+import vn.giakhanhvn.skysim.listener.PlayerListener;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SSU;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 import java.util.Random;
-
-import org.bukkit.Sound;
-import vn.giakhanhvn.skysim.item.SItem;
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.Ability;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.ToolStatistics;
 
 public class BonzoStaff implements ToolStatistics, MaterialFunction, Ability {
     String ACT;

@@ -1,49 +1,32 @@
 package vn.giakhanhvn.skysim.entity.nms;
 
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
-import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
-import vn.giakhanhvn.skysim.entity.EntityDropType;
-import vn.giakhanhvn.skysim.item.SItem;
-import vn.giakhanhvn.skysim.item.SMaterial;
-
-import java.util.ArrayList;
-
-import vn.giakhanhvn.skysim.entity.EntityDrop;
-
-import java.util.List;
-
-import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.Location;
 import com.google.common.util.concurrent.AtomicDouble;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.util.Vector;
-import org.bukkit.Material;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.entity.ArmorStand;
-import vn.giakhanhvn.skysim.entity.SEntityType;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.metadata.FixedMetadataValue;
-import vn.giakhanhvn.skysim.SkySimEngine;
 import net.minecraft.server.v1_8_R3.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import org.bukkit.entity.LivingEntity;
-import vn.giakhanhvn.skysim.user.User;
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.entity.CaveSpider;
-import org.bukkit.entity.Spider;
+import net.minecraft.server.v1_8_R3.EntitySpider;
 import net.minecraft.server.v1_8_R3.World;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.entity.*;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.enchantment.EnchantmentType;
+import vn.giakhanhvn.skysim.entity.*;
+import vn.giakhanhvn.skysim.item.SItem;
+import vn.giakhanhvn.skysim.item.SMaterial;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
-
-import vn.giakhanhvn.skysim.entity.SEntity;
-import vn.giakhanhvn.skysim.entity.EntityStatistics;
-import vn.giakhanhvn.skysim.entity.EntityFunction;
-import net.minecraft.server.v1_8_R3.EntitySpider;
 
 public class TarantulaBroodfather extends EntitySpider implements SNMSEntity, EntityFunction, EntityStatistics, SlayerBoss {
     private static final TieredValue<Double> MAX_HEALTH_VALUES;

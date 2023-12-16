@@ -1,9 +1,9 @@
 package vn.giakhanhvn.skysim.command;
 
-import vn.giakhanhvn.skysim.user.User;
-import vn.giakhanhvn.skysim.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 @CommandParameters(description = "Modify your coin amount.", permission = "spt.balance")
 public class CoinsCommand extends SCommand {

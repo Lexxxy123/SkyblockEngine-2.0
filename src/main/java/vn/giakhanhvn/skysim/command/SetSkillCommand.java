@@ -1,15 +1,11 @@
 package vn.giakhanhvn.skysim.command;
 
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.user.User;
-import vn.giakhanhvn.skysim.skill.MiningSkill;
-import vn.giakhanhvn.skysim.skill.ForagingSkill;
-import vn.giakhanhvn.skysim.skill.FarmingSkill;
-import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.skill.Skill;
-import vn.giakhanhvn.skysim.skill.CombatSkill;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.skill.*;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
 
 @CommandParameters(description = "Modify your coin amount.", permission = "spt.goods", aliases = "ssx")
 public class SetSkillCommand extends SCommand {

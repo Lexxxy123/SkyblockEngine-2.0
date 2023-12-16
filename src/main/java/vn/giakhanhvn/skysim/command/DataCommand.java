@@ -1,11 +1,11 @@
 package vn.giakhanhvn.skysim.command;
 
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.entity.Player;
 import org.apache.commons.lang3.StringUtils;
-import vn.giakhanhvn.skysim.item.SItem;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.PlayerInventory;
+import vn.giakhanhvn.skysim.item.SItem;
 
 @CommandParameters(description = "Sets data for a Spec item.", permission = "spt.item")
 public class DataCommand extends SCommand {

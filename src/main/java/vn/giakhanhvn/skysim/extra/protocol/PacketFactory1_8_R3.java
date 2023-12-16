@@ -1,12 +1,12 @@
 package vn.giakhanhvn.skysim.extra.protocol;
 
-import com.comphenix.protocol.wrappers.WrappedDataWatcher;
-import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.reflect.accessors.Accessors;
 import com.comphenix.protocol.utility.MinecraftReflection;
-import org.bukkit.entity.Entity;
+import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 
 public class PacketFactory1_8_R3 {
     public static WrappedBeamPacket createPacketSquidSpawn(Location location) {

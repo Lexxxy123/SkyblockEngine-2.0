@@ -1,10 +1,6 @@
 package vn.giakhanhvn.skysim.item.tarantula;
 
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.MaterialStatistics;
+import vn.giakhanhvn.skysim.item.*;
 
 public class ToxicArrowPoison implements MaterialStatistics, MaterialFunction {
     @Override

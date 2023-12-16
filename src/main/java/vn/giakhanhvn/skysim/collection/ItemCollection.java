@@ -1,26 +1,14 @@
 package vn.giakhanhvn.skysim.collection;
 
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import java.util.HashMap;
-import java.util.Iterator;
-
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.item.SMaterial;
+import vn.giakhanhvn.skysim.user.User;
 import vn.giakhanhvn.skysim.util.SUtil;
 
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.entity.Player;
-
-import java.util.Collection;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import vn.giakhanhvn.skysim.item.SMaterial;
-
-import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ItemCollection {
     private static final Map<String, ItemCollection> COLLECTION_MAP;

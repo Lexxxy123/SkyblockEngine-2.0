@@ -1,63 +1,40 @@
 package vn.giakhanhvn.skysim.entity.dungeons.boss.sadan;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.entity.EntityType;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
-import org.bukkit.entity.Giant;
-import org.bukkit.entity.FallingBlock;
+import net.minecraft.server.v1_8_R3.*;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
-import vn.giakhanhvn.skysim.util.BlockFallAPI;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.*;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Sound;
-import org.bukkit.Effect;
-import org.bukkit.entity.HumanEntity;
-import net.minecraft.server.v1_8_R3.EntityPlayer;
-import org.bukkit.entity.ArmorStand;
-import vn.giakhanhvn.skysim.user.User;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import vn.giakhanhvn.skysim.entity.SEntityEquipment;
-import net.minecraft.server.v1_8_R3.AttributeInstance;
-import net.minecraft.server.v1_8_R3.EntityLiving;
-import net.minecraft.server.v1_8_R3.Packet;
-import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.Bukkit;
-
-import java.util.List;
-
 import org.bukkit.util.Vector;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.entity.SEntity;
+import vn.giakhanhvn.skysim.entity.SEntityEquipment;
+import vn.giakhanhvn.skysim.entity.dungeons.watcher.GlobalBossBar;
+import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.BlockFallAPI;
+import vn.giakhanhvn.skysim.util.EntityManager;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 import java.util.ArrayList;
-
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.metadata.FixedMetadataValue;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import vn.giakhanhvn.skysim.util.EntityManager;
-import org.bukkit.entity.Entity;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.Material;
-import org.bukkit.GameMode;
-import vn.giakhanhvn.skysim.util.SUtil;
-import net.minecraft.server.v1_8_R3.GenericAttributes;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
-import vn.giakhanhvn.skysim.entity.SEntity;
-
 import java.util.Iterator;
-
-import org.bukkit.entity.Player;
-import org.bukkit.World;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.entity.dungeons.watcher.GlobalBossBar;
-import org.bukkit.entity.LivingEntity;
-import vn.giakhanhvn.skysim.entity.zombie.BaseZombie;
+import java.util.List;
 
 public class SadanGiant extends BaseZombie {
     private static LivingEntity e;

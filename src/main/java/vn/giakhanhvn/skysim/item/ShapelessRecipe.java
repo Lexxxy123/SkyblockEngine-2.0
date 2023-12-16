@@ -1,12 +1,10 @@
 package vn.giakhanhvn.skysim.item;
 
-import java.util.Iterator;
-import java.util.Arrays;
-
 import org.bukkit.inventory.ItemStack;
 import vn.giakhanhvn.skysim.util.SUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ShapelessRecipe extends Recipe<ShapelessRecipe> {

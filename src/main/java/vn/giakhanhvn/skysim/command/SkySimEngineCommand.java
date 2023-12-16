@@ -1,7 +1,7 @@
 package vn.giakhanhvn.skysim.command;
 
-import vn.giakhanhvn.skysim.util.Sputnik;
 import org.bukkit.ChatColor;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 @CommandParameters(description = "The main command for SkySimEngine.", aliases = "ssei")
 public class SkySimEngineCommand extends SCommand {

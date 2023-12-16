@@ -1,14 +1,8 @@
 package vn.giakhanhvn.skysim.item.weapon;
 
-import vn.giakhanhvn.skysim.item.SItem;
-import org.bukkit.entity.Player;
 import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.item.SpecificItemType;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import vn.giakhanhvn.skysim.item.Rarity;
-import vn.giakhanhvn.skysim.item.Ability;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.ToolStatistics;
+import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.item.*;
 
 public class JerryChineGun implements ToolStatistics, MaterialFunction, Ability {
     String ACT;

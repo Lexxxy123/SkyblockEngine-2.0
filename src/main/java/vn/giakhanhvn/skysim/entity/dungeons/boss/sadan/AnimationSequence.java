@@ -1,25 +1,20 @@
 package vn.giakhanhvn.skysim.entity.dungeons.boss.sadan;
 
+import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.MaxChangedBlocksException;
-import com.sk89q.worldedit.regions.Region;
-import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.WorldEdit;
-import com.sk89q.worldedit.Vector;
-import com.sk89q.worldedit.regions.CuboidRegion;
-import com.sk89q.worldedit.BlockVector;
+import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.bukkit.BukkitUtil;
-
-import java.util.Iterator;
-
-import org.bukkit.entity.Entity;
-import vn.giakhanhvn.skysim.entity.SEntityType;
-import vn.giakhanhvn.skysim.entity.SEntity;
-import org.bukkit.Sound;
+import com.sk89q.worldedit.regions.CuboidRegion;
 import org.bukkit.Location;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.util.SUtil;
+import org.bukkit.Sound;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
+import vn.giakhanhvn.skysim.entity.SEntity;
+import vn.giakhanhvn.skysim.entity.SEntityType;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 public class AnimationSequence {
     public static void chainAnimation(final World w) {

@@ -1,33 +1,21 @@
 package vn.giakhanhvn.skysim.gui;
 
-import java.util.List;
-
-import org.bukkit.potion.PotionType;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.Potion;
-import vn.giakhanhvn.skysim.skill.DungeonsSkill;
-import vn.giakhanhvn.skysim.util.Sputnik;
+import org.bukkit.potion.PotionType;
+import vn.giakhanhvn.skysim.collection.ItemCollection;
+import vn.giakhanhvn.skysim.skill.*;
+import vn.giakhanhvn.skysim.user.User;
 import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Collection;
-
-import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.skill.TankSkill;
-import vn.giakhanhvn.skysim.skill.ArcherSkill;
-import vn.giakhanhvn.skysim.skill.BerserkSkill;
-import vn.giakhanhvn.skysim.skill.MageSkill;
-import vn.giakhanhvn.skysim.skill.HealerSkill;
-import vn.giakhanhvn.skysim.skill.Skill;
-import vn.giakhanhvn.skysim.skill.CatacombsSkill;
-import org.bukkit.Material;
-import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.collection.ItemCollection;
-
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import vn.giakhanhvn.skysim.user.User;
-import org.bukkit.inventory.ItemStack;
 
 public class DungeonsLevelGUI extends GUI {
     public static final ItemStack CATA_HEAD;

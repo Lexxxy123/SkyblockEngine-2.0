@@ -1,11 +1,11 @@
 package vn.giakhanhvn.skysim.command;
 
 import net.minecraft.server.v1_8_R3.EntityHuman;
-import org.bukkit.entity.Player;
 import org.bukkit.ChatColor;
-import vn.giakhanhvn.skysim.util.SputnikPlayer;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftHumanEntity;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftHumanEntity;
+import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.util.SputnikPlayer;
 
 @CommandParameters(description = "Modify your absorption amount.", permission = "spt.player")
 public class AbsorptionCommand extends SCommand {

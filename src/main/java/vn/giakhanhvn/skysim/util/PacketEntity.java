@@ -1,28 +1,15 @@
 package vn.giakhanhvn.skysim.util;
 
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
-import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntityLiving;
-
-import java.util.Iterator;
-
-import vn.giakhanhvn.skysim.user.User;
-import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntityTeleport;
-import net.minecraft.server.v1_8_R3.EntityLiving;
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.user.User;
 
 import java.util.ArrayList;
-
-import org.bukkit.scheduler.BukkitTask;
-import net.minecraft.server.v1_8_R3.Packet;
-import org.bukkit.entity.Player;
-
 import java.util.List;
-
-import net.minecraft.server.v1_8_R3.Entity;
 
 public class PacketEntity {
     Entity entity;

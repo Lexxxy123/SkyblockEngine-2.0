@@ -1,20 +1,13 @@
 package vn.giakhanhvn.skysim.nms.nmsutil.reflection.minecraft;
 
+import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.*;
+import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.minecraft.NMSClassResolver;
+
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.Iterator;
-
-import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.ResolverQuery;
-
+import java.util.Arrays;
 import java.util.Map;
-
-import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.MethodResolver;
-import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.FieldResolver;
-import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.ConstructorResolver;
-import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.minecraft.NMSClassResolver;
-import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.ClassResolver;
 
 public class DataWatcher {
     static ClassResolver classResolver;

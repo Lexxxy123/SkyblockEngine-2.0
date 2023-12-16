@@ -1,15 +1,12 @@
 package vn.giakhanhvn.skysim.entity.end;
 
-import java.util.Arrays;
-
+import net.md_5.bungee.api.ChatColor;
+import vn.giakhanhvn.skysim.entity.EntityDrop;
 import vn.giakhanhvn.skysim.entity.EntityDropType;
 import vn.giakhanhvn.skysim.item.SMaterial;
-import vn.giakhanhvn.skysim.entity.EntityDrop;
 
 import java.util.Collections;
 import java.util.List;
-
-import net.md_5.bungee.api.ChatColor;
 
 public class VoidcrazedManiac extends BaseEnderman {
     @Override

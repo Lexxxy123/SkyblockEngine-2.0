@@ -1,29 +1,24 @@
 package vn.giakhanhvn.skysim.dungeons;
 
-import java.util.HashMap;
-import java.util.Iterator;
-
-import org.bukkit.Location;
-import vn.giakhanhvn.skysim.util.SUtil;
-import net.minecraft.server.v1_8_R3.Packet;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import net.minecraft.server.v1_8_R3.PacketPlayOutBlockAction;
-import net.minecraft.server.v1_8_R3.Blocks;
 import net.minecraft.server.v1_8_R3.BlockPosition;
+import net.minecraft.server.v1_8_R3.Blocks;
+import net.minecraft.server.v1_8_R3.PacketPlayOutBlockAction;
+import org.bukkit.Location;
 import org.bukkit.Material;
-import vn.giakhanhvn.skysim.util.Sputnik;
-import vn.giakhanhvn.skysim.gui.DungeonsLootGUI;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
-
-import java.util.Collection;
-
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.block.Block;
+import vn.giakhanhvn.skysim.gui.DungeonsLootGUI;
+import vn.giakhanhvn.skysim.util.SUtil;
+import vn.giakhanhvn.skysim.util.Sputnik;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class ItemChest {

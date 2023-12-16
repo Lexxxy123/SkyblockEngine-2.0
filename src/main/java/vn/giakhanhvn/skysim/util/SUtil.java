@@ -1,146 +1,70 @@
 package vn.giakhanhvn.skysim.util;
 
-import vn.giakhanhvn.skysim.gui.GUIItem;
-import org.apache.commons.lang3.StringUtils;
-import org.bukkit.scheduler.BukkitTask;
-
-import java.util.ListIterator;
-
-import vn.giakhanhvn.skysim.merchant.MerchantItemHandler;
-import vn.giakhanhvn.skysim.potion.PotionEffect;
-import vn.giakhanhvn.skysim.potion.PotionColor;
-import vn.giakhanhvn.skysim.item.Rarity;
-
-import java.lang.reflect.Array;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
-
-import org.bukkit.craftbukkit.v1_8_R3.util.UnsafeList;
-import net.minecraft.server.v1_8_R3.PathfinderGoalSelector;
-
-import java.util.zip.GZIPInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.OutputStream;
-import java.util.zip.GZIPOutputStream;
-import java.io.ByteArrayOutputStream;
-
-import org.bukkit.configuration.ConfigurationSection;
-import net.minecraft.server.v1_8_R3.NBTTagString;
-import net.minecraft.server.v1_8_R3.NBTTagDouble;
-import net.minecraft.server.v1_8_R3.NBTTagFloat;
-import net.minecraft.server.v1_8_R3.NBTTagLong;
-import net.minecraft.server.v1_8_R3.NBTTagInt;
-import net.minecraft.server.v1_8_R3.NBTTagShort;
-import net.minecraft.server.v1_8_R3.NBTTagByte;
-import net.minecraft.server.v1_8_R3.NBTBase;
-import net.minecraft.server.v1_8_R3.NBTTagCompound;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
-import com.sk89q.worldedit.function.operation.Operation;
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 import com.sk89q.worldedit.EditSession;
-import com.sk89q.worldedit.extent.clipboard.Clipboard;
-import com.sk89q.worldedit.world.registry.WorldData;
-import com.sk89q.worldedit.world.World;
-import com.sk89q.worldedit.WorldEditException;
-
-import java.io.IOException;
-
-import com.sk89q.worldedit.function.operation.Operations;
-import com.sk89q.worldedit.extent.Extent;
 import com.sk89q.worldedit.WorldEdit;
-import com.sk89q.worldedit.session.ClipboardHolder;
-
-import java.io.InputStream;
-import java.io.FileInputStream;
-
-import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
+import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
-
-import java.io.File;
-import java.util.Arrays;
-
-import org.bukkit.inventory.ItemFlag;
-import vn.giakhanhvn.skysim.enchantment.Enchantment;
-import org.bukkit.entity.Projectile;
-import org.bukkit.util.Vector;
-import org.bukkit.entity.NPC;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-
-import java.util.concurrent.atomic.AtomicReference;
-
-import org.bukkit.entity.ArmorStand;
+import com.sk89q.worldedit.extent.clipboard.Clipboard;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
+import com.sk89q.worldedit.function.operation.Operation;
+import com.sk89q.worldedit.function.operation.Operations;
+import com.sk89q.worldedit.session.ClipboardHolder;
+import com.sk89q.worldedit.world.World;
+import com.sk89q.worldedit.world.registry.WorldData;
+import net.minecraft.server.v1_8_R3.*;
+import org.apache.commons.lang3.StringUtils;
+import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.GameMode;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_8_R3.util.UnsafeList;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.NPC;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.Vector;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.enchantment.Enchantment;
+import vn.giakhanhvn.skysim.gui.GUI;
+import vn.giakhanhvn.skysim.item.GenericItemType;
+import vn.giakhanhvn.skysim.item.Rarity;
+import vn.giakhanhvn.skysim.item.SItem;
+import vn.giakhanhvn.skysim.item.SMaterial;
+import vn.giakhanhvn.skysim.merchant.MerchantItemHandler;
+import vn.giakhanhvn.skysim.potion.PotionColor;
+import vn.giakhanhvn.skysim.potion.PotionEffect;
 
+import java.io.*;
+import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-
-import vn.giakhanhvn.skysim.item.SItem;
-
-import java.util.LinkedHashMap;
-import java.util.Comparator;
-import java.util.Collection;
-import java.util.Map;
-
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.entity.Item;
-
-import java.util.Date;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.Location;
-import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
-import vn.giakhanhvn.skysim.gui.GUI;
-import org.bukkit.inventory.Inventory;
-import vn.giakhanhvn.skysim.item.GenericItemType;
-import net.minecraft.server.v1_8_R3.Packet;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
-import net.minecraft.server.v1_8_R3.IChatBaseComponent;
-import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.Color;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.bukkit.Material;
-
-import java.lang.reflect.Field;
-
-import org.bukkit.inventory.meta.ItemMeta;
-import com.mojang.authlib.properties.Property;
-
-import java.util.Base64;
-
-import com.mojang.authlib.GameProfile;
-
-import java.util.UUID;
-
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.inventory.meta.SkullMeta;
-import vn.giakhanhvn.skysim.item.SMaterial;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.Random;
-import java.util.Iterator;
-
-import org.bukkit.entity.Player;
-import org.bukkit.Bukkit;
-
-import java.util.ArrayList;
-
-import org.bukkit.ChatColor;
-
-import java.util.List;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 public class SUtil {
     public static final SimpleDateFormat DATE_FORMAT;

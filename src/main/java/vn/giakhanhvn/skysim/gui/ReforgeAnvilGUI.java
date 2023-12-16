@@ -1,38 +1,25 @@
 package vn.giakhanhvn.skysim.gui;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.Material;
-import org.bukkit.plugin.Plugin;
-import vn.giakhanhvn.skysim.SkySimEngine;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.Sound;
-import vn.giakhanhvn.skysim.util.SUtil;
-import vn.giakhanhvn.skysim.user.User;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import java.util.Arrays;
-
-import vn.giakhanhvn.skysim.reforge.ReforgeType;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.item.Rarity;
 import vn.giakhanhvn.skysim.item.Reforgable;
 import vn.giakhanhvn.skysim.item.SItem;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
+import vn.giakhanhvn.skysim.reforge.ReforgeType;
+import vn.giakhanhvn.skysim.user.User;
+import vn.giakhanhvn.skysim.util.SUtil;
 
-import java.util.UUID;
-import java.util.List;
-
-import vn.giakhanhvn.skysim.item.Rarity;
-
-import java.util.Map;
-
-import org.bukkit.inventory.ItemStack;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ReforgeAnvilGUI extends GUI {
     private static final ItemStack DEFAULT_REFORGE_ITEM;

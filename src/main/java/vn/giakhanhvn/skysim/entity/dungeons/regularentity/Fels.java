@@ -1,24 +1,22 @@
 package vn.giakhanhvn.skysim.entity.dungeons.regularentity;
 
-import java.util.Collection;
-import java.util.ArrayList;
-
-import org.bukkit.entity.Player;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEnderman;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.entity.Entity;
-import vn.giakhanhvn.skysim.util.EntityManager;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.scheduler.BukkitRunnable;
 import vn.giakhanhvn.skysim.SkySimEngine;
-import vn.giakhanhvn.skysim.util.SUtil;
-import org.bukkit.entity.ArmorStand;
 import vn.giakhanhvn.skysim.entity.SEntity;
-import org.bukkit.entity.LivingEntity;
 import vn.giakhanhvn.skysim.entity.end.BaseEnderman;
+import vn.giakhanhvn.skysim.util.EntityManager;
+import vn.giakhanhvn.skysim.util.SUtil;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class Fels extends BaseEnderman {
     private boolean spawned;

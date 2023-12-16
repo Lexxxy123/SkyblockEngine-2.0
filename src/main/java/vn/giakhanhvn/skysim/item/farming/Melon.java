@@ -1,11 +1,11 @@
 package vn.giakhanhvn.skysim.item.farming;
 
+import vn.giakhanhvn.skysim.item.ExperienceRewardStatistics;
 import vn.giakhanhvn.skysim.item.GenericItemType;
+import vn.giakhanhvn.skysim.item.MaterialFunction;
 import vn.giakhanhvn.skysim.item.Rarity;
 import vn.giakhanhvn.skysim.skill.FarmingSkill;
 import vn.giakhanhvn.skysim.skill.Skill;
-import vn.giakhanhvn.skysim.item.MaterialFunction;
-import vn.giakhanhvn.skysim.item.ExperienceRewardStatistics;
 
 public class Melon implements ExperienceRewardStatistics, MaterialFunction {
     @Override

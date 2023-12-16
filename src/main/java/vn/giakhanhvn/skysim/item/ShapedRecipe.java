@@ -1,18 +1,9 @@
 package vn.giakhanhvn.skysim.item;
 
-import java.util.Iterator;
-import java.util.Arrays;
-
 import org.bukkit.inventory.ItemStack;
-
-import java.util.Collection;
-import java.util.ArrayList;
-
 import vn.giakhanhvn.skysim.util.SUtil;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
+import java.util.*;
 
 public class ShapedRecipe extends Recipe<ShapedRecipe> {
     public static final List<ShapedRecipe> CACHED_RECIPES;
