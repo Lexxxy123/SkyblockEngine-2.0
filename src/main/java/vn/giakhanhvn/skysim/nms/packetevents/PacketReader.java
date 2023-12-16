@@ -17,11 +17,11 @@ import java.lang.reflect.Field;
 public class PacketReader {
 
     private Player player;
-    private User user;
+
 
     public void injectPlayer(Player player) {
         this.player = player;
-        this.user = User.getUser(player.getUniqueId());
+
         ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler() {
             @Override
             public void channelRead(ChannelHandlerContext channelHandlerContext, Object packet) {
@@ -57,14 +57,9 @@ public class PacketReader {
             {
                 for (SkyblockNPC npc : SkyblockNPCManager.getNPCS()){
                     if (npc.getEntityID() == id) {
-                        if (npc.getMessages() == null || user.getTalked_npcs().contains(npc.getName())) {
+                        if (npc.getMessages() == null || User.getUser(player.getUniqueId()).getTalked_npcs().contains(npc.getName())) {
                             npc.getParameters().onInteract(player, npc);
-                        }
-                        if (!user.getTalked_npcs().contains(npc.getName()))
-                            npc.speak(player).thenRun(() -> {
-                                npc.getParameters().onInteract(player, npc);
-                                user.getTalked_npcs().add(npc.getName());
-                            });
+                        } else if (!User.getUser(player.getUniqueId()).getTalked_npcs().contains(npc.getName())) npc.speak(player);
                     }
                 }
             }

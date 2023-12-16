@@ -186,6 +186,11 @@ public class User {
     public void unload() {
         User.USER_CACHE.remove(this.uuid);
     }
+    public void addTalkedNPC(String name){
+        if (!talked_npcs.contains(name)){
+            talked_npcs.add(name);
+        }
+    }
 
     public void load() {
         this.uuid = UUID.fromString(this.config.getString("uuid"));
@@ -247,9 +252,7 @@ public class User {
             this.unlockedRecipes = (List<String>) this.config.getList("unlockedRecipes");
         }
         if (config.contains("talked_npcs")){
-            SLog.info("Loading talked npc for " + Bukkit.getPlayer(uuid).getName());
             this.talked_npcs = (List<String>) this.config.getList("talked_npcs");
-            if (!talked_npcs.isEmpty()) SLog.info("Loaded talked npc for " + Bukkit.getPlayer(uuid).getName());
         }
         this.auctionSettings = (AuctionSettings) this.config.get("auction.settings");
         if (this.auctionSettings == null) {
