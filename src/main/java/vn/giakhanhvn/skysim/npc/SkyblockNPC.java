@@ -123,7 +123,7 @@ public class SkyblockNPC {
                     sendHeadRotationPacket(player);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0, 2);
+        }.runTaskTimerAsynchronously(SkySimEngine.getPlugin(), 0, 2);
 
     }
 
@@ -183,7 +183,7 @@ public class SkyblockNPC {
 
         // If Bukkit doesn't track the NPC entity anymore, bypass the hiding distance variable.
         // This will cause issues otherwise (e.g. custom skin disappearing).
-        double hideDistance = 30;
+        double hideDistance = 20;
         double distanceSquared = player.getLocation().distanceSquared(location);
         double bukkitRange = Bukkit.getViewDistance() << 4;
 

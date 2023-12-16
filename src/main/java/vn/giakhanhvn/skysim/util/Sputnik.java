@@ -799,7 +799,7 @@ public class Sputnik {
         int count = 0;
         final PlayerInventory inv = player.getInventory();
         for (final ItemStack is : inv.getContents()) {
-            if (SItem.isSpecItem(is) && SItem.of(is) != null && is.getItemMeta().getDisplayName().contains(type)) {
+            if (is != null && is.hasItemMeta() && is.getItemMeta().getDisplayName().contains(type)) {
                 count += is.getAmount();
             }
         }

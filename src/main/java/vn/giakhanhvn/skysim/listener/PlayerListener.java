@@ -74,14 +74,20 @@ public class PlayerListener extends PListener {
 
     @EventHandler
     public void onPlayerMove(final PlayerMoveEvent e) {
-        final Player player = e.getPlayer();
-        final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
-        PlayerUtils.updateInventoryStatistics(player, statistics);
-        final SBlock block = SBlock.getBlock(player.getLocation().clone().subtract(0.0, 0.3, 0.0));
-        if (player.getGameMode() != GameMode.SPECTATOR && e.getTo().getY() <= -25.0) {
-            User.getUser(player.getUniqueId()).kill(EntityDamageEvent.DamageCause.VOID, null);
-        }
-        if (block == null) {
+        Player player = e.getPlayer();
+        Location from = e.getFrom();
+        Location to = e.getTo();
+        // Only check movement when the player moves from one block to another. The event is called often
+        // as it is also called when the pitch or yaw change. This is worth it from a performance view.
+        if (to == null || from.getBlockX() != to.getBlockX()
+                || from.getBlockY() != to.getBlockY()
+                || from.getBlockZ() != to.getBlockZ()) {
+                final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
+                PlayerUtils.updateInventoryStatistics(player, statistics);
+                final SBlock block = SBlock.getBlock(player.getLocation().clone().subtract(0.0, 0.3, 0.0));
+                if (player.getGameMode() != GameMode.SPECTATOR && e.getTo().getY() <= -25.0) {
+                    User.getUser(player.getUniqueId()).kill(EntityDamageEvent.DamageCause.VOID, null);
+                }
         }
     }
 
@@ -190,7 +196,10 @@ public class PlayerListener extends PListener {
                         this.cancel();
                         return;
                     }
-                    Repeater.runPlayerTask(player, counters, counters2);
+                    SUtil.runAsync(()->{
+                        Repeater.runPlayerTask(player, counters, counters2);
+                    });
+
                     if (TemporaryStats.getFromPlayer(player) != null) {
                         TemporaryStats.getFromPlayer(player).update();
                     }
@@ -1393,19 +1402,27 @@ public class PlayerListener extends PListener {
 
 
     @EventHandler
-    public void onMove(PlayerMoveEvent event) {   // handle auto hide and show
+    public void onMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         Location from = event.getFrom();
         Location to = event.getTo();
-        for (SkyblockNPC skyblockNPC : SkyblockNPCManager.getNPCS()) {
-            if (!skyblockNPC.getWorld().equals(player.getWorld())) continue;
-            if (!skyblockNPC.isShown(player) && skyblockNPC.inRangeOf(player)) {
-                skyblockNPC.showTo(player);
-            } else if (skyblockNPC.isShown(player) && !skyblockNPC.inRangeOf(player)) {
-                skyblockNPC.hideFrom(player);
-            }
+
+        // Only check movement when the player moves from one block to another. The event is called often
+        // as it is also called when the pitch or yaw change. This is worth it from a performance view.
+        if (to == null || from.getBlockX() != to.getBlockX()
+                || from.getBlockY() != to.getBlockY()
+                || from.getBlockZ() != to.getBlockZ()){
+                for (SkyblockNPC skyblockNPC : SkyblockNPCManager.getNPCS()) {
+                    if (!skyblockNPC.getWorld().equals(player.getWorld())) continue;
+                    if (!skyblockNPC.isShown(player) && skyblockNPC.inRangeOf(player)) {
+                        skyblockNPC.showTo(player);
+                    } else if (skyblockNPC.isShown(player) && !skyblockNPC.inRangeOf(player)) {
+                        skyblockNPC.hideFrom(player);
+                    }
+                }
         }
     }
+
 
     @EventHandler
     public void swingSword(final PlayerInteractEvent e) {

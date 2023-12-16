@@ -1,5 +1,7 @@
 package vn.giakhanhvn.skysim.util;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.sk89q.worldedit.EditSession;
@@ -991,6 +993,40 @@ public class SUtil {
         }
         return array;
     }
+
+    public static void runAsync(Runnable runnable) {
+        new Thread(runnable).start();
+    }
+    public static void runSync(Runnable runnable){
+        new BukkitRunnable(){
+
+            @Override
+            public void run() {
+                runnable.run();
+            }
+        }.runTask(SkySimEngine.getPlugin());
+    }
+
+    public static ItemStack idToSkull(ItemStack head, String id) {
+        JsonParser parser = new JsonParser();
+        JsonObject o = parser.parse(new String(org.apache.commons.codec.binary.Base64.decodeBase64(id))).getAsJsonObject();
+        String skinUrl = o.get("textures").getAsJsonObject().get("SKIN").getAsJsonObject().get("url").getAsString();
+        SkullMeta headMeta = (SkullMeta) head.getItemMeta();
+        GameProfile profile = new GameProfile(UUID.randomUUID(), null);
+        byte[] encodedData = org.apache.commons.codec.binary.Base64.encodeBase64(("{textures:{SKIN:{url:\"" + skinUrl + "\"}}}").getBytes());
+        profile.getProperties().put("textures", new Property("textures", new String(encodedData)));
+        Field profileField;
+        try {
+            profileField = headMeta.getClass().getDeclaredField("profile");
+            profileField.setAccessible(true);
+            profileField.set(headMeta, profile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        head.setItemMeta(headMeta);
+        return head;
+    }
+
 
     public static String createProgressText(final String text, final int current, final int max) {
         double percent;
