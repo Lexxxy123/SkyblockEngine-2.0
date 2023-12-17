@@ -14,6 +14,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import vn.giakhanhvn.skysim.item.SItem;
 import vn.giakhanhvn.skysim.listener.PListener;
+import vn.giakhanhvn.skysim.user.Profile;
 import vn.giakhanhvn.skysim.user.User;
 import vn.giakhanhvn.skysim.util.SignInput;
 import vn.giakhanhvn.skysim.util.Sputnik;
@@ -30,10 +31,12 @@ public class GUIListener extends PListener {
     public void onCloseInv(final InventoryCloseEvent e) {
         final Player p = (Player) e.getPlayer();
         final User u = User.getUser(p.getUniqueId());
+        Profile profile = Profile.get(p.getUniqueId());
         if (u != null && u.isSaveable()) {
             u.setSaveable(false);
             u.updateInventory();
-            u.syncSavingData();
+
+            u.syncSavingData(profile);
             u.setSaveable(true);
         }
     }

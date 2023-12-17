@@ -2,6 +2,7 @@ package vn.giakhanhvn.skysim.command;
 
 import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.SkySimEngine;
+import vn.giakhanhvn.skysim.user.Profile;
 import vn.giakhanhvn.skysim.user.User;
 import vn.giakhanhvn.skysim.util.SUtil;
 
@@ -69,7 +70,8 @@ public class ServerCommand extends SCommand {
         }
         this.send("&7Hooking up request...");
         final User u = User.getUser(p.getUniqueId());
-        u.syncSavingData();
+        Profile profile = Profile.get(p.getUniqueId());
+        u.syncSavingData(profile);
         SUtil.delay(() -> {
             this.send("&7Sending you to " + finalTarget + "...");
             SkySimEngine.getPlugin().getBc().connect(p, finalTarget);

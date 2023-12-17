@@ -94,6 +94,29 @@ public class SUtil {
         return names;
     }
 
+    public static boolean isUUID(String input) {
+        try {
+            // Try parsing the input as a UUID
+            UUID.fromString(input);
+            return true;
+        } catch (IllegalArgumentException e) {
+            // If an exception is thrown, it's not a valid UUID
+            return false;
+        }
+    }
+
+    private static final String[] FRUITS = {
+            "Apple", "Banana", "Blueberry", "Coconut", "Cucumber", "Grapes", "Kiwi",
+            "Lemon", "Lime", "Mango", "Orange", "Papaya", "Peach", "Pear",
+            "Pineapple", "Pomegranate", "Raspberry", "Strawberry", "Tomato",
+            "Watermelon", "Zucchini"
+    };
+    public static String generateRandomProfileNameFor() {
+        Random random = new Random();
+        int index = random.nextInt(FRUITS.length);
+        return FRUITS[index];
+    }
+
     public static int random(int min, int max) {
         if (min < 0) {
             min = 0;

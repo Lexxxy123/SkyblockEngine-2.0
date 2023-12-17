@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import vn.giakhanhvn.skysim.user.Profile;
 import vn.giakhanhvn.skysim.user.User;
 
 import java.io.IOException;
@@ -28,8 +29,9 @@ public class InvRecovery extends SCommand {
         final Player target = Bukkit.getPlayer(args[0]);
         if (target != null) {
             final User user2 = User.getUser(target.getUniqueId());
+            Profile profile = Profile.get(player.getUniqueId());
             try {
-                user2.loadPlayerData();
+                user2.loadPlayerData(profile);
                 user.send("&aSuccess!");
                 user2.send("&eData Recovered, now disconnect and join back.");
             } catch (final IllegalArgumentException | IOException e) {

@@ -74,6 +74,8 @@ import vn.giakhanhvn.skysim.sql.SQLDatabase;
 import vn.giakhanhvn.skysim.sql.SQLRegionData;
 import vn.giakhanhvn.skysim.sql.SQLWorldData;
 import vn.giakhanhvn.skysim.user.AuctionSettings;
+import vn.giakhanhvn.skysim.user.DatabaseManager;
+import vn.giakhanhvn.skysim.user.Profile;
 import vn.giakhanhvn.skysim.user.User;
 import vn.giakhanhvn.skysim.util.BungeeChannel;
 import vn.giakhanhvn.skysim.util.Groups;
@@ -142,15 +144,8 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
             this.bc = new BungeeChannel(this);
 
             this.setupEconomy();
-            if (Bukkit.getPluginManager().getPlugin("SputnikSkySim") == null) {
-                SLog.severe("===================================");
-                SLog.severe("SKYSIM ENGINE - MADE BY GIAKHANHVN");
-                SLog.severe(" ");
-                SLog.severe("SputnikSkySim not found, disabling this plugin");
-                SLog.severe("for safety!");
-                SLog.severe("===================================");
-                Bukkit.getPluginManager().disablePlugin(this);
-            } else {
+
+                DatabaseManager.connectToDatabase("mongodb://admin:admin@88.99.150.153:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2", "Godspunky");
                 SLog.info("===================================");
                 SLog.info("SKYSIM ENGINE - MADE BY GIAKHANHVN");
                 SLog.info(" ");
@@ -293,7 +288,6 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
                 SLog.info("Any illegal usage will be suppressed! DO NOT LEAK IT!");
                 SLog.info("===================================");
                 this.sq = new SummoningSequence(Bukkit.getWorld("arena"));
-                Bukkit.getWorld("arena").setAutoSave(false);
                 this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
                 this.getServer().getPluginManager().registerEvents(new EntityListener(), this);
                 this.getServer().getPluginManager().registerEvents(new BlockListener(), this);
@@ -321,7 +315,7 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
                 lucki9.addEnchantment(EnchantmentType.LUCKINESS, 6);
                 DimoonLootTable.lowQualitylootTable = new ArrayList<DimoonLootItem>(Arrays.asList(new DimoonLootItem(lucki9, 20, 150), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOON_GEM), 20, 100), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOON_FRAG), 1, 1, 0, true)));
                 Arena.cleanArena();
-            }
+
         } catch (final Throwable $ex) {
             throw $ex;
         }
@@ -640,7 +634,8 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
             SLog.info("YES IT WORK");
             for (final Player p : Bukkit.getOnlinePlayers()) {
                 final User u = User.getUser(p.getUniqueId());
-                u.syncSavingData();
+                Profile profile = Profile.get(player.getUniqueId());
+                u.syncSavingData(profile);
             }
         }
     }
