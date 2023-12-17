@@ -1,8 +1,8 @@
 package vn.giakhanhvn.skysim.nms.nmsutil.reflection.minecraft;
 
-import jdk.internal.reflect.ConstructorAccessor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
+import sun.reflect.ConstructorAccessor;
 import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.ConstructorResolver;
 import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.FieldResolver;
 import vn.giakhanhvn.skysim.nms.nmsutil.reflection.resolver.MethodResolver;
