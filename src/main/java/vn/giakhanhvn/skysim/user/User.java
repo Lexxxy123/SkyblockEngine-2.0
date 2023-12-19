@@ -3,14 +3,12 @@ package vn.giakhanhvn.skysim.user;
 import com.google.common.util.concurrent.AtomicDouble;
 import de.tr7zw.nbtapi.NBTItem;
 import lombok.Getter;
-import lombok.Setter;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.milkbowl.vault.economy.Economy;
 import net.minecraft.server.v1_8_R3.EntityHuman;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
-import org.bson.Document;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftHumanEntity;
@@ -20,7 +18,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
@@ -69,12 +66,7 @@ import java.util.stream.Collectors;
 
 public class User {
     public static final int ISLAND_SIZE = 125;
-    public static final Map<UUID, User> USER_CACHE;
-
-    @Getter
-    @Setter
-    public Profile selectedProfile;
-    public Map<String, Boolean> profiles;
+    private static final Map<UUID, User> USER_CACHE;
     private static final SkySimEngine plugin;
     private static final File USER_FOLDER;
     private long sadancollections;
@@ -93,16 +85,16 @@ public class User {
     private Double islandX;
     private Double islandZ;
     private Region lastRegion;
-    Map<SMaterial, Integer> quiver;
-    List<ActivePotionEffect> effects;
+    private final Map<SMaterial, Integer> quiver;
+    private final List<ActivePotionEffect> effects;
 
     @Getter
     private List<String> talked_npcs;
-    double farmingXP;
+    private double farmingXP;
     private boolean boneToZeroDamage;
     private boolean cooldownAPI;
-    double miningXP;
-    double combatXP;
+    private double miningXP;
+    private double combatXP;
     private double enchantXP;
     private double archerXP;
     private double cataXP;
@@ -110,9 +102,9 @@ public class User {
     private double healerXP;
     private double tankXP;
     private double mageXP;
-    double foragingXP;
-    final int[] highestSlayers;
-    final int[] slayerXP;
+    private double foragingXP;
+    private final int[] highestSlayers;
+    private final int[] slayerXP;
     private final int[] crystalLVL;
     private boolean saveable;
 
@@ -120,7 +112,7 @@ public class User {
     private boolean fatalActive;
     private boolean permanentCoins;
     private SlayerQuest slayerQuest;
-    List<Pet.PetItem> pets;
+    private List<Pet.PetItem> pets;
     @Getter
     private List<String> unlockedRecipes;
     private AuctionSettings auctionSettings;
@@ -132,8 +124,6 @@ public class User {
     private boolean isCompletedSign;
 
     private User(final UUID uuid) {
-        this.selectedProfile = null;
-        this.profiles = new HashMap<>();
         this.stashedItems = new ArrayList<ItemStack>();
         this.cooldownAltar = 0;
         this.headShot = false;
@@ -202,7 +192,7 @@ public class User {
         }
     }
 
-    /*public void load() {
+    public void load() {
         this.uuid = UUID.fromString(this.config.getString("uuid"));
         if (this.config.contains("collections")) {
             for (final String identifier : this.config.getConfigurationSection("collections").getKeys(false)) {
@@ -273,9 +263,57 @@ public class User {
         if (this.auctionEscrow == null) {
             this.auctionEscrow = new AuctionEscrow();
         }
-    }*/
+    }
 
-    /*public void save() {
+    public void asyncSavingData() {
+        new BukkitRunnable() {
+            public void run() {
+                User.this.saveCookie();
+                User.this.save();
+                User.this.saveAllVanillaInstances();
+            }
+        }.runTaskAsynchronously(User.plugin);
+    }
+
+    public void syncSavingData() {
+        new BukkitRunnable() {
+            public void run() {
+                User.this.saveCookie();
+                User.this.save();
+                User.this.saveAllVanillaInstances();
+            }
+        }.runTask(User.plugin);
+    }
+
+    public void loadStatic() {
+        final Player player = Bukkit.getPlayer(this.uuid);
+        final User user = getUser(this.uuid);
+        PlayerUtils.AUTO_SLAYER.put(player.getUniqueId(), this.config.getBoolean("configures.autoSlayer"));
+        Repeater.SBA_MAP.put(player.getUniqueId(), this.config.getBoolean("configures.sbaToggle"));
+        PetsGUI.setShowPets(player, this.config.getBoolean("configures.showPets"));
+    }
+
+    public void loadCookieStatus() {
+        final Player player = Bukkit.getPlayer(this.uuid);
+        PlayerUtils.setCookieDurationTicks(player, this.config.getLong("user.cookieDuration"));
+        PlayerUtils.loadCookieStatsBuff(player);
+    }
+
+    public void saveCookie() {
+        if (Bukkit.getPlayer(this.uuid) == null) {
+            return;
+        }
+        if (!Bukkit.getPlayer(this.uuid).isOnline()) {
+            return;
+        }
+        if (!PlayerUtils.COOKIE_DURATION_CACHE.containsKey(this.uuid)) {
+            return;
+        }
+        this.config.set("user.cookieDuration", PlayerUtils.getCookieDurationTicks(Bukkit.getPlayer(this.uuid)));
+        this.config.save();
+    }
+
+    public void save() {
         this.config.set("uuid", this.uuid.toString());
         this.config.set("collections", null);
         for (final Map.Entry<ItemCollection, Integer> entry : this.collections.entrySet()) {
@@ -347,83 +385,6 @@ public class User {
             this.config.set("configures.sbaToggle", PlayerUtils.isSBAToggle(Bukkit.getPlayer(this.uuid)));
         }
         this.config.save();
-    }*/
-
-    public void setUnlockedRecipes(List<String> unlockedRecipes) {
-        this.unlockedRecipes = unlockedRecipes;
-    }
-
-    public void setTalkedNpcs(List<String> talkedNpcs) {
-        this.talked_npcs = talkedNpcs;
-    }
-
-
-    public List<String> getRawProfiles() {
-        if (!profiles.isEmpty()) {
-            return profiles.keySet().stream().collect(Collectors.toList());
-        }
-        return new ArrayList<>();
-    }
-
-    public List<Profile> getProfiles() {
-        List<Profile> prof = new ArrayList<>();
-        if (!profiles.isEmpty()) {
-            profiles.forEach((k, v) -> {
-                prof.add(Profile.get(UUID.fromString(k), this.uuid));
-            });
-        }
-        return prof;
-    }
-
-    public Map<String, Boolean> getProfilesMap() {
-        return profiles;
-    }
-
-
-    public void load() {
-        SMongoLoader.load(uuid);
-    }
-
-    public void syncSavingData(Profile profile) {
-        new BukkitRunnable() {
-            public void run() {
-                User.this.saveCookie();
-                User.this.save();
-                User.this.saveAllVanillaInstances(profile);
-            }
-        }.runTask((Plugin)User.plugin);
-    }
-
-    public void loadStatic() {
-        final Player player = Bukkit.getPlayer(this.uuid);
-        final User user = getUser(this.uuid);
-        PlayerUtils.AUTO_SLAYER.put(player.getUniqueId(), this.config.getBoolean("configures.autoSlayer"));
-        Repeater.SBA_MAP.put(player.getUniqueId(), this.config.getBoolean("configures.sbaToggle"));
-        PetsGUI.setShowPets(player, this.config.getBoolean("configures.showPets"));
-    }
-
-    public void loadCookieStatus() {
-        final Player player = Bukkit.getPlayer(this.uuid);
-        PlayerUtils.setCookieDurationTicks(player, this.config.getLong("user.cookieDuration"));
-        PlayerUtils.loadCookieStatsBuff(player);
-    }
-
-    public void saveCookie() {
-        if (Bukkit.getPlayer(this.uuid) == null) {
-            return;
-        }
-        if (!Bukkit.getPlayer(this.uuid).isOnline()) {
-            return;
-        }
-        if (!PlayerUtils.COOKIE_DURATION_CACHE.containsKey(this.uuid)) {
-            return;
-        }
-        this.config.set("user.cookieDuration", (Object)PlayerUtils.getCookieDurationTicks(Bukkit.getPlayer(this.uuid)));
-        this.config.save();
-    }
-
-    public void save() {
-        SMongoLoader.save(uuid);
     }
 
     public void saveStorageData(final int page) {
@@ -434,154 +395,136 @@ public class User {
         this.islandZ = z;
     }
 
-    public void saveInventory(Profile profile) {
+    public void saveInventory() {
         if (Bukkit.getPlayer(this.uuid) == null) {
             return;
         }
-        Document existingProfile = SMongoLoader.grabProfile(profile.uuid);
         Object a = null;
-        PlayerInventory piv = Bukkit.getPlayer(this.uuid).getInventory();
+        final PlayerInventory piv = Bukkit.getPlayer(this.uuid).getInventory();
         a = this.getPureListFrom(piv);
-        set(existingProfile,"database.inventory", a.toString());
+        this.config.set("database.inventory", a);
+        this.config.save();
     }
 
-
-
-    public String getPureListFrom(Inventory piv) {
-        ItemStack[] ist = piv.getContents();
-        List<ItemStack> arraylist = Arrays.asList(ist);
+    public String getPureListFrom(final Inventory piv) {
+        final ItemStack[] ist = piv.getContents();
+        final List<ItemStack> arraylist = Arrays.asList(ist);
         for (int i = 0; i < ist.length; ++i) {
-            ItemStack stack = ist[i];
+            final ItemStack stack = ist[i];
             if (stack != null) {
-                NBTItem nbti = new NBTItem(stack);
+                final NBTItem nbti = new NBTItem(stack);
                 if (nbti.hasKey("dontSaveToProfile")) {
                     arraylist.remove(i);
                 }
             }
         }
-        ItemStack[] arrl = (ItemStack[]) arraylist.toArray();
+        final ItemStack[] arrl = (ItemStack[]) arraylist.toArray();
         return BukkitSerializeClass.itemStackArrayToBase64(arrl);
     }
 
-    public void saveArmor(Profile profile) {
-        Document existingProfile = SMongoLoader.grabProfile(profile.uuid);
+    public void saveArmor() {
         if (Bukkit.getPlayer(this.uuid) == null) {
             return;
         }
         Object a = null;
         a = BukkitSerializeClass.itemStackArrayToBase64(Bukkit.getPlayer(this.uuid).getInventory().getArmorContents());
-        set(existingProfile,"database.armor", a);
+        this.config.set("database.armor", a);
+        this.config.save();
     }
 
-    public void saveEnderChest(Profile profile) {
+    public void saveEnderChest() {
         if (Bukkit.getPlayer(this.uuid) == null) {
             return;
         }
-        Document existingProfile = SMongoLoader.grabProfile(profile.uuid);
         Object a = null;
-        Inventory inv = Bukkit.getPlayer(this.uuid).getEnderChest();
+        final Inventory inv = Bukkit.getPlayer(this.uuid).getEnderChest();
         a = this.getPureListFrom(inv);
-        set(existingProfile,"database.enderchest", a);
+        this.config.set("database.enderchest", a);
+        this.config.save();
     }
 
-    public void saveExp(Profile profile) {
-        Document existingProfile = SMongoLoader.grabProfile(profile.uuid);
+    public void saveExp() {
         if (Bukkit.getPlayer(this.uuid) == null) {
             return;
         }
-        set(existingProfile,"database.minecraft_xp", Sputnik.getTotalExperience(Bukkit.getPlayer(this.uuid)));
+        this.config.set("database.minecraft_xp", Sputnik.getTotalExperience(Bukkit.getPlayer(this.uuid)));
+        this.config.save();
     }
 
-    public void loadPlayerData(Profile profile) throws IllegalArgumentException, IOException {
-        Player player = Bukkit.getPlayer(this.uuid);
-        Document document = SMongoLoader.grabProfile(profile.uuid);
-        Document databaseDocument;
-        if (document.containsKey("database")){
-            databaseDocument = (Document) document.get("database");
-        }else{
-            databaseDocument = document;
-        }
-
-
-        if (databaseDocument.containsKey("inventory")) {
-            player.getInventory().setContents(BukkitSerializeClass.itemStackArrayFromBase64(databaseDocument.getString("inventory")));
+    public void loadPlayerData() throws IllegalArgumentException, IOException {
+        if (!multiServer) return;
+        final Player player = Bukkit.getPlayer(this.uuid);
+        if (this.config.getString("database.inventory") != null) {
+            player.getInventory().setContents(BukkitSerializeClass.itemStackArrayFromBase64(this.config.getString("database.inventory")));
         } else {
             player.getInventory().setContents(new ItemStack[player.getInventory().getSize()]);
         }
-        if (databaseDocument.containsKey("enderchest")) {
-            player.getEnderChest().setContents(BukkitSerializeClass.itemStackArrayFromBase64(databaseDocument.getString("enderchest")));
+        if (this.config.getString("database.enderchest") != null) {
+            player.getEnderChest().setContents(BukkitSerializeClass.itemStackArrayFromBase64(this.config.getString("database.enderchest")));
         } else {
             player.getInventory().setContents(new ItemStack[player.getEnderChest().getSize()]);
         }
-        if (databaseDocument.containsKey("armor")) {
-            player.getInventory().setArmorContents(BukkitSerializeClass.itemStackArrayFromBase64(databaseDocument.getString("armor")));
+        if (this.config.getString("database.armor") != null) {
+            player.getInventory().setArmorContents(BukkitSerializeClass.itemStackArrayFromBase64(this.config.getString("database.armor")));
         } else {
             player.getInventory().setContents(new ItemStack[player.getInventory().getArmorContents().length]);
         }
-        if (databaseDocument.containsKey("minecraft_xp")) {
-            Sputnik.setTotalExperience(player, databaseDocument.getInteger("minecraft_xp"));
+        if (this.config.contains("database.minecraft_xp")) {
+            Sputnik.setTotalExperience(player, this.config.getInt("database.minecraft_xp"));
         }
-        if (document.containsKey("stashed")) {
-            ItemStack[] arr = BukkitSerializeClass.itemStackArrayFromBase64(databaseDocument.getString("stashed"));
+        if (this.config.contains("database.stashed")) {
+            final ItemStack[] arr = BukkitSerializeClass.itemStackArrayFromBase64(this.config.getString("database.stashed"));
             this.stashedItems = Arrays.asList(arr);
         } else {
             this.stashedItems = new ArrayList<ItemStack>();
         }
-        //this.loadEconomy();
-        Document configDocument;
-        if (document.containsKey("configures")){
-            configDocument = (Document) document.get("configures");
-
-        }else{
-            configDocument = document;
-        }
-
-
-        if (configDocument.containsKey("slot_selected")) {
-            player.getInventory().setHeldItemSlot(configDocument.getInteger("slot_selected"));
+        this.loadEconomy();
+        if (this.config.contains("configures.slot_selected")) {
+            player.getInventory().setHeldItemSlot(this.config.getInt("configures.slot_selected"));
         }
     }
 
-    /*public void loadEconomy() {
-        Economy eco = GodSpunkyEngine.getEconomy();
-        Player player = Bukkit.getPlayer(this.uuid);
-        if (document.containsKey("database.godspunky_bits")) {
+    public void loadEconomy() {
+        final Economy eco = SkySimEngine.getEconomy();
+        final Player player = Bukkit.getPlayer(this.uuid);
+        if (this.config.contains("database.skysim_bits")) {
             eco.withdrawPlayer(player, eco.getBalance(player));
-            eco.depositPlayer(player, document.getDouble("database.godspunky_bits"));
+            eco.depositPlayer(player, this.config.getDouble("database.skysim_bits"));
         }
-    }*/
-
-    /*public void saveBitsAmount() {
-        if (Bukkit.getPlayer(this.uuid) == null) {
-            return;
-        }
-        set("database.godspunky_bits", GodSpunkyEngine.getEconomy().getBalance((OfflinePlayer)Bukkit.getPlayer(this.uuid)));
-    }*/
-
-    public void saveLastSlot(Profile profile) {
-        Document existingProfile = SMongoLoader.grabProfile(profile.uuid);
-        if (Bukkit.getPlayer(this.uuid) == null) {
-            return;
-        }
-        set(existingProfile,"configures.slot_selected", Bukkit.getPlayer(this.uuid).getInventory().getHeldItemSlot());
     }
 
-    public void saveAllVanillaInstances(Profile profile) {
+    public void saveBitsAmount() {
         if (Bukkit.getPlayer(this.uuid) == null) {
             return;
         }
-        this.saveArmor(profile);
-        this.saveEnderChest(profile);
-        this.saveInventory(profile);
-        this.saveExp(profile);
-        //this.saveBitsAmount();
-        this.saveLastSlot(profile);
-        //this.saveAttributesForAPI();
-        this.saveStash(profile);
+        this.config.set("database.skysim_bits", SkySimEngine.getEconomy().getBalance(Bukkit.getPlayer(this.uuid)));
+        this.config.save();
     }
 
-    public void saveStash(Profile profile) {
-        Document existingProfile = SMongoLoader.grabProfile(profile.uuid);
+    public void saveLastSlot() {
+        if (Bukkit.getPlayer(this.uuid) == null) {
+            return;
+        }
+        this.config.set("configures.slot_selected", Bukkit.getPlayer(this.uuid).getInventory().getHeldItemSlot());
+        this.config.save();
+    }
+
+    public void saveAllVanillaInstances() {
+        if (!multiServer) return;
+        if (Bukkit.getPlayer(this.uuid) == null) {
+            return;
+        }
+        this.saveArmor();
+        this.saveEnderChest();
+        this.saveInventory();
+        this.saveExp();
+        this.saveBitsAmount();
+        this.saveLastSlot();
+        this.saveAttributesForAPI();
+        this.saveStash();
+    }
+
+    public void saveStash() {
         if (Bukkit.getPlayer(this.uuid) == null) {
             return;
         }
@@ -590,13 +533,36 @@ public class User {
         }
         ItemStack[] is = new ItemStack[this.stashedItems.size()];
         is = this.stashedItems.toArray(is);
-        set(existingProfile,"database.stashed", BukkitSerializeClass.itemStackArrayToBase64(is));
+        this.config.set("database.stashed", BukkitSerializeClass.itemStackArrayToBase64(is));
+        this.config.save();
     }
 
-    public void set(Document document, String field, Object value) {
-        DatabaseManager.getCollection("profiles").updateOne(document, new Document("$set", new Document(field, value)));
-        document.append(field, value);
+    public void saveAttributesForAPI() {
+        if (Bukkit.getPlayer(this.uuid) == null) {
+            return;
+        }
+        final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(this.getUuid());
+        if (statistics == null) {
+            return;
+        }
+        Double visualcap = statistics.getCritChance().addAll() * 100.0;
+        if (visualcap > 100.0) {
+            visualcap = 100.0;
+        }
+        this.config.set("apistats.health", statistics.getMaxHealth().addAll().intValue());
+        this.config.set("apistats.defense", statistics.getDefense().addAll().intValue());
+        this.config.set("apistats.strength", statistics.getStrength().addAll().intValue());
+        this.config.set("apistats.crit_chance", visualcap.intValue());
+        this.config.set("apistats.speed", statistics.getSpeed().addAll() * 100.0);
+        this.config.set("apistats.crit_damage", statistics.getCritDamage().addAll() * 100.0);
+        this.config.set("apistats.intelligence", statistics.getIntelligence().addAll().intValue());
+        this.config.set("apistats.attack_speed", Math.min(100.0, statistics.getAttackSpeed().addAll()));
+        this.config.set("apistats.magic_find", statistics.getMagicFind().addAll() * 100.0);
+        this.config.set("apistats.ferocity", statistics.getFerocity().addAll().intValue());
+        this.config.set("apistats.ability_damage", statistics.getAbilityDamage().addAll().intValue());
+        this.config.save();
     }
+
     public Config getConfig() {
         return this.config;
     }
@@ -2173,9 +2139,5 @@ public class User {
         USER_CACHE = new HashMap<UUID, User>();
         plugin = SkySimEngine.getPlugin();
         USER_FOLDER = new File(new File("/rootshare/skysim"), "./users");
-    }
-
-    public Map<ItemCollection, Integer> getCollections() {
-        return collections;
     }
 }

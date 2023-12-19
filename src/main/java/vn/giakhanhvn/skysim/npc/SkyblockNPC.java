@@ -173,7 +173,7 @@ public class SkyblockNPC {
     public boolean isShown(Player player){
         return viewers.contains(player.getUniqueId());
     }
-    // #inRangeOf method is used from npc-lib because mine method is not that good and I am not good at math
+    // #inRangeOf method is used from npc-lib because mine method is not that good, and I am not good at math
     public boolean inRangeOf(Player player) {
         if (player == null) return false;
         if (!player.getWorld().equals(location.getWorld())) {

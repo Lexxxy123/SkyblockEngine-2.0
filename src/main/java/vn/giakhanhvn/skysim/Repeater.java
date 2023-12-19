@@ -35,7 +35,6 @@ import vn.giakhanhvn.skysim.sidebar.Sidebar;
 import vn.giakhanhvn.skysim.slayer.SlayerQuest;
 import vn.giakhanhvn.skysim.user.PlayerStatistics;
 import vn.giakhanhvn.skysim.user.PlayerUtils;
-import vn.giakhanhvn.skysim.user.Profile;
 import vn.giakhanhvn.skysim.user.User;
 import vn.giakhanhvn.skysim.util.*;
 
@@ -76,8 +75,7 @@ public class Repeater {
                         return;
                     }
                     final User user = User.getUser(player.getUniqueId());
-                    Profile profile = Profile.get(player.getUniqueId());
-                    user.syncSavingData(profile);
+                    user.syncSavingData();
                 }
             }
         }.runTaskTimer(SkySimEngine.getPlugin(), 3000L, 3000L));

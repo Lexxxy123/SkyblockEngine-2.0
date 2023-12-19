@@ -52,6 +52,7 @@ import vn.giakhanhvn.skysim.item.pet.PetAbility;
 import vn.giakhanhvn.skysim.nms.packetevents.PacketReader;
 import vn.giakhanhvn.skysim.npc.SkyblockNPC;
 import vn.giakhanhvn.skysim.npc.SkyblockNPCManager;
+import vn.giakhanhvn.skysim.region.RegionType;
 import vn.giakhanhvn.skysim.skill.Skill;
 import vn.giakhanhvn.skysim.slayer.SlayerQuest;
 import vn.giakhanhvn.skysim.user.*;
@@ -77,13 +78,16 @@ public class PlayerListener extends PListener {
         Player player = e.getPlayer();
         Location from = e.getFrom();
         Location to = e.getTo();
+
         // Only check movement when the player moves from one block to another. The event is called often
         // as it is also called when the pitch or yaw change. This is worth it from a performance view.
         if (to == null || from.getBlockX() != to.getBlockX()
                 || from.getBlockY() != to.getBlockY()
                 || from.getBlockZ() != to.getBlockZ()) {
                 final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
-                PlayerUtils.updateInventoryStatistics(player, statistics);
+                //PlayerUtils.updateInventoryStatistics(player, statistics);
+                // It already getting called in repeater so no need to run again
+
                 final SBlock block = SBlock.getBlock(player.getLocation().clone().subtract(0.0, 0.3, 0.0));
                 if (player.getGameMode() != GameMode.SPECTATOR && e.getTo().getY() <= -25.0) {
                     User.getUser(player.getUniqueId()).kill(EntityDamageEvent.DamageCause.VOID, null);
@@ -95,7 +99,6 @@ public class PlayerListener extends PListener {
     public void onPlayerJoin(final PlayerJoinEvent e) {
         final Player player = e.getPlayer();
         this.getIsNotLoaded().put(player.getUniqueId(), true);
-        Profile profile = Profile.get(player.getUniqueId());
         SUtil.delay(() -> {
             if (player.isOnline()) {
                 SkySimEngine.getPlugin().updateServerName(player);
@@ -121,7 +124,7 @@ public class PlayerListener extends PListener {
             user.loadCookieStatus();
             user.loadStatic();
             try {
-                user.loadPlayerData(profile);
+                user.loadPlayerData();
             } catch (final IllegalArgumentException | IOException e2) {
                 SLog.severe("============ SKYSIM DATA LOAD ERROR ============");
                 SLog.severe("Ah shit, here we go again.");
@@ -255,7 +258,6 @@ public class PlayerListener extends PListener {
     @EventHandler
     public void onPlayerQuit(final PlayerQuitEvent e) {
         final Player player = e.getPlayer();
-        Profile profile = Profile.get(player.getUniqueId());
         final User user = User.getUser(player.getUniqueId());
         final SlayerQuest quest = user.getSlayerQuest();
         user.removeAllSlayerBosses();
@@ -266,7 +268,7 @@ public class PlayerListener extends PListener {
         }
         user.save();
         user.saveCookie();
-        user.saveAllVanillaInstances(profile);
+        user.saveAllVanillaInstances();
         Blessings.STAT_MAP.remove(player.getUniqueId());
         PrecursorEye.PrecursorLaser.remove(player.getUniqueId());
         PlayerUtils.COOKIE_DURATION_CACHE.remove(player.getUniqueId());
@@ -833,7 +835,6 @@ public class PlayerListener extends PListener {
     @EventHandler
     public void onTeleport(final PlayerChangedWorldEvent e) {
         final User user = User.getUser(e.getPlayer().getUniqueId());
-        Profile profile = Profile.get(e.getPlayer().getUniqueId());
         if (user == null) {
             return;
         }
@@ -847,7 +848,7 @@ public class PlayerListener extends PListener {
             ts.cleanStats();
         }
         final SlayerQuest quest = user.getSlayerQuest();
-        user.saveAllVanillaInstances(profile);
+        user.saveAllVanillaInstances();
         if (quest != null && quest.getXp() >= quest.getType().getSpawnXP() && quest.getKilled() == 0L) {
             User.getUser(e.getPlayer().getUniqueId()).failSlayerQuest();
         }
