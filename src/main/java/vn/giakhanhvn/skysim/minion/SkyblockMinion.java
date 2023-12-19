@@ -16,7 +16,7 @@ public class SkyblockMinion {
     private List<SMaterial> items;
 
     private void summon(){
-        
+
     }
 
 }
