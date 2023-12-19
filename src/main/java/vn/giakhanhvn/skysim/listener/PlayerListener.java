@@ -95,7 +95,6 @@ public class PlayerListener extends PListener {
     public void onPlayerJoin(final PlayerJoinEvent e) {
         final Player player = e.getPlayer();
         this.getIsNotLoaded().put(player.getUniqueId(), true);
-        Profile profile = Profile.get(player.getUniqueId());
         SUtil.delay(() -> {
             if (player.isOnline()) {
                 SkySimEngine.getPlugin().updateServerName(player);
@@ -121,7 +120,7 @@ public class PlayerListener extends PListener {
             user.loadCookieStatus();
             user.loadStatic();
             try {
-                user.loadPlayerData(profile);
+                user.loadPlayerData();
             } catch (final IllegalArgumentException | IOException e2) {
                 SLog.severe("============ SKYSIM DATA LOAD ERROR ============");
                 SLog.severe("Ah shit, here we go again.");
@@ -255,7 +254,6 @@ public class PlayerListener extends PListener {
     @EventHandler
     public void onPlayerQuit(final PlayerQuitEvent e) {
         final Player player = e.getPlayer();
-        Profile profile = Profile.get(player.getUniqueId());
         final User user = User.getUser(player.getUniqueId());
         final SlayerQuest quest = user.getSlayerQuest();
         user.removeAllSlayerBosses();
@@ -266,7 +264,7 @@ public class PlayerListener extends PListener {
         }
         user.save();
         user.saveCookie();
-        user.saveAllVanillaInstances(profile);
+        user.saveAllVanillaInstances();
         Blessings.STAT_MAP.remove(player.getUniqueId());
         PrecursorEye.PrecursorLaser.remove(player.getUniqueId());
         PlayerUtils.COOKIE_DURATION_CACHE.remove(player.getUniqueId());
@@ -833,7 +831,6 @@ public class PlayerListener extends PListener {
     @EventHandler
     public void onTeleport(final PlayerChangedWorldEvent e) {
         final User user = User.getUser(e.getPlayer().getUniqueId());
-        Profile profile = Profile.get(e.getPlayer().getUniqueId());
         if (user == null) {
             return;
         }
@@ -847,7 +844,7 @@ public class PlayerListener extends PListener {
             ts.cleanStats();
         }
         final SlayerQuest quest = user.getSlayerQuest();
-        user.saveAllVanillaInstances(profile);
+        user.saveAllVanillaInstances();
         if (quest != null && quest.getXp() >= quest.getType().getSpawnXP() && quest.getKilled() == 0L) {
             User.getUser(e.getPlayer().getUniqueId()).failSlayerQuest();
         }

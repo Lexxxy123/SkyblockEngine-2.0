@@ -3,7 +3,6 @@ package vn.giakhanhvn.skysim.command;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import vn.giakhanhvn.skysim.SkySimEngine;
-import vn.giakhanhvn.skysim.user.Profile;
 import vn.giakhanhvn.skysim.user.User;
 import vn.giakhanhvn.skysim.util.SLog;
 import vn.giakhanhvn.skysim.util.SUtil;
@@ -85,8 +84,7 @@ public class SSend
             for (Player player : Bukkit.getOnlinePlayers()) {
                 User u = User.getUser(player.getUniqueId());
                 u.send("&7Hooking up request...");
-                Profile profile = Profile.get(player.getUniqueId());
-                u.syncSavingData(profile);
+                u.syncSavingData();
                 SUtil.delay(() -> {
                     u.send("&7Sending you to " + finalTarget + "...");
                     SkySimEngine.getPlugin().getBc().connect(player, finalTarget);

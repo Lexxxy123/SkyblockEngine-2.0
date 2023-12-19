@@ -3,7 +3,6 @@ package vn.giakhanhvn.skysim.command;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import vn.giakhanhvn.skysim.user.Profile;
 import vn.giakhanhvn.skysim.user.User;
 import vn.giakhanhvn.skysim.util.SLog;
 import vn.giakhanhvn.skysim.util.Sputnik;
@@ -13,7 +12,6 @@ public class SaveDataCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         final Player player = sender.getPlayer();
-        Profile profile = Profile.get(player.getUniqueId());
         if (player != null) {
             if (player.isOp()) {
                 this.send(ChatColor.GRAY + "Performing save action, please wait...");
@@ -23,7 +21,7 @@ public class SaveDataCommand extends SCommand {
                     if (user != null) {
                         user.saveCookie();
                         user.save();
-                        user.saveAllVanillaInstances(profile);
+                        user.saveAllVanillaInstances();
                     }
                 }
                 Bukkit.broadcastMessage(Sputnik.trans("&b[SKYSIM D.C] &aAll players data have been saved! Action performed by " + player.getDisplayName() + "&a!"));
@@ -35,7 +33,7 @@ public class SaveDataCommand extends SCommand {
                 if (user != null) {
                     user.saveCookie();
                     user.save();
-                    user.saveAllVanillaInstances(profile);
+                    user.saveAllVanillaInstances();
                 }
             }
             Bukkit.broadcastMessage(Sputnik.trans("&b[SKYSIM D.C] &aAll players data have been saved! Action performed by &cCONSOLE&a!"));
