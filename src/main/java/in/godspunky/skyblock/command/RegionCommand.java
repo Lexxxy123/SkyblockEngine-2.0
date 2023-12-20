@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.command;
 
+import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.region.Region;
 import in.godspunky.skyblock.region.RegionGenerator;
 import in.godspunky.skyblock.region.RegionType;
@@ -9,7 +10,7 @@ import org.bukkit.command.CommandSender;
 import java.util.HashMap;
 import java.util.Map;
 
-@CommandParameters(description = "Manage world regions.", usage = "/<command> [create <name> <type> | update <name> [type] | delete <name>]", aliases = "reg", permission = "spt.region")
+@CommandParameters(description = "Manage world regions.", usage = "/<command> [create <name> <type> | update <name> [type] | delete <name>]", aliases = "reg", permission = PlayerRank.ADMIN)
 public class RegionCommand extends SCommand {
     public static Map<CommandSender, RegionGenerator> REGION_GENERATION_MAP;
 

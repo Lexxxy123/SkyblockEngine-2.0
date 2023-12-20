@@ -2,13 +2,14 @@ package in.godspunky.skyblock.command;
 
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-@CommandParameters(description = "", aliases = "bbc", permission = "sse.cc")
+@CommandParameters(description = "", aliases = "bbc", permission = PlayerRank.ADMIN)
 public class BuyCookieCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

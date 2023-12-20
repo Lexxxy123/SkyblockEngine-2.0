@@ -1,10 +1,11 @@
 package in.godspunky.skyblock.command;
 
+import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.skill.Skill;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 
-@CommandParameters(description = "Shows your skills.", aliases = "skill", permission = "spt.skills")
+@CommandParameters(description = "Shows your skills.", aliases = "skill", permission = PlayerRank.ADMIN)
 public class SkillsCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

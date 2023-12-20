@@ -1,7 +1,15 @@
+// 
+// Decompiled by Procyon v0.5.36
+// 
+
 package in.godspunky.skyblock.item.pet;
 
 import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.skill.Skill;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.SUtil;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
+import org.bson.Document;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -9,56 +17,57 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.skill.Skill;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.SUtil;
 
 import java.util.*;
 import java.util.function.Consumer;
 
 public abstract class Pet implements SkullStatistics, LoreableMaterialStatistics, MaterialFunction, ItemData {
-    protected static final List<Integer> COMMON_XP_GOALS;
-    protected static final List<Integer> UNCOMMON_XP_GOALS;
-    protected static final List<Integer> RARE_XP_GOALS;
-    protected static final List<Integer> EPIC_XP_GOALS;
-    protected static final List<Integer> LEGENDARY_XP_GOALS;
+    protected static List<Integer> COMMON_XP_GOALS;
+    protected static List<Integer> UNCOMMON_XP_GOALS;
+    protected static List<Integer> RARE_XP_GOALS;
+    protected static List<Integer> EPIC_XP_GOALS;
+    protected static List<Integer> LEGENDARY_XP_GOALS;
 
-    private static List<Integer> getGoalsForRarity(final Rarity rarity) {
+    private static List<Integer> getGoalsForRarity(Rarity rarity) {
         List<Integer> goals = null;
         switch (rarity) {
-            case COMMON:
+            case COMMON: {
                 goals = Pet.COMMON_XP_GOALS;
                 break;
-            case UNCOMMON:
+            }
+            case UNCOMMON: {
                 goals = Pet.UNCOMMON_XP_GOALS;
                 break;
-            case RARE:
+            }
+            case RARE: {
                 goals = Pet.RARE_XP_GOALS;
                 break;
-            case EPIC:
+            }
+            case EPIC: {
                 goals = Pet.EPIC_XP_GOALS;
                 break;
-            default:
+            }
+            default: {
                 goals = Pet.LEGENDARY_XP_GOALS;
                 break;
+            }
         }
         return goals;
     }
 
-    public void runAbilities(final Consumer<PetAbility> consumer, final PetItem item) {
+    public void runAbilities(Consumer<PetAbility> consumer, PetItem item) {
         if (item != null) {
-            for (final PetAbility ability : this.getPetAbilities(item.toItem())) {
+            for (PetAbility ability : this.getPetAbilities(item.toItem())) {
                 consumer.accept(ability);
             }
         }
     }
 
-    public static int getLevel(final double xp, final Rarity rarity) {
+    public static int getLevel(double xp, Rarity rarity) {
         if (xp < 0.0) {
             return -1;
         }
-        final List<Integer> goals = getGoalsForRarity(rarity);
+        List<Integer> goals = getGoalsForRarity(rarity);
         for (int i = 0; i < goals.size(); ++i) {
             if (goals.get(i) > xp) {
                 return i;
@@ -67,7 +76,7 @@ public abstract class Pet implements SkullStatistics, LoreableMaterialStatistics
         return 100;
     }
 
-    private static double getXP(int level, final Rarity rarity) {
+    private static double getXP(int level, Rarity rarity) {
         if (--level < 0 || level > 99) {
             return -1.0;
         }
@@ -76,28 +85,28 @@ public abstract class Pet implements SkullStatistics, LoreableMaterialStatistics
 
     @Override
     public NBTTagCompound getData() {
-        final NBTTagCompound compound = new NBTTagCompound();
+        NBTTagCompound compound = new NBTTagCompound();
         compound.setDouble("xp", 0.0);
         compound.setBoolean("equipped", false);
         return compound;
     }
 
-    public abstract List<PetAbility> getPetAbilities(final SItem p0);
+    public abstract List<PetAbility> getPetAbilities(SItem p0);
 
     public abstract Skill getSkill();
 
     @Override
-    public List<String> getCustomLore(final SItem instance) {
-        final List<String> lore = new ArrayList<String>();
+    public List<String> getCustomLore(SItem instance) {
+        List<String> lore = new ArrayList<String>();
         lore.add(ChatColor.DARK_GRAY + this.getSkill().getName() + " Pet");
         if (this.hasStatBoosts()) {
             lore.add(" ");
         }
-        final int level = getLevel(instance);
+        int level = getLevel(instance);
         addPropertyInt("Magic Find", this.getPerMagicFind() * 100.0, lore, level);
         addPropertyPercent("Crit Damage", this.getPerCritDamage(), lore, level);
         addPropertyPercent("Crit Chance", this.getPerCritChance(), lore, level);
-        final double health = this.getPerHealth();
+        double health = this.getPerHealth();
         if (health > 0.0) {
             lore.add(ChatColor.GRAY + "Health: " + ChatColor.GREEN + "+" + Math.round(health * level) + " HP");
         }
@@ -108,25 +117,25 @@ public abstract class Pet implements SkullStatistics, LoreableMaterialStatistics
         addPropertyInt("Intelligence", this.getPerIntelligence(), lore, level);
         addPropertyInt("Ferocity", this.getPerFerocity(), lore, level);
         addPropertyInt("Bonus Attack Speed", this.getPerAttackSpeed(), lore, level);
-        final List<PetAbility> abilities = this.getPetAbilities(instance);
-        for (final PetAbility ability : abilities) {
+        List<PetAbility> abilities = this.getPetAbilities(instance);
+        for (PetAbility ability : abilities) {
             lore.add(" ");
             lore.add(ChatColor.GOLD + ability.getName());
-            for (final String line : ability.getDescription(instance)) {
+            for (String line : ability.getDescription(instance)) {
                 lore.add(ChatColor.GRAY + line);
             }
         }
         if (level != 100) {
             lore.add(" ");
-            final double xp = instance.getData().getDouble("xp");
-            final int next = level + 1;
-            final double progress = xp - getXP(level, instance.getRarity());
-            final int goal = (int) (getXP(next, instance.getRarity()) - getXP(level, instance.getRarity()));
+            double xp = instance.getData().getDouble("xp");
+            int next = level + 1;
+            double progress = xp - getXP(level, instance.getRarity());
+            int goal = (int) (getXP(next, instance.getRarity()) - getXP(level, instance.getRarity()));
             lore.add(SUtil.createProgressText("Progress to Level " + next, progress, goal));
             lore.add(SUtil.createLineProgressBar(20, ChatColor.DARK_GREEN, progress, goal));
         } else if (level == 100) {
             lore.add("");
-            lore.add("" + ChatColor.AQUA + ChatColor.BOLD + "MAX LEVEL");
+            lore.add(String.valueOf(ChatColor.AQUA) + ChatColor.BOLD + "MAX LEVEL");
         }
         if (!instance.getData().getBoolean("equipped")) {
             lore.add("");
@@ -134,7 +143,7 @@ public abstract class Pet implements SkullStatistics, LoreableMaterialStatistics
             lore.add(ChatColor.YELLOW + "your pet menu!");
         }
         if (instance.getType().getStatistics().displayRarity() && !instance.getData().getBoolean("equipped")) {
-            final SpecificItemType type = instance.getType().getStatistics().getSpecificType();
+            SpecificItemType type = instance.getType().getStatistics().getSpecificType();
             lore.add(" ");
             lore.add((instance.isRecombobulated() ? (instance.getRarity().getBoldedColor() + ChatColor.MAGIC + "D" + ChatColor.RESET + " ") : "") + instance.getRarity().getDisplay() + ((type != SpecificItemType.NONE) ? (" " + type.getName()) : "") + (instance.isRecombobulated() ? (instance.getRarity().getBoldedColor() + " " + ChatColor.MAGIC + "D" + ChatColor.RESET) : ""));
         }
@@ -142,7 +151,7 @@ public abstract class Pet implements SkullStatistics, LoreableMaterialStatistics
     }
 
     @Override
-    public void onInstanceUpdate(final SItem instance) {
+    public void onInstanceUpdate(SItem instance) {
         instance.setDisplayName(ChatColor.GRAY + "[Lvl " + getLevel(instance) + "] " + instance.getRarity().getColor() + this.getDisplayName());
     }
 
@@ -152,13 +161,13 @@ public abstract class Pet implements SkullStatistics, LoreableMaterialStatistics
     }
 
     @Override
-    public void onInteraction(final PlayerInteractEvent e) {
+    public void onInteraction(PlayerInteractEvent e) {
         if (e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return;
         }
-        final Player player = e.getPlayer();
-        final User user = User.getUser(player.getUniqueId());
-        final SItem item = SItem.find(e.getItem());
+        Player player = e.getPlayer();
+        User user = User.getUser(player.getUniqueId());
+        SItem item = SItem.find(e.getItem());
         user.addPet(item);
         player.setItemInHand(null);
         player.playSound(player.getLocation(), Sound.ORB_PICKUP, 1.0f, 1.0f);
@@ -170,20 +179,20 @@ public abstract class Pet implements SkullStatistics, LoreableMaterialStatistics
         return false;
     }
 
-    public static int getLevel(final SItem instance) {
-        final double xp = instance.getData().getDouble("xp");
+    public static int getLevel(SItem instance) {
+        double xp = instance.getData().getDouble("xp");
         return getLevel(xp, instance.getRarity());
     }
 
-    private static void addPropertyInt(final String name, final double value, final List<String> lore, final int level) {
-        final long fin = Math.round(value * level);
+    private static void addPropertyInt(String name, double value, List<String> lore, int level) {
+        long fin = Math.round(value * level);
         if (value != 0.0) {
             lore.add(ChatColor.GRAY + name + ": " + ChatColor.GREEN + ((fin >= 0L) ? "+" : "") + fin);
         }
     }
 
-    private static void addPropertyPercent(final String name, final double value, final List<String> lore, final int level) {
-        final long fin = Math.round(value * 100.0 * level);
+    private static void addPropertyPercent(String name, double value, List<String> lore, int level) {
+        long fin = Math.round(value * 100.0 * level);
         if (value != 0.0) {
             lore.add(ChatColor.GRAY + name + ": " + ChatColor.GREEN + ((fin >= 0L) ? "+" : "") + fin + "%");
         }
@@ -237,7 +246,7 @@ public abstract class Pet implements SkullStatistics, LoreableMaterialStatistics
         return this.getPerHealth() != 0.0 || this.getPerDefense() != 0.0 || this.getPerStrength() != 0.0 || this.getPerIntelligence() != 0.0 || this.getPerSpeed() != 0.0 || this.getPerCritChance() != 0.0 || this.getPerCritDamage() != 0.0 || this.getPerMagicFind() != 0.0 || this.getPerTrueDefense() != 0.0;
     }
 
-    public void particleBelowA(final Player p, final Location l) {
+    public void particleBelowA(Player p, Location l) {
     }
 
     static {
@@ -254,41 +263,49 @@ public abstract class Pet implements SkullStatistics, LoreableMaterialStatistics
         private double xp;
         private boolean active;
 
-        private PetItem(final SMaterial type, final Rarity rarity, final double xp, final boolean active) {
+        private PetItem(SMaterial type, Rarity rarity, double xp, boolean active) {
             this.type = type;
             this.rarity = rarity;
             this.xp = xp;
             this.active = active;
         }
 
-        public PetItem(final SMaterial type, final Rarity rarity, final double xp) {
+        public PetItem(SMaterial type, Rarity rarity, double xp) {
             this(type, rarity, xp, false);
         }
 
         public Map<String, Object> serialize() {
-            final Map<String, Object> map = new HashMap<String, Object>();
+            Map<String, Object> map = new HashMap<String, Object>();
             map.put("type", this.type.name());
             map.put("rarity", this.rarity.name());
             map.put("xp", this.xp);
             map.put("active", this.active);
             return map;
         }
+        public Document toDocument() {
+            Document document = new Document();
+            document.append("type", this.type.name());
+            document.append("rarity", this.rarity.name());
+            document.append("xp", this.xp);
+            document.append("active", this.active);
+            return document;
+        }
 
         @Override
-        public boolean equals(final Object o) {
+        public boolean equals(Object o) {
             if (!(o instanceof PetItem)) {
                 return false;
             }
-            final PetItem pet = (PetItem) o;
+            PetItem pet = (PetItem) o;
             return this.type == pet.type && this.rarity == pet.rarity && this.xp == pet.xp && this.active == pet.active;
         }
 
-        public boolean equalsItem(final SItem item) {
+        public boolean equalsItem(SItem item) {
             return this.type == item.getType() && this.rarity == item.getRarity() && this.xp == item.getData().getDouble("xp");
         }
 
         public SItem toItem() {
-            final SItem sItem = SItem.of(this.type);
+            SItem sItem = SItem.of(this.type);
             sItem.setRarity(this.rarity);
             sItem.getData().setDouble("xp", this.xp);
             return sItem;
@@ -297,6 +314,15 @@ public abstract class Pet implements SkullStatistics, LoreableMaterialStatistics
         public static PetItem deserialize(Map<String, Object> map) {
             return new PetItem(SMaterial.getMaterial((String) map.get("type")), Rarity.getRarity((String) map.get("rarity")), (Double) map.get("xp"), (Boolean) map.get("active"));
         }
+
+        public static PetItem fromDocument(Document document) {
+            String type = document.getString("type");
+            String rarity = document.getString("rarity");
+            double xp = document.getDouble("xp");
+            boolean active = document.getBoolean("active");
+            return new PetItem(SMaterial.getMaterial(type), Rarity.getRarity(rarity), xp, active);
+        }
+
 
         public SMaterial getType() {
             return this.type;
@@ -314,15 +340,15 @@ public abstract class Pet implements SkullStatistics, LoreableMaterialStatistics
             return this.active;
         }
 
-        public void setRarity(final Rarity rarity) {
+        public void setRarity(Rarity rarity) {
             this.rarity = rarity;
         }
 
-        public void setXp(final double xp) {
+        public void setXp(double xp) {
             this.xp = xp;
         }
 
-        public void setActive(final boolean active) {
+        public void setActive(boolean active) {
             this.active = active;
         }
     }

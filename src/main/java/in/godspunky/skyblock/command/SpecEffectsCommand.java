@@ -1,11 +1,12 @@
 package in.godspunky.skyblock.command;
 
 import in.godspunky.skyblock.potion.ActivePotionEffect;
+import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 
-@CommandParameters(description = "Get your current active potion effects.", aliases = "effect", permission = "spt.item")
+@CommandParameters(description = "Get your current active potion effects.", aliases = "effect", permission = PlayerRank.ADMIN)
 public class SpecEffectsCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

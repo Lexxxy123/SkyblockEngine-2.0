@@ -2,6 +2,7 @@ package in.godspunky.skyblock.command;
 
 import in.godspunky.skyblock.item.GenericItemType;
 import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;
@@ -10,7 +11,7 @@ import org.bukkit.World;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-@CommandParameters(description = "bruhbu", aliases = "hpb")
+@CommandParameters(description = "bruhbu", aliases = "hpb", permission = PlayerRank.ADMIN)
 public class HotPotatoBookCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

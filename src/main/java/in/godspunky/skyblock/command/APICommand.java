@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.command;
 
+import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;
@@ -16,7 +17,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.UUID;
 
-@CommandParameters(description = "", aliases = "api", permission = "")
+@CommandParameters(description = "", aliases = "api", permission = PlayerRank.DEFAULT)
 public class APICommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

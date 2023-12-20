@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.command;
 
 import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;
 import net.md_5.bungee.api.ChatColor;
@@ -13,7 +14,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.HashMap;
 import java.util.Map;
 
-@CommandParameters(description = "Spec test command.", aliases = "rebootserver")
+@CommandParameters(description = "Spec test command.", aliases = "rebootserver", permission = PlayerRank.ADMIN)
 public class RebootServerCommand extends SCommand {
     public static Map<Server, Integer> secondMap;
 

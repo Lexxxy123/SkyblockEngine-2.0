@@ -2,6 +2,7 @@ package in.godspunky.skyblock.item;
 
 import net.minecraft.server.v1_8_R3.Item;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
+import org.bson.Document;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -631,6 +632,77 @@ public class SItem implements Cloneable, ConfigurationSerializable {
             compound.setString("uuid", UUID.randomUUID().toString());
         }
         return compound;
+    }
+
+    public static Document serializeSItem(SItem item) {
+        Document itemDocument = new Document("id", item.getType().name())
+                .append("type", item.getType().name())
+                .append("variant", item.getVariant())
+                .append("amount", item.getStack().getAmount())
+                .append("rarity", item.getRarity().name())
+                .append("origin", item.getOrigin().name())
+                .append("recombobulated", item.isRecombobulated());
+
+        for (String key : item.getData().c()) {
+            if (key.equals("display")) {
+                continue;
+            }
+
+            if (item.getData().get(key) instanceof NBTTagCompound) {
+                SerialNBTTagCompound serial = new SerialNBTTagCompound(item.getData().getCompound(key));
+                for (Map.Entry<String, Object> entry : serial.serialize().entrySet()) {
+                    itemDocument.append(key + "." + entry.getKey(), entry.getValue());
+                }
+            } else {
+                itemDocument.append(key, SUtil.getObjectFromCompound(item.getData(), key));
+            }
+        }
+
+        return itemDocument;
+    }
+
+    public static SItem deserializeSItem(Document document) {
+        if (document == null) {
+            return null;
+        }
+        NBTTagCompound data = new NBTTagCompound();
+        for (String key : document.keySet()) {
+            if (SItem.GLOBAL_DATA_KEYS.contains(key)) {
+                continue;
+            }
+            String[] dir = key.split("\\.");
+            if (dir.length >= 2) {
+                String lastKey = dir[dir.length - 1];
+                NBTTagCompound track = data;
+                for (int i = 0; i < dir.length - 1; ++i) {
+                    if (!track.hasKey(dir[i])) {
+                        track.set(dir[i], new NBTTagCompound());
+                    }
+                    track = track.getCompound(dir[i]);
+                }
+                track.set(lastKey, SUtil.getBaseFromObject(document.get(key)));
+            } else {
+                data.set(key, SUtil.getBaseFromObject(document.get(key)));
+            }
+        }
+        SMaterial material = SMaterial.getMaterial(document.getString("type"));
+        if (material == null) {
+            return null;
+        }
+        Short variant = (short) document.getInteger("variant", (int) (short) 0);
+        int amount = document.getInteger("amount", 0);
+        Rarity rarity = Rarity.getRarity(document.getString("rarity"));
+        if (rarity == null) {
+
+            return null;
+        }
+        ItemOrigin origin = ItemOrigin.valueOf(document.getString("origin"));
+        if (origin == null) {
+            return null;
+        }
+        boolean recombobulated = document.getBoolean("recombobulated", false);
+
+        return new SItem(material, variant, new ItemStack(material.getCraftMaterial(), amount, variant), rarity, origin, recombobulated, data, true);
     }
 
     public Map<String, Object> serialize() {

@@ -453,24 +453,9 @@ public class Repeater {
         if (set instanceof TickingSet) {
             ((TickingSet) set).tick(player, SItem.find(inventory.getHelmet()), SItem.find(inventory.getChestplate()), SItem.find(inventory.getLeggings()), SItem.find(inventory.getBoots()), counters2);
         }
-        String skysim = Sputnik.trans("&e&lSKYSIM");
-        final Boolean isNotCracked = Bukkit.getServer().getOnlineMode();
-        if (Repeater.SBA_MAP.containsKey(uuid)) {
-            if (Repeater.SBA_MAP.get(uuid)) {
-                skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYBLOCK");
-            } else if (isNotCracked) {
-                skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYSIM &b&lBETA");
-            } else {
-                skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYSIM &b&lBETA");
-            }
-        } else if (isNotCracked) {
-            skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYSIM &b&lBETA");
-        } else {
-            skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYSIM &b&lBETA");
-        }
-        String finalSkysim = skysim;
+        String godspunky = ChatColor.translateAlternateColorCodes('&', "&e&lSKYBLOCK &c&lALPHA");
         SUtil.runSync(()->{
-            Sidebar sidebar = new Sidebar(finalSkysim, "SKYSIM");
+            Sidebar sidebar = new Sidebar(godspunky, "godspunky");
             SUtil.runAsync(()->{
                 String strd = SUtil.getDate();
                 if (RebootServerCommand.secondMap.containsKey(Bukkit.getServer())) {
@@ -514,9 +499,7 @@ public class Repeater {
                 if (user.isOnUserIsland()) {
                     location = ChatColor.AQUA + "Others Island";
                 }
-                if (player.getWorld().getName().equalsIgnoreCase("dragon")) {
-                    sidebar.add(ChatColor.GRAY + " ⏣ " + ChatColor.DARK_PURPLE + "Dragon's Nest");
-                } else if (player.getWorld().getName().contains("f6")) {
+                if (player.getWorld().getName().contains("f6")) {
                     sidebar.add(ChatColor.GRAY + " ⏣ " + ChatColor.RED + "Catacombs Demo" + ChatColor.GRAY + " (F6)");
                 } else if (player.getWorld().getName().contains("arena")) {
                     sidebar.add(ChatColor.GRAY + " ⏣ " + ChatColor.RED + "Withering Ruins");
@@ -527,20 +510,17 @@ public class Repeater {
                 }
                 if (!player.getWorld().getName().contains("f6") && !player.getWorld().getName().equalsIgnoreCase("arena")) {
                     sidebar.add(" ");
-                    final StringBuilder coinsDisplay = new StringBuilder();
+                    StringBuilder coinsDisplay = new StringBuilder();
                     if (user.isPermanentCoins()) {
                         coinsDisplay.append("Purse: ");
-                    } else if (PlayerUtils.hasItem(player, SMaterial.PIGGY_BANK) || PlayerUtils.hasItem(player, SMaterial.CRACKED_PIGGY_BANK)) {
-                        coinsDisplay.append("Piggy: ");
                     } else {
                         coinsDisplay.append("Purse: ");
                     }
-                    sidebar.add(coinsDisplay.append(ChatColor.GOLD).append(SUtil.commaify(user.getCoins())) + ".0" + ChatColor.YELLOW);
-                    final String bits = PlaceholderAPI.setPlaceholders(player, "%royaleeconomy_balance_purse%") + " " + PlaceholderAPI.setPlaceholders(player, "%royaleeconomy_dynamic_coins%");
+                    sidebar.add(coinsDisplay.append(ChatColor.GOLD).append(String.valueOf(Sputnik.formatFull(user.getCoins())) + ChatColor.YELLOW).toString());            String bits = PlaceholderAPI.setPlaceholders(player, "%royaleeconomy_balance_purse%") + " " + PlaceholderAPI.setPlaceholders(player, "%royaleeconomy_dynamic_coins%");
                     sidebar.add("Bits: " + ChatColor.AQUA + bits);
                     sidebar.add("   ");
                     final SlayerQuest quest = user.getSlayerQuest();
-                    if ((!StaticDragonManager.ACTIVE || StaticDragonManager.DRAGON == null || !player.getWorld().getName().equalsIgnoreCase("dragon")) && quest != null && (quest.getDied() == 0L || quest.getKilled() != 0L)) {
+                    if ((!StaticDragonManager.ACTIVE || StaticDragonManager.DRAGON == null || !player.getWorld().getName().equalsIgnoreCase("world")) && quest != null && (quest.getDied() == 0L || quest.getKilled() != 0L)) {
                         sidebar.add("Slayer Quest");
                         sidebar.add(quest.getType().getDisplayName());
                         if (quest.getKilled() != 0L) {
@@ -558,7 +538,7 @@ public class Repeater {
                         }
                         sidebar.add("    ");
                     }
-                    if (StaticDragonManager.ACTIVE && StaticDragonManager.DRAGON != null && player.getWorld().getName().equalsIgnoreCase("dragon")) {
+                    if (StaticDragonManager.ACTIVE && StaticDragonManager.DRAGON != null && player.getWorld().getName().equalsIgnoreCase("world")) {
                         sidebar.add("Dragon HP: " + ChatColor.GREEN + SUtil.commaify((int) StaticDragonManager.DRAGON.getEntity().getHealth()) + ChatColor.RED + " ❤");
                         int dmgdealt;
                         if (StaticDragonManager.DRAGON.getDamageDealt().containsKey(uuid)) {
@@ -631,12 +611,12 @@ public class Repeater {
                 }
                 if (Repeater.SBA_MAP.containsKey(uuid)) {
                     if (Repeater.SBA_MAP.get(uuid)) {
-                        sidebar.add(ChatColor.YELLOW + "www.hypixel.net");
+                        sidebar.add(ChatColor.YELLOW + "mc.godspunky.in");
                     } else {
-                        sidebar.add(ChatColor.YELLOW + "mc.skysim.sbs");
+                        sidebar.add(ChatColor.YELLOW + "mc.godspunky.in");
                     }
                 } else {
-                    sidebar.add(ChatColor.YELLOW + "mc.skysim.sbs");
+                    sidebar.add(ChatColor.YELLOW + "mc.godspunky.in");
                 }
 
 

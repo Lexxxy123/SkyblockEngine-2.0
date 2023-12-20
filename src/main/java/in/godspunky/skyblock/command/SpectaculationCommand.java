@@ -1,8 +1,9 @@
 package in.godspunky.skyblock.command;
 
+import in.godspunky.skyblock.ranks.PlayerRank;
 import org.bukkit.ChatColor;
 
-@CommandParameters(description = "The main command for Spectaculation.", aliases = "sse")
+@CommandParameters(description = "The main command for Spectaculation.", aliases = "sse", permission = PlayerRank.ADMIN)
 public class SpectaculationCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
