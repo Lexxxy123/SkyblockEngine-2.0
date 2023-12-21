@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.gui;
 
+import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -7,7 +8,6 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import in.godspunky.skyblock.util.SUtil;
 
 public class LiftGUI extends GUI {
     public LiftGUI() {
@@ -16,7 +16,7 @@ public class LiftGUI extends GUI {
 
     @Override
     public void onOpen(final GUIOpenEvent e) {
-        this.fill(LiftGUI.BLACK_STAINED_GLASS_PANE);
+        this.fill(BLACK_STAINED_GLASS_PANE);
         final Player player = e.getPlayer();
         this.set(new GUIClickableItem() {
             @Override

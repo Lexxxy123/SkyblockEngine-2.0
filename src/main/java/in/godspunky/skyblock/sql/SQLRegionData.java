@@ -1,9 +1,9 @@
 package in.godspunky.skyblock.sql;
 
 import in.godspunky.skyblock.SkySimEngine;
-import org.bukkit.Location;
 import in.godspunky.skyblock.region.Region;
 import in.godspunky.skyblock.region.RegionType;
+import org.bukkit.Location;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

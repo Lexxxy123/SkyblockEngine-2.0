@@ -1,12 +1,12 @@
 package in.godspunky.skyblock.command;
 
+import org.bukkit.ChatColor;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 import in.godspunky.skyblock.gui.GUI;
 import in.godspunky.skyblock.gui.GUIType;
 import in.godspunky.skyblock.item.oddities.MaddoxBatphone;
 import in.godspunky.skyblock.util.SUtil;
-import org.bukkit.ChatColor;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;

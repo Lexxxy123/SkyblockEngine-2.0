@@ -1,7 +1,8 @@
 package in.godspunky.skyblock.gui;
 
 import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.util.PaginationList;
+import in.godspunky.skyblock.util.SUtil;
 import net.minecraft.server.v1_8_R3.Item;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -9,8 +10,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import in.godspunky.skyblock.util.PaginationList;
-import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.item.SMaterial;
 
 import java.util.List;
 

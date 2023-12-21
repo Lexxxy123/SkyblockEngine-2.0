@@ -1,16 +1,16 @@
 package in.godspunky.skyblock.gui;
 
 import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.ShapedRecipe;
 import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.PaginationList;
+import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import in.godspunky.skyblock.item.ShapedRecipe;
-import in.godspunky.skyblock.util.PaginationList;
-import in.godspunky.skyblock.util.SUtil;
 
 import java.util.List;
 

@@ -1,8 +1,8 @@
 package in.godspunky.skyblock.item.armor.minichad;
 
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.item.armor.LeatherArmorStatistics;
 import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.item.armor.LeatherArmorStatistics;
 
 public class MinichadChestplate implements MaterialFunction, LeatherArmorStatistics {
     @Override

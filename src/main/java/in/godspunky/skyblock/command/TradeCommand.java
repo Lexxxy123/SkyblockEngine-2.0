@@ -1,9 +1,9 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import in.godspunky.skyblock.util.Sputnik;
 
 @CommandParameters(description = "Modify your absorption amount.", permission = "spt.player")
 public class TradeCommand extends SCommand {

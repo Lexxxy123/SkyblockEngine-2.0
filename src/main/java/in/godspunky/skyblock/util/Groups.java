@@ -1,11 +1,11 @@
 package in.godspunky.skyblock.util;
 
-import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.region.RegionType;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.inventory.InventoryAction;
 import in.godspunky.skyblock.entity.SEntityType;
-import in.godspunky.skyblock.region.RegionType;
+import in.godspunky.skyblock.item.SMaterial;
 
 import java.util.Arrays;
 import java.util.Collections;

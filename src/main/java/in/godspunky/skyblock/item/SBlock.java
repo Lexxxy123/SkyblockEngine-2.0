@@ -1,10 +1,10 @@
 package in.godspunky.skyblock.item;
 
 import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.util.SUtil;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
-import in.godspunky.skyblock.util.SUtil;
 
 public class SBlock {
     protected static final SkySimEngine plugin;

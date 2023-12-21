@@ -1,11 +1,11 @@
 package in.godspunky.skyblock.item.oddities;
 
 import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.potion.PotionEffect;
+import in.godspunky.skyblock.potion.PotionEffectType;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.ChatColor;
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.potion.PotionEffect;
-import in.godspunky.skyblock.potion.PotionEffectType;
 import in.godspunky.skyblock.util.SUtil;
 
 import java.util.ArrayList;

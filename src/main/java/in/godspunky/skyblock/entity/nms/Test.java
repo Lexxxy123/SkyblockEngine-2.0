@@ -1,9 +1,9 @@
 package in.godspunky.skyblock.entity.nms;
 
+import net.md_5.bungee.api.ChatColor;
 import in.godspunky.skyblock.entity.EntityDrop;
 import in.godspunky.skyblock.entity.EntityFunction;
 import in.godspunky.skyblock.entity.SkeletonStatistics;
-import net.md_5.bungee.api.ChatColor;
 
 import java.util.List;
 

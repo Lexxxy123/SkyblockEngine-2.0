@@ -1,15 +1,15 @@
 package in.godspunky.skyblock.gui;
 
+import in.godspunky.skyblock.collection.ItemCollection;
+import in.godspunky.skyblock.collection.ItemCollectionReward;
+import in.godspunky.skyblock.collection.ItemCollectionRewards;
 import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import in.godspunky.skyblock.collection.ItemCollection;
-import in.godspunky.skyblock.collection.ItemCollectionReward;
-import in.godspunky.skyblock.collection.ItemCollectionRewards;
-import in.godspunky.skyblock.util.SUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,7 +25,7 @@ public class ItemCollectionGUI extends GUI {
 
     @Override
     public void onOpen(final GUIOpenEvent e) {
-        this.fill(ItemCollectionGUI.BLACK_STAINED_GLASS_PANE);
+        this.fill(BLACK_STAINED_GLASS_PANE);
         final Player player = e.getPlayer();
         final User user = User.getUser(player.getUniqueId());
         final int amount = user.getCollection(this.collection);

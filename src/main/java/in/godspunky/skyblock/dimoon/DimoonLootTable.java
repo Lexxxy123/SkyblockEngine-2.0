@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.dimoon;
 
-import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.entity.Player;
+import in.godspunky.skyblock.util.SUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;

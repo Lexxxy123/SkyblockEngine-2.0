@@ -1,10 +1,10 @@
 package in.godspunky.skyblock.command;
 
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import in.godspunky.skyblock.region.Region;
 import in.godspunky.skyblock.region.RegionGenerator;
 import in.godspunky.skyblock.region.RegionType;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +24,7 @@ public class RegionCommand extends SCommand {
                     if (name.length() > 100) {
                         throw new CommandFailException("Name too long!");
                     }
-                    if (plugin.regionData.exists(name)) {
+                    if (RegionCommand.plugin.regionData.exists(name)) {
                         throw new CommandFailException("There is already a region named that!");
                     }
                     RegionCommand.REGION_GENERATION_MAP.put(sender.getSender(), new RegionGenerator("create", name, type));

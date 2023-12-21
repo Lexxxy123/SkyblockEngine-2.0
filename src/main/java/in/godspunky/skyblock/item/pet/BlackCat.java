@@ -1,15 +1,15 @@
 package in.godspunky.skyblock.item.pet;
 
-import in.godspunky.skyblock.item.GenericItemType;
-import in.godspunky.skyblock.item.Rarity;
-import in.godspunky.skyblock.item.RarityValue;
-import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.skill.CombatSkill;
+import in.godspunky.skyblock.skill.Skill;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import in.godspunky.skyblock.skill.CombatSkill;
-import in.godspunky.skyblock.skill.Skill;
+import in.godspunky.skyblock.item.GenericItemType;
+import in.godspunky.skyblock.item.Rarity;
+import in.godspunky.skyblock.item.RarityValue;
+import in.godspunky.skyblock.item.SItem;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +20,7 @@ public class BlackCat extends Pet {
     public List<PetAbility> getPetAbilities(final SItem instance) {
         final RarityValue<Double> enderianMul = new RarityValue<Double>(0.1, 0.2, 0.2, 0.3, 0.3, 0.3);
         final RarityValue<Double> savvyMul = new RarityValue<Double>(0.0, 0.0, 0.4, 0.5, 0.5, 0.5);
-        final int level = Pet.getLevel(instance);
+        final int level = getLevel(instance);
         final int speed = level * 10 / 10;
         final double petlucc = level * 0.15 * 10.0 / 10.0;
         final double magicfind = level * 0.15 * 10.0 / 10.0;

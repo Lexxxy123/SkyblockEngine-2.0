@@ -1,8 +1,8 @@
 package in.godspunky.skyblock.listener;
 
-import in.godspunky.skyblock.util.SLog;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.entity.Entity;
+import in.godspunky.skyblock.util.SLog;
 
 import java.util.HashMap;
 import java.util.Map;

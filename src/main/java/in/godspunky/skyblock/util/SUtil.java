@@ -15,12 +15,13 @@ import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.registry.WorldData;
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.gui.GUI;
+import in.godspunky.skyblock.enchantment.Enchantment;
 import in.godspunky.skyblock.item.GenericItemType;
 import in.godspunky.skyblock.item.Rarity;
 import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.merchant.MerchantItemHandler;
+import in.godspunky.skyblock.potion.PotionColor;
+import in.godspunky.skyblock.potion.PotionEffect;
 import net.minecraft.server.v1_8_R3.*;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Material;
@@ -44,10 +45,9 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.enchantment.Enchantment;
-import in.godspunky.skyblock.merchant.MerchantItemHandler;
-import in.godspunky.skyblock.potion.PotionColor;
-import in.godspunky.skyblock.potion.PotionEffect;
+import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.gui.GUI;
+import in.godspunky.skyblock.item.SMaterial;
 
 import java.io.*;
 import java.lang.reflect.Array;
@@ -494,7 +494,7 @@ public class SUtil {
         }.runTaskLater(SkySimEngine.getPlugin(), 140L);
     }
 
-    public static void markAimingArrow(final Projectile projectile, final Enchantment aiming) {
+    public static void markAimingArrow(final Projectile projectile, final in.godspunky.skyblock.enchantment.Enchantment aiming) {
         if (aiming == null) {
             return;
         }
@@ -788,7 +788,7 @@ public class SUtil {
         return stack;
     }
 
-    public static SItem enchant(final SItem item, final Enchantment... enchantments) {
+    public static SItem enchant(final SItem item, final in.godspunky.skyblock.enchantment.Enchantment... enchantments) {
         for (final Enchantment enchantment : enchantments) {
             item.addEnchantment(enchantment.getType(), enchantment.getLevel());
         }

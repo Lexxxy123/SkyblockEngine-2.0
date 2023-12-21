@@ -1,10 +1,10 @@
 package in.godspunky.skyblock.extra.beam;
 
 import com.google.common.base.Preconditions;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
 import in.godspunky.skyblock.extra.protocol.PacketFactory1_8_R3;
 import in.godspunky.skyblock.extra.protocol.WrappedBeamPacket;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 public class LocationTargetBeam {
     private final WrappedBeamPacket packetSquidSpawn;

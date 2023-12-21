@@ -1,11 +1,11 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.item.Rarity;
-import in.godspunky.skyblock.item.SItem;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import in.godspunky.skyblock.item.Rarity;
+import in.godspunky.skyblock.item.SItem;
 
 @CommandParameters(description = "Modifies the rarity of an item.", aliases = "rar", permission = "spt.item")
 public class SpecRarityCommand extends SCommand {

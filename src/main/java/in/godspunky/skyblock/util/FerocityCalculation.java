@@ -1,13 +1,13 @@
 package in.godspunky.skyblock.util;
 
-import in.godspunky.skyblock.user.PlayerStatistics;
-import in.godspunky.skyblock.user.PlayerUtils;
+import in.godspunky.skyblock.entity.nms.VoidgloomSeraph;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import in.godspunky.skyblock.entity.nms.VoidgloomSeraph;
 import in.godspunky.skyblock.listener.PlayerListener;
+import in.godspunky.skyblock.user.PlayerStatistics;
+import in.godspunky.skyblock.user.PlayerUtils;
 
 import java.util.HashMap;
 import java.util.Map;

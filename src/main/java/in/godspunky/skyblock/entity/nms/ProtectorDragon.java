@@ -6,7 +6,7 @@ import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 
 public class ProtectorDragon extends Dragon {
     public ProtectorDragon(final World world) {
-        super(world, 1.4, Dragon.DEFAULT_DAMAGE_DEGREE_RANGE, 300L);
+        super(world, 1.4, DEFAULT_DAMAGE_DEGREE_RANGE, 300L);
     }
 
     public ProtectorDragon() {

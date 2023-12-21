@@ -1,9 +1,9 @@
 package in.godspunky.skyblock.command;
 
+import in.godspunky.skyblock.sequence.SoundSequenceType;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import in.godspunky.skyblock.sequence.SoundSequenceType;
 
 @CommandParameters(description = "Play a sound sequence.", usage = "/<command> <sequence>")
 public class SoundSequenceCommand extends SCommand {

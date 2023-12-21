@@ -1,8 +1,8 @@
 package in.godspunky.skyblock.enchantment;
 
-import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import in.godspunky.skyblock.util.SUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;

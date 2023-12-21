@@ -7,7 +7,7 @@ import in.godspunky.skyblock.util.SUtil;
 import java.util.HashMap;
 
 public class MerchantItemHandler {
-    public final static HashMap<SMaterial, SItem> ITEMS = new HashMap<>();
+    public final static HashMap<SMaterial , SItem> ITEMS = new HashMap<>();
 
     public static void init(){
         initFarmMerchant();

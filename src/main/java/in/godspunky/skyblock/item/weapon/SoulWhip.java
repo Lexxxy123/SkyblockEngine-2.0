@@ -1,8 +1,7 @@
 package in.godspunky.skyblock.item.weapon;
 
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.FerocityCalculation;
 import net.minecraft.server.v1_8_R3.EnumParticle;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
@@ -14,9 +13,10 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.listener.PlayerListener;
-import in.godspunky.skyblock.util.FerocityCalculation;
+import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.HashMap;

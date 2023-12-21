@@ -1,9 +1,8 @@
 package in.godspunky.skyblock.item.pet;
 
-import in.godspunky.skyblock.item.GenericItemType;
-import in.godspunky.skyblock.item.Rarity;
-import in.godspunky.skyblock.item.RarityValue;
-import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.skill.CombatSkill;
+import in.godspunky.skyblock.skill.Skill;
+import in.godspunky.skyblock.util.Groups;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -11,9 +10,10 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.skill.CombatSkill;
-import in.godspunky.skyblock.skill.Skill;
-import in.godspunky.skyblock.util.Groups;
+import in.godspunky.skyblock.item.GenericItemType;
+import in.godspunky.skyblock.item.Rarity;
+import in.godspunky.skyblock.item.RarityValue;
+import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.util.Sputnik;
 
 import java.math.BigDecimal;
@@ -28,7 +28,7 @@ public class VoidlingsPet extends Pet {
     public List<PetAbility> getPetAbilities(final SItem instance) {
         final RarityValue<Double> enderianMul = new RarityValue<Double>(0.1, 0.2, 0.2, 0.3, 0.3, 0.3);
         final RarityValue<Double> savvyMul = new RarityValue<Double>(0.0, 0.0, 0.4, 0.5, 0.5, 0.5);
-        final int level = Pet.getLevel(instance);
+        final int level = getLevel(instance);
         final BigDecimal enderian = new BigDecimal(level * enderianMul.getForRarity(instance.getRarity())).setScale(1, RoundingMode.HALF_EVEN);
         final BigDecimal savvy = new BigDecimal(level * savvyMul.getForRarity(instance.getRarity())).setScale(1, RoundingMode.HALF_EVEN);
         final BigDecimal zealot = new BigDecimal(level * 0.25).setScale(2, RoundingMode.HALF_EVEN);

@@ -1,12 +1,5 @@
 package in.godspunky.skyblock.entity.dungeons;
 
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.entity.EntityFunction;
-import in.godspunky.skyblock.entity.EntityStatistics;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
@@ -14,6 +7,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.entity.EntityFunction;
+import in.godspunky.skyblock.entity.EntityStatistics;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
 
 public class TankZombie implements EntityFunction, EntityStatistics {
     @Override

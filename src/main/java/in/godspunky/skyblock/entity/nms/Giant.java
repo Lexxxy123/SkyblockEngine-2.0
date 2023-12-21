@@ -1,9 +1,6 @@
 package in.godspunky.skyblock.entity.nms;
 
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
-import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.entity.zombie.BaseZombie;
 import in.godspunky.skyblock.util.*;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -17,7 +14,10 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.entity.zombie.BaseZombie;
+import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.*;
 
 import java.util.*;

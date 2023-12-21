@@ -1,15 +1,6 @@
 package in.godspunky.skyblock.entity.zombie;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.extra.beam.Beam;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.entity.ArmorStand;
@@ -22,6 +13,15 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.extra.beam.Beam;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.HashMap;
 import java.util.Map;

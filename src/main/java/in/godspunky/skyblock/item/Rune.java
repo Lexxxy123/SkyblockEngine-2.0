@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.item;
 
-import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import in.godspunky.skyblock.util.SUtil;
+import net.minecraft.server.v1_8_R3.NBTTagCompound;
 
 public interface Rune extends SkullStatistics, MaterialFunction, ItemData {
     default NBTTagCompound getData() {

@@ -1,10 +1,10 @@
 package in.godspunky.skyblock.user;
 
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.item.armor.ArmorSet;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.item.armor.ArmorSet;
 
 import java.util.HashMap;
 import java.util.Map;

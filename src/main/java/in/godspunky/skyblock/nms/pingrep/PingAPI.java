@@ -1,9 +1,9 @@
 package in.godspunky.skyblock.nms.pingrep;
 
 import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.util.SLog;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
-import in.godspunky.skyblock.util.SLog;
 
 import java.util.ArrayList;
 import java.util.List;

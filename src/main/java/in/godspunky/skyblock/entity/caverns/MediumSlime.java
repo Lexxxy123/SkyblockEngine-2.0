@@ -1,10 +1,10 @@
 package in.godspunky.skyblock.entity.caverns;
 
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.EntityFunction;
 import in.godspunky.skyblock.entity.SlimeStatistics;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class MediumSlime implements SlimeStatistics, EntityFunction {
     @Override

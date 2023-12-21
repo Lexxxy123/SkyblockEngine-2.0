@@ -62,8 +62,8 @@ public class INCChannel extends ChannelAbstract {
 
     Channel getChannel(final Player player) throws ReflectiveOperationException {
         final Object handle = Minecraft.getHandle(player);
-        final Object connection = playerConnection.get(handle);
-        return (Channel) INCChannel.channelField.get(networkManager.get(connection));
+        final Object connection = INCChannel.playerConnection.get(handle);
+        return (Channel) INCChannel.channelField.get(INCChannel.networkManager.get(connection));
     }
 
     @Override
@@ -72,7 +72,7 @@ public class INCChannel extends ChannelAbstract {
     }
 
     static {
-        channelField = networkManagerFieldResolver.resolveByFirstTypeSilent(Channel.class);
+        channelField = INCChannel.networkManagerFieldResolver.resolveByFirstTypeSilent(Channel.class);
     }
 
     class ListenerList<E> extends ArrayList<E> implements IListenerList<E> {
@@ -135,7 +135,7 @@ public class INCChannel extends ChannelAbstract {
         public void write(final ChannelHandlerContext ctx, final Object msg, final ChannelPromise promise) throws Exception {
             final Cancellable cancellable = new Cancellable();
             Object pckt = msg;
-            if (Packet.isAssignableFrom(msg.getClass())) {
+            if (ChannelAbstract.Packet.isAssignableFrom(msg.getClass())) {
                 pckt = INCChannel.this.onPacketSend(this.owner, msg, cancellable);
             }
             if (cancellable.isCancelled()) {
@@ -147,7 +147,7 @@ public class INCChannel extends ChannelAbstract {
         public void channelRead(final ChannelHandlerContext ctx, final Object msg) throws Exception {
             final Cancellable cancellable = new Cancellable();
             Object pckt = msg;
-            if (Packet.isAssignableFrom(msg.getClass())) {
+            if (ChannelAbstract.Packet.isAssignableFrom(msg.getClass())) {
                 pckt = INCChannel.this.onPacketReceive(this.owner, msg, cancellable);
             }
             if (cancellable.isCancelled()) {

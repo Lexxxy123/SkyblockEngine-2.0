@@ -1,10 +1,10 @@
 package in.godspunky.skyblock.command;
 
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import in.godspunky.skyblock.gui.GUIType;
 import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.util.Sputnik;
-import org.bukkit.Sound;
-import org.bukkit.entity.Player;
 
 @CommandParameters(description = "Gets the NBT of your current item.", aliases = "fm", permission = "sse.cc")
 public class CookieMerchantCommand extends SCommand {

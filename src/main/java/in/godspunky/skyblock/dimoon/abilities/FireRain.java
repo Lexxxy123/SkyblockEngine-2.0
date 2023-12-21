@@ -1,12 +1,12 @@
 package in.godspunky.skyblock.dimoon.abilities;
 
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.dimoon.Dimoon;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
+import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.dimoon.Dimoon;
 
 public class FireRain implements Ability {
     @Override

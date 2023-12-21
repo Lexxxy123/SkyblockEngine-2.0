@@ -1,11 +1,11 @@
 package in.godspunky.skyblock.gui;
 
+import in.godspunky.skyblock.slayer.SlayerBossType;
+import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import in.godspunky.skyblock.slayer.SlayerBossType;
-import in.godspunky.skyblock.util.SUtil;
 
 public class SlayerConfirmGUI extends GUI {
     public SlayerConfirmGUI(final SlayerBossType type, final Runnable onConfirm) {

@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.auction;
 
-import in.godspunky.skyblock.item.SItem;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import in.godspunky.skyblock.item.SItem;
 
 import java.util.HashMap;
 import java.util.Map;

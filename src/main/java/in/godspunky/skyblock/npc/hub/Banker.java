@@ -1,9 +1,9 @@
 package in.godspunky.skyblock.npc.hub;
 
+import org.bukkit.entity.Player;
 import in.godspunky.skyblock.gui.GUIType;
 import in.godspunky.skyblock.npc.NPCParameters;
 import in.godspunky.skyblock.npc.SkyblockNPC;
-import org.bukkit.entity.Player;
 
 public class Banker extends SkyblockNPC {
     public Banker() {

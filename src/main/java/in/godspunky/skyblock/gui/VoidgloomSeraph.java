@@ -1,15 +1,15 @@
 package in.godspunky.skyblock.gui;
 
+import in.godspunky.skyblock.slayer.SlayerBossType;
 import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import in.godspunky.skyblock.slayer.SlayerBossType;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 
 public class VoidgloomSeraph extends GUI {
     public VoidgloomSeraph() {
@@ -18,7 +18,7 @@ public class VoidgloomSeraph extends GUI {
 
     @Override
     public void onOpen(final GUIOpenEvent e) {
-        this.fill(VoidgloomSeraph.BLACK_STAINED_GLASS_PANE);
+        this.fill(BLACK_STAINED_GLASS_PANE);
         final Player player = e.getPlayer();
         this.set(GUIClickableItem.createGUIOpenerItem(GUIType.SLAYER, player, ChatColor.GREEN + "Go Back", 49, Material.ARROW, ChatColor.GRAY + "To Slayer"));
         this.set(new GUIClickableItem() {

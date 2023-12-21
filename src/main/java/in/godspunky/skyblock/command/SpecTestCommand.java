@@ -1,8 +1,8 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.user.User;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import in.godspunky.skyblock.user.User;
 
 @CommandParameters(description = "Spec test command.", aliases = "setf6c")
 public class SpecTestCommand extends SCommand {

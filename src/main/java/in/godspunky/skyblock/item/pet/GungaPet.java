@@ -1,11 +1,11 @@
 package in.godspunky.skyblock.item.pet;
 
+import in.godspunky.skyblock.skill.CombatSkill;
+import in.godspunky.skyblock.skill.Skill;
+import org.bukkit.ChatColor;
 import in.godspunky.skyblock.item.GenericItemType;
 import in.godspunky.skyblock.item.RarityValue;
 import in.godspunky.skyblock.item.SItem;
-import org.bukkit.ChatColor;
-import in.godspunky.skyblock.skill.CombatSkill;
-import in.godspunky.skyblock.skill.Skill;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -16,7 +16,7 @@ import java.util.List;
 public class GungaPet extends Pet {
     @Override
     public List<PetAbility> getPetAbilities(final SItem instance) {
-        final int level = Pet.getLevel(instance);
+        final int level = getLevel(instance);
         final RarityValue<Double> annihCh = new RarityValue<Double>(10.0, 10.0, 10.0, 8.0, 6.0, 6.0);
         final RarityValue<Integer> gingaCh = new RarityValue<Integer>(50, 40, 30, 20, 10, 10);
         final BigDecimal annih = BigDecimal.valueOf(1.0 / (annihCh.getForRarity(instance.getRarity()) - level * 0.02)).setScale(1, RoundingMode.HALF_EVEN);

@@ -1,9 +1,9 @@
 package in.godspunky.skyblock.enchantment;
 
-import in.godspunky.skyblock.item.SpecificItemType;
-import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.ChatColor;
 import org.bukkit.enchantments.Enchantment;
+import in.godspunky.skyblock.item.SpecificItemType;
+import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.*;
 

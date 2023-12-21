@@ -1,11 +1,11 @@
 package in.godspunky.skyblock.entity;
 
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.config.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
+import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.config.Config;
 
 import java.util.ArrayList;
 import java.util.Iterator;

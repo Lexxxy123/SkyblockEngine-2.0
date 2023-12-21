@@ -1,11 +1,11 @@
 package in.godspunky.skyblock.entity.dungeons;
 
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.metadata.FixedMetadataValue;
 import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.end.BaseEnderman;
 import in.godspunky.skyblock.util.EntityManager;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.metadata.FixedMetadataValue;
 
 public class Fels extends BaseEnderman {
     @Override

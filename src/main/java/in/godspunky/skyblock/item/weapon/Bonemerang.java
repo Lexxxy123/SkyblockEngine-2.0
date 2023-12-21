@@ -1,9 +1,8 @@
 package in.godspunky.skyblock.item.weapon;
 
 import de.tr7zw.nbtapi.NBTItem;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.FerocityCalculation;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import net.minecraft.server.v1_8_R3.NBTTagInt;
 import org.bukkit.*;
@@ -13,9 +12,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.listener.PlayerListener;
-import in.godspunky.skyblock.util.FerocityCalculation;
+import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;
 

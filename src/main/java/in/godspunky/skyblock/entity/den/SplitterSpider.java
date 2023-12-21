@@ -1,8 +1,8 @@
 package in.godspunky.skyblock.entity.den;
 
+import org.bukkit.entity.Entity;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityType;
-import org.bukkit.entity.Entity;
 
 public class SplitterSpider extends BaseSpider {
     @Override

@@ -1,8 +1,8 @@
 package in.godspunky.skyblock.command;
 
+import org.bukkit.entity.Player;
 import in.godspunky.skyblock.Repeater;
 import in.godspunky.skyblock.util.Sputnik;
-import org.bukkit.entity.Player;
 
 import java.util.UUID;
 

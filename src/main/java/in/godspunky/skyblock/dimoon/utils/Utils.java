@@ -1,12 +1,12 @@
 package in.godspunky.skyblock.dimoon.utils;
 
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.dimoon.Dimoon;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 
 public class Utils {
     public static String format(final String str) {

@@ -1,8 +1,8 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.user.User;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import in.godspunky.skyblock.user.User;
 
 public class CommandSource {
     private final CommandSender sender;

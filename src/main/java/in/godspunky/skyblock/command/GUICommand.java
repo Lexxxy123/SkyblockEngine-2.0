@@ -1,9 +1,9 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.gui.GUI;
-import in.godspunky.skyblock.gui.GUIType;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import in.godspunky.skyblock.gui.GUI;
+import in.godspunky.skyblock.gui.GUIType;
 
 @CommandParameters(description = "Opens a GUI.", permission = "spt.gui.edit")
 public class GUICommand extends SCommand {

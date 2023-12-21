@@ -1,13 +1,13 @@
 package in.godspunky.skyblock.listener;
 
-import in.godspunky.skyblock.command.RegionCommand;
-import in.godspunky.skyblock.region.Region;
-import in.godspunky.skyblock.region.RegionGenerator;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
+import in.godspunky.skyblock.command.RegionCommand;
+import in.godspunky.skyblock.region.Region;
+import in.godspunky.skyblock.region.RegionGenerator;
 
 public class BlockListener extends PListener {
     @EventHandler

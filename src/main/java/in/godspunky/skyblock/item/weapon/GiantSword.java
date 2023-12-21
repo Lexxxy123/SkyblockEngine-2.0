@@ -1,8 +1,7 @@
 package in.godspunky.skyblock.item.weapon;
 
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.EntityManager;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -12,9 +11,10 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.listener.PlayerListener;
-import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;
 

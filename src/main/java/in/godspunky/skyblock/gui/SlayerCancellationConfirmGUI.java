@@ -1,12 +1,12 @@
 package in.godspunky.skyblock.gui;
 
 import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import in.godspunky.skyblock.util.SUtil;
 
 public class SlayerCancellationConfirmGUI extends GUI {
     public SlayerCancellationConfirmGUI(final User user) {

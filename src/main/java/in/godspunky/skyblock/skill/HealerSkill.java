@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.skill;
 
-import in.godspunky.skyblock.user.User;
 import org.bukkit.ChatColor;
+import in.godspunky.skyblock.user.User;
 
 import java.util.ArrayList;
 import java.util.Collections;

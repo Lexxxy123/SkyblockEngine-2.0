@@ -2,11 +2,6 @@ package in.godspunky.skyblock.entity.dungeons.watcher;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityType;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.SUtil;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityTeleport;
 import org.bukkit.*;
@@ -24,6 +19,11 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityType;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.SUtil;
 
 import java.lang.reflect.Field;
 import java.util.*;

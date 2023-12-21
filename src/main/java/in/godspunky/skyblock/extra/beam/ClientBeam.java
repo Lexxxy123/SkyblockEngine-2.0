@@ -1,10 +1,10 @@
 package in.godspunky.skyblock.extra.beam;
 
 import com.google.common.base.Preconditions;
-import in.godspunky.skyblock.SkySimEngine;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import in.godspunky.skyblock.SkySimEngine;
 
 import java.util.UUID;
 

@@ -1,8 +1,8 @@
 package in.godspunky.skyblock.user;
 
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import in.godspunky.skyblock.item.ItemCategory;
 import in.godspunky.skyblock.item.Rarity;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.HashMap;
 import java.util.Map;

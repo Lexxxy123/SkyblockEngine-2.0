@@ -1,10 +1,7 @@
 package in.godspunky.skyblock.item.pet;
 
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.item.GenericItemType;
-import in.godspunky.skyblock.item.Rarity;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.skill.CombatSkill;
+import in.godspunky.skyblock.skill.Skill;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,8 +15,11 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.skill.CombatSkill;
-import in.godspunky.skyblock.skill.Skill;
+import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.item.GenericItemType;
+import in.godspunky.skyblock.item.Rarity;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;
 

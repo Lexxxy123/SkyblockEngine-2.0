@@ -1,9 +1,9 @@
 package in.godspunky.skyblock.entity.den;
 
+import org.bukkit.entity.Entity;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityType;
 import in.godspunky.skyblock.util.SUtil;
-import org.bukkit.entity.Entity;
 
 public class BroodMother extends BaseSpider {
     @Override

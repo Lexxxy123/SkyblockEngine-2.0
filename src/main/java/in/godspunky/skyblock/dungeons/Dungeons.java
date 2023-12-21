@@ -1,11 +1,11 @@
 package in.godspunky.skyblock.dungeons;
 
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityType;
 import in.godspunky.skyblock.util.SLog;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityType;
 
 import java.util.*;
 

@@ -1,9 +1,8 @@
 package in.godspunky.skyblock.item.armor;
 
-import in.godspunky.skyblock.Repeater;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.DefenseReplacement;
+import in.godspunky.skyblock.util.ManaReplacement;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -11,10 +10,11 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import in.godspunky.skyblock.Repeater;
+import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.user.PlayerUtils;
-import in.godspunky.skyblock.util.DefenseReplacement;
-import in.godspunky.skyblock.util.ManaReplacement;
+import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;
 

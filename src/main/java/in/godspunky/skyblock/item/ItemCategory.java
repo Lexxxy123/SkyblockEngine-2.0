@@ -1,8 +1,8 @@
 package in.godspunky.skyblock.item;
 
+import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
-import in.godspunky.skyblock.util.SUtil;
 
 public enum ItemCategory {
     WEAPONS("Weapons", ChatColor.GOLD, (short) 1),

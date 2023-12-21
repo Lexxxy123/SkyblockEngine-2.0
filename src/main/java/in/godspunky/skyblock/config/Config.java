@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.config;
 
-import in.godspunky.skyblock.SkySimEngine;
 import org.bukkit.configuration.file.YamlConfiguration;
+import in.godspunky.skyblock.SkySimEngine;
 
 import java.io.File;
 

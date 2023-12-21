@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.item.pet;
 
 import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.skill.Skill;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -10,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.skill.Skill;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 

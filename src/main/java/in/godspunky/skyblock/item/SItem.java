@@ -1,5 +1,13 @@
 package in.godspunky.skyblock.item;
 
+import in.godspunky.skyblock.enchantment.EnchantmentType;
+import in.godspunky.skyblock.item.armor.LeatherArmorStatistics;
+import in.godspunky.skyblock.potion.PotionColor;
+import in.godspunky.skyblock.potion.PotionEffect;
+import in.godspunky.skyblock.potion.PotionEffectType;
+import in.godspunky.skyblock.reforge.Reforge;
+import in.godspunky.skyblock.reforge.ReforgeType;
+import in.godspunky.skyblock.util.SerialNBTTagCompound;
 import net.minecraft.server.v1_8_R3.Item;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.Color;
@@ -13,15 +21,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import in.godspunky.skyblock.enchantment.EnchantmentType;
-import in.godspunky.skyblock.item.armor.LeatherArmorStatistics;
-import in.godspunky.skyblock.potion.PotionColor;
-import in.godspunky.skyblock.potion.PotionEffect;
-import in.godspunky.skyblock.potion.PotionEffectType;
-import in.godspunky.skyblock.reforge.Reforge;
-import in.godspunky.skyblock.reforge.ReforgeType;
 import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.SerialNBTTagCompound;
 import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.*;

@@ -1,9 +1,9 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.potion.ActivePotionEffect;
-import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
+import in.godspunky.skyblock.potion.ActivePotionEffect;
+import in.godspunky.skyblock.util.SUtil;
 
 @CommandParameters(description = "Get your current active potion effects.", aliases = "effect", permission = "spt.item")
 public class SpecEffectsCommand extends SCommand {

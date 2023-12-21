@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.potion;
 
-import in.godspunky.skyblock.util.SUtil;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
+import in.godspunky.skyblock.util.SUtil;
 
 import java.util.Arrays;
 

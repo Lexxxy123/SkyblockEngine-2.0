@@ -1,9 +1,9 @@
 package in.godspunky.skyblock.item.dragon.old;
 
+import org.bukkit.entity.Player;
 import in.godspunky.skyblock.item.MaterialStatistics;
 import in.godspunky.skyblock.item.PlayerBoostStatistics;
 import in.godspunky.skyblock.item.armor.ArmorSet;
-import org.bukkit.entity.Player;
 
 public class OldDragonSet implements ArmorSet {
     @Override

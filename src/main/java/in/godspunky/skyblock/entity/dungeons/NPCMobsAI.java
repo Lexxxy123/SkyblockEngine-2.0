@@ -1,14 +1,14 @@
 package in.godspunky.skyblock.entity.dungeons;
 
+import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
+import me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.metadata.FixedMetadataValue;
 import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.zombie.BaseZombie;
 import in.godspunky.skyblock.util.EntityManager;
 import in.godspunky.skyblock.util.Sputnik;
-import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
-import me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.metadata.FixedMetadataValue;
 
 public class NPCMobsAI extends BaseZombie {
     private PlayerWatcher watcher;

@@ -2,6 +2,7 @@ package in.godspunky.skyblock.nms.nmsutil.packetlistener;
 
 import in.godspunky.skyblock.nms.nmsutil.apihelper.API;
 import in.godspunky.skyblock.nms.nmsutil.apihelper.APIManager;
+import in.godspunky.skyblock.util.SLog;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -14,7 +15,6 @@ import in.godspunky.skyblock.nms.nmsutil.packetlistener.channel.ChannelWrapper;
 import in.godspunky.skyblock.nms.nmsutil.packetlistener.handler.PacketHandler;
 import in.godspunky.skyblock.nms.nmsutil.packetlistener.handler.ReceivedPacket;
 import in.godspunky.skyblock.nms.nmsutil.packetlistener.handler.SentPacket;
-import in.godspunky.skyblock.util.SLog;
 
 public class PacketHelper implements IPacketListener, Listener, API {
     private ChannelInjector channelInjector;

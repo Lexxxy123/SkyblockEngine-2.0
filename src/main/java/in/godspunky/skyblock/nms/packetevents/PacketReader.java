@@ -1,9 +1,6 @@
 package in.godspunky.skyblock.nms.packetevents;
 
 
-import in.godspunky.skyblock.npc.SkyblockNPC;
-import in.godspunky.skyblock.npc.SkyblockNPCManager;
-import in.godspunky.skyblock.user.User;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
@@ -11,6 +8,9 @@ import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayInUseEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import in.godspunky.skyblock.npc.SkyblockNPC;
+import in.godspunky.skyblock.npc.SkyblockNPCManager;
+import in.godspunky.skyblock.user.User;
 
 import java.lang.reflect.Field;
 
@@ -59,7 +59,8 @@ public class PacketReader {
                     if (npc.getEntityID() == id) {
                         if (npc.getMessages() == null || User.getUser(player.getUniqueId()).getTalked_npcs().contains(npc.getName())) {
                             npc.getParameters().onInteract(player, npc);
-                        } else if (!User.getUser(player.getUniqueId()).getTalked_npcs().contains(npc.getName())) npc.speak(player);
+                        } else if (!User.getUser(player.getUniqueId()).getTalked_npcs().contains(npc.getName()))
+                            npc.speak(player);
                     }
                 }
             }

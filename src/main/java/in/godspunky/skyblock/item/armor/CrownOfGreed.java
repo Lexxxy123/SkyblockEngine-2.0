@@ -1,10 +1,10 @@
 package in.godspunky.skyblock.item.armor;
 
+import net.md_5.bungee.api.ChatColor;
 import in.godspunky.skyblock.item.GenericItemType;
 import in.godspunky.skyblock.item.Rarity;
 import in.godspunky.skyblock.item.SpecificItemType;
 import in.godspunky.skyblock.item.ToolStatistics;
-import net.md_5.bungee.api.ChatColor;
 
 public class CrownOfGreed implements ToolStatistics {
     @Override

@@ -1,7 +1,6 @@
 package in.godspunky.skyblock.gui;
 
 import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.user.User;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -9,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 
 import java.util.List;
@@ -27,7 +27,7 @@ public class ShopTradingOptionsGUI extends GUI {
     @Override
     public void onOpen(final GUIOpenEvent e) {
         final Player player = e.getPlayer();
-        this.fill(ShopTradingOptionsGUI.BLACK_STAINED_GLASS_PANE);
+        this.fill(BLACK_STAINED_GLASS_PANE);
         this.set(createTrade(this.item, 20, 1, player));
         this.set(createTrade(this.item, 21, 5, player));
         this.set(createTrade(this.item, 22, 10, player));

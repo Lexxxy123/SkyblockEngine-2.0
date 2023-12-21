@@ -1,12 +1,12 @@
 package in.godspunky.skyblock.item.accessory;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import in.godspunky.skyblock.item.GenericItemType;
 import in.godspunky.skyblock.item.Rarity;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.SpecificItemType;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;

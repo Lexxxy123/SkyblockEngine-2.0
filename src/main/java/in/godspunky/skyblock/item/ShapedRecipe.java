@@ -89,11 +89,11 @@ public class ShapedRecipe extends Recipe<ShapedRecipe> {
         final MaterialQuantifiable[] l1 = MaterialQuantifiable.of(Arrays.copyOfRange(stacks, 0, 3));
         final MaterialQuantifiable[] l2 = MaterialQuantifiable.of(Arrays.copyOfRange(stacks, 3, 6));
         final MaterialQuantifiable[] l3 = MaterialQuantifiable.of(Arrays.copyOfRange(stacks, 6, 9));
-        final MaterialQuantifiable[][] grid = airless(new MaterialQuantifiable[][]{l1, l2, l3});
+        final MaterialQuantifiable[][] grid = Recipe.airless(new MaterialQuantifiable[][]{l1, l2, l3});
         final MaterialQuantifiable[] seg = segment(MaterialQuantifiable.of(stacks));
         for (final ShapedRecipe recipe : ShapedRecipe.CACHED_RECIPES) {
             final MaterialQuantifiable[][] airRecipeGrid = recipe.toMQ2DArray();
-            final MaterialQuantifiable[][] recipeGrid = airless(airRecipeGrid);
+            final MaterialQuantifiable[][] recipeGrid = Recipe.airless(airRecipeGrid);
             final MaterialQuantifiable[] recipeSeg = segment(SUtil.unnest(airRecipeGrid, MaterialQuantifiable.class));
             if (recipeAccepted(recipe.useExchangeables, grid, recipeGrid)) {
                 if (!recipeAccepted(recipe.useExchangeables, seg, recipeSeg)) {
@@ -145,7 +145,7 @@ public class ShapedRecipe extends Recipe<ShapedRecipe> {
                 for (int j = 0; j < grid[i].length; ++j) {
                     final MaterialQuantifiable m1 = grid[i][j];
                     final MaterialQuantifiable m2 = recipeGrid[i][j];
-                    final List<SMaterial> exchangeables = getExchangeablesOf(m2.getMaterial());
+                    final List<SMaterial> exchangeables = Recipe.getExchangeablesOf(m2.getMaterial());
                     if (!usesExchangeables || exchangeables == null || !exchangeables.contains(m1.getMaterial()) || m1.getAmount() < m2.getAmount()) {
                         if (m1.getMaterial() != m2.getMaterial() || m1.getAmount() < m2.getAmount()) {
                             found = false;
@@ -171,7 +171,7 @@ public class ShapedRecipe extends Recipe<ShapedRecipe> {
         for (int i = 0; i < grid1d.length; ++i) {
             final MaterialQuantifiable m1 = grid1d[i];
             final MaterialQuantifiable m2 = recipeGrid1d[i];
-            final List<SMaterial> exchangeables = getExchangeablesOf(m2.getMaterial());
+            final List<SMaterial> exchangeables = Recipe.getExchangeablesOf(m2.getMaterial());
             if (!usesExchangeables || exchangeables == null || !exchangeables.contains(m1.getMaterial()) || m1.getAmount() < m2.getAmount()) {
                 if (m1.getMaterial() != m2.getMaterial() || m1.getAmount() < m2.getAmount()) {
                     found = false;

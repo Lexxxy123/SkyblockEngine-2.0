@@ -5,9 +5,41 @@ import com.comphenix.protocol.ProtocolManager;
 import com.google.common.io.Files;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import de.slikey.effectlib.EffectManager;
+import in.godspunky.skyblock.auction.AuctionBid;
+import in.godspunky.skyblock.auction.AuctionEscrow;
+import in.godspunky.skyblock.auction.AuctionItem;
 import in.godspunky.skyblock.command.*;
+import in.godspunky.skyblock.config.Config;
 import in.godspunky.skyblock.dimoon.*;
+import in.godspunky.skyblock.dimoon.listeners.BlockListener;
+import in.godspunky.skyblock.dimoon.listeners.EntityListener;
+import in.godspunky.skyblock.dimoon.listeners.PlayerListener;
+import in.godspunky.skyblock.enchantment.EnchantmentType;
+import in.godspunky.skyblock.entity.EntityPopulator;
+import in.godspunky.skyblock.entity.EntitySpawner;
+import in.godspunky.skyblock.entity.SEntityType;
+import in.godspunky.skyblock.entity.StaticDragonManager;
+import in.godspunky.skyblock.entity.nms.VoidgloomSeraph;
+import in.godspunky.skyblock.item.ItemListener;
+import in.godspunky.skyblock.item.Rarity;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.armor.VoidlingsWardenHelmet;
+import in.godspunky.skyblock.item.pet.Pet;
+import in.godspunky.skyblock.listener.PacketListener;
+import in.godspunky.skyblock.listener.ServerPingListener;
+import in.godspunky.skyblock.listener.WorldListener;
+import in.godspunky.skyblock.merchant.MerchantItemHandler;
 import in.godspunky.skyblock.nms.packetevents.*;
+import in.godspunky.skyblock.npc.SkyblockNPC;
+import in.godspunky.skyblock.region.Region;
+import in.godspunky.skyblock.region.RegionType;
+import in.godspunky.skyblock.slayer.SlayerQuest;
+import in.godspunky.skyblock.user.AuctionSettings;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.BungeeChannel;
+import in.godspunky.skyblock.util.Groups;
+import in.godspunky.skyblock.util.SLog;
+import in.godspunky.skyblock.util.SerialNBTTagCompound;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -31,32 +63,10 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.reflections.Reflections;
-import in.godspunky.skyblock.auction.AuctionBid;
-import in.godspunky.skyblock.auction.AuctionEscrow;
-import in.godspunky.skyblock.auction.AuctionItem;
 import in.godspunky.skyblock.command.*;
-import in.godspunky.skyblock.config.Config;
 import in.godspunky.skyblock.dimoon.*;
-import in.godspunky.skyblock.dimoon.listeners.BlockListener;
-import in.godspunky.skyblock.dimoon.listeners.EntityListener;
-import in.godspunky.skyblock.dimoon.listeners.PlayerListener;
-import in.godspunky.skyblock.enchantment.EnchantmentType;
-import in.godspunky.skyblock.entity.EntityPopulator;
-import in.godspunky.skyblock.entity.EntitySpawner;
-import in.godspunky.skyblock.entity.SEntityType;
-import in.godspunky.skyblock.entity.StaticDragonManager;
-import in.godspunky.skyblock.entity.nms.VoidgloomSeraph;
 import in.godspunky.skyblock.gui.GUIListener;
-import in.godspunky.skyblock.item.ItemListener;
-import in.godspunky.skyblock.item.Rarity;
-import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.item.armor.VoidlingsWardenHelmet;
-import in.godspunky.skyblock.item.pet.Pet;
-import in.godspunky.skyblock.listener.PacketListener;
-import in.godspunky.skyblock.listener.ServerPingListener;
-import in.godspunky.skyblock.listener.WorldListener;
-import in.godspunky.skyblock.merchant.MerchantItemHandler;
 import in.godspunky.skyblock.nms.nmsutil.apihelper.APIManager;
 import in.godspunky.skyblock.nms.nmsutil.apihelper.SkySimBungee;
 import in.godspunky.skyblock.nms.nmsutil.packetlistener.PacketHelper;
@@ -68,20 +78,10 @@ import in.godspunky.skyblock.nms.packetevents.*;
 import in.godspunky.skyblock.nms.pingrep.PingAPI;
 import in.godspunky.skyblock.nms.pingrep.PingEvent;
 import in.godspunky.skyblock.nms.pingrep.PingListener;
-import in.godspunky.skyblock.npc.SkyblockNPC;
 import in.godspunky.skyblock.npc.SkyblockNPCManager;
-import in.godspunky.skyblock.region.Region;
-import in.godspunky.skyblock.region.RegionType;
-import in.godspunky.skyblock.slayer.SlayerQuest;
 import in.godspunky.skyblock.sql.SQLDatabase;
 import in.godspunky.skyblock.sql.SQLRegionData;
 import in.godspunky.skyblock.sql.SQLWorldData;
-import in.godspunky.skyblock.user.AuctionSettings;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.BungeeChannel;
-import in.godspunky.skyblock.util.Groups;
-import in.godspunky.skyblock.util.SLog;
-import in.godspunky.skyblock.util.SerialNBTTagCompound;
 
 import java.io.File;
 import java.io.IOException;
@@ -116,6 +116,7 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
     public Repeater repeater;
     private BungeeChannel bc;
     private String serverName;
+
     public List<String> bannedUUID;
 
     public SkySimEngine() {
@@ -145,186 +146,176 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
             this.bc = new BungeeChannel(this);
 
             this.setupEconomy();
-            if (Bukkit.getPluginManager().getPlugin("SputnikSkySim") == null) {
-                SLog.severe("===================================");
-                SLog.severe("SKYSIM ENGINE - MADE BY GIAKHANHVN");
-                SLog.severe(" ");
-                SLog.severe("SputnikSkySim not found, disabling this plugin");
-                SLog.severe("for safety!");
-                SLog.severe("===================================");
+            SLog.info("===================================");
+            SLog.info("SKYSIM ENGINE - MADE BY GIAKHANHVN");
+            SLog.info(" ");
+            SLog.info("SputnikSkySim found! Hooking into...");
+            SLog.info("If it's take more than 5s to execute this");
+            SLog.info("contact developers!");
+            SLog.info("===================================");
+            SkySimEngine.plugin = this;
+            SLog.info("Hooked successfully into SputnikSkySim!");
+            SLog.info("Performing world regeneration...");
+            this.fixTheEnd();
+            SLog.info("Loading YAML data from disk...");
+            this.config = new Config("config.yml");
+            this.heads = new Config("heads.yml");
+            this.blocks = new Config("blocks.yml");
+            this.spawners = new Config("spawners.yml");
+            SLog.info("Loading Command map...");
+            try {
+                final Field f = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+                f.setAccessible(true);
+                this.commandMap = (CommandMap) f.get(Bukkit.getServer());
+            } catch (final IllegalAccessException | NoSuchFieldException e) {
+                SLog.severe("Couldn't load command map: ");
+                e.printStackTrace();
+            }
+            SLog.info("Loading SQL database...");
+            this.sql = new SQLDatabase();
+            this.regionData = new SQLRegionData();
+            this.worldData = new SQLWorldData();
+            this.cl = new CommandLoader();
+            SLog.info("Begin Protocol injection... (SkySimProtocol v0.6.2)");
+            APIManager.registerAPI(this.packetInj, this);
+            if (!this.packetInj.injected) {
+                this.getLogger().warning("[FATAL ERROR] Protocol Injection failed. Disabling the plugin for safety...");
                 Bukkit.getPluginManager().disablePlugin(this);
-            } else {
-                SLog.info("===================================");
-                SLog.info("SKYSIM ENGINE - MADE BY GIAKHANHVN");
-                SLog.info(" ");
-                SLog.info("SputnikSkySim found! Hooking into...");
-                SLog.info("If it's take more than 5s to execute this");
-                SLog.info("contact developers!");
-                SLog.info("===================================");
-                SkySimEngine.plugin = this;
-                SLog.info("Hooked successfully into SputnikSkySim!");
-                SLog.info("Performing world regeneration...");
-                this.fixTheEnd();
-                SLog.info("Loading YAML data from disk...");
-                this.config = new Config("config.yml");
-                this.heads = new Config("heads.yml");
-                this.blocks = new Config("blocks.yml");
-                this.spawners = new Config("spawners.yml");
-                SLog.info("Loading Command map...");
-                try {
-                    final Field f = Bukkit.getServer().getClass().getDeclaredField("commandMap");
-                    f.setAccessible(true);
-                    this.commandMap = (CommandMap) f.get(Bukkit.getServer());
-                } catch (final IllegalAccessException | NoSuchFieldException e) {
-                    SLog.severe("Couldn't load command map: ");
-                    e.printStackTrace();
+                return;
+            }
+            SLog.info("Injecting...");
+            PingAPI.register();
+            new Metrics(this);
+            APIManager.initAPI(PacketHelper.class);
+            SLog.info("Starting server loop...");
+            this.repeater = new Repeater();
+            VoidlingsWardenHelmet.startCounting();
+            SLog.info("Loading commands...");
+            this.loadCommands();
+            SLog.info("Loading listeners...");
+            this.loadListeners();
+            SLog.info("Injecting Packet/Ping Listener into the core...");
+            this.registerPacketListener();
+            this.registerPingListener();
+            SLog.info("Starting entity spawners...");
+            EntitySpawner.startSpawnerTask();
+            SLog.info("Establishing player regions...");
+            Region.cacheRegions();
+            SLog.info("Loading NPCS...");
+            registerNPCS();
+            SLog.info("Loading auction items from disk...");
+            SkySimEngine.effectManager = new EffectManager(this);
+            AuctionItem.loadAuctionsFromDisk();
+            SLog.info("Loading merchants prices...");
+            MerchantItemHandler.init();
+            SkyBlockCalendar.ELAPSED = SkySimEngine.plugin.config.getLong("timeElapsed");
+            SLog.info("Synchronizing world time with calendar time and removing world entities...");
+            for (final World world : Bukkit.getWorlds()) {
+                for (final Entity entity : world.getEntities()) {
+                    if (entity instanceof HumanEntity) {
+                        continue;
+                    }
+                    entity.remove();
                 }
-                SLog.info("Loading SQL database...");
-                this.sql = new SQLDatabase();
-                this.regionData = new SQLRegionData();
-                this.worldData = new SQLWorldData();
-                this.cl = new CommandLoader();
-                SLog.info("Begin Protocol injection... (SkySimProtocol v0.6.2)");
-                APIManager.registerAPI(this.packetInj, this);
-                if (!this.packetInj.injected) {
-                    this.getLogger().warning("[FATAL ERROR] Protocol Injection failed. Disabling the plugin for safety...");
-                    Bukkit.getPluginManager().disablePlugin(this);
-                    return;
+                int time = (int) (SkyBlockCalendar.ELAPSED % 24000L - 6000L);
+                if (time < 0) {
+                    time += 24000;
                 }
-                SLog.info("Injecting...");
-                PingAPI.register();
-                new Metrics(this);
-                APIManager.initAPI(PacketHelper.class);
-                SLog.info("Starting server loop...");
-                this.repeater = new Repeater();
-                VoidlingsWardenHelmet.startCounting();
-                SLog.info("Loading commands...");
-                this.loadCommands();
-                SLog.info("Loading listeners...");
-                this.loadListeners();
-                SLog.info("Injecting Packet/Ping Listener into the core...");
-                this.registerPacketListener();
-                this.registerPingListener();
-                SLog.info("Starting entity spawners...");
-                EntitySpawner.startSpawnerTask();
-                SLog.info("Establishing player regions...");
-                Region.cacheRegions();
-                SLog.info("Loading NPCS...");
-                registerNPCS();
-                SLog.info("Loading auction items from disk...");
-                SkySimEngine.effectManager = new EffectManager(this);
-                AuctionItem.loadAuctionsFromDisk();
-                SLog.info("Loading merchants prices...");
-                MerchantItemHandler.init();
-                SkyBlockCalendar.ELAPSED = SkySimEngine.plugin.config.getLong("timeElapsed");
-                SLog.info("Synchronizing world time with calendar time and removing world entities...");
-                for (final World world : Bukkit.getWorlds()) {
-                    for (final Entity entity : world.getEntities()) {
-                        if (entity instanceof HumanEntity) {
+                world.setTime(time);
+            }
+            SLog.info("Loading items...");
+            try {
+                Class.forName("in.godspunky.skyblock.item.SMaterial");
+            } catch (final ClassNotFoundException e2) {
+                e2.printStackTrace();
+            }
+            for (final SMaterial material : SMaterial.values()) {
+                if (material.hasClass()) {
+                    material.getStatistics().load();
+                }
+            }
+            SLog.info("Converting CraftRecipes into custom recipes...");
+            final Iterator<Recipe> iter = Bukkit.recipeIterator();
+            while (iter.hasNext()) {
+                final Recipe recipe = iter.next();
+                if (recipe.getResult() == null) {
+                    continue;
+                }
+                final Material result = recipe.getResult().getType();
+                if (recipe instanceof ShapedRecipe) {
+                    final ShapedRecipe shaped = (ShapedRecipe) recipe;
+                    final in.godspunky.skyblock.item.ShapedRecipe specShaped = new in.godspunky.skyblock.item.ShapedRecipe(SItem.convert(shaped.getResult()), Groups.EXCHANGEABLE_RECIPE_RESULTS.contains(result)).shape(shaped.getShape());
+                    for (final Map.Entry<Character, ItemStack> entry : shaped.getIngredientMap().entrySet()) {
+                        if (entry.getValue() == null) {
                             continue;
                         }
-                        entity.remove();
-                    }
-                    int time = (int) (SkyBlockCalendar.ELAPSED % 24000L - 6000L);
-                    if (time < 0) {
-                        time += 24000;
-                    }
-                    world.setTime(time);
-                }
-                SLog.info("Loading items...");
-                try {
-                    Class.forName("in.godspunky.skyblock.item.SMaterial");
-                } catch (final ClassNotFoundException e2) {
-                    e2.printStackTrace();
-                }
-                for (final SMaterial material : SMaterial.values()) {
-                    if (material.hasClass()) {
-                        material.getStatistics().load();
+                        final ItemStack stack = entry.getValue();
+                        specShaped.set(entry.getKey(), SMaterial.getSpecEquivalent(stack.getType(), stack.getDurability()), stack.getAmount(), true);
                     }
                 }
-                SLog.info("Converting CraftRecipes into custom recipes...");
-                final Iterator<Recipe> iter = Bukkit.recipeIterator();
-                while (iter.hasNext()) {
-                    final Recipe recipe = iter.next();
-                    if (recipe.getResult() == null) {
-                        continue;
-                    }
-                    final Material result = recipe.getResult().getType();
-                    if (recipe instanceof ShapedRecipe) {
-                        final ShapedRecipe shaped = (ShapedRecipe) recipe;
-                        final in.godspunky.skyblock.item.ShapedRecipe specShaped = new in.godspunky.skyblock.item.ShapedRecipe(SItem.convert(shaped.getResult()), Groups.EXCHANGEABLE_RECIPE_RESULTS.contains(result)).shape(shaped.getShape());
-                        for (final Map.Entry<Character, ItemStack> entry : shaped.getIngredientMap().entrySet()) {
-                            if (entry.getValue() == null) {
-                                continue;
-                            }
-                            final ItemStack stack = entry.getValue();
-                            specShaped.set(entry.getKey(), SMaterial.getSpecEquivalent(stack.getType(), stack.getDurability()), stack.getAmount(), true);
-                        }
-                    }
-                    if (!(recipe instanceof ShapelessRecipe)) {
-                        continue;
-                    }
-                    final ShapelessRecipe shapeless = (ShapelessRecipe) recipe;
-                    final in.godspunky.skyblock.item.ShapelessRecipe specShapeless = new in.godspunky.skyblock.item.ShapelessRecipe(SItem.convert(shapeless.getResult()), Groups.EXCHANGEABLE_RECIPE_RESULTS.contains(result));
-                    for (final ItemStack stack2 : shapeless.getIngredientList()) {
-                        specShapeless.add(SMaterial.getSpecEquivalent(stack2.getType(), stack2.getDurability()), stack2.getAmount(), true);
-                    }
+                if (!(recipe instanceof ShapelessRecipe)) {
+                    continue;
                 }
-                SLog.info("Hooking SkySimEngine to PlaceholderAPI and registering...");
-                if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-                    new placeholding().register();
-                    SLog.info("Hooked to PAPI successfully!");
-                } else {
-                    SLog.info("ERROR! PlaceholderAPI plugin does not exist, disabing placeholder request!");
+                final ShapelessRecipe shapeless = (ShapelessRecipe) recipe;
+                final in.godspunky.skyblock.item.ShapelessRecipe specShapeless = new in.godspunky.skyblock.item.ShapelessRecipe(SItem.convert(shapeless.getResult()), Groups.EXCHANGEABLE_RECIPE_RESULTS.contains(result));
+                for (final ItemStack stack2 : shapeless.getIngredientList()) {
+                    specShapeless.add(SMaterial.getSpecEquivalent(stack2.getType(), stack2.getDurability()), stack2.getAmount(), true);
                 }
-                SkySimEngine.protocolManager = ProtocolLibrary.getProtocolManager();
-                this.beginLoopA();
-                WorldListener.blb.add(Material.BEDROCK);
-                WorldListener.blb.add(Material.COMMAND);
-                WorldListener.blb.add(Material.BARRIER);
-                WorldListener.blb.add(Material.ENDER_PORTAL_FRAME);
-                WorldListener.blb.add(Material.ENDER_PORTAL);
-                WorldListener.c();
-                SLog.info("Successfully enabled " + this.getDescription().getFullName());
-                SLog.info("===================================");
-                SLog.info("SKYSIM ENGINE - MADE BY GIAKHANHVN");
-                SLog.info("PLUGIN ENABLED! HOOKED INTO SSS!");
-                SLog.info(" ");
-                SLog.info("This plugin provide SkySim most functions!");
-                SLog.info("Originally made by super (Slayers code used)");
-                SLog.info("Made by GiaKhanhVN (C) 2021");
-                SLog.info("Any illegal usage will be suppressed! DO NOT LEAK IT!");
-                SLog.info("===================================");
-                this.sq = new SummoningSequence(Bukkit.getWorld("arena"));
-                Bukkit.getWorld("arena").setAutoSave(false);
-                this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
-                this.getServer().getPluginManager().registerEvents(new EntityListener(), this);
-                this.getServer().getPluginManager().registerEvents(new BlockListener(), this);
-                final File file = new File(this.getDataFolder(), "parkours");
-                if (!file.exists()) {
-                    try {
-                        Files.createParentDirs(file);
-                        file.mkdir();
-                    } catch (final IOException e3) {
-                        throw new RuntimeException(e3);
-                    }
-                }
-                final SItem gtigerm = SItem.of(SMaterial.HIDDEN_GOLDEN_TIGER_2022);
-                gtigerm.setRarity(Rarity.MYTHIC);
-                final SItem lucki8 = SItem.of(SMaterial.ENCHANTED_BOOK);
-                lucki8.addEnchantment(EnchantmentType.LUCKINESS, 8);
-                final SItem vicious15 = SItem.of(SMaterial.ENCHANTED_BOOK);
-                vicious15.addEnchantment(EnchantmentType.VICIOUS, 15);
-                final SItem chimera6 = SItem.of(SMaterial.ENCHANTED_BOOK);
-                chimera6.addEnchantment(EnchantmentType.CHIMERA, 6);
-                final SItem tbits = SItem.of(SMaterial.ENCHANTED_BOOK);
-                tbits.addEnchantment(EnchantmentType.TURBO_GEM, 1);
-                DimoonLootTable.highQualitylootTable = new ArrayList<DimoonLootItem>(Arrays.asList(new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOONIZARY_DAGGER), 400, 1100), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_EXCRARION), 310, 1000), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_HELMET), 290, 700), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_CHESTPLATE), 340, 900), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_LEGGINGS), 330, 800), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_BOOTS), 220, 500), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_QUANTUMFLUX_POWER_ORB), 310, 900), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_ARCHIVY), 370, 1000), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_MAGICIVY), 370, 1000), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GOLDEN_TIGER_2022), 320, 900), new DimoonLootItem(gtigerm, 300, 1000), new DimoonLootItem(lucki8, 170, 700), new DimoonLootItem(vicious15, 100, 600), new DimoonLootItem(chimera6, 260, 700), new DimoonLootItem(tbits, 210, 700)));
-                final SItem lucki9 = SItem.of(SMaterial.ENCHANTED_BOOK);
-                lucki9.addEnchantment(EnchantmentType.LUCKINESS, 6);
-                DimoonLootTable.lowQualitylootTable = new ArrayList<DimoonLootItem>(Arrays.asList(new DimoonLootItem(lucki9, 20, 150), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOON_GEM), 20, 100), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOON_FRAG), 1, 1, 0, true)));
-                Arena.cleanArena();
             }
+            SLog.info("Hooking SkySimEngine to PlaceholderAPI and registering...");
+            if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+                new placeholding().register();
+                SLog.info("Hooked to PAPI successfully!");
+            } else {
+                SLog.info("ERROR! PlaceholderAPI plugin does not exist, disabing placeholder request!");
+            }
+            SkySimEngine.protocolManager = ProtocolLibrary.getProtocolManager();
+            this.beginLoopA();
+            WorldListener.blb.add(Material.BEDROCK);
+            WorldListener.blb.add(Material.COMMAND);
+            WorldListener.blb.add(Material.BARRIER);
+            WorldListener.blb.add(Material.ENDER_PORTAL_FRAME);
+            WorldListener.blb.add(Material.ENDER_PORTAL);
+            WorldListener.c();
+            SLog.info("Successfully enabled " + this.getDescription().getFullName());
+            SLog.info("===================================");
+            SLog.info("SKYSIM ENGINE - MADE BY GIAKHANHVN");
+            SLog.info("PLUGIN ENABLED! HOOKED INTO SSS!");
+            SLog.info(" ");
+            SLog.info("This plugin provide SkySim most functions!");
+            SLog.info("Originally made by super (Slayers code used)");
+            SLog.info("Made by GiaKhanhVN (C) 2021");
+            SLog.info("Any illegal usage will be suppressed! DO NOT LEAK IT!");
+            SLog.info("===================================");
+            this.sq = new SummoningSequence(Bukkit.getWorld("arena"));
+            Bukkit.getWorld("arena").setAutoSave(false);
+            this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+            this.getServer().getPluginManager().registerEvents(new EntityListener(), this);
+            this.getServer().getPluginManager().registerEvents(new BlockListener(), this);
+            final File file = new File(this.getDataFolder(), "parkours");
+            if (!file.exists()) {
+                try {
+                    Files.createParentDirs(file);
+                    file.mkdir();
+                } catch (final IOException e3) {
+                    throw new RuntimeException(e3);
+                }
+            }
+            final SItem gtigerm = SItem.of(SMaterial.HIDDEN_GOLDEN_TIGER_2022);
+            gtigerm.setRarity(Rarity.MYTHIC);
+            final SItem lucki8 = SItem.of(SMaterial.ENCHANTED_BOOK);
+            lucki8.addEnchantment(EnchantmentType.LUCKINESS, 8);
+            final SItem vicious15 = SItem.of(SMaterial.ENCHANTED_BOOK);
+            vicious15.addEnchantment(EnchantmentType.VICIOUS, 15);
+            final SItem chimera6 = SItem.of(SMaterial.ENCHANTED_BOOK);
+            chimera6.addEnchantment(EnchantmentType.CHIMERA, 6);
+            final SItem tbits = SItem.of(SMaterial.ENCHANTED_BOOK);
+            tbits.addEnchantment(EnchantmentType.TURBO_GEM, 1);
+            DimoonLootTable.highQualitylootTable = new ArrayList<DimoonLootItem>(Arrays.asList(new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOONIZARY_DAGGER), 400, 1100), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_EXCRARION), 310, 1000), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_HELMET), 290, 700), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_CHESTPLATE), 340, 900), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_LEGGINGS), 330, 800), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_BOOTS), 220, 500), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_QUANTUMFLUX_POWER_ORB), 310, 900), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_ARCHIVY), 370, 1000), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_MAGICIVY), 370, 1000), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GOLDEN_TIGER_2022), 320, 900), new DimoonLootItem(gtigerm, 300, 1000), new DimoonLootItem(lucki8, 170, 700), new DimoonLootItem(vicious15, 100, 600), new DimoonLootItem(chimera6, 260, 700), new DimoonLootItem(tbits, 210, 700)));
+            final SItem lucki9 = SItem.of(SMaterial.ENCHANTED_BOOK);
+            lucki9.addEnchantment(EnchantmentType.LUCKINESS, 6);
+            DimoonLootTable.lowQualitylootTable = new ArrayList<DimoonLootItem>(Arrays.asList(new DimoonLootItem(lucki9, 20, 150), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOON_GEM), 20, 100), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOON_FRAG), 1, 1, 0, true)));
+            Arena.cleanArena();
         } catch (final Throwable $ex) {
             throw $ex;
         }

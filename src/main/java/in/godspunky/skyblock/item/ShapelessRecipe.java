@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.item;
 
-import org.bukkit.inventory.ItemStack;
 import in.godspunky.skyblock.util.SUtil;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,7 +69,7 @@ public class ShapelessRecipe extends Recipe<ShapelessRecipe> {
         if (stacks.length != 9) {
             throw new UnsupportedOperationException("Recipe parsing requires a 9 element array!");
         }
-        final MaterialQuantifiable[] materials = SUtil.unnest(airless(new MaterialQuantifiable[][]{MaterialQuantifiable.of(Arrays.copyOfRange(stacks, 0, 3)), MaterialQuantifiable.of(Arrays.copyOfRange(stacks, 3, 6)), MaterialQuantifiable.of(Arrays.copyOfRange(stacks, 6, 9))}), MaterialQuantifiable.class);
+        final MaterialQuantifiable[] materials = SUtil.unnest(Recipe.airless(new MaterialQuantifiable[][]{MaterialQuantifiable.of(Arrays.copyOfRange(stacks, 0, 3)), MaterialQuantifiable.of(Arrays.copyOfRange(stacks, 3, 6)), MaterialQuantifiable.of(Arrays.copyOfRange(stacks, 6, 9))}), MaterialQuantifiable.class);
         for (final ShapelessRecipe recipe : ShapelessRecipe.CACHED_RECIPES) {
             final List<MaterialQuantifiable> ingredients = recipe.getIngredientList();
             if (materials.length != ingredients.size()) {
@@ -92,7 +92,7 @@ public class ShapelessRecipe extends Recipe<ShapelessRecipe> {
     }
 
     private static boolean contains(final boolean usesExchangeables, final MaterialQuantifiable[] grid, final MaterialQuantifiable test) {
-        final List<SMaterial> exchangeables = getExchangeablesOf(test.getMaterial());
+        final List<SMaterial> exchangeables = Recipe.getExchangeablesOf(test.getMaterial());
         for (int i = 0; i < grid.length; ++i) {
             final MaterialQuantifiable material = grid[i];
             if (material != null) {

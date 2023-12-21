@@ -1,9 +1,9 @@
 package in.godspunky.skyblock.skill;
 
+import org.bukkit.ChatColor;
 import in.godspunky.skyblock.user.PlayerStatistics;
 import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.user.User;
-import org.bukkit.ChatColor;
 
 import java.util.Arrays;
 import java.util.List;

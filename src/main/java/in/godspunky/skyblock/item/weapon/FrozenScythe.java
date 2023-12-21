@@ -1,8 +1,7 @@
 package in.godspunky.skyblock.item.weapon;
 
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.SLog;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
@@ -12,10 +11,11 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.listener.PlayerListener;
 import in.godspunky.skyblock.user.PlayerUtils;
-import in.godspunky.skyblock.util.SLog;
+import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.Sputnik;
 
 public class FrozenScythe implements ToolStatistics, MaterialFunction, Ability {

@@ -2,7 +2,6 @@ package in.godspunky.skyblock.npc;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import lombok.Getter;
@@ -18,6 +17,7 @@ import org.bukkit.craftbukkit.v1_8_R3.scoreboard.CraftScoreboard;
 import org.bukkit.craftbukkit.v1_8_R3.scoreboard.CraftScoreboardManager;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import in.godspunky.skyblock.SkySimEngine;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -173,7 +173,7 @@ public class SkyblockNPC {
     public boolean isShown(Player player){
         return viewers.contains(player.getUniqueId());
     }
-    // #inRangeOf method is used from npc-lib because mine method is not that good, and I am not good at math
+    // #inRangeOf method is used from npc-lib because mine method is not that good and I am not good at math
     public boolean inRangeOf(Player player) {
         if (player == null) return false;
         if (!player.getWorld().equals(location.getWorld())) {

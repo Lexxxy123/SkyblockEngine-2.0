@@ -3,21 +3,6 @@ package in.godspunky.skyblock;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
-import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.*;
-import me.clip.placeholderapi.PlaceholderAPI;
-import net.minecraft.server.v1_8_R3.EntityFallingBlock;
-import org.bukkit.*;
-import org.bukkit.entity.*;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.Vector;
 import in.godspunky.skyblock.command.RebootServerCommand;
 import in.godspunky.skyblock.dimoon.SummoningSequence;
 import in.godspunky.skyblock.dungeons.Blessings;
@@ -38,6 +23,21 @@ import in.godspunky.skyblock.sidebar.Sidebar;
 import in.godspunky.skyblock.slayer.SlayerQuest;
 import in.godspunky.skyblock.user.PlayerStatistics;
 import in.godspunky.skyblock.user.PlayerUtils;
+import in.godspunky.skyblock.util.*;
+import me.clip.placeholderapi.PlaceholderAPI;
+import net.minecraft.server.v1_8_R3.EntityFallingBlock;
+import org.bukkit.*;
+import org.bukkit.entity.*;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.Vector;
+import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.*;
 
 import java.util.*;
@@ -326,6 +326,7 @@ public class Repeater {
         if (hand == null) {
             hand = SItem.of(inventory.getItemInHand());
             if (hand != null) {
+                if (player.getItemInHand().hasItemMeta() && player.getItemInHand().getItemMeta().getDisplayName().contains("minion")) return;
                 player.setItemInHand(hand.getStack());
             }
         }

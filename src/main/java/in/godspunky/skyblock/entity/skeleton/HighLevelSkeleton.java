@@ -1,10 +1,5 @@
 package in.godspunky.skyblock.entity.skeleton;
 
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.entity.EntityFunction;
-import in.godspunky.skyblock.entity.EntityStatistics;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityType;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,6 +7,11 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.entity.EntityFunction;
+import in.godspunky.skyblock.entity.EntityStatistics;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityType;
 
 public class HighLevelSkeleton implements EntityStatistics, EntityFunction {
     @Override

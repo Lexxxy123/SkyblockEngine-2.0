@@ -1,9 +1,9 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.gui.ItemBrowserGUI;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import in.godspunky.skyblock.gui.ItemBrowserGUI;
 
 @CommandParameters(description = "Browse from a catalog of items.", aliases = "browseitem,browseitems,browsei,bi,ib", permission = "spt.item")
 public class ItemBrowseCommand extends SCommand {

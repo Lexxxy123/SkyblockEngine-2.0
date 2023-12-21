@@ -1,15 +1,15 @@
 package in.godspunky.skyblock.gui;
 
+import in.godspunky.skyblock.slayer.SlayerBossType;
 import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import in.godspunky.skyblock.slayer.SlayerBossType;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 
 public class RevenantHorrorGUI extends GUI {
     public RevenantHorrorGUI() {

@@ -1,8 +1,8 @@
 package in.godspunky.skyblock.nms.nmsutil.apihelper;
 
+import in.godspunky.skyblock.nms.nmsutil.apihelper.exception.MissingHostException;
 import org.bukkit.plugin.Plugin;
 import in.godspunky.skyblock.nms.nmsutil.apihelper.exception.HostRegistrationException;
-import in.godspunky.skyblock.nms.nmsutil.apihelper.exception.MissingHostException;
 
 import java.util.HashSet;
 import java.util.Set;

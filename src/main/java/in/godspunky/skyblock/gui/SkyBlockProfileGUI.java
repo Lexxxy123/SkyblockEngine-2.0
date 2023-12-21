@@ -1,18 +1,18 @@
 package in.godspunky.skyblock.gui;
 
+import in.godspunky.skyblock.skill.Skill;
+import in.godspunky.skyblock.user.PlayerStatistics;
+import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.FerocityCalculation;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Dye;
-import in.godspunky.skyblock.skill.Skill;
-import in.godspunky.skyblock.user.PlayerStatistics;
-import in.godspunky.skyblock.user.PlayerUtils;
-import in.godspunky.skyblock.util.FerocityCalculation;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 
 public class SkyBlockProfileGUI extends GUI {
     public SkyBlockProfileGUI() {

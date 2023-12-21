@@ -1,12 +1,12 @@
 package in.godspunky.skyblock.item.oddities;
 
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.item.*;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.scheduler.BukkitRunnable;
+import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.util.Sputnik;
 

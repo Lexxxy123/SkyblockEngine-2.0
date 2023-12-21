@@ -1,10 +1,8 @@
 package in.godspunky.skyblock.item.pet;
 
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.item.GenericItemType;
-import in.godspunky.skyblock.item.Rarity;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.skill.CombatSkill;
+import in.godspunky.skyblock.skill.Skill;
+import in.godspunky.skyblock.util.EntityManager;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -13,10 +11,12 @@ import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.item.GenericItemType;
+import in.godspunky.skyblock.item.Rarity;
+import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.listener.PlayerListener;
-import in.godspunky.skyblock.skill.CombatSkill;
-import in.godspunky.skyblock.skill.Skill;
-import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;
 
@@ -29,7 +29,7 @@ public class ArchivyPet extends Pet {
 
     @Override
     public List<PetAbility> getPetAbilities(SItem instance) {
-        int level = Pet.getLevel(instance);
+        int level = getLevel(instance);
         BigDecimal flameArrow = new BigDecimal(level * 0.2).setScale(1, RoundingMode.HALF_EVEN);
         BigDecimal headshot = new BigDecimal(level * 0.75).setScale(1, RoundingMode.HALF_EVEN);
         BigDecimal blessed = new BigDecimal(level * 0.5).setScale(1, RoundingMode.HALF_EVEN);

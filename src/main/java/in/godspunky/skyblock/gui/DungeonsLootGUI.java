@@ -1,11 +1,11 @@
 package in.godspunky.skyblock.gui;
 
+import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.block.Block;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
-import in.godspunky.skyblock.util.SUtil;
 
 public class DungeonsLootGUI extends GUI {
     private final Block bl;

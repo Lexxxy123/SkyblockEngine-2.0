@@ -1,9 +1,9 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.Repeater;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import in.godspunky.skyblock.Repeater;
 
 import java.util.UUID;
 

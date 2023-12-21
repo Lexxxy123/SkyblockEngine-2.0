@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.item;
 
-import in.godspunky.skyblock.user.User;
 import org.bukkit.inventory.ItemStack;
+import in.godspunky.skyblock.user.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;

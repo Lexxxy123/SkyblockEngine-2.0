@@ -1,9 +1,9 @@
 package in.godspunky.skyblock.command;
 
+import in.godspunky.skyblock.collection.ItemCollection;
+import org.bukkit.command.ConsoleCommandSender;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
-import org.bukkit.command.ConsoleCommandSender;
-import in.godspunky.skyblock.collection.ItemCollection;
 
 @CommandParameters(description = "Modify your collections.", permission = "spt.collection")
 public class CollectionsCommand extends SCommand {

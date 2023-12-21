@@ -1,9 +1,7 @@
 package in.godspunky.skyblock.entity;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.Sputnik;
+import in.godspunky.skyblock.entity.zombie.BaseZombie;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -19,7 +17,9 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.entity.zombie.BaseZombie;
+import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.Sputnik;
 
 public class Stronker extends BaseZombie {
     @Override

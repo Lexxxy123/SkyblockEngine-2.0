@@ -2,7 +2,7 @@ package in.godspunky.skyblock.gui;
 
 import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -11,7 +11,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.item.SMaterial;
 
 import java.util.*;
 

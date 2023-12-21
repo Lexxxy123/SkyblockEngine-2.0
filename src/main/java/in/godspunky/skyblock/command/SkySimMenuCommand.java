@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.gui.GUIType;
 import org.bukkit.entity.Player;
+import in.godspunky.skyblock.gui.GUIType;
 
 @CommandParameters(description = "Gets the NBT of your current item.", aliases = "sbmenu", permission = "sse.cc")
 public class SkySimMenuCommand extends SCommand {

@@ -1,9 +1,5 @@
 package in.godspunky.skyblock.entity.nether;
 
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.entity.EntityFunction;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SlimeStatistics;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftMagmaCube;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
@@ -11,6 +7,10 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
+import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.entity.EntityFunction;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SlimeStatistics;
 
 public class LargeMagmaCube implements SlimeStatistics, EntityFunction {
     @Override
