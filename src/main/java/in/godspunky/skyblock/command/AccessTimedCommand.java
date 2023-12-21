@@ -1,6 +1,5 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.ranks.PlayerRank;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.ConsoleCommandSender;
@@ -10,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@CommandParameters(description = "Hidden command.", aliases = "attc", permission = PlayerRank.DEFAULT)
+@CommandParameters(description = "Hidden command.", aliases = "attc")
 public class AccessTimedCommand extends SCommand {
     public static final List<UUID> KEYS;
 

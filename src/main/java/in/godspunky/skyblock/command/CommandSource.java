@@ -1,23 +1,33 @@
 package in.godspunky.skyblock.command;
 
 import in.godspunky.skyblock.user.User;
-import lombok.Getter;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@Getter
 public class CommandSource {
     private final CommandSender sender;
     private final Player player;
     private final User user;
 
-    public CommandSource(CommandSender sender) {
+    public CommandSource(final CommandSender sender) {
         this.sender = sender;
-        this.player = sender instanceof Player ? (Player) sender : null;
-        this.user = player != null ? User.getUser(player.getUniqueId()) : null;
+        this.player = ((sender instanceof Player) ? (Player) sender : null);
+        this.user = ((this.player != null) ? User.getUser(this.player.getUniqueId()) : null);
     }
 
-    public void send(String message) {
-        sender.sendMessage(message);
+    public void send(final String message) {
+        this.sender.sendMessage(message);
+    }
+
+    public CommandSender getSender() {
+        return this.sender;
+    }
+
+    public Player getPlayer() {
+        return this.player;
+    }
+
+    public User getUser() {
+        return this.user;
     }
 }

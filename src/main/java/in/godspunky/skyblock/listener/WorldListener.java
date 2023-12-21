@@ -24,7 +24,6 @@ import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.Groups;
 import in.godspunky.skyblock.util.SUtil;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
-import net.swofty.swm.api.exceptions.WorldAlreadyExistsException;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -43,7 +42,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import in.godspunky.skyblock.item.*;
 
-import java.io.IOException;
 import java.util.*;
 
 public class WorldListener extends PListener {
@@ -270,11 +268,7 @@ public class WorldListener extends PListener {
             WorldListener.ALREADY_TELEPORTING.add(entity.getUniqueId());
             SUtil.delay(() -> WorldListener.ALREADY_TELEPORTING.remove(entity.getUniqueId()), 15L);
             entity.sendMessage(ChatColor.GRAY + "Sending you to your island...");
-            try {
-                PlayerUtils.sendToIsland((Player) entity);
-            } catch (IOException | WorldAlreadyExistsException ex) {
-                throw new RuntimeException(ex);
-            }
+            PlayerUtils.sendToIsland((Player) entity);
         }
     }
 

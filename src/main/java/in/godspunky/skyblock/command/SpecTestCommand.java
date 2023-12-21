@@ -1,11 +1,10 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.user.User;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-@CommandParameters(description = "Spec test command.", aliases = "setf6c", permission = PlayerRank.ADMIN)
+@CommandParameters(description = "Spec test command.", aliases = "setf6c")
 public class SpecTestCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

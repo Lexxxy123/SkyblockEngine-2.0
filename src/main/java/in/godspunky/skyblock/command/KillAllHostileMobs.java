@@ -1,6 +1,5 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -8,7 +7,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 
-@CommandParameters(description = "Gets the NBT of your current item.", aliases = "kamh", permission = PlayerRank.ADMIN)
+@CommandParameters(description = "Gets the NBT of your current item.", aliases = "kamh", permission = "spt.item")
 public class KillAllHostileMobs extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

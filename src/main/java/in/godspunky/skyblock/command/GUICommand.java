@@ -2,11 +2,10 @@ package in.godspunky.skyblock.command;
 
 import in.godspunky.skyblock.gui.GUI;
 import in.godspunky.skyblock.gui.GUIType;
-import in.godspunky.skyblock.ranks.PlayerRank;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-@CommandParameters(description = "Opens a GUI.", permission = PlayerRank.DEFAULT)
+@CommandParameters(description = "Opens a GUI.", permission = "spt.gui.edit")
 public class GUICommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

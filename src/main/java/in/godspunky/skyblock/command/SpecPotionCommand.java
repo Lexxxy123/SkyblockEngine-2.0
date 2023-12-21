@@ -3,13 +3,12 @@ package in.godspunky.skyblock.command;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.potion.PotionEffect;
 import in.godspunky.skyblock.potion.PotionEffectType;
-import in.godspunky.skyblock.ranks.PlayerRank;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-@CommandParameters(description = "Adds an potion from Spec to the specified item.", aliases = "spot", permission = PlayerRank.ADMIN)
+@CommandParameters(description = "Adds an potion from Spec to the specified item.", aliases = "spot", permission = "spt.item")
 public class SpecPotionCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

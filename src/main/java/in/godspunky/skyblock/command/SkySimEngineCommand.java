@@ -1,10 +1,9 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.ChatColor;
 
-@CommandParameters(description = "The main command for SkySimEngine.", aliases = "ssei", permission = PlayerRank.ADMIN)
+@CommandParameters(description = "The main command for SkySimEngine.", aliases = "ssei")
 public class SkySimEngineCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

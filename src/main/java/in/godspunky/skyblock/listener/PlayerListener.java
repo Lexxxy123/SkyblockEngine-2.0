@@ -28,8 +28,6 @@ import in.godspunky.skyblock.item.pet.PetAbility;
 import in.godspunky.skyblock.nms.packetevents.PacketReader;
 import in.godspunky.skyblock.npc.SkyblockNPC;
 import in.godspunky.skyblock.npc.SkyblockNPCManager;
-import in.godspunky.skyblock.ranks.GodspunkyPlayer;
-import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.skill.Skill;
 import in.godspunky.skyblock.slayer.SlayerQuest;
 import in.godspunky.skyblock.user.*;
@@ -126,9 +124,6 @@ public class PlayerListener extends PListener {
             }
             user.loadCookieStatus();
             user.loadStatic();
-            if (user.getActiveProfile() == null) {
-                String randomFruitProfile = FruitProfileGenerator.generateRandomFruitName();
-                user.setProfile(randomFruitProfile);}
             try {
                 user.loadPlayerData();
             } catch (final IllegalArgumentException | IOException e2) {
@@ -249,64 +244,6 @@ public class PlayerListener extends PListener {
         }, 1L);
         new PacketReader().injectPlayer(player);
 
-        User user = User.getUser(player.getUniqueId());
-
-        player.sendMessage(ChatColor.YELLOW + "Welcome to " + ChatColor.GREEN + "Godspunky Skyblock!");
-        player.sendMessage(ChatColor.AQUA + "You are playing on profile: " + ChatColor.YELLOW + user.getActiveProfile());
-
-        new BukkitRunnable() {
-            public void run() {
-                if (!player.isOnline()) {
-                    this.cancel();
-                    return;
-                }
-
-                GodspunkyPlayer data = GodspunkyPlayer.getUser(player);
-                try {
-                    if (data != null) {
-                        PlayerRank rank = data.rank;
-                        player.setDisplayName(ChatColor.translateAlternateColorCodes('&', rank.getPrefix()) +" "+ player.getName());
-                        player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', rank.getPrefix()) +" "+ player.getName());
-                    }
-                }catch (Exception ex){
-                    ex.printStackTrace();
-                }
-
-                User user = User.getUser(player.getUniqueId());
-                boolean hasActiveEffects = user.getEffects().size() > 0;
-                boolean hasActiveBuff = PlayerUtils.cookieBuffActive(player);
-                String cookieDuration = PlayerUtils.getCookieDurationDisplayGUI(player);
-
-                IChatBaseComponent header = new ChatComponentText(
-                        ChatColor.AQUA + "You are" + ChatColor.RESET + " " + ChatColor.AQUA + "playing on " + ChatColor.YELLOW + "" + ChatColor.BOLD + "MC.GODSPUNKY.IN\n");
-
-                IChatBaseComponent footer = new ChatComponentText(
-                        "\n" + ChatColor.GREEN + "" + ChatColor.BOLD + "Active Effects\n" + "" +
-                                (hasActiveEffects ? ChatColor.GRAY + "You have " + ChatColor.YELLOW + user.getEffects().size() + ChatColor.GRAY + " active effects. Use\n" + ChatColor.GRAY + "\"" + ChatColor.GOLD + "/effects" + ChatColor.GRAY + "\" to see them!\n" + "\n" : ChatColor.GRAY + "No effects active. Drink potions or splash\n" + ChatColor.GRAY + "them on the ground to buff yourself!\n\n") +
-                                ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Cookie Buff\n" + "" +
-                                (hasActiveBuff ?
-                                        ChatColor.WHITE + cookieDuration + "\n" :
-                                        ChatColor.GRAY + "Not active! Obtain booster cookies from the\n" + "community shop in the hub") + "\n" + "\n" +
-                                ChatColor.GREEN + "Ranks, Boosters, & MORE!" + ChatColor.RESET + " " + ChatColor.RED + "" + ChatColor.BOLD + "STORE.GODSPUNKY.IN");
-
-                PacketPlayOutPlayerListHeaderFooter packet = new PacketPlayOutPlayerListHeaderFooter();
-
-                try {
-                    Field headerField = packet.getClass().getDeclaredField("a");
-                    Field footerField = packet.getClass().getDeclaredField("b");
-                    headerField.setAccessible(true);
-                    footerField.setAccessible(true);
-                    headerField.set(packet, header);
-                    footerField.set(packet, footer);
-                    headerField.setAccessible(!headerField.isAccessible());
-                    footerField.setAccessible(!footerField.isAccessible());
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-
-                ((CraftPlayer) user.getBukkitPlayer()).getHandle().playerConnection.sendPacket(packet);
-            }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 20L);
     }
 
 
