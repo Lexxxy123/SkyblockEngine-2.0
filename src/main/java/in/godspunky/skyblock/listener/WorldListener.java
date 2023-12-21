@@ -6,6 +6,7 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.EnumWrappers;
+import in.godspunky.skyblock.island.SkyblockIsland;
 import in.godspunky.skyblock.item.*;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
 import org.bukkit.*;
@@ -268,7 +269,7 @@ public class WorldListener extends PListener {
             WorldListener.ALREADY_TELEPORTING.add(entity.getUniqueId());
             SUtil.delay(() -> WorldListener.ALREADY_TELEPORTING.remove(entity.getUniqueId()), 15L);
             entity.sendMessage(ChatColor.GRAY + "Sending you to your island...");
-            PlayerUtils.sendToIsland((Player) entity);
+            SkyblockIsland.getIsland(((Player)entity).getUniqueId()).send();
         }
     }
 

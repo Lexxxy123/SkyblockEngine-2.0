@@ -40,7 +40,9 @@ import in.godspunky.skyblock.util.BungeeChannel;
 import in.godspunky.skyblock.util.Groups;
 import in.godspunky.skyblock.util.SLog;
 import in.godspunky.skyblock.util.SerialNBTTagCompound;
+import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
+import net.swofty.swm.api.SlimePlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -102,8 +104,8 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
     public static EffectManager effectManager;
     private static SkySimEngine instance;
     public Config config;
-
-
+    @Getter
+    private SlimePlugin slimePlugin;
     public Config heads;
     public Config blocks;
     public Config spawners;
@@ -183,6 +185,7 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
                 Bukkit.getPluginManager().disablePlugin(this);
                 return;
             }
+            this.slimePlugin = (SlimePlugin) Bukkit.getPluginManager().getPlugin("SwoftyWorldManager");
             SLog.info("Injecting...");
             PingAPI.register();
             new Metrics(this);

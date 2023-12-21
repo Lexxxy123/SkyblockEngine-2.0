@@ -1047,39 +1047,39 @@ public final class PlayerUtils {
         return false;
     }
 
-    public static void sendToIsland(final Player player) {
-        World world = Bukkit.getWorld("islands");
-        if (world == null) {
-            world = new BlankWorldCreator("islands").createWorld();
-        }
-        final User user = User.getUser(player.getUniqueId());
-        if (user.getIslandX() == null) {
-            final Config config = SkySimEngine.getPlugin().config;
-            double xOffset = config.getDouble("islands.x");
-            double zOffset = config.getDouble("islands.z");
-            if (xOffset < -2.5E7 || xOffset > 2.5E7) {
-                zOffset += 250.0;
-            }
-            final File file = new File(config.getString("islands.schematic"));
-            SUtil.pasteSchematic(file, new Location(world, 7.0 + xOffset, 100.0, 7.0 + zOffset), true);
-            SUtil.setBlocks(new Location(world, 7.0 + xOffset, 104.0, 44.0 + zOffset), new Location(world, 5.0 + xOffset, 100.0, 44.0 + zOffset), Material.PORTAL, false);
-            user.setIslandLocation(7.5 + xOffset, 7.5 + zOffset);
-            user.save();
-            if (xOffset > 0.0) {
-                xOffset *= -1.0;
-            } else if (xOffset <= 0.0) {
-                if (xOffset != 0.0) {
-                    xOffset *= -1.0;
-                }
-                xOffset += 250.0;
-            }
-            config.set("islands.x", xOffset);
-            config.set("islands.z", zOffset);
-            config.save();
-        }
-        final World finalWorld = world;
-        SUtil.delay(() -> player.teleport(finalWorld.getHighestBlockAt(SUtil.blackMagic(user.getIslandX()), SUtil.blackMagic(user.getIslandZ())).getLocation().add(0.5, 1.0, 0.5)), 10L);
-    }
+//    public static void sendToIsland(final Player player) {
+//        World world = Bukkit.getWorld("islands");
+//        if (world == null) {
+//            world = new BlankWorldCreator("islands").createWorld();
+//        }
+//        final User user = User.getUser(player.getUniqueId());
+//        if (user.getIslandX() == null) {
+//            final Config config = SkySimEngine.getPlugin().config;
+//            double xOffset = config.getDouble("islands.x");
+//            double zOffset = config.getDouble("islands.z");
+//            if (xOffset < -2.5E7 || xOffset > 2.5E7) {
+//                zOffset += 250.0;
+//            }
+//            final File file = new File(config.getString("islands.schematic"));
+//            SUtil.pasteSchematic(file, new Location(world, 7.0 + xOffset, 100.0, 7.0 + zOffset), true);
+//            SUtil.setBlocks(new Location(world, 7.0 + xOffset, 104.0, 44.0 + zOffset), new Location(world, 5.0 + xOffset, 100.0, 44.0 + zOffset), Material.PORTAL, false);
+//            user.setIslandLocation(7.5 + xOffset, 7.5 + zOffset);
+//            user.save();
+//            if (xOffset > 0.0) {
+//                xOffset *= -1.0;
+//            } else if (xOffset <= 0.0) {
+//                if (xOffset != 0.0) {
+//                    xOffset *= -1.0;
+//                }
+//                xOffset += 250.0;
+//            }
+//            config.set("islands.x", xOffset);
+//            config.set("islands.z", zOffset);
+//            config.save();
+//        }
+//        final World finalWorld = world;
+//        SUtil.delay(() -> player.teleport(finalWorld.getHighestBlockAt(SUtil.blackMagic(user.getIslandX()), SUtil.blackMagic(user.getIslandZ())).getLocation().add(0.5, 1.0, 0.5)), 10L);
+//    }
 
     public static PotionEffect getPotionEffect(final Player player, final org.bukkit.potion.PotionEffectType type) {
         for (final PotionEffect effect : player.getActivePotionEffects()) {

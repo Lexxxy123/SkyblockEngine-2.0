@@ -17,6 +17,7 @@ import in.godspunky.skyblock.enchantment.EnchantmentType;
 import in.godspunky.skyblock.entity.dungeons.boss.sadan.SadanFunction;
 import in.godspunky.skyblock.entity.dungeons.boss.sadan.SadanHuman;
 import in.godspunky.skyblock.entity.nms.VoidgloomSeraph;
+import in.godspunky.skyblock.island.SkyblockIsland;
 import in.godspunky.skyblock.item.GenericItemType;
 import in.godspunky.skyblock.item.PlayerBoostStatistics;
 import in.godspunky.skyblock.item.SItem;
@@ -102,6 +103,8 @@ public class User {
     private double cataXP;
     private double berserkXP;
     private double healerXP;
+    @Getter
+    private SkyblockIsland island;
     private double tankXP;
     private double mageXP;
     private double foragingXP;
@@ -154,6 +157,7 @@ public class User {
         this.miningXP = 0.0;
         this.combatXP = 0.0;
         this.foragingXP = 0.0;
+        this.island = SkyblockIsland.getIsland(uuid);
         this.enchantXP = 0.0;
         this.highestSlayers = new int[4];
         this.slayerXP = new int[4];
@@ -1455,13 +1459,11 @@ public class User {
     }
 
     public boolean isOnIsland(final Location location) {
-        final World world = Bukkit.getWorld("islands");
+        final World world = Bukkit.getWorld("island-" + uuid);
         if (world == null) {
             return false;
         }
-        final double x = location.getX();
-        final double z = location.getZ();
-        return world.getUID().equals(location.getWorld().getUID()) && x >= this.islandX - 125.0 && x <= this.islandX + 125.0 && z >= this.islandZ - 125.0 && z <= this.islandZ + 125.0;
+       return location.getWorld().getName().equalsIgnoreCase(world.getName());
     }
 
     public boolean isOnUserIsland() {
@@ -1469,20 +1471,12 @@ public class User {
         if (player == null) {
             return false;
         }
-        final World world = Bukkit.getWorld("islands");
-        if (world == null) {
-            return false;
-        }
-        final double x = player.getLocation().getX();
-        final double z = player.getLocation().getZ();
-        return world.getUID().equals(player.getWorld().getUID()) && x < this.islandX - 125.0 && x > this.islandX + 125.0 && z < this.islandZ - 125.0 && z > this.islandZ + 125.0;
+        return player.getWorld().getName().startsWith(SkyblockIsland.ISLAND_PREFIX);
     }
 
     public List<AuctionItem> getBids() {
         return AuctionItem.getAuctions().stream().filter(item -> {
-            final Iterator<AuctionBid> iterator = item.getBids().iterator();
-            while (iterator.hasNext()) {
-                final AuctionBid bid = iterator.next();
+            for (AuctionBid bid : item.getBids()) {
                 if (bid.getBidder().equals(this.uuid) && item.getParticipants().contains(this.uuid)) {
                     return true;
                 }

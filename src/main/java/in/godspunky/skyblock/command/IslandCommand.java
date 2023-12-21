@@ -1,5 +1,7 @@
 package in.godspunky.skyblock.command;
 
+import in.godspunky.skyblock.island.SkyblockIsland;
+import in.godspunky.skyblock.user.User;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import in.godspunky.skyblock.user.PlayerUtils;
@@ -12,6 +14,6 @@ public class IslandCommand extends SCommand {
             throw new CommandFailException("Console senders cannot use this command!");
         }
         final Player player = sender.getPlayer();
-        PlayerUtils.sendToIsland(player);
+        SkyblockIsland.getIsland(player.getUniqueId()).send();
     }
 }

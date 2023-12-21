@@ -50,10 +50,7 @@ import in.godspunky.skyblock.gui.GUI;
 import in.godspunky.skyblock.item.SMaterial;
 
 import java.io.*;
-import java.lang.reflect.Array;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.*;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -317,6 +314,45 @@ public class SUtil {
 
     public static void sendSubtitle(final Player player, final String message) {
         sendTypedTitle(player, message, PacketPlayOutTitle.EnumTitleAction.SUBTITLE);
+    }
+
+    public static void generate(Location loc, String filename) {
+        try {
+            FileInputStream fis = new FileInputStream(new File(SkySimEngine.getPlugin().getDataFolder(), filename));
+            Object nbtData = NBTCompressedStreamTools.class.getMethod("a", InputStream.class).invoke(null, fis);
+            Method getShort  = nbtData.getClass().getMethod("getShort", String.class);
+            Method getByteArray = nbtData.getClass().getMethod("getByteArray", String.class);
+
+            short width = ((short) getShort.invoke(nbtData, "Width"));
+            short height = ((short) getShort.invoke(nbtData, "Height"));
+            short length = ((short) getShort.invoke(nbtData, "Length"));
+
+            byte[] blocks = ((byte[]) getByteArray.invoke(nbtData, "Blocks"));
+            byte[] data = ((byte[]) getByteArray.invoke(nbtData, "Data"));
+
+            fis.close();
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    for (int z = 0; z < length; z++) {
+                        int index = y * width * length + z * width + x;
+                        int b = blocks[index] & 0xFF;
+                        Material m = Material.getMaterial(b);
+                        if (m != Material.AIR) {
+
+                            Block block = new Location(loc.getWorld(),
+                                    loc.getBlockX() - ((int) (width / 2)) + x,
+                                    loc.getBlockY()  + y - 19,
+                                    loc.getBlockZ() - ((int) (length / 2)) + z + 14).getBlock();
+                            block.setType(m, true);
+                            block.setData(data[index]);
+
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void lightningLater(final Location location, final boolean effect, final long delay) {
