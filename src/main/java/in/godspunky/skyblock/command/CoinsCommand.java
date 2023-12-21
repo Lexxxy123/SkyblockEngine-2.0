@@ -1,12 +1,11 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 
-@CommandParameters(description = "Modify your coin amount.", permission = PlayerRank.ADMIN)
+@CommandParameters(description = "Modify your coin amount.", permission = "spt.balance")
 public class CoinsCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

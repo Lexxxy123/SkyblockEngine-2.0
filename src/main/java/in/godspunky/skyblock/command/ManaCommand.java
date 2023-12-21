@@ -1,14 +1,13 @@
 package in.godspunky.skyblock.command;
 
 import in.godspunky.skyblock.Repeater;
-import in.godspunky.skyblock.ranks.PlayerRank;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-@CommandParameters(description = "Modify your mana amount.", permission = PlayerRank.ADMIN)
+@CommandParameters(description = "Modify your mana amount.", permission = "spt.item")
 public class ManaCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

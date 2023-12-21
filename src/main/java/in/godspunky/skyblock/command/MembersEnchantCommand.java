@@ -2,7 +2,6 @@ package in.godspunky.skyblock.command;
 
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.ChatColor;
@@ -10,7 +9,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import in.godspunky.skyblock.enchantment.EnchantmentType;
 
-@CommandParameters(description = "Adds an enchantment from Spec to the specified item.", aliases = "meb", permission = PlayerRank.ADMIN)
+@CommandParameters(description = "Adds an enchantment from Spec to the specified item.", aliases = "meb", permission = "spt.item")
 public class MembersEnchantCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

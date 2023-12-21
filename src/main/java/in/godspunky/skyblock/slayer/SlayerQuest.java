@@ -1,22 +1,17 @@
-// 
-// Decompiled by Procyon v0.5.36
-// 
-
 package in.godspunky.skyblock.slayer;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityType;
-import in.godspunky.skyblock.sequence.SoundSequenceType;
 import in.godspunky.skyblock.util.SUtil;
-import org.bson.Document;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitRunnable;
+import in.godspunky.skyblock.sequence.SoundSequenceType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,13 +26,13 @@ public class SlayerQuest implements ConfigurationSerializable {
     private SEntityType lastKilled;
     private SEntity entity;
 
-    public SlayerQuest(SlayerBossType type, long started) {
+    public SlayerQuest(final SlayerBossType type, final long started) {
         this.type = type;
         this.started = started;
         this.entity = null;
     }
 
-    private SlayerQuest(SlayerBossType type, long started, double xp, long spawned, long killed, long died, SEntityType lastKilled) {
+    private SlayerQuest(final SlayerBossType type, final long started, final double xp, final long spawned, final long killed, final long died, final SEntityType lastKilled) {
         this.type = type;
         this.started = started;
         this.xp = xp;
@@ -49,7 +44,7 @@ public class SlayerQuest implements ConfigurationSerializable {
     }
 
     public Map<String, Object> serialize() {
-        Map<String, Object> map = new HashMap<String, Object>();
+        final Map<String, Object> map = new HashMap<String, Object>();
         map.put("type", this.type.getNamespace());
         map.put("started", this.started);
         map.put("xp", this.xp);
@@ -59,47 +54,24 @@ public class SlayerQuest implements ConfigurationSerializable {
         map.put("lastKilled", null);
         return map;
     }
-    public static Document serializeYourObject(SlayerQuest yourObject) {
-        Document objectDocument = new Document("type", yourObject.getType().getNamespace())
-                .append("started", yourObject.started)
-                .append("xp", yourObject.getXp())
-                .append("spawned", yourObject.getSpawned())
-                .append("killed", yourObject.getKilled())
-                .append("died", yourObject.getDied())
-                .append("lastKilled", null);
-        return objectDocument;
-    }
 
     public static SlayerQuest deserialize(Map<String, Object> map) {
         return new SlayerQuest(SlayerBossType.getByNamespace(String.valueOf(map.get("type"))), ((Number) map.get("started")).longValue(), ((Number) map.get("xp")).doubleValue(), ((Number) map.get("spawned")).longValue(), ((Number) map.get("killed")).longValue(), ((Number) map.get("died")).longValue(), null);
     }
 
-
-
-    public static SlayerQuest deserializeSlayerQuest(Document document) {
-        SlayerBossType type = SlayerBossType.getByNamespace(document.getString("type"));
-        long started = document.getLong("started");
-        double xp = document.getDouble("xp");
-        long spawned = document.getLong("spawned");
-        long killed = document.getLong("killed");
-        long died = document.getLong("died");
-        return new SlayerQuest(type, started, xp, spawned, killed, died, null);
-    }
-
-
-    public static void playMinibossSpawn(Location location, Entity sound) {
-        Location clone = location.clone();
-        World world = location.getWorld();
+    public static void playMinibossSpawn(final Location location, final Entity sound) {
+        final Location clone = location.clone();
+        final World world = location.getWorld();
         if (sound != null) {
             SoundSequenceType.SLAYER_MINIBOSS_SPAWN.play(sound);
         } else {
             SoundSequenceType.SLAYER_MINIBOSS_SPAWN.play(clone);
         }
-        AtomicDouble additive = new AtomicDouble();
+        final AtomicDouble additive = new AtomicDouble();
         SUtil.runIntervalForTicks(() -> world.spigot().playEffect(clone.clone().add(0.0, additive.getAndAdd(0.5), 0.0), Effect.EXPLOSION_LARGE, 1, 0, 0.0f, 0.0f, 0.0f, 0.0f, 1, 16), 3L, 12L);
     }
 
-    public static void playBossSpawn(Location location, Entity sound) {
+    public static void playBossSpawn(final Location location, final Entity sound) {
         final Location clone = location.clone();
         final World world = location.getWorld();
         if (sound != null) {
@@ -109,22 +81,21 @@ public class SlayerQuest implements ConfigurationSerializable {
         }
         SUtil.runIntervalForTicks(() -> {
             for (int i = 0; i < 50; ++i) {
-                world.playEffect(clone.clone().add(0.0, -0.2, 0.0), Effect.WITCH_MAGIC, Effect.SPELL.getData());
-                world.playEffect(clone, Effect.SPELL, Effect.SPELL.getData());
-                world.playEffect(clone, Effect.FLYING_GLYPH, Effect.FLYING_GLYPH.getData());
-                world.playEffect(clone.clone().add(0.0, -0.2, 0.0), Effect.FLYING_GLYPH, Effect.FLYING_GLYPH.getData());
-                world.playEffect(clone, Effect.WITCH_MAGIC, Effect.WITCH_MAGIC.getData());
+                world.playEffect(clone.clone().add(0.0, -0.2, 0.0), Effect.WITCH_MAGIC, (Object) Effect.SPELL.getData());
+                world.playEffect(clone, Effect.SPELL, (Object) Effect.SPELL.getData());
+                world.playEffect(clone, Effect.FLYING_GLYPH, (Object) Effect.FLYING_GLYPH.getData());
+                world.playEffect(clone.clone().add(0.0, -0.2, 0.0), Effect.FLYING_GLYPH, (Object) Effect.FLYING_GLYPH.getData());
+                world.playEffect(clone, Effect.WITCH_MAGIC, (Object) Effect.WITCH_MAGIC.getData());
             }
         }, 5L, 28L);
         new BukkitRunnable() {
-
             public void run() {
-                world.playEffect(clone, Effect.EXPLOSION_HUGE, Effect.EXPLOSION_HUGE.getData());
-                world.playEffect(clone, Effect.EXPLOSION_HUGE, Effect.EXPLOSION_HUGE.getData());
-                world.playEffect(clone, Effect.EXPLOSION_HUGE, Effect.EXPLOSION_HUGE.getData());
-                world.playEffect(clone, Effect.EXPLOSION_HUGE, Effect.EXPLOSION_HUGE.getData());
-                world.playEffect(clone, Effect.EXPLOSION_HUGE, Effect.EXPLOSION_HUGE.getData());
-                world.playEffect(clone, Effect.EXPLOSION_HUGE, Effect.EXPLOSION_HUGE.getData());
+                world.playEffect(clone, Effect.EXPLOSION_HUGE, (Object) Effect.EXPLOSION_HUGE.getData());
+                world.playEffect(clone, Effect.EXPLOSION_HUGE, (Object) Effect.EXPLOSION_HUGE.getData());
+                world.playEffect(clone, Effect.EXPLOSION_HUGE, (Object) Effect.EXPLOSION_HUGE.getData());
+                world.playEffect(clone, Effect.EXPLOSION_HUGE, (Object) Effect.EXPLOSION_HUGE.getData());
+                world.playEffect(clone, Effect.EXPLOSION_HUGE, (Object) Effect.EXPLOSION_HUGE.getData());
+                world.playEffect(clone, Effect.EXPLOSION_HUGE, (Object) Effect.EXPLOSION_HUGE.getData());
             }
         }.runTaskLater(SkySimEngine.getPlugin(), 28L);
     }
@@ -161,28 +132,27 @@ public class SlayerQuest implements ConfigurationSerializable {
         return this.entity;
     }
 
-    public void setXp(double xp) {
+    public void setXp(final double xp) {
         this.xp = xp;
     }
 
-    public void setSpawned(long spawned) {
+    public void setSpawned(final long spawned) {
         this.spawned = spawned;
     }
 
-    public void setKilled(long killed) {
+    public void setKilled(final long killed) {
         this.killed = killed;
     }
 
-    public void setDied(long died) {
+    public void setDied(final long died) {
         this.died = died;
     }
 
-    public void setLastKilled(SEntityType lastKilled) {
+    public void setLastKilled(final SEntityType lastKilled) {
         this.lastKilled = lastKilled;
     }
 
-    public void setEntity(SEntity entity) {
+    public void setEntity(final SEntity entity) {
         this.entity = entity;
     }
-
 }

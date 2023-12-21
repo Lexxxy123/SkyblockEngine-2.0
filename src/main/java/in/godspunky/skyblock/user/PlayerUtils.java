@@ -14,13 +14,6 @@ import in.godspunky.skyblock.item.pet.Pet;
 import in.godspunky.skyblock.item.weapon.EdibleMace;
 import in.godspunky.skyblock.util.*;
 import net.milkbowl.vault.economy.Economy;
-import net.swofty.swm.api.SlimePlugin;
-import net.swofty.swm.api.exceptions.WorldAlreadyExistsException;
-import net.swofty.swm.api.loaders.SlimeLoader;
-import net.swofty.swm.api.world.SlimeWorld;
-import net.swofty.swm.api.world.properties.SlimeProperties;
-import net.swofty.swm.api.world.properties.SlimeProperty;
-import net.swofty.swm.api.world.properties.SlimePropertyMap;
 import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -55,7 +48,6 @@ import in.godspunky.skyblock.slayer.SlayerQuest;
 import in.godspunky.skyblock.util.*;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 public final class PlayerUtils {
@@ -1055,45 +1047,39 @@ public final class PlayerUtils {
         return false;
     }
 
-    public static void sendToIsland(Player player) throws IOException, WorldAlreadyExistsException {
-        User user = User.getUser(player.getUniqueId());
-        if (!user.isHasIsland()) {
-            long start = System.currentTimeMillis();
-            SlimePropertyMap properties = new SlimePropertyMap();
-            properties.setValue(SlimeProperties.DIFFICULTY, "normal");
-            properties.setValue(SlimeProperties.ALLOW_MONSTERS, false);
-            SlimePlugin slimePlugin = (SlimePlugin) Bukkit.getPluginManager().getPlugin("SwoftyWorldManager");
-            SlimeWorld world = slimePlugin.createEmptyWorld(slimePlugin.getLoader("mongodb"),
-                    "island-" + player.getUniqueId().toString(), false, properties);
-            slimePlugin.generateWorld(world);
-            SUtil.delay(() -> {
-                SUtil.generate(new Location(Bukkit.getWorld("island-" + player.getUniqueId()), 0, 100.0, 0), "private_island.schematic");
-                player.teleport(new Location(Bukkit.getWorld("island-" + player.getUniqueId()), 0, 100.0, 0));
-            }, 60);
-            user.setHasIsland(true);
-            user.save();
-            long end = System.currentTimeMillis() - start;
-            player.sendMessage(ChatColor.AQUA + "[SkyBlock] :" + ChatColor.RESET + " Generated island! This took " + ChatColor.YELLOW + end + "ms");
-        } else if (Bukkit.getWorld("island-" + player.getUniqueId()) == null) {
-            SlimePropertyMap properties = new SlimePropertyMap();
-            properties.setValue(SlimeProperties.DIFFICULTY, "normal");
-            properties.setValue(SlimeProperties.ALLOW_MONSTERS, false);
-            SlimePlugin slimePlugin = (SlimePlugin) Bukkit.getPluginManager().getPlugin("SwoftyWorldManager");
-            SlimeLoader loader = slimePlugin.getLoader("mongodb");
-            try {
-                SlimeWorld world = slimePlugin.loadWorld(loader, "island-" + player.getUniqueId(), false, properties);
-                slimePlugin.generateWorld(world);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            SUtil.delay(() -> {
-                player.teleport(new Location(Bukkit.getWorld("island-" + player.getUniqueId()), 0, 100.0, 0));
-            }, 40);
-        }else {
-            player.teleport(new Location(Bukkit.getWorld("island-" + player.getUniqueId()), 0, 100.0, 0));
+    public static void sendToIsland(final Player player) {
+        World world = Bukkit.getWorld("islands");
+        if (world == null) {
+            world = new BlankWorldCreator("islands").createWorld();
         }
+        final User user = User.getUser(player.getUniqueId());
+        if (user.getIslandX() == null) {
+            final Config config = SkySimEngine.getPlugin().config;
+            double xOffset = config.getDouble("islands.x");
+            double zOffset = config.getDouble("islands.z");
+            if (xOffset < -2.5E7 || xOffset > 2.5E7) {
+                zOffset += 250.0;
+            }
+            final File file = new File(config.getString("islands.schematic"));
+            SUtil.pasteSchematic(file, new Location(world, 7.0 + xOffset, 100.0, 7.0 + zOffset), true);
+            SUtil.setBlocks(new Location(world, 7.0 + xOffset, 104.0, 44.0 + zOffset), new Location(world, 5.0 + xOffset, 100.0, 44.0 + zOffset), Material.PORTAL, false);
+            user.setIslandLocation(7.5 + xOffset, 7.5 + zOffset);
+            user.save();
+            if (xOffset > 0.0) {
+                xOffset *= -1.0;
+            } else if (xOffset <= 0.0) {
+                if (xOffset != 0.0) {
+                    xOffset *= -1.0;
+                }
+                xOffset += 250.0;
+            }
+            config.set("islands.x", xOffset);
+            config.set("islands.z", zOffset);
+            config.save();
+        }
+        final World finalWorld = world;
+        SUtil.delay(() -> player.teleport(finalWorld.getHighestBlockAt(SUtil.blackMagic(user.getIslandX()), SUtil.blackMagic(user.getIslandZ())).getLocation().add(0.5, 1.0, 0.5)), 10L);
     }
-
 
     public static PotionEffect getPotionEffect(final Player player, final org.bukkit.potion.PotionEffectType type) {
         for (final PotionEffect effect : player.getActivePotionEffects()) {

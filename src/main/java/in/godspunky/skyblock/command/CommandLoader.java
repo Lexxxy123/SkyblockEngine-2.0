@@ -7,15 +7,15 @@ public class CommandLoader {
     private final List<SCommand> commands;
 
     public CommandLoader() {
-        this.commands = new ArrayList<>();
+        this.commands = new ArrayList<SCommand>();
     }
 
-    public void register(SCommand command) {
-        commands.add(command);
+    public void register(final SCommand command) {
+        this.commands.add(command);
         command.register();
     }
 
     public int getCommandAmount() {
-        return commands.size();
+        return this.commands.size();
     }
 }

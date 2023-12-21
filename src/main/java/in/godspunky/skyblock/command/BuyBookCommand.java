@@ -2,13 +2,12 @@ package in.godspunky.skyblock.command;
 
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import in.godspunky.skyblock.enchantment.EnchantmentType;
 
-@CommandParameters(description = "", aliases = "purc", permission = PlayerRank.DEFAULT)
+@CommandParameters(description = "", aliases = "purc", permission = "sse.cc")
 public class BuyBookCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

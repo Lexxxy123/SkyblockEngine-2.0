@@ -1,6 +1,5 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.user.User;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -9,7 +8,7 @@ import org.bukkit.entity.Player;
 
 import java.io.IOException;
 
-@CommandParameters(description = "bruhbu", aliases = "datarec", permission = PlayerRank.ADMIN)
+@CommandParameters(description = "bruhbu", aliases = "datarec")
 public class InvRecovery extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

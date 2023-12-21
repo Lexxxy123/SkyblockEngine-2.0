@@ -1,9 +1,5 @@
 package in.godspunky.skyblock.command;
 
-
-
-import in.godspunky.skyblock.ranks.PlayerRank;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -15,5 +11,5 @@ public @interface CommandParameters {
 
     String aliases() default "";
 
-    PlayerRank permission();
+    String permission() default "";
 }

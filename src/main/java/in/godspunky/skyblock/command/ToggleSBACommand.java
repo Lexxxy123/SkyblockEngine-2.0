@@ -1,13 +1,12 @@
 package in.godspunky.skyblock.command;
 
 import in.godspunky.skyblock.Repeater;
-import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-@CommandParameters(description = "Spec test command.", aliases = "tsba", permission = PlayerRank.ADMIN)
+@CommandParameters(description = "Spec test command.", aliases = "tsba")
 public class ToggleSBACommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

@@ -1,7 +1,6 @@
 package in.godspunky.skyblock.command;
 
 import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.entity.Player;
@@ -11,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-@CommandParameters(description = "Modify your coin amount.", usage = "", aliases = "ss", permission = PlayerRank.ADMIN)
+@CommandParameters(description = "Modify your coin amount.", usage = "", aliases = "ss")
 public class ServerCommand extends SCommand {
     public Map<UUID, List<String>> servers;
 

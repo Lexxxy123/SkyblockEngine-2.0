@@ -7,16 +7,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 public class BlockListener extends PListener {
-
-    @EventHandler
-    public void onBlockPlace(BlockPlaceEvent event){
-        Player player = event.getPlayer();
-        event.setCancelled(!player.getWorld().getName().equals("island-" + player.getUniqueId()));
-    }
     @EventHandler
     public void onBlockInteract(final PlayerInteractEvent e) {
         final Block block = e.getClickedBlock();
