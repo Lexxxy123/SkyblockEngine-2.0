@@ -301,7 +301,7 @@ public class WorldListener extends PListener {
         if (WorldListener.RESTORER.containsKey(player.getUniqueId())) {
             WorldListener.RESTORER.get(player.getUniqueId()).add(block.getState());
         } else {
-            WorldListener.RESTORER.put(player.getUniqueId(), new ArrayList<BlockState>());
+            WorldListener.RESTORER.put(player.getUniqueId(), new ArrayList<>());
             WorldListener.RESTORER.get(player.getUniqueId()).add(block.getState());
             new BukkitRunnable() {
                 public void run() {

@@ -104,7 +104,6 @@ public class User {
     private double berserkXP;
     private double healerXP;
     @Getter
-    private SkyblockIsland island;
     private double tankXP;
     private double mageXP;
     private double foragingXP;
@@ -157,7 +156,6 @@ public class User {
         this.miningXP = 0.0;
         this.combatXP = 0.0;
         this.foragingXP = 0.0;
-        this.island = SkyblockIsland.getIsland(uuid);
         this.enchantXP = 0.0;
         this.highestSlayers = new int[4];
         this.slayerXP = new int[4];
@@ -1459,11 +1457,11 @@ public class User {
     }
 
     public boolean isOnIsland(final Location location) {
-        final World world = Bukkit.getWorld("island-" + uuid);
+        final World world = Bukkit.getWorld(SkyblockIsland.ISLAND_PREFIX + uuid);
         if (world == null) {
             return false;
         }
-       return location.getWorld().getName().equalsIgnoreCase(world.getName());
+       return location.getWorld().getName().equalsIgnoreCase(SkyblockIsland.ISLAND_PREFIX + uuid);
     }
 
     public boolean isOnUserIsland() {
@@ -1471,7 +1469,7 @@ public class User {
         if (player == null) {
             return false;
         }
-        return player.getWorld().getName().startsWith(SkyblockIsland.ISLAND_PREFIX);
+        return player.getWorld().getName().startsWith(SkyblockIsland.ISLAND_PREFIX) && !player.getWorld().getName().equalsIgnoreCase(SkyblockIsland.ISLAND_PREFIX + uuid);
     }
 
     public List<AuctionItem> getBids() {
