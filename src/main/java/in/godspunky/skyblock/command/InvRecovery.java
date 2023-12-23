@@ -1,7 +1,6 @@
 package in.godspunky.skyblock.command;
 
 import in.godspunky.skyblock.ranks.PlayerRank;
-import in.godspunky.skyblock.user.Profile;
 import in.godspunky.skyblock.user.User;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -31,11 +30,10 @@ public class InvRecovery extends SCommand {
         if (target != null) {
             final User user2 = User.getUser(target.getUniqueId());
             try {
-                Profile profile = user2.getSelectedProfile();
-                user2.loadPlayerData(profile);
+               // user2.loadPlayerData();
                 user.send("&aSuccess!");
                 user2.send("&eData Recovered, now disconnect and join back.");
-            } catch (final IllegalArgumentException | IOException e) {
+            } catch (final IllegalArgumentException e) {
                 e.printStackTrace();
                 user.send("&cError! Check Console!");
             }

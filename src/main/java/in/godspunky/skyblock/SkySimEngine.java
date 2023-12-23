@@ -152,15 +152,7 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
             this.bc = new BungeeChannel(this);
 
             this.setupEconomy();
-            SLog.info("===================================");
-            SLog.info("SKYSIM ENGINE - MADE BY GIAKHANHVN");
-            SLog.info(" ");
-            SLog.info("SputnikSkySim found! Hooking into...");
-            SLog.info("If it's take more than 5s to execute this");
-            SLog.info("contact developers!");
-            SLog.info("===================================");
             SkySimEngine.plugin = this;
-            SLog.info("Hooked successfully into SputnikSkySim!");
             SLog.info("Performing world regeneration...");
             this.fixTheEnd();
             SLog.info("Loading YAML data from disk...");
@@ -169,7 +161,7 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
             this.blocks = new Config("blocks.yml");
             this.spawners = new Config("spawners.yml");
             SLog.info("Loading Command map...");
-            getCommand("setrank").setExecutor(new SetRankCommand());            try {
+            try {
                 final Field f = Bukkit.getServer().getClass().getDeclaredField("commandMap");
                 f.setAccessible(true);
                 this.commandMap = (CommandMap) f.get(Bukkit.getServer());
@@ -288,12 +280,12 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
             WorldListener.c();
             SLog.info("Successfully enabled " + this.getDescription().getFullName());
             SLog.info("===================================");
-            SLog.info("SKYSIM ENGINE - MADE BY GIAKHANHVN");
+            SLog.info("GODSPUNKY SKYBLOCK - MADE BY HAMZA & EPICPORTAL");
             SLog.info("PLUGIN ENABLED! HOOKED INTO SSS!");
             SLog.info(" ");
-            SLog.info("This plugin provide SkySim most functions!");
+            SLog.info("This plugin provide SKYBLOCK most functions!");
             SLog.info("Originally made by super (Slayers code used)");
-            SLog.info("Made by GiaKhanhVN (C) 2021");
+            SLog.info("Made by Hamza And Epicportal (C) 2023");
             SLog.info("Any illegal usage will be suppressed! DO NOT LEAK IT!");
             SLog.info("===================================");
             this.sq = new SummoningSequence(Bukkit.getWorld("arena"));
@@ -325,6 +317,7 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
             lucki9.addEnchantment(EnchantmentType.LUCKINESS, 6);
             DimoonLootTable.lowQualitylootTable = new ArrayList<DimoonLootItem>(Arrays.asList(new DimoonLootItem(lucki9, 20, 150), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOON_GEM), 20, 100), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOON_FRAG), 1, 1, 0, true)));
             Arena.cleanArena();
+            getCommand("setrank").setExecutor(new SetRankCommand());
         } catch (final Throwable $ex) {
             throw $ex;
         }
@@ -473,6 +466,7 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
         this.cl.register(new APICommand());
         this.cl.register(new PickupStashCommand());
         this.cl.register(new StackMyDimoon());
+        cl.register(new AdminItemCommand());
     }
 
     private void loadListeners() {
