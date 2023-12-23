@@ -1,18 +1,19 @@
 package in.godspunky.skyblock.command;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SLog;
 import in.godspunky.skyblock.util.SUtil;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-@CommandParameters(description = "Modify your coin amount.", usage = "", aliases = "ssend")
+@CommandParameters(description = "Modify your coin amount.", usage = "", aliases = "ssend", permission = PlayerRank.ADMIN)
 public class SSend
         extends SCommand {
     public Map<UUID, List<String>> servers = new HashMap<UUID, List<String>>();

@@ -1,15 +1,5 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.collection.ItemCollection;
-import in.godspunky.skyblock.dungeons.BlessingType;
-import in.godspunky.skyblock.dungeons.Blessings;
-import in.godspunky.skyblock.dungeons.ItemSerial;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.dimoon.Arena;
 import in.godspunky.skyblock.dimoon.DimoonLootTable;
@@ -17,14 +7,25 @@ import in.godspunky.skyblock.entity.dungeons.watcher.Watcher;
 import in.godspunky.skyblock.extra.protocol.PacketInvoker;
 import in.godspunky.skyblock.gui.ConfirmWitherRuins;
 import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.user.UserStash;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import in.godspunky.skyblock.collection.ItemCollection;
+import in.godspunky.skyblock.dungeons.BlessingType;
+import in.godspunky.skyblock.dungeons.Blessings;
+import in.godspunky.skyblock.dungeons.ItemSerial;
 
 import java.io.File;
 
-@CommandParameters(description = "Modify your absorption amount.", permission = "spt.player")
+@CommandParameters(description = "Modify your absorption amount.", permission = PlayerRank.ADMIN)
 public class SSTest extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

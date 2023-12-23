@@ -1,13 +1,14 @@
 package in.godspunky.skyblock.command;
 
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityType;
+import in.godspunky.skyblock.ranks.PlayerRank;
+import in.godspunky.skyblock.util.Sputnik;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityType;
-import in.godspunky.skyblock.util.Sputnik;
 
-@CommandParameters(description = "Spawn a mob from Spec.", aliases = "scm", permission = "spt.spawn")
+@CommandParameters(description = "Spawn a mob from Spec.", aliases = "scm", permission = PlayerRank.ADMIN)
 public class SpawnSpecCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

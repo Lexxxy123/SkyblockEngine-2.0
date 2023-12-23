@@ -1,12 +1,13 @@
 package in.godspunky.skyblock.command;
 
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.util.Sputnik;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
-@CommandParameters(description = "", aliases = "smd", permission = "sse.cc")
+@CommandParameters(description = "", aliases = "smd", permission = PlayerRank.ADMIN)
 public class StackMyDimoon extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

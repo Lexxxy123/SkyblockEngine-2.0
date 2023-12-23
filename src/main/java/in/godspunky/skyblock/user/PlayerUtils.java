@@ -1064,7 +1064,7 @@ public final class PlayerUtils {
 //            SUtil.pasteSchematic(file, new Location(world, 7.0 + xOffset, 100.0, 7.0 + zOffset), true);
 //            SUtil.setBlocks(new Location(world, 7.0 + xOffset, 104.0, 44.0 + zOffset), new Location(world, 5.0 + xOffset, 100.0, 44.0 + zOffset), Material.PORTAL, false);
 //            user.setIslandLocation(7.5 + xOffset, 7.5 + zOffset);
-//            user.save();
+//            SMongoLoader.save(player.getUniqueId());
 //            if (xOffset > 0.0) {
 //                xOffset *= -1.0;
 //            } else if (xOffset <= 0.0) {

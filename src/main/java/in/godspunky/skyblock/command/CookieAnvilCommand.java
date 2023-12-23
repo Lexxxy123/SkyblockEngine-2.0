@@ -1,12 +1,13 @@
 package in.godspunky.skyblock.command;
 
-import org.bukkit.Sound;
-import org.bukkit.entity.Player;
 import in.godspunky.skyblock.gui.GUIType;
+import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.util.Sputnik;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 
-@CommandParameters(description = "Gets the NBT of your current item.", aliases = "av", permission = "sse.cc")
+@CommandParameters(description = "Gets the NBT of your current item.", aliases = "av", permission = PlayerRank.DEFAULT)
 public class CookieAnvilCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

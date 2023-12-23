@@ -1,10 +1,11 @@
 package in.godspunky.skyblock.command;
 
+import in.godspunky.skyblock.Repeater;
+import in.godspunky.skyblock.ranks.PlayerRank;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import in.godspunky.skyblock.Repeater;
 
-@CommandParameters(description = "Spec test command.", aliases = "db:tsr")
+@CommandParameters(description = "Spec test command.", aliases = "db:tsr", permission = PlayerRank.ADMIN)
 public class ToggleRepeatingCommand extends SCommand {
     public Repeater repeater;
 

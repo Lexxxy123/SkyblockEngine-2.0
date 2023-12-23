@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.gui;
 
+import in.godspunky.skyblock.user.SMongoLoader;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
@@ -25,7 +26,7 @@ public class DepositGUI extends GUI {
                 final long coins = user.getCoins();
                 user.subCoins(coins);
                 user.addBankCoins(coins);
-                user.save();
+                SMongoLoader.save(player.getUniqueId());
                 player.sendMessage(ChatColor.GREEN + "You have deposited " + ChatColor.GOLD + SUtil.commaify(coins) + " coins" + ChatColor.GREEN + "! You now have " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()) + " coins " + ChatColor.GREEN + "in your account!");
                 GUIType.BANKER.getGUI().open(player);
             }
@@ -46,7 +47,7 @@ public class DepositGUI extends GUI {
                 final long coins = user.getCoins() / 2L;
                 user.subCoins(coins);
                 user.addBankCoins(coins);
-                user.save();
+                SMongoLoader.save(player.getUniqueId());
                 player.sendMessage(ChatColor.GREEN + "You have deposited " + ChatColor.GOLD + SUtil.commaify(coins) + " coins" + ChatColor.GREEN + "! You now have " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()) + " coins " + ChatColor.GREEN + "in your account!");
                 GUIType.BANKER.getGUI().open(player);
             }
@@ -76,7 +77,7 @@ public class DepositGUI extends GUI {
                     }
                     user.subCoins(coins);
                     user.addBankCoins(coins);
-                    user.save();
+                    SMongoLoader.save(player.getUniqueId());
                     player.sendMessage(ChatColor.GREEN + "You have deposited " + ChatColor.GOLD + SUtil.commaify(coins) + " coins" + ChatColor.GREEN + "! You now have " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()) + " coins " + ChatColor.GREEN + "in your account!");
                 } catch (final NumberFormatException ex) {
                     player.sendMessage(ChatColor.RED + "That is not a valid number!");

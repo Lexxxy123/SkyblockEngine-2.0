@@ -1,13 +1,14 @@
 package in.godspunky.skyblock.command;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
+import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SLog;
 import in.godspunky.skyblock.util.Sputnik;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
-@CommandParameters(description = "Spec test command.", aliases = "fsd")
+@CommandParameters(description = "Spec test command.", aliases = "fsd", permission = PlayerRank.ADMIN)
 public class SaveDataCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

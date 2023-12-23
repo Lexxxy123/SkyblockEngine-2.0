@@ -54,7 +54,7 @@ public class CookieConfirmGUI extends GUI {
                 e.getWhoClicked().closeInventory();
                 ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.CLICK, 1.0f, 1.0f);
                 CookieConfirmGUI.this.playParticle((Player) e.getWhoClicked());
-                user.saveCookie();
+                //user.saveCookie();
             }
 
             @Override

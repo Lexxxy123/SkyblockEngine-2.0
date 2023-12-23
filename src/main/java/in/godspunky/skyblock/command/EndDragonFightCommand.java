@@ -1,14 +1,15 @@
 package in.godspunky.skyblock.command;
 
+import in.godspunky.skyblock.entity.StaticDragonManager;
+import in.godspunky.skyblock.ranks.PlayerRank;
+import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import in.godspunky.skyblock.entity.StaticDragonManager;
-import in.godspunky.skyblock.util.SUtil;
 
-@CommandParameters(description = "bruhbu", aliases = "edf")
+@CommandParameters(description = "bruhbu", aliases = "edf", permission = PlayerRank.DEFAULT)
 public class EndDragonFightCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

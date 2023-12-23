@@ -1,14 +1,15 @@
 package in.godspunky.skyblock.command;
 
+import in.godspunky.skyblock.ranks.PlayerRank;
+import in.godspunky.skyblock.user.PlayerUtils;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import in.godspunky.skyblock.user.PlayerUtils;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.Sputnik;
 
-@CommandParameters(description = "bruhbu", aliases = "resetcb")
+@CommandParameters(description = "bruhbu", aliases = "resetcb", permission = PlayerRank.ADMIN)
 public class ResetCookieCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

@@ -1,18 +1,19 @@
 package in.godspunky.skyblock.command;
 
-import org.bukkit.ChatColor;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
 import in.godspunky.skyblock.gui.GUI;
 import in.godspunky.skyblock.gui.GUIType;
 import in.godspunky.skyblock.item.oddities.MaddoxBatphone;
+import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.util.SUtil;
+import org.bukkit.ChatColor;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@CommandParameters(description = "Hidden command for Maddox Batphone.")
+@CommandParameters(description = "Hidden command for Maddox Batphone.", permission = PlayerRank.DEFAULT)
 public class BatphoneCommand extends SCommand {
     public static final UUID ACCESS_KEY;
     public static final List<String> KEYS;

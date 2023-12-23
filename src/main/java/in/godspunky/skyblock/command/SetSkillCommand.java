@@ -1,14 +1,15 @@
 package in.godspunky.skyblock.command;
 
+import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.skill.*;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import in.godspunky.skyblock.skill.*;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.SUtil;
 
-@CommandParameters(description = "Modify your coin amount.", permission = "spt.goods", aliases = "ssx")
+@CommandParameters(description = "Modify your coin amount.", permission = PlayerRank.ADMIN, aliases = "ssx")
 public class SetSkillCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

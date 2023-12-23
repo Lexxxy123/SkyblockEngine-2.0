@@ -537,7 +537,8 @@ public class Repeater {
                         coinsDisplay.append("Purse: ");
                     }
                     sidebar.add(coinsDisplay.append(ChatColor.GOLD).append(SUtil.commaify(user.getCoins())) + ".0" + ChatColor.YELLOW);
-                    final String bits = PlaceholderAPI.setPlaceholders(player, "%royaleeconomy_balance_purse%") + " " + PlaceholderAPI.setPlaceholders(player, "%royaleeconomy_dynamic_coins%");
+                  //  final String bits = PlaceholderAPI.setPlaceholders(player, "%royaleeconomy_balance_purse%") + " " + PlaceholderAPI.setPlaceholders(player, "%royaleeconomy_dynamic_coins%");
+                    String bits = "0";
                     sidebar.add("Bits: " + ChatColor.AQUA + bits);
                     sidebar.add("   ");
                     final SlayerQuest quest = user.getSlayerQuest();
