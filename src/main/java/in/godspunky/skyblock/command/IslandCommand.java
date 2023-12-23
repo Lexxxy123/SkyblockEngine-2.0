@@ -16,10 +16,6 @@ public class IslandCommand extends SCommand {
             throw new CommandFailException("Console senders cannot use this command!");
         }
         final Player player = sender.getPlayer();
-        try {
-            PlayerUtils.sendToIsland(player);
-        } catch (WorldAlreadyExistsException | IOException e) {
-            throw new RuntimeException(e);
-        }
+        // PlayerUtils.sendToIsland(player);
     }
 }

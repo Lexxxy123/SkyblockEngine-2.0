@@ -6,6 +6,8 @@ import in.godspunky.skyblock.util.SUtil;
 public enum GUIType {
     CRAFTING_TABLE(CraftingTableGUI.class),
     ITEM_BROWSE(ItemBrowserGUI.class),
+
+    Admin_Items(AdminItemGui.class),
     ANVIL(AnvilGUI.class),
     TRASH(TrashGUI.class),
     COOKIE_GUI(CookieGUI.class),

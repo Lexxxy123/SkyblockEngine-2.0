@@ -101,6 +101,7 @@ public class PlayerListener extends PListener {
     @EventHandler
     public void onPlayerJoin(final PlayerJoinEvent e) {
         final Player player = e.getPlayer();
+        e.setJoinMessage(null);
         this.getIsNotLoaded().put(player.getUniqueId(), true);
         SUtil.delay(() -> {
             if (player.isOnline()) {

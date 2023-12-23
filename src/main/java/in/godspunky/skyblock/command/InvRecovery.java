@@ -30,10 +30,10 @@ public class InvRecovery extends SCommand {
         if (target != null) {
             final User user2 = User.getUser(target.getUniqueId());
             try {
-                user2.loadPlayerData();
+               // user2.loadPlayerData();
                 user.send("&aSuccess!");
                 user2.send("&eData Recovered, now disconnect and join back.");
-            } catch (final IllegalArgumentException | IOException e) {
+            } catch (final IllegalArgumentException e) {
                 e.printStackTrace();
                 user.send("&cError! Check Console!");
             }
