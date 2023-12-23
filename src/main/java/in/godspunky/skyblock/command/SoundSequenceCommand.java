@@ -1,11 +1,12 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.sequence.SoundSequenceType;
+import in.godspunky.skyblock.ranks.PlayerRank;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import in.godspunky.skyblock.sequence.SoundSequenceType;
 
-@CommandParameters(description = "Play a sound sequence.", usage = "/<command> <sequence>")
+@CommandParameters(description = "Play a sound sequence.", usage = "/<command> <sequence>", permission = PlayerRank.ADMIN)
 public class SoundSequenceCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

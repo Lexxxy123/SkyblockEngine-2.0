@@ -22,6 +22,8 @@ import in.godspunky.skyblock.item.bow.BowFunction;
 import in.godspunky.skyblock.item.pet.Pet;
 import in.godspunky.skyblock.item.pet.PetAbility;
 import in.godspunky.skyblock.nms.packetevents.PacketReader;
+import in.godspunky.skyblock.ranks.GodspunkyPlayer;
+import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.skill.Skill;
 import in.godspunky.skyblock.slayer.SlayerQuest;
 import in.godspunky.skyblock.user.*;
@@ -116,17 +118,17 @@ public class PlayerListener extends PListener {
             player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 1000000, 255));
             PrecursorEye.PrecursorLaser.put(player.getUniqueId(), false);
             final User user = User.getUser(player.getUniqueId());
+            user.loadStatic();
+            SMongoLoader.load(player.getUniqueId());
             if (!PlayerUtils.STATISTICS_CACHE.containsKey(player.getUniqueId())) {
                 PlayerUtils.STATISTICS_CACHE.put(player.getUniqueId(), PlayerUtils.getStatistics(player));
             }
             for (Skill skill : Skill.getSkills()) {
                 skill.onSkillUpdate(user, user.getSkillXP(skill));
             }
-            user.loadCookieStatus();
-            user.loadStatic();
             try {
-                user.loadPlayerData();
-            } catch (final IllegalArgumentException | IOException e2) {
+               // user.loadPlayerData();
+            } catch (final IllegalArgumentException e2) {
                 SLog.severe("============ SKYSIM DATA LOAD ERROR ============");
                 SLog.severe("Ah shit, here we go again.");
                 SLog.severe(" ");
@@ -244,6 +246,60 @@ public class PlayerListener extends PListener {
         }, 1L);
         new PacketReader().injectPlayer(player);
 
+        User user = User.getUser(player.getUniqueId());
+        new BukkitRunnable() {
+            public void run() {
+                if (!player.isOnline()) {
+                    this.cancel();
+                    return;
+                }
+
+                GodspunkyPlayer data = GodspunkyPlayer.getUser(player);
+                try {
+                    if (data != null) {
+                        PlayerRank rank = data.rank;
+                        player.setDisplayName(ChatColor.translateAlternateColorCodes('&', rank.getPrefix()) +" "+ player.getName());
+                        player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', rank.getPrefix()) +" "+ player.getName());
+                    }
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
+
+                User user = User.getUser(player.getUniqueId());
+                boolean hasActiveEffects = user.getEffects().size() > 0;
+                boolean hasActiveBuff = PlayerUtils.cookieBuffActive(player);
+                String cookieDuration = PlayerUtils.getCookieDurationDisplayGUI(player);
+
+                IChatBaseComponent header = new ChatComponentText(
+                        ChatColor.AQUA + "You are" + ChatColor.RESET + " " + ChatColor.AQUA + "playing on " + ChatColor.YELLOW + "" + ChatColor.BOLD + "MC.GODSPUNKY.IN\n");
+
+                IChatBaseComponent footer = new ChatComponentText(
+                        "\n" + ChatColor.GREEN + "" + ChatColor.BOLD + "Active Effects\n" + "" +
+                                (hasActiveEffects ? ChatColor.GRAY + "You have " + ChatColor.YELLOW + user.getEffects().size() + ChatColor.GRAY + " active effects. Use\n" + ChatColor.GRAY + "\"" + ChatColor.GOLD + "/effects" + ChatColor.GRAY + "\" to see them!\n" + "\n" : ChatColor.GRAY + "No effects active. Drink potions or splash\n" + ChatColor.GRAY + "them on the ground to buff yourself!\n\n") +
+                                ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Cookie Buff\n" + "" +
+                                (hasActiveBuff ?
+                                        ChatColor.WHITE + cookieDuration + "\n" :
+                                        ChatColor.GRAY + "Not active! Obtain booster cookies from the\n" + "community shop in the hub") + "\n" + "\n" +
+                                ChatColor.GREEN + "Ranks, Boosters, & MORE!" + ChatColor.RESET + " " + ChatColor.RED + "" + ChatColor.BOLD + "STORE.GODSPUNKY.IN");
+
+                PacketPlayOutPlayerListHeaderFooter packet = new PacketPlayOutPlayerListHeaderFooter();
+
+                try {
+                    Field headerField = packet.getClass().getDeclaredField("a");
+                    Field footerField = packet.getClass().getDeclaredField("b");
+                    headerField.setAccessible(true);
+                    footerField.setAccessible(true);
+                    headerField.set(packet, header);
+                    footerField.set(packet, footer);
+                    headerField.setAccessible(!headerField.isAccessible());
+                    footerField.setAccessible(!footerField.isAccessible());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+                ((CraftPlayer) user.toBukkitPlayer()).getHandle().playerConnection.sendPacket(packet);
+            }
+        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 20L);
     }
 
 
@@ -267,9 +323,9 @@ public class PlayerListener extends PListener {
             player.sendMessage("  " + ChatColor.RED + ChatColor.BOLD + "SLAYER QUEST FAILED!");
             player.sendMessage("   " + ChatColor.DARK_PURPLE + ChatColor.BOLD + "» " + ChatColor.GRAY + "You need to learn how to play this game first!");
         }
-        user.save();
-        user.saveCookie();
-        user.saveAllVanillaInstances();
+        SMongoLoader.save(player.getUniqueId());
+        //user.saveCookie();
+        //user.saveAllVanillaInstances();
         Blessings.STAT_MAP.remove(player.getUniqueId());
         PrecursorEye.PrecursorLaser.remove(player.getUniqueId());
         PlayerUtils.COOKIE_DURATION_CACHE.remove(player.getUniqueId());
@@ -849,7 +905,7 @@ public class PlayerListener extends PListener {
             ts.cleanStats();
         }
         final SlayerQuest quest = user.getSlayerQuest();
-        user.saveAllVanillaInstances();
+       // user.saveAllVanillaInstances();
         if (quest != null && quest.getXp() >= quest.getType().getSpawnXP() && quest.getKilled() == 0L) {
             User.getUser(e.getPlayer().getUniqueId()).failSlayerQuest();
         }

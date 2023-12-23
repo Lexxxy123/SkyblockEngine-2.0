@@ -1,11 +1,12 @@
 package in.godspunky.skyblock.command;
 
+import in.godspunky.skyblock.ranks.PlayerRank;
+import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import in.godspunky.skyblock.util.Sputnik;
 
-@CommandParameters(description = "Modify your absorption amount.", permission = "spt.player")
+@CommandParameters(description = "Modify your absorption amount.", permission = PlayerRank.DEFAULT)
 public class TradeCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

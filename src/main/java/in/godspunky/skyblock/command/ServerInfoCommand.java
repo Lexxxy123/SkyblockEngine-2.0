@@ -1,8 +1,9 @@
 package in.godspunky.skyblock.command;
 
 import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.ranks.PlayerRank;
 
-@CommandParameters(description = "", aliases = "ssi", permission = "sse.cc")
+@CommandParameters(description = "", aliases = "ssi", permission = PlayerRank.ADMIN)
 public class ServerInfoCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

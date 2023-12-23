@@ -1,14 +1,15 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.reforge.Reforge;
-import in.godspunky.skyblock.reforge.ReforgeType;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.ranks.PlayerRank;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.reforge.Reforge;
+import in.godspunky.skyblock.reforge.ReforgeType;
 
-@CommandParameters(description = "Reforge an item from Spec.", aliases = "sref", permission = "spt.item")
+@CommandParameters(description = "Reforge an item from Spec.", aliases = "sref", permission = PlayerRank.ADMIN)
 public class SpecReforgeCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

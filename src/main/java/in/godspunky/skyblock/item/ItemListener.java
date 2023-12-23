@@ -13,6 +13,7 @@ import in.godspunky.skyblock.listener.PListener;
 import in.godspunky.skyblock.skill.Skill;
 import in.godspunky.skyblock.user.PlayerStatistics;
 import in.godspunky.skyblock.user.PlayerUtils;
+import in.godspunky.skyblock.user.SMongoLoader;
 import in.godspunky.skyblock.util.*;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
@@ -773,7 +774,7 @@ public class ItemListener extends PListener {
             if (collection != null) {
                 final int prev = user.getCollection(collection);
                 user.addToCollection(collection, stack.getAmount());
-                user.save();
+                SMongoLoader.save(player.getUniqueId());
                 if (prev == 0) {
                     player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "  COLLECTION UNLOCKED " + ChatColor.RESET + ChatColor.YELLOW + collection.getName());
                     player.playSound(player.getLocation(), Sound.LEVEL_UP, 1.0f, 2.0f);

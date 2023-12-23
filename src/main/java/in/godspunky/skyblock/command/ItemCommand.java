@@ -1,13 +1,14 @@
 package in.godspunky.skyblock.command;
 
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.ranks.PlayerRank;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
 
-@CommandParameters(description = "Gives an item from Spec.", aliases = "sitem,specitem", permission = "spt.item")
+@CommandParameters(description = "Gives an item from Spec.", aliases = "sitem,specitem", permission = PlayerRank.ADMIN)
 public class ItemCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

@@ -31,10 +31,14 @@ import in.godspunky.skyblock.listener.WorldListener;
 import in.godspunky.skyblock.merchant.MerchantItemHandler;
 import in.godspunky.skyblock.nms.packetevents.*;
 import in.godspunky.skyblock.npc.SkyblockNPC;
+import in.godspunky.skyblock.ranks.PlayerChatListener;
+import in.godspunky.skyblock.ranks.PlayerJoinQuitListener;
+import in.godspunky.skyblock.ranks.SetRankCommand;
 import in.godspunky.skyblock.region.Region;
 import in.godspunky.skyblock.region.RegionType;
 import in.godspunky.skyblock.slayer.SlayerQuest;
 import in.godspunky.skyblock.user.AuctionSettings;
+import in.godspunky.skyblock.user.DatabaseManager;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.BungeeChannel;
 import in.godspunky.skyblock.util.Groups;
@@ -165,7 +169,7 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
             this.blocks = new Config("blocks.yml");
             this.spawners = new Config("spawners.yml");
             SLog.info("Loading Command map...");
-            try {
+            getCommand("setrank").setExecutor(new SetRankCommand());            try {
                 final Field f = Bukkit.getServer().getClass().getDeclaredField("commandMap");
                 f.setAccessible(true);
                 this.commandMap = (CommandMap) f.get(Bukkit.getServer());
@@ -174,6 +178,8 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
                 e.printStackTrace();
             }
             SLog.info("Loading SQL database...");
+           DatabaseManager.connectToDatabase("mongodb://admin:admin@88.99.150.153:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2", "Godspunky");
+           // DatabaseManager.connectToDatabase("mongodb://localhost:27017", "Godspunky");
             this.sql = new SQLDatabase();
             this.regionData = new SQLRegionData();
             this.worldData = new SQLWorldData();
@@ -477,6 +483,8 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
         new GUIListener();
         new PacketListener();
         new WorldListener();
+        new PlayerJoinQuitListener();
+        new PlayerChatListener();
     }
 
     private void startPopulators() {
