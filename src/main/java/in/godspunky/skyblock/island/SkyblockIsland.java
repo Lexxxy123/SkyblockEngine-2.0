@@ -55,49 +55,61 @@ public class SkyblockIsland {
     }
 
     public static World getWorld(Player player) {
-        return Bukkit.getWorld(ISLAND_PREFIX + player.getUniqueId());
+        return Bukkit.getWorld(ISLAND_PREFIX +
+                User.getUser(player.getUniqueId()).getSelectedProfileUUID()
+        );
     }
     public static World getWorld(UUID uuid){
-        return Bukkit.getWorld(ISLAND_PREFIX + uuid);
+        return Bukkit.getWorld(ISLAND_PREFIX +
+                User.getUser(uuid).getSelectedProfileUUID()
+        );
     }
+
 
 
     public void send(){
+        owner = User.getUser(uuid);
+        final String worldName = ISLAND_PREFIX + owner.getSelectedProfileUUID();
         SlimePropertyMap properties = new SlimePropertyMap();
         properties.setValue(SlimeProperties.DIFFICULTY, "normal");
         properties.setValue(SlimeProperties.ALLOW_MONSTERS, false);
         SlimeLoader loader = slimePlugin.getLoader("mongodb");
         try {
-            if (!loader.worldExists(ISLAND_PREFIX + uuid.toString())) {
+            if (!loader.worldExists(worldName)) {
                 this.slimeWorld = slimePlugin.createEmptyWorld(
                         loader,
-                        ISLAND_PREFIX + uuid.toString(),
+                        worldName,
                         false,
                         properties
                 );
                 slimePlugin.generateWorld(slimeWorld).thenRun(()->{
-                    this.bukkitWorld = Bukkit.getWorld(ISLAND_PREFIX + uuid);
-                    SUtil.generate(new Location(Bukkit.getWorld(ISLAND_PREFIX + uuid.toString()), 0, 100, 0), "private_island.schematic");
+                    this.bukkitWorld = Bukkit.getWorld(worldName);
+                    SUtil.generate(new Location(Bukkit.getWorld(worldName), 0, 100, 0), "private_island.schematic");
                     Location loc1 = new Location(bukkitWorld, 0, 100 + 4.0, + 35.0);
                     Location loc2 = new Location(bukkitWorld, -2, 100,  35.0);
                     SUtil.setBlocks(loc1, loc2, Material.PORTAL, false);
-                    bukkitPlayer.teleport(new Location(Bukkit.getWorld(ISLAND_PREFIX + uuid.toString()), 0, 100, 0));
+                    bukkitPlayer.teleport(
+                            new Location(Bukkit.getWorld(worldName), 0, 100, 0)
+                    );
 
                 });
 
-            } else if (loader.worldExists(ISLAND_PREFIX + uuid.toString()) && Bukkit.getWorld(ISLAND_PREFIX+uuid) == null) {
+            } else if (loader.worldExists(worldName) &&
+                    Bukkit.getWorld(worldName) == null) {
                 this.slimeWorld = slimePlugin.loadWorld(
                         loader,
-                        ISLAND_PREFIX + uuid.toString(),
+                        worldName,
                         false,
                         properties
                 );
                 slimePlugin.generateWorld(slimeWorld).thenRun(() ->{
-                    bukkitPlayer.teleport(new Location(Bukkit.getWorld(ISLAND_PREFIX + uuid.toString()), 0, 100, 0));
+                    bukkitPlayer.teleport(
+                            new Location(Bukkit.getWorld(worldName), 0, 100, 0)
+                    );
                 });
 
 
-            }else if (Bukkit.getWorld(ISLAND_PREFIX + uuid) != null){
+            }else if (Bukkit.getWorld(worldName) != null){
                 bukkitPlayer.teleport(new Location(Bukkit.getWorld(ISLAND_PREFIX + uuid.toString()), 0, 100, 0));
             }
         }catch (WorldAlreadyExistsException | IOException | CorruptedWorldException | NewerFormatException |

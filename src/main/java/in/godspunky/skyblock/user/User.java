@@ -323,6 +323,10 @@ public class User {
         set(existingProfile,"database.minecraft_xp", Sputnik.getTotalExperience(Bukkit.getPlayer(this.uuid)));
     }
 
+    public UUID getSelectedProfileUUID(){
+        return UUID.fromString(selectedProfile.uuid);
+    }
+
     public void loadPlayerData(Profile profile) throws IllegalArgumentException, IOException {
         Player player = Bukkit.getPlayer(this.uuid);
         Document document = SMongoLoader.grabProfile(profile.uuid);
@@ -1317,7 +1321,7 @@ public class User {
         if (world == null) {
             return false;
         }
-       return location.getWorld().getName().equalsIgnoreCase(world.getName());
+       return location.getWorld().getName().equalsIgnoreCase(SkyblockIsland.ISLAND_PREFIX + uuid);
     }
 
     public boolean isOnUserIsland() {
@@ -1325,7 +1329,7 @@ public class User {
         if (player == null) {
             return false;
         }
-        return player.getWorld().getName().startsWith(SkyblockIsland.ISLAND_PREFIX);
+        return player.getWorld().getName().startsWith(SkyblockIsland.ISLAND_PREFIX) && !player.getWorld().getName().equalsIgnoreCase(SkyblockIsland.ISLAND_PREFIX + uuid);
     }
 
     public List<AuctionItem> getBids() {

@@ -178,8 +178,8 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
                 e.printStackTrace();
             }
             SLog.info("Loading SQL database...");
-           DatabaseManager.connectToDatabase("mongodb://admin:admin@88.99.150.153:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2", "Godspunky");
-           // DatabaseManager.connectToDatabase("mongodb://localhost:27017", "Godspunky");
+           //DatabaseManager.connectToDatabase("mongodb://admin:admin@88.99.150.153:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2", "Godspunky");
+            DatabaseManager.connectToDatabase("mongodb://localhost:27017", "Godspunky");
             this.sql = new SQLDatabase();
             this.regionData = new SQLRegionData();
             this.worldData = new SQLWorldData();

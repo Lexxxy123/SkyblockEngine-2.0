@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.nms.nmsutil.reflection.minecraft;
 
+import jdk.internal.reflect.ConstructorAccessor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import in.godspunky.skyblock.nms.nmsutil.reflection.resolver.ConstructorResolver;
@@ -8,7 +9,7 @@ import in.godspunky.skyblock.nms.nmsutil.reflection.resolver.MethodResolver;
 import in.godspunky.skyblock.nms.nmsutil.reflection.resolver.minecraft.NMSClassResolver;
 import in.godspunky.skyblock.nms.nmsutil.reflection.resolver.minecraft.OBCClassResolver;
 import in.godspunky.skyblock.nms.nmsutil.reflection.util.AccessUtil;
-import sun.reflect.ConstructorAccessor;
+
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

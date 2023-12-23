@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.command;
 
 import in.godspunky.skyblock.ranks.PlayerRank;
+import in.godspunky.skyblock.user.Profile;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SLog;
 import in.godspunky.skyblock.util.Sputnik;
@@ -20,9 +21,10 @@ public class SaveDataCommand extends SCommand {
                 for (final Player p : Bukkit.getOnlinePlayers()) {
                     final User user = User.getUser(p.getUniqueId());
                     if (user != null) {
-                        user.saveCookie();
-                        user.save();
-                        user.saveAllVanillaInstances();
+                        Profile profile = user.getSelectedProfile();
+                        user.saveCookie(profile);
+                        // todo fix it!
+                        user.saveAllVanillaInstances(profile);
                     }
                 }
                 Bukkit.broadcastMessage(Sputnik.trans("&b[SKYSIM D.C] &aAll players data have been saved! Action performed by " + player.getDisplayName() + "&a!"));
@@ -32,9 +34,10 @@ public class SaveDataCommand extends SCommand {
             for (final Player p : Bukkit.getOnlinePlayers()) {
                 final User user = User.getUser(p.getUniqueId());
                 if (user != null) {
-                    user.saveCookie();
-                    user.save();
-                    user.saveAllVanillaInstances();
+                    Profile profile = user.getSelectedProfile();
+                    user.saveCookie(profile);
+                    // todo fix it!
+                    user.saveAllVanillaInstances(profile);
                 }
             }
             Bukkit.broadcastMessage(Sputnik.trans("&b[SKYSIM D.C] &aAll players data have been saved! Action performed by &cCONSOLE&a!"));

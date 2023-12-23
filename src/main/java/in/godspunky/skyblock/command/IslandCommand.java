@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.command;
 
+import in.godspunky.skyblock.island.SkyblockIsland;
 import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.user.PlayerUtils;
 import net.swofty.swm.api.exceptions.WorldAlreadyExistsException;
@@ -16,10 +17,6 @@ public class IslandCommand extends SCommand {
             throw new CommandFailException("Console senders cannot use this command!");
         }
         final Player player = sender.getPlayer();
-        try {
-            PlayerUtils.sendToIsland(player);
-        } catch (WorldAlreadyExistsException | IOException e) {
-            throw new RuntimeException(e);
-        }
+        SkyblockIsland.getIsland(player.getUniqueId()).send();
     }
 }
