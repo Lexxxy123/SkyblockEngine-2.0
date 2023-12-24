@@ -136,7 +136,6 @@ public class User {
     private boolean isCompletedSign;
 
     private User(final UUID uuid) {
-        this.selectedProfile = null;
         this.profiles = new HashMap<>();
         this.stashedItems = new ArrayList<ItemStack>();
         this.cooldownAltar = 0;
@@ -252,10 +251,10 @@ public class User {
 
     public void saveCookie(Profile profile) {
         Document existingProfile = SMongoLoader.grabProfile(profile.uuid);
-        if (Bukkit.getPlayer(this.uuid) == null) {
+        if (Bukkit.getPlayer(uuid) == null) {
             return;
         }
-        if (!Bukkit.getPlayer(this.uuid).isOnline()) {
+        if (!Bukkit.getPlayer(uuid).isOnline()) {
             return;
         }
         if (!PlayerUtils.COOKIE_DURATION_CACHE.containsKey(this.uuid)) {
@@ -1125,7 +1124,7 @@ public class User {
         player.setVelocity(new Vector(0, 0, 0));
         player.setFallDistance(0.0f);
         SputnikPlayer.AbsHP.put(player, 0);
-        if (!player.getWorld().getName().contains("f6")) {
+        if (!player.getWorld().getName().startsWith("f6")) {
             this.sendToSpawn();
             if (!PlayerUtils.cookieBuffActive(player)) {
                 this.clearPotionEffects();
@@ -1216,11 +1215,11 @@ public class User {
             }
         }
         player.playSound(player.getLocation(), Sound.HURT_FLESH, 1.0f, 1.0f);
-        if (!player.getWorld().getName().equalsIgnoreCase("limbo") && !player.getWorld().getName().contains("f6")) {
+        if (!player.getWorld().getName().equalsIgnoreCase("limbo") && !player.getWorld().getName().startsWith("f6")) {
             player.sendMessage(ChatColor.RED + " ☠ " + ChatColor.GRAY + message + ChatColor.GRAY + ".");
             SUtil.broadcastExcept(ChatColor.RED + " ☠ " + ChatColor.GRAY + String.format(out, player.getName()) + ChatColor.GRAY + ".", player);
         }
-        if (player.getWorld().getName().contains("f6")) {
+        if (player.getWorld().getName().startsWith("f6")) {
             player.playSound(player.getLocation(), Sound.HURT_FLESH, 1.0f, 1.0f);
             player.sendMessage(ChatColor.RED + " ☠ " + ChatColor.GRAY + message + ChatColor.GRAY + " and became a ghost.");
             SUtil.broadcastExcept(ChatColor.RED + " ☠ " + ChatColor.GRAY + String.format(out, player.getName()) + ChatColor.GRAY + " and became a ghost.", player);
@@ -1235,7 +1234,7 @@ public class User {
             player.sendMessage(ChatColor.RED + "You died!");
             return;
         }
-        if ((this.isOnIsland() && cause == EntityDamageEvent.DamageCause.VOID) || this.permanentCoins || player.getWorld().getName().equalsIgnoreCase("limbo") || player.getWorld().getName().contains("f6")) {
+        if ((this.isOnIsland() && cause == EntityDamageEvent.DamageCause.VOID) || this.permanentCoins || player.getWorld().getName().equalsIgnoreCase("limbo") || player.getWorld().getName().startsWith("f6")) {
             return;
         }
         final int piggyIndex = PlayerUtils.getSpecItemIndex(player, SMaterial.PIGGY_BANK);
@@ -1317,11 +1316,11 @@ public class User {
     }
 
     public boolean isOnIsland(final Location location) {
-        final World world = Bukkit.getWorld("island-" + uuid);
+        final World world = Bukkit.getWorld("island-" + getSelectedProfileUUID());
         if (world == null) {
             return false;
         }
-       return location.getWorld().getName().equalsIgnoreCase(SkyblockIsland.ISLAND_PREFIX + uuid);
+       return location.getWorld().getName().equalsIgnoreCase(SkyblockIsland.ISLAND_PREFIX + getSelectedProfileUUID());
     }
 
     public boolean isOnUserIsland() {
@@ -1329,7 +1328,7 @@ public class User {
         if (player == null) {
             return false;
         }
-        return player.getWorld().getName().startsWith(SkyblockIsland.ISLAND_PREFIX) && !player.getWorld().getName().equalsIgnoreCase(SkyblockIsland.ISLAND_PREFIX + uuid);
+        return player.getWorld().getName().startsWith(SkyblockIsland.ISLAND_PREFIX) && !player.getWorld().getName().equalsIgnoreCase(SkyblockIsland.ISLAND_PREFIX + getSelectedProfileUUID());
     }
 
     public List<AuctionItem> getBids() {

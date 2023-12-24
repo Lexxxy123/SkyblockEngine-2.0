@@ -14,6 +14,7 @@ import in.godspunky.skyblock.region.Region;
 import in.godspunky.skyblock.region.RegionType;
 import in.godspunky.skyblock.slayer.SlayerBossType;
 import in.godspunky.skyblock.slayer.SlayerQuest;
+import in.godspunky.skyblock.util.SLog;
 import in.godspunky.skyblock.util.SUtil;
 import lombok.SneakyThrows;
 import org.bson.Document;
@@ -38,6 +39,7 @@ import java.util.stream.Collectors;
 public class SMongoLoader
 {
     public static void load(UUID uuid) {
+        SLog.info("Load method is getting called!");
         User user = User.getUser(uuid);
 
         Player player = Bukkit.getPlayer(uuid);
@@ -53,7 +55,9 @@ public class SMongoLoader
                 user.profiles.putIfAbsent(user.selectedProfile.uuid, true);
 
                 User.USER_CACHE.put(uuid, user);
+                Profile.SELECTED_PROFILES_CACHE.put(uuid.toString() , user.selectedProfile);
                 user.selectedProfile.setSelected(true);
+
                 loadProfile(user.selectedProfile);
                 try {
                     user.loadPlayerData(user.selectedProfile);
@@ -69,9 +73,10 @@ public class SMongoLoader
         UUID newProfileUUID = UUID.randomUUID();
         String name = SUtil.generateRandomProfileNameFor();
         Profile newProfile = new Profile(newProfileUUID.toString(), uuid, name);
-        user.selectedProfile = newProfile;
+        user.setSelectedProfile(newProfile);
         user.profiles = new HashMap<>();
         user.profiles.put(newProfile.uuid, true);
+        Profile.SELECTED_PROFILES_CACHE.put(uuid.toString() , newProfile);
 
         User.USER_CACHE.put(uuid, user);
         Profile.USER_CACHE.put(newProfileUUID.toString(), newProfile);
@@ -90,6 +95,7 @@ public class SMongoLoader
 
     @SneakyThrows
     public static void save(UUID uuid) {
+        SLog.info("Save Method is getting called!");
         User user = User.getUser(uuid);
         Profile selectedProfile = user.selectedProfile;
         UserDatabase db = new UserDatabase(uuid.toString(), false);
@@ -108,42 +114,47 @@ public class SMongoLoader
             user.profiles = new HashMap<>();
             user.profiles.put(selectedProfile.getId().toString(), true);
         }
+
         selectedProfile = user.selectedProfile;
-        if (selectedProfile != null) {
-            selectedProfile.setLastRegion(user.getLastRegion());
-            selectedProfile.setQuiver(user.getQuiver());
-            selectedProfile.setEffects(user.getEffects());
-            selectedProfile.setFarmingXP(user.getFarmingXP());
-            selectedProfile.setMiningXP(user.getMiningXP());
-            selectedProfile.setCombatXP(user.getCombatXP());
-            selectedProfile.setForagingXP(user.getForagingXP());
-            selectedProfile.setHighestRevenantHorror(user.highestSlayers[0]);
-            selectedProfile.setHighestTarantulaBroodfather(user.highestSlayers[1]);
-            selectedProfile.setHighestSvenPackmaster(user.highestSlayers[2]);
-            selectedProfile.setHighestVoidgloomSeraph(user.highestSlayers[3]);
-            selectedProfile.setSlayerXP(SlayerBossType.SlayerMobType.ZOMBIE, user.slayerXP[0]);
-            selectedProfile.setSlayerXP(SlayerBossType.SlayerMobType.SPIDER, user.slayerXP[1]);
-            selectedProfile.setSlayerXP(SlayerBossType.SlayerMobType.WOLF, user.slayerXP[2]);
-            selectedProfile.setSlayerXP(SlayerBossType.SlayerMobType.ENDERMAN, user.slayerXP[3]);
-            selectedProfile.setPermanentCoins(user.isPermanentCoins());
-            selectedProfile.setSlayerQuest(user.getSlayerQuest());
-            selectedProfile.setAuctionSettings(user.getAuctionSettings());
-            selectedProfile.setAuctionCreationBIN(user.isAuctionCreationBIN());
-            selectedProfile.setAuctionEscrow(user.getAuctionEscrow());
-            selectedProfile.setCoins(user.getCoins());
-            selectedProfile.setBankCoins(user.getBankCoins());
-            selectedProfile.setCoins(user.getCoins());
-            selectedProfile.setCollections(user.getCollections());
-            selectedProfile.setSelected(true);
+        if (selectedProfile == null && Profile.SELECTED_PROFILES_CACHE.containsKey(uuid.toString())){
+          selectedProfile = Profile.SELECTED_PROFILES_CACHE.get(uuid.toString());
+          user.selectedProfile = selectedProfile;
         }
+        if (selectedProfile == null) return;
+        selectedProfile.setLastRegion(user.getLastRegion());
+        selectedProfile.setQuiver(user.getQuiver());
+        selectedProfile.setEffects(user.getEffects());
+        selectedProfile.setFarmingXP(user.getFarmingXP());
+        selectedProfile.setMiningXP(user.getMiningXP());
+        selectedProfile.setCombatXP(user.getCombatXP());
+        selectedProfile.setForagingXP(user.getForagingXP());
+        selectedProfile.setHighestRevenantHorror(user.highestSlayers[0]);
+        selectedProfile.setHighestTarantulaBroodfather(user.highestSlayers[1]);
+        selectedProfile.setHighestSvenPackmaster(user.highestSlayers[2]);
+        selectedProfile.setHighestVoidgloomSeraph(user.highestSlayers[3]);
+        selectedProfile.setSlayerXP(SlayerBossType.SlayerMobType.ZOMBIE, user.slayerXP[0]);
+        selectedProfile.setSlayerXP(SlayerBossType.SlayerMobType.SPIDER, user.slayerXP[1]);
+        selectedProfile.setSlayerXP(SlayerBossType.SlayerMobType.WOLF, user.slayerXP[2]);
+        selectedProfile.setSlayerXP(SlayerBossType.SlayerMobType.ENDERMAN, user.slayerXP[3]);
+        selectedProfile.setPermanentCoins(user.isPermanentCoins());
+        selectedProfile.setSlayerQuest(user.getSlayerQuest());
+        selectedProfile.setAuctionSettings(user.getAuctionSettings());
+        selectedProfile.setAuctionCreationBIN(user.isAuctionCreationBIN());
+        selectedProfile.setAuctionEscrow(user.getAuctionEscrow());
+        selectedProfile.setCoins(user.getCoins());
+        selectedProfile.setBankCoins(user.getBankCoins());
+        selectedProfile.setCoins(user.getCoins());
+        selectedProfile.setCollections(user.getCollections());
+        selectedProfile.setSelected(true);
+        saveProfile(selectedProfile);
         user.saveAllVanillaInstances(selectedProfile);
         user.saveCookie(selectedProfile);
 
-        saveProfile(selectedProfile);
 
     }
 
     public static void loadProfile(Profile profile) {
+        SLog.info("Load profile method is getting called!");
         System.out.println("using message at " + System.currentTimeMillis());
         User owner = User.getUser(profile.getOwner());
         Player player = Bukkit.getPlayer(profile.owner);
@@ -358,7 +369,7 @@ public class SMongoLoader
     }
 
     public static void saveProfile(Profile profile) {
-        final long[] i = {0};
+        SLog.info("Save Profile is getting called");
         setProfileProperty("owner", profile.owner.toString());
 
         setProfileProperty("name", profile.name);
@@ -409,63 +420,10 @@ public class SMongoLoader
         //setProfileProperty("created", profile.created);
         setProfileProperty("auctionCreationBIN", profile.isAuctionCreationBIN());
         setProfileProperty("selected", profile.isSelected());
-        SUtil.runAsync(() -> saveProfileData(UUID.fromString(profile.uuid)));
+        SUtil.runAsync(() -> saveProfileData(UUID.fromString(profile.uuid) , profile.owner));
     }
 
-    public static void saveNewProfile(Profile profile) {
-        setProfileProperty("name", profile.name);
-        Map<String, Integer> tempColl = new HashMap<>();
-        profile.collections.forEach((key, value) -> {
-            tempColl.put(key.getIdentifier(), value);
-        });
-        setProfileProperty("collections", tempColl);
-        setProfileProperty("coins", profile.getCoins());
-        setProfileProperty("bankCoins", profile.getBankCoins());
-        if (profile.getLastRegion() != null)
-            setProfileProperty("lastRegion", profile.getLastRegion().getName());
-        Map<String, Integer> tempQuiv = new HashMap<>();
-        profile.getQuiver().forEach((key, value) -> tempQuiv.put(key.name(), value));
-        setProfileProperty("quiver", tempQuiv);
-        List<Document> effectsDocuments = new ArrayList<>();
-        for (ActivePotionEffect effect : profile.getEffects()) {
-            Document effectDocument = new Document()
-                    .append("key", effect.getEffect().getType().getNamespace())
-                    .append("level", effect.getEffect().getLevel())
-                    .append("duration", effect.getEffect().getDuration())
-                    .append("remaining", effect.getRemaining());
-            effectsDocuments.add(effectDocument);
-        }
-        setProfileProperty("effects", effectsDocuments);
-        setProfileProperty("skillFarmingXp", profile.farmingXP);
-        setProfileProperty("skillMiningXp", profile.miningXP);
-        setProfileProperty("skillCombatXp", profile.combatXP);
-        setProfileProperty("skillForagingXp", profile.foragingXP);
-        setProfileProperty("slayerRevenantHorrorHighest", profile.highestSlayers[0]);
-        setProfileProperty("slayerTarantulaBroodfatherHighest", profile.highestSlayers[1]);
-        setProfileProperty("slayerSvenPackmasterHighest", profile.highestSlayers[2]);
-        setProfileProperty("slayerVoidgloomSeraphHighest", profile.highestSlayers[3]);
-        setProfileProperty("permanentCoins", profile.isPermanentCoins());
-        setProfileProperty("xpSlayerRevenantHorror", profile.slayerXP[0]);
-        setProfileProperty("xpSlayerTarantulaBroodfather", profile.slayerXP[1]);
-        setProfileProperty("xpSlayerSvenPackmaster", profile.slayerXP[2]);
-        setProfileProperty("xpSlayerVoidgloomSeraph", profile.slayerXP[3]);
-        if (profile.getSlayerQuest() != null)
-            setProfileProperty("slayerQuest", profile.getSlayerQuest().serialize());
-        if (!profile.pets.isEmpty()) {
-            List<Map<String, Object>> petsSerialized = profile.pets.stream().map(pet -> pet.serialize()).collect(Collectors.toList());
-            setProfileProperty("pets", petsSerialized);
-        } else {
-            setProfileProperty("pets", new ArrayList<Map<String, Object>>());
-        }
-        setProfileProperty("unlockedRecipes", profile.getUnlockedRecipes());
-        setProfileProperty("talked_npcs", profile.getTalked_npcs());
-        setProfileProperty("auctionSettings", profile.auctionSettings.serialize());
-        setProfileProperty("auctionCreationBIN", profile.isAuctionCreationBIN());
-        setProfileProperty("auctionEscrow", profile.getAuctionEscrow().serialize());
-        setProfileProperty("selected", profile.isSelected());
 
-        SUtil.runAsync(() -> saveProfileData(profile.owner));
-    }
 
     private static Map<String, Object> profileCache = new ConcurrentHashMap<>();
     private static Map<String, Object> userCache = new ConcurrentHashMap<>();
@@ -491,6 +449,11 @@ public class SMongoLoader
                 userCache.put(key, value);
             }
         }
+    }
+    public static String grabSelectedProfile(String uuid){
+        Document document = grabUser(uuid);
+        if (document == null) return null;
+        return document.getString("d6b8e1fa-80ac-46e6-aa44-6b8ce6dbce43");
     }
 
     public static Document grabUser(String id) {
@@ -543,16 +506,20 @@ public class SMongoLoader
         return Long.parseLong(getString(base, key, def));
     }
 
-    public static void saveProfileData(UUID uuid) {
+    public static void saveProfileData(UUID uuid , UUID owner) {
         synchronized (profileCacheLock) {
             Document found = grabProfile(uuid.toString());
-
+             SLog.info("saveProfileData is getting called!");
             if (found != null) {
                 Document updated = new Document(found);
-                profileCache.forEach(updated::append);
+                profileCache.forEach((key, value) -> updated.put(key, value));
+                System.out.println("ProfileCache size is: " + profileCache.size());
+                System.out.println("Coins : " + profileCache.get("coins"));
 
-                assert found != null;
-                DatabaseManager.getCollection("profiles").replaceOne(found, updated);
+                DatabaseManager.getCollection("profiles").replaceOne(Filters.eq("_id", uuid.toString()), updated);
+                Profile.SELECTED_PROFILES_CACHE.remove(owner.toString());
+
+                SLog.info("Updating profile data: " + uuid);
             }
         }
     }

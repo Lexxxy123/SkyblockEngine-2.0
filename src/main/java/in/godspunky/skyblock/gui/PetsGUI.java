@@ -309,7 +309,7 @@ public class PetsGUI extends GUI {
                     this.cancel();
                     return;
                 }
-                if (player.getWorld().getName().contains("f6")) {
+                if (player.getWorld().getName().startsWith("f6")) {
                     name.setCustomNameVisible(false);
                 }
                 final Pet.PetItem active2 = User.getUser(player.getUniqueId()).getActivePet();
@@ -345,7 +345,7 @@ public class PetsGUI extends GUI {
                 final Location nameLoc = location.clone();
                 if (nameLoc.distanceSquared(target) > 25.0) {
                     name.setCustomNameVisible(false);
-                } else if (!target.getWorld().getName().contains("f6")) {
+                } else if (!target.getWorld().getName().startsWith("f6")) {
                     name.setCustomNameVisible(true);
                 }
                 nameLoc.setPitch(0.0f);

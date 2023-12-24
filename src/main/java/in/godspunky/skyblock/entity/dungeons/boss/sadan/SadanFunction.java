@@ -247,7 +247,7 @@ public class SadanFunction {
     }
 
     public static void endRoom1(final World w) {
-        if (w.getName().contains("f6")) {
+        if (w.getName().startsWith("f6")) {
             SUtil.broadcastWorld(Sputnik.trans("&c&lSKYSIM MC >> &e&lThis demo floor currently in development so you can't respawn or get reward, sorry! We will update later on, thanks for playing, leave rating on #server-rating"), w);
             SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c30s"), w), 600L);
             SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c20s"), w), 1000L);
@@ -262,7 +262,7 @@ public class SadanFunction {
     }
 
     public static void sendReMsg(final boolean finishornot, final World w) {
-        if (w.getName().contains("f6") && Repeater.FloorLivingSec.containsKey(w.getUID())) {
+        if (w.getName().startsWith("f6") && Repeater.FloorLivingSec.containsKey(w.getUID())) {
             if (finishornot) {
                 final int bitsReward = Math.round((float) ((600 - Math.min(600, Repeater.FloorLivingSec.get(w.getUID()))) * 150 / 255));
                 String rew = "&b+" + SUtil.commaify(bitsReward) + " Bits &7(Completion Reward)";
@@ -293,7 +293,7 @@ public class SadanFunction {
     }
 
     public static void endRoom2(final World w) {
-        if (w.getName().contains("f6")) {
+        if (w.getName().startsWith("f6")) {
             SUtil.broadcastWorld(Sputnik.trans("&e"), w);
             SUtil.broadcastWorld(Sputnik.trans("&aThis demo floor currently in development so you can't respawn or get reward yet, sorry! We will update later on, leave rating of this boss on #server-rating, thank you."), w);
             SUtil.broadcastWorld(Sputnik.trans("&e"), w);

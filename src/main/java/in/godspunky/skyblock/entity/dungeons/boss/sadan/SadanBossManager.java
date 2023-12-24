@@ -39,7 +39,7 @@ public class SadanBossManager {
     }
 
     public static void endFloor(final World w) {
-        if (w.getName().toLowerCase().contains("f6") && !w.getName().equalsIgnoreCase("f6")) {
+        if (w.getName().toLowerCase().startsWith("f6") && !w.getName().equalsIgnoreCase("f6")) {
             for (final Entity e : w.getEntities()) {
                 if (e instanceof Player) {
                     continue;

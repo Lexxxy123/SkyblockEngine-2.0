@@ -76,7 +76,7 @@ public class MaddoxBatphone implements SkullStatistics, MaterialFunction, Abilit
 
     @Override
     public void onAbilityUse(Player player, SItem sItem) {
-        if (player.getWorld().getName().contains("f6")) {
+        if (player.getWorld().getName().startsWith("f6")) {
             player.playSound(player.getLocation(), Sound.WOOD_CLICK, 1.0f, 1.0f);
             player.sendMessage(ChatColor.RED + "No service here!");
             return;

@@ -400,7 +400,7 @@ public class PlayerListener extends PListener {
             final Player clicked = (Player) e.getRightClicked();
             if (performer.isSneaking()) {
                 Sputnik.tradeIntitize(clicked, performer);
-            } else if (!performer.getWorld().getName().contains("f6")) {
+            } else if (!performer.getWorld().getName().startsWith("f6")) {
                 new ProfileViewerGUI(clicked).open(performer);
             }
         }

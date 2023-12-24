@@ -153,7 +153,7 @@ public final class PlayerUtils {
         ferocity.add(4, Double.valueOf(ferogrant));
         magicFind.add(4, Double.valueOf(mfgrant));
         strength.add(4, Double.valueOf(hpbwea));
-        if (hand != null && hand.getType().getStatistics().getType() != GenericItemType.ARMOR && (user.toBukkitPlayer().getWorld().getName().contains("f6") || user.toBukkitPlayer().getWorld().getName().contains("dungeon"))) {
+        if (hand != null && hand.getType().getStatistics().getType() != GenericItemType.ARMOR && (user.toBukkitPlayer().getWorld().getName().startsWith("f6") || user.toBukkitPlayer().getWorld().getName().contains("dungeon"))) {
             final ItemSerial is = ItemSerial.getItemBoostStatistics(hand);
             defense.add(4, Double.valueOf(is.getDefense()));
             strength.add(4, Double.valueOf(is.getStrength()));
@@ -251,7 +251,7 @@ public final class PlayerUtils {
                     }
                 }
             }
-            if (piece != null && (player.getWorld().getName().contains("f6") || player.getWorld().getName().contains("dungeon"))) {
+            if (piece != null && (player.getWorld().getName().startsWith("f6") || player.getWorld().getName().contains("dungeon"))) {
                 final ItemSerial is = ItemSerial.getItemBoostStatistics(piece);
                 health.add(slot, Double.valueOf(is.getHealth()));
                 defense.add(slot, Double.valueOf(is.getDefense()));
@@ -755,7 +755,7 @@ public final class PlayerUtils {
             if (sItem.getType() == SMaterial.POOCH_SWORD && EntityType.WOLF.equals(damaged.getType())) {
                 strength += 150.0;
             }
-            if (user.toBukkitPlayer().getWorld().getName().contains("f6") || user.toBukkitPlayer().getWorld().getName().contains("dungeon")) {
+            if (user.toBukkitPlayer().getWorld().getName().startsWith("f6") || user.toBukkitPlayer().getWorld().getName().contains("dungeon")) {
                 damage += (int) ItemSerial.getItemBoostStatistics(sItem).getDamage();
             }
             if ((sItem.getType() == SMaterial.PRISMARINE_BLADE && player.getLocation().getBlock().getType() == Material.WATER) || player.getLocation().getBlock().getType() == Material.STATIONARY_WATER) {
@@ -1144,7 +1144,7 @@ public final class PlayerUtils {
                 if (sEntity.getGenericInstance() instanceof SlayerBoss && !((SlayerBoss) sEntity.getGenericInstance()).getSpawnerUUID().equals(damager.getUniqueId())) {
                     finishSlayerQuest(((SlayerBoss) sEntity.getGenericInstance()).getSpawnerUUID());
                 }
-                if (quest != null && sEntity.getSpecType().getCraftType() == quest.getType().getType().getEntityType() && !damager.getWorld().getName().contains("f6")) {
+                if (quest != null && sEntity.getSpecType().getCraftType() == quest.getType().getType().getEntityType() && !damager.getWorld().getName().startsWith("f6")) {
                     if (sEntity.getGenericInstance() instanceof SlayerBoss && ((SlayerBoss) sEntity.getGenericInstance()).getSpawnerUUID().equals(damager.getUniqueId())) {
                         finishSlayerQuest(damager.getUniqueId());
                     } else {

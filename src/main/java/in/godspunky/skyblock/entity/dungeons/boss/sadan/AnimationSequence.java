@@ -19,7 +19,7 @@ import in.godspunky.skyblock.util.Sputnik;
 public class AnimationSequence {
     public static void chainAnimation(final World w) {
         final boolean chaining = false;
-        if (w.getName().contains("f6")) {
+        if (w.getName().startsWith("f6")) {
             beginRenderDown(w);
             SUtil.delay(() -> beginRenderUp(w), 330L);
         }

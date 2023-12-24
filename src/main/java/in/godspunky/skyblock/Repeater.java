@@ -123,7 +123,7 @@ public class Repeater {
                     }
                 }
                 for (final World world : Bukkit.getWorlds()) {
-                    if (world.getName().toLowerCase().contains("f6")) {
+                    if (world.getName().toLowerCase().startsWith("f6")) {
                         for (final Entity e : world.getEntities()) {
                             if (e.hasMetadata("Giant_")) {
                                 for (final Entity entity2 : e.getNearbyEntities(3.0, 11.0, 3.0)) {
@@ -168,7 +168,7 @@ public class Repeater {
                     }
                 }
                 for (final World w : Bukkit.getWorlds()) {
-                    if (w.getName().contains("f6") && !w.getName().equals("f6") && w.getPlayers().size() == 0) {
+                    if (w.getName().startsWith("f6") && !w.getName().equals("f6") && w.getPlayers().size() == 0) {
                         SadanBossManager.endFloor(w);
                         SLog.warn("[WORLD CLEARER] Cleared F6 Bossroom world " + w.getName() + ". Reason: No player inside");
                     }
@@ -179,7 +179,7 @@ public class Repeater {
             public void run() {
                 SkyBlockCalendar.ELAPSED += 20L;
                 for (final World w : Bukkit.getWorlds()) {
-                    if (SadanHuman.BossRun.containsKey(w.getUID()) && w.getName().contains("f6") && SadanHuman.BossRun.containsKey(w.getUID()) && SadanHuman.BossRun.get(w.getUID())) {
+                    if (SadanHuman.BossRun.containsKey(w.getUID()) && w.getName().startsWith("f6") && SadanHuman.BossRun.containsKey(w.getUID()) && SadanHuman.BossRun.get(w.getUID())) {
                         Repeater.FloorLivingSec.put(w.getUID(), Repeater.FloorLivingSec.get(w.getUID()) + 1);
                     }
                 }
@@ -517,7 +517,7 @@ public class Repeater {
                 }
                 if (player.getWorld().getName().equalsIgnoreCase("dragon")) {
                     sidebar.add(ChatColor.GRAY + " ⏣ " + ChatColor.DARK_PURPLE + "Dragon's Nest");
-                } else if (player.getWorld().getName().contains("f6")) {
+                } else if (player.getWorld().getName().startsWith("f6")) {
                     sidebar.add(ChatColor.GRAY + " ⏣ " + ChatColor.RED + "Catacombs Demo" + ChatColor.GRAY + " (F6)");
                 } else if (player.getWorld().getName().contains("arena")) {
                     sidebar.add(ChatColor.GRAY + " ⏣ " + ChatColor.RED + "Withering Ruins");
@@ -526,7 +526,7 @@ public class Repeater {
                 } else {
                     sidebar.add(ChatColor.GRAY + " ⏣ " + location);
                 }
-                if (!player.getWorld().getName().contains("f6") && !player.getWorld().getName().equalsIgnoreCase("arena")) {
+                if (!player.getWorld().getName().startsWith("f6") && !player.getWorld().getName().equalsIgnoreCase("arena")) {
                     sidebar.add(" ");
                     final StringBuilder coinsDisplay = new StringBuilder();
                     if (user.isPermanentCoins()) {
@@ -575,7 +575,7 @@ public class Repeater {
                         sidebar.add("Your Damage: " + ChatColor.RED + SUtil.commaify(dmgdealt));
                         sidebar.add("     ");
                     }
-                } else if (player.getWorld().getName().contains("f6") && !player.getWorld().getName().equals("f6")) {
+                } else if (player.getWorld().getName().startsWith("f6") && !player.getWorld().getName().equals("f6")) {
                     sidebar.add(ChatColor.RED + " ");
                     if (Repeater.FloorLivingSec.containsKey(player.getWorld().getUID())) {
                         sidebar.add(ChatColor.translateAlternateColorCodes('&', "&fTime Elapsed: &a" + Sputnik.formatTime(Repeater.FloorLivingSec.get(player.getWorld().getUID()))));

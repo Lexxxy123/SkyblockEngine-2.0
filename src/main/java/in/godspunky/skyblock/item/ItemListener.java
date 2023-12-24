@@ -1055,7 +1055,7 @@ public class ItemListener extends PListener {
 
     @EventHandler
     public void onentityded(final EntityDeathEvent e) {
-        if (e.getEntity().getWorld().getName().contains("f6")) {
+        if (e.getEntity().getWorld().getName().startsWith("f6")) {
             e.setDroppedExp(0);
         }
     }

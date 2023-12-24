@@ -95,7 +95,7 @@ public class BossMenu extends GUI {
                 if (!BossMenu.cooldownCata.containsKey(player)) {
                     BossMenu.cooldownCata.put(player, false);
                 }
-                if (!BossMenu.cooldownCata.get(player) && BossMenu.ableToJoin.get(player) && !player.getWorld().getName().contains("f6")) {
+                if (!BossMenu.cooldownCata.get(player) && BossMenu.ableToJoin.get(player) && !player.getWorld().getName().startsWith("f6")) {
                     player.sendMessage(ChatColor.GREEN + "Requesting the server...");
                     Sputnik.startRoom(player);
                     BossMenu.ableToJoin.put(player, false);

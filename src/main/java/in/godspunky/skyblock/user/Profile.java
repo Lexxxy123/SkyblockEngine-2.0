@@ -85,6 +85,7 @@ public class Profile
 
     public static long cookieduration;
     public static final Map<String, Profile> USER_CACHE = new HashMap<>();
+    public static final Map<String , Profile> SELECTED_PROFILES_CACHE = new HashMap<>();
     private static final SkySimEngine plugin;
     private static final File USER_FOLDER;
 
@@ -204,6 +205,7 @@ public class Profile
     }
 
     public boolean isSelected() {
+
         return User.getUser(owner).getSelectedProfile().getId().equals(getId());
     }
 
@@ -1319,7 +1321,7 @@ public class Profile
         player.setVelocity(new Vector(0, 0, 0));
         player.setFallDistance(0.0f);
         SputnikPlayer.AbsHP.put(player, 0);
-        if (!player.getWorld().getName().contains("f6")) {
+        if (!player.getWorld().getName().startsWith("f6")) {
             this.sendToSpawn();
             if (!PlayerUtils.cookieBuffActive(player)) {
                 this.clearPotionEffects();
@@ -1406,11 +1408,11 @@ public class Profile
         if (slayerQuest != null && slayerQuest.getKilled() == 0)
             failSlayerQuest();
         player.playSound(player.getLocation(), Sound.HURT_FLESH, 1.0f, 1.0f);
-        if (!player.getWorld().getName().equalsIgnoreCase("limbo") && !player.getWorld().getName().contains("f6")) {
+        if (!player.getWorld().getName().equalsIgnoreCase("limbo") && !player.getWorld().getName().startsWith("f6")) {
             player.sendMessage(ChatColor.RED + " ☠ " + ChatColor.GRAY + message + ChatColor.GRAY + ".");
             SUtil.broadcastExcept(ChatColor.RED + " ☠ " + ChatColor.GRAY + String.format(out, player.getName()) + ChatColor.GRAY + ".", player);
         }
-        if (player.getWorld().getName().contains("f6")) {
+        if (player.getWorld().getName().startsWith("f6")) {
             player.playSound(player.getLocation(), Sound.HURT_FLESH, 1.0f, 1.0f);
             player.sendMessage(ChatColor.RED + " ☠ " + ChatColor.GRAY + message + ChatColor.GRAY + " and became a ghost.");
             SUtil.broadcastExcept(ChatColor.RED + " ☠ " + ChatColor.GRAY + String.format(out, player.getName()) + ChatColor.GRAY + " and became a ghost.", player);
@@ -1425,7 +1427,7 @@ public class Profile
             player.sendMessage(ChatColor.RED + "You died!");
             return;
         }
-        if ((this.isOnIsland() && cause == EntityDamageEvent.DamageCause.VOID) || this.permanentCoins || player.getWorld().getName().equalsIgnoreCase("limbo") || player.getWorld().getName().contains("f6")) {
+        if ((this.isOnIsland() && cause == EntityDamageEvent.DamageCause.VOID) || this.permanentCoins || player.getWorld().getName().equalsIgnoreCase("limbo") || player.getWorld().getName().startsWith("f6")) {
             return;
         }
         final int piggyIndex = PlayerUtils.getSpecItemIndex(player, SMaterial.PIGGY_BANK);

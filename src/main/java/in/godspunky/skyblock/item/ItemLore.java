@@ -434,7 +434,7 @@ public class ItemLore {
             }
             list.add(builder.toString());
             return true;
-        } else if (this.player.getWorld().getName().contains("f6") || this.player.getWorld().getName().contains("dungeon")) {
+        } else if (this.player.getWorld().getName().startsWith("f6") || this.player.getWorld().getName().contains("dungeon")) {
             i += r;
             i += this.getBoostStats(this.parent, name);
             if (i == 0.0) {
@@ -557,7 +557,7 @@ public class ItemLore {
             builder.append(" " + this.getBoostLore(this.parent, i, name));
             list.add(builder.toString());
             return true;
-        } else if (this.player.getWorld().getName().contains("f6") || this.player.getWorld().getName().contains("dungeon")) {
+        } else if (this.player.getWorld().getName().startsWith("f6") || this.player.getWorld().getName().contains("dungeon")) {
             i += r;
             i += this.getBoostStats(this.parent, name);
             if (i == 0.0) {

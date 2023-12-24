@@ -930,7 +930,7 @@ public class Sputnik {
     public static int runningFloors() {
         int i = 0;
         for (final World w : Bukkit.getWorlds()) {
-            if (w.getName().contains("f6") && !w.getName().equals("f6")) {
+            if (w.getName().startsWith("f6") && !w.getName().equals("f6")) {
                 ++i;
             }
         }

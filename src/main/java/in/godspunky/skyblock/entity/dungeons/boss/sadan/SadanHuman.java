@@ -108,7 +108,7 @@ public class SadanHuman extends BaseZombie {
         } else {
             SadanHuman.BBRunning.put(entity.getWorld().getUID(), true);
         }
-        if (!entity.getWorld().getName().contains("f6")) {
+        if (!entity.getWorld().getName().startsWith("f6")) {
             entity.remove();
             Bukkit.broadcastMessage(Sputnik.trans("&cAn Error has been occured while performing the /spawncustommob command! Please check the Console!"));
             return;
