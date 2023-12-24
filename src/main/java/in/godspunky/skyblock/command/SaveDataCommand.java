@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.command;
 
+import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.user.SMongoLoader;
 import in.godspunky.skyblock.user.User;
@@ -21,7 +22,7 @@ public class SaveDataCommand extends SCommand {
                 for (final Player p : Bukkit.getOnlinePlayers()) {
                     final User user = User.getUser(p.getUniqueId());
                     if (user != null) {
-                        SMongoLoader.save(p.getUniqueId());
+                       SkySimEngine.getPlugin().dataLoader.save(p.getUniqueId());
                     }
                 }
                 Bukkit.broadcastMessage(Sputnik.trans("&b[SKYSIM D.C] &aAll players data have been saved! Action performed by " + player.getDisplayName() + "&a!"));
@@ -31,7 +32,7 @@ public class SaveDataCommand extends SCommand {
             for (final Player p : Bukkit.getOnlinePlayers()) {
                 final User user = User.getUser(p.getUniqueId());
                 if (user != null) {
-                    SMongoLoader.save(p.getUniqueId());
+                    SkySimEngine.getPlugin().getDataLoader().save(p.getUniqueId());
                 }
             }
             Bukkit.broadcastMessage(Sputnik.trans("&b[SKYSIM D.C] &aAll players data have been saved! Action performed by &cCONSOLE&a!"));

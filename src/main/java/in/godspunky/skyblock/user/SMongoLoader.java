@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 
 public class SMongoLoader
 {
-    public static void load(UUID uuid) {
+    public void load(UUID uuid) {
         User user = User.getUser(uuid);
 
         Player player = Bukkit.getPlayer(uuid);
@@ -70,8 +70,36 @@ public class SMongoLoader
         player.sendMessage(ChatColor.YELLOW + "Welcome to " + ChatColor.GREEN + "Godspunky Skyblock!");
         player.sendMessage(ChatColor.AQUA + "You are playing on profile: " + ChatColor.YELLOW + name);
     }
+    public void create(UUID uuid) {
+        User user = User.getUser(uuid);
+        Player player = Bukkit.getPlayer(uuid);
+        List<Profile> profiles = new ArrayList<>();
+        if (!user.profiles.isEmpty()){
+            for (Profile oldProfile : user.getProfiles()){
+                if (!profiles.contains(oldProfile))
+                    profiles.add(oldProfile);
+            }
+        }
+        UUID newProfileUUID = UUID.randomUUID();
+        String name = SUtil.generateRandomProfileNameFor();
+        Profile newProfile = new Profile(newProfileUUID.toString(), uuid, name);
+        user.setSelectedProfile(newProfile);
+        user.profiles = new HashMap<>();
+        user.profiles.put(newProfile.uuid, true);
+        User.USER_CACHE.put(uuid, user);
+        Profile.USER_CACHE.put(newProfileUUID.toString(), newProfile);
+        for (Profile profile : profiles){
+            user.addProfile(profile , false);
+        }
+        user.addProfile(newProfile ,true);
+        grabProfile(newProfileUUID.toString());
+        save(uuid);
+        player.sendMessage(ChatColor.YELLOW + "Welcome to " + ChatColor.GREEN + "Godspunky Skyblock!");
+        player.sendMessage(ChatColor.AQUA + "You are playing on profile: " + ChatColor.YELLOW + name);
+    }
 
-    public static String getActiveProfile(UUID uuid) {
+
+    public String getActiveProfile(UUID uuid) {
         Document document = grabProfile(uuid.toString());
 
         assert document != null;
@@ -79,13 +107,13 @@ public class SMongoLoader
     }
 
     @SneakyThrows
-    public static void save(UUID uuid) {
+    public  void save(UUID uuid) {
         User user = User.getUser(uuid);
         Profile selectedProfile = user.selectedProfile;
         UserDatabase db = new UserDatabase(uuid.toString(), false);
 
         if (db.exists()) {
-            db.getDocument().forEach(SMongoLoader::setUserProperty);
+            db.getDocument().forEach(this::setUserProperty);
         }
 
         setUserProperty("selectedProfile", selectedProfile == null ? null : selectedProfile.getUuid().toString());
@@ -136,7 +164,7 @@ public class SMongoLoader
 
     }
 
-    public static void loadProfile(Profile profile) {
+    public  void loadProfile(Profile profile) {
         System.out.println("using message at " + System.currentTimeMillis());
         User owner = User.getUser(profile.getOwner());
         Player player = Bukkit.getPlayer(profile.owner);
@@ -336,6 +364,62 @@ public class SMongoLoader
         User.USER_CACHE.put(owner.getUuid(), owner);
     }
 
+    public void saveNewProfile(Profile profile) {
+        setProfileProperty("name", profile.name);
+        Map<String, Integer> tempColl = new HashMap<>();
+        profile.collections.forEach((key, value) -> {
+            tempColl.put(key.getIdentifier(), value);
+        });
+        setProfileProperty("collections", tempColl);
+        setProfileProperty("coins", profile.getCoins());
+        setProfileProperty("bankCoins", profile.getBankCoins());
+        if (profile.getLastRegion() != null)
+            setProfileProperty("lastRegion", profile.getLastRegion().getName());
+        Map<String, Integer> tempQuiv = new HashMap<>();
+        profile.getQuiver().forEach((key, value) -> tempQuiv.put(key.name(), value));
+        setProfileProperty("quiver", tempQuiv);
+        List<Document> effectsDocuments = new ArrayList<>();
+        for (ActivePotionEffect effect : profile.getEffects()) {
+            Document effectDocument = new Document()
+                    .append("key", effect.getEffect().getType().getNamespace())
+                    .append("level", effect.getEffect().getLevel())
+                    .append("duration", effect.getEffect().getDuration())
+                    .append("remaining", effect.getRemaining());
+            effectsDocuments.add(effectDocument);
+        }
+        setProfileProperty("effects", effectsDocuments);
+        setProfileProperty("skillFarmingXp", profile.farmingXP);
+        setProfileProperty("skillMiningXp", profile.miningXP);
+        setProfileProperty("skillCombatXp", profile.combatXP);
+        setProfileProperty("skillForagingXp", profile.foragingXP);
+        setProfileProperty("slayerRevenantHorrorHighest", profile.highestSlayers[0]);
+        setProfileProperty("slayerTarantulaBroodfatherHighest", profile.highestSlayers[1]);
+        setProfileProperty("slayerSvenPackmasterHighest", profile.highestSlayers[2]);
+        setProfileProperty("slayerVoidgloomSeraphHighest", profile.highestSlayers[3]);
+        setProfileProperty("permanentCoins", profile.isPermanentCoins());
+        setProfileProperty("xpSlayerRevenantHorror", profile.slayerXP[0]);
+        setProfileProperty("xpSlayerTarantulaBroodfather", profile.slayerXP[1]);
+        setProfileProperty("xpSlayerSvenPackmaster", profile.slayerXP[2]);
+        setProfileProperty("xpSlayerVoidgloomSeraph", profile.slayerXP[3]);
+        if (profile.getSlayerQuest() != null)
+            setProfileProperty("slayerQuest", profile.getSlayerQuest().serialize());
+        if (!profile.pets.isEmpty()) {
+            List<Map<String, Object>> petsSerialized = profile.pets.stream().map(pet -> pet.serialize()).collect(Collectors.toList());
+            setProfileProperty("pets", petsSerialized);
+        } else {
+            setProfileProperty("pets", new ArrayList<Map<String, Object>>());
+        }
+        setProfileProperty("unlockedRecipes", profile.getUnlockedRecipes());
+        setProfileProperty("talked_npcs", profile.getTalked_npcs());
+        setProfileProperty("auctionSettings", profile.auctionSettings.serialize());
+        setProfileProperty("auctionCreationBIN", profile.isAuctionCreationBIN());
+        setProfileProperty("auctionEscrow", profile.getAuctionEscrow().serialize());
+        setProfileProperty("selected", profile.isSelected());
+
+        SUtil.runAsync(() -> saveProfileData(profile.owner));
+    }
+
+
     public void loadOnlyDisplay(Profile profile) {
         Document base = grabProfile(profile.getUuid().toString());
 
@@ -350,7 +434,7 @@ public class SMongoLoader
         profile.foragingXP = getDouble(base, "foragingXP", 0);
     }
 
-    public static void saveProfile(Profile profile) {
+    public void saveProfile(Profile profile) {
         SLog.info("Save Profile is getting called");
         setProfileProperty("owner", profile.owner.toString());
 
@@ -407,33 +491,30 @@ public class SMongoLoader
 
 
 
-    private static Map<String, Object> profileCache = new ConcurrentHashMap<>();
-    private static Map<String, Object> userCache = new ConcurrentHashMap<>();
-    private static final Object profileCacheLock = new Object();
-    private static final Object userCacheLock = new Object();
+    public Map<String, Object> profileCache;
+    public Map<String, Object> userCache;
+    public String cachedUserId;
+    public String cachedProfileId;
 
     public SMongoLoader() {
         profileCache = new HashMap<>();
         userCache = new HashMap<>();
     }
 
-    public static void setProfileProperty(String key, Object value) {
-        synchronized (profileCacheLock) {
+    public  void setProfileProperty(String key, Object value) {
             if (value != null) {
                 profileCache.put(key, value);
             }
         }
-    }
 
-    public static void setUserProperty(String key, Object value) {
-        synchronized (userCacheLock) {
+    public void setUserProperty(String key, Object value) {
             if (value != null) {
                 userCache.put(key, value);
             }
         }
-    }
 
-    public static Document grabUser(String id) {
+
+    public Document grabUser(String id) {
         Document query = new Document("_id", id);
         Document foundOrNot = DatabaseManager.getCollection("users").find(query).first();
         if (foundOrNot == null) {
@@ -442,7 +523,7 @@ public class SMongoLoader
         return foundOrNot;
     }
 
-    public static Document grabProfile(String id) {
+    public Document grabProfile(String id) {
         Document query = new Document("_id", id);
         Document foundOrNot = DatabaseManager.getCollection("profiles").find(query).first();
         if (foundOrNot == null) {
@@ -451,38 +532,38 @@ public class SMongoLoader
         return foundOrNot;
     }
 
-    public static Object get(Document base, String key, Object def) {
+    public Object get(Document base, String key, Object def) {
         if (base.get(key) != null) {
             return base.get(key);
         }
         return def;
     }
 
-    public static String getString(Document base, String key, Object def) {
+    public String getString(Document base, String key, Object def) {
         return get(base, key, def).toString();
     }
 
-    public static int getInt(Document base, String key, Object def) {
+    public int getInt(Document base, String key, Object def) {
         return (int) get(base, key, def);
     }
 
-    public static boolean getBoolean(Document base, String key, Object def) {
+    public boolean getBoolean(Document base, String key, Object def) {
         return Boolean.parseBoolean(get(base, key, def).toString());
     }
 
-    public static double getDouble(Document base, String key, Object def) {
+    public double getDouble(Document base, String key, Object def) {
         return Double.parseDouble(getString(base, key, def));
     }
 
-    public static long getLong(Document base, String key, Object def) {
+    public long getLong(Document base, String key, Object def) {
         if (def.equals(0.0)) {
             def = 0L;
         }
         return Long.parseLong(getString(base, key, def));
     }
 
-    public static void saveProfileData(UUID uuid) {
-        synchronized (profileCacheLock) {
+    public  void saveProfileData(UUID uuid) {
+
             Document found = grabProfile(uuid.toString());
             if (found != null) {
                 Document updated = new Document(found);
@@ -491,10 +572,10 @@ public class SMongoLoader
                 SLog.info("Updating profile data : " + uuid);
             }
         }
-    }
 
-    public static void saveUserData(UUID uuid) {
-        synchronized (userCacheLock) {
+
+    public  void saveUserData(UUID uuid) {
+
             Document found = grabUser(uuid.toString());
 
             if (found != null) {
@@ -505,5 +586,4 @@ public class SMongoLoader
                 DatabaseManager.getCollection("users").replaceOne(found, updated);
             }
         }
-    }
 }

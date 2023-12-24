@@ -197,17 +197,21 @@ public class User {
         CREATE, SWITCH, WIPED
     }
 
-    public void switchProfile(Profile profile, SwitchReason reason) {
-        Map<String, Boolean> prof = new HashMap<>(profiles);
-
-        SUtil.delay(() -> SUtil.runAsync(() -> {
-            prof.put(selectedProfile.getUuid().toString(), false);
-            prof.put(profile.getUuid().toString(), true);
-
-            UserDatabase db = new UserDatabase(uuid.toString(), false);
-            db.setUserProperty("profiles", prof);
-            db.setUserProperty("selectedProfile", profile.getUuid().toString());
-        }), 8);
+    public void switchProfile(Profile newProfile ,SwitchReason reason) {
+        if (reason == SwitchReason.CREATE) {
+            Map<String, Boolean> prof = new HashMap<>(profiles);
+            SUtil.delay(() -> SUtil.runAsync(() -> {
+                SkySimEngine.getPlugin().dataLoader.create(uuid);
+            }), 8);
+        }
+        if (reason == SwitchReason.SWITCH){
+            SUtil.runAsync(()->{
+                selectedProfile = newProfile;
+                UserDatabase db = new UserDatabase(uuid.toString(), false);
+                db.setUserProperty("selectedProfile", newProfile.getUuid().toString());
+               SkySimEngine.getPlugin().dataLoader.load(uuid);
+            });
+        }
     }
 
     public List<String> getRawProfiles() {
@@ -236,11 +240,14 @@ public class User {
     }
 
 
+    public void addProfile(Profile profile , boolean selected){
+        profiles.put(profile.uuid , selected);
+    }
 
     public void syncSavingData() {
         new BukkitRunnable() {
             public void run() {
-                SMongoLoader.save(uuid);;
+                plugin.dataLoader.save(uuid);;
             }
         }.runTask(User.plugin);
     }
@@ -256,11 +263,11 @@ public class User {
 
     public void loadCookieStatus(Profile profile) {
         try {
-            Document document = SMongoLoader.grabProfile(profile.uuid);
-            if (!document.containsKey("user")) return;
+            Document document = plugin.dataLoader.grabProfile(profile.uuid);
+            if (!document.containsKey("cookieDuration")) return;
             Player player = Bukkit.getPlayer(this.uuid);
-            Document userdocument = (Document) document.get("user");
-            PlayerUtils.setCookieDurationTicks(player, userdocument.getLong("cookieDuration"));
+
+            PlayerUtils.setCookieDurationTicks(player, plugin.dataLoader.getLong(document,"cookieDuration" , null));
             PlayerUtils.loadCookieStatsBuff(player);
         }catch (NullPointerException ignored){
 
@@ -268,7 +275,6 @@ public class User {
     }
 
     public void saveCookie(Profile profile) {
-        Document existingProfile = SMongoLoader.grabProfile(profile.uuid);
         if (Bukkit.getPlayer(uuid) == null) {
             return;
         }
@@ -279,14 +285,14 @@ public class User {
             return;
         }
 
-        set(existingProfile,"user.cookieDuration", PlayerUtils.getCookieDurationTicks(Bukkit.getPlayer(this.uuid)));
+        plugin.dataLoader.setUserProperty("cookieDuration", PlayerUtils.getCookieDurationTicks(Bukkit.getPlayer(this.uuid)));
     }
 
     public void saveInventory(Profile profile) {
         if (Bukkit.getPlayer(this.uuid) == null) {
             return;
         }
-        Document existingProfile = SMongoLoader.grabProfile(profile.uuid);
+        Document existingProfile = plugin.dataLoader.grabProfile(profile.uuid);
         Object a = null;
         PlayerInventory piv = Bukkit.getPlayer(this.uuid).getInventory();
         a = this.getPureListFrom(piv);
@@ -312,7 +318,7 @@ public class User {
     }
 
     public void saveArmor(Profile profile) {
-        Document existingProfile = SMongoLoader.grabProfile(profile.uuid);
+        Document existingProfile = plugin.dataLoader.grabProfile(profile.uuid);
         if (Bukkit.getPlayer(this.uuid) == null) {
             return;
         }
@@ -325,7 +331,7 @@ public class User {
         if (Bukkit.getPlayer(this.uuid) == null) {
             return;
         }
-        Document existingProfile = SMongoLoader.grabProfile(profile.uuid);
+        Document existingProfile = plugin.dataLoader.grabProfile(profile.uuid);
         Object a = null;
         Inventory inv = Bukkit.getPlayer(this.uuid).getEnderChest();
         a = this.getPureListFrom(inv);
@@ -333,7 +339,7 @@ public class User {
     }
 
     public void saveExp(Profile profile) {
-        Document existingProfile = SMongoLoader.grabProfile(profile.uuid);
+        Document existingProfile = plugin.dataLoader.grabProfile(profile.uuid);
         if (Bukkit.getPlayer(this.uuid) == null) {
             return;
         }
@@ -346,7 +352,7 @@ public class User {
 
     public void loadPlayerData(Profile profile) throws IllegalArgumentException, IOException {
         Player player = Bukkit.getPlayer(this.uuid);
-        Document document = SMongoLoader.grabProfile(profile.uuid);
+        Document document = plugin.dataLoader.grabProfile(profile.uuid);
         Document databaseDocument;
         if (document.containsKey("database")){
             databaseDocument = (Document) document.get("database");
@@ -411,7 +417,7 @@ public class User {
     }*/
 
     public void saveLastSlot(Profile profile) {
-        Document existingProfile = SMongoLoader.grabProfile(profile.uuid);
+        Document existingProfile = plugin.dataLoader.grabProfile(profile.uuid);
         if (Bukkit.getPlayer(this.uuid) == null) {
             return;
         }
@@ -431,7 +437,7 @@ public class User {
     }
 
     public void saveStash(Profile profile) {
-        Document existingProfile = SMongoLoader.grabProfile(profile.uuid);
+        Document existingProfile = plugin.dataLoader.grabProfile(profile.uuid);
         if (Bukkit.getPlayer(this.uuid) == null) {
             return;
         }
@@ -1278,13 +1284,15 @@ public class User {
             final long sub = (long) (this.coins * 0.25);
             player.sendMessage(ChatColor.RED + "You died, lost " + SUtil.commaify(sub) + " coins, and your piggy bank broke!");
             this.coins -= sub;
-            SMongoLoader.save(uuid);
+            plugin.dataLoader.save(uuid);
+
             return;
         }
         final long sub2 = this.coins / 2L;
         player.sendMessage(ChatColor.RED + "You died and lost " + SUtil.commaify(sub2) + " coins!");
         this.coins -= sub2;
-        SMongoLoader.save(uuid);
+        plugin.dataLoader.save(uuid);
+        // todo remove it!
     }
 
     public void addPotionEffect(final PotionEffect effect) {

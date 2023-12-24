@@ -39,6 +39,7 @@ import in.godspunky.skyblock.region.RegionType;
 import in.godspunky.skyblock.slayer.SlayerQuest;
 import in.godspunky.skyblock.user.AuctionSettings;
 import in.godspunky.skyblock.user.DatabaseManager;
+import in.godspunky.skyblock.user.SMongoLoader;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.BungeeChannel;
 import in.godspunky.skyblock.util.Groups;
@@ -115,6 +116,9 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
     public Config spawners;
     private int onlinePlayerAcrossServers;
     public CommandMap commandMap;
+
+    @Getter
+    public SMongoLoader dataLoader;
     public SQLDatabase sql;
     public SQLRegionData regionData;
     public SQLWorldData worldData;
@@ -173,6 +177,7 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
            //DatabaseManager.connectToDatabase("mongodb://admin:admin@88.99.150.153:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2", "Godspunky");
             DatabaseManager.connectToDatabase("mongodb://localhost:27017", "Godspunky");
             this.sql = new SQLDatabase();
+            this.dataLoader = new SMongoLoader();
             this.regionData = new SQLRegionData();
             this.worldData = new SQLWorldData();
             this.cl = new CommandLoader();
@@ -467,6 +472,8 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
         this.cl.register(new PickupStashCommand());
         this.cl.register(new StackMyDimoon());
         cl.register(new AdminItemCommand());
+        cl.register(new ProfileCommand());
+        // todo use reflection!
     }
 
     private void loadListeners() {

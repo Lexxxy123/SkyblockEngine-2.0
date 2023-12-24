@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.gui;
 
+import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.user.SMongoLoader;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
@@ -26,7 +27,7 @@ public class WithdrawalGUI extends GUI {
                 final long coins = user.getBankCoins();
                 user.addCoins(coins);
                 user.subBankCoins(coins);
-                SMongoLoader.save(player.getUniqueId());
+                SkySimEngine.getPlugin().dataLoader.save(player.getUniqueId());
                 player.sendMessage(ChatColor.GREEN + "You have withdrawn " + ChatColor.GOLD + SUtil.commaify(coins) + " coins" + ChatColor.GREEN + "! You now have " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()) + " coins " + ChatColor.GREEN + "in your account!");
                 GUIType.BANKER.getGUI().open(player);
             }
@@ -47,7 +48,7 @@ public class WithdrawalGUI extends GUI {
                 final long coins = user.getBankCoins() / 2L;
                 user.addCoins(coins);
                 user.subBankCoins(coins);
-                SMongoLoader.save(player.getUniqueId());
+                SkySimEngine.getPlugin().dataLoader.save(player.getUniqueId());
                 player.sendMessage(ChatColor.GREEN + "You have withdrawn " + ChatColor.GOLD + SUtil.commaify(coins) + " coins" + ChatColor.GREEN + "! You now have " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()) + " coins " + ChatColor.GREEN + "in your account!");
                 GUIType.BANKER.getGUI().open(player);
             }
@@ -68,7 +69,7 @@ public class WithdrawalGUI extends GUI {
                 final long coins = Math.round(user.getBankCoins() * 0.2);
                 user.addCoins(coins);
                 user.subBankCoins(coins);
-                SMongoLoader.save(player.getUniqueId());
+                SkySimEngine.getPlugin().dataLoader.save(player.getUniqueId());
                 player.sendMessage(ChatColor.GREEN + "You have withdrawn " + ChatColor.GOLD + SUtil.commaify(coins) + " coins" + ChatColor.GREEN + "! You now have " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()) + " coins " + ChatColor.GREEN + "in your account!");
                 GUIType.BANKER.getGUI().open(player);
             }
@@ -98,7 +99,7 @@ public class WithdrawalGUI extends GUI {
                     }
                     user.addCoins(coins);
                     user.subBankCoins(coins);
-                    SMongoLoader.save(player.getUniqueId());
+                    SkySimEngine.getPlugin().dataLoader.save(player.getUniqueId());
                     player.sendMessage(ChatColor.GREEN + "You have withdrawn " + ChatColor.GOLD + SUtil.commaify(coins) + " coins" + ChatColor.GREEN + "! You now have " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()) + " coins " + ChatColor.GREEN + "in your account!");
                 } catch (final NumberFormatException ex) {
                     player.sendMessage(ChatColor.RED + "That is not a valid number!");

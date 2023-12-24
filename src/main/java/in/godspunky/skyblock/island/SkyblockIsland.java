@@ -27,8 +27,8 @@ public class SkyblockIsland {
 
 
     private User owner;
-    private static UUID uuid;
-    private static SlimePlugin slimePlugin;
+    private  UUID uuid;
+    private  SlimePlugin slimePlugin;
     private World bukkitWorld;
     private SlimeWorld slimeWorld;
     private Player bukkitPlayer;

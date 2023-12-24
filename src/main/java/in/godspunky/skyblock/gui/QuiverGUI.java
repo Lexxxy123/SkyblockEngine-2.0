@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.gui;
 
+import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.user.SMongoLoader;
@@ -126,6 +127,6 @@ public class QuiverGUI extends GUI {
             }
             user.addToQuiver(sItem.getType(), stack.getAmount());
         }
-        SMongoLoader.save(e.getPlayer().getUniqueId());
+        SkySimEngine.getPlugin().dataLoader.save(e.getPlayer().getUniqueId());
     }
 }

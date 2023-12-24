@@ -121,10 +121,8 @@ public class PlayerListener extends PListener {
             PrecursorEye.PrecursorLaser.put(player.getUniqueId(), false);
             final User user = User.getUser(player.getUniqueId());
             user.loadStatic();
-            SMongoLoader.load(player.getUniqueId());
-            if(!SkyblockIsland.getIsland(player.getUniqueId()).exist()){
-                SkyblockIsland.getIsland(player.getUniqueId()).send();
-            }
+            SkySimEngine.getPlugin().dataLoader.load(player.getUniqueId());
+
             if (!PlayerUtils.STATISTICS_CACHE.containsKey(player.getUniqueId())) {
                 PlayerUtils.STATISTICS_CACHE.put(player.getUniqueId(), PlayerUtils.getStatistics(player));
             }
@@ -328,7 +326,7 @@ public class PlayerListener extends PListener {
             player.sendMessage("  " + ChatColor.RED + ChatColor.BOLD + "SLAYER QUEST FAILED!");
             player.sendMessage("   " + ChatColor.DARK_PURPLE + ChatColor.BOLD + "» " + ChatColor.GRAY + "You need to learn how to play this game first!");
         }
-        SMongoLoader.save(player.getUniqueId());
+        plugin.dataLoader.save(player.getUniqueId());
         //user.saveCookie();
         //user.saveAllVanillaInstances();
         Blessings.STAT_MAP.remove(player.getUniqueId());

@@ -1685,7 +1685,8 @@ public class Profile
 
     public void deleteRoot() {
         new Thread(() -> {
-            Document document = SMongoLoader.grabProfile(this.uuid);
+
+            Document document = plugin.dataLoader.grabProfile(this.uuid);
 
             User user = User.getUser(owner);
             user.getProfilesMap().remove(this.uuid);
