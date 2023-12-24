@@ -13,6 +13,7 @@ import in.godspunky.skyblock.enchantment.EnchantmentType;
 import in.godspunky.skyblock.entity.dungeons.watcher.Watcher;
 import in.godspunky.skyblock.entity.nms.VoidgloomSeraph;
 import in.godspunky.skyblock.extra.beam.Beam;
+import in.godspunky.skyblock.island.SkyblockIsland;
 import in.godspunky.skyblock.item.Ability;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.accessory.AccessoryFunction;
@@ -121,6 +122,9 @@ public class PlayerListener extends PListener {
             final User user = User.getUser(player.getUniqueId());
             user.loadStatic();
             SMongoLoader.load(player.getUniqueId());
+            if(!SkyblockIsland.getIsland(player.getUniqueId()).exist()){
+                SkyblockIsland.getIsland(player.getUniqueId()).send();
+            }
             if (!PlayerUtils.STATISTICS_CACHE.containsKey(player.getUniqueId())) {
                 PlayerUtils.STATISTICS_CACHE.put(player.getUniqueId(), PlayerUtils.getStatistics(player));
             }
@@ -130,7 +134,7 @@ public class PlayerListener extends PListener {
             try {
                // user.loadPlayerData();
             } catch (final IllegalArgumentException e2) {
-                SLog.severe("============ SKYSIM DATA LOAD ERROR ============");
+                SLog.severe("============ GODSPUNKY DATA LOAD ERROR ============");
                 SLog.severe("Ah shit, here we go again.");
                 SLog.severe(" ");
                 SLog.severe("Some bullshit errors happended on this user!");

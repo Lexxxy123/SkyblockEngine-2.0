@@ -1,8 +1,6 @@
 package in.godspunky.skyblock.user;
 
-import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
-import de.tr7zw.nbtapi.NBTItem;
 import in.godspunky.skyblock.auction.AuctionEscrow;
 import in.godspunky.skyblock.collection.ItemCollection;
 import in.godspunky.skyblock.item.SMaterial;
@@ -11,7 +9,6 @@ import in.godspunky.skyblock.potion.ActivePotionEffect;
 import in.godspunky.skyblock.potion.PotionEffect;
 import in.godspunky.skyblock.potion.PotionEffectType;
 import in.godspunky.skyblock.region.Region;
-import in.godspunky.skyblock.region.RegionType;
 import in.godspunky.skyblock.slayer.SlayerBossType;
 import in.godspunky.skyblock.slayer.SlayerQuest;
 import in.godspunky.skyblock.util.SLog;
@@ -20,18 +17,9 @@ import lombok.SneakyThrows;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
-import java.awt.*;
 import java.io.IOException;
-import java.util.List;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;

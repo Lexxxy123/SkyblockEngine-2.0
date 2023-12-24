@@ -10,10 +10,7 @@ import net.swofty.swm.api.loaders.SlimeLoader;
 import net.swofty.swm.api.world.SlimeWorld;
 import net.swofty.swm.api.world.properties.SlimeProperties;
 import net.swofty.swm.api.world.properties.SlimePropertyMap;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -30,8 +27,8 @@ public class SkyblockIsland {
 
 
     private User owner;
-    private UUID uuid;
-    private SlimePlugin slimePlugin;
+    private static UUID uuid;
+    private static SlimePlugin slimePlugin;
     private World bukkitWorld;
     private SlimeWorld slimeWorld;
     private Player bukkitPlayer;
@@ -91,6 +88,19 @@ public class SkyblockIsland {
                     bukkitPlayer.teleport(
                             new Location(Bukkit.getWorld(worldName), 0, 100, 0)
                     );
+                    bukkitPlayer.sendMessage(ChatColor.GRAY + "Sending to Player Island...");
+                    bukkitPlayer.sendMessage(ChatColor.YELLOW + "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
+                    bukkitPlayer.sendMessage(ChatColor.WHITE + "" + ChatColor.BOLD + "          Welcome to Skyblock, " + ChatColor.GRAY + bukkitPlayer.getName() + ChatColor.WHITE + ChatColor.BOLD + "!");
+                    bukkitPlayer.sendMessage("");
+                    bukkitPlayer.sendMessage(ChatColor.YELLOW + "               This is your Island, the Skyblock");
+                    bukkitPlayer.sendMessage(ChatColor.YELLOW + "            universe has many lands to discover,");
+                    bukkitPlayer.sendMessage(ChatColor.YELLOW + "         secrets to uncover, and people to meet.");
+                    bukkitPlayer.sendMessage(ChatColor.YELLOW + "            Collect resources, craft items, and");
+                    bukkitPlayer.sendMessage(ChatColor.YELLOW + "         complete objectives to advance your way");
+                    bukkitPlayer.sendMessage(ChatColor.YELLOW + "                       through Skyblock.");
+                    bukkitPlayer.sendMessage(ChatColor.YELLOW + "                             Have fun!");
+                    bukkitPlayer.sendMessage("");
+                    bukkitPlayer.sendMessage(ChatColor.YELLOW + "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
 
                 });
 
