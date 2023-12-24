@@ -81,15 +81,15 @@ public class Repeater {
                 }
             }
         }.runTaskTimer(SkySimEngine.getPlugin(), 3000L, 3000L));
-        this.tasks.add(new BukkitRunnable() {
-            public void run() {
-                for (final User user : User.getCachedUsers()) {
-                    if (Bukkit.getPlayer(user.getUuid()) != null && !Bukkit.getPlayer(user.getUuid()).isOnline()) {
-                        User.getHash().remove(user.getUuid());
-                    }
-                }
-            }
-        }.runTaskTimerAsynchronously(SkySimEngine.getPlugin(), 1L, 1L));
+//        this.tasks.add(new BukkitRunnable() {
+//            public void run() {
+//                for (final User user : User.getCachedUsers()) {
+//                    if (Bukkit.getPlayer(user.getUuid()) != null && !Bukkit.getPlayer(user.getUuid()).isOnline()) {
+//                        User.getHash().remove(user.getUuid());
+//                    }
+//                }
+//            }
+//        }.runTaskTimerAsynchronously(SkySimEngine.getPlugin(), 1L, 1L));
         this.tasks.add(new BukkitRunnable() {
             public void run() {
                 Blessings.update();
