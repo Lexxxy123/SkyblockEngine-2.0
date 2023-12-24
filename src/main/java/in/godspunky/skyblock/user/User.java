@@ -110,8 +110,8 @@ public class User {
     private double cataXP;
     private double berserkXP;
     private double healerXP;
-  //  @Getter
-  //  private SkyblockIsland island;
+    //  @Getter
+    //  private SkyblockIsland island;
     private double tankXP;
     private double mageXP;
     double foragingXP;
@@ -165,7 +165,7 @@ public class User {
         this.miningXP = 0.0;
         this.combatXP = 0.0;
         this.foragingXP = 0.0;
-       // this.island = SkyblockIsland.getIsland(uuid);
+        // this.island = SkyblockIsland.getIsland(uuid);
         this.enchantXP = 0.0;
         this.highestSlayers = new int[4];
         this.slayerXP = new int[4];
@@ -190,6 +190,24 @@ public class User {
         if (!talked_npcs.contains(name)){
             talked_npcs.add(name);
         }
+    }
+
+    public enum SwitchReason
+    {
+        CREATE, SWITCH, WIPED
+    }
+
+    public void switchProfile(Profile profile, SwitchReason reason) {
+        Map<String, Boolean> prof = new HashMap<>(profiles);
+
+        SUtil.delay(() -> SUtil.runAsync(() -> {
+            prof.put(selectedProfile.getUuid().toString(), false);
+            prof.put(profile.getUuid().toString(), true);
+
+            UserDatabase db = new UserDatabase(uuid.toString(), false);
+            db.setUserProperty("profiles", prof);
+            db.setUserProperty("selectedProfile", profile.getUuid().toString());
+        }), 8);
     }
 
     public List<String> getRawProfiles() {
@@ -1320,7 +1338,7 @@ public class User {
         if (world == null) {
             return false;
         }
-       return location.getWorld().getName().equalsIgnoreCase(SkyblockIsland.ISLAND_PREFIX + getSelectedProfileUUID());
+        return location.getWorld().getName().equalsIgnoreCase(SkyblockIsland.ISLAND_PREFIX + getSelectedProfileUUID());
     }
 
     public boolean isOnUserIsland() {
