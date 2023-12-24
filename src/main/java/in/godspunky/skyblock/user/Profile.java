@@ -85,7 +85,6 @@ public class Profile
 
     public static long cookieduration;
     public static final Map<String, Profile> USER_CACHE = new HashMap<>();
-    public static final Map<String , Profile> SELECTED_PROFILES_CACHE = new HashMap<>();
     private static final SkySimEngine plugin;
     private static final File USER_FOLDER;
 

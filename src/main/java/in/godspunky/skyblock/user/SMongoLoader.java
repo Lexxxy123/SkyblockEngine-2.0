@@ -39,7 +39,6 @@ import java.util.stream.Collectors;
 public class SMongoLoader
 {
     public static void load(UUID uuid) {
-        SLog.info("Load method is getting called!");
         User user = User.getUser(uuid);
 
         Player player = Bukkit.getPlayer(uuid);
@@ -55,7 +54,6 @@ public class SMongoLoader
                 user.profiles.putIfAbsent(user.selectedProfile.uuid, true);
 
                 User.USER_CACHE.put(uuid, user);
-                Profile.SELECTED_PROFILES_CACHE.put(uuid.toString() , user.selectedProfile);
                 user.selectedProfile.setSelected(true);
 
                 loadProfile(user.selectedProfile);
@@ -76,7 +74,6 @@ public class SMongoLoader
         user.setSelectedProfile(newProfile);
         user.profiles = new HashMap<>();
         user.profiles.put(newProfile.uuid, true);
-        Profile.SELECTED_PROFILES_CACHE.put(uuid.toString() , newProfile);
 
         User.USER_CACHE.put(uuid, user);
         Profile.USER_CACHE.put(newProfileUUID.toString(), newProfile);
@@ -95,7 +92,6 @@ public class SMongoLoader
 
     @SneakyThrows
     public static void save(UUID uuid) {
-        SLog.info("Save Method is getting called!");
         User user = User.getUser(uuid);
         Profile selectedProfile = user.selectedProfile;
         UserDatabase db = new UserDatabase(uuid.toString(), false);
@@ -116,11 +112,10 @@ public class SMongoLoader
         }
 
         selectedProfile = user.selectedProfile;
-        if (selectedProfile == null && Profile.SELECTED_PROFILES_CACHE.containsKey(uuid.toString())){
-          selectedProfile = Profile.SELECTED_PROFILES_CACHE.get(uuid.toString());
-          user.selectedProfile = selectedProfile;
+        if (selectedProfile == null){
+            SLog.info("Something went wrong while saving data for : " + uuid);
+            return;
         }
-        if (selectedProfile == null) return;
         selectedProfile.setLastRegion(user.getLastRegion());
         selectedProfile.setQuiver(user.getQuiver());
         selectedProfile.setEffects(user.getEffects());
@@ -154,7 +149,6 @@ public class SMongoLoader
     }
 
     public static void loadProfile(Profile profile) {
-        SLog.info("Load profile method is getting called!");
         System.out.println("using message at " + System.currentTimeMillis());
         User owner = User.getUser(profile.getOwner());
         Player player = Bukkit.getPlayer(profile.owner);
@@ -420,7 +414,7 @@ public class SMongoLoader
         //setProfileProperty("created", profile.created);
         setProfileProperty("auctionCreationBIN", profile.isAuctionCreationBIN());
         setProfileProperty("selected", profile.isSelected());
-        SUtil.runAsync(() -> saveProfileData(UUID.fromString(profile.uuid) , profile.owner));
+        SUtil.runAsync(() -> saveProfileData(UUID.fromString(profile.uuid) ));
     }
 
 
@@ -450,11 +444,6 @@ public class SMongoLoader
             }
         }
     }
-    public static String grabSelectedProfile(String uuid){
-        Document document = grabUser(uuid);
-        if (document == null) return null;
-        return document.getString("d6b8e1fa-80ac-46e6-aa44-6b8ce6dbce43");
-    }
 
     public static Document grabUser(String id) {
         Document query = new Document("_id", id);
@@ -462,7 +451,6 @@ public class SMongoLoader
         if (foundOrNot == null) {
             SUtil.runAsync(() -> DatabaseManager.getCollection("users").insertOne(new Document("_id", id)));
         }
-        System.out.println("USER BLAH BLAH " + id);
         return foundOrNot;
     }
 
@@ -472,7 +460,6 @@ public class SMongoLoader
         if (foundOrNot == null) {
             SUtil.runAsync(() -> DatabaseManager.getCollection("profiles").insertOne(new Document("_id", id)));
         }
-        System.out.println("PROFILE BLAH BLAH " + id);
         return foundOrNot;
     }
 
@@ -506,20 +493,14 @@ public class SMongoLoader
         return Long.parseLong(getString(base, key, def));
     }
 
-    public static void saveProfileData(UUID uuid , UUID owner) {
+    public static void saveProfileData(UUID uuid) {
         synchronized (profileCacheLock) {
             Document found = grabProfile(uuid.toString());
-             SLog.info("saveProfileData is getting called!");
             if (found != null) {
                 Document updated = new Document(found);
                 profileCache.forEach((key, value) -> updated.put(key, value));
-                System.out.println("ProfileCache size is: " + profileCache.size());
-                System.out.println("Coins : " + profileCache.get("coins"));
-
                 DatabaseManager.getCollection("profiles").replaceOne(Filters.eq("_id", uuid.toString()), updated);
-                Profile.SELECTED_PROFILES_CACHE.remove(owner.toString());
-
-                SLog.info("Updating profile data: " + uuid);
+                SLog.info("Updating profile data : " + uuid);
             }
         }
     }
