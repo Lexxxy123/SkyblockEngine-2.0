@@ -13,6 +13,7 @@ public class AuctionSettings implements Cloneable, ConfigurationSerializable {
     private Sort sort;
     private Rarity tier;
     private Type type;
+    // commit to update
 
     public AuctionSettings(final ItemCategory category, final String query, final Sort sort, final Rarity tier, final Type type) {
         this.category = category;
