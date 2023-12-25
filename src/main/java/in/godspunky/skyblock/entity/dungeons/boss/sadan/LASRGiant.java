@@ -20,7 +20,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityEquipment;
 import in.godspunky.skyblock.entity.zombie.BaseZombie;
@@ -69,9 +69,9 @@ public class LASRGiant extends BaseZombie {
         SUtil.delay(() -> this.laserActiveCD = false, 10L);
         Sputnik.applyPacketGiant(entity);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 60);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("highername", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("Giant_", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("highername", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("Giant_", new FixedMetadataValue(Skyblock.getPlugin(), true));
         final EntityLiving nmsr = ((CraftLivingEntity) entity).getHandle();
         nmsr.getBoundingBox().grow(5.0, 5.0, 5.0);
         new BukkitRunnable() {
@@ -88,7 +88,7 @@ public class LASRGiant extends BaseZombie {
                     LASRGiant.this.laser(entity);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -118,7 +118,7 @@ public class LASRGiant extends BaseZombie {
                     break;
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 5L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 5L);
     }
 
     @Override
@@ -212,7 +212,7 @@ public class LASRGiant extends BaseZombie {
                     LASRGiant.drawLine(loc2, en2, 0.0);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 5L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 5L);
         new BukkitRunnable() {
             public void run() {
                 if (e.isDead()) {
@@ -241,7 +241,7 @@ public class LASRGiant extends BaseZombie {
                     LASRGiant.getEntity(loc2, en2, e);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 10L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 10L);
     }
 
     public static ItemStack buildColorStackH(final int hexcolor) {

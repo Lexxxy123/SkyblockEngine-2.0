@@ -28,7 +28,7 @@ import org.bukkit.potion.PotionType;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.SMaterial;
@@ -75,8 +75,8 @@ public class Dimoonizae extends BaseZombie {
         final PlayerWatcher skywatch = pl.getWatcher();
         final LivingEntity target = ((CraftZombie) entity).getTarget();
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 70);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("LD", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(Skyblock.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -87,7 +87,7 @@ public class Dimoonizae extends BaseZombie {
                     entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 0.25, 0.0), Effect.WITCH_MAGIC, 0, 1, (float) SUtil.random(-0.5, 0.5), (float) SUtil.random(0.0, 0.6), (float) SUtil.random(-0.5, 0.5), 0.0f, 1, 20);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 15L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 15L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -166,11 +166,11 @@ public class Dimoonizae extends BaseZombie {
                                     Dimoonizae.this.isBowing = false;
                                 }
                             }
-                        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+                        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
         new BukkitRunnable() {
             Location loc = entity.getLocation();
             final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -217,7 +217,7 @@ public class Dimoonizae extends BaseZombie {
                 }
                 this.nms.setSprinting(false);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 7L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 7L);
         new BukkitRunnable() {
             public void run() {
                 final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -256,12 +256,12 @@ public class Dimoonizae extends BaseZombie {
                     break;
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
     }
 
     @Override
     public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
-        if (SkySimEngine.getPlugin().dimoon == null) {
+        if (Skyblock.getPlugin().dimoon == null) {
             return;
         }
         if (!(damager instanceof Player)) {
@@ -269,7 +269,7 @@ public class Dimoonizae extends BaseZombie {
         }
         killed.getWorld().playEffect(killed.getLocation().add(0.0, 0.7, 0.0), Effect.EXPLOSION_HUGE, 0);
         killed.getWorld().playSound(killed.getLocation(), Sound.EXPLODE, 1.0f, 1.0f);
-        SkySimEngine.getPlugin().dimoon.func((Player) damager);
+        Skyblock.getPlugin().dimoon.func((Player) damager);
     }
 
     @Override
@@ -315,7 +315,7 @@ public class Dimoonizae extends BaseZombie {
     }
 
     public void playPar(final Location l) {
-        final ConeEffect Effect = new ConeEffect(SkySimEngine.effectManager);
+        final ConeEffect Effect = new ConeEffect(Skyblock.effectManager);
         Effect.setLocation(l.clone().add(l.getDirection().normalize().multiply(-0.25)).add(0.0, -0.1, 0.0));
         Effect.particle = ParticleEffect.FLAME;
         Effect.angularVelocity = 0.39269908169872414;

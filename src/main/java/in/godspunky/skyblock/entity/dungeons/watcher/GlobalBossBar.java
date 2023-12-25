@@ -7,7 +7,7 @@ import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +25,7 @@ public class GlobalBossBar extends BukkitRunnable {
         this.players = new ArrayList<Player>();
         this.title = title;
         this.w = w;
-        this.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        this.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public void addPlayer(final Player p) {

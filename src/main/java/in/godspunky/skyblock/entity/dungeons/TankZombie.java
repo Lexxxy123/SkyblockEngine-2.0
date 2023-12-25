@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.entity.dungeons;
 
+import in.godspunky.skyblock.Skyblock;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
@@ -7,7 +8,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.EntityFunction;
 import in.godspunky.skyblock.entity.EntityStatistics;
 import in.godspunky.skyblock.entity.SEntity;
@@ -38,7 +38,7 @@ public class TankZombie implements EntityFunction, EntityStatistics {
 
     @Override
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 95);
         entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1000000, 1));
     }

@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.item.weapon;
 
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.util.FerocityCalculation;
 import net.minecraft.server.v1_8_R3.EnumParticle;
@@ -13,8 +14,6 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.listener.PlayerListener;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.Sputnik;
@@ -68,12 +67,12 @@ public class SoulWhip implements ToolStatistics, MaterialFunction, Ability, Owna
                                     FerocityCalculation.activeFerocityTimes(player, (LivingEntity) e, (int) finalDamage1, (boolean) atp[1]);
                                     user.damageEntity((Damageable) e, finalDamage1);
                                 }
-                            }.runTaskLater(SkySimEngine.getPlugin(), 0L);
+                            }.runTaskLater(Skyblock.getPlugin(), 0L);
                             new BukkitRunnable() {
                                 public void run() {
                                     SoulWhip.hit.remove(e.getEntityId());
                                 }
-                            }.runTaskLater(SkySimEngine.getPlugin(), 10L);
+                            }.runTaskLater(Skyblock.getPlugin(), 10L);
                         }
                     }
                     for (int i = 0; i < 10; ++i) {
@@ -101,12 +100,12 @@ public class SoulWhip implements ToolStatistics, MaterialFunction, Ability, Owna
                         this.cancel();
                     }
                 }
-            }.runTaskTimer(SkySimEngine.getPlugin(), 1L, 1L);
+            }.runTaskTimer(Skyblock.getPlugin(), 1L, 1L);
             new BukkitRunnable() {
                 public void run() {
                     SoulWhip.cd.remove(p.getUniqueId());
                 }
-            }.runTaskLater(SkySimEngine.getPlugin(), 10L);
+            }.runTaskLater(Skyblock.getPlugin(), 10L);
         }
     }
 

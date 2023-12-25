@@ -1,10 +1,10 @@
 package in.godspunky.skyblock.dimoon.utils;
 
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.dimoon.Dimoon;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;
 
@@ -14,10 +14,10 @@ public class Utils {
     }
 
     public static void bossMessage(final String message) {
-        if (SkySimEngine.getPlugin().dimoon == null) {
+        if (Skyblock.getPlugin().dimoon == null) {
             return;
         }
-        for (final Player p : SkySimEngine.getPlugin().dimoon.getEntity().getWorld().getPlayers()) {
+        for (final Player p : Skyblock.getPlugin().dimoon.getEntity().getWorld().getPlayers()) {
             p.playSound(p.getLocation(), Sound.WITHER_IDLE, 0.5f, 1.0f);
             p.sendMessage(format("&4[BOSS] Dimoon&f: " + message));
         }

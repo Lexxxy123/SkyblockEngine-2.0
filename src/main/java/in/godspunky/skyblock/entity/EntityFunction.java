@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.entity;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import in.godspunky.skyblock.Skyblock;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftSkeleton;
 import org.bukkit.entity.*;
@@ -8,7 +9,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.*;
@@ -109,7 +109,7 @@ public interface EntityFunction {
                             hologram2.remove();
                             hologram1.remove();
                         }
-                    }.runTaskLater(SkySimEngine.getPlugin(), 20L);
+                    }.runTaskLater(Skyblock.getPlugin(), 20L);
                 }
                 if (hologram2.isDead()) {
                     this.cancel();
@@ -132,7 +132,7 @@ public interface EntityFunction {
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 0L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 0L);
     }
 
     default void onSpawn(final LivingEntity entity, final SEntity sEntity) {

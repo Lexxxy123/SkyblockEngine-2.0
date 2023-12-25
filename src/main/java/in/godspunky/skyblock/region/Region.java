@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.region;
 
+import in.godspunky.skyblock.Skyblock;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -7,7 +8,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.util.SUtil;
 
 import java.util.*;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 public class Region {
     private static final Map<String, Region> REGION_CACHE;
-    protected static final SkySimEngine plugin;
+    protected static final Skyblock plugin;
     protected final String name;
     protected Location firstLocation;
     protected Location secondLocation;
@@ -258,6 +258,6 @@ public class Region {
 
     static {
         REGION_CACHE = new HashMap<String, Region>();
-        plugin = SkySimEngine.getPlugin();
+        plugin = Skyblock.getPlugin();
     }
 }

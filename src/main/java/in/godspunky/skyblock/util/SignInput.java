@@ -8,7 +8,7 @@ import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.gui.GUI;
 import in.godspunky.skyblock.gui.GUISignItem;
 import in.godspunky.skyblock.gui.TradeMenu;
@@ -94,7 +94,7 @@ public class SignInput {
                     SignInput.this.user.setCompletedSign(false);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     static {

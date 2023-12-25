@@ -2,6 +2,7 @@ package in.godspunky.skyblock.listener;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
+import in.godspunky.skyblock.Skyblock;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.PacketPlayInCustomPayload;
@@ -12,7 +13,6 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.command.RebootServerCommand;
 import in.godspunky.skyblock.nms.nmsutil.packetlistener.handler.ReceivedPacket;
 import in.godspunky.skyblock.nms.packetevents.PacketReceiveServerSideEvent;
@@ -38,7 +38,7 @@ public class PacketListener extends PListener {
             final String packetType = ((PacketPlayInCustomPayload) packet.getPacket()).a();
             if (packetType.toLowerCase().contains("bedit") || packetType.toLowerCase().contains("bsign")) {
                 packet.setCancelled(true);
-                final Player p = SkySimEngine.findPlayerByIPAddress(packet.getChannel().getRemoteAddress().toString());
+                final Player p = Skyblock.findPlayerByIPAddress(packet.getChannel().getRemoteAddress().toString());
                 if (p != null) {
                     this.punish(p);
                 }
@@ -68,7 +68,7 @@ public class PacketListener extends PListener {
                     e.printStackTrace();
                 }
             }
-        }.runTaskAsynchronously(SkySimEngine.getPlugin());
+        }.runTaskAsynchronously(Skyblock.getPlugin());
     }
 
     @EventHandler
@@ -92,7 +92,7 @@ public class PacketListener extends PListener {
     void onPing(final SkySimServerPingEvent e) {
         final PingReply pr = e.getPingReply();
         if (!Bukkit.getServer().getOnlineMode() && Bukkit.getOnlinePlayers().size() > 0) {
-            SkySimEngine.getPlugin().updateServerPlayerCount();
+            Skyblock.getPlugin().updateServerPlayerCount();
         }
         if (Bukkit.getServer().hasWhitelist()) {
             pr.setProtocolName(ChatColor.RED + "Maintenance");
@@ -108,7 +108,7 @@ public class PacketListener extends PListener {
             final List<String> sample = new ArrayList<String>();
             sample.add(Sputnik.trans("&cPowered by &6SkySim Engine&c"));
             pr.setPlayerSample(sample);
-            pr.setProtocolName(ChatColor.DARK_RED + "SkySimEngine 1.8.x - 1.17");
+            pr.setProtocolName(ChatColor.DARK_RED + "Skyblock 1.8.x - 1.17");
         } else {
             pr.setProtocolName(ChatColor.RED + "⚠ Restarting Soon!");
             final List<String> sample = new ArrayList<String>();
@@ -150,10 +150,10 @@ public class PacketListener extends PListener {
         final String subchannel = in.readUTF();
         if (subchannel.equals("GetServer")) {
             final String name = in.readUTF();
-            if (SkySimEngine.getPlugin().getServerName().contains("Loading...")) {
+            if (Skyblock.getPlugin().getServerName().contains("Loading...")) {
                 SLog.info("Registered server instance name as " + name + " for this session!");
             }
-            SkySimEngine.getPlugin().setServerName(name);
+            Skyblock.getPlugin().setServerName(name);
         }
     }
 }

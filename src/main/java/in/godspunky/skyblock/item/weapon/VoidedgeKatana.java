@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.item.weapon;
 
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.util.FerocityCalculation;
 import net.md_5.bungee.api.ChatColor;
@@ -10,8 +11,6 @@ import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.util.Sputnik;
 
 public class VoidedgeKatana implements ToolStatistics, MaterialFunction, Ability {
@@ -73,7 +72,7 @@ public class VoidedgeKatana implements ToolStatistics, MaterialFunction, Ability
                 VoidedgeKatana.this.done(player, item, itemslot);
                 Sputnik.playDeActivateSound(player);
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 75L);
+        }.runTaskLater(Skyblock.getPlugin(), 75L);
     }
 
     @Override

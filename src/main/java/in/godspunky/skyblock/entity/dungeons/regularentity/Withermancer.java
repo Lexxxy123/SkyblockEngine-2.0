@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.entity.dungeons.regularentity;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import in.godspunky.skyblock.Skyblock;
 import me.libraryaddict.disguise.disguisetypes.MobDisguise;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
 import net.minecraft.server.v1_8_R3.EntityLiving;
@@ -19,7 +20,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.EntityFunction;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityEquipment;
@@ -68,8 +68,8 @@ public class Withermancer implements SkeletonStatistics, EntityFunction {
         followRange.setValue(40.0);
         final MobDisguise pl = Sputnik.applyPacketSkeleton(entity);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 40);
-        entity.setMetadata("DungeonMobs", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("DungeonMobs", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -80,7 +80,7 @@ public class Withermancer implements SkeletonStatistics, EntityFunction {
                     entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 0.25, 0.0), Effect.MAGIC_CRIT, 0, 1, (float) SUtil.random(-0.5, 0.5), (float) SUtil.random(0.0, 0.6), (float) SUtil.random(-0.5, 0.5), 0.0f, 1, 20);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 15L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 15L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -102,7 +102,7 @@ public class Withermancer implements SkeletonStatistics, EntityFunction {
                     }, 20L);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 2L, 100L);
+        }.runTaskTimer(Skyblock.getPlugin(), 2L, 100L);
         new BukkitRunnable() {
             public void run() {
                 final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -139,7 +139,7 @@ public class Withermancer implements SkeletonStatistics, EntityFunction {
                     break;
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
     }
 
     @Override
@@ -243,7 +243,7 @@ public class Withermancer implements SkeletonStatistics, EntityFunction {
             public synchronized void cancel() throws IllegalStateException {
                 super.cancel();
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
     }
 
     @Override

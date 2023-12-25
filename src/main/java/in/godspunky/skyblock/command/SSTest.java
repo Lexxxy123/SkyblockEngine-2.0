@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.dimoon.Arena;
 import in.godspunky.skyblock.dimoon.DimoonLootTable;
 import in.godspunky.skyblock.entity.dungeons.watcher.Watcher;
@@ -58,7 +58,7 @@ public class SSTest extends SCommand {
                 if (args[0].contains("vlw")) {
                     PacketInvoker.dropVoidSpawner(player, player.getLocation());
                 } else if (args[0].contains("bung")) {
-                    SkySimEngine.getPlugin().updateServerName(player);
+                    Skyblock.getPlugin().updateServerName(player);
                 } else if (args[0].contains("putitemstash")) {
                     if (player.getItemInHand() != null) {
                         if (player.getItemInHand().getType() == Material.AIR) {
@@ -97,7 +97,7 @@ public class SSTest extends SCommand {
                             this.send("&d[♫] &cYou're currently playing a song already! Use /sstest musicbgm stop to stop it!");
                             return;
                         }
-                        final File s2 = new File(SkySimEngine.getPlugin().getDataFolder() + File.separator + "/songs/" + args[2] + ".nbs");
+                        final File s2 = new File(Skyblock.getPlugin().getDataFolder() + File.separator + "/songs/" + args[2] + ".nbs");
                         if (!s2.exists()) {
                             this.send("&d[♫] &cThe specified BGM file does not exist!");
                             return;

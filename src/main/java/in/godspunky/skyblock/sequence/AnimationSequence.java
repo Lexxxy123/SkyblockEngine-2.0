@@ -4,7 +4,7 @@ import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 
 import java.util.Arrays;
 import java.util.List;
@@ -54,7 +54,7 @@ public class AnimationSequence implements Sequence {
                 public void run() {
                     location.getWorld().spigot().playEffect(location, DelayedAnimation.this.effect, 1, DelayedAnimation.this.data, 0.0f, 0.0f, 0.0f, DelayedAnimation.this.speed, DelayedAnimation.this.particleCount, 16);
                 }
-            }.runTaskLater(SkySimEngine.getPlugin(), this.delay);
+            }.runTaskLater(Skyblock.getPlugin(), this.delay);
         }
 
         public void play(final Entity entity) {

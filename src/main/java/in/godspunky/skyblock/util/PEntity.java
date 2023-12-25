@@ -1,12 +1,12 @@
 package in.godspunky.skyblock.util;
 
+import in.godspunky.skyblock.Skyblock;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.user.User;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class PEntity {
         this.players = new ArrayList<Player>();
         this.updateSpawnPacket();
         PEntity.managers.add(this);
-        this.tickTask = Bukkit.getScheduler().runTaskTimer(SkySimEngine.getPlugin(), () -> this.tick(), 1L, 5L);
+        this.tickTask = Bukkit.getScheduler().runTaskTimer(Skyblock.getPlugin(), () -> this.tick(), 1L, 5L);
     }
 
     public PEntity(final Location location) {

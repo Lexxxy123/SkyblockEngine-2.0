@@ -2,7 +2,7 @@ package in.godspunky.skyblock.entity.dungeons;
 
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.metadata.FixedMetadataValue;
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.end.BaseEnderman;
 import in.godspunky.skyblock.util.EntityManager;
@@ -25,8 +25,8 @@ public class Fels extends BaseEnderman {
 
     @Override
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
-        entity.setMetadata("upsidedown", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("upsidedown", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 60);
     }
 

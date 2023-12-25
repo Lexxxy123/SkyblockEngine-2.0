@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.gui;
 
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.enchantment.Enchantment;
 import in.godspunky.skyblock.enchantment.EnchantmentType;
 import in.godspunky.skyblock.item.GenericItemType;
@@ -63,7 +63,7 @@ public class AnvilReforgeGUI extends GUI implements BlockBasedGUI {
                     public void run() {
                         inventory.setItem(e.getSlot(), AnvilReforgeGUI.ANVIL_BARRIER);
                     }
-                }.runTaskLater(SkySimEngine.getPlugin(), 1L);
+                }.runTaskLater(Skyblock.getPlugin(), 1L);
             }
 
             @Override
@@ -146,7 +146,7 @@ public class AnvilReforgeGUI extends GUI implements BlockBasedGUI {
                     SUtil.border(inventory, AnvilReforgeGUI.this, SUtil.createColoredStainedGlassPane((short) 5, ChatColor.RESET + " "), 50, 53, true, false);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 5L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 5L);
     }
 
     @Override
@@ -310,7 +310,7 @@ public class AnvilReforgeGUI extends GUI implements BlockBasedGUI {
                 inventory.setItem(13, display.getStack());
                 inventory.setItem(22, getCombineItemsForXP(0));
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 0L);
+        }.runTaskLater(Skyblock.getPlugin(), 0L);
     }
 
     @Override

@@ -10,7 +10,7 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;
 
@@ -25,10 +25,10 @@ public class BlessingChest {
     private final Blessings type;
     private final byte state;
     private final Block chest;
-    private final SkySimEngine sse;
+    private final Skyblock sse;
 
     public BlessingChest(final Blessings type, final Block chest, final byte state) {
-        this.sse = SkySimEngine.getPlugin();
+        this.sse = Skyblock.getPlugin();
         this.type = type;
         this.state = state;
         this.locked = false;

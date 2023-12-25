@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.entity.dungeons.watcher;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import in.godspunky.skyblock.Skyblock;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
@@ -20,7 +21,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityEquipment;
 import in.godspunky.skyblock.entity.zombie.BaseZombie;
@@ -64,9 +64,9 @@ public class WatcherBonzo extends BaseZombie {
         final HeadsOnWall h = new HeadsOnWall(EnumWatcherType.BONZO);
         final PlayerDisguise p = Sputnik.applyPacketNPC(entity, h.value, h.signature, true);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 85);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("LD", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("WATCHER_E", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("WATCHER_E", new FixedMetadataValue(Skyblock.getPlugin(), true));
         p.setReplaceSounds(true);
         this.tb = Sputnik.spawnDialougeBox(entity, 2.2);
         this.sd("I'm back baby!", 10, 50, true);
@@ -84,7 +84,7 @@ public class WatcherBonzo extends BaseZombie {
                     SUtil.delay(() -> WatcherBonzo.this.barrCD = false, 300L);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -95,7 +95,7 @@ public class WatcherBonzo extends BaseZombie {
                     WatcherBonzo.this.sd(WatcherBonzo.this.bozoCringe[SUtil.random(0, WatcherBonzo.this.bozoCringe.length - 1)], 1, 50, true);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 80L, 80L);
+        }.runTaskTimer(Skyblock.getPlugin(), 80L, 80L);
         new BukkitRunnable() {
             public void run() {
                 final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -131,7 +131,7 @@ public class WatcherBonzo extends BaseZombie {
                     break;
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 3L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 3L);
     }
 
     @Override
@@ -188,7 +188,7 @@ public class WatcherBonzo extends BaseZombie {
                 WatcherBonzo.sendHeadRotation(e, lc.getYaw(), lc.getPitch());
                 WatcherBonzo.this.launchBaloon(e);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
     }
 
     public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
@@ -299,7 +299,7 @@ public class WatcherBonzo extends BaseZombie {
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     @Override

@@ -1,9 +1,9 @@
 package in.godspunky.skyblock.user;
 
+import in.godspunky.skyblock.Skyblock;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.item.armor.ArmorSet;
 
 import java.util.HashMap;
@@ -58,7 +58,7 @@ public class PlayerStatistics {
                 }
                 runnable.run();
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, interval));
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, interval));
     }
 
     public void cancelTickingItem(final int slot) {
@@ -95,7 +95,7 @@ public class PlayerStatistics {
             public void run() {
                 PlayerStatistics.this.manaRegenerationPercentBonus -= percent;
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), ticks);
+        }.runTaskLater(Skyblock.getPlugin(), ticks);
     }
 
     public void boostHealthRegeneration(final double percent, final long ticks) {
@@ -104,7 +104,7 @@ public class PlayerStatistics {
             public void run() {
                 PlayerStatistics.this.healthRegenerationPercentBonus -= percent;
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), ticks);
+        }.runTaskLater(Skyblock.getPlugin(), ticks);
     }
 
     public static PlayerStatistics blank(final UUID uuid) {

@@ -1,16 +1,15 @@
 package in.godspunky.skyblock.user;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import com.mongodb.client.model.Filters;
 import de.tr7zw.nbtapi.NBTItem;
 import in.godspunky.skyblock.Repeater;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.auction.AuctionBid;
 import in.godspunky.skyblock.auction.AuctionEscrow;
 import in.godspunky.skyblock.auction.AuctionItem;
 import in.godspunky.skyblock.collection.ItemCollection;
 import in.godspunky.skyblock.collection.ItemCollectionReward;
 import in.godspunky.skyblock.collection.ItemCollectionRewards;
-import in.godspunky.skyblock.config.Config;
 import in.godspunky.skyblock.dimoon.Dimoon;
 import in.godspunky.skyblock.dungeons.ItemSerial;
 import in.godspunky.skyblock.enchantment.Enchantment;
@@ -38,7 +37,6 @@ import lombok.Setter;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.milkbowl.vault.economy.Economy;
 import net.minecraft.server.v1_8_R3.EntityHuman;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bson.Document;
@@ -54,13 +52,10 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.gui.PetsGUI;
 import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.listener.PlayerListener;
-import in.godspunky.skyblock.skill.*;
-import in.godspunky.skyblock.util.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -78,7 +73,7 @@ public class User {
     @Setter
     public Profile selectedProfile;
     public Map<String, Boolean> profiles;
-    private static final SkySimEngine plugin;
+    private static final Skyblock plugin;
     private static final File USER_FOLDER;
     private long sadancollections;
     private long totalfloor6run;
@@ -201,7 +196,7 @@ public class User {
         if (reason == SwitchReason.CREATE) {
 
          SUtil.runAsync(() -> {
-                SkySimEngine.getPlugin().dataLoader.create(uuid);
+                Skyblock.getPlugin().dataLoader.create(uuid);
             });
         }
         if (reason == SwitchReason.SWITCH){
@@ -209,7 +204,7 @@ public class User {
                 selectedProfile = newProfile;
                 UserDatabase db = new UserDatabase(uuid.toString(), false);
                 db.setUserProperty("selectedProfile", newProfile.getUuid().toString());
-               SkySimEngine.getPlugin().dataLoader.load(uuid);
+               Skyblock.getPlugin().dataLoader.load(uuid);
             });
         }
     }
@@ -903,8 +898,8 @@ public class User {
 
     public static void dmgDimon(final LivingEntity entity, final Player damager) {
         final int bonusDamage = 0;
-        if (damager != null && entity.hasMetadata("Dimoon") && SkySimEngine.getPlugin().dimoon != null) {
-            final Dimoon dimoon = SkySimEngine.getPlugin().dimoon;
+        if (damager != null && entity.hasMetadata("Dimoon") && Skyblock.getPlugin().dimoon != null) {
+            final Dimoon dimoon = Skyblock.getPlugin().dimoon;
             final int damage = 1 + dimoon.getParkoursCompleted() + bonusDamage;
             dimoon.damage(damage, damager.getName());
         }
@@ -1172,7 +1167,7 @@ public class User {
                         this.cancel();
                     }
                 }
-            }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+            }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
             SUtil.sendTitle(player, ChatColor.YELLOW + "You became a ghost!");
             SUtil.sendSubtitle(player, ChatColor.GRAY + "Hopefully your teammates can revive you.");
             if (cause == EntityDamageEvent.DamageCause.VOID) {
@@ -2015,7 +2010,7 @@ public class User {
 
     static {
         USER_CACHE = new HashMap<UUID, User>();
-        plugin = SkySimEngine.getPlugin();
-        USER_FOLDER = new File(SkySimEngine.getPlugin().getDataFolder(), "./users");
+        plugin = Skyblock.getPlugin();
+        USER_FOLDER = new File(Skyblock.getPlugin().getDataFolder(), "./users");
     }
 }

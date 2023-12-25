@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.gui;
 
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
@@ -11,7 +11,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.item.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -157,9 +156,9 @@ public class CraftingTableGUI extends GUI implements BlockBasedGUI {
                         SUtil.border(inventory, gui, SUtil.createColoredStainedGlassPane((short) 5, ChatColor.RESET + " "), 45, 48, true, false);
                         SUtil.border(inventory, gui, SUtil.createColoredStainedGlassPane((short) 5, ChatColor.RESET + " "), 50, 53, true, false);
                     }
-                }.runTaskLaterAsynchronously(SkySimEngine.getPlugin(), 1L);
+                }.runTaskLaterAsynchronously(Skyblock.getPlugin(), 1L);
             }
-        }.runTaskTimerAsynchronously(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimerAsynchronously(Skyblock.getPlugin(), 0L, 1L);
     }
 
     @Override

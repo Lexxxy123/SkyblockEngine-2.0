@@ -2,6 +2,7 @@ package in.godspunky.skyblock.item.weapon;
 
 import de.slikey.effectlib.effect.ConeEffect;
 import de.slikey.effectlib.util.ParticleEffect;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.user.PlayerStatistics;
 import org.bukkit.Color;
@@ -15,8 +16,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.listener.PlayerListener;
 import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.user.User;
@@ -72,7 +71,7 @@ public class IceSprayWand implements ToolStatistics, MaterialFunction, Ability {
     @Override
     public void onAbilityUse(final Player player, final SItem sItem) {
         final Location loc = player.getEyeLocation();
-        final ConeEffect Effect = new ConeEffect(SkySimEngine.effectManager);
+        final ConeEffect Effect = new ConeEffect(Skyblock.effectManager);
         Effect.setLocation(loc.clone().add(loc.getDirection().normalize().multiply(-0.25)).add(0.0, -0.1, 0.0));
         Effect.particle = ParticleEffect.SNOW_SHOVEL;
         Effect.color = Color.WHITE;
@@ -107,7 +106,7 @@ public class IceSprayWand implements ToolStatistics, MaterialFunction, Ability {
             final User user = User.getUser(player.getUniqueId());
             final double baseDamage = Sputnik.calculateMagicDamage(entity, player, 32000, 0.1);
             user.damageEntityIgnoreShield((Damageable) entity, baseDamage);
-            entity.setMetadata("frozen", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+            entity.setMetadata("frozen", new FixedMetadataValue(Skyblock.getPlugin(), true));
             PlayerListener.spawnDamageInd(entity, baseDamage, false);
             double b = 0.0;
             for (int i = 0; i < 2; ++i) {
@@ -140,7 +139,7 @@ public class IceSprayWand implements ToolStatistics, MaterialFunction, Ability {
                         }
                         if (stands.isDead()) {
                             ((LivingEntity) entity).removePotionEffect(PotionEffectType.SLOW);
-                            entity.removeMetadata("frozen", SkySimEngine.getPlugin());
+                            entity.removeMetadata("frozen", Skyblock.getPlugin());
                             this.cancel();
                             return;
                         }
@@ -150,7 +149,7 @@ public class IceSprayWand implements ToolStatistics, MaterialFunction, Ability {
                         ((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 20));
                         stands.teleport(entity.getLocation().add(0.0, c + 1.0, 0.0));
                     }
-                }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+                }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
             }
         }
     }

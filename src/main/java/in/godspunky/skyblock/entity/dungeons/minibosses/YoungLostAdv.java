@@ -3,6 +3,7 @@ package in.godspunky.skyblock.entity.dungeons.minibosses;
 import com.google.common.util.concurrent.AtomicDouble;
 import de.slikey.effectlib.effect.ConeEffect;
 import de.slikey.effectlib.util.ParticleEffect;
+import in.godspunky.skyblock.Skyblock;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher;
 import net.minecraft.server.v1_8_R3.*;
@@ -23,7 +24,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityEquipment;
 import in.godspunky.skyblock.entity.zombie.BaseZombie;
@@ -73,8 +73,8 @@ public class YoungLostAdv extends BaseZombie {
         final PlayerWatcher skywatch = pl.getWatcher();
         final LivingEntity target = ((CraftZombie) entity).getTarget();
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 80);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("LD", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(Skyblock.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -87,7 +87,7 @@ public class YoungLostAdv extends BaseZombie {
                     Sputnik.sendEatingAnimation(entity);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 4L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 4L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -122,10 +122,10 @@ public class YoungLostAdv extends BaseZombie {
                             }, 5L);
                             SUtil.delay(() -> YoungLostAdv.this.EatingCooldown = false, SUtil.random(600, 800));
                         }
-                    }.runTaskLater(SkySimEngine.getPlugin(), 60L);
+                    }.runTaskLater(Skyblock.getPlugin(), 60L);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 10L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 10L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -201,7 +201,7 @@ public class YoungLostAdv extends BaseZombie {
                                     YoungLostAdv.this.isBowing = false;
                                 }
                             }
-                        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+                        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
                     }
                     if (target1.getLocation().distance(entity.getLocation()) <= 5.0 && !YoungLostAdv.this.isBowing && !YoungLostAdv.this.isEating) {
                         if (SUtil.random(0, 100) > 30) {
@@ -242,7 +242,7 @@ public class YoungLostAdv extends BaseZombie {
                     entity.getEquipment().setItemInHand(SUtil.enchant(SItem.of(SMaterial.ASPECT_OF_THE_DRAGONS).getStack()));
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
         new BukkitRunnable() {
             Location loc = entity.getLocation();
             final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -289,7 +289,7 @@ public class YoungLostAdv extends BaseZombie {
                 }
                 this.nms.setSprinting(false);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 7L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 7L);
         new BukkitRunnable() {
             public void run() {
                 final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -331,7 +331,7 @@ public class YoungLostAdv extends BaseZombie {
                     break;
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
     }
 
     @Override
@@ -372,7 +372,7 @@ public class YoungLostAdv extends BaseZombie {
     }
 
     public void playPar(final Location l) {
-        final ConeEffect Effect = new ConeEffect(SkySimEngine.effectManager);
+        final ConeEffect Effect = new ConeEffect(Skyblock.effectManager);
         Effect.setLocation(l.clone().add(l.getDirection().normalize().multiply(-0.25)).add(0.0, -0.1, 0.0));
         Effect.particle = ParticleEffect.FLAME;
         Effect.angularVelocity = 0.39269908169872414;

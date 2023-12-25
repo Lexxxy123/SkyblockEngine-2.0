@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.gui;
 
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
@@ -128,6 +128,6 @@ public class CookieConfirmGUI extends GUI {
                 p.getWorld().playEffect(p.getLocation().add(0.0, 0.5, 0.0), Effect.LAVA_POP, 5);
                 ++this.count;
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 }

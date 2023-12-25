@@ -17,7 +17,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityEquipment;
 import in.godspunky.skyblock.entity.zombie.BaseZombie;
@@ -48,9 +48,9 @@ public class WatcherOoze extends BaseZombie {
         final HeadsOnWall h = new HeadsOnWall(EnumWatcherType.OOZE);
         final PlayerDisguise p = Sputnik.applyPacketNPC(entity, h.value, h.signature, true);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 99);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("LD", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("WATCHER_E", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("WATCHER_E", new FixedMetadataValue(Skyblock.getPlugin(), true));
         p.setReplaceSounds(false);
         new BukkitRunnable() {
             public void run() {
@@ -87,7 +87,7 @@ public class WatcherOoze extends BaseZombie {
                     break;
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 3L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 3L);
     }
 
     @Override

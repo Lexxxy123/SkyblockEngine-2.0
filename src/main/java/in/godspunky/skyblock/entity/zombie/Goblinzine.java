@@ -8,7 +8,7 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.metadata.FixedMetadataValue;
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.entity.EntityDrop;
 import in.godspunky.skyblock.entity.EntityDropType;
 import in.godspunky.skyblock.entity.SEntity;
@@ -40,7 +40,7 @@ public class Goblinzine extends BaseZombie {
         ((CraftZombie) entity).setBaby(false);
         final AttributeInstance followRange = ((CraftLivingEntity) entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
         followRange.setValue(40.0);
-        entity.setMetadata("LD", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(Skyblock.getPlugin(), true));
         final PlayerDisguise pl = Sputnik.applyPacketNPC(entity, "automota", null, false);
         final PlayerWatcher skywatch = pl.getWatcher();
         final LivingEntity target = ((CraftZombie) entity).getTarget();

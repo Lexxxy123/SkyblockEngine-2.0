@@ -1,11 +1,11 @@
 package in.godspunky.skyblock.dimoon;
 
+import in.godspunky.skyblock.Skyblock;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.user.User;
@@ -23,7 +23,7 @@ public class SummoningSequence {
     double[] gl;
     double[] rb;
     public static double[] wl;
-    private final SkySimEngine plugin;
+    private final Skyblock plugin;
     private boolean acE;
     private boolean acD;
     private boolean acR;
@@ -38,7 +38,7 @@ public class SummoningSequence {
         this.em = new double[]{234666.5, 191.0, 236549.5};
         this.gl = new double[]{234600.5, 191.0, 236480.5};
         this.rb = new double[]{234672.5, 191.0, 236414.5};
-        this.plugin = SkySimEngine.getPlugin();
+        this.plugin = Skyblock.getPlugin();
         this.acE = false;
         this.acD = false;
         this.acR = false;
@@ -256,7 +256,7 @@ public class SummoningSequence {
     }
 
     public void interactCatalyst(final Player p, final int slot, final boolean rightClick) {
-        if (this.haveCatal(p) && SkySimEngine.getPlugin().altarCooldown) {
+        if (this.haveCatal(p) && Skyblock.getPlugin().altarCooldown) {
             p.playSound(p.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 2.0f);
             p.sendMessage(Sputnik.trans("&cYou cannot use the altar right now! Let it cool down for a while!"));
             return;

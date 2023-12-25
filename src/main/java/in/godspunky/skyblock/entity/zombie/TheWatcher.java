@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.entity.zombie;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import in.godspunky.skyblock.Skyblock;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.entity.ArmorStand;
@@ -13,7 +14,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.extra.beam.Beam;
 import in.godspunky.skyblock.item.SItem;
@@ -64,7 +64,7 @@ public class TheWatcher extends BaseZombie {
                         public void run() {
                             hologram.remove();
                         }
-                    }.runTaskLater(SkySimEngine.getPlugin(), 20L);
+                    }.runTaskLater(Skyblock.getPlugin(), 20L);
                 }
                 if (hologram.isDead()) {
                     this.cancel();
@@ -79,7 +79,7 @@ public class TheWatcher extends BaseZombie {
                 hologram.teleport(entity.getLocation().clone().add(0.0, height, 0.0));
                 hologram.setCustomName(Sputnik.trans("&e﴾ &c&lThe Watcher &e﴿"));
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 0L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 0L);
         final ArmorStand hologram_d = (ArmorStand) entity.getWorld().spawn(entity.getLocation().add(0.0, height + 0.3, 0.0), (Class) ArmorStand.class);
         hologram_d.setVisible(false);
         hologram_d.setGravity(false);
@@ -94,7 +94,7 @@ public class TheWatcher extends BaseZombie {
                         public void run() {
                             hologram_d.remove();
                         }
-                    }.runTaskLater(SkySimEngine.getPlugin(), 20L);
+                    }.runTaskLater(Skyblock.getPlugin(), 20L);
                 }
                 if (hologram.isDead()) {
                     this.cancel();
@@ -111,10 +111,10 @@ public class TheWatcher extends BaseZombie {
                 hologram_d.teleport(entity.getLocation().clone().add(0.0, height + 0.3, 0.0));
                 hologram_d.teleport(entity.getLocation().clone().add(0.0, height + 0.3, 0.0));
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         EntityManager.noAI(entity);
-        entity.setMetadata("NoAffect", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("notDisplay", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("NoAffect", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("notDisplay", new FixedMetadataValue(Skyblock.getPlugin(), true));
         EntityManager.shutTheFuckUp(entity);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 100);
         final ArmorStand stand = (ArmorStand) entity.getWorld().spawn(entity.getLocation(), (Class) ArmorStand.class);
@@ -129,7 +129,7 @@ public class TheWatcher extends BaseZombie {
                         public void run() {
                             stand.remove();
                         }
-                    }.runTaskLater(SkySimEngine.getPlugin(), 0L);
+                    }.runTaskLater(Skyblock.getPlugin(), 0L);
                 }
                 for (final Entity target : stand.getNearbyEntities(20.0, 20.0, 20.0)) {
                     if (target instanceof Player) {
@@ -142,7 +142,7 @@ public class TheWatcher extends BaseZombie {
                 }
                 stand.teleport(entity.getLocation().clone().add(0.0, 0.0, 0.0));
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     @Override

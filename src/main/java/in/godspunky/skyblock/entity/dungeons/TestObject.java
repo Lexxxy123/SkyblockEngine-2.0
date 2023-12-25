@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.entity.dungeons;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import in.godspunky.skyblock.Skyblock;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
 import net.minecraft.server.v1_8_R3.GenericAttributes;
@@ -14,7 +15,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityEquipment;
 import in.godspunky.skyblock.entity.zombie.BaseZombie;
@@ -64,7 +64,7 @@ public class TestObject extends BaseZombie {
         final PlayerDisguise pl = Sputnik.applyPacketNPC(entity, "dungeon", null, false);
         pl.getWatcher().setRightClicking(false);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 99);
-        entity.setMetadata("LD", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(Skyblock.getPlugin(), true));
     }
 
     @Override

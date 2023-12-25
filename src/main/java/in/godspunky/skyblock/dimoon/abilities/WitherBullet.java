@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.dimoon.Dimoon;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
@@ -37,7 +37,7 @@ public class WitherBullet implements Ability {
                 world.spigot().playEffect(this.particleLocation, Effect.LARGE_SMOKE, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                 world.spigot().playEffect(this.particleLocation, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                 world.spigot().playEffect(this.particleLocation, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
-                if (SkySimEngine.getPlugin().dimoon == null) {
+                if (Skyblock.getPlugin().dimoon == null) {
                     this.cancel();
                     return;
                 }
@@ -45,11 +45,11 @@ public class WitherBullet implements Ability {
                     player.getWorld().playEffect(this.particleLocation, Effect.EXPLOSION_HUGE, 0);
                     player.getWorld().playSound(this.particleLocation, Sound.EXPLODE, 1.0f, 1.0f);
                     User.getUser(player.getUniqueId()).send("&7Wither's Bullet have hit you for &c" + SUtil.commaify(player.getMaxHealth() * 2.0 / 100.0) + " &7true damage.");
-                    User.getUser(player.getUniqueId()).damage(player.getMaxHealth() * 2.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, SkySimEngine.getPlugin().dimoon.getEntity());
+                    User.getUser(player.getUniqueId()).damage(player.getMaxHealth() * 2.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, Skyblock.getPlugin().dimoon.getEntity());
                     this.cancel();
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
     }
 
     @Override

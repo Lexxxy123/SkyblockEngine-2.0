@@ -6,6 +6,7 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.EnumWrappers;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.island.SkyblockIsland;
 import in.godspunky.skyblock.item.*;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
@@ -25,20 +26,17 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SlimeStatistics;
 import in.godspunky.skyblock.entity.caverns.CreeperFunction;
 import in.godspunky.skyblock.entity.nms.Dragon;
 import in.godspunky.skyblock.event.CreeperIgniteEvent;
-import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.region.Region;
 import in.godspunky.skyblock.region.RegionType;
 import in.godspunky.skyblock.skill.FarmingSkill;
 import in.godspunky.skyblock.skill.ForagingSkill;
 import in.godspunky.skyblock.skill.MiningSkill;
 import in.godspunky.skyblock.skill.Skill;
-import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.Groups;
 import in.godspunky.skyblock.util.SUtil;
@@ -312,7 +310,7 @@ public class WorldListener extends PListener {
                     }
                     WorldListener.RESTORER.remove(player.getUniqueId());
                 }
-            }.runTaskLater(SkySimEngine.getPlugin(), 1200L);
+            }.runTaskLater(Skyblock.getPlugin(), 1200L);
         }
     }
 
@@ -413,7 +411,7 @@ public class WorldListener extends PListener {
                         break;
                 }
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), ticks);
+        }.runTaskLater(Skyblock.getPlugin(), ticks);
     }
 
     @EventHandler
@@ -421,12 +419,12 @@ public class WorldListener extends PListener {
         if (e.getBlock().getType() != Material.PRISMARINE) {
             return;
         }
-        e.getBlock().setMetadata("block_hardness", new FixedMetadataValue(SkySimEngine.getPlugin(), 1200));
-        e.getBlock().setMetadata("block_power", new FixedMetadataValue(SkySimEngine.getPlugin(), 4));
+        e.getBlock().setMetadata("block_hardness", new FixedMetadataValue(Skyblock.getPlugin(), 1200));
+        e.getBlock().setMetadata("block_power", new FixedMetadataValue(Skyblock.getPlugin(), 4));
     }
 
     public static void c() {
-        SkySimEngine.getPTC().addPacketListener(new PacketAdapter(SkySimEngine.getPlugin(), ListenerPriority.HIGHEST, new PacketType[]{PacketType.Play.Client.BLOCK_DIG}) {
+        Skyblock.getPTC().addPacketListener(new PacketAdapter(Skyblock.getPlugin(), ListenerPriority.HIGHEST, new PacketType[]{PacketType.Play.Client.BLOCK_DIG}) {
             public void onPacketReceiving(final PacketEvent event) {
                 final PacketContainer packet = event.getPacket();
                 final EnumWrappers.PlayerDigType digType = packet.getPlayerDigTypes().getValues().get(0);

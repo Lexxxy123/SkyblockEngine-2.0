@@ -1,13 +1,12 @@
 package in.godspunky.skyblock.item.oddities;
 
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.*;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.ArrayList;
@@ -39,7 +38,7 @@ public class GrapplingHook implements MaterialStatistics, FishingRodFunction {
                 public void run() {
                     GrapplingHook.COOLDOWN.remove(player.getUniqueId());
                 }
-            }.runTaskLater(SkySimEngine.getPlugin(), 40L);
+            }.runTaskLater(Skyblock.getPlugin(), 40L);
         }
     }
 

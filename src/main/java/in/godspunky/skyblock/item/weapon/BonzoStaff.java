@@ -6,8 +6,7 @@ import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.listener.PlayerListener;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.Sputnik;
@@ -189,14 +188,14 @@ public class BonzoStaff implements ToolStatistics, MaterialFunction, Ability {
                         public void run() {
                             this.cancel();
                         }
-                    }.runTaskLater(SkySimEngine.getPlugin(), 30L);
+                    }.runTaskLater(Skyblock.getPlugin(), 30L);
                     BonzoStaff.this.ACT = "false";
                     final FireworkEffect.Builder builder2 = FireworkEffect.builder();
                     final FireworkEffect effect2 = builder2.flicker(false).trail(false).with(FireworkEffect.Type.BURST).withColor(color2).build();
                     SSU.spawn(stand.getLocation(), effect2);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     @Override

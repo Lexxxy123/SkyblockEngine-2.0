@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.gui;
 
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.Untradeable;
 import in.godspunky.skyblock.user.User;
@@ -112,7 +112,7 @@ public class TradeGUI extends GUI {
                     TradeMenu.tradeP1Countdown.put(TradeGUI.this.tradeUUID, TradeMenu.tradeP1Countdown.get(TradeGUI.this.tradeUUID) - 1);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 20L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 20L);
         new BukkitRunnable() {
             public void run() {
                 if (TradeGUI.this != GUI_MAP.get(player.getUniqueId())) {
@@ -183,7 +183,7 @@ public class TradeGUI extends GUI {
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 if (!TradeGUI.player1.get(TradeGUI.this.tradeUUID).isOnline() || !TradeGUI.player1.get(TradeGUI.this.tradeUUID).getWorld().equals(TradeGUI.player2.get(TradeGUI.this.tradeUUID).getWorld())) {
@@ -194,7 +194,7 @@ public class TradeGUI extends GUI {
                     TradeMenu.triggerCloseEvent(TradeGUI.this.tradeUUID, false, TradeGUI.player2.get(TradeGUI.this.tradeUUID));
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         this.set(new GUISignItem() {
             @Override
             public GUI onSignClose(final String query, final Player target) {
@@ -205,7 +205,7 @@ public class TradeGUI extends GUI {
                     return new TradeGUI(TradeGUI.this.tradeUUID);
                 }
                 try {
-                    final Economy econ = SkySimEngine.getEconomy();
+                    final Economy econ = Skyblock.getEconomy();
                     final long add = Long.parseLong(query);
                     final double cur = econ.getBalance(TradeGUI.player1.get(TradeGUI.this.tradeUUID));
                     if (add <= 0L) {
@@ -318,7 +318,7 @@ public class TradeGUI extends GUI {
             if (!nmsStack.getTag().hasKey("data_bits")) {
                 Sputnik.smartGiveItem(stack, TradeGUI.player1.get(this.tradeUUID));
             } else {
-                final Economy econ = SkySimEngine.getEconomy();
+                final Economy econ = Skyblock.getEconomy();
                 econ.depositPlayer(TradeGUI.player1.get(this.tradeUUID), (double) nmsStack.getTag().getLong("data_bits"));
             }
             TradeMenu.tradeP1Countdown.put(this.tradeUUID, 3);
@@ -341,7 +341,7 @@ public class TradeGUI extends GUI {
             if (!nmsStack.getTag().hasKey("data_bits")) {
                 Sputnik.smartGiveItem(i, p);
             } else {
-                final Economy econ = SkySimEngine.getEconomy();
+                final Economy econ = Skyblock.getEconomy();
                 econ.depositPlayer(p, (double) nmsStack.getTag().getLong("data_bits"));
             }
         }
@@ -354,7 +354,7 @@ public class TradeGUI extends GUI {
             if (!nmsStack.getTag().hasKey("data_bits")) {
                 Sputnik.smartGiveItem(i, p);
             } else {
-                final Economy econ = SkySimEngine.getEconomy();
+                final Economy econ = Skyblock.getEconomy();
                 econ.depositPlayer(p, (double) nmsStack.getTag().getLong("data_bits"));
             }
         }

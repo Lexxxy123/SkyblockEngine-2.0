@@ -1,9 +1,9 @@
 package in.godspunky.skyblock.entity;
 
+import in.godspunky.skyblock.Skyblock;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
-import in.godspunky.skyblock.SkySimEngine;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +26,7 @@ public final class StaticDragonManager {
                 final BlockState s = b.getState();
                 s.setRawData((byte) 0);
                 s.update();
-                b.removeMetadata("placer", SkySimEngine.getPlugin());
+                b.removeMetadata("placer", Skyblock.getPlugin());
             }
         }
         StaticDragonManager.EYES.clear();

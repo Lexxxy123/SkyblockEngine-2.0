@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.entity.dungeons.boss.sadan;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import in.godspunky.skyblock.Skyblock;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.GenericAttributes;
@@ -21,7 +22,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityEquipment;
 import in.godspunky.skyblock.entity.zombie.BaseZombie;
@@ -71,9 +71,9 @@ public class BigfootGiant extends BaseZombie {
         SUtil.delay(() -> this.shockWaveCD = false, 150L);
         Sputnik.applyPacketGiant(entity);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 25);
-        entity.setMetadata("Giant_", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("highername", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("Giant_", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("highername", new FixedMetadataValue(Skyblock.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -92,7 +92,7 @@ public class BigfootGiant extends BaseZombie {
                     }, 10L);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -122,7 +122,7 @@ public class BigfootGiant extends BaseZombie {
                     break;
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 8L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 8L);
     }
 
     @Override
@@ -208,7 +208,7 @@ public class BigfootGiant extends BaseZombie {
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public static ItemStack buildColorStack(final int hexcolor) {

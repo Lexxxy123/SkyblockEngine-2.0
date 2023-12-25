@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.item.weapon;
 
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.slayer.SlayerBossType;
 import in.godspunky.skyblock.util.BlockFallAPI;
@@ -14,8 +15,6 @@ import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import in.godspunky.skyblock.Repeater;
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;
@@ -131,7 +130,7 @@ public class GyrokineticWand implements WandStatistics, MaterialFunction, Abilit
                     }
                     ++this.t;
                 }
-            }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
+            }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
         }
     }
 
@@ -303,7 +302,7 @@ public class GyrokineticWand implements WandStatistics, MaterialFunction, Abilit
                 location.getWorld().spigot().playEffect(loc, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                 this.cout += 10.0f;
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     @Override

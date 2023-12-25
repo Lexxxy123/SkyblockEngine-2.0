@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.gui;
 
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.skill.CombatSkill;
 import in.godspunky.skyblock.skill.Skill;
 import in.godspunky.skyblock.user.PlayerStatistics;
@@ -34,7 +34,7 @@ public class BossMenu extends GUI {
         final User user = User.getUser(player.getUniqueId());
         final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
         this.set(GUIClickableItem.getCloseItem(31));
-        final SkySimEngine plugin = SkySimEngine.getPlugin();
+        final Skyblock plugin = Skyblock.getPlugin();
         final long runMade = plugin.config.getLong("runMade");
         this.set(new GUIClickableItem() {
             @Override

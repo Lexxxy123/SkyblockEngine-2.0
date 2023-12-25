@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.entity.dungeons.watcher;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import in.godspunky.skyblock.Skyblock;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher;
 import net.minecraft.server.v1_8_R3.EntityLiving;
@@ -21,7 +22,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityEquipment;
 import in.godspunky.skyblock.entity.zombie.BaseZombie;
@@ -58,9 +58,9 @@ public class WatcherRevoker extends BaseZombie {
         final HeadsOnWall h = new HeadsOnWall(EnumWatcherType.REVOKER);
         final PlayerDisguise p = Sputnik.applyPacketNPC(entity, h.value, h.signature, true);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 99);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("LD", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("WATCHER_E", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("WATCHER_E", new FixedMetadataValue(Skyblock.getPlugin(), true));
         p.setReplaceSounds(false);
         new BukkitRunnable() {
             public void run() {
@@ -72,7 +72,7 @@ public class WatcherRevoker extends BaseZombie {
                     entity.teleport(((CraftZombie) entity).getTarget().getLocation());
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 100L, 100L);
+        }.runTaskTimer(Skyblock.getPlugin(), 100L, 100L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -149,14 +149,14 @@ public class WatcherRevoker extends BaseZombie {
                                     WatcherRevoker.this.isBowing = false;
                                 }
                             }
-                        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+                        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
                     }
                 } else {
                     WatcherRevoker.this.isBowing = false;
                     entity.getEquipment().setItemInHand(SItem.of(SMaterial.GOLD_SWORD).getStack());
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
         new BukkitRunnable() {
             public void run() {
                 final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -195,7 +195,7 @@ public class WatcherRevoker extends BaseZombie {
                     break;
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 3L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 3L);
     }
 
     @Override

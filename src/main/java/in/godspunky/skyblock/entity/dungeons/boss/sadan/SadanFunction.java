@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.entity.dungeons.boss.sadan;
 
+import in.godspunky.skyblock.Skyblock;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -10,7 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import in.godspunky.skyblock.Repeater;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityType;
 import in.godspunky.skyblock.user.PlayerStatistics;
@@ -40,7 +40,7 @@ public class SadanFunction {
         eq.setChestplate(b(14751108, Material.LEATHER_CHESTPLATE));
         eq.setLeggings(b(14751108, Material.LEATHER_LEGGINGS));
         eq.setBoots(b(14751108, Material.LEATHER_BOOTS));
-        e.setMetadata("JollyPink", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        e.setMetadata("JollyPink", new FixedMetadataValue(Skyblock.getPlugin(), true));
     }
 
     public static void lasrg(final World w) {
@@ -52,7 +52,7 @@ public class SadanFunction {
         eq.setChestplate(b(12228503, Material.LEATHER_CHESTPLATE));
         eq.setLeggings(b(12228503, Material.LEATHER_LEGGINGS));
         eq.setBoots(b(12228503, Material.LEATHER_BOOTS));
-        e.setMetadata("LASR", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        e.setMetadata("LASR", new FixedMetadataValue(Skyblock.getPlugin(), true));
     }
 
     public static void diag(final World w) {
@@ -64,7 +64,7 @@ public class SadanFunction {
         eq.setChestplate(c(Material.DIAMOND_CHESTPLATE));
         eq.setLeggings(c(Material.DIAMOND_LEGGINGS));
         eq.setBoots(c(Material.DIAMOND_BOOTS));
-        e.setMetadata("Diamond", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        e.setMetadata("Diamond", new FixedMetadataValue(Skyblock.getPlugin(), true));
     }
 
     public static void bfg(final World w) {
@@ -76,7 +76,7 @@ public class SadanFunction {
         eq.setChestplate(null);
         eq.setLeggings(null);
         eq.setBoots(b(8991025, Material.LEATHER_BOOTS));
-        e.setMetadata("Bigfoot", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        e.setMetadata("Bigfoot", new FixedMetadataValue(Skyblock.getPlugin(), true));
     }
 
     public static ItemStack buildColorStack(final int hexcolor) {
@@ -269,7 +269,7 @@ public class SadanFunction {
                 if (bitsReward <= 0) {
                     rew = "&cYou have no rewards!";
                 } else {
-                    w.getPlayers().forEach(p -> SkySimEngine.getEconomy().depositPlayer(p, bitsReward));
+                    w.getPlayers().forEach(p -> Skyblock.getEconomy().depositPlayer(p, bitsReward));
                 }
                 SUtil.broadcastWorld(Sputnik.trans("&a▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"), w);
                 SUtil.broadcastWorld(Sputnik.trans("        &cThe Catacombs Demo &8- &eFloor VI"), w);

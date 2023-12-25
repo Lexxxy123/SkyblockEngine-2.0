@@ -9,8 +9,7 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.listener.PlayerListener;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.Sputnik;
@@ -107,7 +106,7 @@ public class ShadowFury implements ToolStatistics, MaterialFunction, Ability {
                         this.cancel();
                     }
                 }
-            }.runTaskTimer(SkySimEngine.getPlugin(), 1L, 5L);
+            }.runTaskTimer(Skyblock.getPlugin(), 1L, 5L);
         } else {
             player.sendMessage(ChatColor.RED + "No nearby target found.");
         }

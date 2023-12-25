@@ -2,6 +2,7 @@ package in.godspunky.skyblock.npc;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import lombok.Getter;
@@ -17,7 +18,6 @@ import org.bukkit.craftbukkit.v1_8_R3.scoreboard.CraftScoreboard;
 import org.bukkit.craftbukkit.v1_8_R3.scoreboard.CraftScoreboardManager;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.SkySimEngine;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -123,7 +123,7 @@ public class SkyblockNPC {
                     sendHeadRotationPacket(player);
                 }
             }
-        }.runTaskTimerAsynchronously(SkySimEngine.getPlugin(), 0, 2);
+        }.runTaskTimerAsynchronously(Skyblock.getPlugin(), 0, 2);
 
     }
 

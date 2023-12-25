@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.sql;
 
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class SQLWorldData {
-    private static final SkySimEngine plugin;
+    private static final Skyblock plugin;
     private final String SELECT = "SELECT * FROM `worlds` WHERE name=?";
     private final String SELECT_ID = "SELECT * FROM `worlds` WHERE id=?";
     private final String INSERT = "INSERT INTO `worlds` (`id`, `name`) VALUES (?, ?);";
@@ -98,6 +98,6 @@ public class SQLWorldData {
     }
 
     static {
-        plugin = SkySimEngine.getPlugin();
+        plugin = Skyblock.getPlugin();
     }
 }

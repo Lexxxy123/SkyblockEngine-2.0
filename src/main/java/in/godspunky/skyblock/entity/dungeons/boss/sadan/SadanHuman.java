@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.entity.dungeons.boss.sadan;
 
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.entity.dungeons.watcher.GlobalBossBar;
 import in.godspunky.skyblock.util.*;
 import org.bukkit.Bukkit;
@@ -17,13 +18,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 import in.godspunky.skyblock.Repeater;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityEquipment;
 import in.godspunky.skyblock.entity.SEntityType;
 import in.godspunky.skyblock.entity.zombie.BaseZombie;
 import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.*;
 
 import java.util.*;
 
@@ -136,7 +135,7 @@ public class SadanHuman extends BaseZombie {
                 SadanHuman.this.phase1(entity);
                 bkt.cancel();
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 170L);
+        }.runTaskLater(Skyblock.getPlugin(), 170L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.getWorld() == null || entity.getWorld().getPlayers().size() == 0 || entity.isDead()) {
@@ -150,7 +149,7 @@ public class SadanHuman extends BaseZombie {
                     this.cancel();
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -182,7 +181,7 @@ public class SadanHuman extends BaseZombie {
                                 bb.setTitle(Sputnik.trans("&c&lSadan's Giants"));
                                 bb.setProgress(1.0);
                             }
-                        }.runTaskLater(SkySimEngine.getPlugin(), 35L);
+                        }.runTaskLater(Skyblock.getPlugin(), 35L);
                     }
                 }
                 if (SadanHuman.this.phase2) {
@@ -198,19 +197,19 @@ public class SadanHuman extends BaseZombie {
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         ((CraftZombie) entity).setBaby(false);
         Sputnik.applyPacketNPC(entity, "ewogICJ0aW1lc3RhbXAiIDogMTYxMjAyOTExOTA2MiwKICAicHJvZmlsZUlkIiA6ICI5ZDQyNWFiOGFmZjg0MGU1OWM3NzUzZjc5Mjg5YjMyZSIsCiAgInByb2ZpbGVOYW1lIiA6ICJUb21wa2luNDIiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmEwNmNiMGM0NzFjMWM5YmMxNjlhZjI3MGNkNDY2ZWE3MDE5NDY3NzYwNTZlNDcyZWNkYWViNDlmMGY0YTRkYyIKICAgIH0KICB9Cn0=", "mpSbfgDmWvoHASfqQ+poj2b4Y0QEZYh4QlqcCqHrZ4DNKY7mIenlbY2s7Ptmhb46dONt5OVfHb1pDLDlCPnYP9QYDXhl/wR99wxA4F7HHjs1g1omvZBfGRCvwHU/Bc3aWhjlaKZCVotf0snzrPTWIHFYnQoVLnhXoz19b3SQfdztIipZoZFKgMxwM2l4y+hBS9p7b/u2loz6/kVLBiLxzzYtAayF+ekma+bWlQcqhdsaf/BAJJSjh/UtipZLvAo4L2E2JlBsoKhj9PVSRVk4eAS1KE7p9Dupbrr/Ypj4bYVpUH5KhMJlQn7vCGoWILwd1NjFWk6KVlGUCag8/3pE1BNeD5d3QOfiVCkFH/rofRfS0/w0Nv8ROK0JQP/cFaAQ3kQ2ilvifF0kzPiA1M7si22lbXGyLqhQAVFsNSgKIU0Fe2qfD536Rr+kkBc/sVAzfVh4ajfsOXtMuMoZGIDJULpA1RD9qsybGvl7kkVQd2jPzlvZD8Ef8ZW8wr64Lu+/zZEj30zISIKZiwIsMKM2vOO7eqbfTs+tu0BNKKjiRg7uLF0qhyCpQrlJENzFud04ZiaTyI1Btt2LpOHQmKASWfg7/TEr8rPVPWiVqRBPCpHe5xJlAtQc2+PrtBO8u+qG3TTRKVci2a+Mpx1SwuPtMY2ZRj1NmYW3yBuu9pQnvlg=", true);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 100);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("LD", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("h_sadan", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("Boss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("h_sadan", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("Boss", new FixedMetadataValue(Skyblock.getPlugin(), true));
         EntityManager.noAI(entity);
         EntityManager.noHit(entity);
         EntityManager.shutTheFuckUp(entity);
-        entity.setMetadata("GiantSword", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("NoAffect", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("GiantSword", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("NoAffect", new FixedMetadataValue(Skyblock.getPlugin(), true));
         final net.minecraft.server.v1_8_R3.Entity e = ((CraftEntity) entity).getHandle();
         final double height;
         final double height_ = height = e.getBoundingBox().e - e.getBoundingBox().b;
@@ -229,7 +228,7 @@ public class SadanHuman extends BaseZombie {
                 }
                 Sputnik.applyPacketNPC(entity, "ewogICJ0aW1lc3RhbXAiIDogMTYxMjAyOTExOTA2MiwKICAicHJvZmlsZUlkIiA6ICI5ZDQyNWFiOGFmZjg0MGU1OWM3NzUzZjc5Mjg5YjMyZSIsCiAgInByb2ZpbGVOYW1lIiA6ICJUb21wa2luNDIiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZmEwNmNiMGM0NzFjMWM5YmMxNjlhZjI3MGNkNDY2ZWE3MDE5NDY3NzYwNTZlNDcyZWNkYWViNDlmMGY0YTRkYyIKICAgIH0KICB9Cn0=", "mpSbfgDmWvoHASfqQ+poj2b4Y0QEZYh4QlqcCqHrZ4DNKY7mIenlbY2s7Ptmhb46dONt5OVfHb1pDLDlCPnYP9QYDXhl/wR99wxA4F7HHjs1g1omvZBfGRCvwHU/Bc3aWhjlaKZCVotf0snzrPTWIHFYnQoVLnhXoz19b3SQfdztIipZoZFKgMxwM2l4y+hBS9p7b/u2loz6/kVLBiLxzzYtAayF+ekma+bWlQcqhdsaf/BAJJSjh/UtipZLvAo4L2E2JlBsoKhj9PVSRVk4eAS1KE7p9Dupbrr/Ypj4bYVpUH5KhMJlQn7vCGoWILwd1NjFWk6KVlGUCag8/3pE1BNeD5d3QOfiVCkFH/rofRfS0/w0Nv8ROK0JQP/cFaAQ3kQ2ilvifF0kzPiA1M7si22lbXGyLqhQAVFsNSgKIU0Fe2qfD536Rr+kkBc/sVAzfVh4ajfsOXtMuMoZGIDJULpA1RD9qsybGvl7kkVQd2jPzlvZD8Ef8ZW8wr64Lu+/zZEj30zISIKZiwIsMKM2vOO7eqbfTs+tu0BNKKjiRg7uLF0qhyCpQrlJENzFud04ZiaTyI1Btt2LpOHQmKASWfg7/TEr8rPVPWiVqRBPCpHe5xJlAtQc2+PrtBO8u+qG3TTRKVci2a+Mpx1SwuPtMY2ZRj1NmYW3yBuu9pQnvlg=", true);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2000L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2000L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -248,7 +247,7 @@ public class SadanHuman extends BaseZombie {
                 hologram_d.teleport(entity.getLocation().clone().add(0.0, height + 0.22, 0.0));
                 hologram_d.teleport(entity.getLocation().clone().add(0.0, height + 0.22, 0.0));
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public void t(final ArmorStand respawnAnchor) {
@@ -313,7 +312,7 @@ public class SadanHuman extends BaseZombie {
                 }
                 SadanHuman.SadanInterest.put(entity.getWorld().getUID(), SadanHuman.SadanInterest.get(entity.getWorld().getUID()) - 1);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 20L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 20L);
     }
 
     public void f(final Entity entity) {
@@ -364,7 +363,7 @@ public class SadanHuman extends BaseZombie {
                     SadanHuman.this.sendDelayed(entity, SadanHuman.this.randP3(), 60);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
     }
 
     public void function(final Entity e) {
@@ -397,11 +396,11 @@ public class SadanHuman extends BaseZombie {
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public void a(final Entity e) {
-        e.setMetadata("RMHN", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        e.setMetadata("RMHN", new FixedMetadataValue(Skyblock.getPlugin(), true));
         final Location l = e.getLocation();
         l.setPitch(-27.0f);
         l.setYaw(-180.0f);
@@ -419,7 +418,7 @@ public class SadanHuman extends BaseZombie {
                 }
                 e.teleport(e.getLocation().add(teleportTo).multiply(1.0));
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
     }
 
     public void b(final Entity e) {
@@ -445,14 +444,14 @@ public class SadanHuman extends BaseZombie {
                             }
                             e.remove();
                         }
-                    }.runTaskLater(SkySimEngine.getPlugin(), 3L);
+                    }.runTaskLater(Skyblock.getPlugin(), 3L);
                     SadanHuman.SadanReach.remove(e.getWorld().getUID());
                     this.cancel();
                     return;
                 }
                 e.teleport(e.getLocation().add(teleportTo).multiply(1.0));
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
     }
 
     public void sayPhase1Dialouge(final Entity e) {
@@ -551,7 +550,7 @@ public class SadanHuman extends BaseZombie {
                     p.playSound(p.getLocation(), "mob.guardian.elder.hit", 1.0f, 0.0f);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 19L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 19L);
     }
 
     static {

@@ -2,6 +2,7 @@ package in.godspunky.skyblock.entity.dungeons.watcher;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import in.godspunky.skyblock.Skyblock;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityTeleport;
 import org.bukkit.*;
@@ -19,7 +20,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityType;
 import in.godspunky.skyblock.user.User;
@@ -129,7 +129,7 @@ public class Watcher implements Listener {
                     bb.setProgress(1.0E-5);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public static double random(final double min, final double max) {
@@ -190,8 +190,8 @@ public class Watcher implements Listener {
         final Location sloc = l.add(0.0, -1.25, 0.0);
         sloc.setYaw(getYaw(sloc));
         final ArmorStand stand = (ArmorStand) l.getWorld().spawn(sloc, (Class) ArmorStand.class);
-        stand.setMetadata("WATCHER_ENTITY", new FixedMetadataValue(SkySimEngine.getPlugin(), 0));
-        stand.setMetadata("TYPE", new FixedMetadataValue(SkySimEngine.getPlugin(), this.how.get(index).stype));
+        stand.setMetadata("WATCHER_ENTITY", new FixedMetadataValue(Skyblock.getPlugin(), 0));
+        stand.setMetadata("TYPE", new FixedMetadataValue(Skyblock.getPlugin(), this.how.get(index).stype));
         stand.setCustomNameVisible(false);
         if (!this.how.get(index).arg0) {
             stand.getEquipment().setHelmet(getSkull(this.how.get(index).skullTexture));
@@ -238,7 +238,7 @@ public class Watcher implements Listener {
                 ((ArmorStand) e).setHeadPose(new EulerAngle(x, y, z));
                 e.teleport(e.getLocation().add(e.getLocation().getDirection().multiply(0.5)));
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public ArmorStand findArmorStand(final Location l) {
@@ -329,7 +329,7 @@ public class Watcher implements Listener {
                 ((ArmorStand) e).setHeadPose(new EulerAngle(x, y, z));
                 e.teleport(e.getLocation().add(e.getLocation().getDirection().multiply(0.5)));
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
@@ -373,7 +373,7 @@ public class Watcher implements Listener {
                 stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 1.2, 0.0), Effect.MAGIC_CRIT, 21, 0, 0.2f, 0.1f, 0.2f, 0.01f, 1, 30);
                 stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 1.2, 0.0), Effect.MAGIC_CRIT, 21, 0, 0.2f, 0.1f, 0.2f, 0.01f, 1, 30);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 3L, 3L);
+        }.runTaskTimer(Skyblock.getPlugin(), 3L, 3L);
         new BukkitRunnable() {
             public void run() {
                 if (stand.isDead()) {
@@ -397,7 +397,7 @@ public class Watcher implements Listener {
                     stand.teleport(stand.getLocation().add(loc_.toVector().subtract(stand.getLocation().toVector()).normalize().multiply(Math.min(9.0, Math.min(15.0, e.getLocation().distance(stand.getLocation())) / 4.0 + 0.2))));
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 3L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 3L);
         return stand;
     }
 
@@ -423,7 +423,7 @@ public class Watcher implements Listener {
                 stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 1.2, 0.0), Effect.MAGIC_CRIT, 21, 0, 0.2f, 0.1f, 0.2f, 0.01f, 1, 30);
                 stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 1.2, 0.0), Effect.MAGIC_CRIT, 21, 0, 0.2f, 0.1f, 0.2f, 0.01f, 1, 30);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 3L, 3L);
+        }.runTaskTimer(Skyblock.getPlugin(), 3L, 3L);
         new BukkitRunnable() {
             public void run() {
                 if (stand.isDead()) {
@@ -447,7 +447,7 @@ public class Watcher implements Listener {
                     stand.teleport(stand.getLocation().add(loc_.toVector().subtract(stand.getLocation().toVector()).normalize().multiply(Math.min(9.0, Math.min(15.0, e.getLocation().distance(stand.getLocation())) / 4.0 + 0.2))));
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 3L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 3L);
         return stand;
     }
 
@@ -455,7 +455,7 @@ public class Watcher implements Listener {
         final ArmorStand stand = (ArmorStand) loc.getWorld().spawn(loc, (Class) ArmorStand.class);
         this.welcomeParticles = true;
         (this.ewatcher = stand).setCustomName(trans("&e﴾ &c&lThe Watcher &e﴿"));
-        stand.setMetadata("WATCHER_M", new FixedMetadataValue(SkySimEngine.getPlugin(), 0));
+        stand.setMetadata("WATCHER_M", new FixedMetadataValue(Skyblock.getPlugin(), 0));
         stand.setCustomNameVisible(true);
         stand.setVisible(false);
         stand.getEquipment().setHelmet(getSkull("a137229538d619da70b5fd2ea06a560d9ce50b0e2f92413e6aa73d99f9d7a878"));
@@ -531,11 +531,11 @@ public class Watcher implements Listener {
                                 x = Math.toRadians(r.getPitch());
                                 s.setHeadPose(new EulerAngle(x, y, z));
                             }
-                        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+                        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 30L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 30L);
         new BukkitRunnable() {
             public void run() {
                 if (stand.isDead()) {
@@ -545,7 +545,7 @@ public class Watcher implements Listener {
                 stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 1.2, 0.0), Effect.CLOUD, 21, 0, 0.1f, 0.0f, 0.1f, 0.01f, 1, 30);
                 stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 1.2, 0.0), Effect.EXPLOSION, 21, 0, 0.1f, 0.0f, 0.1f, 0.01f, 1, 30);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 5L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 5L);
         new BukkitRunnable() {
             public void run() {
                 if (stand.isDead()) {
@@ -569,7 +569,7 @@ public class Watcher implements Listener {
                 }
                 stand2.teleport(stand.getLocation().clone().add(0.0, 2.4, 0.0));
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 if (Watcher.this.ewatcher.isDead()) {
@@ -588,7 +588,7 @@ public class Watcher implements Listener {
                     }, 60L);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 if (stand.isDead() || !Watcher.this.welcomeParticles) {
@@ -601,7 +601,7 @@ public class Watcher implements Listener {
                 stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 0.75, 0.0), Effect.WITCH_MAGIC, 0, 1, (float) Watcher.random(-2, 2), (float) Watcher.random(-1.5, 1.5), (float) Watcher.random(-2, 2), 0.0f, 1, 20);
                 stand.getWorld().spigot().playEffect(new Location(stand.getWorld(), stand.getLocation().getX() + Watcher.random(-2, 2), stand.getLocation().getY() + 1.75 + Watcher.random(-1.5, 1.5), stand.getLocation().getZ() + Watcher.random(-2, 2)), Effect.COLOURED_DUST, 0, 1, 0.99607843f, 0.12941177f, 0.003921569f, 1.0f, 0, 64);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 2L, 2L);
+        }.runTaskTimer(Skyblock.getPlugin(), 2L, 2L);
         this.sd("Oh... hello?", 20, 0, false);
         this.sd(null, 60, 0, false);
         this.sd("You've arrived too early, I haven't even set up...", 80, 0, false);
@@ -679,7 +679,7 @@ public class Watcher implements Listener {
                 stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 1.6, 0.0), Effect.COLOURED_DUST, 0, 1, 0.99607843f, 0.12941177f, 0.003921569f, 1.0f, 0, 64);
                 stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 1.6, 0.0), Effect.COLOURED_DUST, 0, 1, 0.99607843f, 0.12941177f, 0.003921569f, 1.0f, 0, 64);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 2L, 2L);
+        }.runTaskTimer(Skyblock.getPlugin(), 2L, 2L);
         new BukkitRunnable() {
             int t = 0;
             int i = 0;
@@ -706,7 +706,7 @@ public class Watcher implements Listener {
                 stand.teleport(stand.getLocation().add(stand.getLocation().getDirection().multiply(0.25)));
                 Watcher.sendHeadRotation(stand, (float) this.t, r.getPitch());
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 1L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 1L, 1L);
     }
 
     public void say(final String str) {

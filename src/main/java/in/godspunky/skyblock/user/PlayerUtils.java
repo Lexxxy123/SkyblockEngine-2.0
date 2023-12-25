@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.user;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import in.godspunky.skyblock.config.Config;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.dungeons.ItemSerial;
 import in.godspunky.skyblock.enchantment.Enchantment;
 import in.godspunky.skyblock.enchantment.EnchantmentType;
@@ -40,14 +40,10 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 import in.godspunky.skyblock.Repeater;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.gui.SlayerGUI;
-import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.listener.PlayerListener;
-import in.godspunky.skyblock.util.*;
 
-import java.io.File;
 import java.util.*;
 
 public final class PlayerUtils {
@@ -354,7 +350,7 @@ public final class PlayerUtils {
             } else if (pet2.getDisplayName().equals("Golden Tiger")) {
                 magicFind.add(7, Double.valueOf(strength2 / 100.0 / 100.0));
                 if (active.getRarity().isAtLeast(Rarity.MYTHIC)) {
-                    final Economy e = SkySimEngine.getEconomy();
+                    final Economy e = Skyblock.getEconomy();
                     int count = 0;
                     for (long num = (long) e.getBalance(player); num != 0L; num /= 10L, ++count) {
                     }
@@ -599,7 +595,7 @@ public final class PlayerUtils {
                 atkSpeed.sub(6, Double.valueOf(boostStatistics.getBaseAttackSpeed()));
                 PlayerUtils.updateHealth(Bukkit.getPlayer(statistics.getUuid()), statistics);
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), ticks);
+        }.runTaskLater(Skyblock.getPlugin(), ticks);
         return statistics;
     }
 
@@ -979,7 +975,7 @@ public final class PlayerUtils {
                                         PlayerUtils.COOLDOWN_MAP.remove(uuid);
                                     }
                                 }
-                            }.runTaskLater(SkySimEngine.getPlugin(), ability.getAbilityCooldownTicks());
+                            }.runTaskLater(Skyblock.getPlugin(), ability.getAbilityCooldownTicks());
                         }
                     } else {
                         player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
@@ -1054,7 +1050,7 @@ public final class PlayerUtils {
 //        }
 //        final User user = User.getUser(player.getUniqueId());
 //        if (user.getIslandX() == null) {
-//            final Config config = SkySimEngine.getPlugin().config;
+//            final Config config = Skyblock.getPlugin().config;
 //            double xOffset = config.getDouble("islands.x");
 //            double zOffset = config.getDouble("islands.z");
 //            if (xOffset < -2.5E7 || xOffset > 2.5E7) {
@@ -1132,7 +1128,7 @@ public final class PlayerUtils {
                     PlayerUtils.SOUL_EATER_MAP.put(damager.getUniqueId(), sEntity);
                 }
                 if (sitem1 != null && sitem1.getEnchantment(EnchantmentType.TURBO_GEM) != null && sitem1.getType() != SMaterial.ENCHANTED_BOOK) {
-                    SkySimEngine.getEconomy().depositPlayer(damager, sitem1.getEnchantment(EnchantmentType.TURBO_GEM).getLevel());
+                    Skyblock.getEconomy().depositPlayer(damager, sitem1.getEnchantment(EnchantmentType.TURBO_GEM).getLevel());
                 }
                 final User user = User.getUser(damager.getUniqueId());
                 double xpDropped = sEntity.getStatistics().getXPDropped();
@@ -1164,13 +1160,13 @@ public final class PlayerUtils {
                         }
                     }
                 }
-                entity.setMetadata("isDead", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+                entity.setMetadata("isDead", new FixedMetadataValue(Skyblock.getPlugin(), true));
                 boolean rare = false;
                 for (final EntityDrop drop : SUtil.shuffle(function.drops())) {
                     final EntityDropType type = drop.getType();
                     final double magicFind = PlayerUtils.STATISTICS_CACHE.get(damager.getUniqueId()).getMagicFind().addAll() / 100.0;
                     double sp = 100.0 * (drop.getDropChance() * (1.0 + magicFind * 10000.0 / 100.0));
-                    if (!SkySimEngine.getPlugin().config.getBoolean("disableDebug")) {
+                    if (!Skyblock.getPlugin().config.getBoolean("disableDebug")) {
                         SLog.info("-------------------------------");
                         SLog.info("Final SP " + sp);
                         SLog.info("Drop chance " + drop.getDropChance());
@@ -1428,7 +1424,7 @@ public final class PlayerUtils {
                 loc.add(loc.getDirection().normalize().multiply(0.6));
                 p.getWorld().spigot().playEffect(loc.clone().add(0.0, 2.2, 0.0), Effect.FLAME, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     static {

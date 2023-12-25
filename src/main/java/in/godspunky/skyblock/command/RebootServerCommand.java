@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;
@@ -20,10 +20,6 @@ public class RebootServerCommand extends SCommand {
 
     @Override
     public void run(final CommandSource sender, final String[] args) {
-        if (sender.getPlayer() != null) {
-            sender.getPlayer().sendMessage(ChatColor.RED + "This command is highly restricted!");
-            return;
-        }
         if (RebootServerCommand.secondMap.containsKey(Bukkit.getServer())) {
             this.send(ChatColor.RED + "You cannot schedule more than 1 server reboot at a time");
             return;
@@ -64,7 +60,7 @@ public class RebootServerCommand extends SCommand {
                     }, 10L);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 20L, 20L);
+        }.runTaskTimer(Skyblock.getPlugin(), 20L, 20L);
     }
 
     public static boolean isPrimeNumber(final int n) {

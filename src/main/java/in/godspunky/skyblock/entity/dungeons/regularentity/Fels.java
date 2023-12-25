@@ -9,7 +9,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.end.BaseEnderman;
 import in.godspunky.skyblock.util.EntityManager;
@@ -47,9 +47,9 @@ public class Fels extends BaseEnderman {
         drop.setGravity(false);
         drop.setCustomNameVisible(false);
         drop.getEquipment().setHelmet(SUtil.getSkullURLStack("asadas", "96c0b36d53fff69a49c7d6f3932f2b0fe948e032226d5e8045ec58408a36e951", 0, ""));
-        entity.setMetadata("upsidedown", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("DungeonMobs", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("upsidedown", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("DungeonMobs", new FixedMetadataValue(Skyblock.getPlugin(), true));
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 65);
         entity.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 10000, 100));
         entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 10000, 100));
@@ -75,7 +75,7 @@ public class Fels extends BaseEnderman {
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 20L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 20L, 1L);
     }
 
     @Override

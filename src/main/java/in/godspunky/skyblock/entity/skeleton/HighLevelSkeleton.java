@@ -7,7 +7,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.entity.EntityFunction;
 import in.godspunky.skyblock.entity.EntityStatistics;
 import in.godspunky.skyblock.entity.SEntity;
@@ -49,6 +49,6 @@ public class HighLevelSkeleton implements EntityStatistics, EntityFunction {
                 new SEntity(spawn, SEntityType.HIGH_LEVEL_SKELETON);
                 item.remove();
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 100L);
+        }.runTaskLater(Skyblock.getPlugin(), 100L);
     }
 }

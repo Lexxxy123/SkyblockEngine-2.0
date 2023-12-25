@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.entity.nms;
 
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.entity.caverns.CreeperFunction;
 import net.minecraft.server.v1_8_R3.EntityCreeper;
 import net.minecraft.server.v1_8_R3.World;
@@ -10,7 +11,6 @@ import org.bukkit.entity.Creeper;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.EntityStatistics;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.event.CreeperIgniteEvent;
@@ -49,7 +49,7 @@ public class SneakyCreeper extends EntityCreeper implements EntityStatistics, SN
             final int fuseTicks = (int) f.get(this);
             if (this.cm() > 0 && fuseTicks == 0) {
                 final CreeperIgniteEvent ignite = new CreeperIgniteEvent((Creeper) this.getBukkitEntity());
-                SkySimEngine.getPlugin().getServer().getPluginManager().callEvent(ignite);
+                Skyblock.getPlugin().getServer().getPluginManager().callEvent(ignite);
                 if (ignite.isCancelled()) {
                     return;
                 }
@@ -68,7 +68,7 @@ public class SneakyCreeper extends EntityCreeper implements EntityStatistics, SN
                 }
                 sEntity.setVisible(false);
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 35L);
+        }.runTaskLater(Skyblock.getPlugin(), 35L);
     }
 
     public LivingEntity spawn(final Location location) {

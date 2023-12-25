@@ -1,11 +1,11 @@
 package in.godspunky.skyblock.entity.den;
 
+import in.godspunky.skyblock.Skyblock;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.EntityDrop;
 import in.godspunky.skyblock.entity.EntityDropType;
 import in.godspunky.skyblock.entity.SEntity;
@@ -52,7 +52,7 @@ public class MutantTarantula extends BaseSpider {
                     ((Player) e).damage(MutantTarantula.this.getDamageDealt() * 0.5, entity);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 20L, 20L);
+        }.runTaskTimer(Skyblock.getPlugin(), 20L, 20L);
     }
 
     @Override

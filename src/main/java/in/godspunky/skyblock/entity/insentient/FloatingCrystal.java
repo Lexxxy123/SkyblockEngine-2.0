@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.entity.insentient;
 
+import in.godspunky.skyblock.Skyblock;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -10,7 +11,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.nms.VelocityArmorStand;
 import in.godspunky.skyblock.util.SUtil;
@@ -24,7 +24,7 @@ public abstract class FloatingCrystal extends VelocityArmorStand {
         stand.setVisible(false);
         stand.setHelmet(SUtil.getSkull(this.getURL(), null));
         stand.setVelocity(new Vector(0.0, 0.1, 0.0));
-        stand.setMetadata("specUnbreakableArmorStand", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        stand.setMetadata("specUnbreakableArmorStand", new FixedMetadataValue(Skyblock.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 if (stand.isDead()) {
@@ -34,7 +34,7 @@ public abstract class FloatingCrystal extends VelocityArmorStand {
                 final Vector velClone = stand.getVelocity().clone();
                 stand.setVelocity(new Vector(0.0, (velClone.getY() < 0.0) ? 0.1 : -0.1, 0.0));
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 15L, 15L);
+        }.runTaskTimer(Skyblock.getPlugin(), 15L, 15L);
         new BukkitRunnable() {
             public void run() {
                 if (stand.isDead()) {
@@ -46,7 +46,7 @@ public abstract class FloatingCrystal extends VelocityArmorStand {
                 stand.teleport(location);
                 stand.getWorld().spigot().playEffect(stand.getEyeLocation().clone().add(SUtil.random(-0.5, 0.5), 0.0, SUtil.random(-0.5, 0.5)), Effect.FIREWORKS_SPARK, 24, 1, 0.0f, 0.0f, 0.0f, 1.0f, 0, 64);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 if (stand.isDead()) {
@@ -83,7 +83,7 @@ public abstract class FloatingCrystal extends VelocityArmorStand {
                     stand.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply(i / count)), Effect.FIREWORKS_SPARK, 24, 1, 0.0f, 0.0f, 0.0f, 1.0f, 0, 64);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 20L, 20L);
+        }.runTaskTimer(Skyblock.getPlugin(), 20L, 20L);
     }
 
     @Override

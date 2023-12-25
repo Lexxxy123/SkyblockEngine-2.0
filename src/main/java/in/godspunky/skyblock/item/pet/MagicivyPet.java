@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.item.pet;
 
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.skill.CombatSkill;
 import in.godspunky.skyblock.skill.Skill;
 import org.bukkit.Effect;
@@ -15,7 +16,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.item.GenericItemType;
 import in.godspunky.skyblock.item.Rarity;
 import in.godspunky.skyblock.item.SItem;
@@ -187,7 +187,7 @@ public class MagicivyPet extends Pet {
                 continue;
             }
             final User user = User.getUser(player.getUniqueId());
-            entity.setMetadata("frozen", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+            entity.setMetadata("frozen", new FixedMetadataValue(Skyblock.getPlugin(), true));
             double b = 0.0;
             for (int k = 0; k < 2; ++k) {
                 final int d;
@@ -219,7 +219,7 @@ public class MagicivyPet extends Pet {
                         }
                         if (stands.isDead()) {
                             ((LivingEntity) entity).removePotionEffect(PotionEffectType.SLOW);
-                            entity.removeMetadata("frozen", SkySimEngine.getPlugin());
+                            entity.removeMetadata("frozen", Skyblock.getPlugin());
                             entity.getWorld().playSound(entity.getLocation(), Sound.GLASS, 1.0f, 1.0f);
                             this.cancel();
                             return;
@@ -230,7 +230,7 @@ public class MagicivyPet extends Pet {
                         ((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 20));
                         stands.teleport(entity.getLocation().add(0.0, c + 1.0, 0.0));
                     }
-                }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+                }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
             }
         }
     }

@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.item.weapon;
 
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.user.PlayerStatistics;
 import in.godspunky.skyblock.util.EntityManager;
@@ -14,10 +15,8 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityType;
-import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
@@ -93,7 +92,7 @@ public class SpiritSceptre implements ToolStatistics, MaterialFunction, Ability 
         final Location throwLoc = player1.getLocation().add(0.0, 1.5, 0.0);
         final Vector throwVec = player1.getLocation().add(player1.getLocation().getDirection().multiply(10)).toVector().subtract(player1.getLocation().toVector()).normalize().multiply(1.2);
         final Bat armorStand1 = (Bat) player1.getWorld().spawnEntity(throwLoc, EntityType.BAT);
-        armorStand1.setMetadata("GiantSword", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        armorStand1.setMetadata("GiantSword", new FixedMetadataValue(Skyblock.getPlugin(), true));
         EntityManager.noHit(armorStand1);
         EntityManager.shutTheFuckUp(armorStand1);
         final Player bukkitPlayer = player1.getPlayer();
@@ -200,7 +199,7 @@ public class SpiritSceptre implements ToolStatistics, MaterialFunction, Ability 
                                         stand3.remove();
                                         this.cancel();
                                     }
-                                }.runTaskLater(SkySimEngine.getPlugin(), 30L);
+                                }.runTaskLater(Skyblock.getPlugin(), 30L);
                                 break;
                             }
                             break;
@@ -255,13 +254,13 @@ public class SpiritSceptre implements ToolStatistics, MaterialFunction, Ability 
                     count1 = 0;
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 1L, 2L);
+        }.runTaskTimer(Skyblock.getPlugin(), 1L, 2L);
         new BukkitRunnable() {
             public void run() {
                 armorStand1.remove();
                 this.cancel();
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 150L);
+        }.runTaskLater(Skyblock.getPlugin(), 150L);
     }
 
     @Override

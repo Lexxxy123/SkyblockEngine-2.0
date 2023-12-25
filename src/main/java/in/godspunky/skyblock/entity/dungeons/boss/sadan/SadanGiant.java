@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.entity.dungeons.boss.sadan;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.entity.dungeons.watcher.GlobalBossBar;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Material;
@@ -22,7 +23,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityEquipment;
 import in.godspunky.skyblock.entity.zombie.BaseZombie;
@@ -107,10 +107,10 @@ public class SadanGiant extends BaseZombie {
         entity.getEquipment().setItemInHand(SUtil.enchant(new ItemStack(Material.DIAMOND_SWORD)));
         Sputnik.applyPacketGiant(entity);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 55);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("highername", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("Boss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("Giant_", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("highername", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("Boss", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("Giant_", new FixedMetadataValue(Skyblock.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 final LivingEntity target = ((CraftZombie) entity).getTarget();
@@ -163,7 +163,7 @@ public class SadanGiant extends BaseZombie {
                     SadanGiant.this.launchTerrain(entity);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -193,7 +193,7 @@ public class SadanGiant extends BaseZombie {
                     break;
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 8L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 8L);
     }
 
     @Override
@@ -216,7 +216,7 @@ public class SadanGiant extends BaseZombie {
                     this.cancel();
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         for (final Player p : killed.getWorld().getPlayers()) {
             final User user = User.getUser(p.getUniqueId());
             user.addBCollection(1);
@@ -247,7 +247,7 @@ public class SadanGiant extends BaseZombie {
                     as2.setCustomName("");
                 }, 60L);
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 35L);
+        }.runTaskLater(Skyblock.getPlugin(), 35L);
     }
 
     @Override
@@ -347,7 +347,7 @@ public class SadanGiant extends BaseZombie {
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public void laserAni(final LivingEntity e) {
@@ -379,7 +379,7 @@ public class SadanGiant extends BaseZombie {
                     SadanGiant.drawLine(loc2, en2, 0.0);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 5L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 5L);
         new BukkitRunnable() {
             public void run() {
                 if (e.isDead()) {
@@ -408,7 +408,7 @@ public class SadanGiant extends BaseZombie {
                     SadanGiant.getEntity(loc2, en2, e);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 10L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 10L);
     }
 
     public void launchTerrain(final LivingEntity e) {
@@ -428,7 +428,7 @@ public class SadanGiant extends BaseZombie {
                     SadanGiant.this.throwTerrain(e, t);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 30L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 30L);
     }
 
     public static ItemStack buildColorStack(final int hexcolor) {
@@ -566,7 +566,7 @@ public class SadanGiant extends BaseZombie {
             final Location endPos = endList.get(pos);
             final FallingBlock block2 = world.spawnFallingBlock(origin, material, blockData);
             block2.setDropItem(false);
-            block2.setMetadata("f", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+            block2.setMetadata("f", new FixedMetadataValue(Skyblock.getPlugin(), true));
             block2.setVelocity(Sputnik.calculateVelocityBlock(origin.toVector(), endPos.toVector(), 3));
         });
     }
@@ -578,7 +578,7 @@ public class SadanGiant extends BaseZombie {
                     this.cancel();
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public void swordSlamAC(final LivingEntity e, final LivingEntity tar) {
@@ -598,8 +598,8 @@ public class SadanGiant extends BaseZombie {
         armorStand.getEquipment().setItemInHand(SUtil.enchant(new ItemStack(Material.DIAMOND_SWORD)));
         Sputnik.applyPacketGiant(armorStand);
         armorStand.setCustomName("Dinnerbone");
-        armorStand.setMetadata("GiantSword", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        armorStand.setMetadata("NoAffect", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        armorStand.setMetadata("GiantSword", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        armorStand.setMetadata("NoAffect", new FixedMetadataValue(Skyblock.getPlugin(), true));
         EntityManager.Woosh(armorStand);
         EntityManager.noHit(armorStand);
         EntityManager.shutTheFuckUp(armorStand);
@@ -614,8 +614,8 @@ public class SadanGiant extends BaseZombie {
         final Vector vectorBetween = secondLocation.toVector().subtract(mobsVector);
         vectorBetween.divide(new Vector(10, 10, 10));
         vectorBetween.add(new Vector(0, 0, 0));
-        final int id = Bukkit.getScheduler().scheduleSyncRepeatingTask(SkySimEngine.getPlugin(), () -> armorStand.setVelocity(vectorBetween), 10L, 10L);
-        Bukkit.getScheduler().scheduleSyncDelayedTask(SkySimEngine.getPlugin(), () -> Bukkit.getScheduler().cancelTask(id), 40L);
+        final int id = Bukkit.getScheduler().scheduleSyncRepeatingTask(Skyblock.getPlugin(), () -> armorStand.setVelocity(vectorBetween), 10L, 10L);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Skyblock.getPlugin(), () -> Bukkit.getScheduler().cancelTask(id), 40L);
         new BukkitRunnable() {
             public void run() {
                 if (!SadanGiant.this.swordActiv) {
@@ -633,8 +633,8 @@ public class SadanGiant extends BaseZombie {
                     EntityManager.noHit(sword);
                     EntityManager.shutTheFuckUp(sword);
                     sword.setCustomName("Dinnerbone");
-                    sword.setMetadata("GiantSword", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-                    sword.setMetadata("NoAffect", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+                    sword.setMetadata("GiantSword", new FixedMetadataValue(Skyblock.getPlugin(), true));
+                    sword.setMetadata("NoAffect", new FixedMetadataValue(Skyblock.getPlugin(), true));
                     final ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(armorStand.getLocation(), EntityType.ARMOR_STAND);
                     stand.setVisible(false);
                     stand.setGravity(true);
@@ -671,7 +671,7 @@ public class SadanGiant extends BaseZombie {
                     }, 35L);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     @Override

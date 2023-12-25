@@ -1,12 +1,12 @@
 package in.godspunky.skyblock.entity;
 
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.region.Region;
 import in.godspunky.skyblock.region.RegionType;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.util.SUtil;
 
 import java.util.ArrayList;
@@ -76,7 +76,7 @@ public class EntityPopulator {
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, this.delay);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, this.delay);
     }
 
     public void stop() {

@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.entity.nms;
 
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.enchantment.EnchantmentType;
 import in.godspunky.skyblock.entity.*;
 import net.minecraft.server.v1_8_R3.Entity;
@@ -17,8 +18,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.entity.*;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.user.User;
@@ -99,7 +98,7 @@ public class RevenantHorror extends EntityZombie implements SNMSEntity, EntityFu
                     RevenantHorror.this.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).setValue(RevenantHorror.this.getMovementSpeed());
                     RevenantHorror.this.hologram.getEntity().setCustomName(ChatColor.RED + SUtil.getFormattedTime(RevenantHorror.this.end - System.currentTimeMillis(), 1000));
                 }
-            }.runTaskLater(SkySimEngine.getPlugin(), 200L);
+            }.runTaskLater(Skyblock.getPlugin(), 200L);
         }
         if (this.tier >= 3 && !this.raged && SUtil.random(0, 200) == 0 && !this.Cooldown) {
             this.raged = true;
@@ -117,19 +116,19 @@ public class RevenantHorror extends EntityZombie implements SNMSEntity, EntityFu
                     RevenantHorror.this.hologram.getEntity().setCustomName(ChatColor.RED + SUtil.getFormattedTime(RevenantHorror.this.end - System.currentTimeMillis(), 1000));
                     SUtil.delay(() -> RevenantHorror.this.Cooldown = false, 550L);
                 }
-            }.runTaskLater(SkySimEngine.getPlugin(), 250L);
+            }.runTaskLater(Skyblock.getPlugin(), 250L);
         }
     }
 
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
         SUtil.delay(() -> this.Cooldown = false, 400L);
-        entity.setMetadata("BOSS_OWNER_" + Bukkit.getPlayer(this.getSpawnerUUID()).getUniqueId().toString(), new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("BOSS_OWNER_" + Bukkit.getPlayer(this.getSpawnerUUID()).getUniqueId().toString(), new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
         this.hologram = new SEntity(entity.getLocation().add(0.0, 2.3, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND);
         ((ArmorStand) this.hologram.getEntity()).setVisible(false);
         ((ArmorStand) this.hologram.getEntity()).setGravity(false);
         this.hologram.getEntity().setCustomNameVisible(true);
-        entity.setMetadata("notDisplay", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("notDisplay", new FixedMetadataValue(Skyblock.getPlugin(), true));
         this.hologram_name = new SEntity(entity.getLocation().add(0.0, 2.0, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND);
         ((ArmorStand) this.hologram_name.getEntity()).setVisible(false);
         final Entity e = this.getBukkitEntity().getHandle();
@@ -148,7 +147,7 @@ public class RevenantHorror extends EntityZombie implements SNMSEntity, EntityFu
                 }
                 player.damage(RevenantHorror.this.getDamageDealt() * 0.5, entity);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 60L, 60L);
+        }.runTaskTimer(Skyblock.getPlugin(), 60L, 60L);
         if (this.tier >= 2) {
             new BukkitRunnable() {
                 public void run() {
@@ -162,7 +161,7 @@ public class RevenantHorror extends EntityZombie implements SNMSEntity, EntityFu
                     }
                     player.damage(RevenantHorror.this.getDamageDealt(), entity);
                 }
-            }.runTaskTimer(SkySimEngine.getPlugin(), 20L, 20L);
+            }.runTaskTimer(Skyblock.getPlugin(), 20L, 20L);
         }
         new BukkitRunnable() {
             public void run() {
@@ -172,7 +171,7 @@ public class RevenantHorror extends EntityZombie implements SNMSEntity, EntityFu
                     this.cancel();
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public void onDeath(final SEntity sEntity, final org.bukkit.entity.Entity killed, final org.bukkit.entity.Entity damager) {

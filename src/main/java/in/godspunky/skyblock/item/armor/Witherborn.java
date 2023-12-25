@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.item.armor;
 
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.skill.Skill;
 import in.godspunky.skyblock.util.EntityManager;
 import in.godspunky.skyblock.util.Groups;
@@ -10,7 +11,6 @@ import org.bukkit.Sound;
 import org.bukkit.entity.*;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.listener.PlayerListener;
 import in.godspunky.skyblock.user.User;
@@ -65,9 +65,9 @@ public class Witherborn {
         EntityManager.setNBTTag(w, "Invul", this.size);
         EntityManager.noHit(w);
         EntityManager.shutTheFuckUp(w);
-        w.setMetadata("GiantSword", new FixedMetadataValue(SkySimEngine.getPlugin(), 0));
-        w.setMetadata("NoAffect", new FixedMetadataValue(SkySimEngine.getPlugin(), 0));
-        w.setMetadata("Ire", new FixedMetadataValue(SkySimEngine.getPlugin(), 0));
+        w.setMetadata("GiantSword", new FixedMetadataValue(Skyblock.getPlugin(), 0));
+        w.setMetadata("NoAffect", new FixedMetadataValue(Skyblock.getPlugin(), 0));
+        w.setMetadata("Ire", new FixedMetadataValue(Skyblock.getPlugin(), 0));
         this.w = w;
         new BukkitRunnable() {
             public void run() {
@@ -89,7 +89,7 @@ public class Witherborn {
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 100L, 100L);
+        }.runTaskTimer(Skyblock.getPlugin(), 100L, 100L);
         new BukkitRunnable() {
             float cout = Witherborn.this.p.getLocation().getYaw();
 
@@ -121,7 +121,7 @@ public class Witherborn {
                 }
                 this.cout += 7.0f;
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 2L, 2L);
+        }.runTaskTimer(Skyblock.getPlugin(), 2L, 2L);
     }
 
     public void selfSacrificeHeroAction(final Wither w, final Entity e) {
@@ -205,7 +205,7 @@ public class Witherborn {
                 w.teleport(r);
                 w.teleport(w.getLocation().add(w.getLocation().getDirection().normalize().multiply(0.3)));
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 2L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 2L, 1L);
     }
 
     public static Witherborn getWitherbornInstance(final Player p) {

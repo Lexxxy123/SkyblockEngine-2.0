@@ -18,6 +18,7 @@ import com.sk89q.worldedit.world.registry.WorldData;
 import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.PositionSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.command.AccessTimedCommand;
 import in.godspunky.skyblock.dungeons.BlessingChest;
 import in.godspunky.skyblock.dungeons.Blessings;
@@ -57,7 +58,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.gui.BossMenu;
 import in.godspunky.skyblock.gui.PetsGUI;
 import in.godspunky.skyblock.gui.TradeMenu;
@@ -289,7 +289,7 @@ public class Sputnik {
                     beam.update();
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public static int findArgo(final Location arg0, final Location arg1) {
@@ -442,7 +442,7 @@ public class Sputnik {
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 5L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 5L);
     }
 
     public static void witherShieldActive2(final Player p) {
@@ -472,9 +472,9 @@ public class Sputnik {
                             public void run() {
                                 Sputnik.CooldownAbs.put(p.getUniqueId(), false);
                             }
-                        }.runTaskLater(SkySimEngine.getPlugin(), 100L);
+                        }.runTaskLater(Skyblock.getPlugin(), 100L);
                     }
-                }.runTaskLater(SkySimEngine.getPlugin(), 100L);
+                }.runTaskLater(Skyblock.getPlugin(), 100L);
             }
         } else {
             Sputnik.CooldownAbs.put(p.getUniqueId(), false);
@@ -509,9 +509,9 @@ public class Sputnik {
                             public void run() {
                                 Sputnik.CooldownAbs.put(p.getUniqueId(), false);
                             }
-                        }.runTaskLater(SkySimEngine.getPlugin(), 100L);
+                        }.runTaskLater(Skyblock.getPlugin(), 100L);
                     }
-                }.runTaskLater(SkySimEngine.getPlugin(), 100L);
+                }.runTaskLater(Skyblock.getPlugin(), 100L);
             }
         } else {
             Sputnik.CooldownAbs.put(p.getUniqueId(), false);
@@ -591,7 +591,7 @@ public class Sputnik {
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 1L, 5L);
+        }.runTaskTimer(Skyblock.getPlugin(), 1L, 5L);
     }
 
     public static void moveTo(final LivingEntity entity, final Location moveTo, final float speed) {
@@ -728,7 +728,7 @@ public class Sputnik {
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 0L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 0L);
     }
 
     public static final float getAngle(final Vector point1, final Vector point2) {
@@ -820,7 +820,7 @@ public class Sputnik {
 
     public static List<Block> pasteSchematicRep(final String schematic, final boolean withAir, final float lx, final float ly, final float lz, final World w) {
         final List<Block> lb = new ArrayList<Block>();
-        final File schem = new File(SkySimEngine.getPlugin().getDataFolder() + File.separator + "/schematics/" + schematic + ".schematic");
+        final File schem = new File(Skyblock.getPlugin().getDataFolder() + File.separator + "/schematics/" + schematic + ".schematic");
         final com.sk89q.worldedit.world.World world = new BukkitWorld(w);
         final Closer closer = Closer.create();
         FileInputStream fis = null;
@@ -881,7 +881,7 @@ public class Sputnik {
             final com.sk89q.worldedit.Vector pasteLocation = new com.sk89q.worldedit.Vector(location.getX(), location.getY(), location.getZ());
             final BukkitWorld pasteWorld = new BukkitWorld(location.getWorld());
             final WorldData pasteWorldData = pasteWorld.getWorldData();
-            final File schem = new File(SkySimEngine.getPlugin().getDataFolder() + File.separator + "/schematics/" + schematic + ".schematic");
+            final File schem = new File(Skyblock.getPlugin().getDataFolder() + File.separator + "/schematics/" + schematic + ".schematic");
             Clipboard clipboard;
             try {
                 clipboard = ClipboardFormat.SCHEMATIC.getReader(new FileInputStream(schem)).read(pasteWorldData);
@@ -953,7 +953,7 @@ public class Sputnik {
             BossMenu.ableToJoin.put(player, true);
             return;
         }
-        final SkySimEngine plugin = SkySimEngine.getPlugin();
+        final Skyblock plugin = Skyblock.getPlugin();
         plugin.config.set("runMade", plugin.config.getLong("runMade") + 1L);
         plugin.config.save();
         final ArrayList<Player> plist = new ArrayList<Player>();
@@ -1029,18 +1029,18 @@ public class Sputnik {
                     this.loc = 0;
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public static void playSoulWell(final Entity e, final String id) {
         final HashMap<Integer, Integer> S = new HashMap<Integer, Integer>();
         Sputnik.MAP_PARTICLE_1.put(e, e.getLocation());
-        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(SkySimEngine.getPlugin(), new Runnable() {
+        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Skyblock.getPlugin(), new Runnable() {
             final Random random = new Random();
 
             void startSoulWell() {
                 final int num = this.random.nextInt(Integer.MAX_VALUE);
-                S.put(num, Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(SkySimEngine.getPlugin(), new Runnable() {
+                S.put(num, Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Skyblock.getPlugin(), new Runnable() {
                     final Location height = Sputnik.MAP_PARTICLE_1.get(e);
                     int loc = 0;
                     int lifeSpan = 0;
@@ -1072,7 +1072,7 @@ public class Sputnik {
             public void run() {
                 Sputnik.MAP_PARTICLE_1.put(e, e.getLocation());
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     private static ArrayList<Location> getCircle(final Location center, final double radius, final int amount) {
@@ -1166,7 +1166,7 @@ public class Sputnik {
     }
 
     public static void tradeIntitize(final Player target, final Player p) {
-        if (SkySimEngine.getPlugin() != null && !SkySimEngine.getPlugin().config.getBoolean("enableTrade")) {
+        if (Skyblock.getPlugin() != null && !Skyblock.getPlugin().config.getBoolean("enableTrade")) {
             p.sendMessage(trans("&cTrading has been temporary disabled!"));
             return;
         }
@@ -1215,7 +1215,7 @@ public class Sputnik {
                     TradeUtil.resetTrade(target);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         if (TradeUtil.hasRequest(p, target)) {
             p.playSound(p.getLocation(), Sound.VILLAGER_HAGGLE, 1.0f, 1.0f);
             target.playSound(target.getLocation(), Sound.VILLAGER_HAGGLE, 1.0f, 1.0f);
@@ -1255,7 +1255,7 @@ public class Sputnik {
                     this.cancel();
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         return as;
     }
 
@@ -1279,7 +1279,7 @@ public class Sputnik {
                     this.cancel();
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         return as;
     }
 
@@ -1305,7 +1305,7 @@ public class Sputnik {
                 }
                 as.teleport(e.getLocation().add(0.0, yoffset, 0.0));
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         return as;
     }
 
@@ -1431,7 +1431,7 @@ public class Sputnik {
                     e.printStackTrace();
                 }
             }
-        }.runTaskAsynchronously(SkySimEngine.getPlugin());
+        }.runTaskAsynchronously(Skyblock.getPlugin());
     }
 
     public static void sendEatingAnimation(final LivingEntity e) {
@@ -1479,7 +1479,7 @@ public class Sputnik {
     }
 
     public static boolean tpAbilUsable(final Player p) {
-        return !p.getWorld().getName().contains("arena") || SkySimEngine.getPlugin().dimoon == null || SkySimEngine.getPlugin().dimoon.stunned;
+        return !p.getWorld().getName().contains("arena") || Skyblock.getPlugin().dimoon == null || Skyblock.getPlugin().dimoon.stunned;
     }
 
     public static void teleport(final Player p, final Location loc) {
@@ -1491,7 +1491,7 @@ public class Sputnik {
     }
 
     public static PositionSongPlayer playNativeSound(final String filename, final int radius, final int volume, final boolean loop, final Location loc) {
-        final Song song = NBSDecoder.parse(new File(SkySimEngine.getPlugin().getDataFolder() + File.separator + "/songs/" + filename + ".nbs"));
+        final Song song = NBSDecoder.parse(new File(Skyblock.getPlugin().getDataFolder() + File.separator + "/songs/" + filename + ".nbs"));
         final PositionSongPlayer esp = new PositionSongPlayer(song);
         esp.setDistance(radius);
         esp.setVolume((byte) 100);
@@ -1511,7 +1511,7 @@ public class Sputnik {
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         return esp;
     }
 
@@ -1543,7 +1543,7 @@ public class Sputnik {
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     static {

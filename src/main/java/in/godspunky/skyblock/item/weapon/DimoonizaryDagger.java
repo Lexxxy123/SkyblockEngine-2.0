@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.item.weapon;
 
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.util.*;
 import org.bukkit.*;
@@ -8,12 +9,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 import in.godspunky.skyblock.Repeater;
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.listener.PlayerListener;
 import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -254,13 +252,13 @@ public class DimoonizaryDagger implements ToolStatistics, MaterialFunction, Abil
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 1L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 1L, 1L);
         new BukkitRunnable() {
             public void run() {
                 armorStand1.remove();
                 this.cancel();
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 40L);
+        }.runTaskLater(Skyblock.getPlugin(), 40L);
     }
 
     @Override

@@ -11,8 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import in.godspunky.skyblock.Repeater;
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
@@ -38,7 +37,7 @@ public class VoidlingsWardenHelmet implements MaterialFunction, SkullStatistics,
                     ++VoidlingsWardenHelmet.serverIterator;
                 }
             }
-        }.runTaskTimerAsynchronously(SkySimEngine.getPlugin(), 3L, 3L);
+        }.runTaskTimerAsynchronously(Skyblock.getPlugin(), 3L, 3L);
     }
 
     public static String getTexture() {
@@ -233,7 +232,7 @@ public class VoidlingsWardenHelmet implements MaterialFunction, SkullStatistics,
                 }
                 this.cout += 18.0f;
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public boolean checkHelmet(final Player p) {

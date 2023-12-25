@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.command;
 
 
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.ranks.GodspunkyPlayer;
 import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.util.SUtil;
@@ -18,7 +18,7 @@ import java.util.List;
 
 public abstract class SCommand implements CommandExecutor, TabCompleter {
     public static final String COMMAND_SUFFIX = "Command";
-    protected static final SkySimEngine plugin = SkySimEngine.getPlugin();
+    protected static final Skyblock plugin = Skyblock.getPlugin();
 
     private CommandParameters params;
     private String name;
