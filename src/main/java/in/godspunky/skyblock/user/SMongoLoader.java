@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.user;
 
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import in.godspunky.skyblock.auction.AuctionEscrow;
 import in.godspunky.skyblock.collection.ItemCollection;
@@ -21,7 +22,6 @@ import org.bukkit.entity.Player;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class SMongoLoader
@@ -62,7 +62,6 @@ public class SMongoLoader
         user.setSelectedProfile(newProfile);
         user.profiles = new HashMap<>();
         user.profiles.put(newProfile.uuid, true);
-
         User.USER_CACHE.put(uuid, user);
         Profile.USER_CACHE.put(newProfileUUID.toString(), newProfile);
         grabProfile(newProfileUUID.toString());
@@ -94,6 +93,13 @@ public class SMongoLoader
         user.addProfile(newProfile ,true);
         grabProfile(newProfileUUID.toString());
         save(uuid);
+        loadProfile(user.selectedProfile);
+        try {
+            user.loadPlayerData(user.selectedProfile);
+            user.loadCookieStatus(user.selectedProfile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         player.sendMessage(ChatColor.YELLOW + "Welcome to " + ChatColor.GREEN + "Godspunky Skyblock!");
         player.sendMessage(ChatColor.AQUA + "You are playing on profile: " + ChatColor.YELLOW + name);
     }
@@ -112,12 +118,15 @@ public class SMongoLoader
         Profile selectedProfile = user.selectedProfile;
         UserDatabase db = new UserDatabase(uuid.toString(), false);
 
+        // todo fix it
         if (db.exists()) {
-            db.getDocument().forEach(this::setUserProperty);
+            SMongoLoader loader = new SMongoLoader(uuid.toString());
+            db.getDocument().forEach(loader::setUserProperty);
         }
 
-        setUserProperty("selectedProfile", selectedProfile == null ? null : selectedProfile.getUuid().toString());
-        setUserProperty("profiles", user.profiles);
+
+        setUserProperty(uuid.toString(),"selectedProfile", selectedProfile == null ? null : selectedProfile.getUuid().toString());
+        setUserProperty(uuid.toString(),"profiles", user.profiles);
 
         SUtil.runAsync(() -> saveUserData(uuid));
 
@@ -157,12 +166,15 @@ public class SMongoLoader
         selectedProfile.setCoins(user.getCoins());
         selectedProfile.setCollections(user.getCollections());
         selectedProfile.setSelected(true);
-        saveProfile(selectedProfile);
         user.saveAllVanillaInstances(selectedProfile);
         user.saveCookie(selectedProfile);
+        saveProfile(selectedProfile);
+
 
 
     }
+
+
 
     public  void loadProfile(Profile profile) {
         System.out.println("using message at " + System.currentTimeMillis());
@@ -364,60 +376,7 @@ public class SMongoLoader
         User.USER_CACHE.put(owner.getUuid(), owner);
     }
 
-    public void saveNewProfile(Profile profile) {
-        setProfileProperty("name", profile.name);
-        Map<String, Integer> tempColl = new HashMap<>();
-        profile.collections.forEach((key, value) -> {
-            tempColl.put(key.getIdentifier(), value);
-        });
-        setProfileProperty("collections", tempColl);
-        setProfileProperty("coins", profile.getCoins());
-        setProfileProperty("bankCoins", profile.getBankCoins());
-        if (profile.getLastRegion() != null)
-            setProfileProperty("lastRegion", profile.getLastRegion().getName());
-        Map<String, Integer> tempQuiv = new HashMap<>();
-        profile.getQuiver().forEach((key, value) -> tempQuiv.put(key.name(), value));
-        setProfileProperty("quiver", tempQuiv);
-        List<Document> effectsDocuments = new ArrayList<>();
-        for (ActivePotionEffect effect : profile.getEffects()) {
-            Document effectDocument = new Document()
-                    .append("key", effect.getEffect().getType().getNamespace())
-                    .append("level", effect.getEffect().getLevel())
-                    .append("duration", effect.getEffect().getDuration())
-                    .append("remaining", effect.getRemaining());
-            effectsDocuments.add(effectDocument);
-        }
-        setProfileProperty("effects", effectsDocuments);
-        setProfileProperty("skillFarmingXp", profile.farmingXP);
-        setProfileProperty("skillMiningXp", profile.miningXP);
-        setProfileProperty("skillCombatXp", profile.combatXP);
-        setProfileProperty("skillForagingXp", profile.foragingXP);
-        setProfileProperty("slayerRevenantHorrorHighest", profile.highestSlayers[0]);
-        setProfileProperty("slayerTarantulaBroodfatherHighest", profile.highestSlayers[1]);
-        setProfileProperty("slayerSvenPackmasterHighest", profile.highestSlayers[2]);
-        setProfileProperty("slayerVoidgloomSeraphHighest", profile.highestSlayers[3]);
-        setProfileProperty("permanentCoins", profile.isPermanentCoins());
-        setProfileProperty("xpSlayerRevenantHorror", profile.slayerXP[0]);
-        setProfileProperty("xpSlayerTarantulaBroodfather", profile.slayerXP[1]);
-        setProfileProperty("xpSlayerSvenPackmaster", profile.slayerXP[2]);
-        setProfileProperty("xpSlayerVoidgloomSeraph", profile.slayerXP[3]);
-        if (profile.getSlayerQuest() != null)
-            setProfileProperty("slayerQuest", profile.getSlayerQuest().serialize());
-        if (!profile.pets.isEmpty()) {
-            List<Map<String, Object>> petsSerialized = profile.pets.stream().map(pet -> pet.serialize()).collect(Collectors.toList());
-            setProfileProperty("pets", petsSerialized);
-        } else {
-            setProfileProperty("pets", new ArrayList<Map<String, Object>>());
-        }
-        setProfileProperty("unlockedRecipes", profile.getUnlockedRecipes());
-        setProfileProperty("talked_npcs", profile.getTalked_npcs());
-        setProfileProperty("auctionSettings", profile.auctionSettings.serialize());
-        setProfileProperty("auctionCreationBIN", profile.isAuctionCreationBIN());
-        setProfileProperty("auctionEscrow", profile.getAuctionEscrow().serialize());
-        setProfileProperty("selected", profile.isSelected());
 
-        SUtil.runAsync(() -> saveProfileData(profile.owner));
-    }
 
 
     public void loadOnlyDisplay(Profile profile) {
@@ -436,21 +395,22 @@ public class SMongoLoader
 
     public void saveProfile(Profile profile) {
         SLog.info("Save Profile is getting called");
-        setProfileProperty("owner", profile.owner.toString());
+        String uuid = profile.owner.toString();
+        setProfileProperty(uuid ,"owner", profile.owner.toString());
 
-        setProfileProperty("name", profile.name);
+        setProfileProperty(uuid, "name", profile.name);
         Map<String, Integer> tempColl = new HashMap<>();
         for (ItemCollection collection : ItemCollection.getCollections()) {
             tempColl.put(collection.getIdentifier(), profile.getCollection(collection));
         }
-        setProfileProperty("collections", tempColl);
-        setProfileProperty("coins", profile.getCoins());
-        setProfileProperty("bankCoins", profile.getBankCoins());
+        setProfileProperty(uuid ,"collections", tempColl);
+        setProfileProperty(uuid,"coins", profile.getCoins());
+        setProfileProperty(uuid,"bankCoins", profile.getBankCoins());
         if (profile.getLastRegion() != null)
-            setProfileProperty("lastRegion", profile.getLastRegion().getName());
+            setProfileProperty(uuid,"lastRegion", profile.getLastRegion().getName());
         Map<String, Integer> tempQuiv = new HashMap<>();
         profile.getQuiver().forEach((key, value) -> tempQuiv.put(key.name(), value));
-        setProfileProperty("quiver", tempQuiv);
+        setProfileProperty(uuid,"quiver", tempQuiv);
         List<Document> effectsDocuments = new ArrayList<>();
         for (ActivePotionEffect effect : profile.getEffects()) {
             Document effectDocument = new Document()
@@ -460,56 +420,67 @@ public class SMongoLoader
                     .append("remaining", effect.getRemaining());
             effectsDocuments.add(effectDocument);
         }
-        setProfileProperty("effects", effectsDocuments);
-        setProfileProperty("skillFarmingXp", profile.farmingXP);
-        setProfileProperty("skillMiningXp", profile.miningXP);
-        setProfileProperty("skillCombatXp", profile.combatXP);
-        setProfileProperty("skillForagingXp", profile.foragingXP);
-        setProfileProperty("slayerRevenantHorrorHighest", profile.highestSlayers[0]);
-        setProfileProperty("slayerTarantulaBroodfatherHighest", profile.highestSlayers[1]);
-        setProfileProperty("slayerSvenPackmasterHighest", profile.highestSlayers[2]);
-        setProfileProperty("slayerVoidgloomSeraphHighest", profile.highestSlayers[3]);
-        setProfileProperty("permanentCoins", profile.isPermanentCoins());
-        setProfileProperty("xpSlayerRevenantHorror", profile.slayerXP[0]);
-        setProfileProperty("xpSlayerTarantulaBroodfather", profile.slayerXP[1]);
-        setProfileProperty("xpSlayerSvenPackmaster", profile.slayerXP[2]);
-        setProfileProperty("xpSlayerVoidgloomSeraph", profile.slayerXP[3]);
+        setProfileProperty(uuid,"effects", effectsDocuments);
+        setProfileProperty(uuid,"skillFarmingXp", profile.farmingXP);
+        setProfileProperty(uuid,"skillMiningXp", profile.miningXP);
+        setProfileProperty(uuid,"skillCombatXp", profile.combatXP);
+        setProfileProperty(uuid,"skillForagingXp", profile.foragingXP);
+        setProfileProperty(uuid,"slayerRevenantHorrorHighest", profile.highestSlayers[0]);
+        setProfileProperty(uuid,"slayerTarantulaBroodfatherHighest", profile.highestSlayers[1]);
+        setProfileProperty(uuid,"slayerSvenPackmasterHighest", profile.highestSlayers[2]);
+        setProfileProperty(uuid,"slayerVoidgloomSeraphHighest", profile.highestSlayers[3]);
+        setProfileProperty(uuid,"permanentCoins", profile.isPermanentCoins());
+        setProfileProperty(uuid,"xpSlayerRevenantHorror", profile.slayerXP[0]);
+        setProfileProperty(uuid,"xpSlayerTarantulaBroodfather", profile.slayerXP[1]);
+        setProfileProperty(uuid,"xpSlayerSvenPackmaster", profile.slayerXP[2]);
+        setProfileProperty(uuid,"xpSlayerVoidgloomSeraph", profile.slayerXP[3]);
         if (profile.getSlayerQuest() != null)
-            setProfileProperty("slayerQuest", profile.getSlayerQuest().serialize());
+            setProfileProperty(uuid,"slayerQuest", profile.getSlayerQuest().serialize());
         if (!profile.pets.isEmpty()) {
             List<Map<String, Object>> petsSerialized = profile.pets.stream().map(pet -> pet.serialize()).collect(Collectors.toList());
-            setProfileProperty("pets", petsSerialized);
+            setProfileProperty(uuid,"pets", petsSerialized);
         } else {
-            setProfileProperty("pets", new ArrayList<Map<String, Object>>());
+            setProfileProperty(uuid,"pets", new ArrayList<Map<String, Object>>());
         }
-        setProfileProperty("auctionSettings", profile.auctionSettings.serialize());
+        setProfileProperty(uuid,"auctionSettings", profile.auctionSettings.serialize());
         //setProfileProperty("created", profile.created);
-        setProfileProperty("auctionCreationBIN", profile.isAuctionCreationBIN());
-        setProfileProperty("selected", profile.isSelected());
-        SUtil.runAsync(() -> saveProfileData(UUID.fromString(profile.uuid) ));
+        setProfileProperty(uuid,"auctionCreationBIN", profile.isAuctionCreationBIN());
+        setProfileProperty(uuid,"selected", profile.isSelected());
+        SUtil.runAsync(() -> saveProfileData(UUID.fromString(profile.uuid) , profile.owner.toString()));
     }
 
 
 
-    public Map<String, Object> profileCache;
-    public Map<String, Object> userCache;
+    public static Map<String, ProfileDataHolder> profileCache = new HashMap<>();
+    public static Map<String, UserDataHolder> userCache = new HashMap<>();
     public String cachedUserId;
     public String cachedProfileId;
 
     public SMongoLoader() {
-        profileCache = new HashMap<>();
-        userCache = new HashMap<>();
+
+    }
+    public SMongoLoader(String uuid){
+        this.cachedUserId = uuid;
+    }
+    public void setUserProperty(String key , Object value){
+        setUserProperty(cachedUserId , key , value);
     }
 
-    public  void setProfileProperty(String key, Object value) {
+    public void setProfileProperty(String uuid ,String key, Object value) {
             if (value != null) {
-                profileCache.put(key, value);
+                if (!profileCache.containsKey(uuid)){
+                    profileCache.put(uuid , ProfileDataHolder.getDataHolder(uuid));
+                }
+                profileCache.get(uuid).addData(key , value);
             }
         }
 
-    public void setUserProperty(String key, Object value) {
+    public void setUserProperty(String uuid,String key, Object value) {
             if (value != null) {
-                userCache.put(key, value);
+                if (!userCache.containsKey(uuid)){
+                    userCache.put(uuid , UserDataHolder.getDataHolder(uuid));
+                }
+               userCache.get(uuid).addData(key , value);
             }
         }
 
@@ -525,12 +496,18 @@ public class SMongoLoader
 
     public Document grabProfile(String id) {
         Document query = new Document("_id", id);
-        Document foundOrNot = DatabaseManager.getCollection("profiles").find(query).first();
+        MongoCollection<Document> collection = DatabaseManager.getCollection("profiles");
+
+        Document foundOrNot = collection.find(query).first();
+
         if (foundOrNot == null) {
-            SUtil.runAsync(() -> DatabaseManager.getCollection("profiles").insertOne(new Document("_id", id)));
+            collection.insertOne(new Document("_id", id));
+            foundOrNot = collection.find(query).first();
         }
+
         return foundOrNot;
     }
+
 
     public Object get(Document base, String key, Object def) {
         if (base.get(key) != null) {
@@ -562,14 +539,22 @@ public class SMongoLoader
         return Long.parseLong(getString(base, key, def));
     }
 
-    public  void saveProfileData(UUID uuid) {
-
+    public  void saveProfileData(UUID uuid , String owner) {
+        if (owner == null) return;
+        if (uuid == null) return;
             Document found = grabProfile(uuid.toString());
             if (found != null) {
                 Document updated = new Document(found);
-                profileCache.forEach((key, value) -> updated.put(key, value));
-                DatabaseManager.getCollection("profiles").replaceOne(Filters.eq("_id", uuid.toString()), updated);
-                SLog.info("Updating profile data : " + uuid);
+                for (Map.Entry<String, ProfileDataHolder> data : profileCache.entrySet()) {
+                    if (data.getKey().equals(owner)) {
+                        data.getValue().getDATA_CACHE().forEach(updated::append);
+                        System.out.println("cache size : " + data.getValue().getDATA_CACHE().size());
+                        DatabaseManager.getCollection("profiles").replaceOne(found, updated);
+                        System.out.println("saving data for : " + owner);
+                        profileCache.remove(owner);
+                    }
+                }
+                SLog.info("Updating profile data : " + owner);
             }
         }
 
@@ -577,13 +562,16 @@ public class SMongoLoader
     public  void saveUserData(UUID uuid) {
 
             Document found = grabUser(uuid.toString());
-
+            Document updated = new Document();
             if (found != null) {
-                Document updated = new Document();
-                userCache.forEach(updated::append);
-
-                assert found != null;
+                for (Map.Entry<String , UserDataHolder> data : userCache.entrySet()){
+                    if (data.getKey().equals(uuid.toString())){
+                        data.getValue().getDATA_CACHE().forEach(updated::append);
+                        break;
+                    }
+                }
                 DatabaseManager.getCollection("users").replaceOne(found, updated);
+                userCache.remove(uuid.toString());
             }
         }
 }
