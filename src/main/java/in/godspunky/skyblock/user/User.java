@@ -285,7 +285,7 @@ public class User {
             return;
         }
 
-        plugin.dataLoader.setProfileProperty(uuid.toString(),"cookieDuration", PlayerUtils.getCookieDurationTicks(Bukkit.getPlayer(this.uuid)));
+        plugin.dataLoader.setProfileProperty(UUID.fromString(profile.uuid),"cookieDuration", PlayerUtils.getCookieDurationTicks(Bukkit.getPlayer(this.uuid)));
     }
 
     public void saveInventory(Profile profile) {
