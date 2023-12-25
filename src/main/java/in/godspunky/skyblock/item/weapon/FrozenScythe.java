@@ -11,8 +11,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.listener.PlayerListener;
 import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.user.User;
@@ -184,7 +183,7 @@ public class FrozenScythe implements ToolStatistics, MaterialFunction, Ability {
                     p.getWorld().spigot().playEffect(loc, Effect.SNOW_SHOVEL, 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, 40);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 1L, 0L);
+        }.runTaskTimer(Skyblock.getPlugin(), 1L, 0L);
     }
 
     public static void throwIce(final ArmorStand stand1, final ArmorStand stand2, final ArmorStand stand3, final ArmorStand stand4, final ArmorStand stand5, final Player p, final Vector vecTo, final Vector back) {
@@ -196,7 +195,7 @@ public class FrozenScythe implements ToolStatistics, MaterialFunction, Ability {
                 stand4.remove();
                 stand5.remove();
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 80L);
+        }.runTaskLater(Skyblock.getPlugin(), 80L);
     }
 
     @Override

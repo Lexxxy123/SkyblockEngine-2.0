@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.entity.nms;
 
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.entity.*;
 import in.godspunky.skyblock.entity.dungeons.watcher.GlobalBossBar;
 import net.minecraft.server.v1_8_R3.EntityEnderDragon;
@@ -17,8 +18,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.entity.*;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.user.User;
@@ -112,7 +111,7 @@ public abstract class Dragon extends EntityEnderDragon implements SNMSEntity, En
                 }
                 Dragon.this.updateBar((float) (entity.getHealth() / entity.getMaxHealth()), bb);
             }
-        }.runTaskTimerAsynchronously(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimerAsynchronously(Skyblock.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -147,7 +146,7 @@ public abstract class Dragon extends EntityEnderDragon implements SNMSEntity, En
                                 }
                                 Dragon.this.frozen = false;
                             }
-                        }.runTaskLater(SkySimEngine.getPlugin(), 50L);
+                        }.runTaskLater(Skyblock.getPlugin(), 50L);
                         return;
                     case 1: {
                         Dragon.this.frozen = true;
@@ -183,7 +182,7 @@ public abstract class Dragon extends EntityEnderDragon implements SNMSEntity, En
                                         }
                                     }, 1L, 120L);
                                 }
-                            }.runTaskLater(SkySimEngine.getPlugin(), 20L);
+                            }.runTaskLater(Skyblock.getPlugin(), 20L);
                             new BukkitRunnable() {
                                 public void run() {
                                     SUtil.runIntervalForTicks(() -> {
@@ -192,23 +191,23 @@ public abstract class Dragon extends EntityEnderDragon implements SNMSEntity, En
                                         final Object val$finalNear = finalNear;
                                         if (!entity.isDead()) {
                                             final Fireball fireball = (Fireball) entity.getWorld().spawn(entity.getEyeLocation().subtract(0.0, 8.0, 0.0).add(entity.getLocation().getDirection().multiply(-10.0)), (Class) Fireball.class);
-                                            fireball.setMetadata("dragon", new FixedMetadataValue(SkySimEngine.getPlugin(), sEntity));
+                                            fireball.setMetadata("dragon", new FixedMetadataValue(Skyblock.getPlugin(), sEntity));
                                             fireball.setDirection(finalNear.getLocation().getDirection().multiply(-1.0).normalize());
                                         }
                                     }, 5L, 60L);
                                 }
-                            }.runTaskLater(SkySimEngine.getPlugin(), 80L);
+                            }.runTaskLater(Skyblock.getPlugin(), 80L);
                         }
                         new BukkitRunnable() {
                             public void run() {
                                 Dragon.this.frozen = false;
                             }
-                        }.runTaskLater(SkySimEngine.getPlugin(), 140L);
+                        }.runTaskLater(Skyblock.getPlugin(), 140L);
                     }
                     default:
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 100L, this.attackCooldown);
+        }.runTaskTimer(Skyblock.getPlugin(), 100L, this.attackCooldown);
     }
 
     public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
@@ -322,12 +321,12 @@ public abstract class Dragon extends EntityEnderDragon implements SNMSEntity, En
                                 final SItem sItem = SItem.of(majorDrop);
                                 if (!sItem.getFullName().equals("§6Ender Dragon") && !sItem.getFullName().equals("§5Ender Dragon")) {
                                     final Item item = SUtil.spawnPersonalItem(sItem.getStack(), killed.getLocation(), player);
-                                    item.setMetadata("obtained", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+                                    item.setMetadata("obtained", new FixedMetadataValue(Skyblock.getPlugin(), true));
                                     item.setCustomNameVisible(true);
                                     item.setCustomName(item.getItemStack().getAmount() + "x " + sItem.getFullName());
                                 } else {
                                     final Item item = SUtil.spawnPersonalItem(sItem.getStack(), killed.getLocation(), player);
-                                    item.setMetadata("obtained", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+                                    item.setMetadata("obtained", new FixedMetadataValue(Skyblock.getPlugin(), true));
                                     item.setCustomNameVisible(true);
                                     item.setCustomName(item.getItemStack().getAmount() + "x " + ChatColor.GRAY + "[Lvl 1] " + sItem.getFullName());
                                 }
@@ -356,7 +355,7 @@ public abstract class Dragon extends EntityEnderDragon implements SNMSEntity, En
                     }
                 }
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 200L);
+        }.runTaskLater(Skyblock.getPlugin(), 200L);
     }
 
     public LivingEntity spawn(final Location location) {

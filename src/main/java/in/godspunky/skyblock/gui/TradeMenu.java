@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.gui;
 
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.sequence.SoundSequenceType;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
@@ -140,7 +140,7 @@ public class TradeMenu {
                     TradeMenu.this.returnToAllPlayers(TradeMenu.this.p1, TradeMenu.this.p2);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public void clean() {
@@ -168,7 +168,7 @@ public class TradeMenu {
             if (!nmsStack.getTag().hasKey("data_bits")) {
                 Sputnik.smartGiveItem(i, player1);
             } else {
-                final Economy econ = SkySimEngine.getEconomy();
+                final Economy econ = Skyblock.getEconomy();
                 econ.depositPlayer(player1, (double) nmsStack.getTag().getLong("data_bits"));
             }
         }
@@ -177,7 +177,7 @@ public class TradeMenu {
             if (!nmsStack.getTag().hasKey("data_bits")) {
                 Sputnik.smartGiveItem(i, player2);
             } else {
-                final Economy econ = SkySimEngine.getEconomy();
+                final Economy econ = Skyblock.getEconomy();
                 econ.depositPlayer(player2, (double) nmsStack.getTag().getLong("data_bits"));
             }
         }

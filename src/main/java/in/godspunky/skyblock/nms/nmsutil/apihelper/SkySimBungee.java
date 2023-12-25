@@ -3,7 +3,7 @@ package in.godspunky.skyblock.nms.nmsutil.apihelper;
 import com.google.common.collect.Iterables;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.util.SLog;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -37,7 +37,7 @@ public class SkySimBungee {
             sender = p;
         }
         if (sender != null) {
-            sender.sendPluginMessage(SkySimEngine.getPlugin(), this.channel, out.toByteArray());
+            sender.sendPluginMessage(Skyblock.getPlugin(), this.channel, out.toByteArray());
         } else {
             SLog.warn("Player object mustn't be null!");
         }

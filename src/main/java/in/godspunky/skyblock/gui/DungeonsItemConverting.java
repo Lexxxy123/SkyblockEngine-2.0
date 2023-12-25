@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.gui;
 
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.Rarity;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.user.User;
@@ -75,7 +75,7 @@ public class DungeonsItemConverting extends GUI {
                     return;
                 }
                 if (e.getClickedInventory().getItem(31) != null && e.getClickedInventory().getItem(31).getType() != Material.BARRIER) {
-                    final Economy econ = SkySimEngine.getEconomy();
+                    final Economy econ = Skyblock.getEconomy();
                     final long add = (long) DungeonsItemConverting.COST_MAP.get(sItem.getRarity()) * (sItem.getStar() + 1);
                     final double cur = econ.getBalance(player);
                     if (!sItem.isStarrable() || sItem.getStar() >= 5) {
@@ -163,7 +163,7 @@ public class DungeonsItemConverting extends GUI {
                 inventory.setItem(22, stack);
                 inventory.setItem(31, barrierStack);
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 1L);
+        }.runTaskLater(Skyblock.getPlugin(), 1L);
     }
 
     @Override
@@ -188,7 +188,7 @@ public class DungeonsItemConverting extends GUI {
                     DungeonsItemConverting.this.fillFrom(inventory, 8, 5, SUtil.createColoredStainedGlassPane((short) 5, ChatColor.RESET + " "));
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 5L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 5L);
         this.set(new GUIClickableItem() {
             @Override
             public void run(final InventoryClickEvent e) {
@@ -210,7 +210,7 @@ public class DungeonsItemConverting extends GUI {
                     public void run() {
                         inventory.setItem(e.getSlot(), DungeonsItemConverting.ANVIL_BARRIER);
                     }
-                }.runTaskLater(SkySimEngine.getPlugin(), 1L);
+                }.runTaskLater(Skyblock.getPlugin(), 1L);
             }
 
             @Override

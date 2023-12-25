@@ -9,13 +9,13 @@ import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
 import com.sk89q.worldedit.util.io.Closer;
 import com.sk89q.worldedit.world.World;
+import in.godspunky.skyblock.Skyblock;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.dimoon.utils.Utils;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityType;
@@ -43,7 +43,7 @@ public class Arena {
 
     public void pasteParkour() throws IOException {
         final File parkour = new File("plugins/dimoon/parkours/parkour" + this.currentParkour + ".schematic");
-        final Dimoon dimoon = SkySimEngine.getPlugin().dimoon;
+        final Dimoon dimoon = Skyblock.getPlugin().dimoon;
         if (dimoon == null) {
             return;
         }
@@ -114,29 +114,29 @@ public class Arena {
         final int hc = highestYC;
         this.currentParkour = this.currentParkour % 3 + 1;
         SUtil.delay(() -> this.highestY = hc, 1L);
-        final SkySimEngine plugin = SkySimEngine.getPlugin();
+        final Skyblock plugin = Skyblock.getPlugin();
         this.parkourTask = new BukkitRunnable() {
             public void run() {
                 Arena.this.collapseParkour();
                 Arena.this.collapseFloor();
-                for (final Player p : SkySimEngine.getPlugin().dimoon.getEntity().getWorld().getPlayers()) {
+                for (final Player p : Skyblock.getPlugin().dimoon.getEntity().getWorld().getPlayers()) {
                     p.sendMessage(Utils.format("&cYou couldn't complete the parkour in time, the boss regained 5,000 HP that sucks!"));
                 }
-                SkySimEngine.getPlugin().arena.highestY = -1;
+                Skyblock.getPlugin().arena.highestY = -1;
                 dimoon.getTasks().add(new BukkitRunnable() {
                     public void run() {
                         try {
-                            SkySimEngine.getPlugin().arena.pasteParkour();
+                            Skyblock.getPlugin().arena.pasteParkour();
                         } catch (final IOException e) {
                             throw new RuntimeException(e);
                         }
                     }
-                }.runTaskLater(SkySimEngine.getPlugin(), 1200L));
+                }.runTaskLater(Skyblock.getPlugin(), 1200L));
                 if (plugin.dimoon != null) {
                     plugin.dimoon.heal(5000);
                 }
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 12000L);
+        }.runTaskLater(Skyblock.getPlugin(), 12000L);
     }
 
     public void collapseParkour() {
@@ -145,7 +145,7 @@ public class Arena {
         }
         this.isCollapsing = true;
         final Iterator<Block> iterator = this.parkourBlocks.iterator();
-        final SkySimEngine plugin = SkySimEngine.getPlugin();
+        final Skyblock plugin = Skyblock.getPlugin();
         new BukkitRunnable() {
             public void run() {
                 if (!iterator.hasNext()) {
@@ -161,11 +161,11 @@ public class Arena {
                 }
                 block.setType(Material.AIR);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 1L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 1L, 1L);
     }
 
     public void collapseFloor() {
-        final Dimoon dimoon = SkySimEngine.getPlugin().dimoon;
+        final Dimoon dimoon = Skyblock.getPlugin().dimoon;
         if (dimoon == null) {
         }
     }
@@ -173,7 +173,7 @@ public class Arena {
     public void spawnDimoonaize(final Entity entity) {
         Utils.bossMessage("DIMOONAIZE! GO!");
         final List<Location> locList = new ArrayList<Location>();
-        final Dimoon dimoon = SkySimEngine.getPlugin().dimoon;
+        final Dimoon dimoon = Skyblock.getPlugin().dimoon;
         if (dimoon == null) {
             return;
         }
@@ -224,13 +224,13 @@ public class Arena {
                             this.cancel();
                         }
                     }
-                }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+                }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
             }, i * 5L);
         }
     }
 
     public void fixFloor() {
-        final Dimoon dimoon = SkySimEngine.getPlugin().dimoon;
+        final Dimoon dimoon = Skyblock.getPlugin().dimoon;
         if (dimoon == null) {
             return;
         }

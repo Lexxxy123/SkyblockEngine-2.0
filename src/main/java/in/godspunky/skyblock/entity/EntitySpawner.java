@@ -1,10 +1,10 @@
 package in.godspunky.skyblock.entity;
 
+import in.godspunky.skyblock.Skyblock;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.config.Config;
 
 import java.util.ArrayList;
@@ -36,14 +36,14 @@ public class EntitySpawner {
     }
 
     public void delete() {
-        final Config spawners = SkySimEngine.getPlugin().spawners;
+        final Config spawners = Skyblock.getPlugin().spawners;
         EntitySpawner.SPAWNER_CACHE.remove(this);
         spawners.set(this.uuid.toString(), null);
         spawners.save();
     }
 
     public void save() {
-        final Config spawners = SkySimEngine.getPlugin().spawners;
+        final Config spawners = Skyblock.getPlugin().spawners;
         spawners.set(this.uuid.toString() + ".type", this.type.name());
         spawners.set(this.uuid + ".location", this.location);
         spawners.save();
@@ -55,13 +55,13 @@ public class EntitySpawner {
     }
 
     public static EntitySpawner deserialize(final String key) {
-        final Config spawners = SkySimEngine.getPlugin().spawners;
+        final Config spawners = Skyblock.getPlugin().spawners;
         return new EntitySpawner(UUID.fromString(key), SEntityType.getEntityType(spawners.getString(key + ".type")), (Location) spawners.get(key + ".location"));
     }
 
     public static List<EntitySpawner> getSpawners() {
         if (EntitySpawner.SPAWNER_CACHE.size() == 0) {
-            final Config spawners = SkySimEngine.getPlugin().spawners;
+            final Config spawners = Skyblock.getPlugin().spawners;
             for (final String key : spawners.getKeys(false)) {
                 EntitySpawner.SPAWNER_CACHE.add(deserialize(key));
             }
@@ -73,7 +73,7 @@ public class EntitySpawner {
         if (EntitySpawner.SPAWNER_TASK != null) {
             return;
         }
-        EntitySpawner.SPAWNER_TASK = SkySimEngine.getPlugin().getServer().getScheduler().runTaskTimer(SkySimEngine.getPlugin(), () -> {
+        EntitySpawner.SPAWNER_TASK = Skyblock.getPlugin().getServer().getScheduler().runTaskTimer(Skyblock.getPlugin(), () -> {
             final ArrayList<Location> locations = new ArrayList<Location>(Bukkit.getOnlinePlayers().size());
 
             final Iterator<Player> iterator = (Iterator<Player>) Bukkit.getOnlinePlayers().iterator();

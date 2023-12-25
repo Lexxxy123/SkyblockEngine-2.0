@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.dimoon.listeners;
 
+import in.godspunky.skyblock.Skyblock;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
@@ -14,7 +15,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.dimoon.Altar;
 import in.godspunky.skyblock.dimoon.Arena;
 import in.godspunky.skyblock.dimoon.Dimoon;
@@ -42,7 +42,7 @@ public class PlayerListener implements Listener {
             }
         }
         if (damager != null && event.getEntity().hasMetadata("Dimoon")) {
-            final Dimoon dimoon = SkySimEngine.getPlugin().dimoon;
+            final Dimoon dimoon = Skyblock.getPlugin().dimoon;
             event.setDamage(0.0);
             final int damage = 1 + dimoon.getParkoursCompleted() + bonusDamage;
             dimoon.damage(damage, damager.getName());
@@ -52,7 +52,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onMove(final PlayerMoveEvent event) {
         final Player player = event.getPlayer();
-        final SkySimEngine plugin = SkySimEngine.getPlugin();
+        final Skyblock plugin = Skyblock.getPlugin();
         if (plugin.dimoon != null) {
             final Arena arena = plugin.arena;
             if (player.getWorld() == plugin.dimoon.getEntity().getWorld()) {
@@ -83,10 +83,10 @@ public class PlayerListener implements Listener {
                             }
                             if (this.counter == 3) {
                                 this.cancel();
-                                User.getUser(player.getUniqueId()).damage(player.getMaxHealth() * 30.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, SkySimEngine.getPlugin().dimoon.getEntity());
+                                User.getUser(player.getUniqueId()).damage(player.getMaxHealth() * 30.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, Skyblock.getPlugin().dimoon.getEntity());
                             }
                         }
-                    }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 20L);
+                    }.runTaskTimer(Skyblock.getPlugin(), 0L, 20L);
                 }
                 if (withoutY.distance(plugin.dimoon.getEntity().getLocation()) > 60.0) {
                     new BukkitRunnable() {
@@ -113,10 +113,10 @@ public class PlayerListener implements Listener {
                             }
                             if (this.counter == 3) {
                                 this.cancel();
-                                User.getUser(player.getUniqueId()).damage(player.getMaxHealth() * 30.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, SkySimEngine.getPlugin().dimoon.getEntity());
+                                User.getUser(player.getUniqueId()).damage(player.getMaxHealth() * 30.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, Skyblock.getPlugin().dimoon.getEntity());
                             }
                         }
-                    }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 20L);
+                    }.runTaskTimer(Skyblock.getPlugin(), 0L, 20L);
                 }
                 if (arena.highestY != -1 && player.getLocation().getY() >= arena.highestY) {
                     for (final Player p : plugin.dimoon.getEntity().getWorld().getPlayers()) {
@@ -143,7 +143,7 @@ public class PlayerListener implements Listener {
                                 p.sendMessage(Utils.format("&c&lALERT! &eThe boss is about to reactivate its &cdeadly aura &ein &c10 &eseconds&e! RUN!"));
                             }
                         }
-                    }.runTaskLater(SkySimEngine.getPlugin(), 400L);
+                    }.runTaskLater(Skyblock.getPlugin(), 400L);
                     new BukkitRunnable() {
                         public void run() {
                             if (plugin.dimoon == null) {
@@ -156,7 +156,7 @@ public class PlayerListener implements Listener {
                                 p.sendMessage(Utils.format("&c&lALERT! &6Wither Aura &eactivated! Crossing those aura will deal &cinsane damage &eto you!"));
                             }
                         }
-                    }.runTaskLater(SkySimEngine.getPlugin(), 600L);
+                    }.runTaskLater(Skyblock.getPlugin(), 600L);
                     plugin.dimoon.getTasks().add(new BukkitRunnable() {
                         public void run() {
                             if (plugin.dimoon == null) {
@@ -164,12 +164,12 @@ public class PlayerListener implements Listener {
                             }
                             try {
                                 arena.highestY = -1;
-                                SkySimEngine.getPlugin().arena.pasteParkour();
+                                Skyblock.getPlugin().arena.pasteParkour();
                             } catch (final IOException e) {
                                 throw new RuntimeException(e);
                             }
                         }
-                    }.runTaskLater(SkySimEngine.getPlugin(), 1800L));
+                    }.runTaskLater(Skyblock.getPlugin(), 1800L));
                 }
             } else {
                 User.getUser(player.getUniqueId()).setInDanger(false);
@@ -193,8 +193,8 @@ public class PlayerListener implements Listener {
                     e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 0.0f);
                     return;
                 }
-                SkySimEngine.getPlugin().sq.interactCatalyst(e.getPlayer(), slot, true);
-                if (!SkySimEngine.getPlugin().altarCooldown) {
+                Skyblock.getPlugin().sq.interactCatalyst(e.getPlayer(), slot, true);
+                if (!Skyblock.getPlugin().altarCooldown) {
                     this.updateCatalystsBlock(e.getPlayer().getWorld());
                 }
             }
@@ -208,8 +208,8 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onMoveWorld(final PlayerChangedWorldEvent e) {
         final Player player = e.getPlayer();
-        if (SkySimEngine.getPlugin().sq != null && !SkySimEngine.getPlugin().sq.isBossSpawned() && !SkySimEngine.getPlugin().sq.isBossSpawning()) {
-            SkySimEngine.getPlugin().sq.pickupAllCatalysts(player);
+        if (Skyblock.getPlugin().sq != null && !Skyblock.getPlugin().sq.isBossSpawned() && !Skyblock.getPlugin().sq.isBossSpawning()) {
+            Skyblock.getPlugin().sq.pickupAllCatalysts(player);
             this.updateCatalystsBlock(Bukkit.getWorld("arena"));
         }
     }
@@ -217,8 +217,8 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onQuit(final PlayerQuitEvent e) {
         final Player player = e.getPlayer();
-        if (SkySimEngine.getPlugin().sq != null && !SkySimEngine.getPlugin().sq.isBossSpawned() && !SkySimEngine.getPlugin().sq.isBossSpawning()) {
-            SkySimEngine.getPlugin().sq.pickupAllCatalysts(player);
+        if (Skyblock.getPlugin().sq != null && !Skyblock.getPlugin().sq.isBossSpawned() && !Skyblock.getPlugin().sq.isBossSpawning()) {
+            Skyblock.getPlugin().sq.pickupAllCatalysts(player);
             this.updateCatalystsBlock(Bukkit.getWorld("arena"));
         }
     }
@@ -262,11 +262,11 @@ public class PlayerListener implements Listener {
     }
 
     public void updateCatalystsBlock(final World w) {
-        if (SkySimEngine.getPlugin().altarCooldown) {
+        if (Skyblock.getPlugin().altarCooldown) {
             return;
         }
         final Block[] a = Altar.altarList;
-        final UUID[] cache = SkySimEngine.getPlugin().sq.__qch__;
+        final UUID[] cache = Skyblock.getPlugin().sq.__qch__;
         for (int i = 0; i < a.length; ++i) {
             final Block c = w.getBlockAt(a[i].getLocation().clone().add(0.0, 1.0, 0.0));
             if (cache[i] != null) {
@@ -294,8 +294,8 @@ public class PlayerListener implements Listener {
         core.setMarker(true);
         core.setGravity(false);
         core.setHelmet(SUtil.getSkullURLStack("a", "74e8ff30e3937098637c0af03a1f2a6b17f0e828ab2a57a267a01da484ba0c57", 1, ""));
-        core.setMetadata("cid_" + catalystID, new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        core.setMetadata("inv", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        core.setMetadata("cid_" + catalystID, new FixedMetadataValue(Skyblock.getPlugin(), true));
+        core.setMetadata("inv", new FixedMetadataValue(Skyblock.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 if (core.isDead()) {
@@ -306,7 +306,7 @@ public class PlayerListener implements Listener {
                     core.getWorld().spigot().playEffect(core.getLocation().add(0.0, 1.8, 0.0).clone().add(SUtil.random(-0.5, 0.5), SUtil.random(-0.5, 0.5), SUtil.random(-0.5, 0.5)), Effect.COLOURED_DUST, 0, 1, 0.68235296f, 0.1882353f, 0.6901961f, 1.0f, 0, 640);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 6L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 6L);
         new BukkitRunnable() {
             double yaw = core.getLocation().getYaw();
             final double archived_yaw = core.getLocation().getYaw();
@@ -316,7 +316,7 @@ public class PlayerListener implements Listener {
                     this.cancel();
                     return;
                 }
-                final SkySimEngine sse = SkySimEngine.getPlugin();
+                final Skyblock sse = Skyblock.getPlugin();
                 if (sse.sq != null) {
                     if (PlayerListener.this.s(catalystID) && !sse.sq.isBossSpawned()) {
                         this.yaw += 16.0;
@@ -336,20 +336,20 @@ public class PlayerListener implements Listener {
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
     }
 
     boolean s(final int z) {
         if (z == 0 || z == 1) {
-            return SkySimEngine.getPlugin().sq.isAcD();
+            return Skyblock.getPlugin().sq.isAcD();
         }
         if (z == 2 || z == 3) {
-            return SkySimEngine.getPlugin().sq.isAcE();
+            return Skyblock.getPlugin().sq.isAcE();
         }
         if (z == 4 || z == 5) {
-            return SkySimEngine.getPlugin().sq.isAcG();
+            return Skyblock.getPlugin().sq.isAcG();
         }
-        return (z == 6 || z == 7) && SkySimEngine.getPlugin().sq.isAcR();
+        return (z == 6 || z == 7) && Skyblock.getPlugin().sq.isAcR();
     }
 
     boolean isCatalCoreExist(final World w, final int id) {

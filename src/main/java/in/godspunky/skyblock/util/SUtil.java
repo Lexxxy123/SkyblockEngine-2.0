@@ -15,6 +15,7 @@ import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.registry.WorldData;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.enchantment.Enchantment;
 import in.godspunky.skyblock.item.GenericItemType;
 import in.godspunky.skyblock.item.Rarity;
@@ -45,7 +46,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.gui.GUI;
 import in.godspunky.skyblock.item.SMaterial;
 
@@ -130,7 +130,7 @@ public class SUtil {
 
     public static ItemStack getSkull(final String texture, final ItemStack stack, final SMaterial material) {
         final SkullMeta meta = (SkullMeta) stack.getItemMeta();
-        final SkySimEngine plugin = SkySimEngine.getPlugin();
+        final Skyblock plugin = Skyblock.getPlugin();
         String stringUUID;
         if (material != null) {
             if (!plugin.heads.contains(material.name().toLowerCase())) {
@@ -341,7 +341,7 @@ public class SUtil {
 
     public static void generate(Location loc, String filename) {
         try {
-            FileInputStream fis = new FileInputStream(new File(SkySimEngine.getPlugin().getDataFolder(), filename));
+            FileInputStream fis = new FileInputStream(new File(Skyblock.getPlugin().getDataFolder(), filename));
             Object nbtData = NBTCompressedStreamTools.class.getMethod("a", InputStream.class).invoke(null, fis);
             Method getShort  = nbtData.getClass().getMethod("getShort", String.class);
             Method getByteArray = nbtData.getClass().getMethod("getByteArray", String.class);
@@ -387,7 +387,7 @@ public class SUtil {
                     location.getWorld().strikeLightning(location);
                 }
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), delay);
+        }.runTaskLater(Skyblock.getPlugin(), delay);
     }
 
     public static void runIntervalForTicks(final Runnable runnable, final long interval, final long end) {
@@ -400,12 +400,12 @@ public class SUtil {
                 }
                 runnable.run();
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, interval);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, interval);
         new BukkitRunnable() {
             public void run() {
                 stop.set(true);
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), end);
+        }.runTaskLater(Skyblock.getPlugin(), end);
     }
 
     public static String getDate() {
@@ -414,7 +414,7 @@ public class SUtil {
 
     public static Item spawnPersonalItem(final ItemStack stack, final Location location, final Player player) {
         final Item item = location.getWorld().dropItem(location, stack);
-        item.setMetadata("owner", new FixedMetadataValue(SkySimEngine.getPlugin(), player.getUniqueId().toString()));
+        item.setMetadata("owner", new FixedMetadataValue(Skyblock.getPlugin(), player.getUniqueId().toString()));
         return item;
     }
 
@@ -516,7 +516,7 @@ public class SUtil {
                 projectile.teleport(location);
                 projectile.setVelocity(vector.clone().multiply(-1.0).multiply(0.2));
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public static void giantsHitboxFix(final Projectile projectile) {
@@ -545,12 +545,12 @@ public class SUtil {
                 projectile.teleport(location);
                 projectile.setVelocity(vector.clone().multiply(-1.0).multiply(0.5));
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 projectile.remove();
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 140L);
+        }.runTaskLater(Skyblock.getPlugin(), 140L);
     }
 
     public static void markAimingArrow(final Projectile projectile, final in.godspunky.skyblock.enchantment.Enchantment aiming) {
@@ -591,12 +591,12 @@ public class SUtil {
                 projectile.teleport(location);
                 projectile.setVelocity(vector.clone().multiply(-1.0).multiply(0.15));
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 projectile.remove();
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 80L);
+        }.runTaskLater(Skyblock.getPlugin(), 80L);
     }
 
     public static ItemStack getStack(final String name, final Material material, final short data, final int amount, final List<String> lore) {
@@ -961,7 +961,7 @@ public class SUtil {
             public void run() {
                 runnable.run();
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), delay);
+        }.runTaskLater(Skyblock.getPlugin(), delay);
     }
     public static double square(double val) {
         return val * val;
@@ -1063,7 +1063,7 @@ public class SUtil {
             public void run() {
                 runnable.run();
             }
-        }.runTask(SkySimEngine.getPlugin());
+        }.runTask(Skyblock.getPlugin());
     }
 
     public static ItemStack idToSkull(ItemStack head, String id) {
@@ -1230,7 +1230,7 @@ public class SUtil {
             public void run() {
                 runnable.run();
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), delay, interval);
+        }.runTaskTimer(Skyblock.getPlugin(), delay, interval);
     }
 
     public static int blackMagic(final double d) {

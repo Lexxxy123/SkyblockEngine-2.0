@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SLog;
@@ -22,7 +22,7 @@ public class SSend
     @Override
     public void run(CommandSource sender, String[] args) {
         UUID runUUID = UUID.randomUUID();
-        if (SkySimEngine.getPlugin().getBc() == null) {
+        if (Skyblock.getPlugin().getBc() == null) {
             this.send("&cThis is not a BungeeCord based server!");
             return;
         }
@@ -39,7 +39,7 @@ public class SSend
             this.send("&cCorrect Command Usage: /ssend <all/current/specific player> <server name>");
             return;
         }
-        SkySimEngine.getPlugin().getBc().getServers().whenComplete((result, error) -> this.servers.put(runUUID, result));
+        Skyblock.getPlugin().getBc().getServers().whenComplete((result, error) -> this.servers.put(runUUID, result));
         for (int i = 0; i < this.servers.get(runUUID).size(); ++i) {
             SLog.info(this.servers.get(runUUID).get(i));
         }
@@ -68,14 +68,14 @@ public class SSend
         }
         String finalTarget = targetServer;
         if (args[0].equalsIgnoreCase("all")) {
-            SkySimEngine.getPlugin().getBc().getPlayerList("ALL").whenComplete((result, error) -> this.players.put(runUUID, result));
+            Skyblock.getPlugin().getBc().getPlayerList("ALL").whenComplete((result, error) -> this.players.put(runUUID, result));
             this.send("&7Hooking up request for all players you requested (All Servers)...");
             for (String player : this.players.get(runUUID)) {
-                SkySimEngine.getPlugin().getBc().forward("ALL", "savePlayerData", "ALL_PLAYERS".getBytes());
-                SkySimEngine.getPlugin().getBc().sendMessage(player, "&7Hooking up request...");
+                Skyblock.getPlugin().getBc().forward("ALL", "savePlayerData", "ALL_PLAYERS".getBytes());
+                Skyblock.getPlugin().getBc().sendMessage(player, "&7Hooking up request...");
                 SUtil.delay(() -> {
-                    SkySimEngine.getPlugin().getBc().sendMessage(player, "&7Sending you to " + finalTarget + "...");
-                    SkySimEngine.getPlugin().getBc().connectOther(player, finalTarget);
+                    Skyblock.getPlugin().getBc().sendMessage(player, "&7Sending you to " + finalTarget + "...");
+                    Skyblock.getPlugin().getBc().connectOther(player, finalTarget);
                 }, 8L);
             }
             this.servers.remove(runUUID);
@@ -88,7 +88,7 @@ public class SSend
                 u.syncSavingData();
                 SUtil.delay(() -> {
                     u.send("&7Sending you to " + finalTarget + "...");
-                    SkySimEngine.getPlugin().getBc().connect(player, finalTarget);
+                    Skyblock.getPlugin().getBc().connect(player, finalTarget);
                 }, 8L);
             }
             this.servers.remove(runUUID);
@@ -97,10 +97,10 @@ public class SSend
             for (String player : this.players.get(runUUID)) {
                 if (!args[0].equalsIgnoreCase(player)) continue;
                 this.send("&7Hooking up request for " + player + "...");
-                SkySimEngine.getPlugin().getBc().sendMessage(player, "&7Hooking up request...");
+                Skyblock.getPlugin().getBc().sendMessage(player, "&7Hooking up request...");
                 SUtil.delay(() -> {
-                    SkySimEngine.getPlugin().getBc().sendMessage(player, "&7Sending you to " + finalTarget + "...");
-                    SkySimEngine.getPlugin().getBc().connectOther(player, finalTarget);
+                    Skyblock.getPlugin().getBc().sendMessage(player, "&7Sending you to " + finalTarget + "...");
+                    Skyblock.getPlugin().getBc().connectOther(player, finalTarget);
                 }, 8L);
                 this.servers.remove(runUUID);
                 this.players.remove(runUUID);

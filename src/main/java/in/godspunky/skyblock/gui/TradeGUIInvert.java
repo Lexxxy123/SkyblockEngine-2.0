@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.gui;
 
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.Untradeable;
 import in.godspunky.skyblock.user.User;
@@ -72,7 +72,7 @@ public class TradeGUIInvert extends GUI {
                     TradeMenu.tradeP2Countdown.put(TradeGUIInvert.this.tradeUUID, TradeMenu.tradeP2Countdown.get(TradeGUIInvert.this.tradeUUID) - 1);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 20L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 20L);
         this.set(new GUIClickableItem() {
             @Override
             public void run(final InventoryClickEvent e) {
@@ -175,7 +175,7 @@ public class TradeGUIInvert extends GUI {
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         this.set(new GUISignItem() {
             @Override
             public GUI onSignClose(final String query, final Player target) {
@@ -186,7 +186,7 @@ public class TradeGUIInvert extends GUI {
                     return new TradeGUI(TradeGUIInvert.this.tradeUUID);
                 }
                 try {
-                    final Economy econ = SkySimEngine.getEconomy();
+                    final Economy econ = Skyblock.getEconomy();
                     final long add = Long.parseLong(query);
                     final double cur = econ.getBalance(TradeGUI.player2.get(TradeGUIInvert.this.tradeUUID));
                     if (add <= 0L) {
@@ -308,7 +308,7 @@ public class TradeGUIInvert extends GUI {
             if (!nmsStack.getTag().hasKey("data_bits")) {
                 Sputnik.smartGiveItem(stack, TradeGUI.player2.get(this.tradeUUID));
             } else {
-                final Economy econ = SkySimEngine.getEconomy();
+                final Economy econ = Skyblock.getEconomy();
                 econ.depositPlayer(TradeGUI.player2.get(this.tradeUUID), (double) nmsStack.getTag().getLong("data_bits"));
             }
             TradeMenu.tradeP2Countdown.put(this.tradeUUID, 3);

@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.sql;
 
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class SQLDatabase {
-    private static final SkySimEngine plugin;
+    private static final Skyblock plugin;
     private static final String DATABASE_FILENAME = "database.db";
     private Connection connection;
     private final File file;
@@ -46,6 +46,6 @@ public class SQLDatabase {
     }
 
     static {
-        plugin = SkySimEngine.getPlugin();
+        plugin = Skyblock.getPlugin();
     }
 }

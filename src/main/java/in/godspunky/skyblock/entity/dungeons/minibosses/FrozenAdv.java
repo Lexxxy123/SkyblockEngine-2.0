@@ -3,6 +3,7 @@ package in.godspunky.skyblock.entity.dungeons.minibosses;
 import com.google.common.util.concurrent.AtomicDouble;
 import de.slikey.effectlib.effect.ConeEffect;
 import de.slikey.effectlib.util.ParticleEffect;
+import in.godspunky.skyblock.Skyblock;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher;
 import net.minecraft.server.v1_8_R3.*;
@@ -23,7 +24,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityEquipment;
 import in.godspunky.skyblock.entity.zombie.BaseZombie;
@@ -77,8 +77,8 @@ public class FrozenAdv extends BaseZombie {
         final PlayerWatcher skywatch = pl.getWatcher();
         final LivingEntity target = ((CraftZombie) entity).getTarget();
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 87);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("LD", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(Skyblock.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -91,7 +91,7 @@ public class FrozenAdv extends BaseZombie {
                     Sputnik.sendEatingAnimation(entity);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 4L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 4L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -102,7 +102,7 @@ public class FrozenAdv extends BaseZombie {
                     entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 0.25, 0.0), Effect.FLAME, 0, 1, (float) SUtil.random(-0.5, 0.5), (float) SUtil.random(0.0, 1.5), (float) SUtil.random(-0.5, 0.5), 0.0f, 1, 20);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 20L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 20L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -137,10 +137,10 @@ public class FrozenAdv extends BaseZombie {
                             }, 5L);
                             SUtil.delay(() -> FrozenAdv.this.EatingCooldown = false, SUtil.random(600, 800));
                         }
-                    }.runTaskLater(SkySimEngine.getPlugin(), 60L);
+                    }.runTaskLater(Skyblock.getPlugin(), 60L);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 10L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 10L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -216,7 +216,7 @@ public class FrozenAdv extends BaseZombie {
                                     FrozenAdv.this.isBowing = false;
                                 }
                             }
-                        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+                        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
                     }
                     if (target1.getLocation().distance(entity.getLocation()) <= 10.0 && !FrozenAdv.this.isBowing && !FrozenAdv.this.isEating && SUtil.random(0, 100) < 10 && !FrozenAdv.this.CDLA) {
                         FrozenAdv.this.CDLA = true;
@@ -258,7 +258,7 @@ public class FrozenAdv extends BaseZombie {
                                     stands.getEquipment().setItemInHand(new ItemStack(Material.PACKED_ICE));
                                     SUtil.delay(() -> {
                                         stands.remove();
-                                        player.removeMetadata("frozen", SkySimEngine.getPlugin());
+                                        player.removeMetadata("frozen", Skyblock.getPlugin());
                                     }, 100L);
                                     new BukkitRunnable() {
                                         public void run() {
@@ -272,17 +272,17 @@ public class FrozenAdv extends BaseZombie {
                                             }
                                             if (stands.isDead()) {
                                                 player.removePotionEffect(PotionEffectType.SLOW);
-                                                player.removeMetadata("frozen", SkySimEngine.getPlugin());
+                                                player.removeMetadata("frozen", Skyblock.getPlugin());
                                                 this.cancel();
                                                 return;
                                             }
                                             if (player.isDead() || entity.isDead()) {
                                                 stands.remove();
-                                                player.removeMetadata("frozen", SkySimEngine.getPlugin());
+                                                player.removeMetadata("frozen", Skyblock.getPlugin());
                                             }
                                             stands.teleport(player.getLocation().add(0.0, c + 1.0, 0.0));
                                         }
-                                    }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+                                    }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
                                 }
                                 final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
                                 if (statistics == null) {
@@ -291,7 +291,7 @@ public class FrozenAdv extends BaseZombie {
                                 final double defense = statistics.getDefense().addAll();
                                 final int dmglater = (int) Math.round(FrozenAdv.this.getDamageDealt() * 3.0 - FrozenAdv.this.getDamageDealt() * 3.0 * (defense / (defense + 100.0)));
                                 User.getUser(player.getUniqueId()).damage(dmglater, EntityDamageEvent.DamageCause.ENTITY_ATTACK, entity);
-                                player.setMetadata("frozen", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+                                player.setMetadata("frozen", new FixedMetadataValue(Skyblock.getPlugin(), true));
                                 ((LivingEntity) e).damage(1.0E-6, null);
                             }
                         }
@@ -308,7 +308,7 @@ public class FrozenAdv extends BaseZombie {
                     entity.getEquipment().setItemInHand(SUtil.enchant(SItem.of(SMaterial.ICE_WAND).getStack()));
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
         new BukkitRunnable() {
             Location loc = entity.getLocation();
             final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -355,7 +355,7 @@ public class FrozenAdv extends BaseZombie {
                 }
                 this.nms.setSprinting(false);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 7L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 7L);
         new BukkitRunnable() {
             public void run() {
                 final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -397,7 +397,7 @@ public class FrozenAdv extends BaseZombie {
                     break;
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
     }
 
     @Override
@@ -447,7 +447,7 @@ public class FrozenAdv extends BaseZombie {
     }
 
     public void playPar(final Location l) {
-        final ConeEffect Effect = new ConeEffect(SkySimEngine.effectManager);
+        final ConeEffect Effect = new ConeEffect(Skyblock.effectManager);
         Effect.setLocation(l.clone().add(l.getDirection().normalize().multiply(-0.25)).add(0.0, -0.1, 0.0));
         Effect.particle = ParticleEffect.SNOW_SHOVEL;
         Effect.color = Color.WHITE;

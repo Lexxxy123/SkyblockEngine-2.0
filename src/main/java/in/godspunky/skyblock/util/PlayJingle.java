@@ -3,17 +3,17 @@ package in.godspunky.skyblock.util;
 import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.PositionSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.entity.dungeons.boss.sadan.SadanHuman;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.SkySimEngine;
 
 import java.io.File;
 
 public class PlayJingle {
     public static void play(final SkySimSong eff, final byte volume, final Location loc, final int radius) {
-        final Song song = NBSDecoder.parse(new File(SkySimEngine.getPlugin().getDataFolder() + File.separator + "/songs/dungeon_drama.nbs"));
+        final Song song = NBSDecoder.parse(new File(Skyblock.getPlugin().getDataFolder() + File.separator + "/songs/dungeon_drama.nbs"));
         final PositionSongPlayer esp = new PositionSongPlayer(song);
         esp.setDistance(radius);
         esp.setVolume((byte) 100);
@@ -35,7 +35,7 @@ public class PlayJingle {
                     this.cancel();
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public enum SkySimSong {

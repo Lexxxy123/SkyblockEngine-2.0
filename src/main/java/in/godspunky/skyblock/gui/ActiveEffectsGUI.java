@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.gui;
 
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.potion.ActivePotionEffect;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.PaginationList;
@@ -104,7 +104,7 @@ public class ActiveEffectsGUI extends GUI {
                 }
                 new ActiveEffectsGUI(ActiveEffectsGUI.this.page).open(player);
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 20L);
+        }.runTaskLater(Skyblock.getPlugin(), 20L);
     }
 
     static {

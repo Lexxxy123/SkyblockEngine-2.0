@@ -2,6 +2,7 @@ package in.godspunky.skyblock.entity.dungeons;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import de.slikey.effectlib.effect.ConeEffect;
+import in.godspunky.skyblock.Skyblock;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher;
 import net.minecraft.server.v1_8_R3.EntityLiving;
@@ -21,7 +22,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityEquipment;
 import in.godspunky.skyblock.entity.zombie.BaseZombie;
@@ -71,8 +71,8 @@ public class SuperiorLostAdvNPC extends BaseZombie {
         final PlayerWatcher skywatch = pl.getWatcher();
         final LivingEntity target = ((CraftZombie) entity).getTarget();
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 60);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("LD", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(Skyblock.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -83,7 +83,7 @@ public class SuperiorLostAdvNPC extends BaseZombie {
                     entity.getWorld().playSound(entity.getLocation(), Sound.EAT, 1.0f, 1.0f);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 4L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 4L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -101,7 +101,7 @@ public class SuperiorLostAdvNPC extends BaseZombie {
                     new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.CAULDRON_ITEM))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 3L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 3L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -132,10 +132,10 @@ public class SuperiorLostAdvNPC extends BaseZombie {
                             }, 5L);
                             SUtil.delay(() -> SuperiorLostAdvNPC.this.EatingCooldown = false, SUtil.random(400, 500));
                         }
-                    }.runTaskLater(SkySimEngine.getPlugin(), 60L);
+                    }.runTaskLater(Skyblock.getPlugin(), 60L);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 10L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 10L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -225,7 +225,7 @@ public class SuperiorLostAdvNPC extends BaseZombie {
                     entity.getEquipment().setItemInHand(SUtil.enchant(SItem.of(SMaterial.ASPECT_OF_THE_DRAGONS).getStack()));
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
         new BukkitRunnable() {
             public void run() {
                 final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -267,7 +267,7 @@ public class SuperiorLostAdvNPC extends BaseZombie {
                     break;
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
     }
 
     @Override
@@ -308,7 +308,7 @@ public class SuperiorLostAdvNPC extends BaseZombie {
     }
 
     public void playPar(final Location l) {
-        final ConeEffect Effect = new ConeEffect(SkySimEngine.effectManager);
+        final ConeEffect Effect = new ConeEffect(Skyblock.effectManager);
         Effect.setLocation(l.clone().add(l.getDirection().normalize().multiply(-0.25)).add(0.0, -0.1, 0.0));
         Effect.particle = de.slikey.effectlib.util.ParticleEffect.FLAME;
         Effect.angularVelocity = 0.39269908169872414;

@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.ranks;
 
 
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -20,7 +20,7 @@ public class GodspunkyPlayer {
     public long lastPlayed;
     public long firstJoined;
 
-    private static SkySimEngine plugin = SkySimEngine.getPlugin();
+    private static Skyblock plugin = Skyblock.getPlugin();
 
 
 

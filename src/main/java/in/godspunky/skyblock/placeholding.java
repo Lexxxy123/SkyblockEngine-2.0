@@ -115,7 +115,7 @@ public class placeholding extends PlaceholderExpansion {
                     return PlayerUtils.getCookieDurationDisplay(player.getPlayer());
                 }
                 if (identifier.equals("server_name")) {
-                    return SkySimEngine.getPlugin().getServerName();
+                    return Skyblock.getPlugin().getServerName();
                 }
                 if (identifier.equals("server_date")) {
                     return SUtil.getDate();

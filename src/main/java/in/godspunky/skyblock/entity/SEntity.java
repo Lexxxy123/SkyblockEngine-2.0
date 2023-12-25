@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.entity;
 
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.entity.end.EndermanStatistics;
 import in.godspunky.skyblock.entity.nms.SNMSEntity;
 import in.godspunky.skyblock.entity.wolf.WolfStatistics;
@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class SEntity {
-    private static final SkySimEngine plugin;
+    private static final Skyblock plugin;
     public static final Map<Entity, Boolean> isStarred;
     private final SEntityType specType;
     private final LivingEntity entity;
@@ -75,7 +75,7 @@ public class SEntity {
                     }
                     function.tick(SEntity.this.entity);
                 }
-            }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+            }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         }
         if (statistics instanceof SlimeStatistics && this.entity instanceof Slime) {
             ((Slime) this.entity).setSize(((SlimeStatistics) statistics).getSize());
@@ -111,7 +111,7 @@ public class SEntity {
                     ((CraftLivingEntity) SEntity.this.entity).getHandle().setInvisible(true);
                 }
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 2L);
+        }.runTaskLater(Skyblock.getPlugin(), 2L);
         int rand = 0;
         if (this.entity.hasMetadata("WATCHER_E")) {
             rand = SUtil.random(7, 12);
@@ -129,7 +129,7 @@ public class SEntity {
                     SEntity.this.entity.setCustomNameVisible(false);
                 }
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 2L);
+        }.runTaskLater(Skyblock.getPlugin(), 2L);
     }
 
     public SEntity(final Entity e, final SEntityType type, final Object... params) {
@@ -150,7 +150,7 @@ public class SEntity {
             public void run() {
                 ((CraftLivingEntity) SEntity.this.entity).getHandle().setInvisible(!visible);
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 2L);
+        }.runTaskLater(Skyblock.getPlugin(), 2L);
     }
 
     public void setTarget(final LivingEntity target) {
@@ -227,7 +227,7 @@ public class SEntity {
     }
 
     static {
-        plugin = SkySimEngine.getPlugin();
+        plugin = Skyblock.getPlugin();
         isStarred = new HashMap<Entity, Boolean>();
     }
 }

@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.gui;
 
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.Rarity;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.reforge.ReforgeType;
@@ -89,7 +89,7 @@ public class ReforgeAnvilGUI extends GUI {
                     public void run() {
                         ReforgeAnvilGUI.COOLDOWN.remove(player.getUniqueId());
                     }
-                }.runTaskLater(SkySimEngine.getPlugin(), 20L);
+                }.runTaskLater(Skyblock.getPlugin(), 20L);
             }
         });
         this.set(13, null);
@@ -110,7 +110,7 @@ public class ReforgeAnvilGUI extends GUI {
                 }
                 inventory.setItem(22, stack);
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 1L);
+        }.runTaskLater(Skyblock.getPlugin(), 1L);
     }
 
     @Override
@@ -134,7 +134,7 @@ public class ReforgeAnvilGUI extends GUI {
                     ReforgeAnvilGUI.this.fillFrom(inventory, 8, 5, SUtil.createColoredStainedGlassPane((short) 5, ChatColor.RESET + " "));
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 5L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 5L);
     }
 
     @EventHandler

@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.item.weapon;
 
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.util.FerocityCalculation;
 import in.godspunky.skyblock.util.Groups;
@@ -14,8 +15,6 @@ import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.listener.PlayerListener;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
@@ -184,13 +183,13 @@ public class LividDagger implements ToolStatistics, MaterialFunction, Ability {
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 1L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 1L, 1L);
         new BukkitRunnable() {
             public void run() {
                 armorStand1.remove();
                 this.cancel();
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 100L);
+        }.runTaskLater(Skyblock.getPlugin(), 100L);
     }
 
     @Override

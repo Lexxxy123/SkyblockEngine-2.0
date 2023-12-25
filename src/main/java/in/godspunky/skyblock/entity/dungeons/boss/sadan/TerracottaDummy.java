@@ -1,10 +1,10 @@
 package in.godspunky.skyblock.entity.dungeons.boss.sadan;
 
+import in.godspunky.skyblock.Skyblock;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityEquipment;
 import in.godspunky.skyblock.entity.zombie.BaseZombie;
@@ -37,14 +37,14 @@ public class TerracottaDummy extends BaseZombie {
         Sputnik.applyPacketNPC(entity, "Ethelian", null, false);
         EntityManager.noAI(entity);
         EntityManager.noHit(entity);
-        entity.setMetadata("GiantSword", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("NoAffect", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("t_sadan_p1_1", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("GiantSword", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("NoAffect", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("t_sadan_p1_1", new FixedMetadataValue(Skyblock.getPlugin(), true));
         EntityManager.shutTheFuckUp(entity);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 100);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("LD", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("notDisplay", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("notDisplay", new FixedMetadataValue(Skyblock.getPlugin(), true));
         SUtil.delay(() -> Sputnik.applyPacketNPC(entity, "Ethelian", null, false), 50L);
         new BukkitRunnable() {
             public void run() {
@@ -54,7 +54,7 @@ public class TerracottaDummy extends BaseZombie {
                 }
                 Sputnik.applyPacketNPC(entity, "Ethelian", null, false);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 200L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 200L);
     }
 
     @Override

@@ -37,7 +37,7 @@ public final class SkyBlockCalendar {
     }
 
     public static void saveElapsed() {
-        final SkySimEngine plugin = SkySimEngine.getPlugin();
+        final Skyblock plugin = Skyblock.getPlugin();
         plugin.config.set("timeElapsed", SkyBlockCalendar.ELAPSED);
         plugin.config.save();
     }

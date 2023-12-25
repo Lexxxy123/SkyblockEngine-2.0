@@ -6,7 +6,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.config.Config;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.user.AuctionSettings;
@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 
 public class AuctionItem {
     private static final Map<UUID, AuctionItem> AUCTION_ITEM_CACHE;
-    private static final SkySimEngine plugin;
+    private static final Skyblock plugin;
     private static final File AUCTION_ITEM_FOLDER;
     private Config config;
     private UUID uuid;
@@ -429,7 +429,7 @@ public class AuctionItem {
 
     static {
         AUCTION_ITEM_CACHE = new HashMap<UUID, AuctionItem>();
-        plugin = SkySimEngine.getPlugin();
+        plugin = Skyblock.getPlugin();
         AUCTION_ITEM_FOLDER = new File(AuctionItem.plugin.getDataFolder(), "./auctions");
     }
 }

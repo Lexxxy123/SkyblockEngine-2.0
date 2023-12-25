@@ -12,8 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import in.godspunky.skyblock.Repeater;
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.util.SUtil;
 
@@ -123,7 +122,7 @@ public class MosquitoBow implements ToolStatistics, BowFunction, Ability {
             }
         });
         player.setHealth(Math.min(player.getMaxHealth(), player.getHealth() + manaPool * 0.11 * 2.0));
-        e.getProjectile().setMetadata("bite", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        e.getProjectile().setMetadata("bite", new FixedMetadataValue(Skyblock.getPlugin(), true));
     }
 
     @Override

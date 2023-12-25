@@ -5,7 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.user.User;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class PacketEntity {
         this.players = new ArrayList<Player>();
         this.updateSpawnPacket();
         PacketEntity.managers.add(this);
-        this.tickTask = Bukkit.getScheduler().runTaskTimer(SkySimEngine.getPlugin(), () -> this.tick(), 1L, 5L);
+        this.tickTask = Bukkit.getScheduler().runTaskTimer(Skyblock.getPlugin(), () -> this.tick(), 1L, 5L);
     }
 
     public void setShowPermission(final String permission) {

@@ -2,7 +2,7 @@ package in.godspunky.skyblock.entity.den;
 
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.entity.EntityFunction;
 import in.godspunky.skyblock.entity.SlimeStatistics;
 import in.godspunky.skyblock.util.SUtil;
@@ -34,7 +34,7 @@ public class SpidersDenSlime implements SlimeStatistics, EntityFunction {
             public void run() {
                 e.getEntity().setVelocity(e.getEntity().getVelocity().clone().setY(1.5));
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 1L);
+        }.runTaskLater(Skyblock.getPlugin(), 1L);
     }
 
     @Override

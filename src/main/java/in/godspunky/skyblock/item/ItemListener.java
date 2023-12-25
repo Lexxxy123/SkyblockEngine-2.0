@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.item;
 
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.collection.ItemCollection;
 import in.godspunky.skyblock.enchantment.Enchantment;
 import in.godspunky.skyblock.enchantment.EnchantmentType;
@@ -13,7 +14,6 @@ import in.godspunky.skyblock.listener.PListener;
 import in.godspunky.skyblock.skill.Skill;
 import in.godspunky.skyblock.user.PlayerStatistics;
 import in.godspunky.skyblock.user.PlayerUtils;
-import in.godspunky.skyblock.user.SMongoLoader;
 import in.godspunky.skyblock.util.*;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
@@ -45,11 +45,9 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import in.godspunky.skyblock.Repeater;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityType;
 import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.*;
 
 import java.util.*;
 
@@ -359,7 +357,7 @@ public class ItemListener extends PListener {
                                 stand3.remove();
                                 this.cancel();
                             }
-                        }.runTaskLater(SkySimEngine.getPlugin(), 30L);
+                        }.runTaskLater(Skyblock.getPlugin(), 30L);
                         ACT = "false";
                     }
                     player.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply(i / count)), Effect.FIREWORKS_SPARK, 24, 1, 0.0f, 0.0f, 0.0f, 1.0f, 0, 64);
@@ -774,7 +772,7 @@ public class ItemListener extends PListener {
             if (collection != null) {
                 final int prev = user.getCollection(collection);
                 user.addToCollection(collection, stack.getAmount());
-                SkySimEngine.getPlugin().getDataLoader().save(player.getUniqueId());
+                Skyblock.getPlugin().getDataLoader().save(player.getUniqueId());
                 if (prev == 0) {
                     player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "  COLLECTION UNLOCKED " + ChatColor.RESET + ChatColor.YELLOW + collection.getName());
                     player.playSound(player.getLocation(), Sound.LEVEL_UP, 1.0f, 2.0f);
@@ -823,7 +821,7 @@ public class ItemListener extends PListener {
         if (rod == null) {
             return;
         }
-        e.getHook().setMetadata("owner", new FixedMetadataValue(SkySimEngine.getPlugin(), e.getPlayer()));
+        e.getHook().setMetadata("owner", new FixedMetadataValue(Skyblock.getPlugin(), e.getPlayer()));
         final MaterialFunction function = rod.getType().getFunction();
         if (function == null) {
             return;
@@ -903,7 +901,7 @@ public class ItemListener extends PListener {
                 User.getUser(player.getUniqueId()).updateArmorInventory();
                 ItemListener.checkCondition(player);
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 1L);
+        }.runTaskLater(Skyblock.getPlugin(), 1L);
     }
 
     public static void checkCondition(final Player p) {

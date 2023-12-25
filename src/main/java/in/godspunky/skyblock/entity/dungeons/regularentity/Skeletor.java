@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.entity.dungeons.regularentity;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import in.godspunky.skyblock.Skyblock;
 import me.libraryaddict.disguise.disguisetypes.MobDisguise;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
 import net.minecraft.server.v1_8_R3.EntityLiving;
@@ -19,7 +20,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityEquipment;
 import in.godspunky.skyblock.entity.zombie.BaseZombie;
@@ -69,8 +69,8 @@ public class Skeletor extends BaseZombie implements NPCMobs {
         followRange.setValue(40.0);
         final MobDisguise pl = Sputnik.applyPacketSkeleton(entity);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 70);
-        entity.setMetadata("SKEL", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("DungeonMobs", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("SKEL", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("DungeonMobs", new FixedMetadataValue(Skyblock.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -92,7 +92,7 @@ public class Skeletor extends BaseZombie implements NPCMobs {
                     }, 20L);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 2L, 100L);
+        }.runTaskTimer(Skyblock.getPlugin(), 2L, 100L);
         new BukkitRunnable() {
             public void run() {
                 final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -129,7 +129,7 @@ public class Skeletor extends BaseZombie implements NPCMobs {
                     break;
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
     }
 
     @Override
@@ -243,7 +243,7 @@ public class Skeletor extends BaseZombie implements NPCMobs {
             public synchronized void cancel() throws IllegalStateException {
                 super.cancel();
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
     }
 
     @Override

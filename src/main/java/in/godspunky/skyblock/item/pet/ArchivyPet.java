@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.item.pet;
 
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.skill.CombatSkill;
 import in.godspunky.skyblock.skill.Skill;
 import in.godspunky.skyblock.util.EntityManager;
@@ -11,7 +12,6 @@ import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.item.GenericItemType;
 import in.godspunky.skyblock.item.Rarity;
 import in.godspunky.skyblock.item.SItem;
@@ -231,7 +231,7 @@ public class ArchivyPet extends Pet {
                 stand.getWorld().spigot().playEffect(stand.getLocation().add(0.0, 2.0, 0.0), Effect.FLAME, 21, 0, 0.1f, 0.0f, 0.1f, 0.01f, 1, 30);
                 stand.teleport(stand.getLocation().add(stand.getLocation().getDirection().normalize().multiply(1)));
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public void dmgEntityInRange(final Entity e, final Player owner, double damage) {

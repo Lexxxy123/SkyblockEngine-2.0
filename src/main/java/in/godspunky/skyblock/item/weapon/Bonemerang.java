@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.item.weapon;
 
 import de.tr7zw.nbtapi.NBTItem;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.util.FerocityCalculation;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
@@ -12,8 +13,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.listener.PlayerListener;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
@@ -151,7 +150,7 @@ public class Bonemerang implements ToolStatistics, MaterialFunction, Ability {
                                 }
                                 this.cancel();
                             }
-                        }.runTaskLater(SkySimEngine.getPlugin(), 30L);
+                        }.runTaskLater(Skyblock.getPlugin(), 30L);
                         this.cancel();
                         return;
                     }
@@ -224,11 +223,11 @@ public class Bonemerang implements ToolStatistics, MaterialFunction, Ability {
                                 public void run() {
                                     this.cancel();
                                 }
-                            }.runTaskLater(SkySimEngine.getPlugin(), 30L);
+                            }.runTaskLater(Skyblock.getPlugin(), 30L);
                         }
                     }
                 }
-            }.runTaskTimer(SkySimEngine.getPlugin(), 1L, 1L);
+            }.runTaskTimer(Skyblock.getPlugin(), 1L, 1L);
         }
     }
 

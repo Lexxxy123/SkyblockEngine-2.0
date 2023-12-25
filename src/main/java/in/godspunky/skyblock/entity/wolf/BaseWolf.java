@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.entity.wolf;
 
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.slayer.SlayerQuest;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -8,7 +9,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.EntityFunction;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityType;
@@ -40,7 +40,7 @@ public abstract class BaseWolf implements WolfStatistics, EntityFunction {
                 BaseWolf.this.target = found;
                 ((Wolf) entity).setTarget(BaseWolf.this.target);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 20L, 20L);
+        }.runTaskTimer(Skyblock.getPlugin(), 20L, 20L);
     }
 
     @Override

@@ -7,10 +7,9 @@ import org.bukkit.Sound;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityType;
-import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
@@ -108,7 +107,7 @@ public class AspectOfTheDragons implements ToolStatistics, MaterialFunction, Abi
                     stands.remove();
                     this.cancel();
                 }
-            }.runTaskLater(SkySimEngine.getPlugin(), 30L);
+            }.runTaskLater(Skyblock.getPlugin(), 30L);
             user.damageEntity((Damageable) entity, baseDamage);
         }
     }

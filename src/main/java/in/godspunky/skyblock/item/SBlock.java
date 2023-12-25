@@ -1,13 +1,13 @@
 package in.godspunky.skyblock.item;
 
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.util.SUtil;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class SBlock {
-    protected static final SkySimEngine plugin;
+    protected static final Skyblock plugin;
     private final Location location;
     private SMaterial type;
     private final NBTTagCompound data;
@@ -91,6 +91,6 @@ public class SBlock {
     }
 
     static {
-        plugin = SkySimEngine.getPlugin();
+        plugin = Skyblock.getPlugin();
     }
 }

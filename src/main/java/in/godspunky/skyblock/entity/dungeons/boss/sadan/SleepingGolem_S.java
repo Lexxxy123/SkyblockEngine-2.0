@@ -5,7 +5,7 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.metadata.FixedMetadataValue;
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityType;
 import in.godspunky.skyblock.entity.zombie.BaseZombie;
@@ -37,7 +37,7 @@ public class SleepingGolem_S extends BaseZombie {
         EntityManager.noAI(entity);
         Sputnik.applyPacketGolem(entity);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 0);
-        entity.setMetadata("NNP", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("NNP", new FixedMetadataValue(Skyblock.getPlugin(), true));
     }
 
     @Override

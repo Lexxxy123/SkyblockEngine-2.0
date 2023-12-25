@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.gui;
 
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.pet.Pet;
 import in.godspunky.skyblock.user.User;
@@ -263,7 +263,7 @@ public class PetsGUI extends GUI {
         as.setGravity(false);
         as.setArms(true);
         as.setRightArmPose(new EulerAngle(0.0, 45.0, 0.0));
-        as.setMetadata("pets", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        as.setMetadata("pets", new FixedMetadataValue(Skyblock.getPlugin(), true));
         as.setRemoveWhenFarAway(false);
     }
 
@@ -275,14 +275,14 @@ public class PetsGUI extends GUI {
         final ArmorStand name = (ArmorStand) player.getWorld().spawn(player.getLocation(), (Class) ArmorStand.class);
         applyThingy(name, true);
         name.setSmall(true);
-        name.setMetadata(player.getUniqueId().toString() + "_pets", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        name.setMetadata(player.getUniqueId().toString() + "_pets", new FixedMetadataValue(Skyblock.getPlugin(), true));
         final ArmorStand stand = (ArmorStand) player.getWorld().spawn(player.getLocation(), (Class) ArmorStand.class);
         applyThingy(stand, false);
-        stand.setMetadata(player.getUniqueId().toString() + "_pets", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        stand.setMetadata(player.getUniqueId().toString() + "_pets", new FixedMetadataValue(Skyblock.getPlugin(), true));
         final String displayname = Sputnik.trans("&8[&7Lv" + level + "&8] " + active.toItem().getRarity().getColor() + player.getName() + "'s " + petclass.getDisplayName());
         stand.getEquipment().setItemInHand(stacc);
         name.setCustomName(displayname);
-        stand.setMetadata(player.getUniqueId().toString(), new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        stand.setMetadata(player.getUniqueId().toString(), new FixedMetadataValue(Skyblock.getPlugin(), true));
         return new BukkitRunnable() {
             int count = 0;
             int stat = 0;
@@ -362,7 +362,7 @@ public class PetsGUI extends GUI {
                 }
                 PetsGUI.sendDestroyPacket(stand, name, player.getWorld(), player);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 3L, 3L);
+        }.runTaskTimer(Skyblock.getPlugin(), 3L, 3L);
     }
 
     public static void destroyArmorStandWithUUID(final UUID uuid, final World w) {

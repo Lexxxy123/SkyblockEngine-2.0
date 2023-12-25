@@ -1,11 +1,11 @@
 package in.godspunky.skyblock.extra.beam;
 
 import com.google.common.base.Preconditions;
+import in.godspunky.skyblock.Skyblock;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.SkySimEngine;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -46,7 +46,7 @@ public class Beam {
     public void start() {
         Preconditions.checkState(!this.isActive, "The beam must be disabled in order to start it");
         this.isActive = true;
-        (this.runnable = new BeamUpdater()).runTaskTimer(SkySimEngine.getPlugin(), 0L, this.updateDelay);
+        (this.runnable = new BeamUpdater()).runTaskTimer(Skyblock.getPlugin(), 0L, this.updateDelay);
     }
 
     public void stop() {

@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.entity.nms;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.enchantment.EnchantmentType;
 import in.godspunky.skyblock.entity.*;
 import net.minecraft.server.v1_8_R3.World;
@@ -22,8 +23,6 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 import in.godspunky.skyblock.Repeater;
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.entity.*;
 import in.godspunky.skyblock.entity.end.EndermanStatistics;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.SMaterial;
@@ -218,7 +217,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     armorStand1.setVisible(false);
                     armorStand1.setCustomName(ChatColor.translateAlternateColorCodes('&', ""));
                     final Vector vec = armorStand1.getLocation().getDirection().normalize().multiply(1.25);
-                    armorStand1.setMetadata("BeaconSkill", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+                    armorStand1.setMetadata("BeaconSkill", new FixedMetadataValue(Skyblock.getPlugin(), true));
                     vec.setY(0.55);
                     armorStand1.setVelocity(vec);
                     Sputnik.endermanCarryBlock((Enderman) entity, Material.AIR);
@@ -243,7 +242,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     Repeater.BEACON_OWNER.put(armorStand1, player);
                     VoidgloomSeraph.a(armorStand1);
                 }
-            }.runTaskLater(SkySimEngine.getPlugin(), 80L);
+            }.runTaskLater(Skyblock.getPlugin(), 80L);
             new BukkitRunnable() {
                 public void run() {
                     if (entity.isDead()) {
@@ -284,14 +283,14 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     }
                     VoidgloomSeraph.this.activebea = false;
                 }
-            }.runTaskLater(SkySimEngine.getPlugin(), 185L);
+            }.runTaskLater(Skyblock.getPlugin(), 185L);
             new BukkitRunnable() {
                 public void run() {
                     if (VoidgloomSeraph.this.CooldownSkill) {
                         VoidgloomSeraph.this.CooldownSkill = false;
                     }
                 }
-            }.runTaskLater(SkySimEngine.getPlugin(), 400L);
+            }.runTaskLater(Skyblock.getPlugin(), 400L);
         }
         int amounths = 30;
         if (this.tier == 2) {
@@ -327,7 +326,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                         VoidgloomSeraph.this.CooldownSkill2 = false;
                     }
                 }
-            }.runTaskLater(SkySimEngine.getPlugin(), 850L);
+            }.runTaskLater(Skyblock.getPlugin(), 850L);
         }
         if (this.bukkitEntity.getWorld() == player.getWorld() && this.getBukkitEntity().getLocation().distance(player.getLocation()) > 20.0 && this.HeartRadi) {
             User.getUser(player.getUniqueId()).damage(player.getMaxHealth() * 90.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, entity);
@@ -365,12 +364,12 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     }
                     stand_sit.setPassenger(entity);
                 }
-            }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+            }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
             final ArmorStand stand3 = (ArmorStand) stand_sit.getWorld().spawn(stand_sit.getLocation().add(0.0, 0.0, 0.0), (Class) ArmorStand.class);
             stand3.setVisible(false);
             stand3.setGravity(false);
             stand3.setMarker(true);
-            stand3.setMetadata("HeartRadiAS", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+            stand3.setMetadata("HeartRadiAS", new FixedMetadataValue(Skyblock.getPlugin(), true));
             this.Ar1.add(stand3);
             this.Ar2.add(stand3);
             final ArmorStand stand4 = (ArmorStand) entity.getWorld().spawn(stand3.getLocation().add(0.0, 1.5, 0.0), (Class) ArmorStand.class);
@@ -379,14 +378,14 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
             stand4.setMarker(true);
             this.Ar1.add(stand4);
             this.Ar2.add(stand4);
-            stand4.setMetadata("HeartRadiAS", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+            stand4.setMetadata("HeartRadiAS", new FixedMetadataValue(Skyblock.getPlugin(), true));
             final ArmorStand stand5 = (ArmorStand) entity.getWorld().spawn(stand4.getLocation().add(0.0, 1.5, 0.0), (Class) ArmorStand.class);
             stand5.setVisible(false);
             stand5.setGravity(false);
             stand5.setMarker(true);
             this.Ar1.add(stand5);
             this.Ar2.add(stand5);
-            stand5.setMetadata("HeartRadiAS", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+            stand5.setMetadata("HeartRadiAS", new FixedMetadataValue(Skyblock.getPlugin(), true));
             final Location l2 = l;
             l2.setYaw(l.getYaw() + 90.0f);
             final ArmorStand stand1_ = (ArmorStand) stand_sit.getWorld().spawn(l2, (Class) ArmorStand.class);
@@ -395,14 +394,14 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
             stand1_.setMarker(true);
             this.Ar1.add(stand1_);
             this.Ar2.add(stand1_);
-            stand4.setMetadata("HeartRadiAS", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+            stand4.setMetadata("HeartRadiAS", new FixedMetadataValue(Skyblock.getPlugin(), true));
             final ArmorStand stand6 = (ArmorStand) entity.getWorld().spawn(stand1_.getLocation().add(0.0, 1.5, 0.0), (Class) ArmorStand.class);
             stand6.setVisible(false);
             stand6.setGravity(false);
             stand6.setMarker(true);
             this.Ar1.add(stand6);
             this.Ar2.add(stand6);
-            stand6.setMetadata("HeartRadiAS", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+            stand6.setMetadata("HeartRadiAS", new FixedMetadataValue(Skyblock.getPlugin(), true));
             final ArmorStand stand7 = (ArmorStand) entity.getWorld().spawn(stand6.getLocation().add(0.0, 1.5, 0.0), (Class) ArmorStand.class);
             stand7.setVisible(false);
             stand7.setGravity(false);
@@ -414,7 +413,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     player.playSound(player.getLocation(), Sound.FIREWORK_LARGE_BLAST, 1.0f, 0.5f);
                     Sputnik.playFuckingSoundOfVoidgloomThatTookForeverToMake(player, stand_sit);
                 }
-            }.runTaskLater(SkySimEngine.getPlugin(), 15L);
+            }.runTaskLater(Skyblock.getPlugin(), 15L);
             new BukkitRunnable() {
                 public void run() {
                     if (entity.isDead()) {
@@ -449,9 +448,9 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                                 Sputnik.IsInsideTheBeam.remove(player.getUniqueId());
                             }
                         }
-                    }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 3L);
+                    }.runTaskTimer(Skyblock.getPlugin(), 0L, 3L);
                 }
-            }.runTaskLater(SkySimEngine.getPlugin(), 25L);
+            }.runTaskLater(Skyblock.getPlugin(), 25L);
             new BukkitRunnable() {
                 public void run() {
                     VoidgloomSeraph.this.HeartRadi = false;
@@ -463,9 +462,9 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                                 VoidgloomSeraph.this.CooldownSkill3 = false;
                             }
                         }
-                    }.runTaskLater(SkySimEngine.getPlugin(), 700L);
+                    }.runTaskLater(Skyblock.getPlugin(), 700L);
                 }
-            }.runTaskLater(SkySimEngine.getPlugin(), 200L);
+            }.runTaskLater(Skyblock.getPlugin(), 200L);
         }
         if (this.activeskull) {
             int damagefin = 800;
@@ -503,21 +502,21 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                                     VoidgloomSeraph.this.CooldownSkill4 = false;
                                 }
                             }
-                        }.runTaskLater(SkySimEngine.getPlugin(), 400L);
+                        }.runTaskLater(Skyblock.getPlugin(), 400L);
                     }
                 }
-            }.runTaskLater(SkySimEngine.getPlugin(), 300L);
+            }.runTaskLater(Skyblock.getPlugin(), 300L);
         }
     }
 
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
-        entity.setMetadata("NoAffect", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("Voidgloom", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("BOSS_OWNER_" + Bukkit.getPlayer(this.getSpawnerUUID()).getUniqueId().toString(), new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("GiantSword", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("NoAffect", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("Voidgloom", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("BOSS_OWNER_" + Bukkit.getPlayer(this.getSpawnerUUID()).getUniqueId().toString(), new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("GiantSword", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
         VoidgloomSeraph.LivingSkulls.put(this.spawnerUUID, new ArrayList<Entity>());
-        SUtil.delay(() -> entity.removeMetadata("GiantSword", SkySimEngine.getPlugin()), 20L);
+        SUtil.delay(() -> entity.removeMetadata("GiantSword", Skyblock.getPlugin()), 20L);
         SUtil.delay(() -> {
             int amounths = 30;
             if (this.tier == 2) {
@@ -549,7 +548,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
         ((ArmorStand) this.hologram.getEntity()).setVisible(false);
         ((ArmorStand) this.hologram.getEntity()).setGravity(false);
         this.hologram.getEntity().setCustomNameVisible(true);
-        entity.setMetadata("notDisplay", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("notDisplay", new FixedMetadataValue(Skyblock.getPlugin(), true));
         final net.minecraft.server.v1_8_R3.Entity e = this.getBukkitEntity().getHandle();
         final double height_ = e.getBoundingBox().e - e.getBoundingBox().b;
         this.hologram_name = new SEntity(entity.getLocation().add(0.0, height_, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND);
@@ -574,7 +573,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     Repeater.BEACON_OWNER.remove(entity);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -586,7 +585,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -602,7 +601,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     VoidgloomSeraph.getPlayer().damage(VoidgloomSeraph.DAMAGE_VALUES.getByNumber(VoidgloomSeraph.this.tier), entity);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 20L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 20L);
     }
 
     public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
@@ -754,8 +753,8 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
         entity.setGravity(false);
         entity.getEquipment().setHelmet(SItem.of(SMaterial.NUKEKUBI).getStack());
         entity.getEquipment().setItemInHand(new ItemStack(Material.AIR));
-        entity.setMetadata("Nukekubi", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata(p.getUniqueId().toString() + "_NUKEKUBI", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("Nukekubi", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata(p.getUniqueId().toString() + "_NUKEKUBI", new FixedMetadataValue(Skyblock.getPlugin(), true));
         VoidgloomSeraph.NUKEKUBI_TARGET.put(entity, p);
         if (!VoidgloomSeraph.LivingSkulls.containsKey(p.getUniqueId())) {
             VoidgloomSeraph.LivingSkulls.put(p.getUniqueId(), new ArrayList<Entity>());
@@ -783,7 +782,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     entity.getWorld().playEffect(entity.getLocation().add(0.0, 1.4, 0.0), Effect.WITCH_MAGIC, 1);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         return entity;
     }
 
@@ -805,7 +804,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                 e.getWorld().spigot().playEffect(e.getLocation().add(0.0, 1.0, 0.0), Effect.FLAME, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                 e.getWorld().spigot().playEffect(e.getLocation().add(0.0, 1.0, 0.0), Effect.FLAME, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), firstTickRad, tickingRad);
+        }.runTaskTimer(Skyblock.getPlugin(), firstTickRad, tickingRad);
     }
 
     public static void moveHeadAround(final Entity head, final Player p, final Integer damage) {
@@ -826,7 +825,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     head.remove();
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 20L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 20L);
     }
 
     public static void damageUpdate(final double formula) {
@@ -867,14 +866,14 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     armorStand2.setGravity(true);
                     armorStand2.setVisible(false);
                     armorStand2.setCustomName(ChatColor.translateAlternateColorCodes('&', "&c☠ &fTEST"));
-                    armorStand2.setMetadata("BeaconSkill2", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+                    armorStand2.setMetadata("BeaconSkill2", new FixedMetadataValue(Skyblock.getPlugin(), true));
                     loc.getBlock().setType(Material.BARRIER);
                     Repeater.BEACON_THROW2.put(Repeater.BEACON_OWNER.get(entity).getUniqueId(), armorStand2);
                     VoidgloomSeraph.b(armorStand2);
                     Repeater.BEACON.put(armorStand2, BlockFallAPI.sendBlockDestroyWithSignal(loc, Material.BEACON, (byte) 0, world));
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public static void b(final Entity armorStand2) {
@@ -898,7 +897,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                 world.playEffect(armorStand2.getLocation().add(0.0, 1.0, 0.0), Effect.FLYING_GLYPH, 3);
                 world.playEffect(armorStand2.getLocation().add(0.0, 1.0, 0.0), Effect.FLYING_GLYPH, 3);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public void teleportSkill(final Entity e, final Player p) {
@@ -930,7 +929,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                 a.getWorld().playSound(a, Sound.ENDERMAN_TELEPORT, 0.2f, 1.0f);
                 ++this.cout;
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public void drawPointerAt(final Location loc) {
@@ -988,7 +987,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                 }
                 this.cout += 18.0f;
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public void playBossParticle_1(final Entity e) {
@@ -1008,7 +1007,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                 e.getWorld().spigot().playEffect(loc, Effect.CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                 this.cout += 9.0f;
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public void playBossParticle_2(final Entity e) {
@@ -1028,7 +1027,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                 e.getWorld().spigot().playEffect(loc.clone().add(0.0, 0.6, 0.0), Effect.CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                 this.cout -= 9.0f;
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public int getTier() {

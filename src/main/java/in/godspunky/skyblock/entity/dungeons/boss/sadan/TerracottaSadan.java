@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.entity.dungeons.boss.sadan;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import in.godspunky.skyblock.Skyblock;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -20,7 +21,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityEquipment;
 import in.godspunky.skyblock.entity.SEntityType;
@@ -76,9 +76,9 @@ public class TerracottaSadan extends BaseZombie {
         Sputnik.applyPacketNPC(entity, "Ethelian", null, false);
         SUtil.delay(() -> entity.getEquipment().setItemInHand(SItem.of(SMaterial.FLOWER_OF_TRUTH).getStack()), 10L);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 30);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("LD", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("t_sadan", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("t_sadan", new FixedMetadataValue(Skyblock.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -95,7 +95,7 @@ public class TerracottaSadan extends BaseZombie {
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 30L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 30L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -104,7 +104,7 @@ public class TerracottaSadan extends BaseZombie {
                 }
                 Sputnik.applyPacketNPC(entity, "Ethelian", null, false);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1000L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1000L);
         final SkySimBrainCell sbc = SkySimBrainCell.loadFromDB("localhost:27786/skysim/artifical_intelligence/cloud/");
         sbc.accessAIFrom(SkySimBrainCell.BrainCellFor.MELEE);
         sbc.accessAIFrom(SkySimBrainCell.BrainCellFor.MOVEMENT);
@@ -159,7 +159,7 @@ public class TerracottaSadan extends BaseZombie {
                 }
                 this.nms.setSprinting(false);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 7L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 7L);
         new BukkitRunnable() {
             public void run() {
                 final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -189,7 +189,7 @@ public class TerracottaSadan extends BaseZombie {
                     break;
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
     }
 
     public void t(final ArmorStand respawnAnchor) {
@@ -233,9 +233,9 @@ public class TerracottaSadan extends BaseZombie {
                 respawnAnchor.getLocation().getBlock().getLocation().clone().getWorld().spigot().playEffect(respawnAnchor.getLocation().clone().add(0.0, TerracottaSadan.this.y, 0.0), Effect.LARGE_SMOKE, 21, 0, 0.1f, 0.0f, 0.1f, 0.01f, 1, 30);
                 respawnAnchor.getLocation().getBlock().getLocation().clone().getWorld().spigot().playEffect(respawnAnchor.getLocation().clone().add(0.0, TerracottaSadan.this.y, 0.0), Effect.WITCH_MAGIC, 21, 0, 0.1f, 0.0f, 0.1f, 0.01f, 1, 30);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 3L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 3L);
         respawnAnchor.setVisible(false);
-        respawnAnchor.setMetadata("t_sadan", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        respawnAnchor.setMetadata("t_sadan", new FixedMetadataValue(Skyblock.getPlugin(), true));
         respawnAnchor.setGravity(false);
         respawnAnchor.setMarker(true);
         this.f(respawnAnchor.getLocation().add(0.0, this.y, 0.0));
@@ -247,7 +247,7 @@ public class TerracottaSadan extends BaseZombie {
                 }
                 TerracottaSadan.this.f(respawnAnchor.getLocation().clone().add(0.0, TerracottaSadan.this.y + 0.2, 0.0));
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 66L);
+        }.runTaskLater(Skyblock.getPlugin(), 66L);
         new BukkitRunnable() {
             public void run() {
                 if (respawnAnchor.isDead()) {
@@ -256,7 +256,7 @@ public class TerracottaSadan extends BaseZombie {
                 }
                 TerracottaSadan.this.f(respawnAnchor.getLocation().clone().add(0.0, TerracottaSadan.this.y + 0.2, 0.0));
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 131L);
+        }.runTaskLater(Skyblock.getPlugin(), 131L);
         new BukkitRunnable() {
             public void run() {
                 if (respawnAnchor.isDead()) {
@@ -265,7 +265,7 @@ public class TerracottaSadan extends BaseZombie {
                 }
                 TerracottaSadan.this.f(respawnAnchor.getLocation().clone().add(0.0, TerracottaSadan.this.y + 0.2, 0.0));
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 201L);
+        }.runTaskLater(Skyblock.getPlugin(), 201L);
         this.sendPacketBlock(respawnAnchor.getLocation().getBlock().getLocation().clone().add(0.0, 0.0, 0.0), respawnAnchor.getWorld(), 0, killed.getLocation().getYaw(), (LivingEntity) killed, respawnAnchor);
         SUtil.delay(() -> respawnAnchor.remove(), 202L);
         new BukkitRunnable() {
@@ -276,7 +276,7 @@ public class TerracottaSadan extends BaseZombie {
                 }
                 new SEntity(respawnAnchor.getLocation().clone(), SEntityType.TERRACOTTA_SADAN);
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 201L);
+        }.runTaskLater(Skyblock.getPlugin(), 201L);
     }
 
     public void summonOnLoc() {
@@ -353,7 +353,7 @@ public class TerracottaSadan extends BaseZombie {
                     this.cancel();
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         double rot = (e.getLocation().getYaw() - 90.0f) % 360.0f;
         if (rot < 0.0) {
             rot += 360.0;
@@ -402,7 +402,7 @@ public class TerracottaSadan extends BaseZombie {
                     this.cancel();
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         if (s.isDead()) {
             this.r(loc.getBlock().getLocation(), perviousblock, data);
             return;
@@ -421,7 +421,7 @@ public class TerracottaSadan extends BaseZombie {
                 }
                 loc.getBlock().setTypeIdAndData(159, (byte) 12, true);
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 65L);
+        }.runTaskLater(Skyblock.getPlugin(), 65L);
         SUtil.delay(() -> this.y = 1.2, 65L);
         SUtil.delay(() -> this.y = 1.7, 130L);
         SUtil.delay(() -> this.y = 0.85, 200L);
@@ -478,7 +478,7 @@ public class TerracottaSadan extends BaseZombie {
         final Vector throwVec = e.getLocation().add(e.getLocation().getDirection().multiply(10)).toVector().subtract(e.getLocation().toVector()).normalize().multiply(1.2);
         e.getWorld().playSound(e.getLocation(), Sound.EAT, 1.0f, 1.0f);
         final ArmorStand armorStand1 = (ArmorStand) e.getWorld().spawnEntity(throwLoc, EntityType.ARMOR_STAND);
-        armorStand1.setMetadata("ftd", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        armorStand1.setMetadata("ftd", new FixedMetadataValue(Skyblock.getPlugin(), true));
         armorStand1.getEquipment().setHelmet(SItem.of(SMaterial.RED_ROSE).getStack());
         armorStand1.setHeadPose(new EulerAngle(-92.55000305175781, 0.0, 0.0));
         armorStand1.setGravity(false);
@@ -547,6 +547,6 @@ public class TerracottaSadan extends BaseZombie {
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 1L, 3L);
+        }.runTaskTimer(Skyblock.getPlugin(), 1L, 3L);
     }
 }

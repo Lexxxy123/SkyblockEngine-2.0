@@ -8,7 +8,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityType;
 import in.godspunky.skyblock.util.SUtil;
@@ -97,7 +97,7 @@ public class SlayerQuest implements ConfigurationSerializable {
                 world.playEffect(clone, Effect.EXPLOSION_HUGE, (Object) Effect.EXPLOSION_HUGE.getData());
                 world.playEffect(clone, Effect.EXPLOSION_HUGE, (Object) Effect.EXPLOSION_HUGE.getData());
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 28L);
+        }.runTaskLater(Skyblock.getPlugin(), 28L);
     }
 
     public SlayerBossType getType() {

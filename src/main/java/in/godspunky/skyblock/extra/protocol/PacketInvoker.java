@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.extra.protocol;
 
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.enchantment.EnchantmentType;
 import in.godspunky.skyblock.slayer.SlayerQuest;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
@@ -14,7 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityType;
 import in.godspunky.skyblock.item.Rarity;
@@ -35,7 +35,7 @@ public class PacketInvoker {
         drop.setGravity(false);
         drop.setCustomNameVisible(true);
         drop.setCustomName(Sputnik.trans("&6&lLOOT CHEST"));
-        drop.setMetadata("ss_drop", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        drop.setMetadata("ss_drop", new FixedMetadataValue(Skyblock.getPlugin(), true));
         if (!isExplosive) {
             drop.getEquipment().setHelmet(SItem.of(SMaterial.CHEST).getStack());
         } else {
@@ -104,7 +104,7 @@ public class PacketInvoker {
                                 item.setCustomName(Sputnik.trans("&e&ka&r &f1x &7[Lvl 1] &6Enderman &e&ka"));
                             } else {
                                 final int pk = SUtil.random(80, 400);
-                                SkySimEngine.getEconomy().depositPlayer(owner, pk);
+                                Skyblock.getEconomy().depositPlayer(owner, pk);
                                 owner.sendMessage(Sputnik.trans("&b&lBITS! &fYou found &b" + SUtil.commaify(pk) + " Bits&f inside the loot chest!"));
                             }
                         } else {
@@ -123,7 +123,7 @@ public class PacketInvoker {
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public static void dropVoidSpawner(final Player owner, final Location loc) {
@@ -139,7 +139,7 @@ public class PacketInvoker {
         drop.setGravity(false);
         drop.setCustomNameVisible(true);
         drop.setCustomName(Sputnik.trans("&d&lVoidling's Altar"));
-        drop.setMetadata("ss_drop", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        drop.setMetadata("ss_drop", new FixedMetadataValue(Skyblock.getPlugin(), true));
         drop.getEquipment().setHelmet(SItem.of(SMaterial.NUKEKUBI).getStack());
         SUtil.delay(() -> {
             if (!drop.isDead()) {
@@ -180,14 +180,14 @@ public class PacketInvoker {
                             final Object val$drop = drop;
                             final Object val$owner = owner;
                             final SEntity e2 = new SEntity(drop.getLocation().clone().add(0.0, 1.5, 0.0), SEntityType.VOIDLINGS_WARDEN);
-                            e2.getEntity().setMetadata("owner", new FixedMetadataValue(SkySimEngine.getPlugin(), owner.getUniqueId()));
+                            e2.getEntity().setMetadata("owner", new FixedMetadataValue(Skyblock.getPlugin(), owner.getUniqueId()));
                             ((CraftZombie) e2.getEntity()).setTarget(owner);
                         }, 30L);
                         drop.remove();
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public static void dropT34Pet(final Player owner, final Location loc) {
@@ -198,7 +198,7 @@ public class PacketInvoker {
         drop.setVisible(false);
         drop.setGravity(false);
         drop.setCustomNameVisible(true);
-        drop.setMetadata("ss_drop", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        drop.setMetadata("ss_drop", new FixedMetadataValue(Skyblock.getPlugin(), true));
         drop.getEquipment().setHelmet(SItem.of(SMaterial.HIDDEN_USSR_T34_TANK_PET).getStack());
         drop.setCustomName(Sputnik.trans("&e&ka&r &f1x &7[Lvl 1] &6Mini T-34 &e&ka"));
         SUtil.delay(() -> {
@@ -258,7 +258,7 @@ public class PacketInvoker {
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public static void dropEye(final Player owner, final Location loc, final int amount) {
@@ -266,7 +266,7 @@ public class PacketInvoker {
         drop.setVisible(false);
         drop.setGravity(false);
         drop.setCustomNameVisible(true);
-        drop.setMetadata("ss_drop", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        drop.setMetadata("ss_drop", new FixedMetadataValue(Skyblock.getPlugin(), true));
         drop.getEquipment().setHelmet(SItem.of(SMaterial.REMNANT_OF_THE_EYE).getStack());
         drop.setCustomName(Sputnik.trans("&7" + amount + "x &9Ender's Fragment"));
         SUtil.delay(() -> {
@@ -328,7 +328,7 @@ public class PacketInvoker {
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public static void dropGoldenTigerPet(final Player owner, final Location loc, final boolean isMythic) {
@@ -339,14 +339,14 @@ public class PacketInvoker {
             public void run() {
                 Sputnik.sendWebhook("**A TIGER PET DROPPED!** Player `" + owner.getName() + "` dropped a Golden Tiger Pet at `" + owner.getWorld().getName() + "`, Mythic: " + isMythic);
             }
-        }.runTaskAsynchronously(SkySimEngine.getPlugin());
+        }.runTaskAsynchronously(Skyblock.getPlugin());
         owner.playSound(owner.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 2.0f);
         final ArmorStand drop = (ArmorStand) owner.getWorld().spawn(loc.clone().add(0.0, -0.5, 0.0), (Class) ArmorStand.class);
         drop.getWorld().playEffect(drop.getLocation(), Effect.EXPLOSION_HUGE, 1);
         drop.setVisible(false);
         drop.setGravity(false);
         drop.setCustomNameVisible(true);
-        drop.setMetadata("ss_drop", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        drop.setMetadata("ss_drop", new FixedMetadataValue(Skyblock.getPlugin(), true));
         drop.getEquipment().setHelmet(SItem.of(SMaterial.HIDDEN_GOLDEN_TIGER_2022).getStack());
         if (!isMythic) {
             drop.setCustomName(Sputnik.trans("&e&ka&r &f1x &7[Lvl 1] &6Golden Tiger &e&ka"));
@@ -360,7 +360,7 @@ public class PacketInvoker {
                     public void run() {
                         Sputnik.sendWebhook("**PET DESPAWNED! ** Player `" + owner.getName() + "` let a Golden Tiger Pet at `" + owner.getWorld().getName() + "` despawned, Mythic: " + isMythic);
                     }
-                }.runTaskAsynchronously(SkySimEngine.getPlugin());
+                }.runTaskAsynchronously(Skyblock.getPlugin());
                 owner.sendMessage(ChatColor.RED + "Oh no, you didn't picked up your Golden Tiger pet, it despawned, good luck next time, F.");
                 drop.remove();
             }
@@ -374,7 +374,7 @@ public class PacketInvoker {
                         public void run() {
                             Sputnik.sendWebhook("**PET DESPAWNED! ** Player `" + owner.getName() + "` let a Golden Tiger Pet at `" + owner.getWorld().getName() + "` despawned, Mythic: " + isMythic);
                         }
-                    }.runTaskAsynchronously(SkySimEngine.getPlugin());
+                    }.runTaskAsynchronously(Skyblock.getPlugin());
                     owner.sendMessage(ChatColor.RED + "Oh no, you didn't picked up your Golden Tiger pet, it despawned, good luck next time, F.");
                     drop.remove();
                 }
@@ -428,7 +428,7 @@ public class PacketInvoker {
                                 public void run() {
                                     Sputnik.sendWebhook("**PET PICKUP!** Player `" + owner.getName() + "` picked up a Golden Tiger Pet at `" + owner.getWorld().getName() + "`, Mythic: " + isMythic);
                                 }
-                            }.runTaskAsynchronously(SkySimEngine.getPlugin());
+                            }.runTaskAsynchronously(Skyblock.getPlugin());
                             if (!isMythic) {
                                 owner.getInventory().addItem(SItem.of(SMaterial.HIDDEN_GOLDEN_TIGER_2022).getStack());
                             } else {
@@ -450,7 +450,7 @@ public class PacketInvoker {
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public static void invokeChannel(final Entity as1, final World w, final Player owner) {

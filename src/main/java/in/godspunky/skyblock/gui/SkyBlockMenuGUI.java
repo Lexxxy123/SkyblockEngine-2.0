@@ -2,7 +2,7 @@ package in.godspunky.skyblock.gui;
 
 import in.godspunky.skyblock.Repeater;
 import in.godspunky.skyblock.SkyBlockCalendar;
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.collection.ItemCollection;
 import in.godspunky.skyblock.item.pet.Pet;
 import in.godspunky.skyblock.user.PlayerStatistics;
@@ -401,6 +401,6 @@ public class SkyBlockMenuGUI extends GUI {
                 meta.setLore(Arrays.asList(Sputnik.trans("&7Obtain the &dCookie Buff"), Sputnik.trans("&7from booster cookies in the"), Sputnik.trans("&7hub's community shop."), " ", Sputnik.trans(text_ + "&7: " + PlayerUtils.getCookieDurationDisplayGUI(player)), " ", ChatColor.YELLOW + "Click to get all the info!"));
                 craftStack.setItemMeta(meta);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 20L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 20L);
     }
 }

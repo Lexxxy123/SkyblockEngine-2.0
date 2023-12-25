@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.item.weapon;
 
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.util.EntityManager;
 import net.md_5.bungee.api.ChatColor;
@@ -11,8 +12,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.listener.PlayerListener;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
@@ -72,8 +71,8 @@ public class GiantSword implements ToolStatistics, MaterialFunction, Ability {
         EntityManager.noHit(sword);
         EntityManager.shutTheFuckUp(sword);
         sword.setCustomName("Dinnerbone");
-        sword.setMetadata("GiantSword", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        sword.setMetadata("NoAffect", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        sword.setMetadata("GiantSword", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        sword.setMetadata("NoAffect", new FixedMetadataValue(Skyblock.getPlugin(), true));
         final ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(location, EntityType.ARMOR_STAND);
         stand.setVisible(false);
         stand.setGravity(true);
@@ -120,7 +119,7 @@ public class GiantSword implements ToolStatistics, MaterialFunction, Ability {
                 stand.remove();
                 this.cancel();
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 135L);
+        }.runTaskLater(Skyblock.getPlugin(), 135L);
     }
 
     @Override

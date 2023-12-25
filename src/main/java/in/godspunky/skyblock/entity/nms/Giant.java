@@ -14,11 +14,10 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityEquipment;
 import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.*;
 
 import java.util.*;
 
@@ -90,8 +89,8 @@ public class Giant extends BaseZombie {
         entity.getEquipment().setItemInHand(SUtil.enchant(new ItemStack(Material.DIAMOND_SWORD)));
         Sputnik.applyPacketGiant(entity);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 60);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("highername", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("highername", new FixedMetadataValue(Skyblock.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 if (entity.getHealth() > 0.0) {
@@ -136,7 +135,7 @@ public class Giant extends BaseZombie {
                     Giant.this.launchTerrain(entity);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     @Override
@@ -287,22 +286,22 @@ public class Giant extends BaseZombie {
                         public void run() {
                             Giant.createBlockTornado(e, e.getLocation().add(0.0, -1.0, 0.0).getBlock().getType(), e.getLocation().add(0.0, -1.0, 0.0).getBlock().getData());
                         }
-                    }.runTaskLater(SkySimEngine.getPlugin(), 5L);
+                    }.runTaskLater(Skyblock.getPlugin(), 5L);
                     new BukkitRunnable() {
                         public void run() {
                             Giant.createBlockTornado(e, e.getLocation().add(0.0, -2.0, 0.0).getBlock().getType(), e.getLocation().add(0.0, -2.0, 0.0).getBlock().getData());
                         }
-                    }.runTaskLater(SkySimEngine.getPlugin(), 6L);
+                    }.runTaskLater(Skyblock.getPlugin(), 6L);
                     new BukkitRunnable() {
                         public void run() {
                             Giant.createBlockTornado(e, e.getLocation().add(0.0, -2.0, 0.0).getBlock().getType(), e.getLocation().add(0.0, -2.0, 0.0).getBlock().getData());
                         }
-                    }.runTaskLater(SkySimEngine.getPlugin(), 7L);
+                    }.runTaskLater(Skyblock.getPlugin(), 7L);
                     new BukkitRunnable() {
                         public void run() {
                             Giant.createBlockTornado(e, e.getLocation().add(0.0, -1.0, 0.0).getBlock().getType(), e.getLocation().add(0.0, -1.0, 0.0).getBlock().getData());
                         }
-                    }.runTaskLater(SkySimEngine.getPlugin(), 8L);
+                    }.runTaskLater(Skyblock.getPlugin(), 8L);
                     SUtil.delay(() -> {
                         final Object val$e4 = e;
                         e.getWorld().playSound(e.getLocation(), Sound.EXPLODE, 3.0f, 0.0f);
@@ -350,7 +349,7 @@ public class Giant extends BaseZombie {
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public void laserAni(final LivingEntity e) {
@@ -373,7 +372,7 @@ public class Giant extends BaseZombie {
                     p2.playSound(e.getLocation(), "mob.guardian.elder.idle", 0.3f, 0.0f);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
         new BukkitRunnable() {
             public void run() {
                 if (e.isDead()) {
@@ -402,7 +401,7 @@ public class Giant extends BaseZombie {
                     Giant.drawLine(loc2, en2, 0.0);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 5L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 5L);
         new BukkitRunnable() {
             public void run() {
                 if (e.isDead()) {
@@ -439,7 +438,7 @@ public class Giant extends BaseZombie {
                     Giant.getEntity(loc2, en2, e);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 20L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 20L);
     }
 
     public void launchTerrain(final LivingEntity e) {
@@ -459,7 +458,7 @@ public class Giant extends BaseZombie {
                     Giant.this.throwTerrain(e, t);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 30L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 30L);
     }
 
     public static ItemStack buildColorStack(final int hexcolor) {
@@ -599,7 +598,7 @@ public class Giant extends BaseZombie {
             final Location endPos = endList.get(pos);
             final FallingBlock block2 = world.spawnFallingBlock(origin, material, blockData);
             block2.setDropItem(false);
-            block2.setMetadata("t", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+            block2.setMetadata("t", new FixedMetadataValue(Skyblock.getPlugin(), true));
             block2.setVelocity(Sputnik.calculateVelocityBlock(origin.toVector(), endPos.toVector(), 3));
         });
     }
@@ -614,7 +613,7 @@ public class Giant extends BaseZombie {
                 p.playSound(p.getLocation(), "mob.guardian.elder.idle", 0.3f, 2.0f);
                 p.playSound(p.getLocation(), "mob.guardian.elder.idle", 0.3f, 0.0f);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public void swordSlamAC(final LivingEntity e, final LivingEntity tar) {
@@ -635,8 +634,8 @@ public class Giant extends BaseZombie {
         armorStand.getEquipment().setItemInHand(SUtil.enchant(new ItemStack(Material.DIAMOND_SWORD)));
         Sputnik.applyPacketGiant(armorStand);
         armorStand.setCustomName("Dinnerbone");
-        armorStand.setMetadata("GiantSword", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        armorStand.setMetadata("NoAffect", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        armorStand.setMetadata("GiantSword", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        armorStand.setMetadata("NoAffect", new FixedMetadataValue(Skyblock.getPlugin(), true));
         EntityManager.Woosh(armorStand);
         EntityManager.noHit(armorStand);
         EntityManager.shutTheFuckUp(armorStand);
@@ -665,8 +664,8 @@ public class Giant extends BaseZombie {
                     EntityManager.noHit(sword);
                     EntityManager.shutTheFuckUp(sword);
                     sword.setCustomName("Dinnerbone");
-                    sword.setMetadata("GiantSword", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-                    sword.setMetadata("NoAffect", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+                    sword.setMetadata("GiantSword", new FixedMetadataValue(Skyblock.getPlugin(), true));
+                    sword.setMetadata("NoAffect", new FixedMetadataValue(Skyblock.getPlugin(), true));
                     final ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(armorStand.getLocation(), EntityType.ARMOR_STAND);
                     stand.setVisible(false);
                     stand.setGravity(true);
@@ -709,6 +708,6 @@ public class Giant extends BaseZombie {
                     }, 60L);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 }

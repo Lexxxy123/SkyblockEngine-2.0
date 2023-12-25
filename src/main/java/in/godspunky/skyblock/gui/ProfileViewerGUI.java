@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.gui;
 
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.pet.Pet;
 import in.godspunky.skyblock.placeholding;
@@ -258,6 +258,6 @@ public class ProfileViewerGUI extends GUI {
                 }
                 new ProfileViewerGUI(ProfileViewerGUI.this.p).open(player);
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 40L);
+        }.runTaskLater(Skyblock.getPlugin(), 40L);
     }
 }

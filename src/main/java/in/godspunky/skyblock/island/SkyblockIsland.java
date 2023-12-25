@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.island;
 
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import lombok.Data;
@@ -11,15 +11,10 @@ import net.swofty.swm.api.world.SlimeWorld;
 import net.swofty.swm.api.world.properties.SlimeProperties;
 import net.swofty.swm.api.world.properties.SlimePropertyMap;
 import org.bukkit.*;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -45,7 +40,7 @@ public class SkyblockIsland {
         this.owner = User.getUser(uuid);
         this.uuid = uuid;
         this.bukkitPlayer = Bukkit.getPlayer(uuid);
-        this.slimePlugin = SkySimEngine.getPlugin().getSlimePlugin();
+        this.slimePlugin = Skyblock.getPlugin().getSlimePlugin();
         this.slimeWorld = null;
         this.bukkitWorld = null;
 

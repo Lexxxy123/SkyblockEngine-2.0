@@ -2,6 +2,7 @@ package in.godspunky.skyblock.dimoon;
 
 import com.google.common.collect.*;
 import com.xxmicloxx.NoteBlockAPI.songplayer.PositionSongPlayer;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.dimoon.abilities.*;
 import in.godspunky.skyblock.dimoon.abilities.Void;
 import in.godspunky.skyblock.dimoon.listeners.PlayerListener;
@@ -14,8 +15,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.dimoon.abilities.*;
 import in.godspunky.skyblock.dimoon.utils.Utils;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.EntityManager;
@@ -44,24 +43,24 @@ public class Dimoon {
 
     public static Dimoon spawnDimoon() {
         final Dimoon dimoon = new Dimoon();
-        SkySimEngine.getPlugin().dimoon = dimoon;
-        SkySimEngine.getPlugin().arena = new Arena();
+        Skyblock.getPlugin().dimoon = dimoon;
+        Skyblock.getPlugin().arena = new Arena();
         dimoon.stunned = true;
         new BukkitRunnable() {
             public void run() {
                 Utils.bossMessage("Finally, after years, those crystals, they trapped me, finally...!");
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 35L);
+        }.runTaskLater(Skyblock.getPlugin(), 35L);
         new BukkitRunnable() {
             public void run() {
                 Utils.bossMessage("Anyway, how did you get to this place? And you want to challenge me?");
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 75L);
+        }.runTaskLater(Skyblock.getPlugin(), 75L);
         new BukkitRunnable() {
             public void run() {
                 Utils.bossMessage("Only best parkour players are able to pass. Let's see how you will handle this...");
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 115L);
+        }.runTaskLater(Skyblock.getPlugin(), 115L);
         new BukkitRunnable() {
             public void run() {
                 Utils.bossMessage("Good luck! And don't die, seriously, you only have ONE chance.");
@@ -78,13 +77,13 @@ public class Dimoon {
                 }, 100L);
                 SUtil.delay(() -> {
                     final Object val$dimoon2 = dimoon;
-                    if (dimoon != null && SkySimEngine.getPlugin().arena != null) {
-                        SkySimEngine.getPlugin().arena.spawnDimoonaize(dimoon.getEntity());
+                    if (dimoon != null && Skyblock.getPlugin().arena != null) {
+                        Skyblock.getPlugin().arena.spawnDimoonaize(dimoon.getEntity());
                         dimoon.getEntity().getWorld().playSound(dimoon.getEntity().getLocation(), Sound.WITHER_SPAWN, 15.0f, 1.5f);
                     }
                 }, 200L);
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 155L);
+        }.runTaskLater(Skyblock.getPlugin(), 155L);
         return dimoon;
     }
 
@@ -133,8 +132,8 @@ public class Dimoon {
         this.entity.setCustomName(Sputnik.trans("&c&lDimoon"));
         this.entity.setCustomNameVisible(false);
         this.entity.setRemoveWhenFarAway(false);
-        this.entity.setMetadata("NoAffect", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        this.entity.setMetadata("Dimoon", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        this.entity.setMetadata("NoAffect", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        this.entity.setMetadata("Dimoon", new FixedMetadataValue(Skyblock.getPlugin(), true));
         noAI(this.entity);
         final ArmorStand st = Sputnik.spawnStaticDialougeBox(this.entity, 3.5);
         st.setCustomName(Sputnik.trans("&4﴾ &c&lDimoon the Wither &4﴿"));
@@ -160,9 +159,9 @@ public class Dimoon {
                     if (Dimoon.this.pls != null) {
                         Dimoon.this.pls.destroy();
                     }
-                    SkySimEngine.getPlugin().arena.collapseParkour();
+                    Skyblock.getPlugin().arena.collapseParkour();
                     this.e.setHealth(0.0);
-                    final Dimoon dimoon = SkySimEngine.getPlugin().dimoon;
+                    final Dimoon dimoon = Skyblock.getPlugin().dimoon;
                     if (!dimoon.getLastBlow().contains("N/A")) {
                         for (Player player : dimoon.getEntity().getWorld().getPlayers()) {
                             if (Dimoon.this.damages.containsValue(player.getName())) continue;
@@ -240,12 +239,12 @@ public class Dimoon {
                     for (final BukkitTask task : dimoon.getTasks()) {
                         task.cancel();
                     }
-                    SkySimEngine.getPlugin().dimoon = null;
-                    SkySimEngine.getPlugin().arena = null;
-                    SkySimEngine.getPlugin().sq = new SummoningSequence(Bukkit.getWorld("arena"));
-                    SkySimEngine.getPlugin().altarCooldown = true;
+                    Skyblock.getPlugin().dimoon = null;
+                    Skyblock.getPlugin().arena = null;
+                    Skyblock.getPlugin().sq = new SummoningSequence(Bukkit.getWorld("arena"));
+                    Skyblock.getPlugin().altarCooldown = true;
                     SUtil.delay(() -> {
-                        SkySimEngine.getPlugin().altarCooldown = false;
+                        Skyblock.getPlugin().altarCooldown = false;
                         new PlayerListener().updateCatalystsBlock(Bukkit.getWorld("arena"));
                         new PlayerListener().pbA();
                         SUtil.broadcastWorld(Sputnik.trans("&2☬ &aAll Altars are now ready to use!"), Bukkit.getWorld("arena"));
@@ -295,7 +294,7 @@ public class Dimoon {
                 }
                 this.cout += 18.0f;
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 final LivingEntity stand = Dimoon.this.entity;
@@ -309,7 +308,7 @@ public class Dimoon {
                 stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 0.75, 0.0), Effect.WITCH_MAGIC, 0, 1, (float) SUtil.random(-2, 2), (float) SUtil.random(-1.5, 1.5), (float) SUtil.random(-2, 2), 0.0f, 1, 20);
                 stand.getWorld().spigot().playEffect(new Location(stand.getWorld(), stand.getLocation().getX() + SUtil.random(-2, 2), stand.getLocation().getY() + 1.75 + SUtil.random(-1.5, 1.5), stand.getLocation().getZ() + SUtil.random(-2, 2)), Effect.COLOURED_DUST, 0, 1, 0.99607843f, 0.12941177f, 0.003921569f, 1.0f, 0, 64);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 2L, 2L);
+        }.runTaskTimer(Skyblock.getPlugin(), 2L, 2L);
         new BukkitRunnable() {
             public void run() {
                 final LivingEntity stand = Dimoon.this.entity;
@@ -326,7 +325,7 @@ public class Dimoon {
                     });
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 5L, 5L);
+        }.runTaskTimer(Skyblock.getPlugin(), 5L, 5L);
         new BukkitRunnable() {
             public void run() {
                 if (Dimoon.this.entity.isDead()) {
@@ -345,7 +344,7 @@ public class Dimoon {
                 }
                 bb.setProgress(Dimoon.this.health / 100000.0);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 1L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 1L, 1L);
         this.tasks.add(new BukkitRunnable() {
             public void run() {
                 if (!Dimoon.this.stunned) {
@@ -381,16 +380,16 @@ public class Dimoon {
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 20L));
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 20L));
         this.tasks.add(new BukkitRunnable() {
             public void run() {
                 try {
-                    SkySimEngine.getPlugin().arena.pasteParkour();
+                    Skyblock.getPlugin().arena.pasteParkour();
                 } catch (final IOException e) {
                     throw new RuntimeException(e);
                 }
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 600L));
+        }.runTaskLater(Skyblock.getPlugin(), 600L));
         this.tasks.add(new BukkitRunnable() {
             public void run() {
                 for (final Player p : Dimoon.this.entity.getWorld().getPlayers()) {
@@ -409,7 +408,7 @@ public class Dimoon {
                     task.cancel();
                 }
             }
-        }.runTaskLater(SkySimEngine.getPlugin(), 54000L));
+        }.runTaskLater(Skyblock.getPlugin(), 54000L));
     }
 
     void func(final Player p) {
@@ -473,7 +472,7 @@ public class Dimoon {
             return null;
         }
         int catalPlaced = 0;
-        final UUID[] clist = SkySimEngine.getPlugin().sq.__qch__;
+        final UUID[] clist = Skyblock.getPlugin().sq.__qch__;
         for (int i = 0; i < clist.length; ++i) {
             if (clist[i] == p.getUniqueId()) {
                 ++catalPlaced;

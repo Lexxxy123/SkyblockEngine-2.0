@@ -1,10 +1,10 @@
 package in.godspunky.skyblock.entity.dungeons;
 
+import in.godspunky.skyblock.Skyblock;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.metadata.FixedMetadataValue;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.zombie.BaseZombie;
 import in.godspunky.skyblock.util.EntityManager;
@@ -41,8 +41,8 @@ public class NPCMobsAI extends BaseZombie {
         final PlayerDisguise pl = Sputnik.applyPacketNPC(entity, "adventuure", null, false);
         this.watcher = pl.getWatcher();
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 80);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("LD", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(Skyblock.getPlugin(), true));
         this.activeEvent(entity, sEntity);
     }
 

@@ -1,12 +1,12 @@
 package in.godspunky.skyblock.entity.dungeons.boss.sadan;
 
+import in.godspunky.skyblock.Skyblock;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.zombie.BaseZombie;
 import in.godspunky.skyblock.util.EntityManager;
@@ -35,11 +35,11 @@ public class GiantsDummy extends BaseZombie {
         EntityManager.noAI(entity);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 100);
         EntityManager.noHit(entity);
-        entity.setMetadata("GiantSword", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("NoAffect", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("GiantSword", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("NoAffect", new FixedMetadataValue(Skyblock.getPlugin(), true));
         EntityManager.shutTheFuckUp(entity);
-        entity.setMetadata("dummy_a", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("notDisplay", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("dummy_a", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("notDisplay", new FixedMetadataValue(Skyblock.getPlugin(), true));
     }
 
     @Override

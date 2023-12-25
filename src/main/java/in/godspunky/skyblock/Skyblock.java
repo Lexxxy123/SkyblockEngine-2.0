@@ -70,8 +70,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.reflections.Reflections;
-import in.godspunky.skyblock.command.*;
-import in.godspunky.skyblock.dimoon.*;
 import in.godspunky.skyblock.gui.GUIListener;
 import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.nms.nmsutil.apihelper.APIManager;
@@ -81,7 +79,6 @@ import in.godspunky.skyblock.nms.nmsutil.packetlistener.handler.PacketHandler;
 import in.godspunky.skyblock.nms.nmsutil.packetlistener.handler.ReceivedPacket;
 import in.godspunky.skyblock.nms.nmsutil.packetlistener.handler.SentPacket;
 import in.godspunky.skyblock.nms.nmsutil.packetlistener.metrics.Metrics;
-import in.godspunky.skyblock.nms.packetevents.*;
 import in.godspunky.skyblock.nms.pingrep.PingAPI;
 import in.godspunky.skyblock.nms.pingrep.PingEvent;
 import in.godspunky.skyblock.nms.pingrep.PingListener;
@@ -95,11 +92,11 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
 
-public class SkySimEngine extends JavaPlugin implements PluginMessageListener, BungeeChannel.ForwardConsumer {
+public class Skyblock extends JavaPlugin implements PluginMessageListener, BungeeChannel.ForwardConsumer {
     public static MultiverseCore core;
     private static ProtocolManager protocolManager;
     private static Economy econ;
-    private static SkySimEngine plugin;
+    private static Skyblock plugin;
     private final PacketHelper packetInj;
     public Arena arena;
     public Dimoon dimoon;
@@ -107,7 +104,7 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
     public boolean altarCooldown;
     private final ServerVersion serverVersion;
     public static EffectManager effectManager;
-    private static SkySimEngine instance;
+    private static Skyblock instance;
     public Config config;
     @Getter
     private SlimePlugin slimePlugin;
@@ -129,7 +126,7 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
 
     public List<String> bannedUUID;
 
-    public SkySimEngine() {
+    public Skyblock() {
         this.packetInj = new PacketHelper();
         this.arena = null;
         this.dimoon = null;
@@ -140,8 +137,8 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
         this.bannedUUID = Collections.singletonList("");
     }
 
-    public static SkySimEngine getPlugin() {
-        return SkySimEngine.plugin;
+    public static Skyblock getPlugin() {
+        return Skyblock.plugin;
     }
 
     public void onLoad() {
@@ -156,7 +153,7 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
             this.bc = new BungeeChannel(this);
 
             this.setupEconomy();
-            SkySimEngine.plugin = this;
+            Skyblock.plugin = this;
             SLog.info("Performing world regeneration...");
             this.fixTheEnd();
             SLog.info("Loading YAML data from disk...");
@@ -210,11 +207,11 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
             SLog.info("Loading NPCS...");
             registerNPCS();
             SLog.info("Loading auction items from disk...");
-            SkySimEngine.effectManager = new EffectManager(this);
+            Skyblock.effectManager = new EffectManager(this);
             AuctionItem.loadAuctionsFromDisk();
             SLog.info("Loading merchants prices...");
             MerchantItemHandler.init();
-            SkyBlockCalendar.ELAPSED = SkySimEngine.plugin.config.getLong("timeElapsed");
+            SkyBlockCalendar.ELAPSED = Skyblock.plugin.config.getLong("timeElapsed");
             SLog.info("Synchronizing world time with calendar time and removing world entities...");
             for (final World world : Bukkit.getWorlds()) {
                 for (final Entity entity : world.getEntities()) {
@@ -268,14 +265,14 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
                     specShapeless.add(SMaterial.getSpecEquivalent(stack2.getType(), stack2.getDurability()), stack2.getAmount(), true);
                 }
             }
-            SLog.info("Hooking SkySimEngine to PlaceholderAPI and registering...");
+            SLog.info("Hooking Skyblock to PlaceholderAPI and registering...");
             if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
                 new placeholding().register();
                 SLog.info("Hooked to PAPI successfully!");
             } else {
                 SLog.info("ERROR! PlaceholderAPI plugin does not exist, disabing placeholder request!");
             }
-            SkySimEngine.protocolManager = ProtocolLibrary.getProtocolManager();
+            Skyblock.protocolManager = ProtocolLibrary.getProtocolManager();
             this.beginLoopA();
             WorldListener.blb.add(Material.BEDROCK);
             WorldListener.blb.add(Material.COMMAND);
@@ -364,7 +361,7 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
             for (final AuctionItem item : AuctionItem.getAuctions()) {
                 item.save();
             }
-            SkySimEngine.plugin = null;
+            Skyblock.plugin = null;
         }
         SLog.info("Disabled " + this.getDescription().getFullName());
         SLog.info("===================================");
@@ -390,7 +387,7 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
 
 
     public static ProtocolManager getPTC() {
-        return SkySimEngine.protocolManager;
+        return Skyblock.protocolManager;
     }
 
     public void unloadBlocks() {
@@ -533,8 +530,8 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
         ConfigurationSerialization.registerClass(AuctionBid.class, "AuctionBid");
     }
 
-    public static SkySimEngine getInstance() {
-        return SkySimEngine.instance;
+    public static Skyblock getInstance() {
+        return Skyblock.instance;
     }
 
     public void fixTheEnd() {
@@ -548,7 +545,7 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
                     p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 1000000, 255));
                 }
             }
-        }.runTaskTimer(SkySimEngine.plugin, 0L, 1L);
+        }.runTaskTimer(Skyblock.plugin, 0L, 1L);
     }
 
     private boolean setupEconomy() {
@@ -559,8 +556,8 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
         if (rsp == null) {
             return false;
         }
-        SkySimEngine.econ = rsp.getProvider();
-        return SkySimEngine.econ != null;
+        Skyblock.econ = rsp.getProvider();
+        return Skyblock.econ != null;
     }
 
     private void registerPacketListener() {
@@ -599,7 +596,7 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
     }
 
     public static Economy getEconomy() {
-        return SkySimEngine.econ;
+        return Skyblock.econ;
     }
 
     public void async(final Runnable runnable) {
@@ -607,7 +604,7 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
             public void run() {
                 runnable.run();
             }
-        }.runTaskAsynchronously(SkySimEngine.plugin);
+        }.runTaskAsynchronously(Skyblock.plugin);
     }
 
     public BukkitTask syncLoop(final Runnable runnable, final int i0, final int i1) {
@@ -615,7 +612,7 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
             public void run() {
                 runnable.run();
             }
-        }.runTaskTimer(SkySimEngine.plugin, i0, i1);
+        }.runTaskTimer(Skyblock.plugin, i0, i1);
     }
 
     public BukkitTask asyncLoop(final Runnable runnable, final int i0, final int i1) {
@@ -623,7 +620,7 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
             public void run() {
                 runnable.run();
             }
-        }.runTaskTimerAsynchronously(SkySimEngine.plugin, i0, i1);
+        }.runTaskTimerAsynchronously(Skyblock.plugin, i0, i1);
     }
 
     public void onPluginMessageReceived(final String channel, final Player player, final byte[] message) {
@@ -676,7 +673,7 @@ public class SkySimEngine extends JavaPlugin implements PluginMessageListener, B
     }
 
     static {
-        SkySimEngine.core = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
-        SkySimEngine.econ = null;
+        Skyblock.core = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
+        Skyblock.econ = null;
     }
 }

@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
@@ -22,7 +22,7 @@ public class ServerCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         final UUID runUUID = UUID.randomUUID();
-        if (SkySimEngine.getPlugin().getBc() == null) {
+        if (Skyblock.getPlugin().getBc() == null) {
             this.send("&cThis is not a BungeeCord based server!");
             return;
         }
@@ -39,7 +39,7 @@ public class ServerCommand extends SCommand {
             this.send("&cCorrect Command Usage: /ss <server name>");
             return;
         }
-        SkySimEngine.getPlugin().getBc().getServers().whenComplete((result, error) -> this.servers.put(runUUID, result));
+        Skyblock.getPlugin().getBc().getServers().whenComplete((result, error) -> this.servers.put(runUUID, result));
         boolean isExist = false;
         String targetServer = null;
         for (final String sv : this.servers.get(runUUID)) {
@@ -63,7 +63,7 @@ public class ServerCommand extends SCommand {
             return;
         }
         final String finalTarget = targetServer;
-        if (SkySimEngine.getPlugin().getServerName().equalsIgnoreCase(args[0])) {
+        if (Skyblock.getPlugin().getServerName().equalsIgnoreCase(args[0])) {
             this.servers.remove(runUUID);
             this.send("&cYou're already playing on this server");
             return;
@@ -73,7 +73,7 @@ public class ServerCommand extends SCommand {
         u.syncSavingData();
         SUtil.delay(() -> {
             this.send("&7Sending you to " + finalTarget + "...");
-            SkySimEngine.getPlugin().getBc().connect(p, finalTarget);
+            Skyblock.getPlugin().getBc().connect(p, finalTarget);
         }, 8L);
         this.servers.remove(runUUID);
     }

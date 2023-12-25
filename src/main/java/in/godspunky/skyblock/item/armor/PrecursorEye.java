@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.item.armor;
 
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.skill.Skill;
 import in.godspunky.skyblock.util.*;
@@ -11,13 +12,10 @@ import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import in.godspunky.skyblock.Repeater;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityType;
-import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -127,7 +125,7 @@ public class PrecursorEye implements MaterialFunction, SkullStatistics, ToolStat
                 }
                 PrecursorEye.this.ticking(sItem, player);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 15L, 15L);
+        }.runTaskTimer(Skyblock.getPlugin(), 15L, 15L);
     }
 
     public void ticking(final SItem item, final Player player) {
@@ -258,7 +256,7 @@ public class PrecursorEye implements MaterialFunction, SkullStatistics, ToolStat
                             stands.remove();
                             this.cancel();
                         }
-                    }.runTaskLater(SkySimEngine.getPlugin(), 30L);
+                    }.runTaskLater(Skyblock.getPlugin(), 30L);
                     ACT = "false";
                 }
                 player.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply(i / count)), Effect.COLOURED_DUST, 0, 1, 0.5882353f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);

@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.entity.caverns;
 
+import in.godspunky.skyblock.Skyblock;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
 import org.bukkit.*;
@@ -15,7 +16,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.zombie.BaseZombie;
 import in.godspunky.skyblock.item.SItem;
@@ -58,7 +58,7 @@ public class UndeadGiaKhanhvn extends BaseZombie {
         entity.getEquipment().setItemInHand(SItem.of(SMaterial.BONE).getStack());
         Sputnik.applyPacketNPC(entity, "ewogICJ0aW1lc3RhbXAiIDogMTYzMTk3MDM3OTg1MiwKICAicHJvZmlsZUlkIiA6ICIyMWUzNjdkNzI1Y2Y0ZTNiYjI2OTJjNGEzMDBhNGRlYiIsCiAgInByb2ZpbGVOYW1lIiA6ICJHZXlzZXJNQyIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9mZWI0ZTFlNTk3NDNiMDBmNWYwZmM3YTM1NjY3MGIzOTYxMGI4M2IwN2VjNTg2OWJjYmYzOGYwYTU3NGE2YTk5IgogICAgfQogIH0KfQ==", "KuyyIyFjOe4dOCqyEJZGZ/6zOD6tW69/q/CGJ+Y5rIKLfDIcRfPECoDt9mXc/R8aun50jpJdSYbgFoupv7sQaUWPAuPdcVx9YNrPWxbTn8F+1aWntg/AKswhYLb1C6jbwhzKg/PDckE405SuGn/QAcS0OFEfBb/sl/4cJ3xzTfrgnOmQuNIeoCMmBurJFTdPcFbg4CWQuKIenJDj5BM4rBM5aH1v0KJlSz6srU9tKHAr6nwTnKzComylP2nAxZsZD5PXvaYhBiWC+qUme2TVX77hOxReDQWFpG4Vfj2y/+Lh54BRRZWN7kb2B9msJxPgGw+V82A9+agoXpqClkfy1GHG1ZcAyyEblEygkeqR2ElFtyaLp1H29ebtCO4G6Tgh8shCzPFAhoGag03jBWqGQ+gVzU2R2z/w9aJXsRVAkI4fV5tg753v6a4XGUM/NbvIbwt3OJF9DwRknsbp/2dIryorKmVyMyuWG0/Qt/VWyrGj6j7Dj2/kL/xxwRe2E6B3VM260Obkx+NPJ2MmtmJ7k1G92xubnlVvA+fcLKrH+E6OeyrGCG2Eme0otZtookHshgtxI1q17m2NtOwlirw4IZWK+WsNkhzJlOpnJSCF0/koXwunKyniRSbHNWGBizoFG1LF1zSJcOkU443chhmgP0niSNwPPweQsa4qWMS1ca4=", true);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 70);
-        entity.setMetadata("notDisplay", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("notDisplay", new FixedMetadataValue(Skyblock.getPlugin(), true));
         final double height = 1.85;
         final ArmorStand hologram = (ArmorStand) entity.getWorld().spawn(entity.getLocation().add(0.0, height, 0.0), (Class) ArmorStand.class);
         hologram.setVisible(false);
@@ -80,7 +80,7 @@ public class UndeadGiaKhanhvn extends BaseZombie {
                     entity.getWorld().playSound(entity.getLocation(), Sound.EAT, 1.0f, 1.0f);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 4L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 4L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -97,7 +97,7 @@ public class UndeadGiaKhanhvn extends BaseZombie {
                     new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.CAULDRON_ITEM))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 3L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 3L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -123,10 +123,10 @@ public class UndeadGiaKhanhvn extends BaseZombie {
                             UndeadGiaKhanhvn.this.isEating = false;
                             SUtil.delay(() -> UndeadGiaKhanhvn.this.EatingCooldown = false, SUtil.random(400, 500));
                         }
-                    }.runTaskLater(SkySimEngine.getPlugin(), 60L);
+                    }.runTaskLater(Skyblock.getPlugin(), 60L);
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 10L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 10L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -135,7 +135,7 @@ public class UndeadGiaKhanhvn extends BaseZombie {
                         public void run() {
                             hologram.remove();
                         }
-                    }.runTaskLater(SkySimEngine.getPlugin(), 20L);
+                    }.runTaskLater(Skyblock.getPlugin(), 20L);
                 }
                 if (hologram.isDead()) {
                     this.cancel();
@@ -153,7 +153,7 @@ public class UndeadGiaKhanhvn extends BaseZombie {
                 hologram.teleport(entity.getLocation().clone().add(0.0, height, 0.0));
                 hologram.setCustomName(Sputnik.trans(Sputnik.entityNameTag(entity, Sputnik.buildcustomString(UndeadGiaKhanhvn.this.getEntityName(), 0, true))));
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 0L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 0L);
         new BukkitRunnable() {
             public void run() {
                 final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -192,7 +192,7 @@ public class UndeadGiaKhanhvn extends BaseZombie {
                     break;
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
     }
 
     @Override

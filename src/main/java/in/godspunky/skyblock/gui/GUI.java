@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.gui;
 
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.Bukkit;
@@ -193,7 +193,7 @@ public abstract class GUI {
         this.early(player);
         final Inventory inventory = Bukkit.createInventory(player, this.size, this.title);
         final GUIOpenEvent openEvent = new GUIOpenEvent(player, this, inventory);
-        SkySimEngine.getPlugin().getServer().getPluginManager().callEvent(openEvent);
+        Skyblock.getPlugin().getServer().getPluginManager().callEvent(openEvent);
         if (openEvent.isCancelled()) {
             return;
         }

@@ -1,14 +1,14 @@
 package in.godspunky.skyblock.listener;
 
 import org.bukkit.event.Listener;
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 
 public class PListener implements Listener {
     private static int amount;
-    protected SkySimEngine plugin;
+    protected Skyblock plugin;
 
     protected PListener() {
-        this.plugin = SkySimEngine.getPlugin();
+        this.plugin = Skyblock.getPlugin();
         this.plugin.getServer().getPluginManager().registerEvents(this, this.plugin);
         ++PListener.amount;
     }

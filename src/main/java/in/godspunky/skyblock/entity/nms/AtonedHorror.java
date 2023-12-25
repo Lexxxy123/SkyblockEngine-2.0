@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.entity.nms;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.enchantment.EnchantmentType;
 import in.godspunky.skyblock.entity.*;
 import net.minecraft.server.v1_8_R3.EntityLiving;
@@ -19,8 +20,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
-import in.godspunky.skyblock.entity.*;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.user.User;
@@ -154,7 +153,7 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
                         AtonedHorror.this.Cooldown = false;
                     }
                 }
-            }.runTaskLater(SkySimEngine.getPlugin(), 400L), 124L);
+            }.runTaskLater(Skyblock.getPlugin(), 400L), 124L);
         }
     }
 
@@ -170,15 +169,15 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
 
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 70);
-        entity.setMetadata("BOSS_OWNER_" + Bukkit.getPlayer(this.getSpawnerUUID()).getUniqueId().toString(), new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("BOSS_OWNER_" + Bukkit.getPlayer(this.getSpawnerUUID()).getUniqueId().toString(), new FixedMetadataValue(Skyblock.getPlugin(), true));
         SUtil.delay(() -> this.Cooldown = false, 350L);
         this.hologram = new SEntity(entity.getLocation().add(0.0, 2.3, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND);
-        entity.setMetadata("NoAffect", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("NoAffect", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
         ((ArmorStand) this.hologram.getEntity()).setVisible(false);
         ((ArmorStand) this.hologram.getEntity()).setGravity(false);
         this.hologram.getEntity().setCustomNameVisible(true);
-        entity.setMetadata("notDisplay", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        entity.setMetadata("notDisplay", new FixedMetadataValue(Skyblock.getPlugin(), true));
         this.hologram_name = new SEntity(entity.getLocation().add(0.0, 2.0, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND);
         ((ArmorStand) this.hologram_name.getEntity()).setVisible(false);
         final net.minecraft.server.v1_8_R3.Entity e = this.getBukkitEntity().getHandle();
@@ -193,7 +192,7 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
                     this.cancel();
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         if (this.tier >= 1) {
             new BukkitRunnable() {
                 public void run() {
@@ -222,13 +221,13 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
                     final Vector vectorBetween = playersVector.subtract(mobsVector);
                     vectorBetween.divide(new Vector(10, 10, 10));
                     vectorBetween.add(new Vector(0.0, 0.3, 0.0));
-                    final int id = Bukkit.getScheduler().scheduleSyncRepeatingTask(SkySimEngine.getPlugin(), () -> armorStand1.setVelocity(vectorBetween), 2L, 2L);
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(SkySimEngine.getPlugin(), () -> Bukkit.getScheduler().cancelTask(id), 8L);
-                    armorStand1.setMetadata("BoomBoomAtoned", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+                    final int id = Bukkit.getScheduler().scheduleSyncRepeatingTask(Skyblock.getPlugin(), () -> armorStand1.setVelocity(vectorBetween), 2L, 2L);
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(Skyblock.getPlugin(), () -> Bukkit.getScheduler().cancelTask(id), 8L);
+                    armorStand1.setMetadata("BoomBoomAtoned", new FixedMetadataValue(Skyblock.getPlugin(), true));
                     final EntityLiving nms = ((CraftLivingEntity) armorStand1).getHandle();
                     AtonedHorror.this.aA(armorStand1);
                 }
-            }.runTaskTimer(SkySimEngine.getPlugin(), 20L, 40L);
+            }.runTaskTimer(Skyblock.getPlugin(), 20L, 40L);
         }
         if (this.tier >= 1) {
             new BukkitRunnable() {
@@ -245,7 +244,7 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
                         }
                     }
                 }
-            }.runTaskTimer(SkySimEngine.getPlugin(), 20L, 10L);
+            }.runTaskTimer(Skyblock.getPlugin(), 20L, 10L);
         }
     }
 
@@ -587,7 +586,7 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
                     entity.remove();
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public int getTier() {

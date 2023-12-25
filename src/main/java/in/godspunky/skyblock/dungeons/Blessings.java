@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.dungeons;
 
+import in.godspunky.skyblock.Skyblock;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
@@ -8,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityType;
 import in.godspunky.skyblock.user.PlayerStatistics;
@@ -25,7 +25,7 @@ public class Blessings {
     private int level;
     private double buffPercent;
     private final World world;
-    public static final SkySimEngine sse;
+    public static final Skyblock sse;
     public static final Map<World, List<Blessings>> BLESSINGS_MAP;
     public static final Map<UUID, float[]> STAT_MAP;
 
@@ -239,12 +239,12 @@ public class Blessings {
         final ArmorStand drop = (ArmorStand) sEntity.getEntity();
         drop.setVisible(false);
         drop.setCustomNameVisible(false);
-        drop.setMetadata("ss_drop", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        drop.setMetadata("ss_drop", new FixedMetadataValue(Skyblock.getPlugin(), true));
         drop.getEquipment().setHelmet(SUtil.getSkullURLStack("asadas", "e93e2068617872c542ecda1d27df4ece91c699907bf327c4ddb85309412d3939", 1));
         final ArmorStand as = Sputnik.spawnStaticDialougeBox(drop, loc.clone().add(0.0, 1.65, 0.0));
         as.setCustomName(Sputnik.trans("&d" + bless.toText()));
         as.setCustomNameVisible(false);
-        as.setMetadata("ss_drop", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        as.setMetadata("ss_drop", new FixedMetadataValue(Skyblock.getPlugin(), true));
         drop.setVelocity(new Vector(0.0, 0.058, 0.0));
         SUtil.delay(() -> drop.remove(), 150L);
         SUtil.delay(() -> {
@@ -269,7 +269,7 @@ public class Blessings {
                 final Vector velClone = drop.getVelocity().clone();
                 drop.setVelocity(new Vector(0.0, (velClone.getY() < 0.0) ? 0.045 : -0.045, 0.0));
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 20L, 20L);
+        }.runTaskTimer(Skyblock.getPlugin(), 20L, 20L);
         new BukkitRunnable() {
             public void run() {
                 if (drop.isDead()) {
@@ -281,7 +281,7 @@ public class Blessings {
                 l.setYaw(l.getYaw() + 5.0f);
                 drop.teleport(l);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 if (drop.isDead()) {
@@ -291,7 +291,7 @@ public class Blessings {
                 }
                 drop.getWorld().spigot().playEffect(drop.getLocation().clone().add(0.0, 1.5, 0.0), Effect.CLOUD, 21, 0, 0.3f, 0.0f, 0.3f, 0.01f, 1, 30);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 2L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
     }
 
     public static void dropBlessingPickable(final Location loc, final Blessings bless) {
@@ -299,12 +299,12 @@ public class Blessings {
         final ArmorStand drop = (ArmorStand) sEntity.getEntity();
         drop.setVisible(false);
         drop.setCustomNameVisible(false);
-        drop.setMetadata("ss_drop", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        drop.setMetadata("ss_drop", new FixedMetadataValue(Skyblock.getPlugin(), true));
         drop.getEquipment().setHelmet(SUtil.getSkullURLStack("asadas", "e93e2068617872c542ecda1d27df4ece91c699907bf327c4ddb85309412d3939", 1));
         final ArmorStand as = Sputnik.spawnStaticDialougeBox(drop, 2.35);
         as.setCustomName(Sputnik.trans("&d" + bless.toText()));
         as.setCustomNameVisible(true);
-        as.setMetadata("ss_drop", new FixedMetadataValue(SkySimEngine.getPlugin(), true));
+        as.setMetadata("ss_drop", new FixedMetadataValue(Skyblock.getPlugin(), true));
         drop.setVelocity(new Vector(0.0, 0.03, 0.0));
         SUtil.delay(() -> {
             if (!drop.isDead()) {
@@ -326,7 +326,7 @@ public class Blessings {
                 final Vector velClone = drop.getVelocity().clone();
                 drop.setVelocity(new Vector(0.0, (velClone.getY() < 0.0) ? 0.035 : -0.035, 0.0));
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 25L, 25L);
+        }.runTaskTimer(Skyblock.getPlugin(), 25L, 25L);
         new BukkitRunnable() {
             public void run() {
                 if (drop.isDead()) {
@@ -362,7 +362,7 @@ public class Blessings {
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public BlessingType getType() {
@@ -378,7 +378,7 @@ public class Blessings {
     }
 
     static {
-        sse = SkySimEngine.getPlugin();
+        sse = Skyblock.getPlugin();
         BLESSINGS_MAP = new HashMap<World, List<Blessings>>();
         STAT_MAP = new HashMap<UUID, float[]>();
     }

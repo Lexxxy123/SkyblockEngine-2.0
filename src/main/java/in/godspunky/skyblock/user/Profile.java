@@ -1,15 +1,12 @@
 package in.godspunky.skyblock.user;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import de.tr7zw.nbtapi.NBTItem;
-import in.godspunky.skyblock.Repeater;
 import in.godspunky.skyblock.auction.AuctionBid;
 import in.godspunky.skyblock.auction.AuctionEscrow;
 import in.godspunky.skyblock.auction.AuctionItem;
 import in.godspunky.skyblock.collection.ItemCollection;
 import in.godspunky.skyblock.collection.ItemCollectionReward;
 import in.godspunky.skyblock.collection.ItemCollectionRewards;
-import in.godspunky.skyblock.config.Config;
 import in.godspunky.skyblock.dimoon.Dimoon;
 import in.godspunky.skyblock.dungeons.ItemSerial;
 import in.godspunky.skyblock.enchantment.Enchantment;
@@ -17,7 +14,6 @@ import in.godspunky.skyblock.enchantment.EnchantmentType;
 import in.godspunky.skyblock.entity.dungeons.boss.sadan.SadanFunction;
 import in.godspunky.skyblock.entity.dungeons.boss.sadan.SadanHuman;
 import in.godspunky.skyblock.entity.nms.VoidgloomSeraph;
-import in.godspunky.skyblock.island.SkyblockIsland;
 import in.godspunky.skyblock.item.GenericItemType;
 import in.godspunky.skyblock.item.PlayerBoostStatistics;
 import in.godspunky.skyblock.item.SItem;
@@ -38,7 +34,6 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.milkbowl.vault.economy.Economy;
 import net.minecraft.server.v1_8_R3.EntityHuman;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bson.Document;
@@ -50,19 +45,14 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftHumanEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.gui.PetsGUI;
 import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.listener.PlayerListener;
-import in.godspunky.skyblock.skill.*;
-import in.godspunky.skyblock.util.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -85,7 +75,7 @@ public class Profile
 
     public static long cookieduration;
     public static final Map<String, Profile> USER_CACHE = new HashMap<>();
-    private static final SkySimEngine plugin;
+    private static final Skyblock plugin;
     private static final File USER_FOLDER;
 
     @Getter
@@ -692,8 +682,8 @@ public class Profile
 
     public static void dmgDimon(final LivingEntity entity, final Player damager) {
         final int bonusDamage = 0;
-        if (damager != null && entity.hasMetadata("Dimoon") && SkySimEngine.getPlugin().dimoon != null) {
-            final Dimoon dimoon = SkySimEngine.getPlugin().dimoon;
+        if (damager != null && entity.hasMetadata("Dimoon") && Skyblock.getPlugin().dimoon != null) {
+            final Dimoon dimoon = Skyblock.getPlugin().dimoon;
             final int damage = 1 + dimoon.getParkoursCompleted() + bonusDamage;
             dimoon.damage(damage, damager.getName());
         }
@@ -986,7 +976,7 @@ public class Profile
                         this.cancel();
                     }
                 }
-            }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+            }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
             SUtil.sendTitle(player, ChatColor.YELLOW + "You became a ghost!");
             SUtil.sendSubtitle(player, ChatColor.GRAY + "Hopefully your teammates can revive you.");
             if (cause == EntityDamageEvent.DamageCause.VOID) {
@@ -1862,7 +1852,7 @@ public class Profile
     }
 
     static {
-        plugin = SkySimEngine.getPlugin();
+        plugin = Skyblock.getPlugin();
         USER_FOLDER = new File(new File("/rootshare/skysim"), "./users");
     }
 

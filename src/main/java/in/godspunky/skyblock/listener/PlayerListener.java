@@ -4,6 +4,7 @@ import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import in.godspunky.skyblock.Repeater;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.command.RebootServerCommand;
 import in.godspunky.skyblock.dungeons.BlessingChest;
 import in.godspunky.skyblock.dungeons.Blessings;
@@ -13,7 +14,6 @@ import in.godspunky.skyblock.enchantment.EnchantmentType;
 import in.godspunky.skyblock.entity.dungeons.watcher.Watcher;
 import in.godspunky.skyblock.entity.nms.VoidgloomSeraph;
 import in.godspunky.skyblock.extra.beam.Beam;
-import in.godspunky.skyblock.island.SkyblockIsland;
 import in.godspunky.skyblock.item.Ability;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.accessory.AccessoryFunction;
@@ -51,7 +51,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.SkySimEngine;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.gui.PetsGUI;
 import in.godspunky.skyblock.gui.ProfileViewerGUI;
@@ -59,10 +58,7 @@ import in.godspunky.skyblock.item.SBlock;
 import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.npc.SkyblockNPC;
 import in.godspunky.skyblock.npc.SkyblockNPCManager;
-import in.godspunky.skyblock.user.*;
-import in.godspunky.skyblock.util.*;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -106,7 +102,7 @@ public class PlayerListener extends PListener {
         this.getIsNotLoaded().put(player.getUniqueId(), true);
         SUtil.delay(() -> {
             if (player.isOnline()) {
-                SkySimEngine.getPlugin().updateServerName(player);
+                Skyblock.getPlugin().updateServerName(player);
             }
         }, 10L);
 
@@ -121,7 +117,7 @@ public class PlayerListener extends PListener {
             PrecursorEye.PrecursorLaser.put(player.getUniqueId(), false);
             final User user = User.getUser(player.getUniqueId());
             user.loadStatic();
-            SkySimEngine.getPlugin().dataLoader.load(player.getUniqueId());
+            Skyblock.getPlugin().dataLoader.load(player.getUniqueId());
 
             if (!PlayerUtils.STATISTICS_CACHE.containsKey(player.getUniqueId())) {
                 PlayerUtils.STATISTICS_CACHE.put(player.getUniqueId(), PlayerUtils.getStatistics(player));
@@ -161,7 +157,7 @@ public class PlayerListener extends PListener {
                     }
                     UserStash.getStash(player.getUniqueId()).sendNotificationMessage();
                 }
-            }.runTaskTimer(SkySimEngine.getPlugin(), 600L, 550L);
+            }.runTaskTimer(Skyblock.getPlugin(), 600L, 550L);
             new BukkitRunnable() {
 
                 public void run() {
@@ -194,7 +190,7 @@ public class PlayerListener extends PListener {
                         player.getInventory().setHelmet(smStack);
                     }
                 }
-            }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+            }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
             new BukkitRunnable() {
 
                 public void run() {
@@ -233,7 +229,7 @@ public class PlayerListener extends PListener {
                         counters[1] = 1;
                     }
                 }
-            }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 20L);
+            }.runTaskTimer(Skyblock.getPlugin(), 0L, 20L);
             final Pet.PetItem pet = User.getUser(player.getUniqueId()).getActivePet();
             final Pet petclass = User.getUser(player.getUniqueId()).getActivePetClass();
             if (pet != null && petclass != null) {
@@ -302,7 +298,7 @@ public class PlayerListener extends PListener {
 
                 ((CraftPlayer) user.toBukkitPlayer()).getHandle().playerConnection.sendPacket(packet);
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 20L);
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 20L);
     }
 
 
@@ -787,7 +783,7 @@ public class PlayerListener extends PListener {
                         }
                     }, 10L);
                 }
-            }.runTaskLater(SkySimEngine.getPlugin(), 4L * i);
+            }.runTaskLater(Skyblock.getPlugin(), 4L * i);
         }
     }
 
@@ -835,7 +831,7 @@ public class PlayerListener extends PListener {
                         user.subFromQuiver(SMaterial.ARROW);
                         player.getInventory().setItem(8, SUtil.setStackAmount(SItem.of(SMaterial.QUIVER_ARROW).getStack(), Math.min(64, user.getQuiver(SMaterial.ARROW))));
                     }
-                }.runTaskLater(SkySimEngine.getPlugin(), 1L);
+                }.runTaskLater(Skyblock.getPlugin(), 1L);
             }
         }
     }
@@ -875,7 +871,7 @@ public class PlayerListener extends PListener {
                     user.subFromQuiver(SMaterial.ARROW);
                     player.getInventory().setItem(8, SUtil.setStackAmount(SItem.of(SMaterial.QUIVER_ARROW).getStack(), Math.min(64, user.getQuiver(SMaterial.ARROW))));
                 }
-            }.runTaskLater(SkySimEngine.getPlugin(), 1L);
+            }.runTaskLater(Skyblock.getPlugin(), 1L);
         }
         final SItem sItem = SItem.find(e.getBow());
         if (sItem != null) {
@@ -1087,7 +1083,7 @@ public class PlayerListener extends PListener {
                 public void run() {
                     e.getEntity().remove();
                 }
-            }.runTaskLater(SkySimEngine.getPlugin(), 10L);
+            }.runTaskLater(Skyblock.getPlugin(), 10L);
             return;
         }
         if (e.getEntity() instanceof Fireball && (e.getEntity().hasMetadata("dragon") || e.getEntity().hasMetadata("magma"))) {
@@ -1279,7 +1275,7 @@ public class PlayerListener extends PListener {
                     prp.add((Player) e);
                 }
             }
-        }.runTaskAsynchronously(SkySimEngine.getPlugin());
+        }.runTaskAsynchronously(Skyblock.getPlugin());
         new BukkitRunnable() {
 
             public void run() {
@@ -1289,7 +1285,7 @@ public class PlayerListener extends PListener {
                     ((CraftPlayer) e).getHandle().playerConnection.sendPacket(pa);
                 }
             }
-        }.runTaskLaterAsynchronously(SkySimEngine.getPlugin(), 30L);
+        }.runTaskLaterAsynchronously(Skyblock.getPlugin(), 30L);
     }
 
     public static void spawnSpecialDamageInd(final Entity damaged, final double damage, final ChatColor c) {
@@ -1312,7 +1308,7 @@ public class PlayerListener extends PListener {
                     prp.add((Player) e);
                 }
             }
-        }.runTaskAsynchronously(SkySimEngine.getPlugin());
+        }.runTaskAsynchronously(Skyblock.getPlugin());
         new BukkitRunnable() {
             public void run() {
                 final PacketPlayOutEntityDestroy pa = new PacketPlayOutEntityDestroy(stand.getId());
@@ -1322,7 +1318,7 @@ public class PlayerListener extends PListener {
                     }
                 }
             }
-        }.runTaskLaterAsynchronously(SkySimEngine.getPlugin(), 30L);
+        }.runTaskLaterAsynchronously(Skyblock.getPlugin(), 30L);
     }
 
     public static void customDMGIND(final Entity damaged, final String text) {
@@ -1345,7 +1341,7 @@ public class PlayerListener extends PListener {
                     prp.add((Player) e);
                 }
             }
-        }.runTaskAsynchronously(SkySimEngine.getPlugin());
+        }.runTaskAsynchronously(Skyblock.getPlugin());
         new BukkitRunnable() {
             public void run() {
                 final PacketPlayOutEntityDestroy pa = new PacketPlayOutEntityDestroy(stand.getId());
@@ -1355,7 +1351,7 @@ public class PlayerListener extends PListener {
                     }
                 }
             }
-        }.runTaskLaterAsynchronously(SkySimEngine.getPlugin(), 30L);
+        }.runTaskLaterAsynchronously(Skyblock.getPlugin(), 30L);
     }
 
     @EventHandler
@@ -1428,7 +1424,7 @@ public class PlayerListener extends PListener {
                     beam.setEndingPosition(p2.getLocation().clone().add(0.0, 1.0, 0.0));
                     beam.update();
                 }
-            }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 1L);
+            }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
         }
     }
 

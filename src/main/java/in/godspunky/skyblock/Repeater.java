@@ -24,7 +24,6 @@ import in.godspunky.skyblock.slayer.SlayerQuest;
 import in.godspunky.skyblock.user.PlayerStatistics;
 import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.util.*;
-import me.clip.placeholderapi.PlaceholderAPI;
 import net.minecraft.server.v1_8_R3.EntityFallingBlock;
 import org.bukkit.*;
 import org.bukkit.entity.*;
@@ -36,9 +35,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.*;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -80,7 +77,7 @@ public class Repeater {
                     user.syncSavingData();
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 3000L, 3000L));
+        }.runTaskTimer(Skyblock.getPlugin(), 3000L, 3000L));
 //        this.tasks.add(new BukkitRunnable() {
 //            public void run() {
 //                for (final User user : User.getCachedUsers()) {
@@ -89,7 +86,7 @@ public class Repeater {
 //                    }
 //                }
 //            }
-//        }.runTaskTimerAsynchronously(SkySimEngine.getPlugin(), 1L, 1L));
+//        }.runTaskTimerAsynchronously(Skyblock.getPlugin(), 1L, 1L));
         this.tasks.add(new BukkitRunnable() {
             public void run() {
                 Blessings.update();
@@ -157,7 +154,7 @@ public class Repeater {
                     }
                 }
             }
-        }.runTaskTimerAsynchronously(SkySimEngine.getPlugin(), 0L, 1L));
+        }.runTaskTimerAsynchronously(Skyblock.getPlugin(), 0L, 1L));
         this.tasks.add(new BukkitRunnable() {
             public void run() {
                 for (final Player player : Bukkit.getOnlinePlayers()) {
@@ -174,7 +171,7 @@ public class Repeater {
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 45L));
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 45L));
         this.tasks.add(new BukkitRunnable() {
             public void run() {
                 SkyBlockCalendar.ELAPSED += 20L;
@@ -183,31 +180,31 @@ public class Repeater {
                         Repeater.FloorLivingSec.put(w.getUID(), Repeater.FloorLivingSec.get(w.getUID()) + 1);
                     }
                 }
-                if (SkySimEngine.getPlugin().config.getBoolean("antiDupe.scanDuper")) {
+                if (Skyblock.getPlugin().config.getBoolean("antiDupe.scanDuper")) {
                     for (final Player p : Bukkit.getOnlinePlayers()) {
-                        if (SkySimEngine.getEconomy().getBalance(p) >= SkySimEngine.getPlugin().config.getLong("antiDupe.minAmount") && !p.isOp()) {
+                        if (Skyblock.getEconomy().getBalance(p) >= Skyblock.getPlugin().config.getLong("antiDupe.minAmount") && !p.isOp()) {
                             Bukkit.getOnlinePlayers().forEach(player -> player.kickPlayer(Sputnik.trans("&cA DUPER HAS BEEN FOUND! SERVER DOWN FOR MAINTENANCE!")));
                             Bukkit.getServer().setWhitelist(true);
-                            if (SkySimEngine.getPlugin().config.getBoolean("antiDupe.sendToMotherland")) {
+                            if (Skyblock.getPlugin().config.getBoolean("antiDupe.sendToMotherland")) {
                                 new BukkitRunnable() {
                                     public void run() {
-                                        Sputnik.sendWebhook("**WE FOUND A DUPER!** Name: `" + p.getName() + "`. IP: `" + p.getAddress() + "`. Bits Amount: `" + SkySimEngine.getEconomy().getBalance(p) + "`. **Server have been automatically switched to Maintenance Mode for safety!**");
+                                        Sputnik.sendWebhook("**WE FOUND A DUPER!** Name: `" + p.getName() + "`. IP: `" + p.getAddress() + "`. Bits Amount: `" + Skyblock.getEconomy().getBalance(p) + "`. **Server have been automatically switched to Maintenance Mode for safety!**");
                                     }
-                                }.runTaskAsynchronously(SkySimEngine.getPlugin());
+                                }.runTaskAsynchronously(Skyblock.getPlugin());
                             }
-                            if (!SkySimEngine.getPlugin().config.getBoolean("antiDupe.pingEveryone")) {
+                            if (!Skyblock.getPlugin().config.getBoolean("antiDupe.pingEveryone")) {
                                 continue;
                             }
                             new BukkitRunnable() {
                                 public void run() {
                                     Sputnik.sendWebhook("@everyone");
                                 }
-                            }.runTaskAsynchronously(SkySimEngine.getPlugin());
+                            }.runTaskAsynchronously(Skyblock.getPlugin());
                         }
                     }
                 }
             }
-        }.runTaskTimer(SkySimEngine.getPlugin(), 0L, 20L));
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 20L));
     }
 
     public void stop() {
@@ -481,7 +478,7 @@ public class Repeater {
                         strd = ChatColor.RED + "Server closing: 00:0" + RebootServerCommand.secondMap.get(Bukkit.getServer());
                     }
                 }
-                sidebar.add(ChatColor.GRAY + strd + " " + ChatColor.DARK_GRAY + SkySimEngine.getPlugin().getServerName());
+                sidebar.add(ChatColor.GRAY + strd + " " + ChatColor.DARK_GRAY + Skyblock.getPlugin().getServerName());
                 sidebar.add("  ");
                 sidebar.add(" " + SkyBlockCalendar.getMonthName() + " " + SUtil.ntify(SkyBlockCalendar.getDay()));
                 boolean day = true;
@@ -608,8 +605,8 @@ public class Repeater {
                     }
                     sidebar.add(ChatColor.AQUA + "     ");
                 }
-                if (player.getWorld().getName().contains("arena") && SkySimEngine.getPlugin().dimoon == null && SkySimEngine.getPlugin().sq != null) {
-                    final SummoningSequence sq = SkySimEngine.getPlugin().sq;
+                if (player.getWorld().getName().contains("arena") && Skyblock.getPlugin().dimoon == null && Skyblock.getPlugin().sq != null) {
+                    final SummoningSequence sq = Skyblock.getPlugin().sq;
                     sidebar.add(Sputnik.trans("&l"));
                     sidebar.add(Sputnik.trans("&aCatalysts &fPlaced &7(&e" + sq.catalystInTheAltar() + "&7/&a8&7)"));
                     sidebar.add(Sputnik.trans("&6Crystal &fStatus " + (sq.isAcD() ? "&b✬" : "&7✬") + (sq.isAcR() ? "&c✬" : "&7✬") + (sq.isAcG() ? "&e✬" : "&7✬") + (sq.isAcE() ? "&a✬" : "&7✬")));
@@ -619,13 +616,13 @@ public class Repeater {
                     }
                     sidebar.add(Sputnik.trans("&c"));
                 }
-                if (player.getWorld().getName().equalsIgnoreCase("arena") && SkySimEngine.getPlugin().dimoon != null) {
-                    final Set<Integer> damageSet = ((HashMultimap) Multimaps.invertFrom((Multimap) SkySimEngine.getPlugin().dimoon.getDamages(), (Multimap) HashMultimap.create())).get(player.getName());
+                if (player.getWorld().getName().equalsIgnoreCase("arena") && Skyblock.getPlugin().dimoon != null) {
+                    final Set<Integer> damageSet = ((HashMultimap) Multimaps.invertFrom((Multimap) Skyblock.getPlugin().dimoon.getDamages(), (Multimap) HashMultimap.create())).get(player.getName());
                     final int damageDealt = damageSet.iterator().hasNext() ? damageSet.iterator().next() : 0;
                     sidebar.add(Sputnik.trans("&b"));
-                    sidebar.add(Sputnik.trans("Dimoon Boss HP: &a" + SUtil.commaify(SkySimEngine.getPlugin().dimoon.getHealth()) + " &c❤"));
-                    sidebar.add(Sputnik.trans("Boss Stunned: " + (SkySimEngine.getPlugin().dimoon.stunned ? "&a&lYES" : "&c&lNO")));
-                    sidebar.add(Sputnik.trans("Parkours Completed: &e" + SkySimEngine.getPlugin().dimoon.getParkoursCompleted()));
+                    sidebar.add(Sputnik.trans("Dimoon Boss HP: &a" + SUtil.commaify(Skyblock.getPlugin().dimoon.getHealth()) + " &c❤"));
+                    sidebar.add(Sputnik.trans("Boss Stunned: " + (Skyblock.getPlugin().dimoon.stunned ? "&a&lYES" : "&c&lNO")));
+                    sidebar.add(Sputnik.trans("Parkours Completed: &e" + Skyblock.getPlugin().dimoon.getParkoursCompleted()));
                     sidebar.add(Sputnik.trans("&c&l"));
                     sidebar.add(Sputnik.trans("Your Status: " + (user.isInDanger() ? "&c&lDANGER!" : "&a&lSAFE")));
                     sidebar.add(Sputnik.trans("Your Damage: &c" + SUtil.commaify(damageDealt)));
