@@ -199,10 +199,10 @@ public class User {
 
     public void switchProfile(Profile newProfile ,SwitchReason reason) {
         if (reason == SwitchReason.CREATE) {
-            Map<String, Boolean> prof = new HashMap<>(profiles);
-            SUtil.delay(() -> SUtil.runAsync(() -> {
+
+         SUtil.runAsync(() -> {
                 SkySimEngine.getPlugin().dataLoader.create(uuid);
-            }), 8);
+            });
         }
         if (reason == SwitchReason.SWITCH){
             SUtil.runAsync(()->{
@@ -359,8 +359,6 @@ public class User {
         }else{
             databaseDocument = document;
         }
-
-
         if (databaseDocument.containsKey("inventory")) {
             player.getInventory().setContents(BukkitSerializeClass.itemStackArrayFromBase64(databaseDocument.getString("inventory")));
         } else {

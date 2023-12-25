@@ -72,6 +72,11 @@ public class SMongoLoader
     public void create(UUID uuid) {
         User user = User.getUser(uuid);
         Player player = Bukkit.getPlayer(uuid);
+        if (user.selectedProfile != null){
+            user.profiles.put(user.selectedProfile.uuid , false);
+            user.selectedProfile.setSelected(false);
+            save(uuid); // save old profile
+        }
         List<Profile> profiles = new ArrayList<>();
         if (!user.profiles.isEmpty()){
             for (Profile oldProfile : user.getProfiles()){
@@ -85,23 +90,29 @@ public class SMongoLoader
         user.setSelectedProfile(newProfile);
         user.profiles = new HashMap<>();
         user.profiles.put(newProfile.uuid, true);
+        profiles.add(newProfile);
         User.USER_CACHE.put(uuid, user);
         Profile.USER_CACHE.put(newProfileUUID.toString(), newProfile);
         for (Profile profile : profiles){
-            user.addProfile(profile , false);
+            user.addProfile(profile , profile == newProfile);
         }
-        user.addProfile(newProfile ,true);
+        if (user.selectedProfile != newProfile){
+            user.setSelectedProfile(newProfile);
+        }
+        if (!newProfile.isSelected()){
+            newProfile.setSelected(true);
+        }
+        if (!user.profiles.containsKey(newProfile.uuid)){
+            user.profiles.put(newProfile.uuid , true);
+        }
         grabProfile(newProfileUUID.toString());
         save(uuid);
-        loadProfile(user.selectedProfile);
-        try {
-            user.loadPlayerData(user.selectedProfile);
-            user.loadCookieStatus(user.selectedProfile);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        load(uuid);
+        for (Profile profile : profiles){
+            user.addProfile(profile , false);
         }
-        player.sendMessage(ChatColor.YELLOW + "Welcome to " + ChatColor.GREEN + "Godspunky Skyblock!");
-        player.sendMessage(ChatColor.AQUA + "You are playing on profile: " + ChatColor.YELLOW + name);
+        user.addProfile(newProfile , true);
+
     }
 
 
@@ -132,7 +143,9 @@ public class SMongoLoader
 
         if (selectedProfile == null) {
             selectedProfile = new Profile(UUID.randomUUID().toString(), uuid, "$temp");
-            user.profiles = new HashMap<>();
+           if (user.profiles == null){
+               user.profiles = new HashMap<>();
+           }
             user.profiles.put(selectedProfile.getId().toString(), true);
         }
 
@@ -169,9 +182,6 @@ public class SMongoLoader
         user.saveAllVanillaInstances(selectedProfile);
         user.saveCookie(selectedProfile);
         saveProfile(selectedProfile);
-
-
-
     }
 
 

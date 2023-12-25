@@ -99,11 +99,17 @@ public class Profile
     public UUID owner;
     // private final Config config;
     final Map<ItemCollection, Integer> collections;
+    @Getter
     private long coins;
+    @Getter
     private long bankCoins;
+    @Getter
     private List<ItemStack> stashedItems;
+    @Setter
     private int cooldownAltar;
+    @Getter
     private boolean headShot;
+    @Getter
     private boolean playingSong;
     private boolean inDanger;
     private Double islandX;
@@ -146,7 +152,11 @@ public class Profile
     AuctionSettings auctionSettings;
     private boolean auctionCreationBIN;
     private AuctionEscrow auctionEscrow;
+    @Setter
+    @Getter
     private boolean voidlingWardenActive;
+    @Setter
+    @Getter
     private boolean waitingForSign;
     private String signContent;
     private boolean isCompletedSign;
@@ -204,8 +214,7 @@ public class Profile
     }
 
     public boolean isSelected() {
-
-        return User.getUser(owner).getSelectedProfile().getId().equals(getId());
+        return User.getUser(getOwner()).profiles.get(uuid);
     }
 
 
@@ -218,375 +227,6 @@ public class Profile
         PlayerUtils.setCookieDurationTicks(player, ticks);
     }
 
-    /*public void load() {
-        this.owner = UUID.fromString(this.config.getString("owner"));
-        if (this.config.contains("collections")) {
-            for (final String identifier : this.config.getConfigurationSection("collections").getKeys(false)) {
-                this.collections.put(ItemCollection.getByIdentifier(identifier), this.config.getInt("collections." + identifier));
-            }
-        }
-        this.coins = this.config.getLong("coins");
-        this.bankCoins = this.config.getLong("bankCoins");
-        this.islandX = (this.config.contains("island.x") ? Double.valueOf(this.config.getDouble("island.x")) : null);
-        this.islandZ = (this.config.contains("island.z") ? Double.valueOf(this.config.getDouble("island.z")) : null);
-        this.lastRegion = ((this.config.getString("lastRegion") != null) ? Region.get(this.config.getString("lastRegion")) : null);
-        if (this.config.contains("quiver")) {
-            for (final String m : this.config.getConfigurationSection("quiver").getKeys(false)) {
-                this.quiver.put(SMaterial.getMaterial(m), this.config.getInt("quiver." + m));
-            }
-        }
-        if (this.config.contains("effects")) {
-            for (final String key : this.config.getConfigurationSection("effects").getKeys(false)) {
-                this.effects.add(new ActivePotionEffect(new PotionEffect(PotionEffectType.getByNamespace(key), this.config.getInt("effects." + key + ".level"), this.config.getLong("effects." + key + ".duration")), this.config.getLong("effects." + key + ".remaining")));
-            }
-        }
-        this.totalfloor6run = this.config.getLong("dungeons.floor6.run");
-        this.sadancollections = this.config.getLong("dungeons.boss.sadan");
-        this.farmingXP = this.config.getDouble("xp.farming");
-        this.miningXP = this.config.getDouble("xp.mining");
-        this.combatXP = this.config.getDouble("xp.combat");
-        this.foragingXP = this.config.getDouble("xp.foraging");
-        this.enchantXP = this.config.getDouble("xp.enchant");
-        this.cataXP = this.config.getDouble("xp.dungeons.cata");
-        this.archerXP = this.config.getDouble("xp.dungeons.arch");
-        this.mageXP = this.config.getDouble("xp.dungeons.mage");
-        this.tankXP = this.config.getDouble("xp.dungeons.tank");
-        this.berserkXP = this.config.getDouble("xp.dungeons.bers");
-        this.healerXP = this.config.getDouble("xp.dungeons.heal");
-        this.highestSlayers[0] = this.config.getInt("slayer.revenantHorror.highest");
-        this.highestSlayers[1] = this.config.getInt("slayer.tarantulaBroodfather.highest");
-        this.highestSlayers[2] = this.config.getInt("slayer.svenPackmaster.highest");
-        this.highestSlayers[3] = this.config.getInt("slayer.voidgloomSeraph.highest");
-        this.slayerXP[0] = this.config.getInt("xp.slayer.revenantHorror");
-        this.slayerXP[1] = this.config.getInt("xp.slayer.tarantulaBroodfather");
-        this.slayerXP[2] = this.config.getInt("xp.slayer.svenPackmaster");
-        this.slayerXP[3] = this.config.getInt("xp.slayer.voidgloomSeraph");
-        this.crystalLVL[0] = this.config.getInt("crystals.level.health");
-        this.crystalLVL[1] = this.config.getInt("crystals.level.defense");
-        this.crystalLVL[2] = this.config.getInt("crystals.level.critdmg");
-        this.crystalLVL[3] = this.config.getInt("crystals.level.critchance");
-        this.crystalLVL[4] = this.config.getInt("crystals.level.intelligence");
-        this.crystalLVL[5] = this.config.getInt("crystals.level.ferocity");
-        this.crystalLVL[6] = this.config.getInt("crystals.level.magicfind");
-        this.crystalLVL[7] = this.config.getInt("crystals.level.strength");
-        this.permanentCoins = this.config.getBoolean("permanentCoins");
-        this.slayerQuest = (SlayerQuest)this.config.get("slayer.quest");
-        if (this.config.contains("pets")) {
-            this.pets = (List<Pet.PetItem>) this.config.getList("pets");
-        }
-        this.auctionSettings = (AuctionSettings)this.config.get("auction.settings");
-        if (this.auctionSettings == null) {
-            this.auctionSettings = new AuctionSettings();
-        }
-        this.auctionCreationBIN = this.config.getBoolean("auction.creationBIN");
-        this.auctionEscrow = (AuctionEscrow)this.config.get("auction.escrow");
-        if (this.auctionEscrow == null) {
-            this.auctionEscrow = new AuctionEscrow();
-        }
-    }
-
-    public void asyncSavingData() {
-        new BukkitRunnable() {
-            public void run() {
-                Profile.this.saveCookie();
-                User.this.save();
-                User.this.saveAllVanillaInstances();
-            }
-        }.runTaskAsynchronously((Plugin)User.plugin);
-    }
-
-    public void syncSavingData() {
-        new BukkitRunnable() {
-            public void run() {
-                User.this.saveCookie();
-                User.this.save();
-                User.this.saveAllVanillaInstances();
-            }
-        }.runTask((Plugin)User.plugin);
-    }
-
-    public void loadStatic() {
-        final Player player = Bukkit.getPlayer(this.owner);
-        final User user = getUser(this.owner);
-        PlayerUtils.AUTO_SLAYER.put(player.getUniqueId(), this.config.getBoolean("configures.autoSlayer"));
-        Repeater.SBA_MAP.put(player.getUniqueId(), this.config.getBoolean("configures.sbaToggle"));
-        PetsGUI.setShowPets(player, this.config.getBoolean("configures.showPets"));
-    }
-
-    public void loadCookieStatus() {
-        final Player player = Bukkit.getPlayer(this.owner);
-        PlayerUtils.setCookieDurationTicks(player, this.config.getLong("user.cookieDuration"));
-        PlayerUtils.loadCookieStatsBuff(player);
-    }
-
-    public void saveCookie() {
-        if (Bukkit.getPlayer(this.owner) == null) {
-            return;
-        }
-        if (!Bukkit.getPlayer(this.owner).isOnline()) {
-            return;
-        }
-        if (!PlayerUtils.COOKIE_DURATION_CACHE.containsKey(this.owner)) {
-            return;
-        }
-        this.config.set("user.cookieDuration", (Object)PlayerUtils.getCookieDurationTicks(Bukkit.getPlayer(this.owner)));
-        this.config.save();
-    }
-
-    public void save() {
-        this.config.set("owner", (Object)this.owner.toString());
-        this.config.set("collections", (Object)null);
-        for (final Map.Entry<ItemCollection, Integer> entry : this.collections.entrySet()) {
-            this.config.set("collections." + entry.getKey().getIdentifier(), (Object)entry.getValue());
-        }
-        this.config.set("coins", (Object)this.coins);
-        this.config.set("bankCoins", (Object)this.bankCoins);
-        this.config.set("island.x", (Object)this.islandX);
-        this.config.set("island.z", (Object)this.islandZ);
-        if (this.lastRegion != null) {
-            this.config.set("lastRegion", (Object)this.lastRegion.getName());
-        }
-        this.config.set("quiver", (Object)null);
-        for (final Map.Entry<SMaterial, Integer> entry2 : this.quiver.entrySet()) {
-            this.config.set("quiver." + entry2.getKey().name().toLowerCase(), (Object)entry2.getValue());
-        }
-        this.config.set("effects", (Object)null);
-        for (final ActivePotionEffect effect : this.effects) {
-            final PotionEffectType type = effect.getEffect().getType();
-            this.config.set("effects." + type.getNamespace() + ".level", (Object)effect.getEffect().getLevel());
-            this.config.set("effects." + type.getNamespace() + ".duration", (Object)effect.getEffect().getDuration());
-            this.config.set("effects." + type.getNamespace() + ".remaining", (Object)effect.getRemaining());
-        }
-        try {
-            this.config.set("user.lastPlayedVersion", (Object)SkySimEngine.getPlugin().getServerVersion().readableString());
-        }
-        catch (final Exception e) {
-            e.printStackTrace();
-        }
-        this.config.set("dungeons.floor6.run", (Object)this.totalfloor6run);
-        this.config.set("dungeons.boss.sadan", (Object)this.sadancollections);
-        this.config.set("xp.farming", (Object)this.farmingXP);
-        this.config.set("xp.mining", (Object)this.miningXP);
-        this.config.set("xp.combat", (Object)this.combatXP);
-        this.config.set("xp.foraging", (Object)this.foragingXP);
-        this.config.set("xp.enchant", (Object)this.enchantXP);
-        this.config.set("xp.dungeons.cata", (Object)this.cataXP);
-        this.config.set("xp.dungeons.arch", (Object)this.archerXP);
-        this.config.set("xp.dungeons.bers", (Object)this.berserkXP);
-        this.config.set("xp.dungeons.heal", (Object)this.healerXP);
-        this.config.set("xp.dungeons.mage", (Object)this.mageXP);
-        this.config.set("xp.dungeons.tank", (Object)this.tankXP);
-        this.config.set("slayer.revenantHorror.highest", (Object)this.highestSlayers[0]);
-        this.config.set("slayer.tarantulaBroodfather.highest", (Object)this.highestSlayers[1]);
-        this.config.set("slayer.svenPackmaster.highest", (Object)this.highestSlayers[2]);
-        this.config.set("slayer.voidgloomSeraph.highest", (Object)this.highestSlayers[3]);
-        this.config.set("crystals.level.health", (Object)this.crystalLVL[0]);
-        this.config.set("crystals.level.defense", (Object)this.crystalLVL[1]);
-        this.config.set("crystals.level.critdmg", (Object)this.crystalLVL[2]);
-        this.config.set("crystals.level.critchance", (Object)this.crystalLVL[3]);
-        this.config.set("crystals.level.intelligence", (Object)this.crystalLVL[4]);
-        this.config.set("crystals.level.ferocity", (Object)this.crystalLVL[5]);
-        this.config.set("crystals.level.magicfind", (Object)this.crystalLVL[6]);
-        this.config.set("crystals.level.strength", (Object)this.crystalLVL[7]);
-        this.config.set("xp.slayer.revenantHorror", (Object)this.slayerXP[0]);
-        this.config.set("xp.slayer.tarantulaBroodfather", (Object)this.slayerXP[1]);
-        this.config.set("xp.slayer.svenPackmaster", (Object)this.slayerXP[2]);
-        this.config.set("xp.slayer.voidgloomSeraph", (Object)this.slayerXP[3]);
-        this.config.set("permanentCoins", (Object)this.permanentCoins);
-        this.config.set("slayer.quest", (Object)this.slayerQuest);
-        this.config.set("pets", (Object)this.pets);
-        this.config.set("auction.settings", (Object)this.auctionSettings);
-        this.config.set("auction.creationBIN", (Object)this.auctionCreationBIN);
-        this.config.set("auction.escrow", (Object)this.auctionEscrow);
-        if (Bukkit.getPlayer(this.owner) != null && Bukkit.getPlayer(this.owner).isOnline()) {
-            this.config.set("configures.showPets", (Object)PetsGUI.getShowPet(Bukkit.getPlayer(this.owner)));
-            this.config.set("configures.autoSlayer", (Object)PlayerUtils.isAutoSlayer(Bukkit.getPlayer(this.owner)));
-            this.config.set("configures.sbaToggle", (Object)PlayerUtils.isSBAToggle(Bukkit.getPlayer(this.owner)));
-        }
-        this.config.save();
-    }
-
-    public void saveStorageData(final int page) {
-    }
-
-    public void setIslandLocation(final double x, final double z) {
-        this.islandX = x;
-        this.islandZ = z;
-    }
-
-    public void saveInventory() {
-        if (Bukkit.getPlayer(this.owner) == null) {
-            return;
-        }
-        Object a = null;
-        final PlayerInventory piv = Bukkit.getPlayer(this.owner).getInventory();
-        a = this.getPureListFrom((Inventory)piv);
-        this.config.set("database.inventory", a);
-        this.config.save();
-    }
-
-    public String getPureListFrom(final Inventory piv) {
-        final ItemStack[] ist = piv.getContents();
-        final List<ItemStack> arraylist = Arrays.<ItemStack>asList(ist);
-        for (int i = 0; i < ist.length; ++i) {
-            final ItemStack stack = ist[i];
-            if (stack != null) {
-                final NBTItem nbti = new NBTItem(stack);
-                if (nbti.hasKey("dontSaveToProfile")) {
-                    arraylist.remove(i);
-                }
-            }
-        }
-        final ItemStack[] arrl = (ItemStack[])arraylist.toArray();
-        return BukkitSerializeClass.itemStackArrayToBase64(arrl);
-    }
-
-    public void saveArmor() {
-        if (Bukkit.getPlayer(this.owner) == null) {
-            return;
-        }
-        Object a = null;
-        a = BukkitSerializeClass.itemStackArrayToBase64(Bukkit.getPlayer(this.owner).getInventory().getArmorContents());
-        this.config.set("database.armor", a);
-        this.config.save();
-    }
-
-    public void saveEnderChest() {
-        if (Bukkit.getPlayer(this.owner) == null) {
-            return;
-        }
-        Object a = null;
-        final Inventory inv = Bukkit.getPlayer(this.owner).getEnderChest();
-        a = this.getPureListFrom(inv);
-        this.config.set("database.enderchest", a);
-        this.config.save();
-    }
-
-    public void saveExp() {
-        if (Bukkit.getPlayer(this.owner) == null) {
-            return;
-        }
-        this.config.set("database.minecraft_xp", (Object)Sputnik.getTotalExperience(Bukkit.getPlayer(this.owner)));
-        this.config.save();
-    }
-
-    public void loadPlayerData() throws IllegalArgumentException, IOException {
-        final Player player = Bukkit.getPlayer(this.owner);
-        if (this.config.getString("database.inventory") != null) {
-            player.getInventory().setContents(BukkitSerializeClass.itemStackArrayFromBase64(this.config.getString("database.inventory")));
-        }
-        else {
-            player.getInventory().setContents(new ItemStack[player.getInventory().getSize()]);
-        }
-        if (this.config.getString("database.enderchest") != null) {
-            player.getEnderChest().setContents(BukkitSerializeClass.itemStackArrayFromBase64(this.config.getString("database.enderchest")));
-        }
-        else {
-            player.getInventory().setContents(new ItemStack[player.getEnderChest().getSize()]);
-        }
-        if (this.config.getString("database.armor") != null) {
-            player.getInventory().setArmorContents(BukkitSerializeClass.itemStackArrayFromBase64(this.config.getString("database.armor")));
-        }
-        else {
-            player.getInventory().setContents(new ItemStack[player.getInventory().getArmorContents().length]);
-        }
-        if (this.config.contains("database.minecraft_xp")) {
-            Sputnik.setTotalExperience(player, this.config.getInt("database.minecraft_xp"));
-        }
-        if (this.config.contains("database.stashed")) {
-            final ItemStack[] arr = BukkitSerializeClass.itemStackArrayFromBase64(this.config.getString("database.stashed"));
-            this.stashedItems = Arrays.<ItemStack>asList(arr);
-        }
-        else {
-            this.stashedItems = new ArrayList<ItemStack>();
-        }
-        this.loadEconomy();
-        if (this.config.contains("configures.slot_selected")) {
-            player.getInventory().setHeldItemSlot(this.config.getInt("configures.slot_selected"));
-        }
-    }
-
-    public void loadEconomy() {
-        final Economy eco = SkySimEngine.getEconomy();
-        final Player player = Bukkit.getPlayer(this.owner);
-        if (this.config.contains("database.skysim_bits")) {
-            eco.withdrawPlayer((OfflinePlayer)player, eco.getBalance((OfflinePlayer)player));
-            eco.depositPlayer((OfflinePlayer)player, this.config.getDouble("database.skysim_bits"));
-        }
-    }
-
-    public void saveBitsAmount() {
-        if (Bukkit.getPlayer(this.owner) == null) {
-            return;
-        }
-        this.config.set("database.skysim_bits", (Object)SkySimEngine.getEconomy().getBalance((OfflinePlayer)Bukkit.getPlayer(this.owner)));
-        this.config.save();
-    }
-
-    public void saveLastSlot() {
-        if (Bukkit.getPlayer(this.owner) == null) {
-            return;
-        }
-        this.config.set("configures.slot_selected", (Object)Bukkit.getPlayer(this.owner).getInventory().getHeldItemSlot());
-        this.config.save();
-    }
-
-    public void saveAllVanillaInstances() {
-        if (Bukkit.getPlayer(this.owner) == null) {
-            return;
-        }
-        this.saveArmor();
-        this.saveEnderChest();
-        this.saveInventory();
-        this.saveExp();
-        this.saveBitsAmount();
-        this.saveLastSlot();
-        this.saveAttributesForAPI();
-        this.saveStash();
-    }
-
-    public void saveStash() {
-        if (Bukkit.getPlayer(this.owner) == null) {
-            return;
-        }
-        if (this.stashedItems == null) {
-            return;
-        }
-        ItemStack[] is = new ItemStack[this.stashedItems.size()];
-        is = this.stashedItems.<ItemStack>toArray(is);
-        this.config.set("database.stashed", (Object)BukkitSerializeClass.itemStackArrayToBase64(is));
-        this.config.save();
-    }
-
-    public void saveAttributesForAPI() {
-        if (Bukkit.getPlayer(this.owner) == null) {
-            return;
-        }
-        final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(this.getUuid());
-        if (statistics == null) {
-            return;
-        }
-        Double visualcap = statistics.getCritChance().addAll() * 100.0;
-        if (visualcap > 100.0) {
-            visualcap = 100.0;
-        }
-        this.config.set("apistats.health", (Object)statistics.getMaxHealth().addAll().intValue());
-        this.config.set("apistats.defense", (Object)statistics.getDefense().addAll().intValue());
-        this.config.set("apistats.strength", (Object)statistics.getStrength().addAll().intValue());
-        this.config.set("apistats.crit_chance", (Object)visualcap.intValue());
-        this.config.set("apistats.speed", (Object)(statistics.getSpeed().addAll() * 100.0));
-        this.config.set("apistats.crit_damage", (Object)(statistics.getCritDamage().addAll() * 100.0));
-        this.config.set("apistats.intelligence", (Object)statistics.getIntelligence().addAll().intValue());
-        this.config.set("apistats.attack_speed", (Object)Math.min(100.0, statistics.getAttackSpeed().addAll()));
-        this.config.set("apistats.magic_find", (Object)(statistics.getMagicFind().addAll() * 100.0));
-        this.config.set("apistats.ferocity", (Object)statistics.getFerocity().addAll().intValue());
-        this.config.set("apistats.ability_damage", (Object)statistics.getAbilityDamage().addAll().intValue());
-        this.config.save();
-    }*/
-
-    /*public Config getConfig() {
-        return this.config;
-    }*/
 
     public void setLastRegion(final Region lastRegion) {
         this.lastRegion = lastRegion;
@@ -1364,6 +1004,7 @@ public class Profile
             case VOID:
                 message = "You fell into the void";
                 out = "%s fell into the void";
+
                 break;
             case FALL:
                 message = "You fell to your death";
@@ -2023,18 +1664,6 @@ public class Profile
         return file.exists();
     }
 
-    public long getCoins() {
-        return this.coins;
-    }
-
-    public long getBankCoins() {
-        return this.bankCoins;
-    }
-
-    public List<ItemStack> getStashedItems() {
-        return this.stashedItems;
-    }
-
     public void setStashedItems(final List<ItemStack> stashedItems) {
         this.stashedItems = stashedItems;
     }
@@ -2043,20 +1672,8 @@ public class Profile
         return this.cooldownAltar;
     }
 
-    public void setCooldownAltar(final int cooldownAltar) {
-        this.cooldownAltar = cooldownAltar;
-    }
-
-    public boolean isHeadShot() {
-        return this.headShot;
-    }
-
     public void setHeadShot(final boolean headShot) {
         this.headShot = headShot;
-    }
-
-    public boolean isPlayingSong() {
-        return this.playingSong;
     }
 
     public void setPlayingSong(final boolean playingSong) {
@@ -2071,13 +1688,6 @@ public class Profile
         this.inDanger = inDanger;
     }
 
-    public Double getIslandX() {
-        return this.islandX;
-    }
-
-    public Double getIslandZ() {
-        return this.islandZ;
-    }
 
     public Region getLastRegion() {
         return this.lastRegion;
@@ -2233,22 +1843,6 @@ public class Profile
 
     public void setAuctionEscrow(final AuctionEscrow auctionEscrow) {
         this.auctionEscrow = auctionEscrow;
-    }
-
-    public boolean isVoidlingWardenActive() {
-        return this.voidlingWardenActive;
-    }
-
-    public void setVoidlingWardenActive(final boolean voidlingWardenActive) {
-        this.voidlingWardenActive = voidlingWardenActive;
-    }
-
-    public boolean isWaitingForSign() {
-        return this.waitingForSign;
-    }
-
-    public void setWaitingForSign(final boolean waitingForSign) {
-        this.waitingForSign = waitingForSign;
     }
 
     public String getSignContent() {
