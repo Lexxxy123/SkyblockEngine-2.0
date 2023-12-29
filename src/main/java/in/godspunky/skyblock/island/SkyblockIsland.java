@@ -85,7 +85,7 @@ public class SkyblockIsland {
                     );
                     bukkitPlayer.sendMessage(ChatColor.GRAY + "Sending to Player Island...");
                     bukkitPlayer.sendMessage(ChatColor.YELLOW + "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
-                    bukkitPlayer.sendMessage(ChatColor.WHITE + "" + ChatColor.BOLD + "          Welcome to Skyblock, " + ChatColor.GRAY + bukkitPlayer.getName() + ChatColor.WHITE + ChatColor.BOLD + "!");
+                    bukkitPlayer.sendMessage(ChatColor.WHITE + "" + ChatColor.BOLD + "          Welcome to Skyblock, " +  bukkitPlayer.getDisplayName() + ChatColor.WHITE + ChatColor.BOLD + "!");
                     bukkitPlayer.sendMessage("");
                     bukkitPlayer.sendMessage(ChatColor.YELLOW + "               This is your Island, the Skyblock");
                     bukkitPlayer.sendMessage(ChatColor.YELLOW + "            universe has many lands to discover,");

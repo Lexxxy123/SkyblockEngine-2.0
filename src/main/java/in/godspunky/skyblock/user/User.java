@@ -22,6 +22,7 @@ import in.godspunky.skyblock.item.GenericItemType;
 import in.godspunky.skyblock.item.PlayerBoostStatistics;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.pet.Pet;
+
 import in.godspunky.skyblock.potion.ActivePotionEffect;
 import in.godspunky.skyblock.potion.PotionEffect;
 import in.godspunky.skyblock.potion.PotionEffectType;
@@ -88,6 +89,7 @@ public class User {
     private boolean playingSong;
     private boolean inDanger;
     private Double islandX;
+
     private Double islandZ;
     private Region lastRegion;
     Map<SMaterial, Integer> quiver;
@@ -160,7 +162,6 @@ public class User {
         this.miningXP = 0.0;
         this.combatXP = 0.0;
         this.foragingXP = 0.0;
-        // this.island = SkyblockIsland.getIsland(uuid);
         this.enchantXP = 0.0;
         this.highestSlayers = new int[4];
         this.slayerXP = new int[4];
@@ -208,6 +209,8 @@ public class User {
             });
         }
     }
+
+
 
     public List<String> getRawProfiles() {
         if (!profiles.isEmpty()) {

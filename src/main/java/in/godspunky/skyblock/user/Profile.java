@@ -137,6 +137,8 @@ public class Profile
     @Getter
     private static List<String> talked_npcs;
 
+
+
     @Getter
     private List<String> unlockedRecipes;
     AuctionSettings auctionSettings;
@@ -216,7 +218,6 @@ public class Profile
         Player player = Bukkit.getPlayer(getOwner());
         PlayerUtils.setCookieDurationTicks(player, ticks);
     }
-
 
     public void setLastRegion(final Region lastRegion) {
         this.lastRegion = lastRegion;

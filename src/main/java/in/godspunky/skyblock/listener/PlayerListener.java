@@ -14,6 +14,7 @@ import in.godspunky.skyblock.enchantment.EnchantmentType;
 import in.godspunky.skyblock.entity.dungeons.watcher.Watcher;
 import in.godspunky.skyblock.entity.nms.VoidgloomSeraph;
 import in.godspunky.skyblock.extra.beam.Beam;
+import in.godspunky.skyblock.island.SkyblockIsland;
 import in.godspunky.skyblock.item.Ability;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.accessory.AccessoryFunction;
@@ -240,8 +241,8 @@ public class PlayerListener extends PListener {
             SUtil.delay(() -> UserStash.getStash(player.getUniqueId()).sendNotificationMessage(), 30L);
         }, 3L);
         SUtil.delay(() -> {
-            final Location l = new Location(Bukkit.getWorld("world"), -2.5, 70.0, -68.5, 180.0f, 0.0f);
-            player.teleport(l);
+                final Location l = new Location(Bukkit.getWorld("world"), -2.5, 70.0, -68.5, 180.0f, 0.0f);
+                player.teleport(l);
         }, 1L);
         new PacketReader().injectPlayer(player);
 

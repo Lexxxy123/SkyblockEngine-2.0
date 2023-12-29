@@ -31,6 +31,8 @@ import in.godspunky.skyblock.listener.WorldListener;
 import in.godspunky.skyblock.merchant.MerchantItemHandler;
 import in.godspunky.skyblock.nms.packetevents.*;
 import in.godspunky.skyblock.npc.SkyblockNPC;
+
+
 import in.godspunky.skyblock.ranks.PlayerChatListener;
 import in.godspunky.skyblock.ranks.PlayerJoinQuitListener;
 import in.godspunky.skyblock.ranks.SetRankCommand;
@@ -46,6 +48,7 @@ import in.godspunky.skyblock.util.Groups;
 import in.godspunky.skyblock.util.SLog;
 import in.godspunky.skyblock.util.SerialNBTTagCompound;
 import lombok.Getter;
+import lombok.Setter;
 import net.milkbowl.vault.economy.Economy;
 import net.swofty.swm.api.SlimePlugin;
 import org.bukkit.Bukkit;
@@ -95,6 +98,8 @@ import java.util.*;
 public class Skyblock extends JavaPlugin implements PluginMessageListener, BungeeChannel.ForwardConsumer {
     public static MultiverseCore core;
     private static ProtocolManager protocolManager;
+
+
     private static Economy econ;
     private static Skyblock plugin;
     private final PacketHelper packetInj;
@@ -105,6 +110,7 @@ public class Skyblock extends JavaPlugin implements PluginMessageListener, Bunge
     private final ServerVersion serverVersion;
     public static EffectManager effectManager;
     private static Skyblock instance;
+
     public Config config;
     @Getter
     private SlimePlugin slimePlugin;
@@ -171,8 +177,8 @@ public class Skyblock extends JavaPlugin implements PluginMessageListener, Bunge
                 e.printStackTrace();
             }
             SLog.info("Loading SQL database...");
-           //DatabaseManager.connectToDatabase("mongodb://admin:admin@88.99.150.153:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2", "Godspunky");
-            DatabaseManager.connectToDatabase("mongodb://localhost:27017", "Godspunky");
+           DatabaseManager.connectToDatabase("mongodb://admin:admin@88.99.150.153:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2", "Godspunky");
+            //DatabaseManager.connectToDatabase("mongodb://localhost:27017", "Godspunky");
             this.sql = new SQLDatabase();
             this.dataLoader = new SMongoLoader();
             this.regionData = new SQLRegionData();
@@ -213,6 +219,8 @@ public class Skyblock extends JavaPlugin implements PluginMessageListener, Bunge
             MerchantItemHandler.init();
             SkyBlockCalendar.ELAPSED = Skyblock.plugin.config.getLong("timeElapsed");
             SLog.info("Synchronizing world time with calendar time and removing world entities...");
+
+
             for (final World world : Bukkit.getWorlds()) {
                 for (final Entity entity : world.getEntities()) {
                     if (entity instanceof HumanEntity) {
@@ -384,6 +392,7 @@ public class Skyblock extends JavaPlugin implements PluginMessageListener, Bunge
         SLog.info(ChatColor.GREEN + "Successfully loaded " + ChatColor.YELLOW + SkyblockNPCManager.getNPCS().size() + ChatColor.GREEN + " NPCs");
 
     }
+
 
 
     public static ProtocolManager getPTC() {
