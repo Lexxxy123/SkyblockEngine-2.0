@@ -19,7 +19,6 @@ import in.godspunky.skyblock.item.armor.VoidlingsWardenHelmet;
 import in.godspunky.skyblock.item.bow.Terminator;
 import in.godspunky.skyblock.potion.ActivePotionEffect;
 import in.godspunky.skyblock.region.Region;
-import in.godspunky.skyblock.region.RegionType;
 import in.godspunky.skyblock.sidebar.Sidebar;
 import in.godspunky.skyblock.slayer.SlayerQuest;
 import in.godspunky.skyblock.user.PlayerStatistics;
@@ -458,18 +457,18 @@ public class Repeater {
             if (Repeater.SBA_MAP.get(uuid)) {
                 skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYBLOCK");
             } else if (isNotCracked) {
-                skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYBLOCK &b&lBETA");
+                skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYSIM &b&lBETA");
             } else {
-                skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYBLOCK &b&lBETA");
+                skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYSIM &b&lBETA");
             }
         } else if (isNotCracked) {
-            skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYBLOCK &b&lBETA");
+            skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYSIM &b&lBETA");
         } else {
-            skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYBLOCK &b&lBETA");
+            skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYSIM &b&lBETA");
         }
         String finalSkysim = skysim;
         SUtil.runSync(()->{
-            Sidebar sidebar = new Sidebar(finalSkysim, "SKYBLOCK");
+            Sidebar sidebar = new Sidebar(finalSkysim, "SKYSIM");
             SUtil.runAsync(()->{
                 String strd = SUtil.getDate();
                 if (RebootServerCommand.secondMap.containsKey(Bukkit.getServer())) {
@@ -508,7 +507,7 @@ public class Repeater {
                     }
                 }
                 if (user.isOnIsland()) {
-                    location = RegionType.PRIVATE_ISLAND.getColor() + RegionType.PRIVATE_ISLAND.getName();
+                    location = ChatColor.GREEN + "Your Island";
                 }
                 if (user.isOnUserIsland()) {
                     location = ChatColor.AQUA + "Others Island";

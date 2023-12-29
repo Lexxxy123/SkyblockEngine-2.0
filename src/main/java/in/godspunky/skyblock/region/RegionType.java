@@ -49,10 +49,7 @@ public enum RegionType {
     BLAZING_FORTRESS("Blazing Fortress", ChatColor.RED),
     THE_END("The End", ChatColor.LIGHT_PURPLE),
     THE_END_NEST("The End", ChatColor.LIGHT_PURPLE),
-
-    PRIVATE_ISLAND("Your Island", ChatColor.GREEN),
     DRAGONS_NEST("Dragon's Nest", ChatColor.DARK_PURPLE);
-
 
     private final String name;
     private final ChatColor color;

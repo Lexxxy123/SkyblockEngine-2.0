@@ -15,17 +15,17 @@ public class UserDatabase {
 
     public boolean exists() {
         MongoCollection<Document> userCollection = DatabaseManager.getCollection("users");
-        return userCollection.find(new Document("_id", uuid)).first() != null;
+        return userCollection.find(new Document("uuid", uuid)).first() != null;
     }
 
     public Document getDocument() {
         MongoCollection<Document> userCollection = DatabaseManager.getCollection("users");
-        return userCollection.find(new Document("_id", uuid)).first();
+        return userCollection.find(new Document("uuid", uuid)).first();
     }
 
     public void setUserProperty(String key, Object value) {
         MongoCollection<Document> userCollection = DatabaseManager.getCollection("users");
         Document updateDoc = new Document("$set", new Document(key, value));
-        userCollection.updateOne(new Document("_id", uuid), updateDoc);
+        userCollection.updateOne(new Document("uuid", uuid), updateDoc);
     }
 }

@@ -413,9 +413,6 @@ public class SMongoLoader
         for (ItemCollection collection : ItemCollection.getCollections()) {
             tempColl.put(collection.getIdentifier(), profile.getCollection(collection));
         }
-        setProfileProperty(uuid, "quests", new Document()
-                .append("completedQuests", new ArrayList<>())
-                .append("completedObjectives", new ArrayList<>()));
         setProfileProperty(uuid ,"collections", tempColl);
         setProfileProperty(uuid,"coins", profile.getCoins());
         setProfileProperty(uuid,"bankCoins", profile.getBankCoins());
@@ -529,10 +526,6 @@ public class SMongoLoader
         return def;
     }
 
-    public Object get(Document base, String key) {
-        return  base.get(key);
-    }
-
     public String getString(Document base, String key, Object def) {
         return get(base, key, def).toString();
     }
@@ -591,5 +584,4 @@ public class SMongoLoader
                 userCache.remove(uuid.toString());
             }
         }
-
 }
