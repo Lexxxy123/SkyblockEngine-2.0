@@ -196,7 +196,8 @@ public class User {
         if (reason == SwitchReason.CREATE) {
 
          SUtil.runAsync(() -> {
-                Skyblock.getPlugin().dataLoader.create(uuid);
+
+                //Skyblock.getPlugin().dataLoader.create(uuid);
             });
         }
         if (reason == SwitchReason.SWITCH){
@@ -242,7 +243,7 @@ public class User {
     public void syncSavingData() {
         new BukkitRunnable() {
             public void run() {
-                plugin.dataLoader.save(uuid);;
+              //  plugin.dataLoader.save(uuid);;
             }
         }.runTask(User.plugin);
     }
@@ -280,7 +281,7 @@ public class User {
             return;
         }
 
-        plugin.dataLoader.setProfileProperty(UUID.fromString(profile.uuid),"cookieDuration", PlayerUtils.getCookieDurationTicks(Bukkit.getPlayer(this.uuid)));
+        plugin.dataLoader.setProfileProperty("cookieDuration", PlayerUtils.getCookieDurationTicks(Bukkit.getPlayer(this.uuid)));
     }
 
     public void saveInventory(Profile profile) {
@@ -342,6 +343,7 @@ public class User {
     }
 
     public UUID getSelectedProfileUUID(){
+        if (selectedProfile == null) return null;
         return UUID.fromString(selectedProfile.uuid);
     }
 

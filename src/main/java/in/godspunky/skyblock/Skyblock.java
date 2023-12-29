@@ -320,6 +320,7 @@ public class Skyblock extends JavaPlugin implements PluginMessageListener, Bunge
             DimoonLootTable.lowQualitylootTable = new ArrayList<DimoonLootItem>(Arrays.asList(new DimoonLootItem(lucki9, 20, 150), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOON_GEM), 20, 100), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOON_FRAG), 1, 1, 0, true)));
             Arena.cleanArena();
             getCommand("setrank").setExecutor(new SetRankCommand());
+            SMongoLoader.startQueueTask();
         } catch (final Throwable $ex) {
             throw $ex;
         }

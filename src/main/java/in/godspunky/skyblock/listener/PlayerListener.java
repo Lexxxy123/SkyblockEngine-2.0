@@ -322,7 +322,7 @@ public class PlayerListener extends PListener {
             player.sendMessage("  " + ChatColor.RED + ChatColor.BOLD + "SLAYER QUEST FAILED!");
             player.sendMessage("   " + ChatColor.DARK_PURPLE + ChatColor.BOLD + "» " + ChatColor.GRAY + "You need to learn how to play this game first!");
         }
-        plugin.dataLoader.save(player.getUniqueId());
+        SMongoLoader.queue(player.getUniqueId().toString() , true);
         //user.saveCookie();
         //user.saveAllVanillaInstances();
         Blessings.STAT_MAP.remove(player.getUniqueId());
@@ -336,15 +336,15 @@ public class PlayerListener extends PListener {
         PlayerUtils.LAST_KILLED_MAPPING.remove(player.getUniqueId());
         Repeater.PTN_CACHE.remove(user.getUuid());
         PlayerUtils.STATISTICS_CACHE.remove(user.getUuid());
-        user.unload();
+       // user.unload();
     }
 
-    @EventHandler
-    public void onPlayerQuit2(final PlayerQuitEvent e) {
-        final Player player = e.getPlayer();
-        SputnikPlayer.BonemerangFix(player);
-        SputnikPlayer.KatanasFix(player);
-    }
+//    @EventHandler
+//    public void onPlayerQuit2(PlayerQuitEvent e) {
+//        final Player player = e.getPlayer();
+//        SputnikPlayer.BonemerangFix(player);
+//        SputnikPlayer.KatanasFix(player);
+//    }
 
     @EventHandler
     public void onMoveWorld(final PlayerChangedWorldEvent e) {

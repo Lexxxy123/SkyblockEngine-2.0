@@ -106,9 +106,9 @@ public class Profile
     private Double islandZ;
     private Region lastRegion;
 
-    @Getter
+
     @Setter
-    private boolean selected;
+    public boolean selected;
     private final Map<SMaterial, Integer> quiver;
     List<ActivePotionEffect> effects;
     double farmingXP;
@@ -204,7 +204,7 @@ public class Profile
     }
 
     public boolean isSelected() {
-        return User.getUser(getOwner()).profiles.get(uuid);
+        return selected;
     }
 
 
