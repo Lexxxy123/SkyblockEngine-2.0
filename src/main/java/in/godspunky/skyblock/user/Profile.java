@@ -72,6 +72,15 @@ public class Profile
     public String name;
     @Getter
     public static final int ISLAND_SIZE = 125;
+    public final static String[] PROFILE_NAMES = {
+            "Zucchini", "Papaya", "Watermelon", "Pineapple",
+            "Lemon", "Apple", "Banana", "Orange", "Pear",
+            "Coconuts", "Cherry", "Strawberry", "Raspberry",
+            "Kiwi", "Mango", "Pomegranate", "Grape",
+            "Avocado", "Tomato", "Cucumber", "Carrot",
+            "Potato", "Onion", "Garlic", "Celery",
+            "Broccoli", "Cauliflower", "Spinach", "Asparagus"
+    };
 
     public static long cookieduration;
     public static final Map<String, Profile> USER_CACHE = new HashMap<>();
@@ -87,7 +96,7 @@ public class Profile
     private long totalfloor6run;
     @Getter
     public UUID owner;
-    // private final Config config;
+
     final Map<ItemCollection, Integer> collections;
     @Getter
     private long coins;
@@ -204,7 +213,7 @@ public class Profile
     }
 
     public boolean isSelected() {
-        return selected;
+        return User.getUser(owner).getSelectedProfile().getId().equals(getId());
     }
 
 
@@ -1295,9 +1304,17 @@ public class Profile
     public static Profile get(UUID uuid, UUID owner) {
         if (owner == null) return null;
         if (USER_CACHE.containsKey(uuid.toString())) return USER_CACHE.get(uuid.toString());
+        // todo - clean it!
+        if (Skyblock.getPlugin().dataLoader.grabProfile(uuid.toString()) != null){
+            if (Skyblock.getPlugin().dataLoader.grabProfile(uuid.toString()).getString("name") != null){
+                SLog.info("found profile name!");
+                return new Profile(uuid.toString() , owner , Skyblock.getPlugin().dataLoader.grabProfile(uuid.toString()).getString("name"));
+            }
+        }
 
-        return new Profile(uuid.toString(), owner, "ERR: SBR 93");
+        return new Profile(uuid.toString(), owner, SUtil.generateRandomProfileNameFor());
     }
+
 
     public static Profile getExisting(UUID uuid, UUID owner) {
         if (owner == null) return null;
