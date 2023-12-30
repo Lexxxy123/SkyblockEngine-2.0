@@ -134,6 +134,7 @@ public class SMongoLoader
         User owner = User.getUser(profile.getOwner());
         Document base = grabProfile(profile.getUuid().toString());
 
+
         SUtil.runAsync(() -> {
             ItemStack[] inv;
             ItemStack[] arm;
@@ -335,8 +336,13 @@ public class SMongoLoader
         SUtil.runAsync(() -> owner.setPermanentCoins(profile.isPermanentCoins()));
         SUtil.runAsync(() -> owner.setSlayerQuest(profile.getSlayerQuest()));
         SUtil.runAsync(() -> owner.pets = profile.getPets());
-        
-     
+
+        SUtil.runAsync(()->{
+            Profile.updateProfileName(profile.uuid);
+            profile.setName(Profile.getProfileNames().get(profile.uuid));
+        });
+
+
         try {
             SUtil.runAsync(() -> profile.selected = owner.selectedProfile.getUuid().equals(profile.getUuid()));
         } catch (Exception e) {
