@@ -288,6 +288,13 @@ public class SUtil {
         stack.setDurability(data);
         return stack;
     }
+    public static ItemStack colorLeatherArmor(ItemStack stack, Color color) {
+        LeatherArmorMeta meta = (LeatherArmorMeta) stack.getItemMeta();
+        meta.setColor(color);
+        stack.setItemMeta(meta);
+
+        return stack;
+    }
 
     public static void border(final Inventory inventory, final GUI gui, final ItemStack stack, final int cornerSlot, final int cornerSlot2, final boolean overwrite, final boolean pickup) {
         if (cornerSlot < 0 || cornerSlot > inventory.getSize()) {

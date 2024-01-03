@@ -50,6 +50,7 @@ import in.godspunky.skyblock.item.farming.*;
 import in.godspunky.skyblock.item.foraging.*;
 import in.godspunky.skyblock.item.hoe.vanilla.*;
 import in.godspunky.skyblock.item.mining.*;
+import in.godspunky.skyblock.item.minions.CobbleStoneMinion;
 import in.godspunky.skyblock.item.oddities.*;
 import in.godspunky.skyblock.item.orb.*;
 import in.godspunky.skyblock.item.pet.*;
@@ -109,6 +110,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public enum SMaterial {
+
+    //Minions
+    COBBLE_STONE_MINION(Material.SKULL_ITEM , CobbleStoneMinion.class),
     DWARVEN_MITRIL(Material.PRISMARINE_CRYSTALS, Mitril.class),
     DWARVEN_TITANIUM(Material.SKULL_ITEM, Titanium.class),
     HIDDEN_BOOSTER_COOKIE(Material.COOKIE, BoosterCookie.class),
@@ -1167,6 +1171,17 @@ public enum SMaterial {
         final Object generic = this.getGenericInstance();
         if (generic instanceof ItemData) {
             return (ItemData) generic;
+        }
+        return null;
+    }
+
+    public SMinion getSMinion(){
+        if (!this.hasClass()) {
+            return null;
+        }
+        Object generic = getGenericInstance();
+        if (generic instanceof SMinion){
+            return (SMinion) generic;
         }
         return null;
     }

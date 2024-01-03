@@ -7,6 +7,8 @@ import in.godspunky.skyblock.entity.dungeons.watcher.Watcher;
 import in.godspunky.skyblock.extra.protocol.PacketInvoker;
 import in.godspunky.skyblock.gui.ConfirmWitherRuins;
 import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.minion.SkyblockMinion;
 import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.user.UserStash;
@@ -52,8 +54,8 @@ public class SSTest extends SCommand {
                     is.saveTo(sitem);
                     sitem.setStarAmount(5);
                 }
-            } else if (args[0].contains("collectionup")) {
-                User.getUser(player.getUniqueId()).addToCollection(ItemCollection.WHEAT, 50);
+            } else if (args[0].contains("minion")) {
+               new SkyblockMinion(SMaterial.COBBLE_STONE_MINION , 1 , player.getLocation().add(0, Double.parseDouble(args[1]),0) , User.getUser(player.getUniqueId())).spawn();
             } else if (!args[0].contains("wipe")) {
                 if (args[0].contains("vlw")) {
                     PacketInvoker.dropVoidSpawner(player, player.getLocation());
