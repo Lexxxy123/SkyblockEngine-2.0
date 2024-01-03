@@ -33,13 +33,11 @@ public class SSTest extends SCommand {
     public void run(final CommandSource sender, final String[] args) {
         final Player player = sender.getPlayer();
         if (player.isOp()) {
-            if (args[0].contains("sp")) {
-                player.sendMessage(ChatColor.YELLOW + "Intizing Map...");
-                final long s = System.currentTimeMillis();
-                final Watcher w = new Watcher(new Location(player.getWorld(), 96.0, 99.0, 96.0), new Location(player.getWorld(), 126.0, 66.0, 126.0), 69);
-                w.intitize();
-                final long s_ = System.currentTimeMillis() - s;
-                player.sendMessage(ChatColor.GREEN + "All actions completed (Loop, placing heads, spawn Watcher)! This took " + ChatColor.YELLOW + s_ + "ms");
+            if (args[0].contains("minioninventory")) {
+                User user = User.getUser(player.getUniqueId());
+                if (user.minions.isEmpty()) return;
+                user.minions.get(0).openInventory(player);
+
             } else if (args[0].contains("pl")) {
                 player.sendMessage(ChatColor.YELLOW + "Done!");
                 for (final Entity e : player.getWorld().getEntities()) {

@@ -22,6 +22,7 @@ import in.godspunky.skyblock.item.GenericItemType;
 import in.godspunky.skyblock.item.PlayerBoostStatistics;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.pet.Pet;
+import in.godspunky.skyblock.minion.SkyblockMinion;
 import in.godspunky.skyblock.potion.ActivePotionEffect;
 import in.godspunky.skyblock.potion.PotionEffect;
 import in.godspunky.skyblock.potion.PotionEffectType;
@@ -73,6 +74,7 @@ public class User {
     @Setter
     public Profile selectedProfile;
     public Map<String, Boolean> profiles;
+    public List<SkyblockMinion> minions;
     private static final Skyblock plugin;
     private static final File USER_FOLDER;
     private long sadancollections;
@@ -144,6 +146,7 @@ public class User {
         this.signContent = null;
         this.isCompletedSign = false;
         this.uuid = uuid;
+        this.minions = new ArrayList<>();
         this.collections = ItemCollection.getDefaultCollections();
         this.totalfloor6run = 0L;
         this.coins = 0L;

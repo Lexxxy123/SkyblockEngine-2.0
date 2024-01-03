@@ -1,15 +1,21 @@
 package in.godspunky.skyblock.minion;
 
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.item.SMinion;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.ItemBuilder;
+import in.godspunky.skyblock.util.PaginationList;
 import in.godspunky.skyblock.util.SUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,12 +61,53 @@ public class SkyblockMinion {
         this.armorStand.setBasePlate(false);
         this.armorStand.setCanPickupItems(false);
 
-        this.armorStand.setHelmet(new ItemStack(Material.SKULL_ITEM));
+        this.armorStand.setHelmet(SUtil.getSkull("null" , SMaterial.SKULL_ITEM));
         this.armorStand.setChestplate(SUtil.colorLeatherArmor(new ItemBuilder("", Material.LEATHER_CHESTPLATE, 1).toItemStack(), this.leatherArmorColor));
         this.armorStand.setLeggings(SUtil.colorLeatherArmor(new ItemBuilder("", Material.LEATHER_LEGGINGS, 1).toItemStack(), this.leatherArmorColor));
         this.armorStand.setBoots(SUtil.colorLeatherArmor(new ItemBuilder("", Material.LEATHER_BOOTS, 1).toItemStack(), this.leatherArmorColor));
         this.armorStand.setItemInHand(ItemInHand);
+        owner.minions.add(this);
+
+
+        new BukkitRunnable(){
+
+            @Override
+            public void run() {
+                if (armorStand == null || armorStand.isDead()) {
+                    cancel();
+                    return;
+                }
+                    System.out.println("[DEBUG] : generating resource!");
+                    collect();
+                }
+
+        }.runTaskTimerAsynchronously(Skyblock.getPlugin() , 1 , actionDelay * 20L);
 
     }
+    public void collect() {
+        ArrayList<ItemStack> drops = sMinion.calculateDrops(this.level);
 
+        Inventory inventory = Bukkit.createInventory(null, 54);
+
+        this.inventory.forEach((stack) -> { if (stack != null) inventory.addItem(stack); });
+
+        for (ItemStack drop : drops) {
+            inventory.addItem(drop);
+        }
+
+        List<ItemStack> newInventory = new ArrayList<>();
+        for (int i = 0; i < sMinion.getMaxStorage(level); ++i) {
+            if (inventory.getItem(i) != null) newInventory.add(inventory.getItem(i));
+        }
+
+        this.inventory = newInventory;
+    }
+    public void openInventory(Player player){
+        Inventory minionInventory = Bukkit.createInventory(null , 54);
+        for (ItemStack itemStack : inventory){
+            if (itemStack == null) continue;
+            minionInventory.addItem(itemStack);
+        }
+        player.openInventory(minionInventory);
+    }
 }
