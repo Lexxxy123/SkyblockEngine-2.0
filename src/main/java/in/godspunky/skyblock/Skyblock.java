@@ -3,7 +3,6 @@ package in.godspunky.skyblock;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.google.common.io.Files;
-import com.onarandombox.MultiverseCore.MultiverseCore;
 import de.slikey.effectlib.EffectManager;
 import in.godspunky.skyblock.auction.AuctionBid;
 import in.godspunky.skyblock.auction.AuctionEscrow;
@@ -42,10 +41,7 @@ import in.godspunky.skyblock.user.AuctionSettings;
 import in.godspunky.skyblock.user.DatabaseManager;
 import in.godspunky.skyblock.user.SMongoLoader;
 import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.BungeeChannel;
-import in.godspunky.skyblock.util.Groups;
-import in.godspunky.skyblock.util.SLog;
-import in.godspunky.skyblock.util.SerialNBTTagCompound;
+import in.godspunky.skyblock.util.*;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
 import net.swofty.swm.api.SlimePlugin;
@@ -94,7 +90,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 public class Skyblock extends JavaPlugin implements PluginMessageListener, BungeeChannel.ForwardConsumer {
-    public static MultiverseCore core;
+   // public static MultiverseCore core;
     private static ProtocolManager protocolManager;
     private static Economy econ;
     private static Skyblock plugin;
@@ -172,8 +168,8 @@ public class Skyblock extends JavaPlugin implements PluginMessageListener, Bunge
                 e.printStackTrace();
             }
             SLog.info("Loading SQL database...");
-           //DatabaseManager.connectToDatabase("mongodb://admin:admin@88.99.150.153:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2", "Godspunky");
-            DatabaseManager.connectToDatabase("mongodb://localhost:27017", "Godspunky");
+           DatabaseManager.connectToDatabase("mongodb://admin:admin@88.99.150.153:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2", "Godspunky");
+            //DatabaseManager.connectToDatabase("mongodb://localhost:27017", "Godspunky");
             this.sql = new SQLDatabase();
             this.dataLoader = new SMongoLoader();
             this.regionData = new SQLRegionData();
@@ -187,6 +183,7 @@ public class Skyblock extends JavaPlugin implements PluginMessageListener, Bunge
                 return;
             }
             this.slimePlugin = (SlimePlugin) Bukkit.getPluginManager().getPlugin("SwoftyWorldManager");
+            loadWorlds();
             SLog.info("Injecting...");
             PingAPI.register();
             new Metrics(this);
@@ -292,7 +289,7 @@ public class Skyblock extends JavaPlugin implements PluginMessageListener, Bunge
             SLog.info("Any illegal usage will be suppressed! DO NOT LEAK IT!");
             SLog.info("===================================");
             this.sq = new SummoningSequence(Bukkit.getWorld("arena"));
-            Bukkit.getWorld("arena").setAutoSave(false);
+            //Bukkit.getWorld("arena").setAutoSave(false);
             this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
             this.getServer().getPluginManager().registerEvents(new EntityListener(), this);
             this.getServer().getPluginManager().registerEvents(new BlockListener(), this);
@@ -325,6 +322,12 @@ public class Skyblock extends JavaPlugin implements PluginMessageListener, Bunge
         } catch (final Throwable $ex) {
             throw $ex;
         }
+    }
+
+    private void loadWorlds(){
+        new BlankWorldCreator("f6").createWorld();
+        new BlankWorldCreator("arena").createWorld();
+        //new BlankWorldCreator("f1");
     }
 
     public void onDisable() {
@@ -472,6 +475,7 @@ public class Skyblock extends JavaPlugin implements PluginMessageListener, Bunge
         this.cl.register(new StackMyDimoon());
         cl.register(new AdminItemCommand());
         cl.register(new ProfileCommand());
+        cl.register(new HexCommand());
         // todo use reflection!
     }
 
@@ -676,7 +680,7 @@ public class Skyblock extends JavaPlugin implements PluginMessageListener, Bunge
     }
 
     static {
-        Skyblock.core = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
+      //  Skyblock.core = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
         Skyblock.econ = null;
     }
 }

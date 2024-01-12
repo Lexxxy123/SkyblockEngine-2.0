@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.enchantment;
 
+import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.enchantments.Enchantment;
 import in.godspunky.skyblock.item.SpecificItemType;
@@ -8,6 +9,7 @@ import in.godspunky.skyblock.util.Sputnik;
 import java.util.*;
 
 public class EnchantmentType {
+    @Getter
     private static final Map<String, EnchantmentType> ENCHANTMENT_TYPE_CACHE;
     public static final EnchantmentType SHARPNESS;
     public static final EnchantmentType LIFE_STEAL;

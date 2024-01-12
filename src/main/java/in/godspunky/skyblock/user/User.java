@@ -73,6 +73,10 @@ public class User {
     @Getter
     @Setter
     public Profile selectedProfile;
+
+    @Getter
+    @Setter
+    public String name;
     public Map<String, Boolean> profiles;
     public List<SkyblockMinion> minions;
     private static final Skyblock plugin;
@@ -200,7 +204,7 @@ public class User {
 
          SUtil.runAsync(() -> {
 
-                //Skyblock.getPlugin().dataLoader.create(uuid);
+                Skyblock.getPlugin().dataLoader.createAndSaveNewProfile(uuid);
             });
         }
         if (reason == SwitchReason.SWITCH){
@@ -1082,6 +1086,34 @@ public class User {
             this.kill(cause, entity);
             return;
         }
+
+        double damageReductionPercentage;
+        double removeableDefenseAgainstEnderman = 0;
+
+        if (SItem.find(player.getInventory().getHelmet()) != null) {
+            if (SItem.find(player.getInventory().getHelmet()).getBonusDefense() > 0 && SItem.find(player.getInventory().getHelmet()).getType().equals(SMaterial.FINAL_DESTINATION_HELMET)) {
+                removeableDefenseAgainstEnderman += SItem.find(player.getInventory().getHelmet()).getBonusDefense();
+            }
+        }
+
+        if (SItem.find(player.getInventory().getChestplate()) != null) {
+            if (SItem.find(player.getInventory().getChestplate()).getBonusDefense() > 0 && SItem.find(player.getInventory().getChestplate()).getType().equals(SMaterial.FINAL_DESTINATION_CHESTPLATE)) {
+                removeableDefenseAgainstEnderman += SItem.find(player.getInventory().getChestplate()).getBonusDefense();
+            }
+        }
+
+        if (SItem.find(player.getInventory().getLeggings()) != null) {
+            if (SItem.find(player.getInventory().getLeggings()).getBonusDefense() > 0 && SItem.find(player.getInventory().getLeggings()).getType().equals(SMaterial.FINAL_DESTINATION_LEGGINGS)) {
+                removeableDefenseAgainstEnderman += SItem.find(player.getInventory().getLeggings()).getBonusDefense();
+            }
+        }
+
+        if (SItem.find(player.getInventory().getBoots()) != null) {
+            if (SItem.find(player.getInventory().getBoots()).getBonusDefense() > 0 && SItem.find(player.getInventory().getBoots()).getType().equals(SMaterial.FINAL_DESTINATION_BOOTS)) {
+                removeableDefenseAgainstEnderman += SItem.find(player.getInventory().getBoots()).getBonusDefense();
+            }
+        }
+
         final float ab = (float) Math.max(0.0, SputnikPlayer.getCustomAbsorptionHP(player) - d);
         double actual = Math.max(0.0, d - SputnikPlayer.getCustomAbsorptionHP(player));
         SputnikPlayer.setCustomAbsorptionHP(player, ab);

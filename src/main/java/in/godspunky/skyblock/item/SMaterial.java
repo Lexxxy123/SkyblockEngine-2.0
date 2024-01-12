@@ -3,6 +3,10 @@ package in.godspunky.skyblock.item;
 import in.godspunky.skyblock.entity.SEntityType;
 import in.godspunky.skyblock.item.accessory.*;
 import in.godspunky.skyblock.item.armor.*;
+import in.godspunky.skyblock.item.armor.final_destination.FinalDestinationBoots;
+import in.godspunky.skyblock.item.armor.final_destination.FinalDestinationChestplate;
+import in.godspunky.skyblock.item.armor.final_destination.FinalDestinationHelmet;
+import in.godspunky.skyblock.item.armor.final_destination.FinalDestinationLeggings;
 import in.godspunky.skyblock.item.armor.gigachad.*;
 import in.godspunky.skyblock.item.armor.hardened.HardenedDiamondBoots;
 import in.godspunky.skyblock.item.armor.hardened.HardenedDiamondChestplate;
@@ -274,6 +278,11 @@ public enum SMaterial {
     MINER_HELMET(Material.DIAMOND_HELMET, MinerHelmet.class),
     MINER_CHESTPLATE(Material.DIAMOND_CHESTPLATE, MinerChestplate.class),
     MINER_LEGGINGS(Material.DIAMOND_LEGGINGS, MinerLeggings.class),
+
+    FINAL_DESTINATION_HELMET(Material.SKULL_ITEM, FinalDestinationHelmet.class),
+    FINAL_DESTINATION_CHESTPLATE(Material.LEATHER_CHESTPLATE, FinalDestinationChestplate.class),
+    FINAL_DESTINATION_LEGGINGS(Material.LEATHER_LEGGINGS, FinalDestinationLeggings.class),
+    FINAL_DESTINATION_BOOTS(Material.LEATHER_BOOTS, FinalDestinationBoots.class),
     MINER_BOOTS(Material.DIAMOND_BOOTS, MinerBoots.class),
     HARDENED_DIAMOND_HELMET(Material.DIAMOND_HELMET, HardenedDiamondHelmet.class),
     HARDENED_DIAMOND_CHESTPLATE(Material.DIAMOND_CHESTPLATE, HardenedDiamondChestplate.class),

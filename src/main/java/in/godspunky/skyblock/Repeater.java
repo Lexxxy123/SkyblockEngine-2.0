@@ -451,24 +451,24 @@ public class Repeater {
         if (set instanceof TickingSet) {
             ((TickingSet) set).tick(player, SItem.find(inventory.getHelmet()), SItem.find(inventory.getChestplate()), SItem.find(inventory.getLeggings()), SItem.find(inventory.getBoots()), counters2);
         }
-        String skysim = Sputnik.trans("&e&lSKYSIM");
+        String skysim = Sputnik.trans("&e&lSKYBLOCK");
         final Boolean isNotCracked = Bukkit.getServer().getOnlineMode();
         if (Repeater.SBA_MAP.containsKey(uuid)) {
             if (Repeater.SBA_MAP.get(uuid)) {
                 skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYBLOCK");
             } else if (isNotCracked) {
-                skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYSIM &b&lBETA");
+                skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYBLOCK &b&lBETA");
             } else {
-                skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYSIM &b&lBETA");
+                skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYBLOCK &b&lBETA");
             }
         } else if (isNotCracked) {
-            skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYSIM &b&lBETA");
+            skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYBLOCK &b&lBETA");
         } else {
-            skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYSIM &b&lBETA");
+            skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYBLOCK &b&lBETA");
         }
         String finalSkysim = skysim;
         SUtil.runSync(()->{
-            Sidebar sidebar = new Sidebar(finalSkysim, "SKYSIM");
+            Sidebar sidebar = new Sidebar(finalSkysim, "SKYBLOCK");
             SUtil.runAsync(()->{
                 String strd = SUtil.getDate();
                 if (RebootServerCommand.secondMap.containsKey(Bukkit.getServer())) {
