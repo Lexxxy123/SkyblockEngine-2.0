@@ -109,7 +109,7 @@
 			<url>https://repo.citizensnpcs.co/</url>
 		</repository>
 		<repository>
-			<id>github</id>
+			<id>githubxD</id>
 			<url>https://maven.pkg.github.com/Slikey/EffectLib</url>
 		</repository>
 		<repository>
