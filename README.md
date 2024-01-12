@@ -1,4 +1,4 @@
-# Project Name
+# GodspunkySkyblockCore
 
 ## Hypixel SkyBlock Recreation
 
