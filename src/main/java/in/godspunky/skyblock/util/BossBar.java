@@ -16,7 +16,7 @@ public class BossBar extends BukkitRunnable {
     private final HashMap<Player, EntityWither> withers;
 
     public BossBar(final String title) {
-        this.withers = new HashMap<Player, EntityWither>();
+        this.withers = new HashMap<>();
         this.title = title;
         this.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }

@@ -24,16 +24,14 @@ public class FerocityCalculation {
         if (ferocity == 0) {
             return 0;
         }
-        final int feroDiv = Math.round((float) (ferocity / 100)) + 1;
-        return feroDiv;
+        return Math.round((float) (ferocity / 100)) + 1;
     }
 
     public static Integer ferocityStrikeCurrent(final int ferocity) {
         if (ferocity < 100) {
             return 0;
         }
-        final int feroDiv = Math.round((float) (ferocity / 100));
-        return feroDiv;
+        return Math.round((float) (ferocity / 100));
     }
 
     public static Double ferocityPercentCurrent(final int ferocity) {
@@ -107,6 +105,6 @@ public class FerocityCalculation {
     }
 
     static {
-        ONE_TYPE_FEROCITY_BONUS_ENDERMAN = new HashMap<UUID, Integer>();
+        ONE_TYPE_FEROCITY_BONUS_ENDERMAN = new HashMap<>();
     }
 }

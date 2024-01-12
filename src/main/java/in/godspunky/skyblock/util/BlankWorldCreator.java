@@ -6,6 +6,7 @@ import org.bukkit.generator.ChunkGenerator;
 
 import java.util.Random;
 
+@SuppressWarnings("deprecation")
 public class BlankWorldCreator extends WorldCreator {
     public BlankWorldCreator(final String name) {
         super(name);

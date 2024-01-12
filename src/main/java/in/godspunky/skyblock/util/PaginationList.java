@@ -1,7 +1,12 @@
 package in.godspunky.skyblock.util;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.*;
 
+@Setter
+@Getter
 public class PaginationList<T> extends ArrayList<T> {
     private int elementsPerPage;
 
@@ -14,16 +19,9 @@ public class PaginationList<T> extends ArrayList<T> {
         this.elementsPerPage = elementsPerPage;
     }
 
+    @SafeVarargs
     public PaginationList(final int elementsPerPage, final T... elements) {
         super(Arrays.asList(elements));
-        this.elementsPerPage = elementsPerPage;
-    }
-
-    public int getElementsPerPage() {
-        return this.elementsPerPage;
-    }
-
-    public void setElementsPerPage(final int elementsPerPage) {
         this.elementsPerPage = elementsPerPage;
     }
 

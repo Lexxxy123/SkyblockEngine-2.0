@@ -3,7 +3,7 @@ package in.godspunky.skyblock.util;
 import java.util.LinkedList;
 
 public class SaveQueue<T> {
-    private LinkedList<T> queue;
+    private final LinkedList<T> queue;
 
     public SaveQueue() {
         queue = new LinkedList<>();

@@ -11,22 +11,18 @@ import java.util.Base64;
 public class SkyEncryption {
     private static final String UNICODE_FORMAT = "UTF8";
     public static final String DESEDE_ENCRYPTION_SCHEME = "DESede";
-    private final KeySpec ks;
-    private final SecretKeyFactory skf;
     private final Cipher cipher;
     byte[] arrayBytes;
-    private final String myEncryptionKey;
-    private final String myEncryptionScheme;
     SecretKey key;
 
     public SkyEncryption() throws Exception {
-        this.myEncryptionKey = "ThisIsSpartaThisIsSparta";
-        this.myEncryptionScheme = "DESede";
-        this.arrayBytes = this.myEncryptionKey.getBytes(StandardCharsets.UTF_8);
-        this.ks = new DESedeKeySpec(this.arrayBytes);
-        this.skf = SecretKeyFactory.getInstance(this.myEncryptionScheme);
-        this.cipher = Cipher.getInstance(this.myEncryptionScheme);
-        this.key = this.skf.generateSecret(this.ks);
+        String myEncryptionKey = "ThisIsSpartaThisIsSparta";
+        String myEncryptionScheme = "DESede";
+        this.arrayBytes = myEncryptionKey.getBytes(StandardCharsets.UTF_8);
+        KeySpec ks = new DESedeKeySpec(this.arrayBytes);
+        SecretKeyFactory skf = SecretKeyFactory.getInstance(myEncryptionScheme);
+        this.cipher = Cipher.getInstance(myEncryptionScheme);
+        this.key = skf.generateSecret(ks);
     }
 
     public String encrypt(final String unencryptedString) {

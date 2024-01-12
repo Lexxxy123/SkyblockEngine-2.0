@@ -1,5 +1,7 @@
 package in.godspunky.skyblock;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -10,8 +12,12 @@ public class Dungeon {
     private final UUID uuid;
     private final World world;
     private ArrayList<Player> dungeonsmate;
+    @Setter
+    @Getter
     private int deaths;
     private int totalsecretfound;
+    @Setter
+    @Getter
     private int score;
     private int percentagecomplete;
     private boolean isBloodCleared;
@@ -31,16 +37,8 @@ public class Dungeon {
         this.witherkeys = 0;
     }
 
-    public int getScore() {
-        return this.score;
-    }
-
     public World getOperatingWorld() {
         return this.world;
-    }
-
-    public void setScore(final int sc) {
-        this.score = sc;
     }
 
     public UUID getRunUUID() {
@@ -77,14 +75,6 @@ public class Dungeon {
 
     public void setWithersKey(final int wk) {
         this.witherkeys = wk;
-    }
-
-    public int getDeaths() {
-        return this.deaths;
-    }
-
-    public void setDeaths(final int d) {
-        this.deaths = d;
     }
 
     public ArrayList<Player> getAllDungeonsMembers() {

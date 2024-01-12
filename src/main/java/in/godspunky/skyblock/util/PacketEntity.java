@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.util;
 
+import lombok.Getter;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -13,6 +14,7 @@ import java.util.List;
 
 public class PacketEntity {
     Entity entity;
+    @Getter
     List<Player> players;
     Packet spawn;
     List<Packet> spawnPackets;
@@ -29,7 +31,7 @@ public class PacketEntity {
         this.players = new ArrayList<Player>();
         this.updateSpawnPacket();
         PacketEntity.managers.add(this);
-        this.tickTask = Bukkit.getScheduler().runTaskTimer(Skyblock.getPlugin(), () -> this.tick(), 1L, 5L);
+        this.tickTask = Bukkit.getScheduler().runTaskTimer(Skyblock.getPlugin(), this::tick, 1L, 5L);
     }
 
     public void setShowPermission(final String permission) {
@@ -38,7 +40,7 @@ public class PacketEntity {
 
     public void addSpawnPacket(final Packet packet) {
         if (this.spawnPackets == null) {
-            this.spawnPackets = new ArrayList<Packet>();
+            this.spawnPackets = new ArrayList<>();
         }
         this.spawnPackets.add(packet);
         this.sendCustomPacket(packet);
@@ -71,8 +73,7 @@ public class PacketEntity {
             return false;
         }
         final PacketPlayOutAnimation teleport = new PacketPlayOutAnimation(this.entity, anim);
-        for (int i = 0; i < this.players.size(); ++i) {
-            final Player next = this.players.get(i);
+        for (final Player next : this.players) {
             ((CraftPlayer) next).getHandle().playerConnection.sendPacket(teleport);
         }
         return true;
@@ -110,18 +111,13 @@ public class PacketEntity {
     }
 
     public void hide() {
-        for (int i = 0; i < this.players.size(); ++i) {
-            final Player next = this.players.get(i);
+        for (final Player next : this.players) {
             this.sendDestroyPacket(next);
         }
     }
 
     protected void updateSpawnPacket() {
         this.spawn = new PacketPlayOutSpawnEntityLiving((EntityLiving) this.entity);
-    }
-
-    public List<Player> getPlayers() {
-        return this.players;
     }
 
     public void spawn() {

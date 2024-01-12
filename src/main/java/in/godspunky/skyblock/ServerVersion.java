@@ -3,21 +3,11 @@ package in.godspunky.skyblock;
 import in.godspunky.skyblock.util.SkyEncryption;
 
 public class ServerVersion {
-    private final String z;
-    private final int a;
-    private final int b;
-    private final int c;
-    private final int d;
     private byte[] finalResult;
 
     public ServerVersion(final String stage, final int a, final int b, final int c, final int d) {
-        this.a = a;
-        this.b = b;
-        this.c = c;
-        this.d = d;
-        this.z = stage;
         try {
-            this.finalResult = new SkyEncryption().encrypt(this.z + "-" + this.a + "." + this.b + "." + this.c + "." + this.d).getBytes();
+            this.finalResult = new SkyEncryption().encrypt(stage + "-" + a + "." + b + "." + c + "." + d).getBytes();
         } catch (final Exception e) {
             e.printStackTrace();
         }

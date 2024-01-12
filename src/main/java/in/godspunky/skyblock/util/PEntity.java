@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.util;
 
 import in.godspunky.skyblock.Skyblock;
+import lombok.Getter;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -14,6 +15,7 @@ import java.util.List;
 
 public class PEntity {
     Entity entity;
+    @Getter
     List<Player> players;
     Packet spawn;
     List<Packet> spawnPackets;
@@ -31,7 +33,7 @@ public class PEntity {
         this.players = new ArrayList<Player>();
         this.updateSpawnPacket();
         PEntity.managers.add(this);
-        this.tickTask = Bukkit.getScheduler().runTaskTimer(Skyblock.getPlugin(), () -> this.tick(), 1L, 5L);
+        this.tickTask = Bukkit.getScheduler().runTaskTimer(Skyblock.getPlugin(), this::tick, 1L, 5L);
     }
 
     public PEntity(final Location location) {
@@ -64,8 +66,7 @@ public class PEntity {
         this.y = this.entity.locY;
         this.z = this.entity.locZ;
         final PacketPlayOutEntityTeleport teleport = new PacketPlayOutEntityTeleport(this.entity);
-        for (int i = 0; i < this.players.size(); ++i) {
-            final Player next = this.players.get(i);
+        for (final Player next : this.players) {
             ((CraftPlayer) next).getHandle().playerConnection.sendPacket(teleport);
         }
         return true;
@@ -76,8 +77,7 @@ public class PEntity {
             return false;
         }
         final PacketPlayOutAnimation teleport = new PacketPlayOutAnimation(this.entity, anim);
-        for (int i = 0; i < this.players.size(); ++i) {
-            final Player next = this.players.get(i);
+        for (final Player next : this.players) {
             ((CraftPlayer) next).getHandle().playerConnection.sendPacket(teleport);
         }
         return true;
@@ -115,18 +115,13 @@ public class PEntity {
     }
 
     public void hide() {
-        for (int i = 0; i < this.players.size(); ++i) {
-            final Player next = this.players.get(i);
+        for (final Player next : this.players) {
             this.sendDestroyPacket(next);
         }
     }
 
     protected void updateSpawnPacket() {
         this.spawn = new PacketPlayOutSpawnEntityLiving((EntityLiving) this.entity);
-    }
-
-    public List<Player> getPlayers() {
-        return this.players;
     }
 
     public void spawn() {

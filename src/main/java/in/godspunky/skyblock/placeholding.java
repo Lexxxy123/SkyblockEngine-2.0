@@ -15,6 +15,7 @@ import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.codec.binary.Base64;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -25,23 +26,23 @@ public class placeholding extends PlaceholderExpansion {
         return true;
     }
 
-    public String getAuthor() {
-        return "GiaKhanhVN";
+    public @NotNull String getAuthor() {
+        return "TeamGodspunky";
     }
 
-    public String getIdentifier() {
-        return "skysim";
+    public @NotNull String getIdentifier() {
+        return "godspunky";
     }
 
-    public String getVersion() {
+    public @NotNull String getVersion() {
         return "0.1.6";
     }
 
-    public String onRequest(final OfflinePlayer player, final String identifier) {
+    public String onRequest(final OfflinePlayer player, final @NotNull String identifier) {
         final UUID uuid = player.getUniqueId();
         final User user = User.getUser(player.getUniqueId());
         final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(uuid);
-        Double visualcap = statistics.getCritChance().addAll() * 100.0;
+        double visualcap = statistics.getCritChance().addAll() * 100.0;
         if (visualcap > 100.0) {
             visualcap = 100.0;
         }
@@ -56,7 +57,7 @@ public class placeholding extends PlaceholderExpansion {
                 return String.valueOf((statistics.getSpeed().addAll() * 100.0));
             }
             if (identifier.equals("critchance")) {
-                return String.valueOf(visualcap.intValue());
+                return String.valueOf((int) visualcap);
             }
             if (identifier.equals("critdamage")) {
                 return String.valueOf((statistics.getCritDamage().addAll() * 100.0));
@@ -92,9 +93,9 @@ public class placeholding extends PlaceholderExpansion {
                 item.update();
                 final ItemStack stacc = item.getStack();
                 for (final String s : stacc.getItemMeta().getLore()) {
-                    sb.append(s + "\n");
+                    sb.append(s).append("\n");
                 }
-                sb.append(item.getRarity().getBoldedColor() + item.getRarity().getDisplay());
+                sb.append(item.getRarity().getBoldedColor()).append(item.getRarity().getDisplay());
                 return sb.toString();
             } else if (identifier.equals("pet_texture")) {
                 final Pet pet2 = this.findPetClassA(player);
@@ -102,8 +103,7 @@ public class placeholding extends PlaceholderExpansion {
                     return "Steve";
                 }
                 final String URL = "{\"textures\":{\"SKIN\":{\"url\":\"http://textures.minecraft.net/texture/" + pet2.getURL() + "\"}}}";
-                final String encodedString = Base64.encodeBase64String(URL.getBytes());
-                return encodedString;
+                return Base64.encodeBase64String(URL.getBytes());
             } else {
                 if (identifier.equals("potion")) {
                     return this.getEffectLoop(player);
@@ -200,7 +200,7 @@ public class placeholding extends PlaceholderExpansion {
         List<ActivePotionEffect> pte = new ArrayList<ActivePotionEffect>();
         if (user != null) {
             pte = user.getEffects();
-            if (user.getEffects().size() > 0) {
+            if (!user.getEffects().isEmpty()) {
                 returnString = Sputnik.trans(" &7You have &6" + user.getEffects().size() + " &7effects. Use \"&6/potions&7\" to see them ") + "\n" + Sputnik.trans(this.a(user, pte));
             }
         }
@@ -217,6 +217,6 @@ public class placeholding extends PlaceholderExpansion {
     }
 
     static {
-        PTE_CACHE = new HashMap<UUID, String>();
+        PTE_CACHE = new HashMap<>();
     }
 }

@@ -671,16 +671,16 @@ public class Repeater {
     }
 
     static {
-        MANA_MAP = new HashMap<UUID, Integer>();
-        MANA_REGEN_DEC = new HashMap<UUID, Boolean>();
-        SBA_MAP = new HashMap<UUID, Boolean>();
-        DEFENSE_REPLACEMENT_MAP = new HashMap<UUID, DefenseReplacement>();
-        MANA_REPLACEMENT_MAP = new HashMap<UUID, ManaReplacement>();
-        BEACON_THROW2 = new HashMap<UUID, Entity>();
-        BEACON_OWNER = new HashMap<Entity, Player>();
-        BEACON = new HashMap<Entity, EntityFallingBlock>();
-        PTN_CACHE = new HashMap<UUID, Integer>();
+        MANA_MAP = new HashMap<>();
+        MANA_REGEN_DEC = new HashMap<>();
+        SBA_MAP = new HashMap<>();
+        DEFENSE_REPLACEMENT_MAP = new HashMap<>();
+        MANA_REPLACEMENT_MAP = new HashMap<>();
+        BEACON_THROW2 = new HashMap<>();
+        BEACON_OWNER = new HashMap<>();
+        BEACON = new HashMap<>();
+        PTN_CACHE = new HashMap<>();
         Repeater.EFFECT_COUNTING = 0;
-        FloorLivingSec = new HashMap<UUID, Integer>();
+        FloorLivingSec = new HashMap<>();
     }
 }
