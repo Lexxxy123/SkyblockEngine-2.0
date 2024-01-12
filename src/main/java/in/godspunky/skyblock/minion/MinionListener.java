@@ -29,17 +29,12 @@ public class MinionListener extends PListener {
     @EventHandler
     public void onPlace(BlockPlaceEvent event){
         Player player = event.getPlayer();
+        if (event.getPlayer().getItemInHand() == null) return;
         ItemStack itemInHand = event.getItemInHand();
         if (!itemInHand.hasItemMeta()) return;
         System.out.println(itemInHand.getItemMeta().getDisplayName());
         if (!event.getItemInHand().getItemMeta().getDisplayName().contains("minion")) return;
-        System.out.println("found a minion!");
-        System.out.println("**** Details ****");
         SItem sItem = SItem.find(itemInHand);
-        System.out.println("Display name : " + sItem.getDisplayName());
-        System.out.println("Type : " + sItem.getType());
-        System.out.println("is Minion : " + sItem.getType().getSMinion() != null);
-        System.out.println("**** end ****");
         // todo :  store minion level in item nbt!
         if (sItem.getType().getSMinion() != null){
             new SkyblockMinion(sItem.getType() ,
