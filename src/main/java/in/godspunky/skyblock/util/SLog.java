@@ -7,6 +7,10 @@ public class SLog {
     private static final Logger LOGGER;
     private static final String PREFIX = "[Skyblock]";
 
+    static {
+        LOGGER = Logger.getLogger("Minecraft");
+    }
+
     private static void log(final Object o, final Level l) {
         SLog.LOGGER.log(l, "[Skyblock] " + o);
     }
@@ -21,9 +25,5 @@ public class SLog {
 
     public static void severe(final Object o) {
         log(o, Level.SEVERE);
-    }
-
-    static {
-        LOGGER = Logger.getLogger("Minecraft");
     }
 }

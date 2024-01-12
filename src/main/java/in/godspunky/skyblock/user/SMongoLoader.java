@@ -21,11 +21,48 @@ import lombok.SneakyThrows;
 import org.bson.Document;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class SMongoLoader
-{
+public class SMongoLoader {
+    public static SaveQueue<SaveInfo> savingQueue = new SaveQueue<>();
+    public Map<String, Object> profileCache;
+    public Map<String, Object> userCache;
+    public String cachedUserId;
+    public String cachedProfileId;
+
+
+    public SMongoLoader(UUID id) {
+        profileCache = new HashMap<>();
+        userCache = new HashMap<>();
+        cachedUserId = id.toString();
+    }
+
+
+    public SMongoLoader() {
+        profileCache = new HashMap<>();
+        userCache = new HashMap<>();
+    }
+
+    public static void queue(SaveInfo i) {
+        savingQueue.add(i);
+    }
+
+    public static void queue(String uuid, boolean soft) {
+        savingQueue.add(new SaveInfo(uuid, soft));
+    }
+
+    public static void startQueueTask() {
+        Skyblock.getPlugin().getServer().getScheduler().runTaskTimer(Skyblock.getPlugin(), () -> {
+            if (!savingQueue.isEmpty()) {
+                SaveInfo currentSave = savingQueue.dequeue();
+                SLog.info("Saving data for :" + currentSave.getUuid());
+                Skyblock.getPlugin().dataLoader.save(UUID.fromString(currentSave.getUuid()));
+            }
+        }, 1L, 1L);
+    }
+
     public void load(UUID uuid) {
         User user = User.getUser(uuid);
         cachedUserId = uuid.toString();
@@ -35,7 +72,7 @@ public class SMongoLoader
 
         if (selectedProfileUUID != null && SUtil.isUUID(selectedProfileUUID.toString())) {
 
-            user.selectedProfile = Profile.get(selectedProfileUUID , uuid);
+            user.selectedProfile = Profile.get(selectedProfileUUID, uuid);
 
             if (!user.profiles.containsKey(user.selectedProfile.uuid)) {
                 user.profiles.clear();
@@ -103,7 +140,7 @@ public class SMongoLoader
         SUtil.runAsync(() -> saveUserData(db));
         Document base = grabUser(uuid.toString());
         if (base != null && user.selectedProfile == null) {
-            if (getString(base , "selectedProfile" , null) != null) {
+            if (getString(base, "selectedProfile", null) != null) {
                 user.selectedProfile = Profile.get(UUID.fromString(getString(base, "selectedProfile", null)), uuid);
             }
         }
@@ -352,7 +389,7 @@ public class SMongoLoader
         SUtil.runAsync(() -> owner.setSlayerQuest(profile.getSlayerQuest()));
         SUtil.runAsync(() -> owner.pets = profile.getPets());
 
-        SUtil.runAsync(()->{
+        SUtil.runAsync(() -> {
             Profile.updateProfileName(profile.uuid);
             profile.setName(Profile.getProfileNames().get(profile.uuid));
         });
@@ -369,8 +406,6 @@ public class SMongoLoader
         User.USER_CACHE.put(owner.getUuid(), owner);
     }
 
-
-
     public void saveProfile(Profile profile) {
         ProfileDatabase db = new ProfileDatabase(profile.uuid, true);
 
@@ -382,7 +417,7 @@ public class SMongoLoader
         setProfileProperty("owner", profile.owner.toString());
         setProfileProperty("inventory", BukkitSerializeClass.itemStackArrayToBase64(inv));
         setProfileProperty("armor", BukkitSerializeClass.itemStackArrayToBase64(arm));
-        setProfileProperty( "name", profile.name);
+        setProfileProperty("name", profile.name);
         Map<String, Integer> tempColl = new HashMap<>();
         for (ItemCollection collection : ItemCollection.getCollections()) {
             tempColl.put(collection.getIdentifier(), profile.getCollection(collection));
@@ -434,23 +469,6 @@ public class SMongoLoader
         SUtil.runAsync(() -> saveProfileData(db));
         Profile.USER_CACHE.remove(profile.uuid);
         User.USER_CACHE.remove(profile.owner);
-    }
-
-
-    public Map<String, Object> profileCache;
-    public Map<String, Object> userCache;
-    public String cachedUserId;
-    public String cachedProfileId;
-
-    public SMongoLoader(UUID id) {
-        profileCache = new HashMap<>();
-        userCache = new HashMap<>();
-        cachedUserId = id.toString();
-    }
-
-    public SMongoLoader() {
-        profileCache = new HashMap<>();
-        userCache = new HashMap<>();
     }
 
     public void setProfileProperty(String key, Object valye) {
@@ -510,7 +528,6 @@ public class SMongoLoader
         return Long.parseLong(getString(base, key, def));
     }
 
-
     public void saveProfileData(ProfileDatabase db) {
         Document query = new Document("_id", db.id);
         Document found = ProfileDatabase.collection.find(query).first();
@@ -518,7 +535,7 @@ public class SMongoLoader
             SLog.info("Cache size : " + profileCache.size());
             Document updated = new Document(found);
             profileCache.forEach(updated::append);
-            for(Map.Entry<String , Object> entry : profileCache.entrySet()){
+            for (Map.Entry<String, Object> entry : profileCache.entrySet()) {
                 System.out.println(entry.getKey() + " : " + entry.getValue());
             }
             ProfileDatabase.collection.replaceOne(found, updated);
@@ -549,27 +566,8 @@ public class SMongoLoader
         Document found = UserDatabase.collection.find(query).first();
         Document New = new Document("_id", db.id);
         userCache.forEach(New::append);
-       if (found == null) {
-           UserDatabase.collection.insertOne(New);
-       }
-    }
-    public static void queue(SaveInfo i) {
-        savingQueue.add(i);
-    }
-    public static void queue(String uuid , boolean soft) {
-        savingQueue.add(new SaveInfo(uuid , soft));
-    }
-
-    public static SaveQueue<SaveInfo> savingQueue = new SaveQueue<>();
-
-
-    public static void startQueueTask(){
-       Skyblock.getPlugin().getServer().getScheduler().runTaskTimer(Skyblock.getPlugin(), () -> {
-            if (!savingQueue.isEmpty()) {
-                SaveInfo currentSave = savingQueue.dequeue();
-                SLog.info("Saving data for :" + currentSave.getUuid());
-                Skyblock.getPlugin().dataLoader.save(UUID.fromString(currentSave.getUuid()));
-            }
-        }, 1L, 1L);
+        if (found == null) {
+            UserDatabase.collection.insertOne(New);
+        }
     }
 }

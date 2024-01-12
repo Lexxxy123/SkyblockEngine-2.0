@@ -1,7 +1,6 @@
 package in.godspunky.skyblock.item.mining;
 
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.util.Sputnik;
 
 public class Titanium implements MaterialStatistics, MaterialFunction, SkullStatistics {

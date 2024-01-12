@@ -28,8 +28,7 @@ import java.util.List;
 
 public class FinalDestinationBoots implements ToolStatistics, MaterialFunction, LeatherArmorStatistics {
     @Override
-    public String getDisplayName()
-    {
+    public String getDisplayName() {
         return "Final Destination Boots";
     }
 
@@ -64,38 +63,32 @@ public class FinalDestinationBoots implements ToolStatistics, MaterialFunction, 
     }
 
     @Override
-    public Rarity getRarity()
-    {
+    public Rarity getRarity() {
         return Rarity.LEGENDARY;
     }
 
     @Override
-    public GenericItemType getType()
-    {
+    public GenericItemType getType() {
         return GenericItemType.ARMOR;
     }
 
     @Override
-    public SpecificItemType getSpecificType()
-    {
+    public SpecificItemType getSpecificType() {
         return SpecificItemType.BOOTS;
     }
 
     @Override
-    public double getBaseHealth()
-    {
+    public double getBaseHealth() {
         return 100;
     }
 
     @Override
-    public double getBaseDefense()
-    {
+    public double getBaseDefense() {
         return 100;
     }
 
     @Override
-    public double getBaseIntelligence()
-    {
+    public double getBaseIntelligence() {
         return 100;
     }
 

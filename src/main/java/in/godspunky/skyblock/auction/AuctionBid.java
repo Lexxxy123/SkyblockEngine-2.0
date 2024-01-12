@@ -17,16 +17,16 @@ public class AuctionBid implements ConfigurationSerializable {
         this.timestamp = timestamp;
     }
 
+    public static AuctionBid deserialize(Map<String, Object> map) {
+        return new AuctionBid(UUID.fromString((String) map.get("bidder")), (Long) (map.get("amount")), (Long) (map.get("timestamp")));
+    }
+
     public Map<String, Object> serialize() {
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("bidder", this.bidder.toString());
         map.put("amount", this.amount);
         map.put("timestamp", this.timestamp);
         return map;
-    }
-
-    public static AuctionBid deserialize(Map<String, Object> map) {
-        return new AuctionBid(UUID.fromString((String) map.get("bidder")), (Long) (map.get("amount")), (Long) (map.get("timestamp")));
     }
 
     public UUID getBidder() {

@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.potion;
 
-import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import in.godspunky.skyblock.util.SUtil;
+import net.minecraft.server.v1_8_R3.NBTTagCompound;
 
 import java.util.Arrays;
 
@@ -14,6 +14,13 @@ public class PotionEffect {
         this.type = type;
         this.level = level;
         this.duration = duration;
+    }
+
+    public static PotionEffect ofCompound(final String namespace, final NBTTagCompound compound) {
+        final PotionEffectType type = PotionEffectType.getByNamespace(namespace);
+        final int level = compound.getInt("level");
+        final long duration = compound.getLong("duration");
+        return new PotionEffect(type, level, duration);
     }
 
     public String getDescription() {
@@ -78,13 +85,6 @@ public class PotionEffect {
         compound.setInt("level", this.level);
         compound.setLong("duration", this.duration);
         return compound;
-    }
-
-    public static PotionEffect ofCompound(final String namespace, final NBTTagCompound compound) {
-        final PotionEffectType type = PotionEffectType.getByNamespace(namespace);
-        final int level = compound.getInt("level");
-        final long duration = compound.getLong("duration");
-        return new PotionEffect(type, level, duration);
     }
 
     public PotionEffectType getType() {

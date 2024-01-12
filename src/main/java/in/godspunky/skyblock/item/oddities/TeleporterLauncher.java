@@ -2,7 +2,6 @@ package in.godspunky.skyblock.item.oddities;
 
 import in.godspunky.skyblock.item.*;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
-import in.godspunky.skyblock.item.*;
 
 public class TeleporterLauncher implements MaterialStatistics, MaterialFunction, ItemData {
     @Override

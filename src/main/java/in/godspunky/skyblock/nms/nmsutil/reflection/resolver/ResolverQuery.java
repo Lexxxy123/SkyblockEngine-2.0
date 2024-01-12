@@ -5,8 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ResolverQuery {
-    private String name;
     private final Class<?>[] types;
+    private String name;
 
     public ResolverQuery(final String name, final Class<?>... types) {
         this.name = name;
@@ -20,6 +20,10 @@ public class ResolverQuery {
 
     public ResolverQuery(final Class<?>... types) {
         this.types = types;
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     public String getName() {
@@ -59,10 +63,6 @@ public class ResolverQuery {
     @Override
     public String toString() {
         return "ResolverQuery{name='" + this.name + '\'' + ", types=" + Arrays.toString(this.types) + '}';
-    }
-
-    public static Builder builder() {
-        return new Builder();
     }
 
     public static class Builder {

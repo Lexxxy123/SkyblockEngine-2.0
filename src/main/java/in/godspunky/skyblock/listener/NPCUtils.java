@@ -1,8 +1,8 @@
 package in.godspunky.skyblock.listener;
 
+import in.godspunky.skyblock.util.SLog;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.entity.Entity;
-import in.godspunky.skyblock.util.SLog;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +11,12 @@ public class NPCUtils {
     public static final Map<Entity, Integer> HP_CURRENT_NPCMOB;
     public static final Map<Entity, Integer> HP_MAX_NPCMOB;
     public static final Map<Entity, Integer> DAMAGE_NPCMOB;
+
+    static {
+        HP_CURRENT_NPCMOB = new HashMap<Entity, Integer>();
+        HP_MAX_NPCMOB = new HashMap<Entity, Integer>();
+        DAMAGE_NPCMOB = new HashMap<Entity, Integer>();
+    }
 
     public static void setNPCHealth(final NPC npc, final int health) {
         if (npc.getEntity() == null) {
@@ -76,11 +82,5 @@ public class NPCUtils {
     public static boolean isNPCVaild(final NPC npc) {
         boolean isVaild = npc.getEntity() != null;
         return isVaild;
-    }
-
-    static {
-        HP_CURRENT_NPCMOB = new HashMap<Entity, Integer>();
-        HP_MAX_NPCMOB = new HashMap<Entity, Integer>();
-        DAMAGE_NPCMOB = new HashMap<Entity, Integer>();
     }
 }

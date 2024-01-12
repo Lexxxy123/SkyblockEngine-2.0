@@ -15,9 +15,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class CookieConfirmGUI extends GUI {
-    String[] suffix;
     private final int cookieSlot;
     private final ItemStack stack;
+    String[] suffix;
 
     public CookieConfirmGUI(final int cookieSlot, final ItemStack stack) {
         super("Consume Booster Cookie?", 27);

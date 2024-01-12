@@ -20,6 +20,14 @@ public enum Rarity {
         this.color = color;
     }
 
+    public static Rarity getRarity(final String string) {
+        try {
+            return valueOf(string.toUpperCase());
+        } catch (final IllegalArgumentException ex) {
+            return null;
+        }
+    }
+
     public Rarity upgrade() {
         return values()[Math.min(this.ordinal() + 1, values().length - 1)];
     }
@@ -41,14 +49,6 @@ public enum Rarity {
 
     public String getBoldedColor() {
         return "" + this.color + ChatColor.BOLD;
-    }
-
-    public static Rarity getRarity(final String string) {
-        try {
-            return valueOf(string.toUpperCase());
-        } catch (final IllegalArgumentException ex) {
-            return null;
-        }
     }
 
     public ChatColor getColor() {

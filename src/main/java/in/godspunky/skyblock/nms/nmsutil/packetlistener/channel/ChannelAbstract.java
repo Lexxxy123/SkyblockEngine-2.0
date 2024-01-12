@@ -18,28 +18,50 @@ import java.util.concurrent.Executors;
 
 public abstract class ChannelAbstract {
     protected static final NMSClassResolver nmsClassResolver;
+    protected static final FieldResolver entityPlayerFieldResolver;
+    protected static final FieldResolver playerConnectionFieldResolver;
+    protected static final FieldResolver networkManagerFieldResolver;
+    protected static final FieldResolver minecraftServerFieldResolver;
+    protected static final FieldResolver serverConnectionFieldResolver;
+    protected static final MethodResolver craftServerFieldResolver;
     static final Class<?> EntityPlayer;
     static final Class<?> PlayerConnection;
     static final Class<?> NetworkManager;
     static final Class<?> Packet;
     static final Class<?> ServerConnection;
     static final Class<?> MinecraftServer;
-    protected static final FieldResolver entityPlayerFieldResolver;
-    protected static final FieldResolver playerConnectionFieldResolver;
-    protected static final FieldResolver networkManagerFieldResolver;
-    protected static final FieldResolver minecraftServerFieldResolver;
-    protected static final FieldResolver serverConnectionFieldResolver;
     static final Field networkManager;
     static final Field playerConnection;
     static final Field serverConnection;
     static final Field connectionList;
-    protected static final MethodResolver craftServerFieldResolver;
     static final Method getServer;
-    final Executor addChannelExecutor;
-    final Executor removeChannelExecutor;
     static final String KEY_HANDLER = "packet_handler";
     static final String KEY_PLAYER = "packet_listener_player";
     static final String KEY_SERVER = "packet_listener_server";
+
+    static {
+        nmsClassResolver = new NMSClassResolver();
+        EntityPlayer = ChannelAbstract.nmsClassResolver.resolveSilent("EntityPlayer");
+        PlayerConnection = ChannelAbstract.nmsClassResolver.resolveSilent("PlayerConnection");
+        NetworkManager = ChannelAbstract.nmsClassResolver.resolveSilent("NetworkManager");
+        Packet = ChannelAbstract.nmsClassResolver.resolveSilent("Packet");
+        ServerConnection = ChannelAbstract.nmsClassResolver.resolveSilent("ServerConnection");
+        MinecraftServer = ChannelAbstract.nmsClassResolver.resolveSilent("MinecraftServer");
+        entityPlayerFieldResolver = new FieldResolver(ChannelAbstract.EntityPlayer);
+        playerConnectionFieldResolver = new FieldResolver(ChannelAbstract.PlayerConnection);
+        networkManagerFieldResolver = new FieldResolver(ChannelAbstract.NetworkManager);
+        minecraftServerFieldResolver = new FieldResolver(ChannelAbstract.MinecraftServer);
+        serverConnectionFieldResolver = new FieldResolver(ChannelAbstract.ServerConnection);
+        networkManager = ChannelAbstract.playerConnectionFieldResolver.resolveSilent("networkManager");
+        playerConnection = ChannelAbstract.entityPlayerFieldResolver.resolveSilent("playerConnection");
+        serverConnection = ChannelAbstract.minecraftServerFieldResolver.resolveByFirstTypeSilent(ChannelAbstract.ServerConnection);
+        connectionList = ChannelAbstract.serverConnectionFieldResolver.resolveByLastTypeSilent(List.class);
+        craftServerFieldResolver = new MethodResolver(Bukkit.getServer().getClass());
+        getServer = ChannelAbstract.craftServerFieldResolver.resolveSilent("getServer");
+    }
+
+    final Executor addChannelExecutor;
+    final Executor removeChannelExecutor;
     private final IPacketListener iPacketListener;
 
     public ChannelAbstract(final IPacketListener iPacketListener) {
@@ -86,27 +108,6 @@ public abstract class ChannelAbstract {
 
     protected final Object onPacketReceive(final Object sender, final Object packet, final Cancellable cancellable) {
         return this.iPacketListener.onPacketReceive(sender, packet, cancellable);
-    }
-
-    static {
-        nmsClassResolver = new NMSClassResolver();
-        EntityPlayer = ChannelAbstract.nmsClassResolver.resolveSilent("EntityPlayer");
-        PlayerConnection = ChannelAbstract.nmsClassResolver.resolveSilent("PlayerConnection");
-        NetworkManager = ChannelAbstract.nmsClassResolver.resolveSilent("NetworkManager");
-        Packet = ChannelAbstract.nmsClassResolver.resolveSilent("Packet");
-        ServerConnection = ChannelAbstract.nmsClassResolver.resolveSilent("ServerConnection");
-        MinecraftServer = ChannelAbstract.nmsClassResolver.resolveSilent("MinecraftServer");
-        entityPlayerFieldResolver = new FieldResolver(ChannelAbstract.EntityPlayer);
-        playerConnectionFieldResolver = new FieldResolver(ChannelAbstract.PlayerConnection);
-        networkManagerFieldResolver = new FieldResolver(ChannelAbstract.NetworkManager);
-        minecraftServerFieldResolver = new FieldResolver(ChannelAbstract.MinecraftServer);
-        serverConnectionFieldResolver = new FieldResolver(ChannelAbstract.ServerConnection);
-        networkManager = ChannelAbstract.playerConnectionFieldResolver.resolveSilent("networkManager");
-        playerConnection = ChannelAbstract.entityPlayerFieldResolver.resolveSilent("playerConnection");
-        serverConnection = ChannelAbstract.minecraftServerFieldResolver.resolveByFirstTypeSilent(ChannelAbstract.ServerConnection);
-        connectionList = ChannelAbstract.serverConnectionFieldResolver.resolveByLastTypeSilent(List.class);
-        craftServerFieldResolver = new MethodResolver(Bukkit.getServer().getClass());
-        getServer = ChannelAbstract.craftServerFieldResolver.resolveSilent("getServer");
     }
 
     interface IListenerList<E> extends List<E> {

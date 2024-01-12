@@ -22,6 +22,10 @@ import java.util.*;
 public class placeholding extends PlaceholderExpansion {
     public static final Map<UUID, String> PTE_CACHE;
 
+    static {
+        PTE_CACHE = new HashMap<>();
+    }
+
     public boolean canRegister() {
         return true;
     }
@@ -214,9 +218,5 @@ public class placeholding extends PlaceholderExpansion {
             return placeholding.PTE_CACHE.get(user.getUuid());
         }
         return "";
-    }
-
-    static {
-        PTE_CACHE = new HashMap<>();
     }
 }

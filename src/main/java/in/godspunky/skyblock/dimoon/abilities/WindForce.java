@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.dimoon.abilities;
 
 import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.dimoon.Dimoon;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -9,7 +10,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.dimoon.Dimoon;
 
 public class WindForce implements Ability {
     @Override

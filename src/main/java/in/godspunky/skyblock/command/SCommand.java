@@ -20,13 +20,13 @@ public abstract class SCommand implements CommandExecutor, TabCompleter {
     public static final String COMMAND_SUFFIX = "Command";
     protected static final Skyblock plugin = Skyblock.getPlugin();
 
-    private CommandParameters params;
-    private String name;
-    private String description;
-    private String usage;
-    private List<String> aliases;
-    private PlayerRank permission;
-    private SECommand command;
+    private final CommandParameters params;
+    private final String name;
+    private final String description;
+    private final String usage;
+    private final List<String> aliases;
+    private final PlayerRank permission;
+    private final SECommand command;
 
     private CommandSource sender;
 
@@ -54,6 +54,39 @@ public abstract class SCommand implements CommandExecutor, TabCompleter {
 
     public void register() {
         plugin.commandMap.register("", this.command);
+    }
+
+    public void send(String message, CommandSource sender) {
+        sender.send(ChatColor.GRAY + message);
+    }
+
+    public void send(String message) {
+        send(message, sender);
+    }
+
+    public void send(String message, Player player) {
+        player.sendMessage(ChatColor.GRAY + message);
+    }
+
+    public void checkPermission(PlayerRank requiredRank) {
+        PlayerRank playerRank = getPlayerRank(sender.getPlayer());
+        if (!playerRank.isAboveOrEqual(requiredRank)) {
+            throw new CommandPermissionException(requiredRank);
+        }
+    }
+
+    public Player getNonNullPlayer(String name) {
+        Player player = Bukkit.getPlayer(name);
+        if (player == null)
+            throw new PlayerNotFoundException();
+        return player;
+    }
+
+    public PlayerRank getPlayerRank(Player player) {
+        GodspunkyPlayer godspunkyPlayer = GodspunkyPlayer.getUser(player);
+        if (godspunkyPlayer != null)
+            return godspunkyPlayer.rank;
+        return PlayerRank.DEFAULT;
     }
 
     private static class SECommand extends Command {
@@ -92,41 +125,6 @@ public abstract class SCommand implements CommandExecutor, TabCompleter {
                 return tc;
             return SUtil.getPlayerNameList();
         }
-    }
-
-    public void send(String message, CommandSource sender) {
-        sender.send(ChatColor.GRAY + message);
-    }
-
-    public void send(String message) {
-        send(message, sender);
-    }
-
-    public void send(String message, Player player) {
-        player.sendMessage(ChatColor.GRAY + message);
-    }
-
-    public void checkPermission(PlayerRank requiredRank) {
-        PlayerRank playerRank = getPlayerRank(sender.getPlayer());
-        if (!playerRank.isAboveOrEqual(requiredRank)) {
-            throw new CommandPermissionException(requiredRank);
-        }
-    }
-
-
-
-    public Player getNonNullPlayer(String name) {
-        Player player = Bukkit.getPlayer(name);
-        if (player == null)
-            throw new PlayerNotFoundException();
-        return player;
-    }
-
-    public PlayerRank getPlayerRank(Player player) {
-        GodspunkyPlayer godspunkyPlayer = GodspunkyPlayer.getUser(player);
-        if (godspunkyPlayer != null)
-            return godspunkyPlayer.rank;
-        return PlayerRank.DEFAULT;
     }
 
 }

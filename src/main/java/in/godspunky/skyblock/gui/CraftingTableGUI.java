@@ -23,6 +23,12 @@ public class CraftingTableGUI extends GUI implements BlockBasedGUI {
     private static final ItemStack LOCKED_RECIPE_ITEM;
     private static final int RESULT_SLOT = 24;
 
+    static {
+        RECIPE_REQUIRED = SUtil.createNamedItemStack(Material.BARRIER, ChatColor.RED + "Recipe Required");
+        LOCKED_RECIPE_ITEM = SUtil.createNamedItemStack(Material.BARRIER, ChatColor.RED + "Locked Recipe");
+        CRAFT_SLOTS = new int[]{10, 11, 12, 19, 20, 21, 28, 29, 30};
+    }
+
     public CraftingTableGUI() {
         super("Craft Item", 54);
         this.fill(BLACK_STAINED_GLASS_PANE, 13, 34);
@@ -126,6 +132,20 @@ public class CraftingTableGUI extends GUI implements BlockBasedGUI {
         this.set(GUIClickableItem.getCloseItem(49));
     }
 
+    private static int indexOf(final Recipe<?> recipe, final List<MaterialQuantifiable> ingredients, final MaterialQuantifiable search) {
+        final List<SMaterial> exchangeables = Recipe.getExchangeablesOf(search.getMaterial());
+        for (int i = 0; i < ingredients.size(); ++i) {
+            final MaterialQuantifiable ingredient = ingredients.get(i);
+            if (recipe.isUseExchangeables() && exchangeables != null && exchangeables.contains(ingredient.getMaterial()) && search.getAmount() >= ingredient.getAmount()) {
+                return i;
+            }
+            if (ingredient.getMaterial() == search.getMaterial() && search.getAmount() >= ingredient.getAmount()) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     @Override
     public void onOpen(final GUIOpenEvent e) {
         new BukkitRunnable() {
@@ -174,20 +194,6 @@ public class CraftingTableGUI extends GUI implements BlockBasedGUI {
         return stacks;
     }
 
-    private static int indexOf(final Recipe<?> recipe, final List<MaterialQuantifiable> ingredients, final MaterialQuantifiable search) {
-        final List<SMaterial> exchangeables = Recipe.getExchangeablesOf(search.getMaterial());
-        for (int i = 0; i < ingredients.size(); ++i) {
-            final MaterialQuantifiable ingredient = ingredients.get(i);
-            if (recipe.isUseExchangeables() && exchangeables != null && exchangeables.contains(ingredient.getMaterial()) && search.getAmount() >= ingredient.getAmount()) {
-                return i;
-            }
-            if (ingredient.getMaterial() == search.getMaterial() && search.getAmount() >= ingredient.getAmount()) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     private boolean isVanilla(Recipe<?> recipe) {
         if (recipe instanceof ShapedRecipe) {
             return ((ShapedRecipe) recipe).isVanilla();
@@ -195,11 +201,5 @@ public class CraftingTableGUI extends GUI implements BlockBasedGUI {
             return ((ShapelessRecipe) recipe).isVanilla();
         }
         return false;
-    }
-
-    static {
-        RECIPE_REQUIRED = SUtil.createNamedItemStack(Material.BARRIER, ChatColor.RED + "Recipe Required");
-        LOCKED_RECIPE_ITEM = SUtil.createNamedItemStack(Material.BARRIER, ChatColor.RED + "Locked Recipe");
-        CRAFT_SLOTS = new int[]{10, 11, 12, 19, 20, 21, 28, 29, 30};
     }
 }

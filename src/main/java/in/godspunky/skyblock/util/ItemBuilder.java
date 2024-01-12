@@ -17,8 +17,8 @@ import java.util.List;
 @SuppressWarnings({"unused"})
 public class ItemBuilder {
 
-    private ItemStack item;
     private final ItemMeta meta;
+    private ItemStack item;
 
     public ItemBuilder() {
         item = new ItemStack(Material.DIRT);
@@ -105,7 +105,7 @@ public class ItemBuilder {
 
     public ItemBuilder setLore(String... lore) {
         List<String> ls = new ArrayList<>();
-        for(String s : lore) {
+        for (String s : lore) {
             ls.add(ChatColor.translateAlternateColorCodes('&', s));
         }
         meta.setLore(ls);
@@ -115,7 +115,8 @@ public class ItemBuilder {
 
     public ItemBuilder addLore(List<String> lore) {
         List<String> ls;
-        if (meta.getLore() != null) ls = meta.getLore(); else ls = new ArrayList<>();
+        if (meta.getLore() != null) ls = meta.getLore();
+        else ls = new ArrayList<>();
         ls.addAll(lore);
         meta.setLore(ls);
         item.setItemMeta(meta);
@@ -124,7 +125,8 @@ public class ItemBuilder {
 
     public ItemBuilder addLore(String lore) {
         List<String> ls;
-        if (meta.getLore() != null) ls = meta.getLore(); else ls = new ArrayList<>();
+        if (meta.getLore() != null) ls = meta.getLore();
+        else ls = new ArrayList<>();
         ls.add(ChatColor.translateAlternateColorCodes('&', lore));
         meta.setLore(ls);
         item.setItemMeta(meta);
@@ -133,8 +135,9 @@ public class ItemBuilder {
 
     public ItemBuilder addLore(String... lore) {
         List<String> ls;
-        if (meta.getLore() != null) ls = meta.getLore(); else ls = new ArrayList<>();
-        for(String s : lore) {
+        if (meta.getLore() != null) ls = meta.getLore();
+        else ls = new ArrayList<>();
+        for (String s : lore) {
             ls.add(ChatColor.translateAlternateColorCodes('&', s));
         }
         meta.setLore(ls);
@@ -257,7 +260,7 @@ public class ItemBuilder {
     }
 
 
-    public ItemStack toItemStack(){
+    public ItemStack toItemStack() {
         return item;
     }
 

@@ -1,19 +1,19 @@
 package in.godspunky.skyblock.util;
 
+import in.godspunky.skyblock.Skyblock;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.Skyblock;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class BossBar extends BukkitRunnable {
-    private String title;
     private final HashMap<Player, EntityWither> withers;
+    private String title;
 
     public BossBar(final String title) {
         this.withers = new HashMap<>();

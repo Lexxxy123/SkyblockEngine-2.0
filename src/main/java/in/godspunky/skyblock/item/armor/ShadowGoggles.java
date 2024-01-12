@@ -1,7 +1,6 @@
 package in.godspunky.skyblock.item.armor;
 
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.item.*;
 
 public class ShadowGoggles implements MaterialFunction, SkullStatistics, ToolStatistics {
     @Override

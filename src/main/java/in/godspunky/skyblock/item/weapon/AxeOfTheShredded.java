@@ -1,6 +1,11 @@
 package in.godspunky.skyblock.item.weapon;
 
+import in.godspunky.skyblock.Repeater;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.listener.PlayerListener;
+import in.godspunky.skyblock.user.PlayerUtils;
+import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -10,11 +15,6 @@ import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.Repeater;
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.listener.PlayerListener;
-import in.godspunky.skyblock.user.PlayerUtils;
-import in.godspunky.skyblock.user.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +23,11 @@ import java.util.Map;
 
 public class AxeOfTheShredded implements ToolStatistics, MaterialFunction, Ability {
     private static final Map<Player, Integer> axeThrows;
+
+    static {
+        axeThrows = new HashMap<Player, Integer>();
+    }
+
     int currentAxeThrows;
 
     @Override
@@ -270,9 +275,5 @@ public class AxeOfTheShredded implements ToolStatistics, MaterialFunction, Abili
     @Override
     public String getLore() {
         return "Heal " + ChatColor.RED + "50" + ChatColor.RED + "❤" + ChatColor.GRAY + " per hit. Deal " + ChatColor.GREEN + "+250% " + ChatColor.GRAY + "damage to Zombies. Receive " + ChatColor.GREEN + "25% " + ChatColor.GRAY + "less damage from Zombies when held.";
-    }
-
-    static {
-        axeThrows = new HashMap<Player, Integer>();
     }
 }

@@ -53,12 +53,12 @@ public class Dungeon {
         this.bloodkey = bk;
     }
 
-    public int getDungeonCompletePercent() {
-        return this.percentagecomplete;
-    }
-
     public void setBloodKey(final int percent) {
         this.percentagecomplete = percent;
+    }
+
+    public int getDungeonCompletePercent() {
+        return this.percentagecomplete;
     }
 
     public int getAllSecrets() {

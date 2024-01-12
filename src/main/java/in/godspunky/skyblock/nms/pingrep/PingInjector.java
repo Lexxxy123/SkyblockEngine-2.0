@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.nms.pingrep;
 
+import in.godspunky.skyblock.nms.pingrep.reflect.ReflectUtils;
 import io.netty.channel.Channel;
 import net.minecraft.server.v1_8_R3.MinecraftServer;
 import net.minecraft.server.v1_8_R3.NetworkManager;
@@ -9,7 +10,6 @@ import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServerListPingEvent;
-import in.godspunky.skyblock.nms.pingrep.reflect.ReflectUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

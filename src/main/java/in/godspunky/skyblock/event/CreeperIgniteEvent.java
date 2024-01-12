@@ -7,10 +7,19 @@ import org.bukkit.event.entity.EntityEvent;
 
 public class CreeperIgniteEvent extends EntityEvent implements Cancellable {
     private static final HandlerList handlers;
+
+    static {
+        handlers = new HandlerList();
+    }
+
     private boolean cancelled;
 
     public CreeperIgniteEvent(final Creeper what) {
         super(what);
+    }
+
+    public static HandlerList getHandlerList() {
+        return CreeperIgniteEvent.handlers;
     }
 
     public Creeper getEntity() {
@@ -27,13 +36,5 @@ public class CreeperIgniteEvent extends EntityEvent implements Cancellable {
 
     public HandlerList getHandlers() {
         return CreeperIgniteEvent.handlers;
-    }
-
-    public static HandlerList getHandlerList() {
-        return CreeperIgniteEvent.handlers;
-    }
-
-    static {
-        handlers = new HandlerList();
     }
 }

@@ -2,6 +2,7 @@ package in.godspunky.skyblock.entity;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftSkeleton;
 import org.bukkit.entity.*;
@@ -9,7 +10,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.*;
 

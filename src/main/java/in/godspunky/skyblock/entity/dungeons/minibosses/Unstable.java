@@ -4,6 +4,17 @@ import com.google.common.util.concurrent.AtomicDouble;
 import de.slikey.effectlib.effect.ConeEffect;
 import de.slikey.effectlib.util.ParticleEffect;
 import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.entity.zombie.BaseZombie;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.user.PlayerStatistics;
+import in.godspunky.skyblock.user.PlayerUtils;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher;
 import net.minecraft.server.v1_8_R3.*;
@@ -24,17 +35,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
-import in.godspunky.skyblock.entity.zombie.BaseZombie;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.user.PlayerStatistics;
-import in.godspunky.skyblock.user.PlayerUtils;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 
 public class Unstable extends BaseZombie {
     private boolean isEating;
@@ -251,8 +251,8 @@ public class Unstable extends BaseZombie {
             }
         }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
         new BukkitRunnable() {
-            Location loc = entity.getLocation();
             final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
+            Location loc = entity.getLocation();
 
             public void run() {
                 if (entity.isDead()) {

@@ -2,6 +2,12 @@ package in.godspunky.skyblock.entity.dungeons;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.entity.zombie.BaseZombie;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
 import net.minecraft.server.v1_8_R3.GenericAttributes;
@@ -15,12 +21,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
-import in.godspunky.skyblock.entity.zombie.BaseZombie;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 
 public class TestObject extends BaseZombie {
     private final boolean isEating;
@@ -31,6 +31,14 @@ public class TestObject extends BaseZombie {
         this.isEating = false;
         this.isBowing = false;
         this.EatingCooldown = false;
+    }
+
+    public static ItemStack b(final int hexcolor, final Material m) {
+        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
     }
 
     @Override
@@ -46,14 +54,6 @@ public class TestObject extends BaseZombie {
     @Override
     public double getDamageDealt() {
         return 4.0E8;
-    }
-
-    public static ItemStack b(final int hexcolor, final Material m) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
     }
 
     @Override

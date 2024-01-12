@@ -5,6 +5,12 @@ public class ReflectionTPS implements Runnable {
     public static long[] TICKS;
     public static long LAST_TICK;
 
+    static {
+        ReflectionTPS.TICK_COUNT = 0;
+        ReflectionTPS.TICKS = new long[600];
+        ReflectionTPS.LAST_TICK = 0L;
+    }
+
     public static double getTPS() {
         return getTPS(100);
     }
@@ -29,11 +35,5 @@ public class ReflectionTPS implements Runnable {
     public void run() {
         ReflectionTPS.TICKS[ReflectionTPS.TICK_COUNT % ReflectionTPS.TICKS.length] = System.currentTimeMillis();
         ++ReflectionTPS.TICK_COUNT;
-    }
-
-    static {
-        ReflectionTPS.TICK_COUNT = 0;
-        ReflectionTPS.TICKS = new long[600];
-        ReflectionTPS.LAST_TICK = 0L;
     }
 }

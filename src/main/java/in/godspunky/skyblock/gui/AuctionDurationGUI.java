@@ -16,6 +16,31 @@ public class AuctionDurationGUI extends GUI {
         this.fill(BLACK_STAINED_GLASS_PANE);
     }
 
+    private static GUIClickableItem createTime(final short color, final int hours, final int slot, final User user) {
+        final long millis = hours * 3600000L;
+        return new GUIClickableItem() {
+            @Override
+            public void run(final InventoryClickEvent e) {
+                user.getAuctionEscrow().setDuration(millis);
+                new AuctionDurationGUI().open((Player) e.getWhoClicked());
+            }
+
+            @Override
+            public int getSlot() {
+                return slot;
+            }
+
+            @Override
+            public ItemStack getItem() {
+                final ItemStack stack = SUtil.getStack(ChatColor.GREEN + SUtil.getAuctionSetupFormattedTime(millis), Material.STAINED_CLAY, color, 1, ChatColor.YELLOW + "Click to pick!");
+                if (user.getAuctionEscrow().getDuration() == millis) {
+                    SUtil.enchant(stack);
+                }
+                return stack;
+            }
+        };
+    }
+
     @Override
     public void onOpen(final GUIOpenEvent e) {
         final User user = User.getUser(e.getPlayer().getUniqueId());
@@ -69,30 +94,5 @@ public class AuctionDurationGUI extends GUI {
             }
         });
         this.set(GUIClickableItem.createGUIOpenerItem(GUIType.CREATE_AUCTION, e.getPlayer(), ChatColor.GREEN + "Go Back", 31, Material.ARROW, (short) 0, ChatColor.GRAY + "To Create " + (user.isAuctionCreationBIN() ? "BIN " : "") + "Auction"));
-    }
-
-    private static GUIClickableItem createTime(final short color, final int hours, final int slot, final User user) {
-        final long millis = hours * 3600000L;
-        return new GUIClickableItem() {
-            @Override
-            public void run(final InventoryClickEvent e) {
-                user.getAuctionEscrow().setDuration(millis);
-                new AuctionDurationGUI().open((Player) e.getWhoClicked());
-            }
-
-            @Override
-            public int getSlot() {
-                return slot;
-            }
-
-            @Override
-            public ItemStack getItem() {
-                final ItemStack stack = SUtil.getStack(ChatColor.GREEN + SUtil.getAuctionSetupFormattedTime(millis), Material.STAINED_CLAY, color, 1, ChatColor.YELLOW + "Click to pick!");
-                if (user.getAuctionEscrow().getDuration() == millis) {
-                    SUtil.enchant(stack);
-                }
-                return stack;
-            }
-        };
     }
 }

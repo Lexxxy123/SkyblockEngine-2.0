@@ -1,7 +1,6 @@
 package in.godspunky.skyblock.item.armor.sorrow;
 
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.item.*;
 
 public class SorrowArmorHelmet implements ToolStatistics, MaterialFunction {
     @Override

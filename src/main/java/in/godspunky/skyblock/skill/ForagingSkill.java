@@ -1,15 +1,19 @@
 package in.godspunky.skyblock.skill;
 
-import org.bukkit.ChatColor;
 import in.godspunky.skyblock.user.PlayerStatistics;
 import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.user.User;
+import org.bukkit.ChatColor;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class ForagingSkill extends Skill {
     public static final ForagingSkill INSTANCE;
+
+    static {
+        INSTANCE = new ForagingSkill();
+    }
 
     @Override
     public String getName() {
@@ -58,9 +62,5 @@ public class ForagingSkill extends Skill {
         final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(user.getUuid());
         statistics.zeroAll(13);
         statistics.getStrength().set(13, Double.valueOf(this.getStrength(getLevel(user.getSkillXP(this), this.hasSixtyLevels()))));
-    }
-
-    static {
-        INSTANCE = new ForagingSkill();
     }
 }

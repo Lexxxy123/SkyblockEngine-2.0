@@ -1,7 +1,6 @@
 package in.godspunky.skyblock.item.axe.vanilla;
 
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.item.*;
 
 public class GoldenAxe implements ToolStatistics, MaterialFunction {
     @Override

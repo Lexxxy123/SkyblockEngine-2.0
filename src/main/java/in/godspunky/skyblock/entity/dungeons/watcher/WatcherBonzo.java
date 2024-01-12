@@ -2,6 +2,16 @@ package in.godspunky.skyblock.entity.dungeons.watcher;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.entity.zombie.BaseZombie;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SSU;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
@@ -21,27 +31,26 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
-import in.godspunky.skyblock.entity.zombie.BaseZombie;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SSU;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.Random;
 
 public class WatcherBonzo extends BaseZombie {
+    private final String[] bozoCringe;
     private ArmorStand tb;
     private boolean barrCD;
-    private final String[] bozoCringe;
 
     public WatcherBonzo() {
         this.barrCD = true;
         this.bozoCringe = new String[]{"Cringe.", "Lame.", "Why are you running?", "Leave me alone!", "Oh noes! You got me! Whatever will I do?", "OUCH!", "Stop.", "Hacker!"};
+    }
+
+    public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
+        final net.minecraft.server.v1_8_R3.Entity pl = ((CraftZombie) e).getHandle();
+        pl.setLocation(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), yaw, pitch);
+        final PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(pl);
+        for (final Player p : e.getWorld().getPlayers()) {
+            ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
+        }
     }
 
     @Override
@@ -189,15 +198,6 @@ public class WatcherBonzo extends BaseZombie {
                 WatcherBonzo.this.launchBaloon(e);
             }
         }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
-    }
-
-    public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
-        final net.minecraft.server.v1_8_R3.Entity pl = ((CraftZombie) e).getHandle();
-        pl.setLocation(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), yaw, pitch);
-        final PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(pl);
-        for (final Player p : e.getWorld().getPlayers()) {
-            ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
-        }
     }
 
     public void launchBaloon(final LivingEntity player1) {

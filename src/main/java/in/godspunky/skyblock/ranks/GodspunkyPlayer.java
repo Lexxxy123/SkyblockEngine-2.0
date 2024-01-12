@@ -14,14 +14,12 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class GodspunkyPlayer {
-    protected Player player;
     public static HashMap<Player, GodspunkyPlayer> players = new HashMap<>();
+    private static final Skyblock plugin = Skyblock.getPlugin();
     public PlayerRank rank;
     public long lastPlayed;
     public long firstJoined;
-
-    private static Skyblock plugin = Skyblock.getPlugin();
-
+    protected Player player;
 
 
     public GodspunkyPlayer(Player player) {
@@ -42,13 +40,32 @@ public class GodspunkyPlayer {
         lastPlayed = config.getLong("lastPlayed");
     }
 
+    public static GodspunkyPlayer getUser(Player player) {
+        if (players.containsKey(player))
+            return players.get(player);
+        return null;
+    }
+    //hm
+
+    public static void unloadPlayer(Player player) {
+        GodspunkyPlayer rplayer = players.get(player);
+        rplayer.saveAll();
+        players.remove(player);
+
+    }
+
+    public static void savePlayers() {
+        for (Player player : players.keySet()) {
+            players.get(player).saveAll();
+        }
+    }
+
     public void saveAll() {
         FileConfiguration config = getConfig();
         config.set("lastPlayed", System.currentTimeMillis());
         config.set("rank", rank.toString());
         save(config);
     }
-    //hm
 
     public void setRank(PlayerRank rank) {
         this.rank = rank;
@@ -80,25 +97,6 @@ public class GodspunkyPlayer {
         return this.player;
     }
 
-    public static GodspunkyPlayer getUser(Player player) {
-        if (players.containsKey(player))
-            return players.get(player);
-        return null;
-    }
-
-    public static void unloadPlayer(Player player) {
-        GodspunkyPlayer rplayer = players.get(player);
-        rplayer.saveAll();
-        players.remove(player);
-
-    }
-
-    public static void savePlayers() {
-        for (Player player : players.keySet()) {
-            players.get(player).saveAll();
-        }
-    }
-
     public void sendMessage(Object message) {
         if (message instanceof String) {
             player.sendMessage(message.toString().replace('&', ChatColor.COLOR_CHAR));
@@ -108,9 +106,8 @@ public class GodspunkyPlayer {
     }
 
 
-
     public void sendMessages(Object... messages) {
-        for(Object message : messages) {
+        for (Object message : messages) {
             sendMessage(message);
         }
     }

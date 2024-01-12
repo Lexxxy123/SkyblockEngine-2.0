@@ -1,16 +1,14 @@
 package in.godspunky.skyblock.enchantment;
 
+import in.godspunky.skyblock.item.SpecificItemType;
+import in.godspunky.skyblock.util.Sputnik;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.enchantments.Enchantment;
-import in.godspunky.skyblock.item.SpecificItemType;
-import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.*;
 
 public class EnchantmentType {
-    @Getter
-    private static final Map<String, EnchantmentType> ENCHANTMENT_TYPE_CACHE;
     public static final EnchantmentType SHARPNESS;
     public static final EnchantmentType LIFE_STEAL;
     public static final EnchantmentType EXECUTE;
@@ -41,6 +39,43 @@ public class EnchantmentType {
     public static final EnchantmentType CHIMERA;
     public static final EnchantmentType LEGION;
     public static final EnchantmentType ONE_FOR_ALL;
+    @Getter
+    private static final Map<String, EnchantmentType> ENCHANTMENT_TYPE_CACHE;
+
+    static {
+        ENCHANTMENT_TYPE_CACHE = new HashMap<String, EnchantmentType>();
+        SHARPNESS = new EnchantmentType("Sharpness", "sharpness", "Increases damage dealt by " + ChatColor.GREEN + "%s%", SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
+        LIFE_STEAL = new EnchantmentType("Life Steal", "life_steal", "Heals for " + ChatColor.GREEN + "%s%" + ChatColor.GRAY + " of your max health each time you hit a mob.", SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
+        EXECUTE = new EnchantmentType("Execute", "execute", "Increases damage by " + ChatColor.GREEN + "%s%" + Sputnik.trans(" &7for each percent of Health missing on your target. "), SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
+        FIRE_ASPECT = new EnchantmentType("Fire Aspect", "fire_aspect", "Gives whoever this weapon hits %s seconds of fire.", SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
+        PROTECTION = new EnchantmentType("Protection", "protection", "Grants " + ChatColor.GREEN + "+%s ❈ Defense" + ChatColor.GRAY + ".", SpecificItemType.HELMET, SpecificItemType.CHESTPLATE, SpecificItemType.LEGGINGS, SpecificItemType.BOOTS);
+        GROWTH = new EnchantmentType("Growth", "growth", "Grants " + ChatColor.GREEN + "+%s " + ChatColor.RED + "❤ " + ChatColor.RED + "Health" + ChatColor.GRAY + ".", SpecificItemType.HELMET, SpecificItemType.CHESTPLATE, SpecificItemType.LEGGINGS, SpecificItemType.BOOTS);
+        AIMING = new EnchantmentType("Aiming", "aiming", "Arrows home towards nearby mobs if they are within %s blocks.", SpecificItemType.BOW);
+        POWER = new EnchantmentType("Power", "power", "Increases bow damage by " + ChatColor.GREEN + "%s%", SpecificItemType.BOW);
+        FLAME = new EnchantmentType("Flame", "flame", "Arrow ignites target for 3 seconds, dealing 5 damage every second.", SpecificItemType.BOW);
+        ENDER_SLAYER = new EnchantmentType("Ender Slayer", "ender_slayer", "Increases damage dealt to Ender Dragons and Endermen by " + ChatColor.GREEN + "%s% " + ChatColor.GRAY, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
+        DRAGON_HUNTER = new EnchantmentType("Dragon Hunter", "dragon_hunter", "Increases damage dealt to Ender Dragons by " + ChatColor.GREEN + "%s% " + ChatColor.GRAY, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE, SpecificItemType.BOW);
+        TURBO_GEM = new EnchantmentType("Turbo-Gem", "turbo_gem", "Grants " + ChatColor.AQUA + "%s" + ChatColor.GRAY + " extra Bits while killing mobs. Doesn't apply for" + ChatColor.YELLOW + " magic abilities", SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE, SpecificItemType.BOW);
+        EFFICIENCY = new EnchantmentType("Efficiency", "efficiency", "Reduces the time in takes to mine.", Enchantment.DIG_SPEED, SpecificItemType.AXE, SpecificItemType.PICKAXE, SpecificItemType.SHOVEL);
+        KNOCKBACK = new EnchantmentType("Knockback", "knockback", Sputnik.trans("Increases knockback by &a%s&7 blocks."), Enchantment.KNOCKBACK, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
+        AQUA_INFINITY = new EnchantmentType("Aqua Infinity", "aqua_infinity", Sputnik.trans("Increases underwater mining rate to normal level mining rate."), Enchantment.WATER_WORKER, SpecificItemType.HELMET);
+        VAMPIRISM = new EnchantmentType("Vampirism", "vampirism", Sputnik.trans("Heals for &a%s% &7of your missing Health per level whenever you kill an enemy."), SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
+        FIRST_STRIKE = new EnchantmentType("First Strike", "first_strike", Sputnik.trans("Increases the first melee damage dealt to a mob by &a%s%"), SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
+        VICIOUS = new EnchantmentType("Vicious", "vicious", Sputnik.trans("Grant &c+%s⫽ Ferocity"), SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE, SpecificItemType.BOW);
+        SMITE = new EnchantmentType("Smite", "smite", "Increases damage dealt to Zombies, Zombie Pigmen, Withers, Wither Skeletons, and Skeletons by " + ChatColor.GREEN + "%s% " + ChatColor.GRAY, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
+        BANE_OF_ARTHROPODS = new EnchantmentType("Bane of Arthropods", "bane_of_arthropods", "Increases damage dealt to Cave Spiders, Spiders, and Silverfish by " + ChatColor.GREEN + "%s% " + ChatColor.GRAY, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
+        CRITICAL = new EnchantmentType("Critical", "critical", "Increases " + ChatColor.BLUE + "☠ Crit Damage " + ChatColor.GRAY + "by " + ChatColor.GREEN + "%s%" + ChatColor.GRAY + ".", SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
+        FATAL_TEMPO = new EnchantmentType("Fatal Tempo", "fatal_tempo", Sputnik.trans("&7Attack increases your &c⫽ &cFerocity &7by &c%s% &7per hit, capped at &c200% &7for 3 seconds after your &efirst &eattack &7that triggers the enchantment."), true, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
+        HARVESTING = new EnchantmentType("Harvesting", "harvesting", "Increases the chance for crops to drop double the amount of items by " + ChatColor.GREEN + "%s%" + ChatColor.GRAY + ".", SpecificItemType.HOE);
+        TELEKINESIS = new EnchantmentType("Telekinesis", "telekinesis", "Blocks and mob drops go directly into your inventory.", SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.BOW, SpecificItemType.AXE);
+        ULTIMATE_WISE = new EnchantmentType("Ultimate Wise", "ultimate_wise", "Reduces the Mana Cost of this item's ability by " + ChatColor.GREEN + "%s%" + ChatColor.GRAY + ".", true, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.SHOVEL, SpecificItemType.SHEARS, SpecificItemType.PICKAXE, SpecificItemType.BOW, SpecificItemType.AXE, SpecificItemType.ROD, SpecificItemType.HOE, SpecificItemType.WAND);
+        LUCKINESS = new EnchantmentType("Luckiness", "luckiness", Sputnik.trans("&7Grant &b+%s ✯ Magic Find"), SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.SHOVEL, SpecificItemType.SHEARS, SpecificItemType.PICKAXE, SpecificItemType.BOW, SpecificItemType.AXE, SpecificItemType.ROD, SpecificItemType.HOE, SpecificItemType.HELMET, SpecificItemType.CHESTPLATE, SpecificItemType.LEGGINGS, SpecificItemType.BOOTS);
+        SOUL_EATER = new EnchantmentType("Soul Eater", "soul_eater", Sputnik.trans("Your weapon gains &c%sx&7 damage of the latest monster killed and applies it on your next hit."), true, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE, SpecificItemType.BOW);
+        CHIMERA = new EnchantmentType("Chimera", "chimera", Sputnik.trans("Copies &a%s% &7of your active pet's stats."), true, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE, SpecificItemType.BOW);
+        LEGION = new EnchantmentType("Legion", "legion", Sputnik.trans("Increases most of your player stats by &e+%s% &7per player per level within &b30 &7blocks of you, up to &a20 &7players."), true, SpecificItemType.HELMET, SpecificItemType.CHESTPLATE, SpecificItemType.LEGGINGS, SpecificItemType.BOOTS);
+        ONE_FOR_ALL = new EnchantmentType("One for All", "one_for_all", Sputnik.trans("Removes all other enchants but increases your weapon damage by &a%s%"), true, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
+    }
+
     private final String name;
     private final String namespace;
     private final String description;
@@ -105,39 +140,5 @@ public class EnchantmentType {
 
     public List<SpecificItemType> getCompatibleTypes() {
         return this.compatibleTypes;
-    }
-
-    static {
-        ENCHANTMENT_TYPE_CACHE = new HashMap<String, EnchantmentType>();
-        SHARPNESS = new EnchantmentType("Sharpness", "sharpness", "Increases damage dealt by " + ChatColor.GREEN + "%s%", SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
-        LIFE_STEAL = new EnchantmentType("Life Steal", "life_steal", "Heals for " + ChatColor.GREEN + "%s%" + ChatColor.GRAY + " of your max health each time you hit a mob.", SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
-        EXECUTE = new EnchantmentType("Execute", "execute", "Increases damage by " + ChatColor.GREEN + "%s%" + Sputnik.trans(" &7for each percent of Health missing on your target. "), SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
-        FIRE_ASPECT = new EnchantmentType("Fire Aspect", "fire_aspect", "Gives whoever this weapon hits %s seconds of fire.", SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
-        PROTECTION = new EnchantmentType("Protection", "protection", "Grants " + ChatColor.GREEN + "+%s ❈ Defense" + ChatColor.GRAY + ".", SpecificItemType.HELMET, SpecificItemType.CHESTPLATE, SpecificItemType.LEGGINGS, SpecificItemType.BOOTS);
-        GROWTH = new EnchantmentType("Growth", "growth", "Grants " + ChatColor.GREEN + "+%s " + ChatColor.RED + "❤ " + ChatColor.RED + "Health" + ChatColor.GRAY + ".", SpecificItemType.HELMET, SpecificItemType.CHESTPLATE, SpecificItemType.LEGGINGS, SpecificItemType.BOOTS);
-        AIMING = new EnchantmentType("Aiming", "aiming", "Arrows home towards nearby mobs if they are within %s blocks.", SpecificItemType.BOW);
-        POWER = new EnchantmentType("Power", "power", "Increases bow damage by " + ChatColor.GREEN + "%s%", SpecificItemType.BOW);
-        FLAME = new EnchantmentType("Flame", "flame", "Arrow ignites target for 3 seconds, dealing 5 damage every second.", SpecificItemType.BOW);
-        ENDER_SLAYER = new EnchantmentType("Ender Slayer", "ender_slayer", "Increases damage dealt to Ender Dragons and Endermen by " + ChatColor.GREEN + "%s% " + ChatColor.GRAY, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
-        DRAGON_HUNTER = new EnchantmentType("Dragon Hunter", "dragon_hunter", "Increases damage dealt to Ender Dragons by " + ChatColor.GREEN + "%s% " + ChatColor.GRAY, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE, SpecificItemType.BOW);
-        TURBO_GEM = new EnchantmentType("Turbo-Gem", "turbo_gem", "Grants " + ChatColor.AQUA + "%s" + ChatColor.GRAY + " extra Bits while killing mobs. Doesn't apply for" + ChatColor.YELLOW + " magic abilities", SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE, SpecificItemType.BOW);
-        EFFICIENCY = new EnchantmentType("Efficiency", "efficiency", "Reduces the time in takes to mine.", Enchantment.DIG_SPEED, SpecificItemType.AXE, SpecificItemType.PICKAXE, SpecificItemType.SHOVEL);
-        KNOCKBACK = new EnchantmentType("Knockback", "knockback", Sputnik.trans("Increases knockback by &a%s&7 blocks."), Enchantment.KNOCKBACK, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
-        AQUA_INFINITY = new EnchantmentType("Aqua Infinity", "aqua_infinity", Sputnik.trans("Increases underwater mining rate to normal level mining rate."), Enchantment.WATER_WORKER, SpecificItemType.HELMET);
-        VAMPIRISM = new EnchantmentType("Vampirism", "vampirism", Sputnik.trans("Heals for &a%s% &7of your missing Health per level whenever you kill an enemy."), SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
-        FIRST_STRIKE = new EnchantmentType("First Strike", "first_strike", Sputnik.trans("Increases the first melee damage dealt to a mob by &a%s%"), SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
-        VICIOUS = new EnchantmentType("Vicious", "vicious", Sputnik.trans("Grant &c+%s⫽ Ferocity"), SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE, SpecificItemType.BOW);
-        SMITE = new EnchantmentType("Smite", "smite", "Increases damage dealt to Zombies, Zombie Pigmen, Withers, Wither Skeletons, and Skeletons by " + ChatColor.GREEN + "%s% " + ChatColor.GRAY, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
-        BANE_OF_ARTHROPODS = new EnchantmentType("Bane of Arthropods", "bane_of_arthropods", "Increases damage dealt to Cave Spiders, Spiders, and Silverfish by " + ChatColor.GREEN + "%s% " + ChatColor.GRAY, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
-        CRITICAL = new EnchantmentType("Critical", "critical", "Increases " + ChatColor.BLUE + "☠ Crit Damage " + ChatColor.GRAY + "by " + ChatColor.GREEN + "%s%" + ChatColor.GRAY + ".", SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
-        FATAL_TEMPO = new EnchantmentType("Fatal Tempo", "fatal_tempo", Sputnik.trans("&7Attack increases your &c⫽ &cFerocity &7by &c%s% &7per hit, capped at &c200% &7for 3 seconds after your &efirst &eattack &7that triggers the enchantment."), true, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
-        HARVESTING = new EnchantmentType("Harvesting", "harvesting", "Increases the chance for crops to drop double the amount of items by " + ChatColor.GREEN + "%s%" + ChatColor.GRAY + ".", SpecificItemType.HOE);
-        TELEKINESIS = new EnchantmentType("Telekinesis", "telekinesis", "Blocks and mob drops go directly into your inventory.", SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.BOW, SpecificItemType.AXE);
-        ULTIMATE_WISE = new EnchantmentType("Ultimate Wise", "ultimate_wise", "Reduces the Mana Cost of this item's ability by " + ChatColor.GREEN + "%s%" + ChatColor.GRAY + ".", true, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.SHOVEL, SpecificItemType.SHEARS, SpecificItemType.PICKAXE, SpecificItemType.BOW, SpecificItemType.AXE, SpecificItemType.ROD, SpecificItemType.HOE, SpecificItemType.WAND);
-        LUCKINESS = new EnchantmentType("Luckiness", "luckiness", Sputnik.trans("&7Grant &b+%s ✯ Magic Find"), SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.SHOVEL, SpecificItemType.SHEARS, SpecificItemType.PICKAXE, SpecificItemType.BOW, SpecificItemType.AXE, SpecificItemType.ROD, SpecificItemType.HOE, SpecificItemType.HELMET, SpecificItemType.CHESTPLATE, SpecificItemType.LEGGINGS, SpecificItemType.BOOTS);
-        SOUL_EATER = new EnchantmentType("Soul Eater", "soul_eater", Sputnik.trans("Your weapon gains &c%sx&7 damage of the latest monster killed and applies it on your next hit."), true, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE, SpecificItemType.BOW);
-        CHIMERA = new EnchantmentType("Chimera", "chimera", Sputnik.trans("Copies &a%s% &7of your active pet's stats."), true, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE, SpecificItemType.BOW);
-        LEGION = new EnchantmentType("Legion", "legion", Sputnik.trans("Increases most of your player stats by &e+%s% &7per player per level within &b30 &7blocks of you, up to &a20 &7players."), true, SpecificItemType.HELMET, SpecificItemType.CHESTPLATE, SpecificItemType.LEGGINGS, SpecificItemType.BOOTS);
-        ONE_FOR_ALL = new EnchantmentType("One for All", "one_for_all", Sputnik.trans("Removes all other enchants but increases your weapon damage by &a%s%"), true, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
     }
 }

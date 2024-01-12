@@ -1,7 +1,6 @@
 package in.godspunky.skyblock.item.armor.necron;
 
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.item.*;
 
 public class NecronHelmet implements MaterialFunction, SkullStatistics, ToolStatistics {
     @Override

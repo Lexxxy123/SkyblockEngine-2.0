@@ -2,7 +2,10 @@ package in.godspunky.skyblock.item.weapon;
 
 import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.listener.PlayerListener;
+import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.FerocityCalculation;
+import in.godspunky.skyblock.util.Sputnik;
 import net.minecraft.server.v1_8_R3.EnumParticle;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
@@ -14,9 +17,6 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.listener.PlayerListener;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -26,6 +26,11 @@ import java.util.UUID;
 public class SoulWhip implements ToolStatistics, MaterialFunction, Ability, Ownable {
     public static final Map<UUID, Boolean> cd;
     public static final Map<Integer, Boolean> hit;
+
+    static {
+        cd = new HashMap<UUID, Boolean>();
+        hit = new HashMap<Integer, Boolean>();
+    }
 
     @Override
     public String getAbilityName() {
@@ -162,10 +167,5 @@ public class SoulWhip implements ToolStatistics, MaterialFunction, Ability, Owna
     @Override
     public NBTTagCompound getData() {
         return Ownable.super.getData();
-    }
-
-    static {
-        cd = new HashMap<UUID, Boolean>();
-        hit = new HashMap<Integer, Boolean>();
     }
 }

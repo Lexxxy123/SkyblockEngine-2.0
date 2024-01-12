@@ -17,9 +17,11 @@ import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.registry.WorldData;
 import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.enchantment.Enchantment;
+import in.godspunky.skyblock.gui.GUI;
 import in.godspunky.skyblock.item.GenericItemType;
 import in.godspunky.skyblock.item.Rarity;
 import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.merchant.MerchantItemHandler;
 import in.godspunky.skyblock.potion.PotionColor;
 import in.godspunky.skyblock.potion.PotionEffect;
@@ -46,8 +48,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.gui.GUI;
-import in.godspunky.skyblock.item.SMaterial;
 
 import java.io.*;
 import java.lang.reflect.*;
@@ -70,6 +70,20 @@ public class SUtil {
     private static final NumberFormat COMMA_FORMAT;
     private static final List<ChatColor> CRIT_SPECTRUM;
     private static final List<ChatColor> VISIBLE_COLOR_SPECTRUM;
+    private static final String[] FRUITS = {
+            "Apple", "Banana", "Blueberry", "Coconut", "Cucumber", "Grapes", "Kiwi",
+            "Lemon", "Lime", "Mango", "Orange", "Papaya", "Peach", "Pear",
+            "Pineapple", "Pomegranate", "Raspberry", "Strawberry", "Tomato",
+            "Watermelon", "Zucchini"
+    };
+
+    static {
+        DATE_FORMAT = new SimpleDateFormat("MM/dd/yy");
+        COMMA_FORMAT = NumberFormat.getInstance();
+        CRIT_SPECTRUM = Arrays.asList(ChatColor.WHITE, ChatColor.WHITE, ChatColor.YELLOW, ChatColor.GOLD, ChatColor.RED, ChatColor.RED);
+        VISIBLE_COLOR_SPECTRUM = Arrays.asList(ChatColor.DARK_GREEN, ChatColor.DARK_AQUA, ChatColor.DARK_RED, ChatColor.DARK_PURPLE, ChatColor.GOLD, ChatColor.GREEN, ChatColor.AQUA, ChatColor.RED, ChatColor.LIGHT_PURPLE, ChatColor.YELLOW, ChatColor.WHITE);
+        SUtil.COMMA_FORMAT.setGroupingUsed(true);
+    }
 
     public static String commaify(final int i) {
         return SUtil.COMMA_FORMAT.format(i);
@@ -112,12 +126,6 @@ public class SUtil {
         }
     }
 
-    private static final String[] FRUITS = {
-            "Apple", "Banana", "Blueberry", "Coconut", "Cucumber", "Grapes", "Kiwi",
-            "Lemon", "Lime", "Mango", "Orange", "Papaya", "Peach", "Pear",
-            "Pineapple", "Pomegranate", "Raspberry", "Strawberry", "Tomato",
-            "Watermelon", "Zucchini"
-    };
     public static String generateRandomProfileNameFor() {
         Random random = new Random();
         int index = random.nextInt(FRUITS.length);
@@ -288,6 +296,7 @@ public class SUtil {
         stack.setDurability(data);
         return stack;
     }
+
     public static ItemStack colorLeatherArmor(ItemStack stack, Color color) {
         LeatherArmorMeta meta = (LeatherArmorMeta) stack.getItemMeta();
         meta.setColor(color);
@@ -350,7 +359,7 @@ public class SUtil {
         try {
             FileInputStream fis = new FileInputStream(new File(Skyblock.getPlugin().getDataFolder(), filename));
             Object nbtData = NBTCompressedStreamTools.class.getMethod("a", InputStream.class).invoke(null, fis);
-            Method getShort  = nbtData.getClass().getMethod("getShort", String.class);
+            Method getShort = nbtData.getClass().getMethod("getShort", String.class);
             Method getByteArray = nbtData.getClass().getMethod("getByteArray", String.class);
 
             short width = ((short) getShort.invoke(nbtData, "Width"));
@@ -370,9 +379,9 @@ public class SUtil {
                         if (m != Material.AIR) {
 
                             Block block = new Location(loc.getWorld(),
-                                    loc.getBlockX() - ((int) (width / 2)) + x,
-                                    loc.getBlockY()  + y - 19,
-                                    loc.getBlockZ() - ((int) (length / 2)) + z + 14).getBlock();
+                                    loc.getBlockX() - (width / 2) + x,
+                                    loc.getBlockY() + y - 19,
+                                    loc.getBlockZ() - (length / 2) + z + 14).getBlock();
                             block.setType(m, true);
                             block.setData(data[index]);
 
@@ -970,15 +979,17 @@ public class SUtil {
             }
         }.runTaskLater(Skyblock.getPlugin(), delay);
     }
+
     public static double square(double val) {
         return val * val;
     }
-    public static SItem toShopItem(SMaterial smaterial , int amount , Long price , Long value){
+
+    public static SItem toShopItem(SMaterial smaterial, int amount, Long price, Long value) {
         SItem item = SItem.of(smaterial);
         item.getStack().setAmount(amount);
         item.setPrice(price);
         item.setItemValue(value);
-        MerchantItemHandler.ITEMS.put(smaterial , item);
+        MerchantItemHandler.ITEMS.put(smaterial, item);
         return item;
     }
 
@@ -1063,8 +1074,9 @@ public class SUtil {
     public static void runAsync(Runnable runnable) {
         new Thread(runnable).start();
     }
-    public static void runSync(Runnable runnable){
-        new BukkitRunnable(){
+
+    public static void runSync(Runnable runnable) {
+        new BukkitRunnable() {
 
             @Override
             public void run() {
@@ -1092,7 +1104,6 @@ public class SUtil {
         head.setItemMeta(headMeta);
         return head;
     }
-
 
     public static String createProgressText(final String text, final int current, final int max) {
         double percent;
@@ -1314,13 +1325,5 @@ public class SUtil {
             }
         }
         return dur;
-    }
-
-    static {
-        DATE_FORMAT = new SimpleDateFormat("MM/dd/yy");
-        COMMA_FORMAT = NumberFormat.getInstance();
-        CRIT_SPECTRUM = Arrays.asList(ChatColor.WHITE, ChatColor.WHITE, ChatColor.YELLOW, ChatColor.GOLD, ChatColor.RED, ChatColor.RED);
-        VISIBLE_COLOR_SPECTRUM = Arrays.asList(ChatColor.DARK_GREEN, ChatColor.DARK_AQUA, ChatColor.DARK_RED, ChatColor.DARK_PURPLE, ChatColor.GOLD, ChatColor.GREEN, ChatColor.AQUA, ChatColor.RED, ChatColor.LIGHT_PURPLE, ChatColor.YELLOW, ChatColor.WHITE);
-        SUtil.COMMA_FORMAT.setGroupingUsed(true);
     }
 }

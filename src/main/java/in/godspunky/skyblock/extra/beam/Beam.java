@@ -16,11 +16,11 @@ public class Beam {
     private final String worldname;
     private final double viewingRadiusSquared;
     private final long updateDelay;
-    private boolean isActive;
     private final LocationTargetBeam beam;
+    private final Set<UUID> viewers;
+    private boolean isActive;
     private Location startingPosition;
     private Location endingPosition;
-    private final Set<UUID> viewers;
     private BukkitRunnable runnable;
 
     public Beam(final Location startingPosition, final Location endingPosition) {

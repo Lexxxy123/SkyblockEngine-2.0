@@ -11,6 +11,11 @@ import java.sql.SQLException;
 
 public class SQLWorldData {
     private static final Skyblock plugin;
+
+    static {
+        plugin = Skyblock.getPlugin();
+    }
+
     private final String SELECT = "SELECT * FROM `worlds` WHERE name=?";
     private final String SELECT_ID = "SELECT * FROM `worlds` WHERE id=?";
     private final String INSERT = "INSERT INTO `worlds` (`id`, `name`) VALUES (?, ?);";
@@ -95,9 +100,5 @@ public class SQLWorldData {
             ex.printStackTrace();
             return 0;
         }
-    }
-
-    static {
-        plugin = Skyblock.getPlugin();
     }
 }

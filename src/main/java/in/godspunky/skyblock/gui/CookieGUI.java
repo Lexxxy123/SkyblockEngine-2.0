@@ -24,6 +24,18 @@ public class CookieGUI extends GUI {
         this.fill(CookieGUI.BLACK_STAINED_GLASS_PANE);
     }
 
+    public CookieGUI(final String query) {
+        this(query, 1);
+    }
+
+    public CookieGUI(final int page) {
+        this("", page);
+    }
+
+    public CookieGUI() {
+        this(1);
+    }
+
     @Override
     public void onOpen(final GUIOpenEvent e) {
         final Player player = e.getPlayer();
@@ -168,17 +180,5 @@ public class CookieGUI extends GUI {
                 craftStack.setItemMeta(meta);
             }
         }.runTaskTimer(Skyblock.getPlugin(), 0L, 20L);
-    }
-
-    public CookieGUI(final String query) {
-        this(query, 1);
-    }
-
-    public CookieGUI(final int page) {
-        this("", page);
-    }
-
-    public CookieGUI() {
-        this(1);
     }
 }

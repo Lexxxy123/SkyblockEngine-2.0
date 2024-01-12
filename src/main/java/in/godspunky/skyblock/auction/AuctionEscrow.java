@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.auction;
 
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import in.godspunky.skyblock.item.SItem;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,18 +21,17 @@ public class AuctionEscrow implements ConfigurationSerializable {
         this(null, 50L, 21600000L);
     }
 
+    // todo : fix it
+    public static AuctionEscrow deserialize(Map<String, Object> map) {
+        return new AuctionEscrow((SItem) map.get("item"), map.get("starter") instanceof Long ? ((Long) map.get("starter")).longValue() : ((Integer) map.get("starter")).longValue(), map.get("duration") instanceof Long ? ((Long) map.get("duration")).longValue() : ((Integer) map.get("duration")).longValue());
+    }
+
     public Map<String, Object> serialize() {
         final Map<String, Object> map = new HashMap<String, Object>();
         map.put("item", this.item);
         map.put("starter", this.starter);
         map.put("duration", this.duration);
         return map;
-    }
-
-
-    // todo : fix it
-    public static AuctionEscrow deserialize(Map<String, Object> map) {
-        return new AuctionEscrow((SItem) map.get("item"), map.get("starter") instanceof Long ? ((Long) map.get("starter")).longValue() : ((Integer) map.get("starter")).longValue(), map.get("duration") instanceof Long ? ((Long) map.get("duration")).longValue() : ((Integer) map.get("duration")).longValue());
     }
 
     public SItem getItem() {

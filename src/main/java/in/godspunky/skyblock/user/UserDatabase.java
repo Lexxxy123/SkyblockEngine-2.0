@@ -5,14 +5,15 @@ import org.bson.Document;
 
 
 public class UserDatabase {
-    public final String id;
     public static final MongoCollection<Document> collection = DatabaseManager.getCollection("users");
+    public final String id;
 
 
     public UserDatabase(String uuid) {
         this.id = uuid;
     }
-    public UserDatabase(String uuid , boolean idk) {
+
+    public UserDatabase(String uuid, boolean idk) {
         this.id = uuid;
     }
 

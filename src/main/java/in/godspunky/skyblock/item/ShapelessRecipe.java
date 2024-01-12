@@ -9,6 +9,11 @@ import java.util.List;
 
 public class ShapelessRecipe extends Recipe<ShapelessRecipe> {
     public static final List<ShapelessRecipe> CACHED_RECIPES;
+
+    static {
+        CACHED_RECIPES = new ArrayList<ShapelessRecipe>();
+    }
+
     private final List<MaterialQuantifiable> ingredientList;
     private boolean isVanilla;
 
@@ -28,41 +33,6 @@ public class ShapelessRecipe extends Recipe<ShapelessRecipe> {
 
     public ShapelessRecipe(final SMaterial material) {
         this(SItem.of(material));
-    }
-
-    @Override
-    public ShapelessRecipe setResult(final SItem result) {
-        this.result = result;
-        return this;
-    }
-
-    public ShapelessRecipe add(final MaterialQuantifiable material, boolean isVanilla) {
-        this.ingredientList.add(material.clone());
-        this.isVanilla = isVanilla;
-        return this;
-    }
-
-    public ShapelessRecipe add(final MaterialQuantifiable material) {
-        this.ingredientList.add(material.clone());
-        return this;
-    }
-
-    public ShapelessRecipe add(final SMaterial material, final int amount) {
-        return this.add(new MaterialQuantifiable(material, amount), false);
-    }
-
-    public ShapelessRecipe add(final SMaterial material, final int amount, boolean isVanilla) {
-        return this.add(new MaterialQuantifiable(material, amount), isVanilla);
-    }
-
-    @Override
-    public List<MaterialQuantifiable> getIngredients() {
-        return this.ingredientList;
-    }
-
-    @Override
-    public String toString() {
-        return "ShapelessRecipe{" + this.ingredientList.toString() + "}";
     }
 
     protected static ShapelessRecipe parseShapelessRecipe(final ItemStack[] stacks) {
@@ -109,15 +79,46 @@ public class ShapelessRecipe extends Recipe<ShapelessRecipe> {
         return false;
     }
 
+    @Override
+    public ShapelessRecipe setResult(final SItem result) {
+        this.result = result;
+        return this;
+    }
+
+    public ShapelessRecipe add(final MaterialQuantifiable material, boolean isVanilla) {
+        this.ingredientList.add(material.clone());
+        this.isVanilla = isVanilla;
+        return this;
+    }
+
+    public ShapelessRecipe add(final MaterialQuantifiable material) {
+        this.ingredientList.add(material.clone());
+        return this;
+    }
+
+    public ShapelessRecipe add(final SMaterial material, final int amount) {
+        return this.add(new MaterialQuantifiable(material, amount), false);
+    }
+
+    public ShapelessRecipe add(final SMaterial material, final int amount, boolean isVanilla) {
+        return this.add(new MaterialQuantifiable(material, amount), isVanilla);
+    }
+
+    @Override
+    public List<MaterialQuantifiable> getIngredients() {
+        return this.ingredientList;
+    }
+
+    @Override
+    public String toString() {
+        return "ShapelessRecipe{" + this.ingredientList.toString() + "}";
+    }
+
     public boolean isVanilla() {
         return isVanilla;
     }
 
     public List<MaterialQuantifiable> getIngredientList() {
         return this.ingredientList;
-    }
-
-    static {
-        CACHED_RECIPES = new ArrayList<ShapelessRecipe>();
     }
 }

@@ -1,7 +1,6 @@
 package in.godspunky.skyblock.item.armor.hardened;
 
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.item.*;
 
 public class HardenedDiamondHelmet implements ToolStatistics, MaterialFunction {
     @Override

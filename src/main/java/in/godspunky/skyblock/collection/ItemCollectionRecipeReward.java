@@ -1,10 +1,9 @@
 package in.godspunky.skyblock.collection;
 
 import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.user.User;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.user.User;
 
 public class ItemCollectionRecipeReward extends ItemCollectionReward {
     private final SMaterial material;

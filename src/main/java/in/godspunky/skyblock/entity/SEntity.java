@@ -23,16 +23,22 @@ import java.util.Map;
 import java.util.UUID;
 
 public class SEntity {
-    private static final Skyblock plugin;
     public static final Map<Entity, Boolean> isStarred;
+    private static final Skyblock plugin;
+
+    static {
+        plugin = Skyblock.getPlugin();
+        isStarred = new HashMap<Entity, Boolean>();
+    }
+
     private final SEntityType specType;
     private final LivingEntity entity;
     private final Map<UUID, Double> damageDealt;
-    private BukkitTask task;
-    private BukkitTask ticker;
     private final Object genericInstance;
     private final EntityStatistics statistics;
     private final EntityFunction function;
+    private BukkitTask task;
+    private BukkitTask ticker;
 
     public SEntity(final Location location, final SEntityType specType, final Object... params) {
         this.specType = specType;
@@ -136,6 +142,13 @@ public class SEntity {
         this(e.getLocation(), type, params);
     }
 
+    public static SEntity findSEntity(final Entity entity) {
+        if (!entity.hasMetadata("specEntityObject") || entity.getMetadata("specEntityObject").size() == 0 || !(entity.getMetadata("specEntityObject").get(0).value() instanceof SEntity)) {
+            return null;
+        }
+        return (SEntity) entity.getMetadata("specEntityObject").get(0).value();
+    }
+
     public void addDamageFor(final Player player, double damage) {
         final UUID uuid = player.getUniqueId();
         if (this.damageDealt.containsKey(uuid)) {
@@ -187,13 +200,6 @@ public class SEntity {
     public void setDamage(final int damage) {
     }
 
-    public static SEntity findSEntity(final Entity entity) {
-        if (!entity.hasMetadata("specEntityObject") || entity.getMetadata("specEntityObject").size() == 0 || !(entity.getMetadata("specEntityObject").get(0).value() instanceof SEntity)) {
-            return null;
-        }
-        return (SEntity) entity.getMetadata("specEntityObject").get(0).value();
-    }
-
     public SEntityType getSpecType() {
         return this.specType;
     }
@@ -224,10 +230,5 @@ public class SEntity {
 
     public EntityFunction getFunction() {
         return this.function;
-    }
-
-    static {
-        plugin = Skyblock.getPlugin();
-        isStarred = new HashMap<Entity, Boolean>();
     }
 }

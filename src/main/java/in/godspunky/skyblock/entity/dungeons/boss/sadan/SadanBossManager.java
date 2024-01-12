@@ -5,6 +5,7 @@
 package in.godspunky.skyblock.entity.dungeons.boss.sadan;
 
 //import com.onarandombox.MultiverseCore.api.MVWorldManager;
+
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityType;
 import in.godspunky.skyblock.util.SLog;
@@ -25,7 +26,7 @@ public class SadanBossManager {
 //        MVWorldManager worldManager = GodSpunkyEngine.core.getMVWorldManager();
 //        worldManager.cloneWorld("f6", worldname);
 //        worldManager.loadWorld(worldname);
-        WorldCloneApi.copyWorld(Bukkit.getWorld("f6") , worldname);
+        WorldCloneApi.copyWorld(Bukkit.getWorld("f6"), worldname);
         World world = Bukkit.getWorld(worldname);
         world.setGameRuleValue("keepInventory", "true");
         world.setGameRuleValue("doMobSpawning", "false");

@@ -4,11 +4,11 @@ import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 
 public class ProfileDatabase {
-    public final String id;
     public static final MongoCollection<Document> collection = DatabaseManager.getCollection("profiles");
+    public final String id;
 
 
-    public ProfileDatabase(String uuid , boolean idk) {
+    public ProfileDatabase(String uuid, boolean idk) {
         this.id = uuid;
     }
 

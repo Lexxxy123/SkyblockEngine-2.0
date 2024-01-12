@@ -1,15 +1,14 @@
 package in.godspunky.skyblock.item.weapon;
 
-import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.util.DefenseReplacement;
-import in.godspunky.skyblock.util.ManaReplacement;
-import org.bukkit.ChatColor;
-import org.bukkit.Sound;
-import org.bukkit.entity.Player;
 import in.godspunky.skyblock.Repeater;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.user.PlayerUtils;
+import in.godspunky.skyblock.util.DefenseReplacement;
+import in.godspunky.skyblock.util.ManaReplacement;
 import in.godspunky.skyblock.util.SUtil;
+import org.bukkit.ChatColor;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +16,10 @@ import java.util.UUID;
 
 public class EdibleMace implements ToolStatistics, MaterialFunction, Ability {
     public static final Map<UUID, Boolean> edibleMace;
+
+    static {
+        edibleMace = new HashMap<UUID, Boolean>();
+    }
 
     @Override
     public int getBaseDamage() {
@@ -116,9 +119,5 @@ public class EdibleMace implements ToolStatistics, MaterialFunction, Ability {
     @Override
     public int getManaCost() {
         return 0;
-    }
-
-    static {
-        edibleMace = new HashMap<UUID, Boolean>();
     }
 }

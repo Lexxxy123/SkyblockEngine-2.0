@@ -2,6 +2,7 @@ package in.godspunky.skyblock.gui;
 
 import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -11,7 +12,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import in.godspunky.skyblock.item.SMaterial;
 
 import java.util.*;
 
@@ -21,6 +21,15 @@ public abstract class GUI {
     public static final ItemStack LIME_STAINED_GLASS_PANE;
     public static final ItemStack GRAY_STAINED_GLASS_PANE;
     public static final Map<UUID, GUI> GUI_MAP;
+
+    static {
+        BLACK_STAINED_GLASS_PANE = SUtil.createColoredStainedGlassPane((short) 15, " ");
+        RED_STAINED_GLASS_PANE = SUtil.createColoredStainedGlassPane((short) 14, ChatColor.RESET + " ");
+        LIME_STAINED_GLASS_PANE = SUtil.createColoredStainedGlassPane((short) 5, ChatColor.RESET + " ");
+        GRAY_STAINED_GLASS_PANE = SUtil.createColoredStainedGlassPane((short) 7, ChatColor.RESET + " ");
+        GUI_MAP = new HashMap<UUID, GUI>();
+    }
+
     protected String title;
     protected int size;
     protected List<GUIItem> items;
@@ -237,13 +246,5 @@ public abstract class GUI {
 
     public List<GUIItem> getItems() {
         return this.items;
-    }
-
-    static {
-        BLACK_STAINED_GLASS_PANE = SUtil.createColoredStainedGlassPane((short) 15, " ");
-        RED_STAINED_GLASS_PANE = SUtil.createColoredStainedGlassPane((short) 14, ChatColor.RESET + " ");
-        LIME_STAINED_GLASS_PANE = SUtil.createColoredStainedGlassPane((short) 5, ChatColor.RESET + " ");
-        GRAY_STAINED_GLASS_PANE = SUtil.createColoredStainedGlassPane((short) 7, ChatColor.RESET + " ");
-        GUI_MAP = new HashMap<UUID, GUI>();
     }
 }

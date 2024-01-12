@@ -1,5 +1,6 @@
 package in.godspunky.skyblock.dimoon.listeners;
 
+import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -10,7 +11,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.util.SUtil;
 
 public class EntityListener implements Listener {
     @EventHandler

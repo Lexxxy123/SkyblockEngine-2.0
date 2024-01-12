@@ -18,6 +18,11 @@ import java.util.List;
 
 public class ActiveEffectsGUI extends GUI {
     private static final int[] INTERIOR;
+
+    static {
+        INTERIOR = new int[]{10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43};
+    }
+
     private int page;
 
     public ActiveEffectsGUI(final int page) {
@@ -105,9 +110,5 @@ public class ActiveEffectsGUI extends GUI {
                 new ActiveEffectsGUI(ActiveEffectsGUI.this.page).open(player);
             }
         }.runTaskLater(Skyblock.getPlugin(), 20L);
-    }
-
-    static {
-        INTERIOR = new int[]{10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43};
     }
 }

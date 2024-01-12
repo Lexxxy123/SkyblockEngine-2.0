@@ -3,7 +3,7 @@ package in.godspunky.skyblock.merchant;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.SMaterial;
 
-public class MineMerchantGUI extends ShopGUI{
+public class MineMerchantGUI extends ShopGUI {
 
     private static final SItem[] ITEMS = new SItem[]
             {
@@ -16,6 +16,7 @@ public class MineMerchantGUI extends ShopGUI{
                     MerchantItemHandler.getItem(SMaterial.COBBLESTONE),
                     MerchantItemHandler.getItem(SMaterial.STONE),
             };
+
     public MineMerchantGUI(int page) {
         super("Mine Merchant", page, ITEMS);
     }

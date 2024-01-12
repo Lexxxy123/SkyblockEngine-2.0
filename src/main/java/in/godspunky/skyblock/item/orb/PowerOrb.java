@@ -1,6 +1,10 @@
 package in.godspunky.skyblock.item.orb;
 
+import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityType;
 import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -11,10 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityType;
-import in.godspunky.skyblock.util.SUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +24,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 public abstract class PowerOrb implements SkullStatistics, MaterialFunction, Ability, OrbBuff {
     private static final Map<UUID, ArmorStand> USING_POWER_ORB_MAP;
     private static final Map<UUID, PowerOrbInstance> POWER_ORB_MAP;
+
+    static {
+        USING_POWER_ORB_MAP = new HashMap<UUID, ArmorStand>();
+        POWER_ORB_MAP = new HashMap<UUID, PowerOrbInstance>();
+    }
 
     @Override
     public String getAbilityName() {
@@ -173,11 +178,6 @@ public abstract class PowerOrb implements SkullStatistics, MaterialFunction, Abi
         player.playEffect(loc2, Effect.POTION_SWIRL, 0);
         player.playEffect(loc2, Effect.POTION_SWIRL, 0);
         player.playEffect(loc2, Effect.POTION_SWIRL, 0);
-    }
-
-    static {
-        USING_POWER_ORB_MAP = new HashMap<UUID, ArmorStand>();
-        POWER_ORB_MAP = new HashMap<UUID, PowerOrbInstance>();
     }
 
     private interface PowerOrbInstance {

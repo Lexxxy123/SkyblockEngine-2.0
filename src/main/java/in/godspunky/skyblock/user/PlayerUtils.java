@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.user;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import in.godspunky.skyblock.Repeater;
 import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.dungeons.ItemSerial;
 import in.godspunky.skyblock.enchantment.Enchantment;
@@ -9,6 +10,7 @@ import in.godspunky.skyblock.entity.*;
 import in.godspunky.skyblock.entity.dungeons.watcher.Watcher;
 import in.godspunky.skyblock.entity.nms.SlayerBoss;
 import in.godspunky.skyblock.extra.protocol.PacketInvoker;
+import in.godspunky.skyblock.gui.SlayerGUI;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.item.accessory.AccessoryFunction;
 import in.godspunky.skyblock.item.armor.ArmorSet;
@@ -17,6 +19,7 @@ import in.godspunky.skyblock.item.armor.gigachad.GigachadSet;
 import in.godspunky.skyblock.item.armor.minichad.MinichadSet;
 import in.godspunky.skyblock.item.pet.Pet;
 import in.godspunky.skyblock.item.weapon.EdibleMace;
+import in.godspunky.skyblock.listener.PlayerListener;
 import in.godspunky.skyblock.potion.ActivePotionEffect;
 import in.godspunky.skyblock.potion.PotionEffectType;
 import in.godspunky.skyblock.reforge.Reforge;
@@ -37,9 +40,6 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.Repeater;
-import in.godspunky.skyblock.gui.SlayerGUI;
-import in.godspunky.skyblock.listener.PlayerListener;
 
 import java.util.*;
 
@@ -51,6 +51,16 @@ public final class PlayerUtils {
     public static final Map<UUID, SEntity> SOUL_EATER_MAP;
     public static final Map<UUID, Long> COOKIE_DURATION_CACHE;
     public static final Map<UUID, Integer> LAST_KILLED_MAPPING;
+
+    static {
+        AUTO_SLAYER = new HashMap<UUID, Boolean>();
+        USER_SESSION_ID = new HashMap<UUID, UUID>();
+        STATISTICS_CACHE = new HashMap<UUID, PlayerStatistics>();
+        COOLDOWN_MAP = new HashMap<UUID, List<SMaterial>>();
+        SOUL_EATER_MAP = new HashMap<UUID, SEntity>();
+        COOKIE_DURATION_CACHE = new HashMap<UUID, Long>();
+        LAST_KILLED_MAPPING = new HashMap<UUID, Integer>();
+    }
 
     public static PlayerStatistics getStatistics(final Player player) {
         final PlayerInventory inv = player.getInventory();
@@ -1032,19 +1042,6 @@ public final class PlayerUtils {
         return accessories;
     }
 
-    public static boolean hasItem(final Player player, final SMaterial material) {
-        for (final ItemStack stack : player.getInventory()) {
-            final SItem sItem = SItem.find(stack);
-            if (sItem == null) {
-                continue;
-            }
-            if (sItem.getType() == material) {
-                return true;
-            }
-        }
-        return false;
-    }
-
 //    public static void sendToIsland(final Player player) {
 //        World world = Bukkit.getWorld("islands");
 //        if (world == null) {
@@ -1078,6 +1075,19 @@ public final class PlayerUtils {
 //        final World finalWorld = world;
 //        SUtil.delay(() -> player.teleport(finalWorld.getHighestBlockAt(SUtil.blackMagic(user.getIslandX()), SUtil.blackMagic(user.getIslandZ())).getLocation().add(0.5, 1.0, 0.5)), 10L);
 //    }
+
+    public static boolean hasItem(final Player player, final SMaterial material) {
+        for (final ItemStack stack : player.getInventory()) {
+            final SItem sItem = SItem.find(stack);
+            if (sItem == null) {
+                continue;
+            }
+            if (sItem.getType() == material) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public static PotionEffect getPotionEffect(final Player player, final org.bukkit.potion.PotionEffectType type) {
         for (final PotionEffect effect : player.getActivePotionEffects()) {
@@ -1263,7 +1273,7 @@ public final class PlayerUtils {
                     boots = SItem.find(inventory.getBoots());
                 }
 
-                if(sEntity.getEntity().getType() == SEntityType.ENDERMAN.getCraftType()){
+                if (sEntity.getEntity().getType() == SEntityType.ENDERMAN.getCraftType()) {
                     if (SItem.find(inventory.getHelmet()) != null) {
                         if (SItem.find(inventory.getHelmet()).getType().equals(SMaterial.FINAL_DESTINATION_HELMET)) {
                             //Access Kills.
@@ -1786,7 +1796,6 @@ public final class PlayerUtils {
         }
     }
 
-
     public static void finishSlayerQuest(final UUID uuid) {
         final Player damager = Bukkit.getPlayer(uuid);
         final User user = User.getUser(uuid);
@@ -1973,23 +1982,13 @@ public final class PlayerUtils {
         }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
-    static {
-        AUTO_SLAYER = new HashMap<UUID, Boolean>();
-        USER_SESSION_ID = new HashMap<UUID, UUID>();
-        STATISTICS_CACHE = new HashMap<UUID, PlayerStatistics>();
-        COOLDOWN_MAP = new HashMap<UUID, List<SMaterial>>();
-        SOUL_EATER_MAP = new HashMap<UUID, SEntity>();
-        COOKIE_DURATION_CACHE = new HashMap<UUID, Long>();
-        LAST_KILLED_MAPPING = new HashMap<UUID, Integer>();
-    }
-
-    public static class Debugmsg {
-        public static boolean debugmsg;
-    }
-
     public interface DamageResult {
         double getFinalDamage();
 
         boolean didCritDamage();
+    }
+
+    public static class Debugmsg {
+        public static boolean debugmsg;
     }
 }

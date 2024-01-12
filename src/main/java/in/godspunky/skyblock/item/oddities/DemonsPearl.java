@@ -2,7 +2,6 @@ package in.godspunky.skyblock.item.oddities;
 
 import in.godspunky.skyblock.item.*;
 import org.bukkit.ChatColor;
-import in.godspunky.skyblock.item.*;
 
 public class DemonsPearl implements MaterialStatistics, MaterialFunction, SkullStatistics {
     @Override

@@ -2,6 +2,12 @@ package in.godspunky.skyblock.entity.dungeons.boss.sadan;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.entity.zombie.BaseZombie;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.GenericAttributes;
@@ -20,12 +26,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
-import in.godspunky.skyblock.entity.zombie.BaseZombie;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 
 public class DiamondGiant extends BaseZombie {
     private static LivingEntity e;
@@ -35,6 +35,34 @@ public class DiamondGiant extends BaseZombie {
     public DiamondGiant() {
         this.swordActiv = false;
         this.swordSlamCD = true;
+    }
+
+    public static ItemStack buildColorStack(final int hexcolor) {
+        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB(hexcolor));
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
+    }
+
+    public static ItemStack b(final int hexcolor, final Material m) {
+        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
+    }
+
+    public static ItemStack c(final Material m) {
+        final ItemStack stack = new ItemStack(m);
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
+    }
+
+    public static void applyEffect(final PotionEffectType e, final Entity en, final int ticks, final int amp) {
+        ((LivingEntity) en).addPotionEffect(new PotionEffect(e, ticks, amp));
     }
 
     @Override
@@ -155,34 +183,6 @@ public class DiamondGiant extends BaseZombie {
     @Override
     public double getMovementSpeed() {
         return 0.35;
-    }
-
-    public static ItemStack buildColorStack(final int hexcolor) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
-    }
-
-    public static ItemStack b(final int hexcolor, final Material m) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
-    }
-
-    public static ItemStack c(final Material m) {
-        final ItemStack stack = new ItemStack(m);
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
-    }
-
-    public static void applyEffect(final PotionEffectType e, final Entity en, final int ticks, final int amp) {
-        ((LivingEntity) en).addPotionEffect(new PotionEffect(e, ticks, amp));
     }
 
     public void swordSlamAC(final LivingEntity e, final LivingEntity tar) {

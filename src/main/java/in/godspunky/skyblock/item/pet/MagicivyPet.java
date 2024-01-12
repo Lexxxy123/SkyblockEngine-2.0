@@ -1,8 +1,14 @@
 package in.godspunky.skyblock.item.pet;
 
 import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.item.GenericItemType;
+import in.godspunky.skyblock.item.Rarity;
+import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.skill.CombatSkill;
 import in.godspunky.skyblock.skill.Skill;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,12 +22,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.item.GenericItemType;
-import in.godspunky.skyblock.item.Rarity;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -29,6 +29,10 @@ import java.util.*;
 
 public class MagicivyPet extends Pet {
     public static final Map<Player, Boolean> COOLDOWN;
+
+    static {
+        COOLDOWN = new HashMap<Player, Boolean>();
+    }
 
     @Override
     public List<PetAbility> getPetAbilities(SItem instance) {
@@ -269,9 +273,5 @@ public class MagicivyPet extends Pet {
         final double x = v.getX() * cos + v.getZ() * sin;
         final double z = v.getX() * -sin + v.getZ() * cos;
         return v.setX(x).setZ(z);
-    }
-
-    static {
-        COOLDOWN = new HashMap<Player, Boolean>();
     }
 }

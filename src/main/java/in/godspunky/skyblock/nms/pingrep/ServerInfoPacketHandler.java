@@ -1,13 +1,13 @@
 package in.godspunky.skyblock.nms.pingrep;
 
 import com.mojang.authlib.GameProfile;
+import in.godspunky.skyblock.nms.pingrep.reflect.ReflectUtils;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.server.v1_8_R3.ChatComponentText;
 import net.minecraft.server.v1_8_R3.IChatBaseComponent;
 import net.minecraft.server.v1_8_R3.PacketStatusOutServerInfo;
 import net.minecraft.server.v1_8_R3.ServerPing;
 import org.bukkit.craftbukkit.v1_8_R3.util.CraftIconCache;
-import in.godspunky.skyblock.nms.pingrep.reflect.ReflectUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -19,23 +19,12 @@ import java.util.UUID;
 public class ServerInfoPacketHandler extends ServerInfoPacket {
     private static final Field SERVER_PING_FIELD;
 
-    public ServerInfoPacketHandler(final PingReply reply) {
-        super(reply);
+    static {
+        SERVER_PING_FIELD = ReflectUtils.getFirstFieldByType(PacketStatusOutServerInfo.class, ServerPing.class);
     }
 
-    @Override
-    public void send() {
-        try {
-            final Field field = this.getReply().getClass().getDeclaredField("ctx");
-            field.setAccessible(true);
-            final Object ctx = field.get(this.getReply());
-            final Method writeAndFlush = ctx.getClass().getMethod("writeAndFlush", Object.class);
-            writeAndFlush.setAccessible(true);
-            writeAndFlush.invoke(ctx, constructPacket(this.getReply()));
-        } catch (final NoSuchFieldException | IllegalAccessException | IllegalArgumentException |
-                       InvocationTargetException | NoSuchMethodException | SecurityException e) {
-            e.printStackTrace();
-        }
+    public ServerInfoPacketHandler(final PingReply reply) {
+        super(reply);
     }
 
     public static PacketStatusOutServerInfo constructPacket(final PingReply reply) {
@@ -75,7 +64,18 @@ public class ServerInfoPacketHandler extends ServerInfoPacket {
         }
     }
 
-    static {
-        SERVER_PING_FIELD = ReflectUtils.getFirstFieldByType(PacketStatusOutServerInfo.class, ServerPing.class);
+    @Override
+    public void send() {
+        try {
+            final Field field = this.getReply().getClass().getDeclaredField("ctx");
+            field.setAccessible(true);
+            final Object ctx = field.get(this.getReply());
+            final Method writeAndFlush = ctx.getClass().getMethod("writeAndFlush", Object.class);
+            writeAndFlush.setAccessible(true);
+            writeAndFlush.invoke(ctx, constructPacket(this.getReply()));
+        } catch (final NoSuchFieldException | IllegalAccessException | IllegalArgumentException |
+                       InvocationTargetException | NoSuchMethodException | SecurityException e) {
+            e.printStackTrace();
+        }
     }
 }

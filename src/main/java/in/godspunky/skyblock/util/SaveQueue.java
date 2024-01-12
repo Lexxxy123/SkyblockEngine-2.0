@@ -12,7 +12,8 @@ public class SaveQueue<T> {
     public void enqueue(T element) {
         queue.add(element);
     }
-    public void add(T element){
+
+    public void add(T element) {
         queue.add(element);
     }
 

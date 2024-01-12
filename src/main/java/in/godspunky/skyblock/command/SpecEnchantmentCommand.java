@@ -1,12 +1,12 @@
 package in.godspunky.skyblock.command;
 
+import in.godspunky.skyblock.enchantment.EnchantmentType;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.ranks.PlayerRank;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import in.godspunky.skyblock.enchantment.EnchantmentType;
 
 @CommandParameters(description = "Adds an enchantment from Spec to the specified item.", aliases = "sench", permission = PlayerRank.ADMIN)
 public class SpecEnchantmentCommand extends SCommand {

@@ -1,10 +1,10 @@
 package in.godspunky.skyblock.item.armor.storm;
 
-import net.md_5.bungee.api.ChatColor;
-import org.bukkit.entity.Player;
 import in.godspunky.skyblock.item.MaterialStatistics;
 import in.godspunky.skyblock.item.PlayerBoostStatistics;
 import in.godspunky.skyblock.item.armor.ArmorSet;
+import net.md_5.bungee.api.ChatColor;
+import org.bukkit.entity.Player;
 
 public class StormFullSet implements ArmorSet {
     @Override

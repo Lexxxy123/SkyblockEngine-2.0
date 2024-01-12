@@ -1,5 +1,7 @@
 package in.godspunky.skyblock.entity.nms;
 
+import in.godspunky.skyblock.entity.EntityFunction;
+import in.godspunky.skyblock.entity.EntityStatistics;
 import net.minecraft.server.v1_8_R3.EntityArmorStand;
 import net.minecraft.server.v1_8_R3.World;
 import org.bukkit.Bukkit;
@@ -7,8 +9,6 @@ import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import in.godspunky.skyblock.entity.EntityFunction;
-import in.godspunky.skyblock.entity.EntityStatistics;
 
 public class VelocityArmorStand extends EntityArmorStand implements EntityStatistics, EntityFunction, SNMSEntity {
     public VelocityArmorStand(final World world) {

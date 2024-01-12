@@ -7,7 +7,6 @@ import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import in.godspunky.skyblock.skill.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,30 +16,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class SkillMenuGUI extends GUI {
     public SkillMenuGUI() {
         super("Your Skills", 54);
-    }
-
-    @Override
-    public void onOpen(final GUIOpenEvent e) {
-        this.fill(BLACK_STAINED_GLASS_PANE);
-        final Player player = e.getPlayer();
-        final User user = User.getUser(player.getUniqueId());
-        this.set(GUIClickableItem.getCloseItem(49));
-        final AtomicInteger found = new AtomicInteger();
-        final Collection<ItemCollection> collections = ItemCollection.getCollections();
-        for (final ItemCollection collection : collections) {
-            if (user.getCollection(collection) > 0) {
-                found.incrementAndGet();
-            }
-        }
-        this.set(GUIClickableItem.createGUIOpenerItem(GUIType.SKYBLOCK_MENU, player, ChatColor.GREEN + "Go Back", 48, Material.ARROW, ChatColor.GRAY + "To SkySim Menu"));
-        this.set(4, SUtil.getStack(ChatColor.GREEN + "Your Skills", Material.DIAMOND_SWORD, (short) 0, 1, ChatColor.GRAY + "View your Skill progression and", ChatColor.GRAY + "rewards."));
-        this.set(createCollectionClickable(new SkillDetails(FarmingSkill.INSTANCE, player, 1), FarmingSkill.INSTANCE, Material.GOLD_HOE, 19, player));
-        this.set(createCollectionClickable(new SkillDetails(MiningSkill.INSTANCE, player, 1), MiningSkill.INSTANCE, Material.STONE_PICKAXE, 20, player));
-        this.set(createCollectionClickable(new SkillDetails(CombatSkill.INSTANCE, player, 1), CombatSkill.INSTANCE, Material.STONE_SWORD, 21, player));
-        this.set(createCollectionClickable(new SkillDetails(ForagingSkill.INSTANCE, player, 1), ForagingSkill.INSTANCE, Material.SAPLING, (short) 3, 22, player));
-        this.set(createCollectionClickable(null, null, Material.FISHING_ROD, 23, player));
-        this.set(createCollectionClickable(new SkillDetails(EnchantingSkill.INSTANCE, player, 1), EnchantingSkill.INSTANCE, Material.ENCHANTMENT_TABLE, 24, player));
-        this.set(createCollectionClickable(null, null, Material.BREWING_STAND_ITEM, 25, player));
     }
 
     private static GUIClickableItem createCollectionClickable(final GUI gui, final Skill skill, final Material icon, final short data, final int slot, final Player player) {
@@ -83,5 +58,29 @@ public class SkillMenuGUI extends GUI {
 
     private static GUIClickableItem createCollectionClickable(final GUI gui, final Skill skill, final Material icon, final int slot, final Player player) {
         return createCollectionClickable(gui, skill, icon, (short) 0, slot, player);
+    }
+
+    @Override
+    public void onOpen(final GUIOpenEvent e) {
+        this.fill(BLACK_STAINED_GLASS_PANE);
+        final Player player = e.getPlayer();
+        final User user = User.getUser(player.getUniqueId());
+        this.set(GUIClickableItem.getCloseItem(49));
+        final AtomicInteger found = new AtomicInteger();
+        final Collection<ItemCollection> collections = ItemCollection.getCollections();
+        for (final ItemCollection collection : collections) {
+            if (user.getCollection(collection) > 0) {
+                found.incrementAndGet();
+            }
+        }
+        this.set(GUIClickableItem.createGUIOpenerItem(GUIType.SKYBLOCK_MENU, player, ChatColor.GREEN + "Go Back", 48, Material.ARROW, ChatColor.GRAY + "To SkySim Menu"));
+        this.set(4, SUtil.getStack(ChatColor.GREEN + "Your Skills", Material.DIAMOND_SWORD, (short) 0, 1, ChatColor.GRAY + "View your Skill progression and", ChatColor.GRAY + "rewards."));
+        this.set(createCollectionClickable(new SkillDetails(FarmingSkill.INSTANCE, player, 1), FarmingSkill.INSTANCE, Material.GOLD_HOE, 19, player));
+        this.set(createCollectionClickable(new SkillDetails(MiningSkill.INSTANCE, player, 1), MiningSkill.INSTANCE, Material.STONE_PICKAXE, 20, player));
+        this.set(createCollectionClickable(new SkillDetails(CombatSkill.INSTANCE, player, 1), CombatSkill.INSTANCE, Material.STONE_SWORD, 21, player));
+        this.set(createCollectionClickable(new SkillDetails(ForagingSkill.INSTANCE, player, 1), ForagingSkill.INSTANCE, Material.SAPLING, (short) 3, 22, player));
+        this.set(createCollectionClickable(null, null, Material.FISHING_ROD, 23, player));
+        this.set(createCollectionClickable(new SkillDetails(EnchantingSkill.INSTANCE, player, 1), EnchantingSkill.INSTANCE, Material.ENCHANTMENT_TABLE, 24, player));
+        this.set(createCollectionClickable(null, null, Material.BREWING_STAND_ITEM, 25, player));
     }
 }

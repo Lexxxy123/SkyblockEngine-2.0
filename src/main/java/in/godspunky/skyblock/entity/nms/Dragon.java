@@ -3,6 +3,10 @@ package in.godspunky.skyblock.entity.nms;
 import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.entity.*;
 import in.godspunky.skyblock.entity.dungeons.watcher.GlobalBossBar;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.SUtil;
 import net.minecraft.server.v1_8_R3.EntityEnderDragon;
 import net.minecraft.server.v1_8_R3.World;
 import org.apache.commons.lang3.Range;
@@ -18,10 +22,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.SUtil;
 
 import java.util.*;
 
@@ -29,11 +29,16 @@ public abstract class Dragon extends EntityEnderDragon implements SNMSEntity, En
     public static final long DEFAULT_ATTACK_COOLDOWN = 300L;
     public static final Range DEFAULT_DAMAGE_DEGREE_RANGE;
     public static final double DEFAULT_SPEED_MODIFIER = 1.4;
+
+    static {
+        DEFAULT_DAMAGE_DEGREE_RANGE = Range.between((Comparable) 0.3, (Comparable) 0.7);
+    }
+
+    private final long attackCooldown;
     private boolean frozen;
     private double yD;
     private double speedModifier;
     private Range<Double> damageDegree;
-    private final long attackCooldown;
 
     protected Dragon(final World world, final double speedModifier, final Range<Double> damageDegree, final long attackCooldown) {
         super(world);
@@ -394,10 +399,6 @@ public abstract class Dragon extends EntityEnderDragon implements SNMSEntity, En
 
     public long getAttackCooldown() {
         return this.attackCooldown;
-    }
-
-    static {
-        DEFAULT_DAMAGE_DEGREE_RANGE = Range.between((Comparable) 0.3, (Comparable) 0.7);
     }
 
     private static class DragonDrop {

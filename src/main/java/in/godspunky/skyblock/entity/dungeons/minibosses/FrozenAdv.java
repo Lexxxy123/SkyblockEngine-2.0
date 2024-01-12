@@ -4,6 +4,17 @@ import com.google.common.util.concurrent.AtomicDouble;
 import de.slikey.effectlib.effect.ConeEffect;
 import de.slikey.effectlib.util.ParticleEffect;
 import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.entity.zombie.BaseZombie;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.user.PlayerStatistics;
+import in.godspunky.skyblock.user.PlayerUtils;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher;
 import net.minecraft.server.v1_8_R3.*;
@@ -24,17 +35,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
-import in.godspunky.skyblock.entity.zombie.BaseZombie;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.user.PlayerStatistics;
-import in.godspunky.skyblock.user.PlayerUtils;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.List;
 
@@ -51,6 +51,22 @@ public class FrozenAdv extends BaseZombie {
         this.EatingCooldown = false;
         this.CDDR = false;
         this.CDLA = false;
+    }
+
+    public static ItemStack st(final int hexcolor, final Material m, final String name) {
+        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.setDisplayName(name);
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
+    }
+
+    public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
+        final net.minecraft.server.v1_8_R3.Entity pl = ((CraftZombie) e).getHandle();
+        pl.setLocation(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), yaw, pitch);
+        final PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(pl);
+        Sputnik.sendPacket(e.getWorld(), packet);
     }
 
     @Override
@@ -310,8 +326,8 @@ public class FrozenAdv extends BaseZombie {
             }
         }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
         new BukkitRunnable() {
-            Location loc = entity.getLocation();
             final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
+            Location loc = entity.getLocation();
 
             public void run() {
                 if (entity.isDead()) {
@@ -412,15 +428,6 @@ public class FrozenAdv extends BaseZombie {
         return new SEntityEquipment(SUtil.enchant(SItem.of(SMaterial.ICE_WAND).getStack()), SUtil.enchant(SUtil.getSkullURLStack("Frozen Blaze Helmet", "55a13bb48e3595b55de8dd6943fc38db5235371278c695bd453e49a0999", 1, "")), SUtil.enchant(st(10541807, Material.LEATHER_CHESTPLATE, "Frozen Blaze Chestplate")), SUtil.enchant(st(10541807, Material.LEATHER_LEGGINGS, "Frozen Blaze Leggings")), SUtil.enchant(st(10541807, Material.LEATHER_BOOTS, "Frozen Blaze Boots")));
     }
 
-    public static ItemStack st(final int hexcolor, final Material m, final String name) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.setDisplayName(name);
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
-    }
-
     @Override
     public boolean isBaby() {
         return false;
@@ -474,12 +481,5 @@ public class FrozenAdv extends BaseZombie {
                 User.getUser(p.getUniqueId()).damage(p.getMaxHealth() * 10.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, e);
             }
         }
-    }
-
-    public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
-        final net.minecraft.server.v1_8_R3.Entity pl = ((CraftZombie) e).getHandle();
-        pl.setLocation(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), yaw, pitch);
-        final PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(pl);
-        Sputnik.sendPacket(e.getWorld(), packet);
     }
 }

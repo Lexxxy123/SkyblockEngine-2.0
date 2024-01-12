@@ -1,8 +1,13 @@
 package in.godspunky.skyblock.item.armor;
 
+import in.godspunky.skyblock.Repeater;
 import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityType;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.skill.Skill;
+import in.godspunky.skyblock.user.PlayerUtils;
+import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.*;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Effect;
@@ -11,11 +16,6 @@ import org.bukkit.Sound;
 import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.Repeater;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityType;
-import in.godspunky.skyblock.user.PlayerUtils;
-import in.godspunky.skyblock.user.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +25,12 @@ import java.util.UUID;
 public class PrecursorEye implements MaterialFunction, SkullStatistics, ToolStatistics, Ability, TickingMaterial {
     public static final Map<UUID, Boolean> PrecursorLaser;
     public static final Map<UUID, Integer> PrecursorLivingSeconds;
+
+    static {
+        PrecursorLaser = new HashMap<UUID, Boolean>();
+        PrecursorLivingSeconds = new HashMap<UUID, Integer>();
+    }
+
     int boosting;
 
     @Override
@@ -268,10 +274,5 @@ public class PrecursorEye implements MaterialFunction, SkullStatistics, ToolStat
     @Override
     public int getManaCost() {
         return 0;
-    }
-
-    static {
-        PrecursorLaser = new HashMap<UUID, Boolean>();
-        PrecursorLivingSeconds = new HashMap<UUID, Integer>();
     }
 }

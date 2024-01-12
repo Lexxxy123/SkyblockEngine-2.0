@@ -2,6 +2,7 @@ package in.godspunky.skyblock.item.weapon;
 
 import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.util.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -10,7 +11,6 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.user.PlayerUtils;
 
 public class MidasStaff implements ToolStatistics, MaterialFunction, Ability {
     @Override

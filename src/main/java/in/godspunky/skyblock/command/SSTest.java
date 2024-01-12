@@ -3,7 +3,9 @@ package in.godspunky.skyblock.command;
 import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.dimoon.Arena;
 import in.godspunky.skyblock.dimoon.DimoonLootTable;
-import in.godspunky.skyblock.entity.dungeons.watcher.Watcher;
+import in.godspunky.skyblock.dungeons.BlessingType;
+import in.godspunky.skyblock.dungeons.Blessings;
+import in.godspunky.skyblock.dungeons.ItemSerial;
 import in.godspunky.skyblock.extra.protocol.PacketInvoker;
 import in.godspunky.skyblock.gui.ConfirmWitherRuins;
 import in.godspunky.skyblock.item.SItem;
@@ -15,15 +17,10 @@ import in.godspunky.skyblock.user.UserStash;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import in.godspunky.skyblock.collection.ItemCollection;
-import in.godspunky.skyblock.dungeons.BlessingType;
-import in.godspunky.skyblock.dungeons.Blessings;
-import in.godspunky.skyblock.dungeons.ItemSerial;
 
 import java.io.File;
 
@@ -53,7 +50,7 @@ public class SSTest extends SCommand {
                     sitem.setStarAmount(5);
                 }
             } else if (args[0].contains("minion")) {
-               new SkyblockMinion(SMaterial.COBBLE_STONE_MINION , 1 , player.getLocation().add(0, Double.parseDouble(args[1]),0) , User.getUser(player.getUniqueId())).spawn();
+                new SkyblockMinion(SMaterial.COBBLE_STONE_MINION, 1, player.getLocation().add(0, Double.parseDouble(args[1]), 0), User.getUser(player.getUniqueId())).spawn();
             } else if (!args[0].contains("wipe")) {
                 if (args[0].contains("vlw")) {
                     PacketInvoker.dropVoidSpawner(player, player.getLocation());

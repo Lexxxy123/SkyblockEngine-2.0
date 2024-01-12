@@ -1,7 +1,11 @@
 package in.godspunky.skyblock.item.weapon;
 
 import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.listener.PlayerListener;
+import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R3.EnumParticle;
 import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
@@ -12,11 +16,6 @@ import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.listener.PlayerListener;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.Set;
 

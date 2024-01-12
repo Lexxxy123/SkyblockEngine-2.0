@@ -16,6 +16,15 @@ public class CollectionMenuGUI extends GUI {
         super("Collection", 54);
     }
 
+    private static GUIClickableItem createCollectionClickable(final GUI gui, final ItemCollectionCategory category, final Material icon, final short data, final int slot, final Player player) {
+        final String[] progress = ItemCollection.getProgress(player, category);
+        return GUIClickableItem.createGUIOpenerItem(gui, player, ChatColor.GREEN + category.getName() + " Collection", slot, icon, data, ChatColor.GRAY + "View your " + category.getName() + " Collection!", " ", progress[0], progress[1], " ", ChatColor.YELLOW + "Click to view!");
+    }
+
+    private static GUIClickableItem createCollectionClickable(final GUI gui, final ItemCollectionCategory category, final Material icon, final int slot, final Player player) {
+        return createCollectionClickable(gui, category, icon, (short) 0, slot, player);
+    }
+
     @Override
     public void onOpen(final GUIOpenEvent e) {
         this.fill(BLACK_STAINED_GLASS_PANE);
@@ -37,14 +46,5 @@ public class CollectionMenuGUI extends GUI {
         this.set(createCollectionClickable(new CategoryCollectionGUI(ItemCollectionCategory.COMBAT), ItemCollectionCategory.COMBAT, Material.STONE_SWORD, 22, player));
         this.set(createCollectionClickable(new CategoryCollectionGUI(ItemCollectionCategory.FORAGING), ItemCollectionCategory.FORAGING, Material.SAPLING, (short) 3, 23, player));
         this.set(createCollectionClickable(new CategoryCollectionGUI(ItemCollectionCategory.FISHING), ItemCollectionCategory.FISHING, Material.FISHING_ROD, 24, player));
-    }
-
-    private static GUIClickableItem createCollectionClickable(final GUI gui, final ItemCollectionCategory category, final Material icon, final short data, final int slot, final Player player) {
-        final String[] progress = ItemCollection.getProgress(player, category);
-        return GUIClickableItem.createGUIOpenerItem(gui, player, ChatColor.GREEN + category.getName() + " Collection", slot, icon, data, ChatColor.GRAY + "View your " + category.getName() + " Collection!", " ", progress[0], progress[1], " ", ChatColor.YELLOW + "Click to view!");
-    }
-
-    private static GUIClickableItem createCollectionClickable(final GUI gui, final ItemCollectionCategory category, final Material icon, final int slot, final Player player) {
-        return createCollectionClickable(gui, category, icon, (short) 0, slot, player);
     }
 }

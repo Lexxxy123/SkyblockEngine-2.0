@@ -2,6 +2,13 @@ package in.godspunky.skyblock.entity.dungeons.boss.sadan;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.entity.zombie.BaseZombie;
+import in.godspunky.skyblock.util.BlockFallAPI;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.GenericAttributes;
@@ -22,13 +29,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
-import in.godspunky.skyblock.entity.zombie.BaseZombie;
-import in.godspunky.skyblock.util.BlockFallAPI;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 
 public class BigfootGiant extends BaseZombie {
     private static LivingEntity e;
@@ -38,6 +38,55 @@ public class BigfootGiant extends BaseZombie {
     public BigfootGiant() {
         this.shockWave = false;
         this.shockWaveCD = true;
+    }
+
+    public static ItemStack buildColorStack(final int hexcolor) {
+        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB(hexcolor));
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
+    }
+
+    public static ItemStack b(final int hexcolor, final Material m) {
+        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
+    }
+
+    public static ItemStack c(final Material m) {
+        final ItemStack stack = new ItemStack(m);
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
+    }
+
+    public static void applyEffect(final PotionEffectType e, final Entity en, final int ticks, final int amp) {
+        ((LivingEntity) en).addPotionEffect(new PotionEffect(e, ticks, amp));
+    }
+
+    public static void createBlockTornado(final Entity e, final Material mat, final byte id) {
+        for (int i = 0; i <= 30; ++i) {
+            final int random = SUtil.random(0, 3);
+            double range = 0.0;
+            final Location loc = e.getLocation().clone();
+            loc.setYaw((float) SUtil.random(0, 360));
+            if (random == 1) {
+                range = 0.6;
+            }
+            if (random == 2) {
+                range = 0.7;
+            }
+            if (random == 3) {
+                range = 0.8;
+            }
+            final Vector vec = loc.getDirection().normalize().multiply(range);
+            vec.setY(1.1);
+            BlockFallAPI.sendVelocityBlock(e.getLocation(), mat, id, e.getWorld(), 70, vec);
+        }
     }
 
     @Override
@@ -209,55 +258,6 @@ public class BigfootGiant extends BaseZombie {
                 }
             }
         }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
-    }
-
-    public static ItemStack buildColorStack(final int hexcolor) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
-    }
-
-    public static ItemStack b(final int hexcolor, final Material m) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
-    }
-
-    public static ItemStack c(final Material m) {
-        final ItemStack stack = new ItemStack(m);
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
-    }
-
-    public static void applyEffect(final PotionEffectType e, final Entity en, final int ticks, final int amp) {
-        ((LivingEntity) en).addPotionEffect(new PotionEffect(e, ticks, amp));
-    }
-
-    public static void createBlockTornado(final Entity e, final Material mat, final byte id) {
-        for (int i = 0; i <= 30; ++i) {
-            final int random = SUtil.random(0, 3);
-            double range = 0.0;
-            final Location loc = e.getLocation().clone();
-            loc.setYaw((float) SUtil.random(0, 360));
-            if (random == 1) {
-                range = 0.6;
-            }
-            if (random == 2) {
-                range = 0.7;
-            }
-            if (random == 3) {
-                range = 0.8;
-            }
-            final Vector vec = loc.getDirection().normalize().multiply(range);
-            vec.setY(1.1);
-            BlockFallAPI.sendVelocityBlock(e.getLocation(), mat, id, e.getWorld(), 70, vec);
-        }
     }
 
     @Override

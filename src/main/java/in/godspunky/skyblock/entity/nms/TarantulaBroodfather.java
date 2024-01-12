@@ -4,6 +4,11 @@ import com.google.common.util.concurrent.AtomicDouble;
 import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.enchantment.EnchantmentType;
 import in.godspunky.skyblock.entity.*;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 import net.minecraft.server.v1_8_R3.Entity;
 import net.minecraft.server.v1_8_R3.EntitySpider;
 import net.minecraft.server.v1_8_R3.World;
@@ -18,11 +23,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,12 +31,18 @@ import java.util.UUID;
 public class TarantulaBroodfather extends EntitySpider implements SNMSEntity, EntityFunction, EntityStatistics, SlayerBoss {
     private static final TieredValue<Double> MAX_HEALTH_VALUES;
     private static final TieredValue<Double> DAMAGE_VALUES;
+
+    static {
+        MAX_HEALTH_VALUES = new TieredValue<Double>(750.0, 30000.0, 900000.0, 2400000.0);
+        DAMAGE_VALUES = new TieredValue<Double>(35.0, 110.0, 525.0, 1325.0);
+    }
+
     private final int tier;
     private final long end;
+    private final UUID spawnerUUID;
     private SEntity hologram;
     private SEntity top;
     private SEntity hologram_name;
-    private final UUID spawnerUUID;
 
     public TarantulaBroodfather(final Integer tier, final UUID spawnerUUID) {
         super(((CraftWorld) Bukkit.getPlayer(spawnerUUID).getWorld()).getHandle());
@@ -240,11 +246,6 @@ public class TarantulaBroodfather extends EntitySpider implements SNMSEntity, En
 
     public int getTier() {
         return this.tier;
-    }
-
-    static {
-        MAX_HEALTH_VALUES = new TieredValue<Double>(750.0, 30000.0, 900000.0, 2400000.0);
-        DAMAGE_VALUES = new TieredValue<Double>(35.0, 110.0, 525.0, 1325.0);
     }
 
     public static class TopCaveSpider implements EntityStatistics, EntityFunction {

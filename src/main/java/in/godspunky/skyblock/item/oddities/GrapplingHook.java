@@ -2,12 +2,12 @@ package in.godspunky.skyblock.item.oddities;
 
 import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +15,10 @@ import java.util.UUID;
 
 public class GrapplingHook implements MaterialStatistics, FishingRodFunction {
     private static final List<UUID> COOLDOWN;
+
+    static {
+        COOLDOWN = new ArrayList<UUID>();
+    }
 
     @Override
     public void onFish(final SItem instance, final PlayerFishEvent e) {
@@ -60,9 +64,5 @@ public class GrapplingHook implements MaterialStatistics, FishingRodFunction {
     @Override
     public String getLore() {
         return "Travel around in style using this Grappling Hook. 2 Second Cooldown";
-    }
-
-    static {
-        COOLDOWN = new ArrayList<UUID>();
     }
 }

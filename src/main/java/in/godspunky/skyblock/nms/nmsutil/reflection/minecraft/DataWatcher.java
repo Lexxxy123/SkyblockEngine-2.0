@@ -2,7 +2,6 @@ package in.godspunky.skyblock.nms.nmsutil.reflection.minecraft;
 
 import in.godspunky.skyblock.nms.nmsutil.reflection.resolver.*;
 import in.godspunky.skyblock.nms.nmsutil.reflection.resolver.minecraft.NMSClassResolver;
-import in.godspunky.skyblock.nms.nmsutil.reflection.resolver.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -24,6 +23,25 @@ public class DataWatcher {
     static FieldResolver DataWatcherFieldResolver;
     static MethodResolver TIntObjectMapMethodResolver;
     static MethodResolver DataWatcherMethodResolver;
+
+    static {
+        in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.classResolver = new ClassResolver();
+        in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.nmsClassResolver = new NMSClassResolver();
+        in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.ItemStack = in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.nmsClassResolver.resolveSilent("ItemStack");
+        in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.ChunkCoordinates = in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.nmsClassResolver.resolveSilent("ChunkCoordinates");
+        in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.BlockPosition = in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.nmsClassResolver.resolveSilent("BlockPosition");
+        in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.Vector3f = in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.nmsClassResolver.resolveSilent("Vector3f");
+        in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.DataWatcher = in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.nmsClassResolver.resolveSilent("DataWatcher");
+        in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.Entity = in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.nmsClassResolver.resolveSilent("Entity");
+        in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.TIntObjectMap = in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.classResolver.resolveSilent("gnu.trove.map.TIntObjectMap", "net.minecraft.util.gnu.trove.map.TIntObjectMap");
+        in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.DataWacherConstructorResolver = new ConstructorResolver(in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.DataWatcher);
+        in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.DataWatcherFieldResolver = new FieldResolver(in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.DataWatcher);
+        in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.TIntObjectMapMethodResolver = new MethodResolver(in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.TIntObjectMap);
+        in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.DataWatcherMethodResolver = new MethodResolver(in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.DataWatcher);
+    }
+
+    private DataWatcher() {
+    }
 
     public static Object newDataWatcher(final Object entity) throws ReflectiveOperationException {
         return in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.DataWacherConstructorResolver.resolve(new Class[][]{{in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.Entity}}).newInstance(entity);
@@ -91,31 +109,17 @@ public class DataWatcher {
         return type;
     }
 
-    private DataWatcher() {
-    }
-
-    static {
-        in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.classResolver = new ClassResolver();
-        in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.nmsClassResolver = new NMSClassResolver();
-        in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.ItemStack = in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.nmsClassResolver.resolveSilent("ItemStack");
-        in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.ChunkCoordinates = in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.nmsClassResolver.resolveSilent("ChunkCoordinates");
-        in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.BlockPosition = in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.nmsClassResolver.resolveSilent("BlockPosition");
-        in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.Vector3f = in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.nmsClassResolver.resolveSilent("Vector3f");
-        in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.DataWatcher = in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.nmsClassResolver.resolveSilent("DataWatcher");
-        in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.Entity = in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.nmsClassResolver.resolveSilent("Entity");
-        in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.TIntObjectMap = in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.classResolver.resolveSilent("gnu.trove.map.TIntObjectMap", "net.minecraft.util.gnu.trove.map.TIntObjectMap");
-        in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.DataWacherConstructorResolver = new ConstructorResolver(in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.DataWatcher);
-        in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.DataWatcherFieldResolver = new FieldResolver(in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.DataWatcher);
-        in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.TIntObjectMapMethodResolver = new MethodResolver(in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.TIntObjectMap);
-        in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.DataWatcherMethodResolver = new MethodResolver(in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.DataWatcher);
-    }
-
     public static class V1_9 {
         static Class<?> DataWatcherItem;
         static Class<?> DataWatcherObject;
         static ConstructorResolver DataWatcherItemConstructorResolver;
         static FieldResolver DataWatcherItemFieldResolver;
         static FieldResolver DataWatcherObjectFieldResolver;
+
+        static {
+            V1_9.DataWatcherItem = in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.nmsClassResolver.resolveSilent("DataWatcher$Item");
+            V1_9.DataWatcherObject = in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.nmsClassResolver.resolveSilent("DataWatcherObject");
+        }
 
         public static Object newDataWatcherItem(final Object dataWatcherObject, final Object value) throws ReflectiveOperationException {
             if (V1_9.DataWatcherItemConstructorResolver == null) {
@@ -140,7 +144,7 @@ public class DataWatcher {
         }
 
         public static Object getItem(final Object dataWatcher, final Object dataWatcherObject) throws ReflectiveOperationException {
-            return in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.DataWatcherMethodResolver.resolve(new ResolverQuery("c", new Class[]{V1_9.DataWatcherObject})).invoke(dataWatcher, dataWatcherObject);
+            return in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.DataWatcherMethodResolver.resolve(new ResolverQuery("c", V1_9.DataWatcherObject)).invoke(dataWatcher, dataWatcherObject);
         }
 
         public static Object getValue(final Object dataWatcher, final Object dataWatcherObject) throws ReflectiveOperationException {
@@ -198,11 +202,6 @@ public class DataWatcher {
 
         public static void setItemValue(final Object item, final Object value) throws ReflectiveOperationException {
             V1_9.DataWatcherItemFieldResolver.resolve("b").set(item, value);
-        }
-
-        static {
-            V1_9.DataWatcherItem = in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.nmsClassResolver.resolveSilent("DataWatcher$Item");
-            V1_9.DataWatcherObject = in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.nmsClassResolver.resolveSilent("DataWatcherObject");
         }
 
         public enum ValueType {
@@ -289,6 +288,10 @@ public class DataWatcher {
         static ConstructorResolver WatchableObjectConstructorResolver;
         static FieldResolver WatchableObjectFieldResolver;
 
+        static {
+            V1_8.WatchableObject = in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.nmsClassResolver.resolveSilent("WatchableObject", "DataWatcher$WatchableObject");
+        }
+
         public static Object newWatchableObject(final int index, final Object value) throws ReflectiveOperationException {
             return newWatchableObject(in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.getValueType(value), index, value);
         }
@@ -331,10 +334,6 @@ public class DataWatcher {
                 V1_8.WatchableObjectFieldResolver = new FieldResolver(V1_8.WatchableObject);
             }
             return V1_8.WatchableObjectFieldResolver.resolve("c").get(object);
-        }
-
-        static {
-            V1_8.WatchableObject = in.godspunky.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.nmsClassResolver.resolveSilent("WatchableObject", "DataWatcher$WatchableObject");
         }
     }
 }

@@ -2,6 +2,14 @@ package in.godspunky.skyblock.entity.dungeons;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.entity.zombie.BaseZombie;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
 import net.minecraft.server.v1_8_R3.GenericAttributes;
 import org.bukkit.*;
@@ -17,14 +25,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
-import in.godspunky.skyblock.entity.zombie.BaseZombie;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 
 public class ShadowAssassins extends BaseZombie {
     private final boolean isEating;
@@ -35,6 +35,14 @@ public class ShadowAssassins extends BaseZombie {
         this.isEating = false;
         this.isBowing = false;
         this.EatingCooldown = false;
+    }
+
+    public static ItemStack b(final int hexcolor, final Material m) {
+        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
     }
 
     @Override
@@ -50,14 +58,6 @@ public class ShadowAssassins extends BaseZombie {
     @Override
     public double getDamageDealt() {
         return 900000.0;
-    }
-
-    public static ItemStack b(final int hexcolor, final Material m) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
     }
 
     @Override

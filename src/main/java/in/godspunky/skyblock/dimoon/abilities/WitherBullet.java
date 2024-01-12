@@ -1,5 +1,9 @@
 package in.godspunky.skyblock.dimoon.abilities;
 
+import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.dimoon.Dimoon;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -9,10 +13,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.dimoon.Dimoon;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.SUtil;
 
 public class WitherBullet implements Ability {
     @Override

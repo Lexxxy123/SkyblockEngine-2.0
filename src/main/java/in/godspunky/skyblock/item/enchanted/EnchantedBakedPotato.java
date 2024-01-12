@@ -1,7 +1,6 @@
 package in.godspunky.skyblock.item.enchanted;
 
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.item.*;
 
 public class EnchantedBakedPotato implements EnchantedMaterialStatistics, MaterialFunction {
     @Override

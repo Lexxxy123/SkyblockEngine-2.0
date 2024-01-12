@@ -3,7 +3,6 @@ package in.godspunky.skyblock.item.bow;
 import in.godspunky.skyblock.item.*;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import in.godspunky.skyblock.item.*;
 
 public class EndStoneBow implements ToolStatistics, MaterialFunction, Ability {
     @Override

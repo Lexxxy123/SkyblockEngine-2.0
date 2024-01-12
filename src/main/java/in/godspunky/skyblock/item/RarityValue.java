@@ -17,6 +17,22 @@ public class RarityValue<T> {
         this.rest = rest;
     }
 
+    public static RarityValue<Integer> zeroInteger() {
+        return new RarityValue<Integer>(0, 0, 0, 0, 0, 0);
+    }
+
+    public static RarityValue<Double> zeroDouble() {
+        return new RarityValue<Double>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    }
+
+    public static RarityValue<Integer> singleInteger(final Integer i) {
+        return new RarityValue<Integer>(i, i, i, i, i, i);
+    }
+
+    public static RarityValue<Double> singleDouble(final Double d) {
+        return new RarityValue<Double>(d, d, d, d, d, d);
+    }
+
     public T getForRarity(final Rarity rarity) {
         switch (rarity) {
             case COMMON:
@@ -32,22 +48,6 @@ public class RarityValue<T> {
             default:
                 return this.rest;
         }
-    }
-
-    public static RarityValue<Integer> zeroInteger() {
-        return new RarityValue<Integer>(0, 0, 0, 0, 0, 0);
-    }
-
-    public static RarityValue<Double> zeroDouble() {
-        return new RarityValue<Double>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
-    }
-
-    public static RarityValue<Integer> singleInteger(final Integer i) {
-        return new RarityValue<Integer>(i, i, i, i, i, i);
-    }
-
-    public static RarityValue<Double> singleDouble(final Double d) {
-        return new RarityValue<Double>(d, d, d, d, d, d);
     }
 
     public T getCommon() {

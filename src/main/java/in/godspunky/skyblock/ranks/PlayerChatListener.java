@@ -5,7 +5,6 @@ import in.godspunky.skyblock.listener.PListener;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class PlayerChatListener extends PListener {
@@ -13,7 +12,7 @@ public class PlayerChatListener extends PListener {
     public void Event(AsyncPlayerChatEvent e) {
         String userTag;
         GodspunkyPlayer data = GodspunkyPlayer.getUser(e.getPlayer());
-        e.setFormat("%1$s" + (data.rank== PlayerRank.DEFAULT ? ChatColor.GRAY : ChatColor.WHITE) + ": %2$s");
+        e.setFormat("%1$s" + (data.rank == PlayerRank.DEFAULT ? ChatColor.GRAY : ChatColor.WHITE) + ": %2$s");
         e.getPlayer().setDisplayName(e.getPlayer().getName());
         PlayerRank rank = data.rank;
         if (rank == PlayerRank.DEFAULT) {

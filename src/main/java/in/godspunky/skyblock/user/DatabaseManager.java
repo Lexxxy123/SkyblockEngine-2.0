@@ -19,7 +19,7 @@ public class DatabaseManager {
         return database.getCollection(collectionName);
     }
 
-    public static MongoDatabase getDatabase(){
+    public static MongoDatabase getDatabase() {
         return database;
     }
 

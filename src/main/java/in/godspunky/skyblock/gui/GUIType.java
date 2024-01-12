@@ -48,6 +48,15 @@ public enum GUIType {
         this.gui = gui;
     }
 
+    public static GUI getGUI(final String title) {
+        for (final GUIType type : values()) {
+            if (type.getGUI().getTitle().contains(title)) {
+                return type.getGUI();
+            }
+        }
+        return null;
+    }
+
     public GUI getGUI() {
         try {
             return this.gui.newInstance();
@@ -59,14 +68,5 @@ public enum GUIType {
 
     public GUI getGUI(final Object... params) {
         return SUtil.instance(GUI.class, params);
-    }
-
-    public static GUI getGUI(final String title) {
-        for (final GUIType type : values()) {
-            if (type.getGUI().getTitle().contains(title)) {
-                return type.getGUI();
-            }
-        }
-        return null;
     }
 }

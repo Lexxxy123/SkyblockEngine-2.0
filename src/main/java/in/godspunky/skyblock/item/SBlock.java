@@ -8,14 +8,38 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class SBlock {
     protected static final Skyblock plugin;
+
+    static {
+        plugin = Skyblock.getPlugin();
+    }
+
     private final Location location;
-    private SMaterial type;
     private final NBTTagCompound data;
+    private SMaterial type;
 
     public SBlock(final Location location, final SMaterial type, final NBTTagCompound data) {
         this.location = location;
         this.type = type;
         this.data = data;
+    }
+
+    public static SBlock getBlock(final Location location) {
+        final ConfigurationSection cs = SBlock.plugin.blocks.getConfigurationSection(toLocationString(location));
+        if (cs == null) {
+            return null;
+        }
+        final NBTTagCompound compound = new NBTTagCompound();
+        for (final String key : cs.getKeys(false)) {
+            if (key.equals("type")) {
+                continue;
+            }
+            compound.set(key, SUtil.getBaseFromObject(cs, key));
+        }
+        return new SBlock(location, SMaterial.getMaterial(cs.getString("type")), compound);
+    }
+
+    private static String toLocationString(final Location location) {
+        return location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ() + "," + location.getWorld().getName();
     }
 
     public float getDataFloat(final String key) {
@@ -32,21 +56,6 @@ public class SBlock {
 
     public String getDataString(final String key) {
         return this.data.getString(key);
-    }
-
-    public static SBlock getBlock(final Location location) {
-        final ConfigurationSection cs = SBlock.plugin.blocks.getConfigurationSection(toLocationString(location));
-        if (cs == null) {
-            return null;
-        }
-        final NBTTagCompound compound = new NBTTagCompound();
-        for (final String key : cs.getKeys(false)) {
-            if (key.equals("type")) {
-                continue;
-            }
-            compound.set(key, SUtil.getBaseFromObject(cs, key));
-        }
-        return new SBlock(location, SMaterial.getMaterial(cs.getString("type")), compound);
     }
 
     public void save() {
@@ -70,10 +79,6 @@ public class SBlock {
         return toLocationString(this.location);
     }
 
-    private static String toLocationString(final Location location) {
-        return location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ() + "," + location.getWorld().getName();
-    }
-
     public Location getLocation() {
         return this.location;
     }
@@ -82,15 +87,11 @@ public class SBlock {
         return this.type;
     }
 
-    public NBTTagCompound getData() {
-        return this.data;
-    }
-
     public void setType(final SMaterial type) {
         this.type = type;
     }
 
-    static {
-        plugin = Skyblock.getPlugin();
+    public NBTTagCompound getData() {
+        return this.data;
     }
 }

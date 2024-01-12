@@ -2,6 +2,7 @@ package in.godspunky.skyblock.entity.dungeons.boss.sadan;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import in.godspunky.skyblock.util.SUtil;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
@@ -13,7 +14,6 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.scoreboard.CraftScoreboard;
 import org.bukkit.craftbukkit.v1_8_R3.scoreboard.CraftScoreboardManager;
 import org.bukkit.entity.Player;
-import in.godspunky.skyblock.util.SUtil;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -67,7 +67,7 @@ public final class DeadBodyMaker {
         for (final Player p : location.getWorld().getPlayers()) {
             final PlayerConnection conn = ((CraftPlayer) p).getHandle().playerConnection;
             conn.sendPacket(astp);
-            conn.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, new EntityPlayer[]{botPlayer}));
+            conn.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, botPlayer));
             conn.sendPacket(new PacketPlayOutNamedEntitySpawn(botPlayer));
             conn.sendPacket(packet);
             sendPacketBundle(p, new Packet[]{new PacketPlayOutScoreboardTeam(scoreboardTeam, 1), new PacketPlayOutScoreboardTeam(scoreboardTeam, 0), new PacketPlayOutScoreboardTeam(scoreboardTeam, Collections.singletonList(name), 3)});

@@ -1,7 +1,6 @@
 package in.godspunky.skyblock.item.armor.vanilla.golden;
 
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.item.*;
 
 public class GoldenHelmet implements ToolStatistics, MaterialFunction {
     @Override

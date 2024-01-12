@@ -1,14 +1,14 @@
 package in.godspunky.skyblock.entity.end;
 
-import in.godspunky.skyblock.slayer.SlayerQuest;
-import org.bukkit.Location;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import in.godspunky.skyblock.entity.EntityFunction;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityType;
+import in.godspunky.skyblock.slayer.SlayerQuest;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 public abstract class BaseEnderman implements EndermanStatistics, EntityFunction {
     @Override

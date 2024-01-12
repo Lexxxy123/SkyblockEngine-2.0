@@ -1,8 +1,8 @@
 package in.godspunky.skyblock.user;
 
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import in.godspunky.skyblock.item.ItemCategory;
 import in.godspunky.skyblock.item.Rarity;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +25,10 @@ public class AuctionSettings implements Cloneable, ConfigurationSerializable {
 
     public AuctionSettings() {
         this(ItemCategory.WEAPONS, null, Sort.HIGHEST_BID, null, Type.SHOW_ALL);
+    }
+
+    public static AuctionSettings deserialize(Map<String, Object> map) {
+        return new AuctionSettings(ItemCategory.valueOf((String) map.get("category")), (String) map.getOrDefault("query", null), Sort.valueOf((String) map.get("sort")), map.containsKey("tier") ? Rarity.getRarity((String) map.get("tier")) : null, Type.valueOf((String) map.get("type")));
     }
 
     public Map<String, Object> serialize() {
@@ -95,10 +99,6 @@ public class AuctionSettings implements Cloneable, ConfigurationSerializable {
 
     public void setType(final Type type) {
         this.type = type;
-    }
-
-    public static AuctionSettings deserialize(Map<String, Object> map) {
-        return new AuctionSettings(ItemCategory.valueOf((String) map.get("category")), (String) map.getOrDefault("query", null), Sort.valueOf((String) map.get("sort")), map.containsKey("tier") ? Rarity.getRarity((String) map.get("tier")) : null, Type.valueOf((String) map.get("type")));
     }
 
     public enum Sort {

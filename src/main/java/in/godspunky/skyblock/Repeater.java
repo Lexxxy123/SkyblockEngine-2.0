@@ -23,6 +23,7 @@ import in.godspunky.skyblock.sidebar.Sidebar;
 import in.godspunky.skyblock.slayer.SlayerQuest;
 import in.godspunky.skyblock.user.PlayerStatistics;
 import in.godspunky.skyblock.user.PlayerUtils;
+import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.*;
 import net.minecraft.server.v1_8_R3.EntityFallingBlock;
 import org.bukkit.*;
@@ -35,7 +36,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.user.User;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -50,20 +50,24 @@ public class Repeater {
     public static final Map<Entity, Player> BEACON_OWNER;
     public static final Map<Entity, EntityFallingBlock> BEACON;
     public static final Map<UUID, Integer> PTN_CACHE;
-    private final List<BukkitTask> tasks;
-    public static int EFFECT_COUNTING;
     public static final Map<UUID, Integer> FloorLivingSec;
+    public static int EFFECT_COUNTING;
 
-    public static void cRun(final User u) {
-        final List<ActivePotionEffect> apt = u.getEffects();
-        if (Repeater.PTN_CACHE.containsKey(u.getUuid())) {
-            if (Repeater.PTN_CACHE.get(u.getUuid()) >= apt.size()) {
-                Repeater.PTN_CACHE.put(u.getUuid(), 0);
-            }
-        } else {
-            Repeater.PTN_CACHE.put(u.getUuid(), 0);
-        }
+    static {
+        MANA_MAP = new HashMap<>();
+        MANA_REGEN_DEC = new HashMap<>();
+        SBA_MAP = new HashMap<>();
+        DEFENSE_REPLACEMENT_MAP = new HashMap<>();
+        MANA_REPLACEMENT_MAP = new HashMap<>();
+        BEACON_THROW2 = new HashMap<>();
+        BEACON_OWNER = new HashMap<>();
+        BEACON = new HashMap<>();
+        PTN_CACHE = new HashMap<>();
+        Repeater.EFFECT_COUNTING = 0;
+        FloorLivingSec = new HashMap<>();
     }
+
+    private final List<BukkitTask> tasks;
 
     public Repeater() {
         (this.tasks = new ArrayList<BukkitTask>()).add(new BukkitRunnable() {
@@ -74,7 +78,7 @@ public class Repeater {
                         return;
                     }
                     final User user = User.getUser(player.getUniqueId());
-                   // user.syncSavingData();
+                    // user.syncSavingData();
                 }
             }
         }.runTaskTimer(Skyblock.getPlugin(), 3000L, 3000L));
@@ -207,14 +211,15 @@ public class Repeater {
         }.runTaskTimer(Skyblock.getPlugin(), 0L, 20L));
     }
 
-    public void stop() {
-        for (final BukkitTask task : this.tasks) {
-            task.cancel();
+    public static void cRun(final User u) {
+        final List<ActivePotionEffect> apt = u.getEffects();
+        if (Repeater.PTN_CACHE.containsKey(u.getUuid())) {
+            if (Repeater.PTN_CACHE.get(u.getUuid()) >= apt.size()) {
+                Repeater.PTN_CACHE.put(u.getUuid(), 0);
+            }
+        } else {
+            Repeater.PTN_CACHE.put(u.getUuid(), 0);
         }
-    }
-
-    public int runningTasks() {
-        return this.tasks.size();
     }
 
     public static void runPlayerTask(final Player player, final int[] counters, final List<AtomicInteger> counters2) {
@@ -323,7 +328,8 @@ public class Repeater {
         if (hand == null) {
             hand = SItem.of(inventory.getItemInHand());
             if (hand != null) {
-                if (player.getItemInHand().hasItemMeta() && player.getItemInHand().getItemMeta().getDisplayName().contains("minion")) return;
+                if (player.getItemInHand().hasItemMeta() && player.getItemInHand().getItemMeta().getDisplayName().contains("minion"))
+                    return;
                 player.setItemInHand(hand.getStack());
             }
         }
@@ -467,9 +473,9 @@ public class Repeater {
             skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYBLOCK &b&lBETA");
         }
         String finalSkysim = skysim;
-        SUtil.runSync(()->{
+        SUtil.runSync(() -> {
             Sidebar sidebar = new Sidebar(finalSkysim, "SKYBLOCK");
-            SUtil.runAsync(()->{
+            SUtil.runAsync(() -> {
                 String strd = SUtil.getDate();
                 if (RebootServerCommand.secondMap.containsKey(Bukkit.getServer())) {
                     if (RebootServerCommand.secondMap.get(Bukkit.getServer()) >= 10) {
@@ -534,7 +540,7 @@ public class Repeater {
                         coinsDisplay.append("Purse: ");
                     }
                     sidebar.add(coinsDisplay.append(ChatColor.GOLD).append(SUtil.commaify(user.getCoins())) + ".0" + ChatColor.YELLOW);
-                  //  final String bits = PlaceholderAPI.setPlaceholders(player, "%royaleeconomy_balance_purse%") + " " + PlaceholderAPI.setPlaceholders(player, "%royaleeconomy_dynamic_coins%");
+                    //  final String bits = PlaceholderAPI.setPlaceholders(player, "%royaleeconomy_balance_purse%") + " " + PlaceholderAPI.setPlaceholders(player, "%royaleeconomy_dynamic_coins%");
                     String bits = "0";
                     sidebar.add("Bits: " + ChatColor.AQUA + bits);
                     sidebar.add("   ");
@@ -639,27 +645,26 @@ public class Repeater {
                 }
 
 
+                if (!player.getWorld().getName().equalsIgnoreCase("limbo") && !player.getWorld().getName().equalsIgnoreCase("dungeon")) {
+                    sidebar.apply(player);
 
-            if (!player.getWorld().getName().equalsIgnoreCase("limbo") && !player.getWorld().getName().equalsIgnoreCase("dungeon")) {
-                sidebar.apply(player);
 
+                } else if (player.getWorld().getName().equalsIgnoreCase("limbo")) {
+                    final Sidebar sidebar2 = new Sidebar("" + ChatColor.YELLOW + ChatColor.BOLD + "SKYSIM " + ChatColor.RED + ChatColor.BOLD + "LIMBO", "SKYSIM1");
+                    sidebar2.add(ChatColor.GRAY + SUtil.getDate() + " " + ChatColor.DARK_GRAY + "mini12D7");
+                    sidebar2.add("     ");
+                    sidebar2.add("You are currently in" + ChatColor.RED);
+                    sidebar2.add("the " + ChatColor.RED + "Limbo " + ChatColor.WHITE + "server.");
+                    sidebar2.add("Use " + ChatColor.GOLD + "/hub " + ChatColor.WHITE + "to");
+                    sidebar2.add("continue playing.");
+                    sidebar2.add("If your connection is");
+                    sidebar2.add("unstable, stay here!");
+                    sidebar2.add(ChatColor.AQUA + "     ");
+                    sidebar2.add(ChatColor.YELLOW + "godspunky.in");
 
-            } else if (player.getWorld().getName().equalsIgnoreCase("limbo")) {
-                final Sidebar sidebar2 = new Sidebar("" + ChatColor.YELLOW + ChatColor.BOLD + "SKYSIM " + ChatColor.RED + ChatColor.BOLD + "LIMBO", "SKYSIM1");
-                sidebar2.add(ChatColor.GRAY + SUtil.getDate() + " " + ChatColor.DARK_GRAY + "mini12D7");
-                sidebar2.add("     ");
-                sidebar2.add("You are currently in" + ChatColor.RED);
-                sidebar2.add("the " + ChatColor.RED + "Limbo " + ChatColor.WHITE + "server.");
-                sidebar2.add("Use " + ChatColor.GOLD + "/hub " + ChatColor.WHITE + "to");
-                sidebar2.add("continue playing.");
-                sidebar2.add("If your connection is");
-                sidebar2.add("unstable, stay here!");
-                sidebar2.add(ChatColor.AQUA + "     ");
-                sidebar2.add(ChatColor.YELLOW + "godspunky.in");
-
-                sidebar2.apply(player);
-            }
-           });
+                    sidebar2.apply(player);
+                }
+            });
         });
     }
 
@@ -670,17 +675,13 @@ public class Repeater {
         return "";
     }
 
-    static {
-        MANA_MAP = new HashMap<>();
-        MANA_REGEN_DEC = new HashMap<>();
-        SBA_MAP = new HashMap<>();
-        DEFENSE_REPLACEMENT_MAP = new HashMap<>();
-        MANA_REPLACEMENT_MAP = new HashMap<>();
-        BEACON_THROW2 = new HashMap<>();
-        BEACON_OWNER = new HashMap<>();
-        BEACON = new HashMap<>();
-        PTN_CACHE = new HashMap<>();
-        Repeater.EFFECT_COUNTING = 0;
-        FloorLivingSec = new HashMap<>();
+    public void stop() {
+        for (final BukkitTask task : this.tasks) {
+            task.cancel();
+        }
+    }
+
+    public int runningTasks() {
+        return this.tasks.size();
     }
 }

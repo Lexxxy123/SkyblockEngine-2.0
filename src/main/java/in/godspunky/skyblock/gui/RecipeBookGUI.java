@@ -1,6 +1,8 @@
 package in.godspunky.skyblock.gui;
 
+import in.godspunky.skyblock.item.MaterialQuantifiable;
 import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.item.ShapedRecipe;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;
@@ -8,13 +10,16 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import in.godspunky.skyblock.item.MaterialQuantifiable;
-import in.godspunky.skyblock.item.SMaterial;
 
 import java.util.Arrays;
 
 public class RecipeBookGUI extends GUI {
     private static final int[] CRAFT_SLOTS;
+
+    static {
+        CRAFT_SLOTS = new int[]{10, 11, 12, 19, 20, 21, 28, 29, 30};
+    }
+
     private final SItem targetItem;
 
     public RecipeBookGUI(final SItem sitem) {
@@ -51,9 +56,5 @@ public class RecipeBookGUI extends GUI {
                 break;
             }
         }
-    }
-
-    static {
-        CRAFT_SLOTS = new int[]{10, 11, 12, 19, 20, 21, 28, 29, 30};
     }
 }

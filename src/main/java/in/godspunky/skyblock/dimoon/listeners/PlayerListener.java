@@ -1,6 +1,14 @@
 package in.godspunky.skyblock.dimoon.listeners;
 
 import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.dimoon.Altar;
+import in.godspunky.skyblock.dimoon.Arena;
+import in.godspunky.skyblock.dimoon.Dimoon;
+import in.godspunky.skyblock.dimoon.utils.Utils;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
@@ -15,19 +23,14 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.dimoon.Altar;
-import in.godspunky.skyblock.dimoon.Arena;
-import in.godspunky.skyblock.dimoon.Dimoon;
-import in.godspunky.skyblock.dimoon.utils.Utils;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 
 import java.io.IOException;
 import java.util.UUID;
 
 public class PlayerListener implements Listener {
+    public static void worldBorder(final Player p, final boolean on) {
+    }
+
     @EventHandler
     public void onPlayerDealDamage(final EntityDamageByEntityEvent event) {
         Player damager = null;
@@ -177,9 +180,6 @@ public class PlayerListener implements Listener {
         }
     }
 
-    public static void worldBorder(final Player p, final boolean on) {
-    }
-
     @EventHandler
     public void onCatalPlace(final PlayerInteractEvent e) {
         if (!e.getPlayer().getWorld().getName().contains("arena")) {
@@ -308,8 +308,8 @@ public class PlayerListener implements Listener {
             }
         }.runTaskTimer(Skyblock.getPlugin(), 0L, 6L);
         new BukkitRunnable() {
-            double yaw = core.getLocation().getYaw();
             final double archived_yaw = core.getLocation().getYaw();
+            double yaw = core.getLocation().getYaw();
 
             public void run() {
                 if (core.isDead()) {

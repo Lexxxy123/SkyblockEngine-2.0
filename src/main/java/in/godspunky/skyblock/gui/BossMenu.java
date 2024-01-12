@@ -23,6 +23,11 @@ public class BossMenu extends GUI {
     public static final Map<Player, Boolean> ableToJoin;
     public static final Map<Player, Boolean> cooldownCata;
 
+    static {
+        ableToJoin = new HashMap<Player, Boolean>();
+        cooldownCata = new HashMap<Player, Boolean>();
+    }
+
     public BossMenu() {
         super("The Catacombs Demo", 36);
     }
@@ -139,10 +144,5 @@ public class BossMenu extends GUI {
                 return itemstack;
             }
         });
-    }
-
-    static {
-        ableToJoin = new HashMap<Player, Boolean>();
-        cooldownCata = new HashMap<Player, Boolean>();
     }
 }

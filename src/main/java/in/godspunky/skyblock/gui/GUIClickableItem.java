@@ -8,8 +8,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 public interface GUIClickableItem extends GUIItem {
-    void run(final InventoryClickEvent p0);
-
     static GUIClickableItem getCloseItem(final int slot) {
         return new GUIClickableItem() {
             @Override
@@ -105,4 +103,6 @@ public interface GUIClickableItem extends GUIItem {
     static GUIClickableItem createGUIOpenerItem(GUIType guiType, Player player, String name, int slot, Material type, String... lore) {
         return GUIClickableItem.createGUIOpenerItem(guiType, player, name, slot, type, (short) 0, lore);
     }
+
+    void run(final InventoryClickEvent p0);
 }

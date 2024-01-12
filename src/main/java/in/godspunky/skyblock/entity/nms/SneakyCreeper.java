@@ -1,7 +1,10 @@
 package in.godspunky.skyblock.entity.nms;
 
 import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.entity.EntityStatistics;
+import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.caverns.CreeperFunction;
+import in.godspunky.skyblock.event.CreeperIgniteEvent;
 import net.minecraft.server.v1_8_R3.EntityCreeper;
 import net.minecraft.server.v1_8_R3.World;
 import org.bukkit.Bukkit;
@@ -11,9 +14,6 @@ import org.bukkit.entity.Creeper;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.entity.EntityStatistics;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.event.CreeperIgniteEvent;
 
 import java.lang.reflect.Field;
 

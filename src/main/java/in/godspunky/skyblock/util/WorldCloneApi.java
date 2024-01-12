@@ -6,7 +6,6 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ public class WorldCloneApi {
                     if (!target.exists())
                         if (!target.mkdirs())
                             throw new IOException("Couldn't create world directory!");
-                    String files[] = source.list();
+                    String[] files = source.list();
                     for (String file : files) {
                         File srcFile = new File(source, file);
                         File destFile = new File(target, file);
@@ -55,8 +54,8 @@ public class WorldCloneApi {
         World world = Bukkit.getWorld(worldName);
         if (world != null) {
             Location location = Bukkit.getWorld("world").getSpawnLocation();
-            for (Player player : world.getPlayers()){
-                player.teleport(new Location(Bukkit.getWorld("world") ,location.getX() , location.getY() , location.getZ()));
+            for (Player player : world.getPlayers()) {
+                player.teleport(new Location(Bukkit.getWorld("world"), location.getX(), location.getY(), location.getZ()));
             }
             Bukkit.unloadWorld(world, false);
             File worldFolder = world.getWorldFolder();

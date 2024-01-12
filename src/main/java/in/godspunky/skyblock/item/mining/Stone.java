@@ -1,11 +1,11 @@
 package in.godspunky.skyblock.item.mining;
 
-import in.godspunky.skyblock.skill.MiningSkill;
-import in.godspunky.skyblock.skill.Skill;
 import in.godspunky.skyblock.item.ExperienceRewardStatistics;
 import in.godspunky.skyblock.item.GenericItemType;
 import in.godspunky.skyblock.item.MaterialFunction;
 import in.godspunky.skyblock.item.Rarity;
+import in.godspunky.skyblock.skill.MiningSkill;
+import in.godspunky.skyblock.skill.Skill;
 
 public class Stone implements ExperienceRewardStatistics, MaterialFunction {
     @Override

@@ -1,16 +1,15 @@
 package in.godspunky.skyblock.nms.nmsutil.reflection.minecraft;
 
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Entity;
 import in.godspunky.skyblock.nms.nmsutil.reflection.resolver.ConstructorResolver;
 import in.godspunky.skyblock.nms.nmsutil.reflection.resolver.FieldResolver;
 import in.godspunky.skyblock.nms.nmsutil.reflection.resolver.MethodResolver;
 import in.godspunky.skyblock.nms.nmsutil.reflection.resolver.minecraft.NMSClassResolver;
 import in.godspunky.skyblock.nms.nmsutil.reflection.resolver.minecraft.OBCClassResolver;
 import in.godspunky.skyblock.nms.nmsutil.reflection.util.AccessUtil;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 import sun.reflect.ConstructorAccessor;
-
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -19,12 +18,26 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Minecraft {
-    static final Pattern NUMERIC_VERSION_PATTERN;
     public static final Version VERSION;
+    static final Pattern NUMERIC_VERSION_PATTERN;
     private static NMSClassResolver nmsClassResolver;
     private static OBCClassResolver obcClassResolver;
     private static Class<?> NmsEntity;
     private static Class<?> CraftEntity;
+
+    static {
+        NUMERIC_VERSION_PATTERN = Pattern.compile("v([0-9])_([0-9]*)_R([0-9])");
+        Minecraft.nmsClassResolver = new NMSClassResolver();
+        Minecraft.obcClassResolver = new OBCClassResolver();
+        VERSION = Version.getVersion();
+        System.out.println("[SkySim Reflection Injector] Version is " + Minecraft.VERSION);
+        try {
+            Minecraft.NmsEntity = Minecraft.nmsClassResolver.resolve("Entity");
+            Minecraft.CraftEntity = Minecraft.obcClassResolver.resolve("entity.CraftEntity");
+        } catch (final ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static String getVersion() {
         return Minecraft.VERSION.name() + ".";
@@ -33,9 +46,9 @@ public class Minecraft {
     public static Object getHandle(final Object object) throws ReflectiveOperationException {
         Method method;
         try {
-            method = AccessUtil.setAccessible(object.getClass().getDeclaredMethod("getHandle", new Class[0]));
+            method = AccessUtil.setAccessible(object.getClass().getDeclaredMethod("getHandle"));
         } catch (final ReflectiveOperationException e) {
-            method = AccessUtil.setAccessible(Minecraft.CraftEntity.getDeclaredMethod("getHandle", new Class[0]));
+            method = AccessUtil.setAccessible(Minecraft.CraftEntity.getDeclaredMethod("getHandle"));
         }
         return method.invoke(object);
     }
@@ -43,9 +56,9 @@ public class Minecraft {
     public static Entity getBukkitEntity(final Object object) throws ReflectiveOperationException {
         Method method;
         try {
-            method = AccessUtil.setAccessible(Minecraft.NmsEntity.getDeclaredMethod("getBukkitEntity", new Class[0]));
+            method = AccessUtil.setAccessible(Minecraft.NmsEntity.getDeclaredMethod("getBukkitEntity"));
         } catch (final ReflectiveOperationException e) {
-            method = AccessUtil.setAccessible(Minecraft.CraftEntity.getDeclaredMethod("getHandle", new Class[0]));
+            method = AccessUtil.setAccessible(Minecraft.CraftEntity.getDeclaredMethod("getHandle"));
         }
         return (Entity) method.invoke(object);
     }
@@ -67,20 +80,6 @@ public class Minecraft {
             constructorAccessor = (ConstructorAccessor) accessorField.get(constructor);
         }
         return constructorAccessor.newInstance(values);
-    }
-
-    static {
-        NUMERIC_VERSION_PATTERN = Pattern.compile("v([0-9])_([0-9]*)_R([0-9])");
-        Minecraft.nmsClassResolver = new NMSClassResolver();
-        Minecraft.obcClassResolver = new OBCClassResolver();
-        VERSION = Version.getVersion();
-        System.out.println("[SkySim Reflection Injector] Version is " + Minecraft.VERSION);
-        try {
-            Minecraft.NmsEntity = Minecraft.nmsClassResolver.resolve("Entity");
-            Minecraft.CraftEntity = Minecraft.obcClassResolver.resolve("entity.CraftEntity");
-        } catch (final ReflectiveOperationException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public enum Version {
@@ -108,26 +107,6 @@ public class Minecraft {
 
         Version(final int version) {
             this.version = version;
-        }
-
-        public int version() {
-            return this.version;
-        }
-
-        public boolean olderThan(final Version version) {
-            return this.version() < version.version();
-        }
-
-        public boolean newerThan(final Version version) {
-            return this.version() >= version.version();
-        }
-
-        public boolean inRange(final Version oldVersion, final Version newVersion) {
-            return this.newerThan(oldVersion) && this.olderThan(newVersion);
-        }
-
-        public boolean matchesPackageName(final String packageName) {
-            return packageName.toLowerCase().contains(this.name().toLowerCase());
         }
 
         public static Version getVersion() {
@@ -174,6 +153,26 @@ public class Minecraft {
                 }
             }
             return Version.UNKNOWN;
+        }
+
+        public int version() {
+            return this.version;
+        }
+
+        public boolean olderThan(final Version version) {
+            return this.version() < version.version();
+        }
+
+        public boolean newerThan(final Version version) {
+            return this.version() >= version.version();
+        }
+
+        public boolean inRange(final Version oldVersion, final Version newVersion) {
+            return this.newerThan(oldVersion) && this.olderThan(newVersion);
+        }
+
+        public boolean matchesPackageName(final String packageName) {
+            return packageName.toLowerCase().contains(this.name().toLowerCase());
         }
 
         @Override

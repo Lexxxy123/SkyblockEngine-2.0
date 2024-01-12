@@ -2,6 +2,17 @@ package in.godspunky.skyblock.entity.dungeons.boss.sadan;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.entity.SEntityType;
+import in.godspunky.skyblock.entity.zombie.BaseZombie;
+import in.godspunky.skyblock.gui.SkySimBrainCell;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.MagicFlowerPot;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -21,17 +32,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
-import in.godspunky.skyblock.entity.SEntityType;
-import in.godspunky.skyblock.entity.zombie.BaseZombie;
-import in.godspunky.skyblock.gui.SkySimBrainCell;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.MagicFlowerPot;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 import xyz.xenondevs.particle.ParticleBuilder;
 import xyz.xenondevs.particle.ParticleEffect;
 import xyz.xenondevs.particle.data.texture.ItemTexture;
@@ -114,8 +114,8 @@ public class TerracottaSadan extends BaseZombie {
         sbc.accessAIFrom(SkySimBrainCell.BrainCellFor.ATTACK_PLAYER);
         SkySimBrainCell.applyAIToNMSPlayer(this, 140, sbc);
         new BukkitRunnable() {
-            Location loc = entity.getLocation();
             final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
+            Location loc = entity.getLocation();
 
             public void run() {
                 if (entity.isDead()) {

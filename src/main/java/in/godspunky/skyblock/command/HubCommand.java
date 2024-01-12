@@ -14,6 +14,10 @@ import java.util.Map;
 public class HubCommand extends SCommand {
     public static Map<CommandSender, RegionGenerator> REGION_GENERATION_MAP;
 
+    static {
+        HubCommand.REGION_GENERATION_MAP = new HashMap<CommandSender, RegionGenerator>();
+    }
+
     @Override
     public void run(final CommandSource sender, final String[] args) {
         this.send(Sputnik.trans("&7Sending you to the Hub..."));
@@ -21,9 +25,5 @@ public class HubCommand extends SCommand {
         if (sender.getPlayer() != null) {
             sender.getPlayer().teleport(l);
         }
-    }
-
-    static {
-        HubCommand.REGION_GENERATION_MAP = new HashMap<CommandSender, RegionGenerator>();
     }
 }

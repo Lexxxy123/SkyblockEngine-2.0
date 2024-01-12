@@ -3,7 +3,7 @@ package in.godspunky.skyblock.merchant;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.SMaterial;
 
-public class LumberMerchantGUI extends ShopGUI{
+public class LumberMerchantGUI extends ShopGUI {
     private static final SItem[] ITEMS = new SItem[]
             {
                     MerchantItemHandler.getItem(SMaterial.OAK_WOOD),
@@ -20,7 +20,7 @@ public class LumberMerchantGUI extends ShopGUI{
                     MerchantItemHandler.getItem(SMaterial.WOOD_HOE),
                     MerchantItemHandler.getItem(SMaterial.WOOD_AXE),
             };
-    
+
 
     public LumberMerchantGUI(int page) {
         super("Lumber Merchant", page, ITEMS);

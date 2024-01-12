@@ -12,6 +12,7 @@ public class PlayerJoinQuitListener extends PListener {
     public void playerJoinEvent(PlayerJoinEvent e) {
         Bukkit.getScheduler().runTaskAsynchronously(Skyblock.getPlugin(), () -> new GodspunkyPlayer(e.getPlayer()));
     }
+
     @EventHandler
     public void playerQuitEvent(PlayerQuitEvent e) {
         Bukkit.getScheduler().runTaskAsynchronously(Skyblock.getPlugin(), () -> GodspunkyPlayer.unloadPlayer(e.getPlayer()));

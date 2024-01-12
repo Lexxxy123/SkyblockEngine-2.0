@@ -5,10 +5,15 @@ import java.util.List;
 
 public final class SkyBlockCalendar {
     public static final List<String> MONTH_NAMES;
-    public static long ELAPSED;
     public static final int YEAR = 8928000;
     public static final int MONTH = 744000;
     public static final int DAY = 24000;
+    public static long ELAPSED;
+
+    static {
+        MONTH_NAMES = Arrays.asList("Early Spring", "Spring", "Late Spring", "Early Summer", "Summer", "Late Summer", "Early Autumn", "Autumn", "Late Autumn", "Early Winter", "Winter", "Late Winter");
+        SkyBlockCalendar.ELAPSED = 0L;
+    }
 
     private SkyBlockCalendar() {
     }
@@ -40,10 +45,5 @@ public final class SkyBlockCalendar {
         final Skyblock plugin = Skyblock.getPlugin();
         plugin.config.set("timeElapsed", SkyBlockCalendar.ELAPSED);
         plugin.config.save();
-    }
-
-    static {
-        MONTH_NAMES = Arrays.asList("Early Spring", "Spring", "Late Spring", "Early Summer", "Summer", "Late Summer", "Early Autumn", "Autumn", "Late Autumn", "Early Winter", "Winter", "Late Winter");
-        SkyBlockCalendar.ELAPSED = 0L;
     }
 }

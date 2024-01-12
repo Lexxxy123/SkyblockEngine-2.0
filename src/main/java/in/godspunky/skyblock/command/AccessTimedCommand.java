@@ -14,6 +14,10 @@ import java.util.UUID;
 public class AccessTimedCommand extends SCommand {
     public static final List<UUID> KEYS;
 
+    static {
+        KEYS = new ArrayList<UUID>();
+    }
+
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (sender instanceof ConsoleCommandSender) {
@@ -32,9 +36,5 @@ public class AccessTimedCommand extends SCommand {
         }
         p.chat("/trade " + args[1]);
         AccessTimedCommand.KEYS.remove(UUID.fromString(args[0]));
-    }
-
-    static {
-        KEYS = new ArrayList<UUID>();
     }
 }

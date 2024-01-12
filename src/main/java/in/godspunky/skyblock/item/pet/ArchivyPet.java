@@ -1,9 +1,16 @@
 package in.godspunky.skyblock.item.pet;
 
 import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.item.GenericItemType;
+import in.godspunky.skyblock.item.Rarity;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.listener.PlayerListener;
 import in.godspunky.skyblock.skill.CombatSkill;
 import in.godspunky.skyblock.skill.Skill;
+import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,13 +19,6 @@ import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.item.GenericItemType;
-import in.godspunky.skyblock.item.Rarity;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.listener.PlayerListener;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -26,6 +26,36 @@ import java.util.*;
 
 public class ArchivyPet extends Pet {
     public static final Map<Player, Boolean> COOLDOWN;
+
+    static {
+        COOLDOWN = new HashMap<Player, Boolean>();
+    }
+
+    public static List<Entity> scanEntityNear(final Entity e, final int arg0, final int arg1, final int arg2) {
+        final List<Entity> re = new ArrayList<Entity>();
+        for (final Entity entity1 : e.getNearbyEntities(arg0, arg1, arg2)) {
+            if (entity1.isDead()) {
+                continue;
+            }
+            if (!(entity1 instanceof LivingEntity)) {
+                continue;
+            }
+            if (entity1 instanceof Player || entity1 instanceof EnderDragonPart || entity1 instanceof Villager || entity1 instanceof ArmorStand || entity1 instanceof Item) {
+                continue;
+            }
+            if (entity1 instanceof ItemFrame) {
+                continue;
+            }
+            if (entity1.hasMetadata("GiantSword")) {
+                continue;
+            }
+            if (entity1.hasMetadata("NoAffect")) {
+                continue;
+            }
+            re.add(entity1);
+        }
+        return re;
+    }
 
     @Override
     public List<PetAbility> getPetAbilities(SItem instance) {
@@ -275,38 +305,8 @@ public class ArchivyPet extends Pet {
         }
     }
 
-    public static List<Entity> scanEntityNear(final Entity e, final int arg0, final int arg1, final int arg2) {
-        final List<Entity> re = new ArrayList<Entity>();
-        for (final Entity entity1 : e.getNearbyEntities(arg0, arg1, arg2)) {
-            if (entity1.isDead()) {
-                continue;
-            }
-            if (!(entity1 instanceof LivingEntity)) {
-                continue;
-            }
-            if (entity1 instanceof Player || entity1 instanceof EnderDragonPart || entity1 instanceof Villager || entity1 instanceof ArmorStand || entity1 instanceof Item) {
-                continue;
-            }
-            if (entity1 instanceof ItemFrame) {
-                continue;
-            }
-            if (entity1.hasMetadata("GiantSword")) {
-                continue;
-            }
-            if (entity1.hasMetadata("NoAffect")) {
-                continue;
-            }
-            re.add(entity1);
-        }
-        return re;
-    }
-
     public void playParticleAndSound(final Entity e) {
         e.getLocation().getWorld().playSound(e.getLocation(), Sound.GHAST_FIREBALL, 1.0f, 1.3f);
         e.getWorld().playEffect(e.getLocation(), Effect.EXPLOSION_HUGE, 0);
-    }
-
-    static {
-        COOLDOWN = new HashMap<Player, Boolean>();
     }
 }

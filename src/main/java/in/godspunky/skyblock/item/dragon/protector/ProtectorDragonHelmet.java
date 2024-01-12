@@ -1,7 +1,6 @@
 package in.godspunky.skyblock.item.dragon.protector;
 
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.item.*;
 
 public class ProtectorDragonHelmet implements MaterialFunction, SkullStatistics, ToolStatistics {
     @Override

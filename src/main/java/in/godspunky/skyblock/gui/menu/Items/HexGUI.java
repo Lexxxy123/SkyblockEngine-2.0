@@ -66,8 +66,8 @@ public class HexGUI extends GUI {
             public ItemStack getItem() {
                 return SUtil.getSkullURLStack(Sputnik.trans("&aReforges"), "94af5f3b50e2dea2687d292cc3a5e42c028b8626e638842fb4f78671debe276c", 1,
                         Sputnik.trans3("&7Apply &aReforges&7 to your item",
-                        "&7with &aReforge Stones&7 or by",
-                        "&7rolling a &brandom&7 reforge.")
+                                "&7with &aReforge Stones&7 or by",
+                                "&7rolling a &brandom&7 reforge.")
                 );
             }
         });
@@ -92,10 +92,10 @@ public class HexGUI extends GUI {
             public ItemStack getItem() {
                 return SUtil.getSkullURLStack(Sputnik.trans("&aModifiers"), "57ccd36dc8f72adcb1f8c8e61ee82cd96ead140cf2a16a1366be9b5a8e3cc3fc", 1,
                         Sputnik.trans5("&7Apply miscellaneous item",
-                        "&7modifiers like the",
-                        "&6Recombobulator 3000&7,",
-                        "&5Wither Scrolls&7, and &cMaster",
-                        "&cStars&7!")
+                                "&7modifiers like the",
+                                "&6Recombobulator 3000&7,",
+                                "&5Wither Scrolls&7, and &cMaster",
+                                "&cStars&7!")
                 );
             }
         });
@@ -120,10 +120,10 @@ public class HexGUI extends GUI {
             public ItemStack getItem() {
                 return SUtil.getStack(Sputnik.trans("&aEnchantments"), Material.ENCHANTMENT_TABLE, (short) 0, 1,
                         Sputnik.trans5("&7This special &aEnchantment Table",
-                        "&7allows you to access way more",
-                        "&7Enchantments and gives you the",
-                        "&7option to consume &aBottles of",
-                        "&aEnchanting&7 directly!")
+                                "&7allows you to access way more",
+                                "&7Enchantments and gives you the",
+                                "&7option to consume &aBottles of",
+                                "&aEnchanting&7 directly!")
                 );
             }
         });
@@ -149,9 +149,9 @@ public class HexGUI extends GUI {
             public ItemStack getItem() {
                 return SUtil.getStack(Sputnik.trans("&aUltimate Enchantments"), Material.BOOK_AND_QUILL, (short) 0, 1,
                         Sputnik.trans4("&7Allows you to apply &d&lUltimate",
-                        "&d&lEnchantments&r&7 and gives you the",
-                        "&7option to consume &aBottles of",
-                        "&aEnchanting&7 directly!")
+                                "&d&lEnchantments&r&7 and gives you the",
+                                "&7option to consume &aBottles of",
+                                "&aEnchanting&7 directly!")
                 );
             }
         });
@@ -172,8 +172,8 @@ public class HexGUI extends GUI {
             public ItemStack getItem() {
                 return SUtil.getStack(Sputnik.trans("&aBooks"), Material.BOOK, (short) 0, 1,
                         Sputnik.trans3("&7Knowledge is &6power!&7 Apply",
-                        "&7special books to your item to",
-                        "&7upgrade it!")
+                                "&7special books to your item to",
+                                "&7upgrade it!")
                 );
             }
         });
@@ -301,7 +301,8 @@ public class HexGUI extends GUI {
                     return;
                 }
 
-                if (!(hexItem.getType().getStatistics().getSpecificType() == SpecificItemType.SWORD || hexItem.getType().getStatistics().getSpecificType() == SpecificItemType.AXE || hexItem.getType().getStatistics().getSpecificType() == SpecificItemType.BOW || hexItem.getType().getStatistics().getType().equals(GenericItemType.ARMOR) || hexItem.getType().getStatistics().getType().equals(GenericItemType.ACCESSORY))) return;
+                if (!(hexItem.getType().getStatistics().getSpecificType() == SpecificItemType.SWORD || hexItem.getType().getStatistics().getSpecificType() == SpecificItemType.AXE || hexItem.getType().getStatistics().getSpecificType() == SpecificItemType.BOW || hexItem.getType().getStatistics().getType().equals(GenericItemType.ARMOR) || hexItem.getType().getStatistics().getType().equals(GenericItemType.ACCESSORY)))
+                    return;
 
                 upgradeableItem = hexItem;
             }

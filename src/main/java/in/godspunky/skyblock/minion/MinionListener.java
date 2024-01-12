@@ -1,6 +1,5 @@
 package in.godspunky.skyblock.minion;
 
-import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.listener.PListener;
 import in.godspunky.skyblock.user.User;
@@ -27,7 +26,7 @@ public class MinionListener extends PListener {
     }
 
     @EventHandler
-    public void onPlace(BlockPlaceEvent event){
+    public void onPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
         if (event.getPlayer().getItemInHand() == null) return;
         ItemStack itemInHand = event.getItemInHand();
@@ -36,11 +35,11 @@ public class MinionListener extends PListener {
         if (!event.getItemInHand().getItemMeta().getDisplayName().contains("minion")) return;
         SItem sItem = SItem.find(itemInHand);
         // todo :  store minion level in item nbt!
-        if (sItem.getType().getSMinion() != null){
-            new SkyblockMinion(sItem.getType() ,
-                    1 , event.getBlock().getLocation().add(0.5, 0, 0.5) ,
+        if (sItem.getType().getSMinion() != null) {
+            new SkyblockMinion(sItem.getType(),
+                    1, event.getBlock().getLocation().add(0.5, 0, 0.5),
                     User.getUser(player.getUniqueId())).spawn();
         }
-     }
+    }
 
 }

@@ -1,12 +1,11 @@
 package in.godspunky.skyblock.item.oddities;
 
+import in.godspunky.skyblock.gui.GUIType;
 import in.godspunky.skyblock.item.*;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import in.godspunky.skyblock.gui.GUIType;
-import in.godspunky.skyblock.item.*;
 
 public class SkyBlockMenu implements MaterialStatistics, MaterialFunction, Untradeable {
     @Override

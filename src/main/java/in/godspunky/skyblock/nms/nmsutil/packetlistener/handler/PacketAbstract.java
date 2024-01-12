@@ -1,20 +1,20 @@
 package in.godspunky.skyblock.nms.nmsutil.packetlistener.handler;
 
+import in.godspunky.skyblock.nms.nmsutil.packetlistener.channel.ChannelWrapper;
 import in.godspunky.skyblock.nms.nmsutil.reflection.resolver.FieldResolver;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
-import in.godspunky.skyblock.nms.nmsutil.packetlistener.channel.ChannelWrapper;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 public abstract class PacketAbstract {
+    private final Cancellable cancellable;
+    protected FieldResolver fieldResolver;
     private Player player;
     private ChannelWrapper channelWrapper;
     private Object packet;
-    private final Cancellable cancellable;
-    protected FieldResolver fieldResolver;
 
     public PacketAbstract(final Object packet, final Cancellable cancellable, final Player player) {
         this.player = player;
@@ -96,12 +96,12 @@ public abstract class PacketAbstract {
         return this.fieldResolver;
     }
 
-    public void setCancelled(final boolean b) {
-        this.cancellable.setCancelled(b);
-    }
-
     public boolean isCancelled() {
         return this.cancellable.isCancelled();
+    }
+
+    public void setCancelled(final boolean b) {
+        this.cancellable.setCancelled(b);
     }
 
     public Player getPlayer() {
@@ -127,12 +127,12 @@ public abstract class PacketAbstract {
         return this.player.getName();
     }
 
-    public void setPacket(final Object packet) {
-        this.packet = packet;
-    }
-
     public Object getPacket() {
         return this.packet;
+    }
+
+    public void setPacket(final Object packet) {
+        this.packet = packet;
     }
 
     public Player getPlayerInvolved() {

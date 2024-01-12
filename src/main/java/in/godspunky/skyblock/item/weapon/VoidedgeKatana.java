@@ -3,6 +3,7 @@ package in.godspunky.skyblock.item.weapon;
 import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.util.FerocityCalculation;
+import in.godspunky.skyblock.util.Sputnik;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import net.minecraft.server.v1_8_R3.NBTTagInt;
@@ -11,7 +12,6 @@ import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.util.Sputnik;
 
 public class VoidedgeKatana implements ToolStatistics, MaterialFunction, Ability {
     @Override

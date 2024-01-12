@@ -1,7 +1,6 @@
 package in.godspunky.skyblock.item.shovel.vanilla;
 
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.item.*;
 
 public class DiamondShovel implements ToolStatistics, MaterialFunction {
     @Override

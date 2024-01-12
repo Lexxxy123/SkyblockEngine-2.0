@@ -7,10 +7,15 @@ import java.util.ArrayList;
 public interface SMinion extends MaterialStatistics {
 
     ItemStack getHand(int level);
+
     String getHead(int level);
+
     int getActionDelay(int level);
+
     int getMaxStorage(int level);
+
     ArrayList<ItemStack> calculateDrops(int level);
+
     int getSlotLevelRequirement(int level);
 
     @Override
@@ -19,12 +24,12 @@ public interface SMinion extends MaterialStatistics {
     }
 
     @Override
-    default Rarity getRarity(){
+    default Rarity getRarity() {
         return Rarity.RARE;
     }
 
     @Override
-   default GenericItemType getType(){
+    default GenericItemType getType() {
         return GenericItemType.ITEM;
     }
 

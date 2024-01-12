@@ -39,15 +39,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HexUltimateEnchantments extends GUI {
-    SItem upgradeableItem;
-    List<EnchantmentType> selected = new ArrayList<>();
-    List<EnchantmentType> exists = new ArrayList<>();
-
     private static final int[] INTERIOR = new int[]{
             12, 13, 14, 15, 16,
             21, 22, 23, 24, 25,
             30, 31, 32, 33, 34,
     };
+    SItem upgradeableItem;
+    List<EnchantmentType> selected = new ArrayList<>();
+    List<EnchantmentType> exists = new ArrayList<>();
 
     public HexUltimateEnchantments(SItem item) {
         this(item, 1);
@@ -78,44 +77,38 @@ public class HexUltimateEnchantments extends GUI {
         List<SItem> items = pagedEnchantBooks.getPage(page);
         if (items == null) return;
 
-        if (page > 1)
-        {
-            set(new GUIClickableItem()
-            {
+        if (page > 1) {
+            set(new GUIClickableItem() {
                 @Override
-                public void run(InventoryClickEvent e)
-                {
-                    new HexUltimateEnchantments(item,finalPage - 1).open((Player) e.getWhoClicked());
+                public void run(InventoryClickEvent e) {
+                    new HexUltimateEnchantments(item, finalPage - 1).open((Player) e.getWhoClicked());
                 }
+
                 @Override
-                public int getSlot()
-                {
+                public int getSlot() {
                     return 45;
                 }
+
                 @Override
-                public ItemStack getItem()
-                {
+                public ItemStack getItem() {
                     return SUtil.createNamedItemStack(Material.ARROW, ChatColor.GRAY + "<-");
                 }
             });
         }
-        if (page != pagedEnchantBooks.getPageCount())
-        {
-            set(new GUIClickableItem()
-            {
+        if (page != pagedEnchantBooks.getPageCount()) {
+            set(new GUIClickableItem() {
                 @Override
-                public void run(InventoryClickEvent e)
-                {
-                    new HexUltimateEnchantments(item,finalPage + 1).open((Player) e.getWhoClicked());
+                public void run(InventoryClickEvent e) {
+                    new HexUltimateEnchantments(item, finalPage + 1).open((Player) e.getWhoClicked());
                 }
+
                 @Override
-                public int getSlot()
-                {
+                public int getSlot() {
                     return 53;
                 }
+
                 @Override
-                public ItemStack getItem()
-                {
+                public ItemStack getItem() {
                     return SUtil.createNamedItemStack(Material.ARROW, ChatColor.GRAY + "->");
                 }
             });
@@ -124,8 +117,7 @@ public class HexUltimateEnchantments extends GUI {
         for (int i = 0; i < items.size(); i++) {
             int slot = INTERIOR[i];
             int finalI = i;
-            set(new GUIClickableItem()
-            {
+            set(new GUIClickableItem() {
                 @Override
                 public void run(InventoryClickEvent e) {
                     Player player = (Player) e.getWhoClicked();
@@ -134,59 +126,59 @@ public class HexUltimateEnchantments extends GUI {
                     for (Enchantment enchantment : items.get(finalI).getEnchantments()) {
                         EnchantmentType type = enchantment.getType();
 
-                       if (exists.contains(type)) {
-                           exists.remove(type);
-                           item.removeEnchantment(type);
-                           player.sendMessage(ChatColor.RED + "You removed the enchantment: " + type.getName() + " from your item!");
-                           return;
-                       } else {
-                           if (selected.contains(type)) {
-                               player.sendMessage(ChatColor.RED + "You removed the Enchantment " + type.getName() + " from your selection!");
-                               selected.remove(type);
-                           } else {
-                               for (Enchantment enchantment1 : item.getEnchantments()) {
-                                   if (type.equals(EnchantmentType.ONE_FOR_ALL)) {
-                                       item.removeEnchantment(enchantment1.getType());
-                                   }
+                        if (exists.contains(type)) {
+                            exists.remove(type);
+                            item.removeEnchantment(type);
+                            player.sendMessage(ChatColor.RED + "You removed the enchantment: " + type.getName() + " from your item!");
+                            return;
+                        } else {
+                            if (selected.contains(type)) {
+                                player.sendMessage(ChatColor.RED + "You removed the Enchantment " + type.getName() + " from your selection!");
+                                selected.remove(type);
+                            } else {
+                                for (Enchantment enchantment1 : item.getEnchantments()) {
+                                    if (type.equals(EnchantmentType.ONE_FOR_ALL)) {
+                                        item.removeEnchantment(enchantment1.getType());
+                                    }
 
-                                   if (enchantment1.getType().isUltimate()) item.removeEnchantment(enchantment1.getType());
-                               }
+                                    if (enchantment1.getType().isUltimate())
+                                        item.removeEnchantment(enchantment1.getType());
+                                }
 
-                               selected.add(type);
+                                selected.add(type);
 
-                               int ultcount = 0;
-                               for (EnchantmentType selectedEnchantments : selected) {
-                                   ultcount++;
-                               }
+                                int ultcount = 0;
+                                for (EnchantmentType selectedEnchantments : selected) {
+                                    ultcount++;
+                                }
 
-                               if (ultcount > 1) {
-                                   for (EnchantmentType selectedEnchantments : selected) {
-                                       selected.remove(selectedEnchantments);
-                                   }
-                                   player.sendMessage(ChatColor.RED + "You may not apply multiple ultimate enchantments on your item!");
-                                   e.setCancelled(true);
-                                   return;
-                               }
+                                if (ultcount > 1) {
+                                    for (EnchantmentType selectedEnchantments : selected) {
+                                        selected.remove(selectedEnchantments);
+                                    }
+                                    player.sendMessage(ChatColor.RED + "You may not apply multiple ultimate enchantments on your item!");
+                                    e.setCancelled(true);
+                                    return;
+                                }
 
-                               player.sendMessage(ChatColor.GREEN + "You added the Enchantment " + type.getName() + " to your selection but your old Ultimate Enchantment was removed!");
-                               return;
-                           }
-                       }
+                                player.sendMessage(ChatColor.GREEN + "You added the Enchantment " + type.getName() + " to your selection but your old Ultimate Enchantment was removed!");
+                                return;
+                            }
+                        }
                     }
                 }
+
                 @Override
-                public int getSlot()
-                {
+                public int getSlot() {
                     return slot;
                 }
+
                 @Override
-                public ItemStack getItem()
-                {
+                public ItemStack getItem() {
                     return items.get(finalI).getStack();
                 }
             });
         }
-
 
 
         set(GUIClickableItem.getCloseItem(49));

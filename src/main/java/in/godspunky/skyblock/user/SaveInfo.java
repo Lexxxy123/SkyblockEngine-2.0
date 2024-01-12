@@ -1,7 +1,5 @@
 package in.godspunky.skyblock.user;
 
-import java.util.UUID;
-
 public class SaveInfo {
     private final String uuid;
     private boolean isSoft;

@@ -1,7 +1,13 @@
 package in.godspunky.skyblock.entity.dungeons.boss.sadan;
 
+import in.godspunky.skyblock.Repeater;
 import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.entity.SEntityType;
 import in.godspunky.skyblock.entity.dungeons.watcher.GlobalBossBar;
+import in.godspunky.skyblock.entity.zombie.BaseZombie;
+import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -17,25 +23,10 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.Repeater;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
-import in.godspunky.skyblock.entity.SEntityType;
-import in.godspunky.skyblock.entity.zombie.BaseZombie;
-import in.godspunky.skyblock.user.User;
 
 import java.util.*;
 
 public class SadanHuman extends BaseZombie {
-    private final double y;
-    private boolean a;
-    private boolean b;
-    private boolean c;
-    private boolean d;
-    private boolean e;
-    private boolean f;
-    private boolean g;
-    private boolean h;
     public static final Map<Entity, String> DIALOUGE_BOSS;
     public static final Map<UUID, Boolean> SadanReach;
     @Deprecated
@@ -51,6 +42,30 @@ public class SadanHuman extends BaseZombie {
     public static final Map<World, Byte> SadanCurrentPhase;
     @Deprecated
     public static final Map<World, Boolean> IsSadanDied;
+
+    static {
+        DIALOUGE_BOSS = new HashMap<Entity, String>();
+        SadanReach = new HashMap<UUID, Boolean>();
+        SadanP1 = new HashMap<World, Boolean>();
+        SadanP2 = new HashMap<World, Boolean>();
+        SadanInterest = new HashMap<UUID, Integer>();
+        SadanGiantsCount = new HashMap<UUID, Integer>();
+        IsMusicPlaying = new HashMap<UUID, Boolean>();
+        BBRunning = new HashMap<UUID, Boolean>();
+        BossRun = new HashMap<UUID, Boolean>();
+        SadanCurrentPhase = new HashMap<World, Byte>();
+        IsSadanDied = new HashMap<World, Boolean>();
+    }
+
+    private final double y;
+    private boolean a;
+    private boolean b;
+    private boolean c;
+    private boolean d;
+    private boolean e;
+    private boolean f;
+    private boolean g;
+    private boolean h;
     private boolean phase1;
     private boolean phase2;
     private boolean phase3;
@@ -62,6 +77,16 @@ public class SadanHuman extends BaseZombie {
         this.phase1 = false;
         this.phase2 = false;
         this.phase3 = false;
+    }
+
+    public static BukkitTask playHBS(final World w) {
+        return new BukkitRunnable() {
+            public void run() {
+                for (final Player p : w.getPlayers()) {
+                    p.playSound(p.getLocation(), "mob.guardian.elder.hit", 1.0f, 0.0f);
+                }
+            }
+        }.runTaskTimer(Skyblock.getPlugin(), 0L, 19L);
     }
 
     @Override
@@ -541,29 +566,5 @@ public class SadanHuman extends BaseZombie {
     public String randCom() {
         final String fin = "";
         return fin;
-    }
-
-    public static BukkitTask playHBS(final World w) {
-        return new BukkitRunnable() {
-            public void run() {
-                for (final Player p : w.getPlayers()) {
-                    p.playSound(p.getLocation(), "mob.guardian.elder.hit", 1.0f, 0.0f);
-                }
-            }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 19L);
-    }
-
-    static {
-        DIALOUGE_BOSS = new HashMap<Entity, String>();
-        SadanReach = new HashMap<UUID, Boolean>();
-        SadanP1 = new HashMap<World, Boolean>();
-        SadanP2 = new HashMap<World, Boolean>();
-        SadanInterest = new HashMap<UUID, Integer>();
-        SadanGiantsCount = new HashMap<UUID, Integer>();
-        IsMusicPlaying = new HashMap<UUID, Boolean>();
-        BBRunning = new HashMap<UUID, Boolean>();
-        BossRun = new HashMap<UUID, Boolean>();
-        SadanCurrentPhase = new HashMap<World, Byte>();
-        IsSadanDied = new HashMap<World, Boolean>();
     }
 }

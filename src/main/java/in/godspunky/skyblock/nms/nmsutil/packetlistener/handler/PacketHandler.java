@@ -14,16 +14,31 @@ import java.util.List;
 
 public abstract class PacketHandler {
     private static final List<PacketHandler> handlers;
+    static NMSClassResolver nmsClassResolver;
+    static FieldResolver EntityPlayerFieldResolver;
+    static MethodResolver PlayerConnectionMethodResolver;
+
+    static {
+        handlers = new ArrayList<PacketHandler>();
+        PacketHandler.nmsClassResolver = new NMSClassResolver();
+        PacketHandler.EntityPlayerFieldResolver = new FieldResolver(PacketHandler.nmsClassResolver.resolveSilent("EntityPlayer"));
+        PacketHandler.PlayerConnectionMethodResolver = new MethodResolver(PacketHandler.nmsClassResolver.resolveSilent("PlayerConnection"));
+    }
+
     private boolean hasSendOptions;
     private boolean forcePlayerSend;
     private boolean forceServerSend;
     private boolean hasReceiveOptions;
     private boolean forcePlayerReceive;
     private boolean forceServerReceive;
-    static NMSClassResolver nmsClassResolver;
-    static FieldResolver EntityPlayerFieldResolver;
-    static MethodResolver PlayerConnectionMethodResolver;
     private Plugin plugin;
+
+    public PacketHandler() {
+    }
+
+    public PacketHandler(final Plugin plugin) {
+        this.plugin = plugin;
+    }
 
     public static boolean addHandler(final PacketHandler handler) {
         final boolean b = PacketHandler.handlers.contains(handler);
@@ -109,6 +124,23 @@ public abstract class PacketHandler {
         }
     }
 
+    public static List<PacketHandler> getHandlers() {
+        return new ArrayList<PacketHandler>(PacketHandler.handlers);
+    }
+
+    public static List<PacketHandler> getForPlugin(final Plugin plugin) {
+        final List<PacketHandler> handlers = new ArrayList<PacketHandler>();
+        if (plugin == null) {
+            return handlers;
+        }
+        for (final PacketHandler h : getHandlers()) {
+            if (plugin.equals(h.getPlugin())) {
+                handlers.add(h);
+            }
+        }
+        return handlers;
+    }
+
     @Override
     public boolean equals(final Object object) {
         if (this == object) {
@@ -158,23 +190,6 @@ public abstract class PacketHandler {
         return "PacketHandler{hasSendOptions=" + this.hasSendOptions + ", forcePlayerSend=" + this.forcePlayerSend + ", forceServerSend=" + this.forceServerSend + ", hasReceiveOptions=" + this.hasReceiveOptions + ", forcePlayerReceive=" + this.forcePlayerReceive + ", forceServerReceive=" + this.forceServerReceive + ", plugin=" + this.plugin + '}';
     }
 
-    public static List<PacketHandler> getHandlers() {
-        return new ArrayList<PacketHandler>(PacketHandler.handlers);
-    }
-
-    public static List<PacketHandler> getForPlugin(final Plugin plugin) {
-        final List<PacketHandler> handlers = new ArrayList<PacketHandler>();
-        if (plugin == null) {
-            return handlers;
-        }
-        for (final PacketHandler h : getHandlers()) {
-            if (plugin.equals(h.getPlugin())) {
-                handlers.add(h);
-            }
-        }
-        return handlers;
-    }
-
     public void sendPacket(final Player p, final Object packet) {
         if (p == null || packet == null) {
             throw new NullPointerException();
@@ -201,13 +216,6 @@ public abstract class PacketHandler {
         return clone;
     }
 
-    public PacketHandler() {
-    }
-
-    public PacketHandler(final Plugin plugin) {
-        this.plugin = plugin;
-    }
-
     public Plugin getPlugin() {
         return this.plugin;
     }
@@ -215,11 +223,4 @@ public abstract class PacketHandler {
     public abstract void onSend(final SentPacket p0);
 
     public abstract void onReceive(final ReceivedPacket p0);
-
-    static {
-        handlers = new ArrayList<PacketHandler>();
-        PacketHandler.nmsClassResolver = new NMSClassResolver();
-        PacketHandler.EntityPlayerFieldResolver = new FieldResolver(PacketHandler.nmsClassResolver.resolveSilent("EntityPlayer"));
-        PacketHandler.PlayerConnectionMethodResolver = new MethodResolver(PacketHandler.nmsClassResolver.resolveSilent("PlayerConnection"));
-    }
 }

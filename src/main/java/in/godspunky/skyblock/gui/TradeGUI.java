@@ -23,22 +23,23 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.*;
 
 public class TradeGUI extends GUI {
-    private final UUID tradeUUID;
     public static final Map<UUID, List<ItemStack>> itemOfferP1;
     public static final Map<UUID, List<ItemStack>> itemOfferP2;
     public static final Map<UUID, Player> player1;
     public static final Map<UUID, Player> player2;
     public static final Map<UUID, Integer> tradeCountdown;
+
+    static {
+        itemOfferP1 = new HashMap<UUID, List<ItemStack>>();
+        itemOfferP2 = new HashMap<UUID, List<ItemStack>>();
+        player1 = new HashMap<UUID, Player>();
+        player2 = new HashMap<UUID, Player>();
+        tradeCountdown = new HashMap<UUID, Integer>();
+    }
+
+    private final UUID tradeUUID;
     private final int[] ls;
     private final int[] rs;
-
-    public void fillFrom(final Inventory i, final int startFromSlot, final int height, final ItemStack stacc) {
-        i.setItem(startFromSlot, stacc);
-        i.setItem(startFromSlot + 9, stacc);
-        i.setItem(startFromSlot + 9 + 9, stacc);
-        i.setItem(startFromSlot + 9 + 9 + 9, stacc);
-        i.setItem(startFromSlot + 9 + 9 + 9 + 9, stacc);
-    }
 
     public TradeGUI() {
         this(UUID.randomUUID());
@@ -55,6 +56,23 @@ public class TradeGUI extends GUI {
         if (!TradeGUI.itemOfferP2.containsKey(uuid) && TradeGUI.itemOfferP2.get(uuid) == null) {
             TradeGUI.itemOfferP2.put(uuid, new ArrayList<ItemStack>());
         }
+    }
+
+    public static boolean isContain(final int[] array, final int key) {
+        for (final int i : array) {
+            if (i == key) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void fillFrom(final Inventory i, final int startFromSlot, final int height, final ItemStack stacc) {
+        i.setItem(startFromSlot, stacc);
+        i.setItem(startFromSlot + 9, stacc);
+        i.setItem(startFromSlot + 9 + 9, stacc);
+        i.setItem(startFromSlot + 9 + 9 + 9, stacc);
+        i.setItem(startFromSlot + 9 + 9 + 9 + 9, stacc);
     }
 
     @Override
@@ -358,22 +376,5 @@ public class TradeGUI extends GUI {
                 econ.depositPlayer(p, (double) nmsStack.getTag().getLong("data_bits"));
             }
         }
-    }
-
-    public static boolean isContain(final int[] array, final int key) {
-        for (final int i : array) {
-            if (i == key) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    static {
-        itemOfferP1 = new HashMap<UUID, List<ItemStack>>();
-        itemOfferP2 = new HashMap<UUID, List<ItemStack>>();
-        player1 = new HashMap<UUID, Player>();
-        player2 = new HashMap<UUID, Player>();
-        tradeCountdown = new HashMap<UUID, Integer>();
     }
 }

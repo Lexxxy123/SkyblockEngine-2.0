@@ -1,5 +1,13 @@
 package in.godspunky.skyblock.entity.zombie;
 
+import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.entity.EntityDrop;
+import in.godspunky.skyblock.entity.EntityDropType;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.Sputnik;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher;
 import net.md_5.bungee.api.ChatColor;
@@ -11,14 +19,6 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.entity.EntityDrop;
-import in.godspunky.skyblock.entity.EntityDropType;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.Arrays;
 import java.util.List;

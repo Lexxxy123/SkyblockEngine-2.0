@@ -11,8 +11,13 @@ import java.sql.SQLException;
 public class SQLDatabase {
     private static final Skyblock plugin;
     private static final String DATABASE_FILENAME = "database.db";
-    private Connection connection;
+
+    static {
+        plugin = Skyblock.getPlugin();
+    }
+
     private final File file;
+    private Connection connection;
 
     public SQLDatabase() {
         final File file = new File(SQLDatabase.plugin.getDataFolder(), "database.db");
@@ -43,9 +48,5 @@ public class SQLDatabase {
             ex.printStackTrace();
         }
         return null;
-    }
-
-    static {
-        plugin = Skyblock.getPlugin();
     }
 }

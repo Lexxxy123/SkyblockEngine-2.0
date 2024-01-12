@@ -1,13 +1,13 @@
 package in.godspunky.skyblock.potion;
 
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 import in.godspunky.skyblock.Repeater;
 import in.godspunky.skyblock.user.PlayerStatistics;
 import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;
 import in.godspunky.skyblock.util.TriConsumer;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -15,7 +15,6 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 
 public class PotionEffectType {
-    private static final Map<String, PotionEffectType> POTION_EFFECT_TYPE_CACHE = new HashMap<String, PotionEffectType>();
     public static final PotionEffectType STRENGTH = new PotionEffectType(ChatColor.DARK_RED + "Strength", "strength", "Increases Strength by %s.", PotionColor.BLOOD_RED, (statistics, slot, level) -> statistics.getStrength().add(slot, SUtil.getOrDefault(Arrays.asList(5.0, 12.0, 20.0, 30.0, 40.0, 50.0, 60.0, 75.0), level - 1, Double.valueOf((double) level.intValue() * 10.0))), false, true);
     public static final PotionEffectType FEROCITY = new PotionEffectType(ChatColor.RED + "Ferocity", "ferocity", "Increases Ferocity by %s.", PotionColor.RED, (statistics, slot, level) -> statistics.getFerocity().add(slot, SUtil.getOrDefault(Arrays.asList(5.0, 12.0, 20.0, 30.0, 40.0, 50.0, 60.0, 75.0), level - 1, Double.valueOf((double) level.intValue() * 10.0))), false, true);
     public static final PotionEffectType RABBIT = new PotionEffectType(ChatColor.GREEN + "Rabbit", "rabbit", "Grants Jump Boost %s and +%s Speed.", PotionColor.DARK_GREEN, (effect, player) -> PlayerUtils.replacePotionEffect(player, new org.bukkit.potion.PotionEffect(org.bukkit.potion.PotionEffectType.JUMP, (int) effect.getDuration(), effect.getLevel() % 2 == 0 ? effect.getLevel() / 2 : (effect.getLevel() + 1) / 2)), (statistics, slot, level) -> statistics.getSpeed().add(slot, (double) level.intValue() * 10.0 / 100.0), false, true);
@@ -48,6 +47,7 @@ public class PotionEffectType {
         statistics.getSpeed().add(slot, (double) level.intValue() * 10.0 / 100.0);
         statistics.getCritDamage().add(slot, (double) level.intValue() * 10.0 / 100.0);
     }, false, true);
+    private static final Map<String, PotionEffectType> POTION_EFFECT_TYPE_CACHE = new HashMap<String, PotionEffectType>();
     private final String name;
     private final String namespace;
     private final String description;

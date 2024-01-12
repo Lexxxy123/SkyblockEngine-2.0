@@ -1,5 +1,7 @@
 package in.godspunky.skyblock.entity.zombie;
 
+import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.util.Sputnik;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
 import net.minecraft.server.v1_8_R3.GenericAttributes;
@@ -7,8 +9,6 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.metadata.FixedMetadataValue;
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.util.Sputnik;
 
 public interface NPCMobs {
     default PlayerDisguise onEntitySpawn(final LivingEntity entity, final String url1, final String url2, final boolean apl1) {

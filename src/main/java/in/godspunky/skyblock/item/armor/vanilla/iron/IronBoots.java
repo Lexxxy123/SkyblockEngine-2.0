@@ -1,7 +1,6 @@
 package in.godspunky.skyblock.item.armor.vanilla.iron;
 
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.item.*;
 
 public class IronBoots implements ToolStatistics, MaterialFunction {
     @Override

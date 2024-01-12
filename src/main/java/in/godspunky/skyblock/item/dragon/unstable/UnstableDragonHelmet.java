@@ -1,7 +1,6 @@
 package in.godspunky.skyblock.item.dragon.unstable;
 
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.item.*;
 
 public class UnstableDragonHelmet implements MaterialFunction, SkullStatistics, ToolStatistics {
     @Override

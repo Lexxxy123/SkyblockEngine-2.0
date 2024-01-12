@@ -2,8 +2,12 @@ package in.godspunky.skyblock.item.weapon;
 
 import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.listener.PlayerListener;
+import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.FerocityCalculation;
 import in.godspunky.skyblock.util.Groups;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
@@ -15,10 +19,6 @@ import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.listener.PlayerListener;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

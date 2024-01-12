@@ -3,6 +3,11 @@ package in.godspunky.skyblock.entity.nms;
 import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.enchantment.EnchantmentType;
 import in.godspunky.skyblock.entity.*;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 import net.minecraft.server.v1_8_R3.Entity;
 import net.minecraft.server.v1_8_R3.EntityZombie;
 import net.minecraft.server.v1_8_R3.GenericAttributes;
@@ -18,11 +23,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,14 +32,21 @@ public class RevenantHorror extends EntityZombie implements SNMSEntity, EntityFu
     private static final TieredValue<Double> MAX_HEALTH_VALUES;
     private static final TieredValue<Double> DAMAGE_VALUES;
     private static final TieredValue<Double> SPEED_VALUES;
+
+    static {
+        MAX_HEALTH_VALUES = new TieredValue<Double>(500.0, 20000.0, 400000.0, 1500000.0);
+        DAMAGE_VALUES = new TieredValue<Double>(15.0, 50.0, 300.0, 1000.0);
+        SPEED_VALUES = new TieredValue<Double>(0.35, 0.4, 0.45, 0.55);
+    }
+
     private final int tier;
+    private final long end;
+    private final UUID spawnerUUID;
     private boolean enraged;
     private boolean raged;
     private boolean Cooldown;
-    private final long end;
     private SEntity hologram;
     private SEntity hologram_name;
-    private final UUID spawnerUUID;
 
     public RevenantHorror(final Integer tier, final UUID spawnerUUID) {
         super(((CraftWorld) Bukkit.getPlayer(spawnerUUID).getWorld()).getHandle());
@@ -263,11 +270,5 @@ public class RevenantHorror extends EntityZombie implements SNMSEntity, EntityFu
 
     public int getTier() {
         return this.tier;
-    }
-
-    static {
-        MAX_HEALTH_VALUES = new TieredValue<Double>(500.0, 20000.0, 400000.0, 1500000.0);
-        DAMAGE_VALUES = new TieredValue<Double>(15.0, 50.0, 300.0, 1000.0);
-        SPEED_VALUES = new TieredValue<Double>(0.35, 0.4, 0.45, 0.55);
     }
 }

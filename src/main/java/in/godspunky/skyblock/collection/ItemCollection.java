@@ -1,20 +1,28 @@
 package in.godspunky.skyblock.collection;
 
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class ItemCollection {
-    private static final Map<String, ItemCollection> COLLECTION_MAP;
     public static final ItemCollection WHEAT;
     public static final ItemCollection OAK_WOOD;
     public static final ItemCollection STRING;
+    private static final Map<String, ItemCollection> COLLECTION_MAP;
+
+    static {
+        COLLECTION_MAP = new HashMap<String, ItemCollection>();
+        WHEAT = new ItemCollection("Wheat", ItemCollectionCategory.FARMING, SMaterial.WHEAT, (short) 0, new ItemCollectionRewards(50, new ItemCollectionRecipeReward(SMaterial.ASPECT_OF_THE_END)), new ItemCollectionRewards(100), new ItemCollectionRewards(250), new ItemCollectionRewards(500), new ItemCollectionRewards(1000), new ItemCollectionRewards(2500), new ItemCollectionRewards(10000), new ItemCollectionRewards(15000), new ItemCollectionRewards(25000), new ItemCollectionRewards(50000), new ItemCollectionRewards(100000));
+        OAK_WOOD = new ItemCollection("Oak Wood", ItemCollectionCategory.FORAGING, SMaterial.OAK_WOOD, (short) 0, 9);
+        STRING = new ItemCollection("String", ItemCollectionCategory.COMBAT, SMaterial.STRING, (short) 0, new ItemCollectionRewards(50), new ItemCollectionRewards(100), new ItemCollectionRewards(250, new ItemCollectionUpgradeReward("Quiver", ChatColor.GREEN)), new ItemCollectionRewards(1000), new ItemCollectionRewards(2500), new ItemCollectionRewards(5000), new ItemCollectionRewards(10000), new ItemCollectionRewards(25000), new ItemCollectionRewards(50000));
+    }
+
     private final String name;
     private final String identifier;
     private final ItemCollectionCategory category;
@@ -73,6 +81,35 @@ public class ItemCollection {
         return new String[]{title, progress};
     }
 
+    public static ItemCollection getByIdentifier(final String identifier) {
+        return ItemCollection.COLLECTION_MAP.get(identifier.toLowerCase());
+    }
+
+    public static ItemCollection getByMaterial(final SMaterial material, final short data) {
+        for (final ItemCollection collection : ItemCollection.COLLECTION_MAP.values()) {
+            if (collection.material == material && collection.data == data) {
+                return collection;
+            }
+        }
+        return null;
+    }
+
+    public static Map<ItemCollection, Integer> getDefaultCollections() {
+        final Map<ItemCollection, Integer> collections = new HashMap<ItemCollection, Integer>();
+        for (final ItemCollection collection : ItemCollection.COLLECTION_MAP.values()) {
+            collections.put(collection, 0);
+        }
+        return collections;
+    }
+
+    public static Collection<ItemCollection> getCollections() {
+        return ItemCollection.COLLECTION_MAP.values();
+    }
+
+    public static List<ItemCollection> getCategoryCollections(final ItemCollectionCategory category) {
+        return getCollections().stream().filter(collection -> collection.category == category).collect(Collectors.toList());
+    }
+
     public int getMaxAmount() {
         if (this.rewards.size() == 0 || this.rewards.get(this.rewards.size() - 1) == null) {
             return 0;
@@ -116,35 +153,6 @@ public class ItemCollection {
         return this.rewards.get(tier);
     }
 
-    public static ItemCollection getByIdentifier(final String identifier) {
-        return ItemCollection.COLLECTION_MAP.get(identifier.toLowerCase());
-    }
-
-    public static ItemCollection getByMaterial(final SMaterial material, final short data) {
-        for (final ItemCollection collection : ItemCollection.COLLECTION_MAP.values()) {
-            if (collection.material == material && collection.data == data) {
-                return collection;
-            }
-        }
-        return null;
-    }
-
-    public static Map<ItemCollection, Integer> getDefaultCollections() {
-        final Map<ItemCollection, Integer> collections = new HashMap<ItemCollection, Integer>();
-        for (final ItemCollection collection : ItemCollection.COLLECTION_MAP.values()) {
-            collections.put(collection, 0);
-        }
-        return collections;
-    }
-
-    public static Collection<ItemCollection> getCollections() {
-        return ItemCollection.COLLECTION_MAP.values();
-    }
-
-    public static List<ItemCollection> getCategoryCollections(final ItemCollectionCategory category) {
-        return getCollections().stream().filter(collection -> collection.category == category).collect(Collectors.toList());
-    }
-
     public String getName() {
         return this.name;
     }
@@ -171,12 +179,5 @@ public class ItemCollection {
 
     public boolean isTemporary() {
         return this.temporary;
-    }
-
-    static {
-        COLLECTION_MAP = new HashMap<String, ItemCollection>();
-        WHEAT = new ItemCollection("Wheat", ItemCollectionCategory.FARMING, SMaterial.WHEAT, (short) 0, new ItemCollectionRewards(50, new ItemCollectionRecipeReward(SMaterial.ASPECT_OF_THE_END)), new ItemCollectionRewards(100), new ItemCollectionRewards(250), new ItemCollectionRewards(500), new ItemCollectionRewards(1000), new ItemCollectionRewards(2500), new ItemCollectionRewards(10000), new ItemCollectionRewards(15000), new ItemCollectionRewards(25000), new ItemCollectionRewards(50000), new ItemCollectionRewards(100000));
-        OAK_WOOD = new ItemCollection("Oak Wood", ItemCollectionCategory.FORAGING, SMaterial.OAK_WOOD, (short) 0, 9);
-        STRING = new ItemCollection("String", ItemCollectionCategory.COMBAT, SMaterial.STRING, (short) 0, new ItemCollectionRewards(50), new ItemCollectionRewards(100), new ItemCollectionRewards(250, new ItemCollectionUpgradeReward("Quiver", ChatColor.GREEN)), new ItemCollectionRewards(1000), new ItemCollectionRewards(2500), new ItemCollectionRewards(5000), new ItemCollectionRewards(10000), new ItemCollectionRewards(25000), new ItemCollectionRewards(50000));
     }
 }

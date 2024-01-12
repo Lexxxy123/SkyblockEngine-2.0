@@ -2,6 +2,7 @@ package in.godspunky.skyblock.gui;
 
 import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
@@ -14,7 +15,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import in.godspunky.skyblock.item.SMaterial;
 
 import java.util.Map;
 

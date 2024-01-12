@@ -1,7 +1,6 @@
 package in.godspunky.skyblock.item.dragon.strong;
 
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.item.*;
 
 public class StrongDragonHelmet implements MaterialFunction, SkullStatistics, ToolStatistics {
     @Override

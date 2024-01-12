@@ -15,6 +15,12 @@ public final class StaticDragonManager {
     public static Map<UUID, List<Location>> EYES;
     public static SEntity DRAGON;
 
+    static {
+        StaticDragonManager.ACTIVE = false;
+        StaticDragonManager.EYES = new HashMap<UUID, List<Location>>();
+        StaticDragonManager.DRAGON = null;
+    }
+
     public static void endFight() {
         if (StaticDragonManager.DRAGON == null) {
             return;
@@ -30,12 +36,6 @@ public final class StaticDragonManager {
             }
         }
         StaticDragonManager.EYES.clear();
-        StaticDragonManager.DRAGON = null;
-    }
-
-    static {
-        StaticDragonManager.ACTIVE = false;
-        StaticDragonManager.EYES = new HashMap<UUID, List<Location>>();
         StaticDragonManager.DRAGON = null;
     }
 }

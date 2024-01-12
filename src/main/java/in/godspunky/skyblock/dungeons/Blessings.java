@@ -1,14 +1,6 @@
 package in.godspunky.skyblock.dungeons;
 
 import in.godspunky.skyblock.Skyblock;
-import org.bukkit.*;
-import org.bukkit.block.Block;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityType;
 import in.godspunky.skyblock.user.PlayerStatistics;
@@ -17,17 +9,32 @@ import in.godspunky.skyblock.user.TemporaryStats;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;
+import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import java.util.*;
 
 public class Blessings {
-    private final BlessingType type;
-    private int level;
-    private double buffPercent;
-    private final World world;
     public static final Skyblock sse;
     public static final Map<World, List<Blessings>> BLESSINGS_MAP;
     public static final Map<UUID, float[]> STAT_MAP;
+
+    static {
+        sse = Skyblock.getPlugin();
+        BLESSINGS_MAP = new HashMap<World, List<Blessings>>();
+        STAT_MAP = new HashMap<UUID, float[]>();
+    }
+
+    private final BlessingType type;
+    private final World world;
+    private int level;
+    private double buffPercent;
 
     public Blessings(final BlessingType type, final int level, final World operatedWorld) {
         this.level = 1;
@@ -36,44 +43,11 @@ public class Blessings {
         this.level = level;
     }
 
-    public void active() {
-        final World operatedWorld = this.world;
-        if (Blessings.BLESSINGS_MAP.containsKey(operatedWorld)) {
-            for (final Blessings bs : Blessings.BLESSINGS_MAP.get(operatedWorld)) {
-                if (bs.getType() == this.type) {
-                    bs.setLevel(bs.getLevel() + this.level);
-                    return;
-                }
-            }
-            Blessings.BLESSINGS_MAP.get(operatedWorld).add(this);
-        } else {
-            Blessings.BLESSINGS_MAP.put(operatedWorld, new ArrayList<Blessings>());
-            Blessings.BLESSINGS_MAP.get(operatedWorld).add(this);
-        }
-    }
-
     public static List<Blessings> getFrom(final World w) {
         if (Blessings.BLESSINGS_MAP.containsKey(w)) {
             return Blessings.BLESSINGS_MAP.get(w);
         }
         return null;
-    }
-
-    public void remove() {
-        Blessings.BLESSINGS_MAP.get(this.world).remove(this);
-        for (final Player p : this.world.getPlayers()) {
-            TemporaryStats ts = null;
-            final User u = User.getUser(p.getUniqueId());
-            if (u == null) {
-                continue;
-            }
-            if (TemporaryStats.getFromPlayer(u.toBukkitPlayer()) != null) {
-                ts = TemporaryStats.getFromPlayer(u.toBukkitPlayer());
-            } else {
-                ts = new TemporaryStats(User.getUser(u.toBukkitPlayer().getUniqueId()));
-            }
-            ts.cleanStats();
-        }
     }
 
     public static void resetForWorld(final World w) {
@@ -90,76 +64,6 @@ public class Blessings {
                 ts = new TemporaryStats(User.getUser(u.toBukkitPlayer().getUniqueId()));
             }
             ts.cleanStats();
-        }
-    }
-
-    public WrappedStats getBlessingStats(final User u) {
-        TemporaryStats ts = null;
-        if (TemporaryStats.getFromPlayer(u.toBukkitPlayer()) != null) {
-            ts = TemporaryStats.getFromPlayer(u.toBukkitPlayer());
-        } else {
-            ts = new TemporaryStats(User.getUser(u.toBukkitPlayer().getUniqueId()));
-        }
-        ts.cleanStats();
-        final float[] statsarray = this.calculate(User.getUser(u.getUuid()));
-        return new WrappedStats(statsarray);
-    }
-
-    private float[] calculate(final User u) {
-        final float[] stats = new float[7];
-        if (u == null) {
-            return stats;
-        }
-        final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(u.getUuid());
-        final double pci = 1.0 + this.level * 2.0 * 1.2 / 100.0;
-        final double fic = this.level * 2.0 * 1.2;
-        if (this.type == BlessingType.LIFE_BLESSINGS) {
-            final double stat = statistics.getMaxHealth().addAll();
-            stats[0] = (float) (1.2 * (stat * pci + fic - stat));
-            stats[1] = (float) (this.level / 100);
-        } else if (this.type == BlessingType.POWER_BLESSINGS) {
-            final double stat_1 = statistics.getStrength().addAll();
-            stats[2] = (float) (1.2 * (stat_1 * pci + fic - stat_1));
-            final double stat_2 = statistics.getCritDamage().addAll() * 100.0;
-            stats[3] = (float) (1.2 * (stat_2 * pci + fic - stat_2)) / 100.0f;
-        } else if (this.type == BlessingType.WISDOM_BLESSINGS) {
-            final double stat_1 = statistics.getIntelligence().addAll();
-            stats[4] = (float) (1.2 * (stat_1 * pci + fic - stat_1));
-            final double stat_2 = statistics.getSpeed().addAll() * 100.0;
-            stats[5] = (float) (1.2 * (stat_2 * pci + fic - stat_2)) / 100.0f;
-        } else if (this.type == BlessingType.STONE_BLESSINGS) {
-            final double stat_1 = statistics.getDefense().addAll();
-            stats[6] = (float) (1.2 * (stat_1 * pci + fic - stat_1));
-            final double stat_2 = statistics.getStrength().addAll();
-            stats[2] = (float) (1.2 * (stat_2 * pci + fic - stat_2));
-        } else {
-            final double stat_1 = statistics.getDefense().addAll();
-            stats[6] = (float) (stat_1 + 1.2 * (stat_1 * pci + fic - stat_1));
-            final double stat_2 = statistics.getStrength().addAll();
-            stats[2] = (float) (stat_2 + 1.2 * (stat_2 * pci + fic - stat_2));
-            final double stat2 = statistics.getMaxHealth().addAll();
-            stats[0] = (float) (stat2 + 1.2 * (stat2 * pci + fic - stat2));
-            final double stat_3 = statistics.getIntelligence().addAll();
-            stats[4] = (float) (stat_3 + 1.2 * (stat_3 * pci + fic - stat_3));
-        }
-        return stats;
-    }
-
-    public String toText() {
-        final String n = SUtil.toRomanNumeral(this.level);
-        switch (this.type) {
-            case LIFE_BLESSINGS:
-                return "Blessing of Life " + n;
-            case POWER_BLESSINGS:
-                return "Blessing of Power " + n;
-            case STONE_BLESSINGS:
-                return "Blessing of Stone " + n;
-            case TIME_BLESSINGS:
-                return "Blessing of Time " + n;
-            case WISDOM_BLESSINGS:
-                return "Blessing of Wisdom " + n;
-            default:
-                return "Blessing " + n;
         }
     }
 
@@ -200,37 +104,6 @@ public class Blessings {
                 ts.update();
             }
         });
-    }
-
-    public String buildPickupMessage(final User targetUser, final User picker) {
-        final Blessings type = this;
-        final StringBuilder sb = new StringBuilder();
-        if (picker == null) {
-            sb.append(Sputnik.trans("&6&lDUNGEON BUFF! &fA &d" + type.toText() + "&f have been picked up!\n"));
-        } else if (targetUser.getUuid() == picker.getUuid()) {
-            sb.append(Sputnik.trans("&6&lDUNGEON BUFF! &fYou found a &d" + type.toText() + "&f!\n"));
-        } else {
-            sb.append(Sputnik.trans("&6&lDUNGEON BUFF! &b" + picker.toBukkitPlayer().getName() + " &ffound a &d" + type.toText() + "&f!\n"));
-        }
-        sb.append(Sputnik.trans("   &7Granted you "));
-        switch (type.getType()) {
-            case LIFE_BLESSINGS:
-                sb.append(Sputnik.trans("&a+" + Sputnik.roundComma(type.getBlessingStats(targetUser).getHealth()) + " HP &7and &a+0% &7health generation."));
-                break;
-            case POWER_BLESSINGS:
-                sb.append(Sputnik.trans("&a+" + Sputnik.roundComma(type.getBlessingStats(targetUser).getStrength()) + " &c❁ Strength &7and &a+" + Sputnik.roundComma(type.getBlessingStats(targetUser).getCritDamage() * 100.0f) + " &9☠ Crit Damage&7."));
-                break;
-            case STONE_BLESSINGS:
-                sb.append(Sputnik.trans("&a" + Sputnik.roundComma(type.getBlessingStats(targetUser).getDefense()) + " ❈ Defense &7and &a+" + Sputnik.roundComma(type.getBlessingStats(targetUser).getStrength()) + " &c❁ Strength&7."));
-                break;
-            case TIME_BLESSINGS:
-                sb.append(Sputnik.trans("&a+" + Sputnik.roundComma(type.getBlessingStats(targetUser).getHealth()) + " HP&7, &a" + Sputnik.roundComma(type.getBlessingStats(targetUser).getDefense()) + " ❈ Defense&7, &a" + Sputnik.roundComma(type.getBlessingStats(targetUser).getIntelligence()) + " &b✎ Intelligence &7and &a+" + Sputnik.roundComma(type.getBlessingStats(targetUser).getStrength()) + " &c❁ Strength&7."));
-                break;
-            case WISDOM_BLESSINGS:
-                sb.append(Sputnik.trans("&a" + Sputnik.roundComma(type.getBlessingStats(targetUser).getIntelligence()) + " &b✎ Intelligence &7and &a" + Sputnik.roundComma(type.getBlessingStats(targetUser).getSpeed() * 100.0f) + " &f✦ Speed&7."));
-                break;
-        }
-        return sb.toString();
     }
 
     public static void openBlessingChest(final Block chest, final Blessings bless, final Player e) {
@@ -365,6 +238,140 @@ public class Blessings {
         }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
+    public void active() {
+        final World operatedWorld = this.world;
+        if (Blessings.BLESSINGS_MAP.containsKey(operatedWorld)) {
+            for (final Blessings bs : Blessings.BLESSINGS_MAP.get(operatedWorld)) {
+                if (bs.getType() == this.type) {
+                    bs.setLevel(bs.getLevel() + this.level);
+                    return;
+                }
+            }
+            Blessings.BLESSINGS_MAP.get(operatedWorld).add(this);
+        } else {
+            Blessings.BLESSINGS_MAP.put(operatedWorld, new ArrayList<Blessings>());
+            Blessings.BLESSINGS_MAP.get(operatedWorld).add(this);
+        }
+    }
+
+    public void remove() {
+        Blessings.BLESSINGS_MAP.get(this.world).remove(this);
+        for (final Player p : this.world.getPlayers()) {
+            TemporaryStats ts = null;
+            final User u = User.getUser(p.getUniqueId());
+            if (u == null) {
+                continue;
+            }
+            if (TemporaryStats.getFromPlayer(u.toBukkitPlayer()) != null) {
+                ts = TemporaryStats.getFromPlayer(u.toBukkitPlayer());
+            } else {
+                ts = new TemporaryStats(User.getUser(u.toBukkitPlayer().getUniqueId()));
+            }
+            ts.cleanStats();
+        }
+    }
+
+    public WrappedStats getBlessingStats(final User u) {
+        TemporaryStats ts = null;
+        if (TemporaryStats.getFromPlayer(u.toBukkitPlayer()) != null) {
+            ts = TemporaryStats.getFromPlayer(u.toBukkitPlayer());
+        } else {
+            ts = new TemporaryStats(User.getUser(u.toBukkitPlayer().getUniqueId()));
+        }
+        ts.cleanStats();
+        final float[] statsarray = this.calculate(User.getUser(u.getUuid()));
+        return new WrappedStats(statsarray);
+    }
+
+    private float[] calculate(final User u) {
+        final float[] stats = new float[7];
+        if (u == null) {
+            return stats;
+        }
+        final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(u.getUuid());
+        final double pci = 1.0 + this.level * 2.0 * 1.2 / 100.0;
+        final double fic = this.level * 2.0 * 1.2;
+        if (this.type == BlessingType.LIFE_BLESSINGS) {
+            final double stat = statistics.getMaxHealth().addAll();
+            stats[0] = (float) (1.2 * (stat * pci + fic - stat));
+            stats[1] = (float) (this.level / 100);
+        } else if (this.type == BlessingType.POWER_BLESSINGS) {
+            final double stat_1 = statistics.getStrength().addAll();
+            stats[2] = (float) (1.2 * (stat_1 * pci + fic - stat_1));
+            final double stat_2 = statistics.getCritDamage().addAll() * 100.0;
+            stats[3] = (float) (1.2 * (stat_2 * pci + fic - stat_2)) / 100.0f;
+        } else if (this.type == BlessingType.WISDOM_BLESSINGS) {
+            final double stat_1 = statistics.getIntelligence().addAll();
+            stats[4] = (float) (1.2 * (stat_1 * pci + fic - stat_1));
+            final double stat_2 = statistics.getSpeed().addAll() * 100.0;
+            stats[5] = (float) (1.2 * (stat_2 * pci + fic - stat_2)) / 100.0f;
+        } else if (this.type == BlessingType.STONE_BLESSINGS) {
+            final double stat_1 = statistics.getDefense().addAll();
+            stats[6] = (float) (1.2 * (stat_1 * pci + fic - stat_1));
+            final double stat_2 = statistics.getStrength().addAll();
+            stats[2] = (float) (1.2 * (stat_2 * pci + fic - stat_2));
+        } else {
+            final double stat_1 = statistics.getDefense().addAll();
+            stats[6] = (float) (stat_1 + 1.2 * (stat_1 * pci + fic - stat_1));
+            final double stat_2 = statistics.getStrength().addAll();
+            stats[2] = (float) (stat_2 + 1.2 * (stat_2 * pci + fic - stat_2));
+            final double stat2 = statistics.getMaxHealth().addAll();
+            stats[0] = (float) (stat2 + 1.2 * (stat2 * pci + fic - stat2));
+            final double stat_3 = statistics.getIntelligence().addAll();
+            stats[4] = (float) (stat_3 + 1.2 * (stat_3 * pci + fic - stat_3));
+        }
+        return stats;
+    }
+
+    public String toText() {
+        final String n = SUtil.toRomanNumeral(this.level);
+        switch (this.type) {
+            case LIFE_BLESSINGS:
+                return "Blessing of Life " + n;
+            case POWER_BLESSINGS:
+                return "Blessing of Power " + n;
+            case STONE_BLESSINGS:
+                return "Blessing of Stone " + n;
+            case TIME_BLESSINGS:
+                return "Blessing of Time " + n;
+            case WISDOM_BLESSINGS:
+                return "Blessing of Wisdom " + n;
+            default:
+                return "Blessing " + n;
+        }
+    }
+
+    public String buildPickupMessage(final User targetUser, final User picker) {
+        final Blessings type = this;
+        final StringBuilder sb = new StringBuilder();
+        if (picker == null) {
+            sb.append(Sputnik.trans("&6&lDUNGEON BUFF! &fA &d" + type.toText() + "&f have been picked up!\n"));
+        } else if (targetUser.getUuid() == picker.getUuid()) {
+            sb.append(Sputnik.trans("&6&lDUNGEON BUFF! &fYou found a &d" + type.toText() + "&f!\n"));
+        } else {
+            sb.append(Sputnik.trans("&6&lDUNGEON BUFF! &b" + picker.toBukkitPlayer().getName() + " &ffound a &d" + type.toText() + "&f!\n"));
+        }
+        sb.append(Sputnik.trans("   &7Granted you "));
+        switch (type.getType()) {
+            case LIFE_BLESSINGS:
+                sb.append(Sputnik.trans("&a+" + Sputnik.roundComma(type.getBlessingStats(targetUser).getHealth()) + " HP &7and &a+0% &7health generation."));
+                break;
+            case POWER_BLESSINGS:
+                sb.append(Sputnik.trans("&a+" + Sputnik.roundComma(type.getBlessingStats(targetUser).getStrength()) + " &c❁ Strength &7and &a+" + Sputnik.roundComma(type.getBlessingStats(targetUser).getCritDamage() * 100.0f) + " &9☠ Crit Damage&7."));
+                break;
+            case STONE_BLESSINGS:
+                sb.append(Sputnik.trans("&a" + Sputnik.roundComma(type.getBlessingStats(targetUser).getDefense()) + " ❈ Defense &7and &a+" + Sputnik.roundComma(type.getBlessingStats(targetUser).getStrength()) + " &c❁ Strength&7."));
+                break;
+            case TIME_BLESSINGS:
+                sb.append(Sputnik.trans("&a+" + Sputnik.roundComma(type.getBlessingStats(targetUser).getHealth()) + " HP&7, &a" + Sputnik.roundComma(type.getBlessingStats(targetUser).getDefense()) + " ❈ Defense&7, &a" + Sputnik.roundComma(type.getBlessingStats(targetUser).getIntelligence()) + " &b✎ Intelligence &7and &a+" + Sputnik.roundComma(type.getBlessingStats(targetUser).getStrength()) + " &c❁ Strength&7."));
+                break;
+            case WISDOM_BLESSINGS:
+                sb.append(Sputnik.trans("&a" + Sputnik.roundComma(type.getBlessingStats(targetUser).getIntelligence()) + " &b✎ Intelligence &7and &a" + Sputnik.roundComma(type.getBlessingStats(targetUser).getSpeed() * 100.0f) + " &f✦ Speed&7."));
+                break;
+        }
+        return sb.toString();
+    }
+
     public BlessingType getType() {
         return this.type;
     }
@@ -375,11 +382,5 @@ public class Blessings {
 
     public void setLevel(final int level) {
         this.level = level;
-    }
-
-    static {
-        sse = Skyblock.getPlugin();
-        BLESSINGS_MAP = new HashMap<World, List<Blessings>>();
-        STAT_MAP = new HashMap<UUID, float[]>();
     }
 }

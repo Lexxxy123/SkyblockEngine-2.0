@@ -1,9 +1,9 @@
 package in.godspunky.skyblock.npc.hub.merchants;
 
 import in.godspunky.skyblock.merchant.FarmMerchantGUI;
-import org.bukkit.entity.Player;
 import in.godspunky.skyblock.npc.NPCParameters;
 import in.godspunky.skyblock.npc.SkyblockNPC;
+import org.bukkit.entity.Player;
 
 public class FarmMerchant extends SkyblockNPC {
     public FarmMerchant() {

@@ -1,15 +1,19 @@
 package in.godspunky.skyblock.skill;
 
-import org.bukkit.ChatColor;
 import in.godspunky.skyblock.user.PlayerStatistics;
 import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.user.User;
+import org.bukkit.ChatColor;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class MiningSkill extends Skill {
     public static final MiningSkill INSTANCE;
+
+    static {
+        INSTANCE = new MiningSkill();
+    }
 
     @Override
     public String getName() {
@@ -58,9 +62,5 @@ public class MiningSkill extends Skill {
         final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(user.getUuid());
         statistics.zeroAll(11);
         statistics.getDefense().set(11, Double.valueOf(this.getDefense(getLevel(user.getSkillXP(this), this.hasSixtyLevels()))));
-    }
-
-    static {
-        INSTANCE = new MiningSkill();
     }
 }

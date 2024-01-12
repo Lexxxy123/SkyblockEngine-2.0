@@ -8,10 +8,19 @@ import org.bukkit.event.HandlerList;
 
 public class PacketSentServerSideEvent extends Event implements Cancellable {
     private static final HandlerList handlers;
+
+    static {
+        handlers = new HandlerList();
+    }
+
     private final SentPacket a;
 
     public PacketSentServerSideEvent(final SentPacket b) {
         this.a = b;
+    }
+
+    public static HandlerList getHandlerList() {
+        return PacketSentServerSideEvent.handlers;
     }
 
     public Packet getPacket() {
@@ -32,13 +41,5 @@ public class PacketSentServerSideEvent extends Event implements Cancellable {
 
     public HandlerList getHandlers() {
         return PacketSentServerSideEvent.handlers;
-    }
-
-    public static HandlerList getHandlerList() {
-        return PacketSentServerSideEvent.handlers;
-    }
-
-    static {
-        handlers = new HandlerList();
     }
 }

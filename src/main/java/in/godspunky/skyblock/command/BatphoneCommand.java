@@ -18,6 +18,11 @@ public class BatphoneCommand extends SCommand {
     public static final UUID ACCESS_KEY;
     public static final List<String> KEYS;
 
+    static {
+        ACCESS_KEY = UUID.randomUUID();
+        KEYS = new ArrayList<String>();
+    }
+
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (sender instanceof ConsoleCommandSender) {
@@ -34,10 +39,5 @@ public class BatphoneCommand extends SCommand {
         SUtil.delay(() -> MaddoxBatphone.CALL_COOLDOWN.remove(player.getUniqueId()), 400L);
         final GUI gui = GUIType.SLAYER.getGUI();
         gui.open(player);
-    }
-
-    static {
-        ACCESS_KEY = UUID.randomUUID();
-        KEYS = new ArrayList<String>();
     }
 }

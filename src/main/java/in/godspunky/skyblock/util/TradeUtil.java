@@ -6,8 +6,13 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class TradeUtil {
-    private static HashMap<UUID, UUID> tradeReq;
     public static final HashMap<UUID, Boolean> trading;
+    private static HashMap<UUID, UUID> tradeReq;
+
+    static {
+        TradeUtil.tradeReq = new HashMap<UUID, UUID>();
+        trading = new HashMap<UUID, Boolean>();
+    }
 
     public static boolean hasRequest(final Player p, final Player requester) {
         return TradeUtil.tradeReq.containsKey(requester.getUniqueId()) && TradeUtil.tradeReq.get(requester.getUniqueId()) == p.getUniqueId();
@@ -26,10 +31,5 @@ public class TradeUtil {
             TradeUtil.trading.put(req.getUniqueId(), false);
         }
         return TradeUtil.trading.get(req.getUniqueId());
-    }
-
-    static {
-        TradeUtil.tradeReq = new HashMap<UUID, UUID>();
-        trading = new HashMap<UUID, Boolean>();
     }
 }

@@ -12,8 +12,8 @@ public class ClientBeam {
     private final UUID worldUID;
     private final double viewingRadiusSquared;
     private final long updateDelay;
-    private boolean isActive;
     private final LocationTargetBeam beam;
+    private boolean isActive;
     private Location startingPosition;
     private Location endingPosition;
     private Player player;

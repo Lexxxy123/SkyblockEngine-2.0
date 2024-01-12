@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.gui;
 
 import in.godspunky.skyblock.auction.AuctionItem;
+import in.godspunky.skyblock.item.ItemCategory;
 import in.godspunky.skyblock.item.Rarity;
 import in.godspunky.skyblock.user.AuctionSettings;
 import in.godspunky.skyblock.user.User;
@@ -11,7 +12,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import in.godspunky.skyblock.item.ItemCategory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,6 +20,11 @@ import java.util.concurrent.ExecutionException;
 
 public class AuctionsBrowserGUI extends GUI {
     private static final int[] INTERIOR;
+
+    static {
+        INTERIOR = new int[]{11, 12, 13, 14, 15, 16, 20, 21, 22, 23, 24, 25, 29, 30, 31, 32, 33, 34, 38, 39, 40, 41, 42, 43};
+    }
+
     private int page;
 
     public AuctionsBrowserGUI(final int page) {
@@ -376,9 +381,5 @@ public class AuctionsBrowserGUI extends GUI {
                 }
             });
         }
-    }
-
-    static {
-        INTERIOR = new int[]{11, 12, 13, 14, 15, 16, 20, 21, 22, 23, 24, 25, 29, 30, 31, 32, 33, 34, 38, 39, 40, 41, 42, 43};
     }
 }

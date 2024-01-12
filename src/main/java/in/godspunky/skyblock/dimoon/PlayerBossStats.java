@@ -6,6 +6,11 @@ import java.util.UUID;
 
 public class PlayerBossStats {
     private static Map<UUID, PlayerBossStats> CACHE;
+
+    static {
+        PlayerBossStats.CACHE = new HashMap<UUID, PlayerBossStats>();
+    }
+
     public int catalystsPlaced;
     public int damagePlace;
 
@@ -18,9 +23,5 @@ public class PlayerBossStats {
             return PlayerBossStats.CACHE.get(u);
         }
         return null;
-    }
-
-    static {
-        PlayerBossStats.CACHE = new HashMap<UUID, PlayerBossStats>();
     }
 }

@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.dimoon.abilities;
 
-import org.bukkit.entity.Player;
 import in.godspunky.skyblock.dimoon.Dimoon;
+import org.bukkit.entity.Player;
 
 public class Void implements Ability {
     @Override

@@ -19,6 +19,10 @@ import java.util.Map;
 public class CollectionBoss extends GUI {
     public static final Map<Player, Boolean> ableToJoin;
 
+    static {
+        ableToJoin = new HashMap<Player, Boolean>();
+    }
+
     public CollectionBoss() {
         super("Boss Collections", 36);
     }
@@ -87,9 +91,5 @@ public class CollectionBoss extends GUI {
                 return itemstack;
             }
         });
-    }
-
-    static {
-        ableToJoin = new HashMap<Player, Boolean>();
     }
 }

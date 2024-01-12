@@ -1,15 +1,19 @@
 package in.godspunky.skyblock.skill;
 
-import org.bukkit.ChatColor;
 import in.godspunky.skyblock.user.PlayerStatistics;
 import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.user.User;
+import org.bukkit.ChatColor;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class FarmingSkill extends Skill {
     public static final FarmingSkill INSTANCE;
+
+    static {
+        INSTANCE = new FarmingSkill();
+    }
 
     @Override
     public String getName() {
@@ -71,9 +75,5 @@ public class FarmingSkill extends Skill {
         final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(user.getUuid());
         statistics.zeroAll(10);
         statistics.getMaxHealth().set(10, Double.valueOf(this.getHealth(getLevel(user.getSkillXP(this), this.hasSixtyLevels()))));
-    }
-
-    static {
-        INSTANCE = new FarmingSkill();
     }
 }

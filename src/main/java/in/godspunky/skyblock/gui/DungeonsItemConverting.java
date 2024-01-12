@@ -27,13 +27,21 @@ public class DungeonsItemConverting extends GUI {
     private static final Map<Rarity, Integer> COST_MAP;
     private static final List<UUID> COOLDOWN;
 
-    public void fillFrom(final Inventory i, final int startFromSlot, final int height, final ItemStack stacc) {
-        i.setItem(startFromSlot, stacc);
-        i.setItem(startFromSlot + 9, stacc);
-        i.setItem(startFromSlot + 9 + 9, stacc);
-        i.setItem(startFromSlot + 9 + 9 + 9, stacc);
-        i.setItem(startFromSlot + 9 + 9 + 9 + 9, stacc);
-        i.setItem(startFromSlot + 9 + 9 + 9 + 9 + 9, stacc);
+    static {
+        DEFAULT_REFORGE_ITEM = SUtil.getStack(ChatColor.RED + "Upgrade Item", Material.ANVIL, (short) 0, 1, Sputnik.trans("&7Upgrades items using"), Sputnik.trans("&bBits &7place a weapon or"), Sputnik.trans("&7armor piece above to upgrade it"), Sputnik.trans("&7to a &dDungeon item&7, improving"), Sputnik.trans("&7its stats while in Dungeons. You"), Sputnik.trans("&7can also upgrade an existing"), Sputnik.trans("&7Dungeon item's stats!"));
+        ANVIL_BARRIER = SUtil.getStack(ChatColor.RED + "Upgrade Item", Material.BARRIER, (short) 0, 1, Sputnik.trans("&7Upgrades items using"), Sputnik.trans("&bBits &7place a weapon or"), Sputnik.trans("&7armor piece above to upgrade it"), Sputnik.trans("&7to a &dDungeon item&7, improving"), Sputnik.trans("&7its stats while in Dungeons. You"), Sputnik.trans("&7can also upgrade an existing"), Sputnik.trans("&7Dungeon item's stats!"));
+        COST_MAP = new HashMap<Rarity, Integer>();
+        COOLDOWN = new ArrayList<UUID>();
+        DungeonsItemConverting.COST_MAP.put(Rarity.COMMON, 400);
+        DungeonsItemConverting.COST_MAP.put(Rarity.UNCOMMON, 750);
+        DungeonsItemConverting.COST_MAP.put(Rarity.RARE, 1050);
+        DungeonsItemConverting.COST_MAP.put(Rarity.EPIC, 1470);
+        DungeonsItemConverting.COST_MAP.put(Rarity.LEGENDARY, 1820);
+        DungeonsItemConverting.COST_MAP.put(Rarity.MYTHIC, 2150);
+        DungeonsItemConverting.COST_MAP.put(Rarity.SUPREME, 4100);
+        DungeonsItemConverting.COST_MAP.put(Rarity.SPECIAL, 4600);
+        DungeonsItemConverting.COST_MAP.put(Rarity.VERY_SPECIAL, 7000);
+        DungeonsItemConverting.COST_MAP.put(Rarity.EXCLUSIVE, 100000);
     }
 
     public DungeonsItemConverting() {
@@ -103,6 +111,15 @@ public class DungeonsItemConverting extends GUI {
                 }
             }
         });
+    }
+
+    public void fillFrom(final Inventory i, final int startFromSlot, final int height, final ItemStack stacc) {
+        i.setItem(startFromSlot, stacc);
+        i.setItem(startFromSlot + 9, stacc);
+        i.setItem(startFromSlot + 9 + 9, stacc);
+        i.setItem(startFromSlot + 9 + 9 + 9, stacc);
+        i.setItem(startFromSlot + 9 + 9 + 9 + 9, stacc);
+        i.setItem(startFromSlot + 9 + 9 + 9 + 9 + 9, stacc);
     }
 
     @Override
@@ -242,22 +259,5 @@ public class DungeonsItemConverting extends GUI {
         }
         gui.onClose(e);
         GUI_MAP.remove(player.getUniqueId());
-    }
-
-    static {
-        DEFAULT_REFORGE_ITEM = SUtil.getStack(ChatColor.RED + "Upgrade Item", Material.ANVIL, (short) 0, 1, Sputnik.trans("&7Upgrades items using"), Sputnik.trans("&bBits &7place a weapon or"), Sputnik.trans("&7armor piece above to upgrade it"), Sputnik.trans("&7to a &dDungeon item&7, improving"), Sputnik.trans("&7its stats while in Dungeons. You"), Sputnik.trans("&7can also upgrade an existing"), Sputnik.trans("&7Dungeon item's stats!"));
-        ANVIL_BARRIER = SUtil.getStack(ChatColor.RED + "Upgrade Item", Material.BARRIER, (short) 0, 1, Sputnik.trans("&7Upgrades items using"), Sputnik.trans("&bBits &7place a weapon or"), Sputnik.trans("&7armor piece above to upgrade it"), Sputnik.trans("&7to a &dDungeon item&7, improving"), Sputnik.trans("&7its stats while in Dungeons. You"), Sputnik.trans("&7can also upgrade an existing"), Sputnik.trans("&7Dungeon item's stats!"));
-        COST_MAP = new HashMap<Rarity, Integer>();
-        COOLDOWN = new ArrayList<UUID>();
-        DungeonsItemConverting.COST_MAP.put(Rarity.COMMON, 400);
-        DungeonsItemConverting.COST_MAP.put(Rarity.UNCOMMON, 750);
-        DungeonsItemConverting.COST_MAP.put(Rarity.RARE, 1050);
-        DungeonsItemConverting.COST_MAP.put(Rarity.EPIC, 1470);
-        DungeonsItemConverting.COST_MAP.put(Rarity.LEGENDARY, 1820);
-        DungeonsItemConverting.COST_MAP.put(Rarity.MYTHIC, 2150);
-        DungeonsItemConverting.COST_MAP.put(Rarity.SUPREME, 4100);
-        DungeonsItemConverting.COST_MAP.put(Rarity.SPECIAL, 4600);
-        DungeonsItemConverting.COST_MAP.put(Rarity.VERY_SPECIAL, 7000);
-        DungeonsItemConverting.COST_MAP.put(Rarity.EXCLUSIVE, 100000);
     }
 }

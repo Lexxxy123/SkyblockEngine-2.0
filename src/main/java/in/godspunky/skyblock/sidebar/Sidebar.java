@@ -9,6 +9,11 @@ import java.util.List;
 
 public class Sidebar {
     private static ScoreboardManager manager;
+
+    static {
+        Sidebar.manager = Bukkit.getScoreboardManager();
+    }
+
     private final String name;
     private final String identifier;
     private final Scoreboard board;
@@ -35,9 +40,5 @@ public class Sidebar {
             this.scores.get(i).setScore(i);
         }
         player.setScoreboard(this.board);
-    }
-
-    static {
-        Sidebar.manager = Bukkit.getScoreboardManager();
     }
 }

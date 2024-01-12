@@ -63,38 +63,32 @@ public class FinalDestinationChestplate implements ToolStatistics, MaterialFunct
     }
 
     @Override
-    public Rarity getRarity()
-    {
+    public Rarity getRarity() {
         return Rarity.LEGENDARY;
     }
 
     @Override
-    public GenericItemType getType()
-    {
+    public GenericItemType getType() {
         return GenericItemType.ARMOR;
     }
 
     @Override
-    public SpecificItemType getSpecificType()
-    {
+    public SpecificItemType getSpecificType() {
         return SpecificItemType.CHESTPLATE;
     }
 
     @Override
-    public double getBaseHealth()
-    {
+    public double getBaseHealth() {
         return 200;
     }
 
     @Override
-    public double getBaseDefense()
-    {
+    public double getBaseDefense() {
         return 100;
     }
 
     @Override
-    public double getBaseIntelligence()
-    {
+    public double getBaseIntelligence() {
         return 100;
     }
 
@@ -103,7 +97,6 @@ public class FinalDestinationChestplate implements ToolStatistics, MaterialFunct
     public int getColor() {
         return 0xA0011;
     }
-
 
 
 }

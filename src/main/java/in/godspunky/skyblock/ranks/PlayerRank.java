@@ -16,8 +16,8 @@ public enum PlayerRank {
     GAMEMASTER("&2[GM]", 13),
     BUILD("&3[BUILD TEAM]", 14),
     ADMIN("&c[ADMIN]", 15),
-    MANAGER("&c[MANAGER]",16),
-    WATCHDOG("&c[WATCHDOG]",17),
+    MANAGER("&c[MANAGER]", 16),
+    WATCHDOG("&c[WATCHDOG]", 17),
     JERRY("&d[JERRY++]", 18),
     OWNER("&c[OWNER]", 19);
 
@@ -25,11 +25,19 @@ public enum PlayerRank {
     private final String prefix;
     private final int level;
 
-    PlayerRank( String prefix, int level) {
+    PlayerRank(String prefix, int level) {
         this.prefix = prefix;
         this.level = level;
     }
 
+    public static PlayerRank getRankOrDefault(int level) {
+        for (PlayerRank rank : PlayerRank.values()) {
+            if (rank.level == level) {
+                return rank;
+            }
+        }
+        return DEFAULT;
+    }
 
     public String getPrefix() {
         return prefix;
@@ -45,16 +53,6 @@ public enum PlayerRank {
 
     public boolean isAboveOrEqual(PlayerRank rank) {
         return this.level >= rank.level;
-    }
-
-
-    public static PlayerRank getRankOrDefault(int level) {
-        for (PlayerRank rank : PlayerRank.values()) {
-            if (rank.level == level) {
-                return rank;
-            }
-        }
-        return DEFAULT;
     }
 
     public boolean hasRank(PlayerRank requiredRank) {

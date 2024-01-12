@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.user;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.auction.AuctionBid;
 import in.godspunky.skyblock.auction.AuctionEscrow;
 import in.godspunky.skyblock.auction.AuctionItem;
@@ -11,13 +12,16 @@ import in.godspunky.skyblock.dimoon.Dimoon;
 import in.godspunky.skyblock.dungeons.ItemSerial;
 import in.godspunky.skyblock.enchantment.Enchantment;
 import in.godspunky.skyblock.enchantment.EnchantmentType;
+import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.dungeons.boss.sadan.SadanFunction;
 import in.godspunky.skyblock.entity.dungeons.boss.sadan.SadanHuman;
 import in.godspunky.skyblock.entity.nms.VoidgloomSeraph;
 import in.godspunky.skyblock.item.GenericItemType;
 import in.godspunky.skyblock.item.PlayerBoostStatistics;
 import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.item.pet.Pet;
+import in.godspunky.skyblock.listener.PlayerListener;
 import in.godspunky.skyblock.potion.ActivePotionEffect;
 import in.godspunky.skyblock.potion.PotionEffect;
 import in.godspunky.skyblock.potion.PotionEffectType;
@@ -49,10 +53,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.listener.PlayerListener;
 
 import java.io.File;
 import java.io.IOException;
@@ -63,33 +63,50 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Profile
-{
+public class Profile {
 
+    @Getter
+    public static final int ISLAND_SIZE = 125;
+    public static final Map<String, Profile> USER_CACHE = new HashMap<>();
+    private final static HashMap<String, String> PROFILE_NAMES = new HashMap<>();
+    private static final Skyblock plugin;
+    private static final File USER_FOLDER;
+    public static long cookieduration;
+    @Getter
+    private static List<String> talked_npcs;
+
+    static {
+        plugin = Skyblock.getPlugin();
+        USER_FOLDER = new File(new File("/rootshare/skysim"), "./users");
+    }
+
+    final Map<ItemCollection, Integer> collections;
+    final int[] highestSlayers;
+    final int[] slayerXP;
+    private final Map<SMaterial, Integer> quiver;
+    private final int[] crystalLVL;
     public String uuid;
     @Getter
     @Setter
     public String name;
     @Getter
-    public static final int ISLAND_SIZE = 125;
-    private final static HashMap<String, String> PROFILE_NAMES = new HashMap<>();
-
-    public static long cookieduration;
-    public static final Map<String, Profile> USER_CACHE = new HashMap<>();
-    private static final Skyblock plugin;
-    private static final File USER_FOLDER;
-
-    @Getter
     @Setter
     public List<?> inventory;
     @Setter
     public List<?> armor;
-    private long sadancollections;
-    private long totalfloor6run;
     @Getter
     public UUID owner;
-
-    final Map<ItemCollection, Integer> collections;
+    @Setter
+    public boolean selected;
+    List<ActivePotionEffect> effects;
+    double farmingXP;
+    double miningXP;
+    double combatXP;
+    double foragingXP;
+    List<Pet.PetItem> pets;
+    AuctionSettings auctionSettings;
+    private long sadancollections;
+    private long totalfloor6run;
     @Getter
     private long coins;
     @Getter
@@ -103,20 +120,11 @@ public class Profile
     @Getter
     private boolean playingSong;
     private boolean inDanger;
-    private Double islandX;
-    private Double islandZ;
+    private final Double islandX;
+    private final Double islandZ;
     private Region lastRegion;
-
-
-    @Setter
-    public boolean selected;
-    private final Map<SMaterial, Integer> quiver;
-    List<ActivePotionEffect> effects;
-    double farmingXP;
     private boolean boneToZeroDamage;
     private boolean cooldownAPI;
-    double miningXP;
-    double combatXP;
     private double enchantXP;
     private double archerXP;
     private double cataXP;
@@ -124,23 +132,13 @@ public class Profile
     private double healerXP;
     private double tankXP;
     private double mageXP;
-    double foragingXP;
-    final int[] highestSlayers;
-    final int[] slayerXP;
-    private final int[] crystalLVL;
     private boolean saveable;
     private int bonusFerocity;
     private boolean fatalActive;
     private boolean permanentCoins;
     private SlayerQuest slayerQuest;
-    List<Pet.PetItem> pets;
-
     @Getter
-    private static List<String> talked_npcs;
-
-    @Getter
-    private List<String> unlockedRecipes;
-    AuctionSettings auctionSettings;
+    private final List<String> unlockedRecipes;
     private boolean auctionCreationBIN;
     private AuctionEscrow auctionEscrow;
     @Setter
@@ -175,7 +173,7 @@ public class Profile
         this.islandX = null;
         this.islandZ = null;
         this.lastRegion = null;
-        this.talked_npcs = new ArrayList<>();
+        talked_npcs = new ArrayList<>();
         this.quiver = new HashMap<SMaterial, Integer>();
         this.effects = new ArrayList<ActivePotionEffect>();
         this.unlockedRecipes = new ArrayList<>();
@@ -200,25 +198,99 @@ public class Profile
         Profile.USER_CACHE.put(String.valueOf(owner), this);
     }
 
+    public static HashMap<String, String> getProfileNames() {
+        return PROFILE_NAMES;
+    }
+
+    public static void updateProfileName(String profileUUID) {
+        if (PROFILE_NAMES.containsKey(profileUUID)) return;
+        Document document = Skyblock.getPlugin().dataLoader.grabProfile(profileUUID);
+        if (document == null) return;
+        String profileName = document.getString("name");
+        if (profileName == null) return;
+        PROFILE_NAMES.put(profileUUID, profileName);
+    }
+
+    public static void dmgDimon(final LivingEntity entity, final Player damager) {
+        final int bonusDamage = 0;
+        if (damager != null && entity.hasMetadata("Dimoon") && Skyblock.getPlugin().dimoon != null) {
+            final Dimoon dimoon = Skyblock.getPlugin().dimoon;
+            final int damage = 1 + dimoon.getParkoursCompleted() + bonusDamage;
+            dimoon.damage(damage, damager.getName());
+        }
+    }
+
+    public static String generateRandom() {
+        final int leftLimit = 97;
+        final int rightLimit = 122;
+        final int targetStringLength = SUtil.random(7, 7);
+        final Random random = new Random();
+        final String generatedString = random.ints(leftLimit, rightLimit + 1).limit(targetStringLength).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
+        return generatedString;
+    }
+
+    public static void wipeUser(final UUID owner) {
+        final String wipeID = generateRandom();
+        SLog.info("Wiping with " + wipeID);
+        if (Bukkit.getPlayer(owner).isOnline()) {
+            final Player p = Bukkit.getPlayer(owner);
+            p.kickPlayer(ChatColor.RED + "You have been disconnected");
+        }
+        final Path source = Paths.get(Profile.USER_FOLDER + "/" + owner.toString() + ".yml");
+        try {
+            Files.move(source, source.resolveSibling("WIPED_" + wipeID + "_" + owner + ".yml"));
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Profile get(UUID uuid, UUID owner) {
+        if (owner == null) return null;
+        if (USER_CACHE.containsKey(uuid.toString())) return USER_CACHE.get(uuid.toString());
+        return new Profile(uuid.toString(), owner, SUtil.generateRandomProfileNameFor());
+    }
+
+    public static Profile getExisting(UUID uuid, UUID owner) {
+        if (owner == null) return null;
+        if (USER_CACHE.containsKey(uuid)) return USER_CACHE.get(uuid);
+
+        File file = new File(USER_FOLDER, uuid.toString() + ".yml");
+        if (!file.exists()) return null;
+
+        FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
+        return new Profile(uuid.toString(), owner, cfg.getString("name"));
+    }
+
+    public static Collection<Profile> getCachedUsers() {
+        return USER_CACHE.values();
+    }
+
+    public static Profile get(UUID uuid) {
+        if (USER_CACHE.containsKey(uuid.toString()))
+            return USER_CACHE.get(uuid.toString());
+
+        return new Profile(uuid.toString(), null, "$unk");
+    }
+
+    public static Profile getFromCache(UUID id) {
+        return USER_CACHE.get(id.toString());
+    }
+
+    public static Map<String, Profile> getHash() {
+        return Profile.USER_CACHE;
+    }
+
+    public static boolean exists(UUID uuid) {
+        File file = new File(USER_FOLDER, uuid.toString() + ".yml");
+        return file.exists();
+    }
+
     public List<?> getArmor() {
         return armor;
     }
 
     public boolean isSelected() {
         return User.getUser(owner).getSelectedProfile().getId().equals(getId());
-    }
-    public static HashMap<String , String> getProfileNames(){
-        return PROFILE_NAMES;
-    }
-
-
-    public static void updateProfileName(String profileUUID){
-        if (PROFILE_NAMES.containsKey(profileUUID)) return;
-        Document document = Skyblock.getPlugin().dataLoader.grabProfile(profileUUID);
-        if (document == null) return;
-        String profileName = document.getString("name");
-        if (profileName == null) return;
-        PROFILE_NAMES.put(profileUUID , profileName);
     }
 
     public void unload() {
@@ -228,11 +300,6 @@ public class Profile
     public void setCookieDurationTicks(long ticks) {
         Player player = Bukkit.getPlayer(getOwner());
         PlayerUtils.setCookieDurationTicks(player, ticks);
-    }
-
-
-    public void setLastRegion(final Region lastRegion) {
-        this.lastRegion = lastRegion;
     }
 
     public void addCoins(final long coins) {
@@ -263,16 +330,16 @@ public class Profile
         this.sadancollections += a;
     }
 
-    public void setBCollection(final int a) {
-        this.sadancollections = a;
-    }
-
     public void subBCollection(final int a) {
         this.sadancollections -= a;
     }
 
     public long getBCollection() {
         return this.sadancollections;
+    }
+
+    public void setBCollection(final int a) {
+        this.sadancollections = a;
     }
 
     public void addBRun6(final int a) {
@@ -367,18 +434,9 @@ public class Profile
         this.quiver.put(material, amount);
     }
 
-    public void setAuctionSettings(AuctionSettings auctionSettings) {
-        this.auctionSettings = auctionSettings.clone(); // Assuming AuctionSettings has a clone method
-    }
-
     public void setCollections(Map<ItemCollection, Integer> collections) {
         this.collections.clear();
         this.collections.putAll(collections);
-    }
-
-    public void setQuiver(Map<SMaterial, Integer> quiver) {
-        this.quiver.clear();  // Clear existing quiver
-        this.quiver.putAll(quiver);  // Set the new quiver
     }
 
     public int getQuiver(final SMaterial material) {
@@ -454,7 +512,7 @@ public class Profile
         if (item == null) {
             return null;
         }
-        return (Pet)item.getType().getGenericInstance();
+        return (Pet) item.getType().getGenericInstance();
     }
 
     public double getSkillXP(final Skill skill) {
@@ -668,7 +726,7 @@ public class Profile
         this.slayerQuest.setDied(System.currentTimeMillis());
         if (this.slayerQuest.getEntity() != null) {
             this.slayerQuest.getEntity().remove();
-            this.slayerQuest.getEntity().getFunction().onDeath(this.slayerQuest.getEntity(), (Entity)this.slayerQuest.getEntity().getEntity(), (Entity)player);
+            this.slayerQuest.getEntity().getFunction().onDeath(this.slayerQuest.getEntity(), this.slayerQuest.getEntity().getEntity(), player);
         }
         SUtil.delay(() -> {
             this.removeAllSlayerBosses();
@@ -693,24 +751,15 @@ public class Profile
         player.sendMessage(Sputnik.trans(message));
     }
 
-    public static void dmgDimon(final LivingEntity entity, final Player damager) {
-        final int bonusDamage = 0;
-        if (damager != null && entity.hasMetadata("Dimoon") && Skyblock.getPlugin().dimoon != null) {
-            final Dimoon dimoon = Skyblock.getPlugin().dimoon;
-            final int damage = 1 + dimoon.getParkoursCompleted() + bonusDamage;
-            dimoon.damage(damage, damager.getName());
-        }
-    }
-
     public void damageEntity(final Damageable entity1, final double damageBase) {
         if (entity1.isDead()) {
             return;
         }
         final Player player = Bukkit.getPlayer(this.owner);
         double damage = damageBase;
-        dmgDimon((LivingEntity)entity1, player);
+        dmgDimon((LivingEntity) entity1, player);
         if (VoidgloomSeraph.HIT_SHIELD.containsKey(entity1)) {
-            VoidgloomSeraph.HIT_SHIELD.put((Entity)entity1, VoidgloomSeraph.HIT_SHIELD.get(entity1) - 1);
+            VoidgloomSeraph.HIT_SHIELD.put(entity1, VoidgloomSeraph.HIT_SHIELD.get(entity1) - 1);
             entity1.getWorld().playSound(entity1.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 2.0f);
         }
         if (entity1.getType() != EntityType.ENDER_DRAGON) {
@@ -721,30 +770,24 @@ public class Profile
                 }
                 damage -= damage * defensepercent / 100.0;
             }
-            PlayerUtils.handleSpecEntity((Entity)entity1, player, new AtomicDouble(damage));
+            PlayerUtils.handleSpecEntity(entity1, player, new AtomicDouble(damage));
             entity1.setHealth(Math.max(0.0, entity1.getHealth() - damage));
-        }
-        else {
-            final double formula = damage / ((EnderDragon)entity1).getMaxHealth() * 100.0;
+        } else {
+            final double formula = damage / entity1.getMaxHealth() * 100.0;
             if (formula < 10.0) {
                 damage *= 1.0;
-            }
-            else if (formula > 10.0 && formula < 15.0) {
+            } else if (formula > 10.0 && formula < 15.0) {
                 damage -= damage * 90.0 / 100.0;
-            }
-            else if (formula > 15.0 && formula < 20.0) {
+            } else if (formula > 15.0 && formula < 20.0) {
                 damage -= damage * 99.0 / 100.0;
-            }
-            else if (formula > 20.0 && formula <= 25.0) {
+            } else if (formula > 20.0 && formula <= 25.0) {
                 damage -= damage * 99.9 / 100.0;
-            }
-            else if (formula > 25.0) {
+            } else if (formula > 25.0) {
                 damage *= 0.0;
-            }
-            else {
+            } else {
                 damage *= 1.0;
             }
-            PlayerUtils.handleSpecEntity((Entity)entity1, player, new AtomicDouble(damage));
+            PlayerUtils.handleSpecEntity(entity1, player, new AtomicDouble(damage));
             entity1.setHealth(Math.max(0.0, entity1.getHealth() - damage));
         }
         final double health = entity1.getMaxHealth();
@@ -773,34 +816,28 @@ public class Profile
         final Player player = Bukkit.getPlayer(this.owner);
         double damage = damageBase;
         if (VoidgloomSeraph.HIT_SHIELD.containsKey(entity1)) {
-            VoidgloomSeraph.HIT_SHIELD.put((Entity)entity1, VoidgloomSeraph.HIT_SHIELD.get(entity1) - 1);
+            VoidgloomSeraph.HIT_SHIELD.put(entity1, VoidgloomSeraph.HIT_SHIELD.get(entity1) - 1);
             entity1.getWorld().playSound(entity1.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 2.0f);
         }
         if (entity1.getType() != EntityType.ENDER_DRAGON) {
-            PlayerUtils.handleSpecEntity((Entity)entity1, player, new AtomicDouble(damage));
+            PlayerUtils.handleSpecEntity(entity1, player, new AtomicDouble(damage));
             entity1.setHealth(Math.max(0.0, entity1.getHealth() - damage));
-        }
-        else {
-            final double formula = damage / ((EnderDragon)entity1).getMaxHealth() * 100.0;
+        } else {
+            final double formula = damage / entity1.getMaxHealth() * 100.0;
             if (formula < 10.0) {
                 damage *= 1.0;
-            }
-            else if (formula > 10.0 && formula < 15.0) {
+            } else if (formula > 10.0 && formula < 15.0) {
                 damage -= damage * 90.0 / 100.0;
-            }
-            else if (formula > 15.0 && formula < 20.0) {
+            } else if (formula > 15.0 && formula < 20.0) {
                 damage -= damage * 99.0 / 100.0;
-            }
-            else if (formula > 20.0 && formula <= 25.0) {
+            } else if (formula > 20.0 && formula <= 25.0) {
                 damage -= damage * 99.9 / 100.0;
-            }
-            else if (formula > 25.0) {
+            } else if (formula > 25.0) {
                 damage *= 0.0;
-            }
-            else {
+            } else {
                 damage *= 1.0;
             }
-            PlayerUtils.handleSpecEntity((Entity)entity1, player, new AtomicDouble(damage));
+            PlayerUtils.handleSpecEntity(entity1, player, new AtomicDouble(damage));
             entity1.setHealth(Math.max(0.0, entity1.getHealth() - damage));
         }
         final double health = entity1.getMaxHealth();
@@ -824,7 +861,7 @@ public class Profile
 
     public void damageEntityBowEman(final Damageable entity1, double damage, final Player player, final Arrow a) {
         if (VoidgloomSeraph.HIT_SHIELD.containsKey(entity1)) {
-            VoidgloomSeraph.HIT_SHIELD.put((Entity)entity1, VoidgloomSeraph.HIT_SHIELD.get(entity1) - 1);
+            VoidgloomSeraph.HIT_SHIELD.put(entity1, VoidgloomSeraph.HIT_SHIELD.get(entity1) - 1);
             entity1.getWorld().playSound(entity1.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 2.0f);
         }
         final double health = entity1.getMaxHealth();
@@ -840,30 +877,24 @@ public class Profile
                 damage -= damage * defensepercent / 100.0;
             }
             entity1.setHealth(Math.max(0.0, entity1.getHealth() - damage));
-        }
-        else {
-            final double formula = damage / ((EnderDragon)entity1).getMaxHealth() * 100.0;
+        } else {
+            final double formula = damage / entity1.getMaxHealth() * 100.0;
             if (formula < 10.0) {
                 damage *= 1.0;
-            }
-            else if (formula > 10.0 && formula < 15.0) {
+            } else if (formula > 10.0 && formula < 15.0) {
                 damage -= damage * 90.0 / 100.0;
-            }
-            else if (formula > 15.0 && formula < 20.0) {
+            } else if (formula > 15.0 && formula < 20.0) {
                 damage -= damage * 99.0 / 100.0;
-            }
-            else if (formula > 20.0 && formula <= 25.0) {
+            } else if (formula > 20.0 && formula <= 25.0) {
                 damage -= damage * 99.9 / 100.0;
-            }
-            else if (formula > 25.0) {
+            } else if (formula > 25.0) {
                 damage *= 0.0;
-            }
-            else {
+            } else {
                 damage *= 1.0;
             }
             entity1.setHealth(Math.max(0.0, entity1.getHealth() - damage));
         }
-        PlayerUtils.handleSpecEntity((Entity)entity1, player, new AtomicDouble(damage));
+        PlayerUtils.handleSpecEntity(entity1, player, new AtomicDouble(damage));
         a.remove();
     }
 
@@ -872,7 +903,7 @@ public class Profile
         if (player == null) {
             return;
         }
-        entity.damage(0.0, (Entity)player);
+        entity.damage(0.0, player);
     }
 
     public void damage(double d, final EntityDamageEvent.DamageCause cause, final Entity entity) {
@@ -883,7 +914,7 @@ public class Profile
         if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) {
             return;
         }
-        final EntityHuman human = ((CraftHumanEntity)player).getHandle();
+        final EntityHuman human = ((CraftHumanEntity) player).getHandle();
         final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
         final double trueDefense = statistics.getTrueDefense().addAll();
         final double health = statistics.getMaxHealth().addAll();
@@ -892,15 +923,14 @@ public class Profile
             this.kill(cause, entity);
             return;
         }
-        final float ab = (float)Math.max(0.0, SputnikPlayer.getCustomAbsorptionHP(player) - d);
+        final float ab = (float) Math.max(0.0, SputnikPlayer.getCustomAbsorptionHP(player) - d);
         double actual = Math.max(0.0, d - SputnikPlayer.getCustomAbsorptionHP(player));
         SputnikPlayer.setCustomAbsorptionHP(player, ab);
         if (cause == EntityDamageEvent.DamageCause.FIRE || cause == EntityDamageEvent.DamageCause.FIRE_TICK || cause == EntityDamageEvent.DamageCause.LAVA) {
             final int damage = 0;
             if (cause == EntityDamageEvent.DamageCause.FIRE || (cause == EntityDamageEvent.DamageCause.FIRE_TICK && cause != EntityDamageEvent.DamageCause.LAVA)) {
                 actual = 5.0;
-            }
-            else if (cause == EntityDamageEvent.DamageCause.LAVA) {
+            } else if (cause == EntityDamageEvent.DamageCause.LAVA) {
                 actual = 20.0;
             }
         }
@@ -918,25 +948,19 @@ public class Profile
         }
         player.setHealth(Math.max(0.0, player.getHealth() - actual));
         if (cause == EntityDamageEvent.DamageCause.FIRE || cause == EntityDamageEvent.DamageCause.FIRE_TICK || cause == EntityDamageEvent.DamageCause.LAVA) {
-            PlayerListener.spawnSpecialDamageInd((Entity)player, actual, ChatColor.GOLD);
-        }
-        else if (cause == EntityDamageEvent.DamageCause.FALL || cause == EntityDamageEvent.DamageCause.CONTACT || cause == EntityDamageEvent.DamageCause.SUFFOCATION) {
-            PlayerListener.spawnSpecialDamageInd((Entity)player, actual, ChatColor.GRAY);
-        }
-        else if (cause == EntityDamageEvent.DamageCause.DROWNING) {
-            PlayerListener.spawnSpecialDamageInd((Entity)player, actual, ChatColor.DARK_AQUA);
-        }
-        else if (cause == EntityDamageEvent.DamageCause.LIGHTNING) {
-            PlayerListener.spawnSpecialDamageInd((Entity)player, actual, ChatColor.RED);
-        }
-        else if (cause == EntityDamageEvent.DamageCause.POISON) {
-            PlayerListener.spawnSpecialDamageInd((Entity)player, actual, ChatColor.DARK_GREEN);
-        }
-        else if (cause == EntityDamageEvent.DamageCause.WITHER) {
-            PlayerListener.spawnSpecialDamageInd((Entity)player, actual, ChatColor.BLACK);
-        }
-        else {
-            PlayerListener.spawnSpecialDamageInd((Entity)player, actual, ChatColor.WHITE);
+            PlayerListener.spawnSpecialDamageInd(player, actual, ChatColor.GOLD);
+        } else if (cause == EntityDamageEvent.DamageCause.FALL || cause == EntityDamageEvent.DamageCause.CONTACT || cause == EntityDamageEvent.DamageCause.SUFFOCATION) {
+            PlayerListener.spawnSpecialDamageInd(player, actual, ChatColor.GRAY);
+        } else if (cause == EntityDamageEvent.DamageCause.DROWNING) {
+            PlayerListener.spawnSpecialDamageInd(player, actual, ChatColor.DARK_AQUA);
+        } else if (cause == EntityDamageEvent.DamageCause.LIGHTNING) {
+            PlayerListener.spawnSpecialDamageInd(player, actual, ChatColor.RED);
+        } else if (cause == EntityDamageEvent.DamageCause.POISON) {
+            PlayerListener.spawnSpecialDamageInd(player, actual, ChatColor.DARK_GREEN);
+        } else if (cause == EntityDamageEvent.DamageCause.WITHER) {
+            PlayerListener.spawnSpecialDamageInd(player, actual, ChatColor.BLACK);
+        } else {
+            PlayerListener.spawnSpecialDamageInd(player, actual, ChatColor.WHITE);
         }
         if (player.getHealth() <= 0.0) {
             player.setFireTicks(0);
@@ -957,7 +981,8 @@ public class Profile
         for (int i = 0; i < player.getInventory().getSize(); ++i) {
             final ItemStack stack = player.getInventory().getItem(i);
             final SItem sItem = SItem.find(stack);
-            if (sItem == null) {}
+            if (sItem == null) {
+            }
         }
         player.setFireTicks(0);
         player.setVelocity(new Vector(0, 0, 0));
@@ -968,8 +993,7 @@ public class Profile
             if (!PlayerUtils.cookieBuffActive(player)) {
                 this.clearPotionEffects();
             }
-        }
-        else {
+        } else {
             final World w = player.getWorld();
             for (final Entity en : player.getWorld().getEntities()) {
                 if (en instanceof HumanEntity) {
@@ -1014,8 +1038,8 @@ public class Profile
                 out = "%s fell to their death";
                 break;
             case ENTITY_ATTACK:
-                message = "You were killed by " + name + ChatColor.GRAY + "";
-                out = "%s was killed by " + name + ChatColor.GRAY + "";
+                message = "You were killed by " + name + ChatColor.GRAY;
+                out = "%s was killed by " + name + ChatColor.GRAY;
                 break;
             case ENTITY_EXPLOSION:
                 message = "You were killed by " + name + ChatColor.GRAY + "'s explosion";
@@ -1093,7 +1117,7 @@ public class Profile
                 broken.setReforge(crackedPiggy.getReforge());
             }
             player.getInventory().setItem(crackedPiggyIndex, broken.getStack());
-            final long sub = (long)(this.coins * 0.25);
+            final long sub = (long) (this.coins * 0.25);
             player.sendMessage(ChatColor.RED + "You died, lost " + SUtil.commaify(sub) + " coins, and your piggy bank broke!");
             this.coins -= sub;
             //this.save();
@@ -1177,7 +1201,7 @@ public class Profile
 
     public List<AuctionItem> getBids() {
         return AuctionItem.getAuctions().stream().filter(item -> {
-            final Iterator<AuctionBid> iterator = item.getBids().iterator();;
+            final Iterator<AuctionBid> iterator = item.getBids().iterator();
             while (iterator.hasNext()) {
                 final AuctionBid bid = iterator.next();
                 if (bid.getBidder().equals(this.owner) && item.getParticipants().contains(this.owner)) {
@@ -1197,7 +1221,7 @@ public class Profile
     }
 
     public EntityPlayer toNMSPlayer() {
-        return ((CraftPlayer)Bukkit.getPlayer(this.owner)).getHandle();
+        return ((CraftPlayer) Bukkit.getPlayer(this.owner)).getHandle();
     }
 
     public void sendToSpawn() {
@@ -1208,8 +1232,7 @@ public class Profile
         if (this.isOnIsland()) {
             final World world = Bukkit.getWorld("islands");
             player.teleport(world.getHighestBlockAt(SUtil.blackMagic(this.islandX), SUtil.blackMagic(this.islandZ)).getLocation().add(0.5, 1.0, 0.5));
-        }
-        else if (this.lastRegion != null) {
+        } else if (this.lastRegion != null) {
             switch (this.lastRegion.getType()) {
                 case BANK:
                     player.teleport(player.getWorld().getSpawnLocation());
@@ -1274,57 +1297,9 @@ public class Profile
                     player.teleport(player.getWorld().getSpawnLocation());
                     break;
             }
-        }
-        else {
+        } else {
             player.teleport(player.getWorld().getSpawnLocation());
         }
-    }
-
-    public static String generateRandom() {
-        final int leftLimit = 97;
-        final int rightLimit = 122;
-        final int targetStringLength = SUtil.random(7, 7);
-        final Random random = new Random();
-        final String generatedString = random.ints(leftLimit, rightLimit + 1).limit(targetStringLength).<StringBuilder>collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
-        return generatedString;
-    }
-
-    public static void wipeUser(final UUID owner) {
-        final String wipeID = generateRandom();
-        SLog.info("Wiping with " + wipeID);
-        if (Bukkit.getPlayer(owner).isOnline()) {
-            final Player p = Bukkit.getPlayer(owner);
-            p.kickPlayer(ChatColor.RED + "You have been disconnected");
-        }
-        final Path source = Paths.get(Profile.USER_FOLDER + "/" + owner.toString() + ".yml", new String[0]);
-        try {
-            Files.move(source, source.resolveSibling("WIPED_" + wipeID + "_" + owner.toString() + ".yml"), new CopyOption[0]);
-        }
-        catch (final IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static Profile get(UUID uuid, UUID owner) {
-        if (owner == null) return null;
-        if (USER_CACHE.containsKey(uuid.toString())) return USER_CACHE.get(uuid.toString());
-        return new Profile(uuid.toString(), owner, SUtil.generateRandomProfileNameFor());
-    }
-
-
-    public static Profile getExisting(UUID uuid, UUID owner) {
-        if (owner == null) return null;
-        if (USER_CACHE.containsKey(uuid)) return USER_CACHE.get(uuid);
-
-        File file = new File(USER_FOLDER, uuid.toString() + ".yml");
-        if (!file.exists()) return null;
-
-        FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
-        return new Profile(uuid.toString(), owner, cfg.getString("name"));
-    }
-
-    public static Collection<Profile> getCachedUsers() {
-        return USER_CACHE.values();
     }
 
     public void deleteRoot() {
@@ -1347,24 +1322,8 @@ public class Profile
         }).start();
     }
 
-
-    public static Profile get(UUID uuid) {
-        if (USER_CACHE.containsKey(uuid.toString()))
-            return USER_CACHE.get(uuid.toString());
-
-        return new Profile(uuid.toString(), null, "$unk");
-    }
-
-    public static Profile getFromCache(UUID id) {
-        return USER_CACHE.get(id.toString());
-    }
-
     public boolean hasPermission(final String permission) {
         return true;
-    }
-
-    public static Map<String, Profile> getHash() {
-        return Profile.USER_CACHE;
     }
 
     public void updateArmorInventory() {
@@ -1586,8 +1545,7 @@ public class Profile
             }
             if (sitem.getType().getStatistics().getType() == GenericItemType.WEAPON || sitem.getType().getStatistics().getType() == GenericItemType.RANGED_WEAPON) {
                 hpbboostweapons = sitem.getDataInt("hpb") * 2;
-            }
-            else if (sitem.getType().getStatistics().getType() == GenericItemType.ARMOR) {
+            } else if (sitem.getType().getStatistics().getType() == GenericItemType.ARMOR) {
                 hpbboosthp = sitem.getDataInt("hpb") * 4;
                 hpbboostdef = sitem.getDataInt("hpb") * 2;
             }
@@ -1634,12 +1592,12 @@ public class Profile
     public void sendClickableMessage(final String message, final TextComponent[] hover, final String commandToRun) {
         final TextComponent tcp = new TextComponent(Sputnik.trans(message));
         if (hover != null) {
-            tcp.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, (BaseComponent[])hover));
+            tcp.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hover));
         }
         if (commandToRun != null) {
             tcp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, commandToRun));
         }
-        this.toBukkitPlayer().spigot().sendMessage((BaseComponent)tcp);
+        this.toBukkitPlayer().spigot().sendMessage(tcp);
     }
 
     public long getSadancollections() {
@@ -1660,11 +1618,6 @@ public class Profile
 
     public UUID getProfileId() {
         return getUuid();
-    }
-
-    public static boolean exists(UUID uuid) {
-        File file = new File(USER_FOLDER, uuid.toString() + ".yml");
-        return file.exists();
     }
 
     public void setStashedItems(final List<ItemStack> stashedItems) {
@@ -1691,21 +1644,37 @@ public class Profile
         this.inDanger = inDanger;
     }
 
-
     public Region getLastRegion() {
         return this.lastRegion;
+    }
+
+    public void setLastRegion(final Region lastRegion) {
+        this.lastRegion = lastRegion;
     }
 
     public Map<SMaterial, Integer> getQuiver() {
         return this.quiver;
     }
 
+    public void setQuiver(Map<SMaterial, Integer> quiver) {
+        this.quiver.clear();  // Clear existing quiver
+        this.quiver.putAll(quiver);  // Set the new quiver
+    }
+
     public List<ActivePotionEffect> getEffects() {
         return this.effects;
     }
 
+    public void setEffects(List<ActivePotionEffect> effects) {
+        this.effects = new ArrayList<>(effects);
+    }
+
     public double getFarmingXP() {
         return this.farmingXP;
+    }
+
+    public void setFarmingXP(double farmingXP) {
+        this.farmingXP = farmingXP;
     }
 
     public boolean isBoneToZeroDamage() {
@@ -1728,8 +1697,16 @@ public class Profile
         return this.miningXP;
     }
 
+    public void setMiningXP(double miningXP) {
+        this.miningXP = miningXP;
+    }
+
     public double getCombatXP() {
         return this.combatXP;
+    }
+
+    public void setCombatXP(double combatXP) {
+        this.combatXP = combatXP;
     }
 
     public double getEnchantXP() {
@@ -1762,6 +1739,10 @@ public class Profile
 
     public double getForagingXP() {
         return this.foragingXP;
+    }
+
+    public void setForagingXP(double foragingXP) {
+        this.foragingXP = foragingXP;
     }
 
     public boolean isSaveable() {
@@ -1812,32 +1793,16 @@ public class Profile
         return this.auctionSettings;
     }
 
+    public void setAuctionSettings(AuctionSettings auctionSettings) {
+        this.auctionSettings = auctionSettings.clone(); // Assuming AuctionSettings has a clone method
+    }
+
     public boolean isAuctionCreationBIN() {
         return this.auctionCreationBIN;
     }
 
     public void setAuctionCreationBIN(final boolean auctionCreationBIN) {
         this.auctionCreationBIN = auctionCreationBIN;
-    }
-
-    public void setEffects(List<ActivePotionEffect> effects) {
-        this.effects = new ArrayList<>(effects);
-    }
-
-    public void setFarmingXP(double farmingXP) {
-        this.farmingXP = farmingXP;
-    }
-
-    public void setMiningXP(double miningXP) {
-        this.miningXP = miningXP;
-    }
-
-    public void setCombatXP(double combatXP) {
-        this.combatXP = combatXP;
-    }
-
-    public void setForagingXP(double foragingXP) {
-        this.foragingXP = foragingXP;
     }
 
     public AuctionEscrow getAuctionEscrow() {
@@ -1862,11 +1827,6 @@ public class Profile
 
     public void setCompletedSign(final boolean isCompletedSign) {
         this.isCompletedSign = isCompletedSign;
-    }
-
-    static {
-        plugin = Skyblock.getPlugin();
-        USER_FOLDER = new File(new File("/rootshare/skysim"), "./users");
     }
 
     public UUID getOwner() {

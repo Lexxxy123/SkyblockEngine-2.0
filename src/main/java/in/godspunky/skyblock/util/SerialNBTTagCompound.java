@@ -17,22 +17,6 @@ public class SerialNBTTagCompound extends NBTTagCompound implements Configuratio
         }
     }
 
-    public Map<String, Object> serialize() {
-        final Map<String, Object> map = new HashMap<String, Object>();
-        for (final String k : this.c()) {
-            final NBTBase b = this.get(k);
-            if (b instanceof NBTTagCompound) {
-                final SerialNBTTagCompound serial = new SerialNBTTagCompound((NBTTagCompound) b);
-                for (final Map.Entry<String, Object> entry : serial.serialize().entrySet()) {
-                    map.put(k + "." + entry.getKey(), entry.getValue());
-                }
-            } else {
-                map.put(k, SUtil.getObjectFromCompound(this, k));
-            }
-        }
-        return map;
-    }
-
     public static SerialNBTTagCompound deserialize(final Map<String, Object> map) {
         final SerialNBTTagCompound compound = new SerialNBTTagCompound();
         for (final Map.Entry<String, Object> entry : map.entrySet()) {
@@ -53,5 +37,21 @@ public class SerialNBTTagCompound extends NBTTagCompound implements Configuratio
             }
         }
         return compound;
+    }
+
+    public Map<String, Object> serialize() {
+        final Map<String, Object> map = new HashMap<String, Object>();
+        for (final String k : this.c()) {
+            final NBTBase b = this.get(k);
+            if (b instanceof NBTTagCompound) {
+                final SerialNBTTagCompound serial = new SerialNBTTagCompound((NBTTagCompound) b);
+                for (final Map.Entry<String, Object> entry : serial.serialize().entrySet()) {
+                    map.put(k + "." + entry.getKey(), entry.getValue());
+                }
+            } else {
+                map.put(k, SUtil.getObjectFromCompound(this, k));
+            }
+        }
+        return map;
     }
 }

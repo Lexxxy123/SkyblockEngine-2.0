@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.item.armor;
 
-import org.bukkit.entity.Player;
 import in.godspunky.skyblock.item.SItem;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;

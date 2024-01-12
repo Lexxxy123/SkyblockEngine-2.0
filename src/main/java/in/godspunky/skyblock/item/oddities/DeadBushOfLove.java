@@ -1,10 +1,10 @@
 package in.godspunky.skyblock.item.oddities;
 
-import net.md_5.bungee.api.ChatColor;
 import in.godspunky.skyblock.item.GenericItemType;
 import in.godspunky.skyblock.item.MaterialFunction;
 import in.godspunky.skyblock.item.MaterialStatistics;
 import in.godspunky.skyblock.item.Rarity;
+import net.md_5.bungee.api.ChatColor;
 
 public class DeadBushOfLove implements MaterialStatistics, MaterialFunction {
     @Override

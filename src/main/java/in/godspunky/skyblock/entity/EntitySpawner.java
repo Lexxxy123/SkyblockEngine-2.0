@@ -1,11 +1,11 @@
 package in.godspunky.skyblock.entity;
 
 import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.config.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
-import in.godspunky.skyblock.config.Config;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -15,6 +15,11 @@ import java.util.UUID;
 public class EntitySpawner {
     private static final List<EntitySpawner> SPAWNER_CACHE;
     private static BukkitTask SPAWNER_TASK;
+
+    static {
+        SPAWNER_CACHE = new ArrayList<EntitySpawner>();
+    }
+
     private final UUID uuid;
     private final SEntityType type;
     private final Location location;
@@ -33,25 +38,6 @@ public class EntitySpawner {
         this.location = location;
         EntitySpawner.SPAWNER_CACHE.add(this);
         this.save();
-    }
-
-    public void delete() {
-        final Config spawners = Skyblock.getPlugin().spawners;
-        EntitySpawner.SPAWNER_CACHE.remove(this);
-        spawners.set(this.uuid.toString(), null);
-        spawners.save();
-    }
-
-    public void save() {
-        final Config spawners = Skyblock.getPlugin().spawners;
-        spawners.set(this.uuid.toString() + ".type", this.type.name());
-        spawners.set(this.uuid + ".location", this.location);
-        spawners.save();
-    }
-
-    @Override
-    public String toString() {
-        return "EntitySpawner{uuid=" + this.uuid.toString() + ", type=" + this.type.name() + ", location=" + this.location.toString() + "}";
     }
 
     public static EntitySpawner deserialize(final String key) {
@@ -120,6 +106,25 @@ public class EntitySpawner {
         EntitySpawner.SPAWNER_TASK = null;
     }
 
+    public void delete() {
+        final Config spawners = Skyblock.getPlugin().spawners;
+        EntitySpawner.SPAWNER_CACHE.remove(this);
+        spawners.set(this.uuid.toString(), null);
+        spawners.save();
+    }
+
+    public void save() {
+        final Config spawners = Skyblock.getPlugin().spawners;
+        spawners.set(this.uuid.toString() + ".type", this.type.name());
+        spawners.set(this.uuid + ".location", this.location);
+        spawners.save();
+    }
+
+    @Override
+    public String toString() {
+        return "EntitySpawner{uuid=" + this.uuid.toString() + ", type=" + this.type.name() + ", location=" + this.location.toString() + "}";
+    }
+
     public UUID getUuid() {
         return this.uuid;
     }
@@ -130,9 +135,5 @@ public class EntitySpawner {
 
     public Location getLocation() {
         return this.location;
-    }
-
-    static {
-        SPAWNER_CACHE = new ArrayList<EntitySpawner>();
     }
 }

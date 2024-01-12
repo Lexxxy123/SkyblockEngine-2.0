@@ -1,10 +1,10 @@
 package in.godspunky.skyblock.command;
 
+import in.godspunky.skyblock.collection.ItemCollection;
 import in.godspunky.skyblock.ranks.PlayerRank;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.command.ConsoleCommandSender;
-import in.godspunky.skyblock.collection.ItemCollection;
 
 @CommandParameters(description = "Modify your collections.", permission = PlayerRank.ADMIN)
 public class CollectionsCommand extends SCommand {

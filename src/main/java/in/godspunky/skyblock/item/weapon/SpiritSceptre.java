@@ -1,11 +1,16 @@
 package in.godspunky.skyblock.item.weapon;
 
 import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityType;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.user.PlayerStatistics;
+import in.godspunky.skyblock.user.PlayerUtils;
+import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.EntityManager;
 import in.godspunky.skyblock.util.Groups;
 import in.godspunky.skyblock.util.SLog;
+import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -15,11 +20,6 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityType;
-import in.godspunky.skyblock.user.PlayerUtils;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.SUtil;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

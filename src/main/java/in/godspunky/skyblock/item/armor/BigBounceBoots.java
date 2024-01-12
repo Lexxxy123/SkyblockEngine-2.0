@@ -3,7 +3,6 @@ package in.godspunky.skyblock.item.armor;
 import in.godspunky.skyblock.item.*;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.entity.Player;
-import in.godspunky.skyblock.item.*;
 
 public class BigBounceBoots implements LeatherArmorStatistics, TickingMaterial, FlightStatistics, Ability {
     @Override

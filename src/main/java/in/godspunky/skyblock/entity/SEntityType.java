@@ -8,8 +8,8 @@ import in.godspunky.skyblock.entity.dungeons.boss.sadan.*;
 import in.godspunky.skyblock.entity.dungeons.minibosses.*;
 import in.godspunky.skyblock.entity.dungeons.regularentity.*;
 import in.godspunky.skyblock.entity.dungeons.watcher.*;
-import in.godspunky.skyblock.entity.end.*;
 import in.godspunky.skyblock.entity.end.Watcher;
+import in.godspunky.skyblock.entity.end.*;
 import in.godspunky.skyblock.entity.insentient.WheatCrystal;
 import in.godspunky.skyblock.entity.nether.LargeMagmaCube;
 import in.godspunky.skyblock.entity.nether.MediumMagmaCube;
@@ -22,16 +22,6 @@ import in.godspunky.skyblock.entity.zombie.*;
 import net.minecraft.server.v1_8_R3.EntityInsentient;
 import net.minecraft.server.v1_8_R3.EntityTypes;
 import org.bukkit.entity.EntityType;
-import in.godspunky.skyblock.entity.caverns.*;
-import in.godspunky.skyblock.entity.den.*;
-import in.godspunky.skyblock.entity.dungeons.boss.sadan.*;
-import in.godspunky.skyblock.entity.dungeons.minibosses.*;
-import in.godspunky.skyblock.entity.dungeons.regularentity.*;
-import in.godspunky.skyblock.entity.dungeons.watcher.*;
-import in.godspunky.skyblock.entity.end.*;
-import in.godspunky.skyblock.entity.nms.*;
-import in.godspunky.skyblock.entity.wolf.*;
-import in.godspunky.skyblock.entity.zombie.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -203,6 +193,31 @@ public enum SEntityType {
         this(craftType, clazz, false);
     }
 
+    private static void registerEntity(final String name, final int id, final Class<? extends EntityInsentient> clazz) {
+        try {
+            final List<Map<?, ?>> dataMap = new ArrayList<Map<?, ?>>();
+            for (final Field f : EntityTypes.class.getDeclaredFields()) {
+                if (f.getType().getSimpleName().equals(Map.class.getSimpleName())) {
+                    f.setAccessible(true);
+                    dataMap.add((Map) f.get(null));
+                }
+            }
+            if (dataMap.get(2).containsKey(id)) {
+                dataMap.get(0).remove(name);
+                dataMap.get(2).remove(id);
+            }
+            final Method method = EntityTypes.class.getDeclaredMethod("a", Class.class, String.class, Integer.TYPE);
+            method.setAccessible(true);
+            method.invoke(null, clazz, name, id);
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static SEntityType getEntityType(final String name) {
+        return valueOf(name.toUpperCase());
+    }
+
     public EntityStatistics getStatistics() {
         final Object generic = this.getGenericInstance();
         if (generic instanceof EntityStatistics) {
@@ -240,31 +255,6 @@ public enum SEntityType {
             e.printStackTrace();
             return null;
         }
-    }
-
-    private static void registerEntity(final String name, final int id, final Class<? extends EntityInsentient> clazz) {
-        try {
-            final List<Map<?, ?>> dataMap = new ArrayList<Map<?, ?>>();
-            for (final Field f : EntityTypes.class.getDeclaredFields()) {
-                if (f.getType().getSimpleName().equals(Map.class.getSimpleName())) {
-                    f.setAccessible(true);
-                    dataMap.add((Map) f.get(null));
-                }
-            }
-            if (dataMap.get(2).containsKey(id)) {
-                dataMap.get(0).remove(name);
-                dataMap.get(2).remove(id);
-            }
-            final Method method = EntityTypes.class.getDeclaredMethod("a", Class.class, String.class, Integer.TYPE);
-            method.setAccessible(true);
-            method.invoke(null, clazz, name, id);
-        } catch (final Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static SEntityType getEntityType(final String name) {
-        return valueOf(name.toUpperCase());
     }
 
     public EntityType getCraftType() {

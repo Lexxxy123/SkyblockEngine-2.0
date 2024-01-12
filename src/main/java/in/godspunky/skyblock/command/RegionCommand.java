@@ -14,6 +14,10 @@ import java.util.Map;
 public class RegionCommand extends SCommand {
     public static Map<CommandSender, RegionGenerator> REGION_GENERATION_MAP;
 
+    static {
+        RegionCommand.REGION_GENERATION_MAP = new HashMap<CommandSender, RegionGenerator>();
+    }
+
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (args.length == 3) {
@@ -68,9 +72,5 @@ public class RegionCommand extends SCommand {
             }
             this.send(result.toString());
         }
-    }
-
-    static {
-        RegionCommand.REGION_GENERATION_MAP = new HashMap<CommandSender, RegionGenerator>();
     }
 }

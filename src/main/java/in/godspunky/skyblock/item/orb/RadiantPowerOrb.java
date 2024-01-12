@@ -1,10 +1,10 @@
 package in.godspunky.skyblock.item.orb;
 
+import in.godspunky.skyblock.item.Rarity;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import in.godspunky.skyblock.item.Rarity;
 
 public class RadiantPowerOrb extends PowerOrb {
     @Override

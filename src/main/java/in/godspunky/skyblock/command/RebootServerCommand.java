@@ -18,6 +18,22 @@ import java.util.Map;
 public class RebootServerCommand extends SCommand {
     public static Map<Server, Integer> secondMap;
 
+    static {
+        RebootServerCommand.secondMap = new HashMap<Server, Integer>();
+    }
+
+    public static boolean isPrimeNumber(final int n) {
+        if (n < 2) {
+            return false;
+        }
+        for (int squareRoot = (int) Math.sqrt(n), i = 2; i <= squareRoot; ++i) {
+            if (n % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     @Override
     public void run(final CommandSource sender, final String[] args) {
         if (RebootServerCommand.secondMap.containsKey(Bukkit.getServer())) {
@@ -61,21 +77,5 @@ public class RebootServerCommand extends SCommand {
                 }
             }
         }.runTaskTimer(Skyblock.getPlugin(), 20L, 20L);
-    }
-
-    public static boolean isPrimeNumber(final int n) {
-        if (n < 2) {
-            return false;
-        }
-        for (int squareRoot = (int) Math.sqrt(n), i = 2; i <= squareRoot; ++i) {
-            if (n % i == 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    static {
-        RebootServerCommand.secondMap = new HashMap<Server, Integer>();
     }
 }

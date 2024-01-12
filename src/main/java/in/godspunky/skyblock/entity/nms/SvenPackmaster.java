@@ -5,6 +5,11 @@ import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.enchantment.EnchantmentType;
 import in.godspunky.skyblock.entity.*;
 import in.godspunky.skyblock.entity.wolf.WolfStatistics;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 import net.minecraft.server.v1_8_R3.Entity;
 import net.minecraft.server.v1_8_R3.EntityWolf;
 import net.minecraft.server.v1_8_R3.GenericAttributes;
@@ -17,11 +22,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,15 +32,23 @@ public class SvenPackmaster extends EntityWolf implements SNMSEntity, EntityFunc
     private static final TieredValue<Double> DAMAGE_VALUES;
     private static final TieredValue<Double> TRUE_DAMAGE_VALUES;
     private static final TieredValue<Double> SPEED_VALUES;
+
+    static {
+        MAX_HEALTH_VALUES = new TieredValue<Double>(2000.0, 40000.0, 750000.0, 2000000.0);
+        DAMAGE_VALUES = new TieredValue<Double>(60.0, 200.0, 450.0, 1100.0);
+        TRUE_DAMAGE_VALUES = new TieredValue<Double>(0.0, 10.0, 50.0, 200.0);
+        SPEED_VALUES = new TieredValue<Double>(0.35, 0.4, 0.45, 0.55);
+    }
+
     private final int tier;
     private final long end;
+    private final UUID spawnerUUID;
+    private final List<SEntity> pups;
     private SEntity hologram;
     private SEntity hologram_name;
-    private final UUID spawnerUUID;
     private long lastDamage;
     private boolean pupsSpawned;
     private boolean isActive;
-    private final List<SEntity> pups;
 
     public SvenPackmaster(final Integer tier, final UUID spawnerUUID) {
         super(((CraftWorld) Bukkit.getPlayer(spawnerUUID).getWorld()).getHandle());
@@ -270,12 +278,5 @@ public class SvenPackmaster extends EntityWolf implements SNMSEntity, EntityFunc
 
     public List<SEntity> getPups() {
         return this.pups;
-    }
-
-    static {
-        MAX_HEALTH_VALUES = new TieredValue<Double>(2000.0, 40000.0, 750000.0, 2000000.0);
-        DAMAGE_VALUES = new TieredValue<Double>(60.0, 200.0, 450.0, 1100.0);
-        TRUE_DAMAGE_VALUES = new TieredValue<Double>(0.0, 10.0, 50.0, 200.0);
-        SPEED_VALUES = new TieredValue<Double>(0.35, 0.4, 0.45, 0.55);
     }
 }

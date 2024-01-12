@@ -7,8 +7,22 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SlimeStatistics;
+import in.godspunky.skyblock.entity.caverns.CreeperFunction;
+import in.godspunky.skyblock.entity.nms.Dragon;
+import in.godspunky.skyblock.event.CreeperIgniteEvent;
 import in.godspunky.skyblock.island.SkyblockIsland;
 import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.region.Region;
+import in.godspunky.skyblock.region.RegionType;
+import in.godspunky.skyblock.skill.FarmingSkill;
+import in.godspunky.skyblock.skill.ForagingSkill;
+import in.godspunky.skyblock.skill.MiningSkill;
+import in.godspunky.skyblock.skill.Skill;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.Groups;
+import in.godspunky.skyblock.util.SUtil;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -26,34 +40,164 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SlimeStatistics;
-import in.godspunky.skyblock.entity.caverns.CreeperFunction;
-import in.godspunky.skyblock.entity.nms.Dragon;
-import in.godspunky.skyblock.event.CreeperIgniteEvent;
-import in.godspunky.skyblock.region.Region;
-import in.godspunky.skyblock.region.RegionType;
-import in.godspunky.skyblock.skill.FarmingSkill;
-import in.godspunky.skyblock.skill.ForagingSkill;
-import in.godspunky.skyblock.skill.MiningSkill;
-import in.godspunky.skyblock.skill.Skill;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.Groups;
-import in.godspunky.skyblock.util.SUtil;
 
 import java.util.*;
 
 public class WorldListener extends PListener {
-    private static final Map<UUID, List<BlockState>> RESTORER;
-    private static final List<UUID> ALREADY_TELEPORTING;
     public static final Map<UUID, EnumWrappers.PlayerDigType> isCM;
     public static final Map<UUID, Boolean> isSWI;
     public static final Map<UUID, Integer> miningSpeed;
     public static final Map<UUID, Integer> breakingPower;
     public static final Map<Block, Integer> CACHED_BLOCK_ID;
     public static final Map<Block, Byte> CACHED_BLOCK_BYTE;
+    private static final Map<UUID, List<BlockState>> RESTORER;
+    private static final List<UUID> ALREADY_TELEPORTING;
     public static ArrayList<Material> blb;
     public static ArrayList<Block> changed_blocks;
+
+    static {
+        RESTORER = new HashMap<UUID, List<BlockState>>();
+        ALREADY_TELEPORTING = new ArrayList<UUID>();
+        isCM = new HashMap<UUID, EnumWrappers.PlayerDigType>();
+        isSWI = new HashMap<UUID, Boolean>();
+        miningSpeed = new HashMap<UUID, Integer>();
+        breakingPower = new HashMap<UUID, Integer>();
+        CACHED_BLOCK_ID = new HashMap<Block, Integer>();
+        CACHED_BLOCK_BYTE = new HashMap<Block, Byte>();
+        WorldListener.blb = new ArrayList<Material>();
+        WorldListener.changed_blocks = new ArrayList<Block>();
+    }
+
+    private static void addToRestorer(final Block block, final Player player) {
+        if (WorldListener.RESTORER.containsKey(player.getUniqueId())) {
+            WorldListener.RESTORER.get(player.getUniqueId()).add(block.getState());
+        } else {
+            WorldListener.RESTORER.put(player.getUniqueId(), new ArrayList<>());
+            WorldListener.RESTORER.get(player.getUniqueId()).add(block.getState());
+            new BukkitRunnable() {
+                public void run() {
+                    for (final BlockState state : WorldListener.RESTORER.get(player.getUniqueId())) {
+                        state.getBlock().setType(state.getType());
+                        state.setRawData(state.getRawData());
+                        state.update();
+                    }
+                    WorldListener.RESTORER.remove(player.getUniqueId());
+                }
+            }.runTaskLater(Skyblock.getPlugin(), 1200L);
+        }
+    }
+
+    private static void extraDrops(final Collection<ItemStack> drops, final double d, final double t, final Block block) {
+        for (final ItemStack drop : drops) {
+            int amount = 0;
+            if (SUtil.random(0.0, 1.0) < t) {
+                amount = 2;
+            } else if (SUtil.random(0.0, 1.0) < d) {
+                amount = 1;
+            }
+            if (amount == 0) {
+                continue;
+            }
+            block.getWorld().dropItemNaturally(block.getLocation().clone().add(0.5, 0.5, 0.5), SUtil.setStackAmount(drop, amount));
+        }
+    }
+
+    private static BukkitTask regenerateLater(final Block block, final long ticks, final RegionType type) {
+        return new BukkitRunnable() {
+            public void run() {
+                if (block.getType() != Material.BEDROCK) {
+                    return;
+                }
+                final int r5 = SUtil.random(1, 5);
+                switch (type) {
+                    case COAL_MINE:
+                        if (SUtil.random(1, 15) == 1) {
+                            block.setType(Material.COAL_ORE);
+                            break;
+                        }
+                        block.setType(Material.STONE);
+                        break;
+                    case GOLD_MINE:
+                    case GUNPOWDER_MINES:
+                        if (SUtil.random(1, 20) == 1) {
+                            block.setType(Material.GOLD_ORE);
+                            break;
+                        }
+                        if (r5 == 1) {
+                            block.setType(Material.IRON_ORE);
+                            break;
+                        }
+                        block.setType(Material.STONE);
+                        break;
+                    case LAPIS_QUARRY:
+                        if (r5 == 1) {
+                            block.setType(Material.LAPIS_ORE);
+                            break;
+                        }
+                        block.setType(Material.STONE);
+                        break;
+                    case PIGMENS_DEN:
+                        if (r5 == 1) {
+                            block.setType(Material.REDSTONE_ORE);
+                            break;
+                        }
+                        block.setType(Material.STONE);
+                        break;
+                    case SLIMEHILL:
+                        if (r5 == 1) {
+                            block.setType(Material.EMERALD_ORE);
+                            break;
+                        }
+                        block.setType(Material.STONE);
+                        break;
+                    case DIAMOND_RESERVE:
+                        if (r5 == 1) {
+                            block.setType(Material.DIAMOND_ORE);
+                            break;
+                        }
+                        block.setType(Material.STONE);
+                        break;
+                    case OBSIDIAN_SANCTUARY:
+                        if (SUtil.random(1, 40) == 1) {
+                            block.setType(Material.DIAMOND_BLOCK);
+                            break;
+                        }
+                        if (SUtil.random(1, 30) == 1) {
+                            block.setType(Material.OBSIDIAN);
+                            break;
+                        }
+                        if (r5 == 1) {
+                            block.setType(Material.DIAMOND_ORE);
+                            break;
+                        }
+                        block.setType(Material.STONE);
+                        break;
+                    case THE_END:
+                    case DRAGONS_NEST:
+                        block.setType(Material.ENDER_STONE);
+                        break;
+                    case BLAZING_FORTRESS:
+                        block.setType(Material.NETHERRACK);
+                        break;
+                    default:
+                        block.setType(Material.STONE);
+                        break;
+                }
+            }
+        }.runTaskLater(Skyblock.getPlugin(), ticks);
+    }
+
+    public static void c() {
+        Skyblock.getPTC().addPacketListener(new PacketAdapter(Skyblock.getPlugin(), ListenerPriority.HIGHEST, PacketType.Play.Client.BLOCK_DIG) {
+            public void onPacketReceiving(final PacketEvent event) {
+                final PacketContainer packet = event.getPacket();
+                final EnumWrappers.PlayerDigType digType = packet.getPlayerDigTypes().getValues().get(0);
+                if (event.getPlayer() != null) {
+                    WorldListener.isCM.put(event.getPlayer().getUniqueId(), digType);
+                }
+            }
+        });
+    }
 
     @EventHandler
     public void onCreatureSpawn(final CreatureSpawnEvent e) {
@@ -267,7 +411,7 @@ public class WorldListener extends PListener {
             WorldListener.ALREADY_TELEPORTING.add(entity.getUniqueId());
             SUtil.delay(() -> WorldListener.ALREADY_TELEPORTING.remove(entity.getUniqueId()), 15L);
             entity.sendMessage(ChatColor.GRAY + "Sending you to your island...");
-            SkyblockIsland.getIsland(((Player)entity).getUniqueId()).send();
+            SkyblockIsland.getIsland(entity.getUniqueId()).send();
         }
     }
 
@@ -295,125 +439,6 @@ public class WorldListener extends PListener {
         }
     }
 
-    private static void addToRestorer(final Block block, final Player player) {
-        if (WorldListener.RESTORER.containsKey(player.getUniqueId())) {
-            WorldListener.RESTORER.get(player.getUniqueId()).add(block.getState());
-        } else {
-            WorldListener.RESTORER.put(player.getUniqueId(), new ArrayList<>());
-            WorldListener.RESTORER.get(player.getUniqueId()).add(block.getState());
-            new BukkitRunnable() {
-                public void run() {
-                    for (final BlockState state : WorldListener.RESTORER.get(player.getUniqueId())) {
-                        state.getBlock().setType(state.getType());
-                        state.setRawData(state.getRawData());
-                        state.update();
-                    }
-                    WorldListener.RESTORER.remove(player.getUniqueId());
-                }
-            }.runTaskLater(Skyblock.getPlugin(), 1200L);
-        }
-    }
-
-    private static void extraDrops(final Collection<ItemStack> drops, final double d, final double t, final Block block) {
-        for (final ItemStack drop : drops) {
-            int amount = 0;
-            if (SUtil.random(0.0, 1.0) < t) {
-                amount = 2;
-            } else if (SUtil.random(0.0, 1.0) < d) {
-                amount = 1;
-            }
-            if (amount == 0) {
-                continue;
-            }
-            block.getWorld().dropItemNaturally(block.getLocation().clone().add(0.5, 0.5, 0.5), SUtil.setStackAmount(drop, amount));
-        }
-    }
-
-    private static BukkitTask regenerateLater(final Block block, final long ticks, final RegionType type) {
-        return new BukkitRunnable() {
-            public void run() {
-                if (block.getType() != Material.BEDROCK) {
-                    return;
-                }
-                final int r5 = SUtil.random(1, 5);
-                switch (type) {
-                    case COAL_MINE:
-                        if (SUtil.random(1, 15) == 1) {
-                            block.setType(Material.COAL_ORE);
-                            break;
-                        }
-                        block.setType(Material.STONE);
-                        break;
-                    case GOLD_MINE:
-                    case GUNPOWDER_MINES:
-                        if (SUtil.random(1, 20) == 1) {
-                            block.setType(Material.GOLD_ORE);
-                            break;
-                        }
-                        if (r5 == 1) {
-                            block.setType(Material.IRON_ORE);
-                            break;
-                        }
-                        block.setType(Material.STONE);
-                        break;
-                    case LAPIS_QUARRY:
-                        if (r5 == 1) {
-                            block.setType(Material.LAPIS_ORE);
-                            break;
-                        }
-                        block.setType(Material.STONE);
-                        break;
-                    case PIGMENS_DEN:
-                        if (r5 == 1) {
-                            block.setType(Material.REDSTONE_ORE);
-                            break;
-                        }
-                        block.setType(Material.STONE);
-                        break;
-                    case SLIMEHILL:
-                        if (r5 == 1) {
-                            block.setType(Material.EMERALD_ORE);
-                            break;
-                        }
-                        block.setType(Material.STONE);
-                        break;
-                    case DIAMOND_RESERVE:
-                        if (r5 == 1) {
-                            block.setType(Material.DIAMOND_ORE);
-                            break;
-                        }
-                        block.setType(Material.STONE);
-                        break;
-                    case OBSIDIAN_SANCTUARY:
-                        if (SUtil.random(1, 40) == 1) {
-                            block.setType(Material.DIAMOND_BLOCK);
-                            break;
-                        }
-                        if (SUtil.random(1, 30) == 1) {
-                            block.setType(Material.OBSIDIAN);
-                            break;
-                        }
-                        if (r5 == 1) {
-                            block.setType(Material.DIAMOND_ORE);
-                            break;
-                        }
-                        block.setType(Material.STONE);
-                        break;
-                    case THE_END:
-                    case DRAGONS_NEST:
-                        block.setType(Material.ENDER_STONE);
-                        break;
-                    case BLAZING_FORTRESS:
-                        block.setType(Material.NETHERRACK);
-                        break;
-                    default:
-                        block.setType(Material.STONE);
-                        break;
-                }
-            }
-        }.runTaskLater(Skyblock.getPlugin(), ticks);
-    }
-
     @EventHandler
     public void bpe(final BlockPlaceEvent e) {
         if (e.getBlock().getType() != Material.PRISMARINE) {
@@ -421,18 +446,6 @@ public class WorldListener extends PListener {
         }
         e.getBlock().setMetadata("block_hardness", new FixedMetadataValue(Skyblock.getPlugin(), 1200));
         e.getBlock().setMetadata("block_power", new FixedMetadataValue(Skyblock.getPlugin(), 4));
-    }
-
-    public static void c() {
-        Skyblock.getPTC().addPacketListener(new PacketAdapter(Skyblock.getPlugin(), ListenerPriority.HIGHEST, new PacketType[]{PacketType.Play.Client.BLOCK_DIG}) {
-            public void onPacketReceiving(final PacketEvent event) {
-                final PacketContainer packet = event.getPacket();
-                final EnumWrappers.PlayerDigType digType = packet.getPlayerDigTypes().getValues().get(0);
-                if (event.getPlayer() != null) {
-                    WorldListener.isCM.put(event.getPlayer().getUniqueId(), digType);
-                }
-            }
-        });
     }
 
     public double findDivFor(final double a) {
@@ -593,18 +606,5 @@ public class WorldListener extends PListener {
                 ((CraftPlayer) p).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) player).getHandle(), 0));
             }
         }
-    }
-
-    static {
-        RESTORER = new HashMap<UUID, List<BlockState>>();
-        ALREADY_TELEPORTING = new ArrayList<UUID>();
-        isCM = new HashMap<UUID, EnumWrappers.PlayerDigType>();
-        isSWI = new HashMap<UUID, Boolean>();
-        miningSpeed = new HashMap<UUID, Integer>();
-        breakingPower = new HashMap<UUID, Integer>();
-        CACHED_BLOCK_ID = new HashMap<Block, Integer>();
-        CACHED_BLOCK_BYTE = new HashMap<Block, Byte>();
-        WorldListener.blb = new ArrayList<Material>();
-        WorldListener.changed_blocks = new ArrayList<Block>();
     }
 }

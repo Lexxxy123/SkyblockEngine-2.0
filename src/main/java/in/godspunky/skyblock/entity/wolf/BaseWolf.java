@@ -1,7 +1,12 @@
 package in.godspunky.skyblock.entity.wolf;
 
 import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.entity.EntityFunction;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityType;
 import in.godspunky.skyblock.slayer.SlayerQuest;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -9,11 +14,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.entity.EntityFunction;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityType;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.SUtil;
 
 import java.util.List;
 import java.util.stream.Collectors;

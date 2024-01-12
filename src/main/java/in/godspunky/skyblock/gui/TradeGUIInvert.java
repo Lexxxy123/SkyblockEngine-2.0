@@ -29,14 +29,6 @@ public class TradeGUIInvert extends GUI {
     private final int[] rs;
     private final UUID tradeUUID;
 
-    public void fillFrom(final Inventory i, final int startFromSlot, final int height, final ItemStack stacc) {
-        i.setItem(startFromSlot, stacc);
-        i.setItem(startFromSlot + 9, stacc);
-        i.setItem(startFromSlot + 9 + 9, stacc);
-        i.setItem(startFromSlot + 9 + 9 + 9, stacc);
-        i.setItem(startFromSlot + 9 + 9 + 9 + 9, stacc);
-    }
-
     public TradeGUIInvert() {
         this(UUID.randomUUID());
     }
@@ -52,6 +44,14 @@ public class TradeGUIInvert extends GUI {
         if (!TradeGUI.itemOfferP2.containsKey(uuid) && TradeGUI.itemOfferP2.get(uuid) == null) {
             TradeGUI.itemOfferP2.put(uuid, new ArrayList<ItemStack>());
         }
+    }
+
+    public void fillFrom(final Inventory i, final int startFromSlot, final int height, final ItemStack stacc) {
+        i.setItem(startFromSlot, stacc);
+        i.setItem(startFromSlot + 9, stacc);
+        i.setItem(startFromSlot + 9 + 9, stacc);
+        i.setItem(startFromSlot + 9 + 9 + 9, stacc);
+        i.setItem(startFromSlot + 9 + 9 + 9 + 9, stacc);
     }
 
     @Override

@@ -4,7 +4,12 @@ import com.google.common.util.concurrent.AtomicDouble;
 import de.slikey.effectlib.effect.ConeEffect;
 import de.slikey.effectlib.util.ParticleEffect;
 import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
 import in.godspunky.skyblock.entity.zombie.BaseZombie;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher;
 import net.minecraft.server.v1_8_R3.EntityLiving;
@@ -24,17 +29,17 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class BorisYeltsin extends BaseZombie {
     public static final Map<Entity, String> DIALOUGE_BOSS;
+
+    static {
+        DIALOUGE_BOSS = new HashMap<Entity, String>();
+    }
+
     private final boolean isEating;
     private final boolean isBowing;
     private final boolean EatingCooldown;
@@ -211,9 +216,5 @@ public class BorisYeltsin extends BaseZombie {
 
     public void cd_(final Entity e) {
         BorisYeltsin.DIALOUGE_BOSS.remove(e);
-    }
-
-    static {
-        DIALOUGE_BOSS = new HashMap<Entity, String>();
     }
 }

@@ -8,10 +8,19 @@ import org.bukkit.event.HandlerList;
 
 public class SkySimServerPingEvent extends Event implements Cancellable {
     private static final HandlerList handlers;
+
+    static {
+        handlers = new HandlerList();
+    }
+
     private final PingEvent a;
 
     public SkySimServerPingEvent(final PingEvent event) {
         this.a = event;
+    }
+
+    public static HandlerList getHandlerList() {
+        return SkySimServerPingEvent.handlers;
     }
 
     public PingReply getPingReply() {
@@ -28,13 +37,5 @@ public class SkySimServerPingEvent extends Event implements Cancellable {
 
     public HandlerList getHandlers() {
         return SkySimServerPingEvent.handlers;
-    }
-
-    public static HandlerList getHandlerList() {
-        return SkySimServerPingEvent.handlers;
-    }
-
-    static {
-        handlers = new HandlerList();
     }
 }

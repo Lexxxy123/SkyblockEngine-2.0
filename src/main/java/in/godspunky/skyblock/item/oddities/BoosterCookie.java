@@ -1,10 +1,9 @@
 package in.godspunky.skyblock.item.oddities;
 
-import in.godspunky.skyblock.item.*;
-import org.bukkit.entity.Player;
 import in.godspunky.skyblock.gui.CookieConfirmGUI;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.util.Sputnik;
+import org.bukkit.entity.Player;
 
 public class BoosterCookie implements MaterialStatistics, MaterialFunction, Ability, Untradeable {
     @Override

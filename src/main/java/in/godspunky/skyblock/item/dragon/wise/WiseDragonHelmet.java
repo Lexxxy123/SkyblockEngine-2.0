@@ -1,7 +1,6 @@
 package in.godspunky.skyblock.item.dragon.wise;
 
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.item.*;
 
 public class WiseDragonHelmet implements MaterialFunction, SkullStatistics, ToolStatistics {
     @Override

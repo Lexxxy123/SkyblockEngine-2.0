@@ -19,6 +19,11 @@ import java.util.List;
 
 public class CategoryCollectionGUI extends GUI {
     private static final int[] INTERIOR;
+
+    static {
+        INTERIOR = new int[]{10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43};
+    }
+
     private final ItemCollectionCategory category;
     private int page;
 
@@ -129,9 +134,5 @@ public class CategoryCollectionGUI extends GUI {
                 this.set(slot, SUtil.getStack(ChatColor.RED + collection.getName(), Material.INK_SACK, (short) 8, 1, ChatColor.GRAY + "Find this item to add it to your", ChatColor.GRAY + "collection and unlock collection", ChatColor.GRAY + "rewards!"));
             }
         }
-    }
-
-    static {
-        INTERIOR = new int[]{10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43};
     }
 }

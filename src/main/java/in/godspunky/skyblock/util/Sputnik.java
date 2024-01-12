@@ -26,10 +26,16 @@ import in.godspunky.skyblock.dungeons.ItemChest;
 import in.godspunky.skyblock.entity.dungeons.boss.sadan.SadanBossManager;
 import in.godspunky.skyblock.entity.nms.VoidgloomSeraph;
 import in.godspunky.skyblock.extra.beam.Beam;
+import in.godspunky.skyblock.gui.BossMenu;
+import in.godspunky.skyblock.gui.PetsGUI;
+import in.godspunky.skyblock.gui.TradeMenu;
 import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.item.pet.Pet;
+import in.godspunky.skyblock.listener.PlayerListener;
 import in.godspunky.skyblock.user.PlayerStatistics;
 import in.godspunky.skyblock.user.PlayerUtils;
+import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.user.UserStash;
 import me.libraryaddict.disguise.disguisetypes.FlagWatcher;
 import me.libraryaddict.disguise.disguisetypes.MobDisguise;
@@ -58,12 +64,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.gui.BossMenu;
-import in.godspunky.skyblock.gui.PetsGUI;
-import in.godspunky.skyblock.gui.TradeMenu;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.listener.PlayerListener;
-import in.godspunky.skyblock.user.User;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -74,7 +74,6 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 public class Sputnik {
-    public Random random;
     public static final Map<Server, Integer> RunThisSession;
     public static final Map<SItem, Integer> MidasStaff;
     public static final Map<SItem, Long> MidasStaffDmg;
@@ -83,6 +82,19 @@ public class Sputnik {
     public static final Map<UUID, Boolean> CooldownAbs;
     public static final Map<UUID, Boolean> HaveDMGReduction;
     public static final Map<Entity, Location> MAP_PARTICLE_1;
+
+    static {
+        RunThisSession = new HashMap<Server, Integer>();
+        MidasStaff = new HashMap<SItem, Integer>();
+        MidasStaffDmg = new HashMap<SItem, Long>();
+        CoinsTakenOut = new HashMap<UUID, Integer>();
+        IsInsideTheBeam = new HashMap<UUID, Boolean>();
+        CooldownAbs = new HashMap<UUID, Boolean>();
+        HaveDMGReduction = new HashMap<UUID, Boolean>();
+        MAP_PARTICLE_1 = new HashMap<Entity, Location>();
+    }
+
+    public Random random;
 
     public Sputnik() {
         this.random = new Random();
@@ -100,7 +112,6 @@ public class Sputnik {
 
         return String.format(content, arg1, arg2, arg3);
     }
-
 
     public static String trans3(String content, String arg1, String arg2) {
         content = ChatColor.translateAlternateColorCodes('&', content);
@@ -120,9 +131,6 @@ public class Sputnik {
 
         return String.format(content, arg1, arg2, arg3, arg4);
     }
-
-
-
 
     public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
         final net.minecraft.server.v1_8_R3.Entity pl = ((CraftZombie) e).getHandle();
@@ -1482,7 +1490,7 @@ public class Sputnik {
                 vec3d2 = vec3d2.a(-pitch * 3.141593f / 180.0f);
                 vec3d2 = vec3d2.b(-yaw * 3.141593f / 180.0f);
                 vec3d2 = vec3d2.add(l.getX(), l.getY() + 1.690000057220459, l.getZ());
-                sendPacket(e.getWorld(), new PacketPlayOutWorldParticles(EnumParticle.ITEM_CRACK, true, (float) vec3d2.a, (float) vec3d2.b, (float) vec3d2.c, (float) vec3d.a, (float) ((float) vec3d.b + 0.05), (float) vec3d.c, 0.75f, 0, new int[]{Item.getId(itemstack.getItem()), itemstack.getData()}));
+                sendPacket(e.getWorld(), new PacketPlayOutWorldParticles(EnumParticle.ITEM_CRACK, true, (float) vec3d2.a, (float) vec3d2.b, (float) vec3d2.c, (float) vec3d.a, (float) ((float) vec3d.b + 0.05), (float) vec3d.c, 0.75f, 0, Item.getId(itemstack.getItem()), itemstack.getData()));
             }
             e.getWorld().playSound(l, Sound.EAT, 0.5f + 0.5f * random.nextInt(2), (random.nextFloat() - random.nextFloat()) * 0.2f + 1.0f);
         }
@@ -1576,16 +1584,5 @@ public class Sputnik {
                 }
             }
         }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
-    }
-
-    static {
-        RunThisSession = new HashMap<Server, Integer>();
-        MidasStaff = new HashMap<SItem, Integer>();
-        MidasStaffDmg = new HashMap<SItem, Long>();
-        CoinsTakenOut = new HashMap<UUID, Integer>();
-        IsInsideTheBeam = new HashMap<UUID, Boolean>();
-        CooldownAbs = new HashMap<UUID, Boolean>();
-        HaveDMGReduction = new HashMap<UUID, Boolean>();
-        MAP_PARTICLE_1 = new HashMap<Entity, Location>();
     }
 }

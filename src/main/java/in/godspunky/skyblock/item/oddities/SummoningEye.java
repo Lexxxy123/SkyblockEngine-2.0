@@ -1,10 +1,10 @@
 package in.godspunky.skyblock.item.oddities;
 
-import org.bukkit.ChatColor;
 import in.godspunky.skyblock.item.GenericItemType;
 import in.godspunky.skyblock.item.MaterialFunction;
 import in.godspunky.skyblock.item.Rarity;
 import in.godspunky.skyblock.item.SkullStatistics;
+import org.bukkit.ChatColor;
 
 public class SummoningEye implements SkullStatistics, MaterialFunction {
     @Override

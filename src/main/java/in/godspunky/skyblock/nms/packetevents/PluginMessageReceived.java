@@ -5,10 +5,19 @@ import org.bukkit.event.HandlerList;
 
 public class PluginMessageReceived extends Event {
     private static final HandlerList handlers;
+
+    static {
+        handlers = new HandlerList();
+    }
+
     private final WrappedPluginMessage a;
 
     public PluginMessageReceived(final WrappedPluginMessage b) {
         this.a = b;
+    }
+
+    public static HandlerList getHandlerList() {
+        return PluginMessageReceived.handlers;
     }
 
     public WrappedPluginMessage getWrappedPluginMessage() {
@@ -17,13 +26,5 @@ public class PluginMessageReceived extends Event {
 
     public HandlerList getHandlers() {
         return PluginMessageReceived.handlers;
-    }
-
-    public static HandlerList getHandlerList() {
-        return PluginMessageReceived.handlers;
-    }
-
-    static {
-        handlers = new HandlerList();
     }
 }

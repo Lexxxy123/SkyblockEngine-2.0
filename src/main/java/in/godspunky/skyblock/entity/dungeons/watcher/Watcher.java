@@ -3,6 +3,10 @@ package in.godspunky.skyblock.entity.dungeons.watcher;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityType;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.SUtil;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityTeleport;
 import org.bukkit.*;
@@ -20,20 +24,22 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityType;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.SUtil;
 
 import java.lang.reflect.Field;
 import java.util.*;
 
 public class Watcher implements Listener {
     private static final Map<World, Watcher> WATCHER_CACHE;
+
+    static {
+        WATCHER_CACHE = new HashMap<World, Watcher>();
+    }
+
     private final World arg0;
-    private boolean a;
     private final Location arg1;
     private final Location arg2;
+    private final List<HeadsOnWall> how;
+    private final List<String> spawnedMob;
     public Location watcher;
     public ArmorStand ewatcher;
     public ArmorStand econv;
@@ -42,19 +48,18 @@ public class Watcher implements Listener {
     public float floorY;
     public int mobSpawned;
     public int perRunMS;
-    private boolean wfe1_shoot;
-    private boolean wfe2_shoot;
     public boolean isResting;
-    private boolean firstRun;
     public int currentMobsCount;
     public boolean welcomeParticles;
-    private final List<HeadsOnWall> how;
-    private final List<String> spawnedMob;
     public List<Location> P1Heads;
     public String[] mobSummonConvs;
     public String[] mobDeathConvs;
     public String[] sneakyPeaky;
     public String[] watcherAttack;
+    private boolean a;
+    private boolean wfe1_shoot;
+    private boolean wfe2_shoot;
+    private boolean firstRun;
 
     public Watcher(final Location pos1, final Location pos2, final int floorY) {
         this.currentMobsCount = 15;
@@ -77,6 +82,86 @@ public class Watcher implements Listener {
             return Watcher.WATCHER_CACHE.get(world);
         }
         return null;
+    }
+
+    public static double random(final double min, final double max) {
+        return Math.random() * (max - min) + min;
+    }
+
+    public static float getYaw(final Location loc) {
+        final Location newA = loc.getBlock().getLocation().add(0.5, 0.0, 0.5);
+        newA.add(0.0, 1.7, 0.0);
+        int rot = 0;
+        for (int i = 0; i < 4; ++i) {
+            rot += 90;
+            newA.setYaw((float) rot);
+            final Location newLoc = newA.clone().add(newA.getDirection().normalize().multiply(2));
+            if (newLoc.getBlock().getType() == Material.AIR) {
+                return (float) rot;
+            }
+        }
+        return 0.0f;
+    }
+
+    public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
+        final net.minecraft.server.v1_8_R3.Entity pl = ((CraftArmorStand) e).getHandle();
+        pl.setLocation(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), yaw, pitch);
+        final PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(pl);
+        for (final Player p : e.getWorld().getPlayers()) {
+            ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
+        }
+    }
+
+    public static int random(int min, int max) {
+        if (min < 0) {
+            min = 0;
+        }
+        if (max < 0) {
+            max = 0;
+        }
+        return new Random().nextInt(max - min + 1) + min;
+    }
+
+    public static void drawLineforMovingPoints(final Location point1, final Location point2, final double space, final Player p, final Entity e) {
+        final Location blockLocation = point1;
+        final Location crystalLocation = point2;
+        final Vector vector = blockLocation.clone().toVector().subtract(crystalLocation.clone().toVector());
+        final double count = 45.0;
+        for (int i = 1; i <= (int) count; ++i) {
+            final Vector v = vector.clone().multiply(i / count);
+            point1.getWorld().spigot().playEffect(crystalLocation.clone().add(v), Effect.MAGIC_CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+        }
+    }
+
+    public static String trans(final String content) {
+        return ChatColor.translateAlternateColorCodes('&', content);
+    }
+
+    public static ItemStack getSkull(final String texture) {
+        final ItemStack stack = new ItemStack(Material.SKULL_ITEM, 1);
+        stack.setDurability((short) 3);
+        SkullMeta meta = (SkullMeta) stack.getItemMeta();
+        String stringUUID = UUID.randomUUID().toString();
+        GameProfile profile = new GameProfile(UUID.fromString(stringUUID), null);
+        byte[] ed = Base64.getEncoder().encode(String.format("{textures:{SKIN:{url:\"http://textures.minecraft.net/texture/%s\"}}}", texture).getBytes());
+        profile.getProperties().put("textures", new Property("textures", new String(ed)));
+        try {
+            final Field f = meta.getClass().getDeclaredField("profile");
+            f.setAccessible(true);
+            f.set(meta, profile);
+        } catch (final NoSuchFieldException | IllegalArgumentException | IllegalAccessException ex) {
+        }
+        stack.setItemMeta(meta);
+        return stack;
+    }
+
+    public static ItemStack getSkullStack(final String name) {
+        final ItemStack stack = new ItemStack(Material.SKULL_ITEM, 1);
+        stack.setDurability((short) 3);
+        final SkullMeta meta = (SkullMeta) stack.getItemMeta();
+        meta.setOwner(name);
+        stack.setItemMeta(meta);
+        return stack;
     }
 
     public void intitize() {
@@ -132,10 +217,6 @@ public class Watcher implements Listener {
         }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
-    public static double random(final double min, final double max) {
-        return Math.random() * (max - min) + min;
-    }
-
     private void apt() {
         for (final EnumWatcherType ew : EnumWatcherType.values()) {
             if (!ew.equals(EnumWatcherType.PLAYER)) {
@@ -167,21 +248,6 @@ public class Watcher implements Listener {
 
     public boolean isIntitized() {
         return this.a;
-    }
-
-    public static float getYaw(final Location loc) {
-        final Location newA = loc.getBlock().getLocation().add(0.5, 0.0, 0.5);
-        newA.add(0.0, 1.7, 0.0);
-        int rot = 0;
-        for (int i = 0; i < 4; ++i) {
-            rot += 90;
-            newA.setYaw((float) rot);
-            final Location newLoc = newA.clone().add(newA.getDirection().normalize().multiply(2));
-            if (newLoc.getBlock().getType() == Material.AIR) {
-                return (float) rot;
-            }
-        }
-        return 0.0f;
     }
 
     public void placeHead(final Location l, int index) {
@@ -330,25 +396,6 @@ public class Watcher implements Listener {
                 e.teleport(e.getLocation().add(e.getLocation().getDirection().multiply(0.5)));
             }
         }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
-    }
-
-    public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
-        final net.minecraft.server.v1_8_R3.Entity pl = ((CraftArmorStand) e).getHandle();
-        pl.setLocation(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), yaw, pitch);
-        final PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(pl);
-        for (final Player p : e.getWorld().getPlayers()) {
-            ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
-        }
-    }
-
-    public static int random(int min, int max) {
-        if (min < 0) {
-            min = 0;
-        }
-        if (max < 0) {
-            max = 0;
-        }
-        return new Random().nextInt(max - min + 1) + min;
     }
 
     public ArmorStand spawnWatchfulEyes(final Entity e) {
@@ -614,48 +661,6 @@ public class Watcher implements Listener {
         }, 200L);
     }
 
-    public static void drawLineforMovingPoints(final Location point1, final Location point2, final double space, final Player p, final Entity e) {
-        final Location blockLocation = point1;
-        final Location crystalLocation = point2;
-        final Vector vector = blockLocation.clone().toVector().subtract(crystalLocation.clone().toVector());
-        final double count = 45.0;
-        for (int i = 1; i <= (int) count; ++i) {
-            final Vector v = vector.clone().multiply(i / count);
-            point1.getWorld().spigot().playEffect(crystalLocation.clone().add(v), Effect.MAGIC_CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
-        }
-    }
-
-    public static String trans(final String content) {
-        return ChatColor.translateAlternateColorCodes('&', content);
-    }
-
-    public static ItemStack getSkull(final String texture) {
-        final ItemStack stack = new ItemStack(Material.SKULL_ITEM, 1);
-        stack.setDurability((short) 3);
-        SkullMeta meta = (SkullMeta) stack.getItemMeta();
-        String stringUUID = UUID.randomUUID().toString();
-        GameProfile profile = new GameProfile(UUID.fromString(stringUUID), null);
-        byte[] ed = Base64.getEncoder().encode(String.format("{textures:{SKIN:{url:\"http://textures.minecraft.net/texture/%s\"}}}", texture).getBytes());
-        profile.getProperties().put("textures", new Property("textures", new String(ed)));
-        try {
-            final Field f = meta.getClass().getDeclaredField("profile");
-            f.setAccessible(true);
-            f.set(meta, profile);
-        } catch (final NoSuchFieldException | IllegalArgumentException | IllegalAccessException ex) {
-        }
-        stack.setItemMeta(meta);
-        return stack;
-    }
-
-    public static ItemStack getSkullStack(final String name) {
-        final ItemStack stack = new ItemStack(Material.SKULL_ITEM, 1);
-        stack.setDurability((short) 3);
-        final SkullMeta meta = (SkullMeta) stack.getItemMeta();
-        meta.setOwner(name);
-        stack.setItemMeta(meta);
-        return stack;
-    }
-
     public void playHeadSpawning(final Entity e) {
         String amd = e.getMetadata("TYPE").get(0).asString();
         amd = amd.replace("WATCHER_", "");
@@ -730,9 +735,5 @@ public class Watcher implements Listener {
                 }
             }, timeout + delay);
         }
-    }
-
-    static {
-        WATCHER_CACHE = new HashMap<World, Watcher>();
     }
 }

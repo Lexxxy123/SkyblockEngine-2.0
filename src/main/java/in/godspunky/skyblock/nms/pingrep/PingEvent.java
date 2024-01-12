@@ -18,16 +18,16 @@ public class PingEvent {
         return this.reply;
     }
 
-    public void setCancelled(final boolean cancel) {
-        this.cancelEvent = cancel;
-    }
-
     public void cancelPong(final boolean cancel) {
         this.cancelPong = cancel;
     }
 
     public boolean isCancelled() {
         return this.cancelEvent;
+    }
+
+    public void setCancelled(final boolean cancel) {
+        this.cancelEvent = cancel;
     }
 
     public boolean isPongCancelled() {

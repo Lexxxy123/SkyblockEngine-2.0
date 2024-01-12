@@ -9,8 +9,8 @@ import java.security.spec.KeySpec;
 import java.util.Base64;
 
 public class SkyEncryption {
-    private static final String UNICODE_FORMAT = "UTF8";
     public static final String DESEDE_ENCRYPTION_SCHEME = "DESede";
+    private static final String UNICODE_FORMAT = "UTF8";
     private final Cipher cipher;
     byte[] arrayBytes;
     SecretKey key;

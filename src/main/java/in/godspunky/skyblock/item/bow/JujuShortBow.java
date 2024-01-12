@@ -4,8 +4,10 @@ import in.godspunky.skyblock.enchantment.Enchantment;
 import in.godspunky.skyblock.enchantment.EnchantmentType;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.user.PlayerStatistics;
+import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.util.InventoryUpdate;
 import in.godspunky.skyblock.util.SLog;
+import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,9 +17,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.user.PlayerUtils;
-import in.godspunky.skyblock.util.SUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +24,10 @@ import java.util.UUID;
 
 public class JujuShortBow implements ToolStatistics, BowFunction {
     public static final Map<UUID, Boolean> USABLE_JUJU;
+
+    static {
+        USABLE_JUJU = new HashMap<UUID, Boolean>();
+    }
 
     @Override
     public String getDisplayName() {
@@ -114,9 +117,5 @@ public class JujuShortBow implements ToolStatistics, BowFunction {
         final Player player = (Player) e.getEntity();
         e.setCancelled(true);
         player.updateInventory();
-    }
-
-    static {
-        USABLE_JUJU = new HashMap<UUID, Boolean>();
     }
 }

@@ -21,6 +21,11 @@ import java.util.UUID;
 
 public class ItemLore {
     private static final String SSE_ID;
+
+    static {
+        SSE_ID = ChatColor.DARK_GRAY + "SKYSIM_ID: %s";
+    }
+
     private final SItem parent;
     private Player player;
     private User user;
@@ -617,9 +622,5 @@ public class ItemLore {
         }
         list.add(builder.toString());
         return true;
-    }
-
-    static {
-        SSE_ID = ChatColor.DARK_GRAY + "SKYSIM_ID: %s";
     }
 }

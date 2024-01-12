@@ -7,8 +7,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-import java.io.IOException;
-
 @CommandParameters(description = "bruhbu", aliases = "datarec", permission = PlayerRank.ADMIN)
 public class InvRecovery extends SCommand {
     @Override
@@ -30,7 +28,7 @@ public class InvRecovery extends SCommand {
         if (target != null) {
             final User user2 = User.getUser(target.getUniqueId());
             try {
-               // user2.loadPlayerData();
+                // user2.loadPlayerData();
                 user.send("&aSuccess!");
                 user2.send("&eData Recovered, now disconnect and join back.");
             } catch (final IllegalArgumentException e) {

@@ -1,12 +1,11 @@
 package in.godspunky.skyblock.item.weapon;
 
 import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.user.User;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.user.User;
 
 import java.util.Arrays;
 import java.util.Collections;

@@ -3,7 +3,6 @@ package in.godspunky.skyblock.item.weapon;
 import in.godspunky.skyblock.item.*;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import in.godspunky.skyblock.item.*;
 
 public class AspectOfTheJerry implements ToolStatistics, MaterialFunction, Ability {
     @Override

@@ -1,9 +1,12 @@
 package in.godspunky.skyblock.item;
 
+import in.godspunky.skyblock.Repeater;
 import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.collection.ItemCollection;
 import in.godspunky.skyblock.enchantment.Enchantment;
 import in.godspunky.skyblock.enchantment.EnchantmentType;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityType;
 import in.godspunky.skyblock.entity.StaticDragonManager;
 import in.godspunky.skyblock.entity.dungeons.boss.sadan.JollyPinkGiant;
 import in.godspunky.skyblock.entity.dungeons.boss.sadan.SadanGiant;
@@ -14,6 +17,7 @@ import in.godspunky.skyblock.listener.PListener;
 import in.godspunky.skyblock.skill.Skill;
 import in.godspunky.skyblock.user.PlayerStatistics;
 import in.godspunky.skyblock.user.PlayerUtils;
+import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.*;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
@@ -44,16 +48,103 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.Repeater;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityType;
-import in.godspunky.skyblock.user.User;
 
 import java.util.*;
 
 public class ItemListener extends PListener {
     public static final Map<Player, String> Classes;
     public static final Map<Player, Boolean> IsDead;
+
+    static {
+        Classes = new HashMap<Player, String>();
+        IsDead = new HashMap<Player, Boolean>();
+    }
+
+    public static void updateStatistics(final Player player) {
+        final PlayerInventory inv = player.getInventory();
+        final ItemStack beforeHelmet = inv.getHelmet();
+        final ItemStack beforeChestplate = inv.getChestplate();
+        final ItemStack beforeLeggings = inv.getLeggings();
+        final ItemStack beforeBoots = inv.getBoots();
+        new BukkitRunnable() {
+            public void run() {
+                final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
+                final ItemStack afterHelmet = inv.getHelmet();
+                final ItemStack afterChestplate = inv.getChestplate();
+                final ItemStack afterLeggings = inv.getLeggings();
+                final ItemStack afterBoots = inv.getBoots();
+                final boolean helmetSimilar = similar(beforeHelmet, afterHelmet);
+                final boolean chestplateSimilar = similar(beforeChestplate, afterChestplate);
+                final boolean leggingsSimilar = similar(beforeLeggings, afterLeggings);
+                final boolean bootsSimilar = similar(beforeBoots, afterBoots);
+                SItem helmet = null;
+                SItem chestplate = null;
+                SItem leggings = null;
+                SItem boots = null;
+                if (!helmetSimilar) {
+                    PlayerUtils.updateArmorStatistics(helmet = SItem.find(afterHelmet), statistics, 0);
+                }
+                if (!chestplateSimilar) {
+                    PlayerUtils.updateArmorStatistics(chestplate = SItem.find(afterChestplate), statistics, 1);
+                }
+                if (!leggingsSimilar) {
+                    PlayerUtils.updateArmorStatistics(leggings = SItem.find(afterLeggings), statistics, 2);
+                }
+                if (!bootsSimilar) {
+                    PlayerUtils.updateArmorStatistics(boots = SItem.find(afterBoots), statistics, 3);
+                }
+                PlayerUtils.updateInventoryStatistics(player, statistics);
+                User.getUser(player.getUniqueId()).updateArmorInventory();
+                ItemListener.checkCondition(player);
+            }
+        }.runTaskLater(Skyblock.getPlugin(), 1L);
+    }
+
+    public static void checkCondition(final Player p) {
+        final SItem helm = SItem.find(p.getInventory().getHelmet());
+        final SItem chest = SItem.find(p.getInventory().getChestplate());
+        final SItem leg = SItem.find(p.getInventory().getLeggings());
+        final SItem boots = SItem.find(p.getInventory().getBoots());
+        if (helm != null && chest != null && leg != null && boots != null) {
+            if (Groups.WITHER_HELMETS.contains(helm.getType()) && Groups.WITHER_CHESTPLATES.contains(chest.getType()) && Groups.WITHER_LEGGINGS.contains(leg.getType()) && Groups.WITHER_BOOTS.contains(boots.getType())) {
+                if (Witherborn.WITHER_COOLDOWN.containsKey(p.getUniqueId())) {
+                    if (!Witherborn.WITHER_COOLDOWN.get(p.getUniqueId()) && !Witherborn.WITHER_MAP.containsKey(p.getUniqueId())) {
+                        final Witherborn w = new Witherborn(p);
+                        w.spawnWither();
+                    }
+                } else if (!Witherborn.WITHER_MAP.containsKey(p.getUniqueId())) {
+                    final Witherborn w = new Witherborn(p);
+                    w.spawnWither();
+                }
+            } else Witherborn.WITHER_MAP.remove(p.getUniqueId());
+        } else Witherborn.WITHER_MAP.remove(p.getUniqueId());
+    }
+
+    public static void updateStatistics1(final Player player) {
+        final PlayerInventory inv = player.getInventory();
+        final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
+        final ItemStack afterHelmet = inv.getHelmet();
+        final ItemStack afterChestplate = inv.getChestplate();
+        final ItemStack afterLeggings = inv.getLeggings();
+        final ItemStack afterBoots = inv.getBoots();
+        SItem helmet = null;
+        SItem chestplate = null;
+        SItem leggings = null;
+        SItem boots = null;
+        PlayerUtils.updateArmorStatistics(helmet = SItem.find(afterHelmet), statistics, 0);
+        PlayerUtils.updateArmorStatistics(chestplate = SItem.find(afterChestplate), statistics, 1);
+        PlayerUtils.updateArmorStatistics(leggings = SItem.find(afterLeggings), statistics, 2);
+        PlayerUtils.updateArmorStatistics(boots = SItem.find(afterBoots), statistics, 3);
+        SUtil.delay(() -> PlayerUtils.updateInventoryStatistics(player, statistics), 1L);
+    }
+
+    private static boolean similar(final ItemStack is, final ItemStack is1) {
+        return (is == null && is1 == null) || ((is == null || is1 != null) && is != null && is.isSimilar(is1));
+    }
+
+    private static boolean isAir(final ItemStack is) {
+        return is == null || is.getType() == Material.AIR;
+    }
 
     @EventHandler
     public void useEtherWarp(final PlayerInteractEvent e) {
@@ -864,92 +955,6 @@ public class ItemListener extends PListener {
         }
     }
 
-    public static void updateStatistics(final Player player) {
-        final PlayerInventory inv = player.getInventory();
-        final ItemStack beforeHelmet = inv.getHelmet();
-        final ItemStack beforeChestplate = inv.getChestplate();
-        final ItemStack beforeLeggings = inv.getLeggings();
-        final ItemStack beforeBoots = inv.getBoots();
-        new BukkitRunnable() {
-            public void run() {
-                final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
-                final ItemStack afterHelmet = inv.getHelmet();
-                final ItemStack afterChestplate = inv.getChestplate();
-                final ItemStack afterLeggings = inv.getLeggings();
-                final ItemStack afterBoots = inv.getBoots();
-                final boolean helmetSimilar = similar(beforeHelmet, afterHelmet);
-                final boolean chestplateSimilar = similar(beforeChestplate, afterChestplate);
-                final boolean leggingsSimilar = similar(beforeLeggings, afterLeggings);
-                final boolean bootsSimilar = similar(beforeBoots, afterBoots);
-                SItem helmet = null;
-                SItem chestplate = null;
-                SItem leggings = null;
-                SItem boots = null;
-                if (!helmetSimilar) {
-                    PlayerUtils.updateArmorStatistics(helmet = SItem.find(afterHelmet), statistics, 0);
-                }
-                if (!chestplateSimilar) {
-                    PlayerUtils.updateArmorStatistics(chestplate = SItem.find(afterChestplate), statistics, 1);
-                }
-                if (!leggingsSimilar) {
-                    PlayerUtils.updateArmorStatistics(leggings = SItem.find(afterLeggings), statistics, 2);
-                }
-                if (!bootsSimilar) {
-                    PlayerUtils.updateArmorStatistics(boots = SItem.find(afterBoots), statistics, 3);
-                }
-                PlayerUtils.updateInventoryStatistics(player, statistics);
-                User.getUser(player.getUniqueId()).updateArmorInventory();
-                ItemListener.checkCondition(player);
-            }
-        }.runTaskLater(Skyblock.getPlugin(), 1L);
-    }
-
-    public static void checkCondition(final Player p) {
-        final SItem helm = SItem.find(p.getInventory().getHelmet());
-        final SItem chest = SItem.find(p.getInventory().getChestplate());
-        final SItem leg = SItem.find(p.getInventory().getLeggings());
-        final SItem boots = SItem.find(p.getInventory().getBoots());
-        if (helm != null && chest != null && leg != null && boots != null) {
-            if (Groups.WITHER_HELMETS.contains(helm.getType()) && Groups.WITHER_CHESTPLATES.contains(chest.getType()) && Groups.WITHER_LEGGINGS.contains(leg.getType()) && Groups.WITHER_BOOTS.contains(boots.getType())) {
-                if (Witherborn.WITHER_COOLDOWN.containsKey(p.getUniqueId())) {
-                    if (!Witherborn.WITHER_COOLDOWN.get(p.getUniqueId()) && !Witherborn.WITHER_MAP.containsKey(p.getUniqueId())) {
-                        final Witherborn w = new Witherborn(p);
-                        w.spawnWither();
-                    }
-                } else if (!Witherborn.WITHER_MAP.containsKey(p.getUniqueId())) {
-                    final Witherborn w = new Witherborn(p);
-                    w.spawnWither();
-                }
-            } else Witherborn.WITHER_MAP.remove(p.getUniqueId());
-        } else Witherborn.WITHER_MAP.remove(p.getUniqueId());
-    }
-
-    public static void updateStatistics1(final Player player) {
-        final PlayerInventory inv = player.getInventory();
-        final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
-        final ItemStack afterHelmet = inv.getHelmet();
-        final ItemStack afterChestplate = inv.getChestplate();
-        final ItemStack afterLeggings = inv.getLeggings();
-        final ItemStack afterBoots = inv.getBoots();
-        SItem helmet = null;
-        SItem chestplate = null;
-        SItem leggings = null;
-        SItem boots = null;
-        PlayerUtils.updateArmorStatistics(helmet = SItem.find(afterHelmet), statistics, 0);
-        PlayerUtils.updateArmorStatistics(chestplate = SItem.find(afterChestplate), statistics, 1);
-        PlayerUtils.updateArmorStatistics(leggings = SItem.find(afterLeggings), statistics, 2);
-        PlayerUtils.updateArmorStatistics(boots = SItem.find(afterBoots), statistics, 3);
-        SUtil.delay(() -> PlayerUtils.updateInventoryStatistics(player, statistics), 1L);
-    }
-
-    private static boolean similar(final ItemStack is, final ItemStack is1) {
-        return (is == null && is1 == null) || ((is == null || is1 != null) && is != null && is.isSimilar(is1));
-    }
-
-    private static boolean isAir(final ItemStack is) {
-        return is == null || is.getType() == Material.AIR;
-    }
-
     @EventHandler
     public void aAaB(final ProjectileHitEvent enn) {
         final Entity e = enn.getEntity();
@@ -1056,10 +1061,5 @@ public class ItemListener extends PListener {
         if (e.getEntity().getWorld().getName().startsWith("f6")) {
             e.setDroppedExp(0);
         }
-    }
-
-    static {
-        Classes = new HashMap<Player, String>();
-        IsDead = new HashMap<Player, Boolean>();
     }
 }

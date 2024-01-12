@@ -1,7 +1,6 @@
 package in.godspunky.skyblock.item.oddities;
 
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.item.*;
 
 public class WardenHeart implements MaterialStatistics, MaterialFunction, SkullStatistics {
     @Override

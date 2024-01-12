@@ -27,6 +27,19 @@ public class TradeMenu {
     public static final Map<UUID, Boolean> successTrade;
     public static final Map<UUID, Boolean> player1TradeUUID;
     public static final Map<UUID, Boolean> player2TradeUUID;
+
+    static {
+        tradeClose = new HashMap<UUID, Boolean>();
+        tradeClosePlayerName = new HashMap<UUID, Player>();
+        tradeP1Countdown = new HashMap<UUID, Integer>();
+        tradeP2Countdown = new HashMap<UUID, Integer>();
+        tradeP1Ready = new HashMap<UUID, Boolean>();
+        tradeP2Ready = new HashMap<UUID, Boolean>();
+        successTrade = new HashMap<UUID, Boolean>();
+        player1TradeUUID = new HashMap<UUID, Boolean>();
+        player2TradeUUID = new HashMap<UUID, Boolean>();
+    }
+
     private final Player p1;
     private final Player p2;
     private final UUID tradeUUID;
@@ -189,17 +202,5 @@ public class TradeMenu {
 
     public Player getP2() {
         return this.p2;
-    }
-
-    static {
-        tradeClose = new HashMap<UUID, Boolean>();
-        tradeClosePlayerName = new HashMap<UUID, Player>();
-        tradeP1Countdown = new HashMap<UUID, Integer>();
-        tradeP2Countdown = new HashMap<UUID, Integer>();
-        tradeP1Ready = new HashMap<UUID, Boolean>();
-        tradeP2Ready = new HashMap<UUID, Boolean>();
-        successTrade = new HashMap<UUID, Boolean>();
-        player1TradeUUID = new HashMap<UUID, Boolean>();
-        player2TradeUUID = new HashMap<UUID, Boolean>();
     }
 }

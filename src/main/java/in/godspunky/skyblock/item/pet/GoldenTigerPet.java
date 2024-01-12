@@ -1,7 +1,12 @@
 package in.godspunky.skyblock.item.pet;
 
+import in.godspunky.skyblock.item.GenericItemType;
+import in.godspunky.skyblock.item.Rarity;
+import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.skill.CombatSkill;
 import in.godspunky.skyblock.skill.Skill;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -9,11 +14,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.item.GenericItemType;
-import in.godspunky.skyblock.item.Rarity;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -21,6 +21,10 @@ import java.util.*;
 
 public class GoldenTigerPet extends Pet {
     public static final Map<Player, Boolean> COOLDOWN;
+
+    static {
+        COOLDOWN = new HashMap<Player, Boolean>();
+    }
 
     @Override
     public List<PetAbility> getPetAbilities(final SItem instance) {
@@ -154,9 +158,5 @@ public class GoldenTigerPet extends Pet {
     public void particleBelowA(final Player p, final Location l) {
         p.spigot().playEffect(l, Effect.COLOURED_DUST, 0, 1, 0.92156863f, 0.8980392f, 0.20392157f, 1.0f, 0, 64);
         p.spigot().playEffect(l, Effect.COLOURED_DUST, 0, 1, 0.9882353f, 0.7294118f, 0.011764706f, 1.0f, 0, 64);
-    }
-
-    static {
-        COOLDOWN = new HashMap<Player, Boolean>();
     }
 }

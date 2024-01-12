@@ -1,18 +1,25 @@
 package in.godspunky.skyblock.util;
 
+import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.user.User;
 import lombok.Getter;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PacketEntity {
+    static final int showRadius = 50;
+    public static List<PacketEntity> managers;
+
+    static {
+        PacketEntity.managers = new ArrayList<PacketEntity>();
+    }
+
     Entity entity;
     @Getter
     List<Player> players;
@@ -20,8 +27,6 @@ public class PacketEntity {
     List<Packet> spawnPackets;
     BukkitTask tickTask;
     String permission;
-    static final int showRadius = 50;
-    public static List<PacketEntity> managers;
     double x;
     double y;
     double z;
@@ -32,6 +37,12 @@ public class PacketEntity {
         this.updateSpawnPacket();
         PacketEntity.managers.add(this);
         this.tickTask = Bukkit.getScheduler().runTaskTimer(Skyblock.getPlugin(), this::tick, 1L, 5L);
+    }
+
+    public static void removePlayer(final Player player) {
+        for (final PacketEntity manager : PacketEntity.managers) {
+            manager.players.remove(player);
+        }
     }
 
     public void setShowPermission(final String permission) {
@@ -147,16 +158,6 @@ public class PacketEntity {
     }
 
     protected void sendDestroyPacket(final Player player) {
-        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(new int[]{this.entity.getId()}));
-    }
-
-    public static void removePlayer(final Player player) {
-        for (final PacketEntity manager : PacketEntity.managers) {
-            manager.players.remove(player);
-        }
-    }
-
-    static {
-        PacketEntity.managers = new ArrayList<PacketEntity>();
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(this.entity.getId()));
     }
 }

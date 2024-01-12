@@ -19,9 +19,11 @@ import in.godspunky.skyblock.entity.EntitySpawner;
 import in.godspunky.skyblock.entity.SEntityType;
 import in.godspunky.skyblock.entity.StaticDragonManager;
 import in.godspunky.skyblock.entity.nms.VoidgloomSeraph;
+import in.godspunky.skyblock.gui.GUIListener;
 import in.godspunky.skyblock.item.ItemListener;
 import in.godspunky.skyblock.item.Rarity;
 import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.item.armor.VoidlingsWardenHelmet;
 import in.godspunky.skyblock.item.pet.Pet;
 import in.godspunky.skyblock.listener.PacketListener;
@@ -29,14 +31,28 @@ import in.godspunky.skyblock.listener.ServerPingListener;
 import in.godspunky.skyblock.listener.WorldListener;
 import in.godspunky.skyblock.merchant.MerchantItemHandler;
 import in.godspunky.skyblock.minion.MinionListener;
+import in.godspunky.skyblock.nms.nmsutil.apihelper.APIManager;
+import in.godspunky.skyblock.nms.nmsutil.apihelper.SkySimBungee;
+import in.godspunky.skyblock.nms.nmsutil.packetlistener.PacketHelper;
+import in.godspunky.skyblock.nms.nmsutil.packetlistener.handler.PacketHandler;
+import in.godspunky.skyblock.nms.nmsutil.packetlistener.handler.ReceivedPacket;
+import in.godspunky.skyblock.nms.nmsutil.packetlistener.handler.SentPacket;
+import in.godspunky.skyblock.nms.nmsutil.packetlistener.metrics.Metrics;
 import in.godspunky.skyblock.nms.packetevents.*;
+import in.godspunky.skyblock.nms.pingrep.PingAPI;
+import in.godspunky.skyblock.nms.pingrep.PingEvent;
+import in.godspunky.skyblock.nms.pingrep.PingListener;
 import in.godspunky.skyblock.npc.SkyblockNPC;
+import in.godspunky.skyblock.npc.SkyblockNPCManager;
 import in.godspunky.skyblock.ranks.PlayerChatListener;
 import in.godspunky.skyblock.ranks.PlayerJoinQuitListener;
 import in.godspunky.skyblock.ranks.SetRankCommand;
 import in.godspunky.skyblock.region.Region;
 import in.godspunky.skyblock.region.RegionType;
 import in.godspunky.skyblock.slayer.SlayerQuest;
+import in.godspunky.skyblock.sql.SQLDatabase;
+import in.godspunky.skyblock.sql.SQLRegionData;
+import in.godspunky.skyblock.sql.SQLWorldData;
 import in.godspunky.skyblock.user.AuctionSettings;
 import in.godspunky.skyblock.user.DatabaseManager;
 import in.godspunky.skyblock.user.SMongoLoader;
@@ -68,22 +84,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.reflections.Reflections;
-import in.godspunky.skyblock.gui.GUIListener;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.nms.nmsutil.apihelper.APIManager;
-import in.godspunky.skyblock.nms.nmsutil.apihelper.SkySimBungee;
-import in.godspunky.skyblock.nms.nmsutil.packetlistener.PacketHelper;
-import in.godspunky.skyblock.nms.nmsutil.packetlistener.handler.PacketHandler;
-import in.godspunky.skyblock.nms.nmsutil.packetlistener.handler.ReceivedPacket;
-import in.godspunky.skyblock.nms.nmsutil.packetlistener.handler.SentPacket;
-import in.godspunky.skyblock.nms.nmsutil.packetlistener.metrics.Metrics;
-import in.godspunky.skyblock.nms.pingrep.PingAPI;
-import in.godspunky.skyblock.nms.pingrep.PingEvent;
-import in.godspunky.skyblock.nms.pingrep.PingListener;
-import in.godspunky.skyblock.npc.SkyblockNPCManager;
-import in.godspunky.skyblock.sql.SQLDatabase;
-import in.godspunky.skyblock.sql.SQLRegionData;
-import in.godspunky.skyblock.sql.SQLWorldData;
 
 import java.io.File;
 import java.io.IOException;
@@ -92,30 +92,30 @@ import java.util.*;
 
 @SuppressWarnings("deprecation")
 public class Skyblock extends JavaPlugin implements PluginMessageListener, BungeeChannel.ForwardConsumer {
-   // public static MultiverseCore core;
+    public static EffectManager effectManager;
+    // public static MultiverseCore core;
     private static ProtocolManager protocolManager;
     private static Economy econ;
     private static Skyblock plugin;
+    private static Skyblock instance;
+
+    static {
+        //  Skyblock.core = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
+        Skyblock.econ = null;
+    }
+
     private final PacketHelper packetInj;
+    @Getter
+    private final ServerVersion serverVersion;
     public Arena arena;
     public Dimoon dimoon;
     public SummoningSequence sq;
     public boolean altarCooldown;
-    @Getter
-    private final ServerVersion serverVersion;
-    public static EffectManager effectManager;
-    private static Skyblock instance;
     public Config config;
-    @Getter
-    private SlimePlugin slimePlugin;
     public Config heads;
     public Config blocks;
     public Config spawners;
-    @Getter
-    @Setter
-    private int onlinePlayerAcrossServers;
     public CommandMap commandMap;
-
     @Getter
     public SMongoLoader dataLoader;
     public SQLDatabase sql;
@@ -123,13 +123,17 @@ public class Skyblock extends JavaPlugin implements PluginMessageListener, Bunge
     public SQLWorldData worldData;
     public CommandLoader cl;
     public Repeater repeater;
+    public List<String> bannedUUID;
+    @Getter
+    private SlimePlugin slimePlugin;
+    @Getter
+    @Setter
+    private int onlinePlayerAcrossServers;
     @Getter
     private BungeeChannel bc;
     @Getter
     @Setter
     private String serverName;
-
-    public List<String> bannedUUID;
 
     public Skyblock() {
         this.packetInj = new PacketHelper();
@@ -144,6 +148,27 @@ public class Skyblock extends JavaPlugin implements PluginMessageListener, Bunge
 
     public static Skyblock getPlugin() {
         return Skyblock.plugin;
+    }
+
+    public static ProtocolManager getPTC() {
+        return Skyblock.protocolManager;
+    }
+
+    public static Skyblock getInstance() {
+        return Skyblock.instance;
+    }
+
+    public static Player findPlayerByIPAddress(final String ip) {
+        for (final Player p : Bukkit.getOnlinePlayers()) {
+            if (p.getAddress().toString().contains(ip)) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    public static Economy getEconomy() {
+        return Skyblock.econ;
     }
 
     public void onLoad() {
@@ -328,7 +353,7 @@ public class Skyblock extends JavaPlugin implements PluginMessageListener, Bunge
         SMongoLoader.startQueueTask();
     }
 
-    private void loadWorlds(){
+    private void loadWorlds() {
         new BlankWorldCreator("f6").createWorld();
         new BlankWorldCreator("arena").createWorld();
         //new BlankWorldCreator("f1");
@@ -379,24 +404,18 @@ public class Skyblock extends JavaPlugin implements PluginMessageListener, Bunge
         SLog.info("===================================");
     }
 
-    private void registerNPCS()
-    {
+    private void registerNPCS() {
         Reflections reflections = new Reflections("in.godspunky.skyblock.npc");
-        for (Class<? extends SkyblockNPC> npcClazz : reflections.getSubTypesOf(SkyblockNPC.class)){
+        for (Class<? extends SkyblockNPC> npcClazz : reflections.getSubTypesOf(SkyblockNPC.class)) {
             try {
                 npcClazz.getDeclaredConstructor().newInstance();
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 ex.printStackTrace();
 
             }
         }
         SLog.info(ChatColor.GREEN + "Successfully loaded " + ChatColor.YELLOW + SkyblockNPCManager.getNPCS().size() + ChatColor.GREEN + " NPCs");
 
-    }
-
-
-    public static ProtocolManager getPTC() {
-        return Skyblock.protocolManager;
     }
 
     public void unloadBlocks() {
@@ -541,10 +560,6 @@ public class Skyblock extends JavaPlugin implements PluginMessageListener, Bunge
         ConfigurationSerialization.registerClass(AuctionBid.class, "AuctionBid");
     }
 
-    public static Skyblock getInstance() {
-        return Skyblock.instance;
-    }
-
     public void fixTheEnd() {
         SLog.info("No Tasks");
     }
@@ -597,19 +612,6 @@ public class Skyblock extends JavaPlugin implements PluginMessageListener, Bunge
         });
     }
 
-    public static Player findPlayerByIPAddress(final String ip) {
-        for (final Player p : Bukkit.getOnlinePlayers()) {
-            if (p.getAddress().toString().contains(ip)) {
-                return p;
-            }
-        }
-        return null;
-    }
-
-    public static Economy getEconomy() {
-        return Skyblock.econ;
-    }
-
     public void async(final Runnable runnable) {
         new BukkitRunnable() {
             public void run() {
@@ -657,10 +659,5 @@ public class Skyblock extends JavaPlugin implements PluginMessageListener, Bunge
                 u.syncSavingData();
             }
         }
-    }
-
-    static {
-      //  Skyblock.core = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
-        Skyblock.econ = null;
     }
 }

@@ -6,7 +6,6 @@ import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
-import in.godspunky.skyblock.item.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +13,10 @@ import java.util.UUID;
 
 public abstract class Storage implements MaterialStatistics, MaterialFunction, ItemData, Untradeable {
     private static final Map<UUID, Inventory> OPENED_STORAGE_UNITS;
+
+    static {
+        OPENED_STORAGE_UNITS = new HashMap<UUID, Inventory>();
+    }
 
     public static Inventory getCurrentStorageOpened(final Player player) {
         return Storage.OPENED_STORAGE_UNITS.get(player.getUniqueId());
@@ -44,8 +47,4 @@ public abstract class Storage implements MaterialStatistics, MaterialFunction, I
     }
 
     public abstract int getSlots();
-
-    static {
-        OPENED_STORAGE_UNITS = new HashMap<UUID, Inventory>();
-    }
 }

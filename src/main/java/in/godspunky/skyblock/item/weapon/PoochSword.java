@@ -2,7 +2,6 @@ package in.godspunky.skyblock.item.weapon;
 
 import in.godspunky.skyblock.item.*;
 import org.bukkit.ChatColor;
-import in.godspunky.skyblock.item.*;
 
 public class PoochSword implements ToolStatistics, MaterialFunction {
     @Override

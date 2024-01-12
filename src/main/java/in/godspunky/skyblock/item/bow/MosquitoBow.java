@@ -1,9 +1,13 @@
 package in.godspunky.skyblock.item.bow;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import in.godspunky.skyblock.Repeater;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.util.DefenseReplacement;
 import in.godspunky.skyblock.util.ManaReplacement;
+import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
@@ -11,10 +15,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.metadata.FixedMetadataValue;
-import in.godspunky.skyblock.Repeater;
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.user.PlayerUtils;
-import in.godspunky.skyblock.util.SUtil;
 
 public class MosquitoBow implements ToolStatistics, BowFunction, Ability {
     @Override

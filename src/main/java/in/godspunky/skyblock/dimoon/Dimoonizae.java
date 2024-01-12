@@ -3,10 +3,17 @@ package in.godspunky.skyblock.dimoon;
 import com.google.common.util.concurrent.AtomicDouble;
 import de.slikey.effectlib.effect.ConeEffect;
 import de.slikey.effectlib.util.ParticleEffect;
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.entity.EntityDrop;
 import in.godspunky.skyblock.entity.EntityDropType;
+import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityEquipment;
 import in.godspunky.skyblock.entity.zombie.BaseZombie;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher;
 import net.minecraft.server.v1_8_R3.*;
@@ -28,26 +35,56 @@ import org.bukkit.potion.PotionType;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.Collections;
 import java.util.List;
 
 public class Dimoonizae extends BaseZombie {
-    private boolean isBowing;
     private final boolean s;
+    private boolean isBowing;
     private Location spawnLoc;
 
     public Dimoonizae() {
         this.isBowing = false;
         this.s = false;
         this.spawnLoc = null;
+    }
+
+    public static void spawnHealthPotion(final Location location, final Entity en) {
+        final World world = location.getWorld();
+        final ItemStack item = new ItemStack(Material.POTION, 1);
+        final Potion pot = new Potion(1);
+        pot.setType(PotionType.INSTANT_HEAL);
+        pot.setSplash(true);
+        pot.apply(item);
+        final ThrownPotion thrownPotion = (ThrownPotion) world.spawnEntity(location.clone().add(0.0, -0.5, 0.0), EntityType.SPLASH_POTION);
+        thrownPotion.setShooter((ProjectileSource) en);
+        thrownPotion.setItem(item);
+    }
+
+    public static ItemStack getPot() {
+        final ItemStack item = new ItemStack(Material.POTION, 1);
+        final Potion pot = new Potion(1);
+        pot.setType(PotionType.INSTANT_HEAL);
+        pot.setSplash(true);
+        pot.apply(item);
+        return item;
+    }
+
+    public static ItemStack getStrPot() {
+        final ItemStack item = new ItemStack(Material.POTION, 1);
+        final Potion pot = new Potion(1);
+        pot.setType(PotionType.STRENGTH);
+        pot.setSplash(false);
+        pot.apply(item);
+        return item;
+    }
+
+    public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
+        final net.minecraft.server.v1_8_R3.Entity pl = ((CraftZombie) e).getHandle();
+        pl.setLocation(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), yaw, pitch);
+        final PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(pl);
+        Sputnik.sendPacket(e.getWorld(), packet);
     }
 
     @Override
@@ -172,8 +209,8 @@ public class Dimoonizae extends BaseZombie {
             }
         }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
         new BukkitRunnable() {
-            Location loc = entity.getLocation();
             final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
+            Location loc = entity.getLocation();
 
             public void run() {
                 if (entity.isDead()) {
@@ -324,42 +361,5 @@ public class Dimoonizae extends BaseZombie {
         Effect.period = 3;
         Effect.iterations = 5;
         Effect.start();
-    }
-
-    public static void spawnHealthPotion(final Location location, final Entity en) {
-        final World world = location.getWorld();
-        final ItemStack item = new ItemStack(Material.POTION, 1);
-        final Potion pot = new Potion(1);
-        pot.setType(PotionType.INSTANT_HEAL);
-        pot.setSplash(true);
-        pot.apply(item);
-        final ThrownPotion thrownPotion = (ThrownPotion) world.spawnEntity(location.clone().add(0.0, -0.5, 0.0), EntityType.SPLASH_POTION);
-        thrownPotion.setShooter((ProjectileSource) en);
-        thrownPotion.setItem(item);
-    }
-
-    public static ItemStack getPot() {
-        final ItemStack item = new ItemStack(Material.POTION, 1);
-        final Potion pot = new Potion(1);
-        pot.setType(PotionType.INSTANT_HEAL);
-        pot.setSplash(true);
-        pot.apply(item);
-        return item;
-    }
-
-    public static ItemStack getStrPot() {
-        final ItemStack item = new ItemStack(Material.POTION, 1);
-        final Potion pot = new Potion(1);
-        pot.setType(PotionType.STRENGTH);
-        pot.setSplash(false);
-        pot.apply(item);
-        return item;
-    }
-
-    public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
-        final net.minecraft.server.v1_8_R3.Entity pl = ((CraftZombie) e).getHandle();
-        pl.setLocation(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), yaw, pitch);
-        final PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(pl);
-        Sputnik.sendPacket(e.getWorld(), packet);
     }
 }

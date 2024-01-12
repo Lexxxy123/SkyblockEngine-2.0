@@ -35,20 +35,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class HexEnchantments extends GUI {
-    SItem upgradeableItem;
-    List<EnchantmentType> selected = new ArrayList<>();
-    List<EnchantmentType> exists = new ArrayList<>();
-
     private static final int[] INTERIOR = new int[]{
             12, 13, 14, 15, 16,
             21, 22, 23, 24, 25,
             30, 31, 32, 33, 34,
     };
+    SItem upgradeableItem;
+    List<EnchantmentType> selected = new ArrayList<>();
+    List<EnchantmentType> exists = new ArrayList<>();
 
     public HexEnchantments(SItem item) {
         this(item, 1);
@@ -80,44 +78,38 @@ public class HexEnchantments extends GUI {
         List<SItem> items = pagedEnchantBooks.getPage(page);
         if (items == null) return;
 
-        if (page > 1)
-        {
-            set(new GUIClickableItem()
-            {
+        if (page > 1) {
+            set(new GUIClickableItem() {
                 @Override
-                public void run(InventoryClickEvent e)
-                {
-                    new HexEnchantments(item,finalPage - 1).open((Player) e.getWhoClicked());
+                public void run(InventoryClickEvent e) {
+                    new HexEnchantments(item, finalPage - 1).open((Player) e.getWhoClicked());
                 }
+
                 @Override
-                public int getSlot()
-                {
+                public int getSlot() {
                     return 45;
                 }
+
                 @Override
-                public ItemStack getItem()
-                {
+                public ItemStack getItem() {
                     return SUtil.createNamedItemStack(Material.ARROW, ChatColor.GRAY + "<-");
                 }
             });
         }
-        if (page != pagedEnchantBooks.getPageCount())
-        {
-            set(new GUIClickableItem()
-            {
+        if (page != pagedEnchantBooks.getPageCount()) {
+            set(new GUIClickableItem() {
                 @Override
-                public void run(InventoryClickEvent e)
-                {
-                    new HexEnchantments(item,finalPage + 1).open((Player) e.getWhoClicked());
+                public void run(InventoryClickEvent e) {
+                    new HexEnchantments(item, finalPage + 1).open((Player) e.getWhoClicked());
                 }
+
                 @Override
-                public int getSlot()
-                {
+                public int getSlot() {
                     return 53;
                 }
+
                 @Override
-                public ItemStack getItem()
-                {
+                public ItemStack getItem() {
                     return SUtil.createNamedItemStack(Material.ARROW, ChatColor.GRAY + "->");
                 }
             });
@@ -126,11 +118,9 @@ public class HexEnchantments extends GUI {
         for (int i = 0; i < items.size(); i++) {
             int slot = INTERIOR[i];
             int finalI = i;
-            set(new GUIClickableItem()
-            {
+            set(new GUIClickableItem() {
                 @Override
-                public void run(InventoryClickEvent e)
-                {
+                public void run(InventoryClickEvent e) {
                     Player player = (Player) e.getWhoClicked();
                     player.playSound(player.getLocation(), Sound.ORB_PICKUP, 10, 2);
 
@@ -138,46 +128,45 @@ public class HexEnchantments extends GUI {
                     for (Enchantment enchantment : items.get(finalI).getEnchantments()) {
                         EnchantmentType type = enchantment.getType();
 
-                       if (exists.contains(type)) {
-                           exists.remove(type);
-                           item.removeEnchantment(type);
-                           player.sendMessage(ChatColor.RED + "You removed the enchantment: " + type.getName() + " from your item!");
-                           return;
-                       } else {
-                           if (selected.contains(type)) {
-                               player.sendMessage(ChatColor.RED + "You removed the Enchantment " + type.getName() + " from your selection!");
-                               selected.remove(type);
-                               return;
-                           }
-                           if (!selected.contains(type)) {
-                               if (item.hasEnchantment(EnchantmentType.ONE_FOR_ALL)) {
-                                   player.sendMessage(ChatColor.GREEN + "You added the Enchantment " + type.getName() + " to your selection but One For All was removed!");
-                                   selected.add(type);
+                        if (exists.contains(type)) {
+                            exists.remove(type);
+                            item.removeEnchantment(type);
+                            player.sendMessage(ChatColor.RED + "You removed the enchantment: " + type.getName() + " from your item!");
+                            return;
+                        } else {
+                            if (selected.contains(type)) {
+                                player.sendMessage(ChatColor.RED + "You removed the Enchantment " + type.getName() + " from your selection!");
+                                selected.remove(type);
+                                return;
+                            }
+                            if (!selected.contains(type)) {
+                                if (item.hasEnchantment(EnchantmentType.ONE_FOR_ALL)) {
+                                    player.sendMessage(ChatColor.GREEN + "You added the Enchantment " + type.getName() + " to your selection but One For All was removed!");
+                                    selected.add(type);
 
-                                   item.removeEnchantment(EnchantmentType.ONE_FOR_ALL);
-                               } else {
-                                   player.sendMessage(ChatColor.GREEN + "You added the Enchantment " + type.getName() + " to your selection!");
-                                   selected.add(type);
-                               }
+                                    item.removeEnchantment(EnchantmentType.ONE_FOR_ALL);
+                                } else {
+                                    player.sendMessage(ChatColor.GREEN + "You added the Enchantment " + type.getName() + " to your selection!");
+                                    selected.add(type);
+                                }
 
-                               return;
-                           }
-                       }
+                                return;
+                            }
+                        }
                     }
                 }
+
                 @Override
-                public int getSlot()
-                {
+                public int getSlot() {
                     return slot;
                 }
+
                 @Override
-                public ItemStack getItem()
-                {
+                public ItemStack getItem() {
                     return items.get(finalI).getStack();
                 }
             });
         }
-
 
 
         set(GUIClickableItem.getCloseItem(49));

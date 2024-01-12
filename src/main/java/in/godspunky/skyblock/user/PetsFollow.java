@@ -10,19 +10,16 @@ import java.util.UUID;
 
 public class PetsFollow {
     public static HashMap<UUID, PetsFollow> pets;
+
+    static {
+        PetsFollow.pets = new HashMap<UUID, PetsFollow>();
+    }
+
     private Player player;
     private ArmorStand nametag;
     private ArmorStand petitem;
     private ArrayList<Location> locs;
     private Location loc;
-
-    public void setPlayer(final Player player) {
-        this.player = player;
-    }
-
-    public void setNameTagAS(final ArmorStand as) {
-        this.nametag = as;
-    }
 
     public void setPetAS(final ArmorStand as) {
         this.petitem = as;
@@ -30,14 +27,6 @@ public class PetsFollow {
 
     public void addLocation(final Location loc) {
         this.locs.add(loc);
-    }
-
-    public void setLocs(final ArrayList<Location> locs) {
-        this.locs = locs;
-    }
-
-    public void setLoc(final Location loc) {
-        this.loc = loc;
     }
 
     public void removeLoc(final int index) {
@@ -54,12 +43,24 @@ public class PetsFollow {
         return this.loc;
     }
 
+    public void setLoc(final Location loc) {
+        this.loc = loc;
+    }
+
     public Player getPlayer() {
         return this.player;
     }
 
+    public void setPlayer(final Player player) {
+        this.player = player;
+    }
+
     public ArmorStand getNameTagAS() {
         return this.nametag;
+    }
+
+    public void setNameTagAS(final ArmorStand as) {
+        this.nametag = as;
     }
 
     public ArmorStand getPetItemAS() {
@@ -70,7 +71,7 @@ public class PetsFollow {
         return this.locs;
     }
 
-    static {
-        PetsFollow.pets = new HashMap<UUID, PetsFollow>();
+    public void setLocs(final ArrayList<Location> locs) {
+        this.locs = locs;
     }
 }

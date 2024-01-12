@@ -1,10 +1,10 @@
 package in.godspunky.skyblock.sequence;
 
+import in.godspunky.skyblock.Skyblock;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.Skyblock;
 
 import java.util.Arrays;
 import java.util.List;

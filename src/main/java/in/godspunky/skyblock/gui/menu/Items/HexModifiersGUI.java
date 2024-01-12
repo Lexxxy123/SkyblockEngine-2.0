@@ -84,10 +84,10 @@ public class HexModifiersGUI extends GUI {
             public ItemStack getItem() {
                 return SUtil.getStack("&aApply Modifiers", Material.ANVIL, (short) 0, 1,
                         Sputnik.trans5("&7Apply miscellaneous item",
-                        "&7modifiers like the",
-                        "&6Recombobulator 3000&7,",
-                        "&5Wither Scrolls&7, and &cMaster",
-                        "&cStars&7!")
+                                "&7modifiers like the",
+                                "&6Recombobulator 3000&7,",
+                                "&5Wither Scrolls&7, and &cMaster",
+                                "&cStars&7!")
                 );
             }
         });

@@ -1,10 +1,10 @@
 package in.godspunky.skyblock.nms.nmsutil.apihelper;
 
+import in.godspunky.skyblock.nms.nmsutil.apihelper.exception.APIRegistrationException;
 import in.godspunky.skyblock.nms.nmsutil.apihelper.exception.MissingHostException;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
-import in.godspunky.skyblock.nms.nmsutil.apihelper.exception.APIRegistrationException;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,6 +16,12 @@ public class APIManager {
     private static final Map<API, RegisteredAPI> HOST_MAP;
     private static final Map<Class<? extends API>, Set<Plugin>> PENDING_API_CLASSES;
     private static final Logger LOGGER;
+
+    static {
+        HOST_MAP = new HashMap<API, RegisteredAPI>();
+        PENDING_API_CLASSES = new HashMap<Class<? extends API>, Set<Plugin>>();
+        LOGGER = Logger.getLogger("APIManager");
+    }
 
     public static RegisteredAPI registerAPI(final API api) throws APIRegistrationException {
         if (APIManager.HOST_MAP.containsKey(api)) {
@@ -158,11 +164,5 @@ public class APIManager {
         if (plugin instanceof API) {
             throw new IllegalArgumentException("Plugin must not implement API");
         }
-    }
-
-    static {
-        HOST_MAP = new HashMap<API, RegisteredAPI>();
-        PENDING_API_CLASSES = new HashMap<Class<? extends API>, Set<Plugin>>();
-        LOGGER = Logger.getLogger("APIManager");
     }
 }

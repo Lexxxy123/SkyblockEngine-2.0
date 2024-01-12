@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.skill;
 
-import org.bukkit.ChatColor;
 import in.godspunky.skyblock.user.User;
+import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,6 +9,10 @@ import java.util.List;
 
 public class HealerSkill extends Skill implements DungeonsSkill {
     public static final HealerSkill INSTANCE;
+
+    static {
+        INSTANCE = new HealerSkill();
+    }
 
     @Override
     public String getName() {
@@ -65,9 +69,5 @@ public class HealerSkill extends Skill implements DungeonsSkill {
         t.add("Healing Potion");
         t.add("Revive Self");
         return t;
-    }
-
-    static {
-        INSTANCE = new HealerSkill();
     }
 }

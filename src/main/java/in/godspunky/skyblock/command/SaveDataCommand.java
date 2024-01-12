@@ -21,7 +21,7 @@ public class SaveDataCommand extends SCommand {
                 for (final Player p : Bukkit.getOnlinePlayers()) {
                     final User user = User.getUser(p.getUniqueId());
                     if (user != null) {
-                       Skyblock.getPlugin().dataLoader.save(p.getUniqueId());
+                        Skyblock.getPlugin().dataLoader.save(p.getUniqueId());
                     }
                 }
                 Bukkit.broadcastMessage(Sputnik.trans("&b[SKYSIM D.C] &aAll players data have been saved! Action performed by " + player.getDisplayName() + "&a!"));

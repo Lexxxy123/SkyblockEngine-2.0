@@ -10,6 +10,10 @@ import java.util.List;
 public class CatacombsSkill extends Skill {
     public static final CatacombsSkill INSTANCE;
 
+    static {
+        INSTANCE = new CatacombsSkill();
+    }
+
     @Override
     public String getName() {
         return "The Catacombs";
@@ -38,9 +42,5 @@ public class CatacombsSkill extends Skill {
     @Override
     public void onSkillUpdate(final User user, final double previousXP) {
         super.onSkillUpdate(user, previousXP);
-    }
-
-    static {
-        INSTANCE = new CatacombsSkill();
     }
 }

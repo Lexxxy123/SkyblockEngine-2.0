@@ -1,11 +1,11 @@
 package in.godspunky.skyblock.item.farming;
 
-import in.godspunky.skyblock.skill.FarmingSkill;
-import in.godspunky.skyblock.skill.Skill;
 import in.godspunky.skyblock.item.ExperienceRewardStatistics;
 import in.godspunky.skyblock.item.GenericItemType;
 import in.godspunky.skyblock.item.MaterialFunction;
 import in.godspunky.skyblock.item.Rarity;
+import in.godspunky.skyblock.skill.FarmingSkill;
+import in.godspunky.skyblock.skill.Skill;
 
 public class WheatSeeds implements ExperienceRewardStatistics, MaterialFunction {
     @Override

@@ -2,6 +2,16 @@ package in.godspunky.skyblock.entity.dungeons.regularentity;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.entity.zombie.BaseZombie;
+import in.godspunky.skyblock.entity.zombie.NPCMobs;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Material;
 import org.bukkit.*;
@@ -18,22 +28,27 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
-import in.godspunky.skyblock.entity.zombie.BaseZombie;
-import in.godspunky.skyblock.entity.zombie.NPCMobs;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 
 public class CryptLurker extends BaseZombie implements NPCMobs {
     private boolean stop;
 
     public CryptLurker() {
         this.stop = false;
+    }
+
+    public static ItemStack b(final int hexcolor, final Material m) {
+        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
+    }
+
+    public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
+        final net.minecraft.server.v1_8_R3.Entity pl = ((CraftZombie) e).getHandle();
+        pl.setLocation(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), yaw, pitch);
+        final PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(pl);
+        Sputnik.sendPacket(e.getWorld(), packet);
     }
 
     @Override
@@ -49,14 +64,6 @@ public class CryptLurker extends BaseZombie implements NPCMobs {
     @Override
     public double getDamageDealt() {
         return 900000.0;
-    }
-
-    public static ItemStack b(final int hexcolor, final Material m) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
     }
 
     @Override
@@ -160,13 +167,6 @@ public class CryptLurker extends BaseZombie implements NPCMobs {
     @Override
     public double getMovementSpeed() {
         return 0.25;
-    }
-
-    public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
-        final net.minecraft.server.v1_8_R3.Entity pl = ((CraftZombie) e).getHandle();
-        pl.setLocation(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), yaw, pitch);
-        final PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(pl);
-        Sputnik.sendPacket(e.getWorld(), packet);
     }
 
     public void throwThickAssBone(final Entity e) {

@@ -1,9 +1,13 @@
 package in.godspunky.skyblock.item.armor;
 
 import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.listener.PlayerListener;
 import in.godspunky.skyblock.skill.Skill;
+import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.EntityManager;
 import in.godspunky.skyblock.util.Groups;
+import in.godspunky.skyblock.util.SUtil;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -11,10 +15,6 @@ import org.bukkit.Sound;
 import org.bukkit.entity.*;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.listener.PlayerListener;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.SUtil;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -24,13 +24,19 @@ import java.util.Map;
 import java.util.UUID;
 
 public class Witherborn {
-    private final Player p;
-    private final int size;
-    private Wither w;
-    private boolean isTargetting;
-    public Entity withersTarget;
     public static final Map<UUID, Witherborn> WITHER_MAP;
     public static final Map<UUID, Boolean> WITHER_COOLDOWN;
+
+    static {
+        WITHER_MAP = new HashMap<UUID, Witherborn>();
+        WITHER_COOLDOWN = new HashMap<UUID, Boolean>();
+    }
+
+    private final Player p;
+    private final int size;
+    public Entity withersTarget;
+    private Wither w;
+    private boolean isTargetting;
 
     public Witherborn(final Player p) {
         this.size = 790;
@@ -39,6 +45,10 @@ public class Witherborn {
         this.p = p;
         this.isTargetting = false;
         Witherborn.WITHER_MAP.put(p.getUniqueId(), this);
+    }
+
+    public static Witherborn getWitherbornInstance(final Player p) {
+        return Witherborn.WITHER_MAP.get(p.getUniqueId());
     }
 
     public boolean checkCondition() {
@@ -208,20 +218,11 @@ public class Witherborn {
         }.runTaskTimer(Skyblock.getPlugin(), 2L, 1L);
     }
 
-    public static Witherborn getWitherbornInstance(final Player p) {
-        return Witherborn.WITHER_MAP.get(p.getUniqueId());
-    }
-
     public Entity getWithersTarget() {
         return this.withersTarget;
     }
 
     public void setWithersTarget(final Entity withersTarget) {
         this.withersTarget = withersTarget;
-    }
-
-    static {
-        WITHER_MAP = new HashMap<UUID, Witherborn>();
-        WITHER_COOLDOWN = new HashMap<UUID, Boolean>();
     }
 }

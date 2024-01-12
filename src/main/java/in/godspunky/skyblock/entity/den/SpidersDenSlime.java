@@ -1,11 +1,11 @@
 package in.godspunky.skyblock.entity.den;
 
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.entity.EntityFunction;
 import in.godspunky.skyblock.entity.SlimeStatistics;
 import in.godspunky.skyblock.util.SUtil;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class SpidersDenSlime implements SlimeStatistics, EntityFunction {
     @Override

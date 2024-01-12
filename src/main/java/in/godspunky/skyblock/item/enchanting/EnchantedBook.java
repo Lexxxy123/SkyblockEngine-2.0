@@ -3,10 +3,13 @@ package in.godspunky.skyblock.item.enchanting;
 import in.godspunky.skyblock.enchantment.Enchantment;
 import in.godspunky.skyblock.enchantment.EnchantmentType;
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.item.*;
 
 public class EnchantedBook implements MaterialStatistics, MaterialFunction, Enchantable {
     private static final MaterialQuantifiable PAPER_16;
+
+    static {
+        PAPER_16 = new MaterialQuantifiable(SMaterial.PAPER, 16);
+    }
 
     @Override
     public String getDisplayName() {
@@ -84,9 +87,5 @@ public class EnchantedBook implements MaterialStatistics, MaterialFunction, Ench
         recipe.set('7', SMaterial.HIDDEN_DIMOON_FRAG, 8);
         recipe.set('8', SMaterial.HIDDEN_DIMOON_FRAG, 8);
         recipe.set('9', SMaterial.HIDDEN_DIMOON_FRAG, 8);
-    }
-
-    static {
-        PAPER_16 = new MaterialQuantifiable(SMaterial.PAPER, 16);
     }
 }

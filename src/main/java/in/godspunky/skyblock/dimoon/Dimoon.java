@@ -3,10 +3,15 @@ package in.godspunky.skyblock.dimoon;
 import com.google.common.collect.*;
 import com.xxmicloxx.NoteBlockAPI.songplayer.PositionSongPlayer;
 import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.dimoon.abilities.*;
 import in.godspunky.skyblock.dimoon.abilities.Void;
+import in.godspunky.skyblock.dimoon.abilities.*;
 import in.godspunky.skyblock.dimoon.listeners.PlayerListener;
+import in.godspunky.skyblock.dimoon.utils.Utils;
 import in.godspunky.skyblock.entity.dungeons.watcher.GlobalBossBar;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
@@ -15,91 +20,31 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import in.godspunky.skyblock.dimoon.utils.Utils;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 
 import java.io.IOException;
 import java.util.*;
 
 public class Dimoon {
     public static final int MAX_HEALTH = 100000;
+    public static ArmorStand a;
+
+    static {
+        Dimoon.a = null;
+    }
+
     private final LivingEntity entity;
-    private int health;
     private final boolean diminiS;
-    private boolean failed;
     private final List<Ability> abilities;
-    public boolean stunned;
-    private PositionSongPlayer pls;
     private final TreeMultimap<Integer, String> damages;
-    private String lastBlow;
-    private int parkoursCompleted;
     private final Map<Class<? extends Ability>, Integer> cooldowns;
     private final List<BukkitTask> tasks;
-    public static ArmorStand a;
     private final Map<Integer, String> messages;
-
-    public static Dimoon spawnDimoon() {
-        final Dimoon dimoon = new Dimoon();
-        Skyblock.getPlugin().dimoon = dimoon;
-        Skyblock.getPlugin().arena = new Arena();
-        dimoon.stunned = true;
-        new BukkitRunnable() {
-            public void run() {
-                Utils.bossMessage("Finally, after years, those crystals, they trapped me, finally...!");
-            }
-        }.runTaskLater(Skyblock.getPlugin(), 35L);
-        new BukkitRunnable() {
-            public void run() {
-                Utils.bossMessage("Anyway, how did you get to this place? And you want to challenge me?");
-            }
-        }.runTaskLater(Skyblock.getPlugin(), 75L);
-        new BukkitRunnable() {
-            public void run() {
-                Utils.bossMessage("Only best parkour players are able to pass. Let's see how you will handle this...");
-            }
-        }.runTaskLater(Skyblock.getPlugin(), 115L);
-        new BukkitRunnable() {
-            public void run() {
-                Utils.bossMessage("Good luck! And don't die, seriously, you only have ONE chance.");
-                SUtil.delay(() -> {
-                    final Object val$dimoon = dimoon;
-                    if (dimoon != null) {
-                        dimoon.stunned = false;
-                        Utils.bossMessage("WITHER AURA!");
-                        for (Player p : dimoon.getEntity().getWorld().getPlayers()) {
-                            p.sendMessage(Utils.format("&c&lALERT! &6Wither Aura &eactivated! Crossing those aura will deal &cinsane damage &eto you!"));
-                        }
-                        dimoon.getEntity().getWorld().playSound(dimoon.getEntity().getLocation(), Sound.WITHER_DEATH, 15.0f, 1.5f);
-                    }
-                }, 100L);
-                SUtil.delay(() -> {
-                    final Object val$dimoon2 = dimoon;
-                    if (dimoon != null && Skyblock.getPlugin().arena != null) {
-                        Skyblock.getPlugin().arena.spawnDimoonaize(dimoon.getEntity());
-                        dimoon.getEntity().getWorld().playSound(dimoon.getEntity().getLocation(), Sound.WITHER_SPAWN, 15.0f, 1.5f);
-                    }
-                }, 200L);
-            }
-        }.runTaskLater(Skyblock.getPlugin(), 155L);
-        return dimoon;
-    }
-
-    public int getPlayerPlacement(final Player player) {
-        final Iterator<Map.Entry<Integer, String>> iterator = this.getDamages().entries().iterator();
-        int place = -1;
-        int i = 0;
-        while (iterator.hasNext()) {
-            if (iterator.next().getValue().equals(player.getName())) {
-                place = i + 1;
-                break;
-            }
-            ++i;
-        }
-        return place;
-    }
+    public boolean stunned;
+    private int health;
+    private boolean failed;
+    private PositionSongPlayer pls;
+    private String lastBlow;
+    private int parkoursCompleted;
 
     private Dimoon() {
         this.health = 100000;
@@ -411,6 +356,77 @@ public class Dimoon {
         }.runTaskLater(Skyblock.getPlugin(), 54000L));
     }
 
+    public static Dimoon spawnDimoon() {
+        final Dimoon dimoon = new Dimoon();
+        Skyblock.getPlugin().dimoon = dimoon;
+        Skyblock.getPlugin().arena = new Arena();
+        dimoon.stunned = true;
+        new BukkitRunnable() {
+            public void run() {
+                Utils.bossMessage("Finally, after years, those crystals, they trapped me, finally...!");
+            }
+        }.runTaskLater(Skyblock.getPlugin(), 35L);
+        new BukkitRunnable() {
+            public void run() {
+                Utils.bossMessage("Anyway, how did you get to this place? And you want to challenge me?");
+            }
+        }.runTaskLater(Skyblock.getPlugin(), 75L);
+        new BukkitRunnable() {
+            public void run() {
+                Utils.bossMessage("Only best parkour players are able to pass. Let's see how you will handle this...");
+            }
+        }.runTaskLater(Skyblock.getPlugin(), 115L);
+        new BukkitRunnable() {
+            public void run() {
+                Utils.bossMessage("Good luck! And don't die, seriously, you only have ONE chance.");
+                SUtil.delay(() -> {
+                    final Object val$dimoon = dimoon;
+                    if (dimoon != null) {
+                        dimoon.stunned = false;
+                        Utils.bossMessage("WITHER AURA!");
+                        for (Player p : dimoon.getEntity().getWorld().getPlayers()) {
+                            p.sendMessage(Utils.format("&c&lALERT! &6Wither Aura &eactivated! Crossing those aura will deal &cinsane damage &eto you!"));
+                        }
+                        dimoon.getEntity().getWorld().playSound(dimoon.getEntity().getLocation(), Sound.WITHER_DEATH, 15.0f, 1.5f);
+                    }
+                }, 100L);
+                SUtil.delay(() -> {
+                    final Object val$dimoon2 = dimoon;
+                    if (dimoon != null && Skyblock.getPlugin().arena != null) {
+                        Skyblock.getPlugin().arena.spawnDimoonaize(dimoon.getEntity());
+                        dimoon.getEntity().getWorld().playSound(dimoon.getEntity().getLocation(), Sound.WITHER_SPAWN, 15.0f, 1.5f);
+                    }
+                }, 200L);
+            }
+        }.runTaskLater(Skyblock.getPlugin(), 155L);
+        return dimoon;
+    }
+
+    private static void noAI(final Entity bukkitEntity) {
+        final net.minecraft.server.v1_8_R3.Entity nmsEntity = ((CraftEntity) bukkitEntity).getHandle();
+        NBTTagCompound tag = nmsEntity.getNBTTag();
+        if (tag == null) {
+            tag = new NBTTagCompound();
+        }
+        nmsEntity.c(tag);
+        tag.setInt("NoAI", 1);
+        nmsEntity.f(tag);
+    }
+
+    public int getPlayerPlacement(final Player player) {
+        final Iterator<Map.Entry<Integer, String>> iterator = this.getDamages().entries().iterator();
+        int place = -1;
+        int i = 0;
+        while (iterator.hasNext()) {
+            if (iterator.next().getValue().equals(player.getName())) {
+                place = i + 1;
+                break;
+            }
+            ++i;
+        }
+        return place;
+    }
+
     void func(final Player p) {
         this.damage(12000, p.getName());
         for (final Player pl : this.getEntity().getWorld().getPlayers()) {
@@ -454,17 +470,6 @@ public class Dimoon {
 
     public void completedParkour() {
         ++this.parkoursCompleted;
-    }
-
-    private static void noAI(final Entity bukkitEntity) {
-        final net.minecraft.server.v1_8_R3.Entity nmsEntity = ((CraftEntity) bukkitEntity).getHandle();
-        NBTTagCompound tag = nmsEntity.getNBTTag();
-        if (tag == null) {
-            tag = new NBTTagCompound();
-        }
-        nmsEntity.c(tag);
-        tag.setInt("NoAI", 1);
-        nmsEntity.f(tag);
     }
 
     Object[] calculateDropChance(final Player p, final int place) {
@@ -512,9 +517,5 @@ public class Dimoon {
 
     public List<BukkitTask> getTasks() {
         return this.tasks;
-    }
-
-    static {
-        Dimoon.a = null;
     }
 }

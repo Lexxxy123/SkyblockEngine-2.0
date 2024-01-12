@@ -1,7 +1,6 @@
 package in.godspunky.skyblock.command;
 
 
-
 import in.godspunky.skyblock.ranks.PlayerRank;
 
 import java.lang.annotation.Retention;

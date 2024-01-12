@@ -18,6 +18,11 @@ import java.util.stream.Stream;
 
 public class ManageAuctionsGUI extends GUI {
     private static final int[] INTERIOR;
+
+    static {
+        INTERIOR = new int[]{10, 11, 12, 13, 14, 15, 16};
+    }
+
     private final Sort sort;
 
     public ManageAuctionsGUI(final Sort sort) {
@@ -178,10 +183,6 @@ public class ManageAuctionsGUI extends GUI {
                 }
             });
         }
-    }
-
-    static {
-        INTERIOR = new int[]{10, 11, 12, 13, 14, 15, 16};
     }
 
     private enum Sort {

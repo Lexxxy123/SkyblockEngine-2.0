@@ -1,8 +1,8 @@
 package in.godspunky.skyblock.item.armor;
 
-import org.bukkit.entity.Player;
 import in.godspunky.skyblock.item.MaterialStatistics;
 import in.godspunky.skyblock.item.PlayerBoostStatistics;
+import org.bukkit.entity.Player;
 
 public interface ArmorSet {
     String getName();

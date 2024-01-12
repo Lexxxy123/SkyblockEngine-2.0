@@ -7,7 +7,6 @@ import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import in.godspunky.skyblock.skill.*;
 
 @CommandParameters(description = "Modify your coin amount.", permission = PlayerRank.ADMIN, aliases = "ssx")
 public class SetSkillCommand extends SCommand {

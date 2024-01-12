@@ -26,6 +26,11 @@ public class GUIListener extends PListener {
     public static final Map<UUID, GUIQueryItem> QUERY_MAP;
     public static final Map<UUID, Boolean> QUERY_MAPPING;
 
+    static {
+        QUERY_MAP = new HashMap<UUID, GUIQueryItem>();
+        QUERY_MAPPING = new HashMap<UUID, Boolean>();
+    }
+
     @EventHandler
     public void onCloseInv(final InventoryCloseEvent e) {
         final Player p = (Player) e.getPlayer();
@@ -262,10 +267,5 @@ public class GUIListener extends PListener {
             return;
         }
         gui.onClose(e);
-    }
-
-    static {
-        QUERY_MAP = new HashMap<UUID, GUIQueryItem>();
-        QUERY_MAPPING = new HashMap<UUID, Boolean>();
     }
 }

@@ -1,6 +1,9 @@
 package in.godspunky.skyblock.entity.insentient;
 
 import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.nms.VelocityArmorStand;
+import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,9 +14,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.nms.VelocityArmorStand;
-import in.godspunky.skyblock.util.SUtil;
 
 import java.util.ArrayList;
 import java.util.List;

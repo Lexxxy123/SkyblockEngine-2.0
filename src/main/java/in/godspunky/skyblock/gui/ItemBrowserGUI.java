@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.gui;
 
 import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.util.PaginationList;
 import in.godspunky.skyblock.util.SUtil;
 import net.minecraft.server.v1_8_R3.Item;
@@ -10,12 +11,15 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import in.godspunky.skyblock.item.SMaterial;
 
 import java.util.List;
 
 public class ItemBrowserGUI extends GUI {
     private static final int[] INTERIOR;
+
+    static {
+        INTERIOR = new int[]{10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43};
+    }
 
     public ItemBrowserGUI(final String query, int page) {
         super("Item Browser", 54);
@@ -136,9 +140,5 @@ public class ItemBrowserGUI extends GUI {
 
     public ItemBrowserGUI() {
         this(1);
-    }
-
-    static {
-        INTERIOR = new int[]{10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43};
     }
 }

@@ -22,9 +22,7 @@ package in.godspunky.skyblock.gui.menu.Items;
 import in.godspunky.skyblock.gui.GUI;
 import in.godspunky.skyblock.gui.GUIClickableItem;
 import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.reforge.Reforge;
-import in.godspunky.skyblock.reforge.ReforgeType;
 import in.godspunky.skyblock.util.PaginationList;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;
@@ -38,14 +36,13 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 public class HexReforgesGUI extends GUI {
-    SItem upgradeableItem;
-    Reforge selected;
-
     private static final int[] INTERIOR = new int[]{
             12, 13, 14, 15, 16,
             21, 22, 23, 24, 25,
             30, 31, 32, 33, 34,
     };
+    SItem upgradeableItem;
+    Reforge selected;
 
     public HexReforgesGUI(SItem item) {
         this(item, 1);
@@ -61,44 +58,38 @@ public class HexReforgesGUI extends GUI {
         List<SItem> items = pagedReforgeStones.getPage(page);
         if (items == null) return;
 
-        if (page > 1)
-        {
-            set(new GUIClickableItem()
-            {
+        if (page > 1) {
+            set(new GUIClickableItem() {
                 @Override
-                public void run(InventoryClickEvent e)
-                {
-                    new HexReforgesGUI(item,finalPage - 1).open((Player) e.getWhoClicked());
+                public void run(InventoryClickEvent e) {
+                    new HexReforgesGUI(item, finalPage - 1).open((Player) e.getWhoClicked());
                 }
+
                 @Override
-                public int getSlot()
-                {
+                public int getSlot() {
                     return 45;
                 }
+
                 @Override
-                public ItemStack getItem()
-                {
+                public ItemStack getItem() {
                     return SUtil.createNamedItemStack(Material.ARROW, ChatColor.GRAY + "<-");
                 }
             });
         }
-        if (page != pagedReforgeStones.getPageCount())
-        {
-            set(new GUIClickableItem()
-            {
+        if (page != pagedReforgeStones.getPageCount()) {
+            set(new GUIClickableItem() {
                 @Override
-                public void run(InventoryClickEvent e)
-                {
-                    new HexReforgesGUI(item,finalPage + 1).open((Player) e.getWhoClicked());
+                public void run(InventoryClickEvent e) {
+                    new HexReforgesGUI(item, finalPage + 1).open((Player) e.getWhoClicked());
                 }
+
                 @Override
-                public int getSlot()
-                {
+                public int getSlot() {
                     return 53;
                 }
+
                 @Override
-                public ItemStack getItem()
-                {
+                public ItemStack getItem() {
                     return SUtil.createNamedItemStack(Material.ARROW, ChatColor.GRAY + "->");
                 }
             });
@@ -116,19 +107,18 @@ public class HexReforgesGUI extends GUI {
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aYou selected the reforge " + SItem.find(e.getCurrentItem()).getReforge().getName() + " to be applied on your item!"));
                     selected = SItem.find(e.getCurrentItem()).getReforge();
                 }
+
                 @Override
-                public int getSlot()
-                {
+                public int getSlot() {
                     return slot;
                 }
+
                 @Override
-                public ItemStack getItem()
-                {
+                public ItemStack getItem() {
                     return items.get(finalI).getStack();
                 }
             });
         }
-
 
 
         set(GUIClickableItem.getCloseItem(49));
@@ -161,8 +151,8 @@ public class HexReforgesGUI extends GUI {
             public ItemStack getItem() {
                 return SUtil.getStack("&aApply Reforges", Material.ANVIL, (short) 0, 1,
                         Sputnik.trans3("&7Apply &aReforges&7 to your item",
-                        "&7with &aReforge Stones&7 or by",
-                        "&7rolling a &brandom&7 reforge.")
+                                "&7with &aReforge Stones&7 or by",
+                                "&7rolling a &brandom&7 reforge.")
                 );
             }
         });

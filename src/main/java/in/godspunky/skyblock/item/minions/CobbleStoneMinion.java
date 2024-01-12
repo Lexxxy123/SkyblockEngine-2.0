@@ -6,8 +6,9 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
-public class CobbleStoneMinion implements  SMinion {
+public class CobbleStoneMinion implements SMinion {
 
     @Override
     public String getDisplayName() {
@@ -36,7 +37,7 @@ public class CobbleStoneMinion implements  SMinion {
 
     @Override
     public ArrayList<ItemStack> calculateDrops(int level) {
-         return new ArrayList<ItemStack>(Arrays.asList(new ItemStack(Material.COBBLESTONE)));
+        return new ArrayList<ItemStack>(Collections.singletonList(new ItemStack(Material.COBBLESTONE)));
     }
 
 

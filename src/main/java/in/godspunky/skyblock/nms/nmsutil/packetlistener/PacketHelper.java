@@ -2,6 +2,10 @@ package in.godspunky.skyblock.nms.nmsutil.packetlistener;
 
 import in.godspunky.skyblock.nms.nmsutil.apihelper.API;
 import in.godspunky.skyblock.nms.nmsutil.apihelper.APIManager;
+import in.godspunky.skyblock.nms.nmsutil.packetlistener.channel.ChannelWrapper;
+import in.godspunky.skyblock.nms.nmsutil.packetlistener.handler.PacketHandler;
+import in.godspunky.skyblock.nms.nmsutil.packetlistener.handler.ReceivedPacket;
+import in.godspunky.skyblock.nms.nmsutil.packetlistener.handler.SentPacket;
 import in.godspunky.skyblock.util.SLog;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -11,17 +15,21 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
-import in.godspunky.skyblock.nms.nmsutil.packetlistener.channel.ChannelWrapper;
-import in.godspunky.skyblock.nms.nmsutil.packetlistener.handler.PacketHandler;
-import in.godspunky.skyblock.nms.nmsutil.packetlistener.handler.ReceivedPacket;
-import in.godspunky.skyblock.nms.nmsutil.packetlistener.handler.SentPacket;
 
 public class PacketHelper implements IPacketListener, Listener, API {
-    private ChannelInjector channelInjector;
     public boolean injected;
+    private ChannelInjector channelInjector;
 
     public PacketHelper() {
         this.injected = false;
+    }
+
+    public static boolean addPacketHandler(final PacketHandler handler) {
+        return PacketHandler.addHandler(handler);
+    }
+
+    public static boolean removePacketHandler(final PacketHandler handler) {
+        return PacketHandler.removeHandler(handler);
     }
 
     public void load() {
@@ -56,14 +64,6 @@ public class PacketHelper implements IPacketListener, Listener, API {
         while (!PacketHandler.getHandlers().isEmpty()) {
             PacketHandler.removeHandler(PacketHandler.getHandlers().get(0));
         }
-    }
-
-    public static boolean addPacketHandler(final PacketHandler handler) {
-        return PacketHandler.addHandler(handler);
-    }
-
-    public static boolean removePacketHandler(final PacketHandler handler) {
-        return PacketHandler.removeHandler(handler);
     }
 
     @EventHandler

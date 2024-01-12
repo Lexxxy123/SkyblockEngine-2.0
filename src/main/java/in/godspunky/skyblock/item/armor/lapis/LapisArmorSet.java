@@ -1,11 +1,11 @@
 package in.godspunky.skyblock.item.armor.lapis;
 
-import org.bukkit.entity.Player;
 import in.godspunky.skyblock.item.GenericItemType;
 import in.godspunky.skyblock.item.MaterialStatistics;
 import in.godspunky.skyblock.item.PlayerBoostStatistics;
 import in.godspunky.skyblock.item.Rarity;
 import in.godspunky.skyblock.item.armor.ArmorSet;
+import org.bukkit.entity.Player;
 
 public class LapisArmorSet implements ArmorSet {
     @Override
