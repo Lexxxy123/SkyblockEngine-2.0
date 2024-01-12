@@ -7,6 +7,7 @@ import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.ItemBuilder;
 import in.godspunky.skyblock.util.PaginationList;
 import in.godspunky.skyblock.util.SUtil;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -15,10 +16,12 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class SkyblockMinion {
     private SMinion sMinion;
@@ -32,6 +35,9 @@ public class SkyblockMinion {
     private int actionDelay;
     private User owner;
     private Color leatherArmorColor;
+    @Getter
+    private UUID uuid;
+
 
     public SkyblockMinion(SMaterial sMaterial , int level , Location location , User owner) {
         this.sMinion = sMaterial.getSMinion();
@@ -46,8 +52,8 @@ public class SkyblockMinion {
         this.drops = sMinion.calculateDrops(level);
         this.actionDelay = sMinion.getActionDelay(level);
         this.owner = owner;
+        this.uuid = UUID.randomUUID();
         this.leatherArmorColor = Color.fromRGB(72, 71, 59);
-
     }
 
     public void spawn() {
@@ -66,9 +72,10 @@ public class SkyblockMinion {
         this.armorStand.setLeggings(SUtil.colorLeatherArmor(new ItemBuilder("", Material.LEATHER_LEGGINGS, 1).toItemStack(), this.leatherArmorColor));
         this.armorStand.setBoots(SUtil.colorLeatherArmor(new ItemBuilder("", Material.LEATHER_BOOTS, 1).toItemStack(), this.leatherArmorColor));
         this.armorStand.setItemInHand(ItemInHand);
+        this.armorStand.setMetadata("uuid" , new FixedMetadataValue(Skyblock.getPlugin(), uuid.toString()));
+        this.armorStand.setMetadata("owner" , new FixedMetadataValue(Skyblock.getPlugin(), owner.getUuid()));
+        this.armorStand.setMetadata("minion", new FixedMetadataValue(Skyblock.getPlugin(), true));
         owner.minions.add(this);
-
-
         new BukkitRunnable(){
 
             @Override
@@ -108,6 +115,7 @@ public class SkyblockMinion {
             if (itemStack == null) continue;
             minionInventory.addItem(itemStack);
         }
+
         player.openInventory(minionInventory);
     }
 }

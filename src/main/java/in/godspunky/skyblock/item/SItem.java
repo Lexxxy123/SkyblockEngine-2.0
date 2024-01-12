@@ -531,6 +531,9 @@ public class SItem implements Cloneable, ConfigurationSerializable {
             stack.setDurability((short) 3);
             SUtil.getSkull(((SkullStatistics) statistics).getURL(), stack, specMaterial);
         }
+        if (specMaterial.getSMinion() != null){
+            stack.setDurability((short) 3);
+        }
         if (statistics instanceof LeatherArmorStatistics) {
             SUtil.applyColorToLeatherArmor(stack, Color.fromRGB(((LeatherArmorStatistics) statistics).getColor()));
         }

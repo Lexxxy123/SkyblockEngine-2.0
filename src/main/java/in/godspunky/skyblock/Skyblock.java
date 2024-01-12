@@ -29,6 +29,7 @@ import in.godspunky.skyblock.listener.PacketListener;
 import in.godspunky.skyblock.listener.ServerPingListener;
 import in.godspunky.skyblock.listener.WorldListener;
 import in.godspunky.skyblock.merchant.MerchantItemHandler;
+import in.godspunky.skyblock.minion.MinionListener;
 import in.godspunky.skyblock.nms.packetevents.*;
 import in.godspunky.skyblock.npc.SkyblockNPC;
 import in.godspunky.skyblock.ranks.PlayerChatListener;
@@ -479,6 +480,7 @@ public class Skyblock extends JavaPlugin implements PluginMessageListener, Bunge
         new in.godspunky.skyblock.listener.PlayerListener();
         new ServerPingListener();
         new ItemListener();
+        new MinionListener();
         new GUIListener();
         new PacketListener();
         new WorldListener();

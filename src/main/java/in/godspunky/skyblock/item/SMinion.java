@@ -27,4 +27,5 @@ public interface SMinion extends MaterialStatistics {
    default GenericItemType getType(){
         return GenericItemType.ITEM;
     }
+
 }
