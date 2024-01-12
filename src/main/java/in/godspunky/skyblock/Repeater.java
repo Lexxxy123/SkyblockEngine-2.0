@@ -630,12 +630,12 @@ public class Repeater {
                 }
                 if (Repeater.SBA_MAP.containsKey(uuid)) {
                     if (Repeater.SBA_MAP.get(uuid)) {
-                        sidebar.add(ChatColor.YELLOW + "www.hypixel.net");
+                        sidebar.add(ChatColor.YELLOW + "mc.godspunky.in");
                     } else {
-                        sidebar.add(ChatColor.YELLOW + "mc.skysim.sbs");
+                        sidebar.add(ChatColor.YELLOW + "mc.godspunky.in");
                     }
                 } else {
-                    sidebar.add(ChatColor.YELLOW + "mc.skysim.sbs");
+                    sidebar.add(ChatColor.YELLOW + "mc.godspunky.in");
                 }
 
 
@@ -655,7 +655,7 @@ public class Repeater {
                 sidebar2.add("If your connection is");
                 sidebar2.add("unstable, stay here!");
                 sidebar2.add(ChatColor.AQUA + "     ");
-                sidebar2.add(ChatColor.YELLOW + "skysim.sbs");
+                sidebar2.add(ChatColor.YELLOW + "godspunky.in");
 
                 sidebar2.apply(player);
             }

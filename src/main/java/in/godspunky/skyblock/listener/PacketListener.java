@@ -97,7 +97,7 @@ public class PacketListener extends PListener {
         if (Bukkit.getServer().hasWhitelist()) {
             pr.setProtocolName(ChatColor.RED + "Maintenance");
             final List<String> sample = new ArrayList<String>();
-            pr.setMOTD(Sputnik.trans("             &aSkySim Network &c[1.8-1.17]&r\n       &c&lSERVER UNDER MAINTENANCE"));
+            pr.setMOTD(Sputnik.trans("             &aSkySim Network &c[1.8-1.20]&r\n       &c&lSERVER UNDER MAINTENANCE"));
             sample.add(Sputnik.trans("&bJoin our &9Discord &bserver for more info"));
             sample.add(Sputnik.trans("&6https://discord.skysim.sbs/"));
             pr.setPlayerSample(sample);
@@ -106,9 +106,9 @@ public class PacketListener extends PListener {
         }
         if (!RebootServerCommand.secondMap.containsKey(Bukkit.getServer())) {
             final List<String> sample = new ArrayList<String>();
-            sample.add(Sputnik.trans("&cPowered by &6SkySim Engine&c"));
+            sample.add(Sputnik.trans("&cPowered by &6Skyblock Engine&c"));
             pr.setPlayerSample(sample);
-            pr.setProtocolName(ChatColor.DARK_RED + "Skyblock 1.8.x - 1.17");
+            pr.setProtocolName(ChatColor.DARK_RED + "Skyblock 1.8.x - 1.20");
         } else {
             pr.setProtocolName(ChatColor.RED + "⚠ Restarting Soon!");
             final List<String> sample = new ArrayList<String>();
@@ -119,7 +119,7 @@ public class PacketListener extends PListener {
             pr.setPlayerSample(sample);
             pr.setProtocolVersion(-1);
         }
-        pr.setMOTD(Sputnik.trans("             &aSkySim Network &c[1.8-1.17]&r\n  &c&lDIMOON & GIANTS ISLAND! &8➜ &a&lNOW LIVE!"));
+        pr.setMOTD(Sputnik.trans("             &aGodspunky Network &c[1.8-1.20]&r\n  &c&lDIMOON & GIANTS ISLAND! &8➜ &a&lNOW LIVE!"));
         pr.setMaxPlayers(50);
     }
 
