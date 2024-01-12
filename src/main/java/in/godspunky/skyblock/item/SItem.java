@@ -7,6 +7,7 @@ import in.godspunky.skyblock.potion.PotionEffect;
 import in.godspunky.skyblock.potion.PotionEffectType;
 import in.godspunky.skyblock.reforge.Reforge;
 import in.godspunky.skyblock.reforge.ReforgeType;
+import in.godspunky.skyblock.util.SLog;
 import in.godspunky.skyblock.util.SerialNBTTagCompound;
 import net.minecraft.server.v1_8_R3.Item;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
@@ -119,6 +120,34 @@ public class SItem implements Cloneable, ConfigurationSerializable {
         this.data.set("enchantments", es);
         this.update();
         return removeIf;
+    }
+
+    public void setBonusDefense(Integer nextInteger) {
+        data.setInt("bonusDefense", nextInteger);
+        update();
+    }
+    public void setNextDefense(Integer nextInteger) {
+        data.setInt("nextDefense", nextInteger);
+        update();
+    }
+    public void setRequiredKills(Integer kills) {
+        data.setInt("requiredKills", kills);
+        update();
+    }
+    public void setProgressKills(Integer kills) {
+        data.setInt("progressKills", kills);
+    }
+
+    public int getBonusDefense() {
+        return data.getInt("bonusDefense");
+    }
+    public int getRequiredKills() {
+        return data.getInt("requiredKills");
+    }
+    public int getNextDefense() { return data.getInt("nextDefense"); }
+
+    public int getProgressKills() {
+        return data.getInt("progressKills");
     }
 
     public Long getPrice() {
@@ -279,12 +308,13 @@ public class SItem implements Cloneable, ConfigurationSerializable {
         this.update();
     }
 
-    public void setKills(final Integer kills) {
-        if (!this.type.getStatistics().displayKills()) {
-            throw new UnsupportedOperationException("You cannot display kills on this item");
+    public void setKills(Integer kills) {
+        if (!type.getStatistics().displayKills()) {
+            SLog.info("Cant Add kills (test)");
+            return;
         }
-        this.data.setInt("kills", kills);
-        this.update();
+        data.setInt("kills", kills);
+        update();
     }
 
     public void setHPBs(final Integer hpbs) {

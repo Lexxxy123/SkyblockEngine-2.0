@@ -4,6 +4,7 @@ import com.mongodb.client.MongoCollection;
 import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.auction.AuctionEscrow;
 import in.godspunky.skyblock.collection.ItemCollection;
+import in.godspunky.skyblock.island.SkyblockIsland;
 import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.item.pet.Pet;
 import in.godspunky.skyblock.potion.ActivePotionEffect;
@@ -18,6 +19,7 @@ import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.SaveQueue;
 import lombok.SneakyThrows;
 import org.bson.Document;
+import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -45,23 +47,27 @@ public class SMongoLoader
 
             if (user.selectedProfile == null) {
                 createAndSaveNewProfile(uuid);
+                SkyblockIsland.getIsland(uuid).send();
                 return;
             }
 
             if (user.profiles.isEmpty()) {
                 user.profiles.put(user.selectedProfile.uuid, true);
             }
-
             loadProfile(user.selectedProfile);
+            user.toBukkitPlayer().sendMessage(ChatColor.YELLOW + "Welcome to " + ChatColor.GREEN + "Godspunky Skyblock!");
+            user.toBukkitPlayer().sendMessage(ChatColor.AQUA + "You are playing on profile: " + ChatColor.YELLOW + getActiveProfile(UUID.fromString(user.selectedProfile.uuid)));
         } else {
             createAndSaveNewProfile(uuid);
+            SkyblockIsland.getIsland(uuid).send();
         }
     }
 
-    private void createAndSaveNewProfile(UUID uuid) {
+    public void createAndSaveNewProfile(UUID uuid) {
         User user = User.getUser(uuid);
         UUID id = UUID.randomUUID();
-        Profile profile = new Profile(id.toString(), uuid, SUtil.generateRandomProfileNameFor());
+        String name = SUtil.generateRandomProfileNameFor();
+        Profile profile = new Profile(id.toString(), uuid, name);
         user.selectedProfile = profile;
         user.profiles = Collections.singletonMap(profile.uuid, true);
 
@@ -70,6 +76,15 @@ public class SMongoLoader
 
         grabProfile(id.toString());
         queue(uuid.toString(), true);
+        user.toBukkitPlayer().sendMessage(ChatColor.YELLOW + "Welcome to " + ChatColor.GREEN + "Godspunky Skyblock!");
+        user.toBukkitPlayer().sendMessage(ChatColor.AQUA + "You are playing on profile: " + ChatColor.YELLOW + name);
+    }
+
+    public String getActiveProfile(UUID uuid) {
+        Document document = grabProfile(uuid.toString());
+
+        assert document != null;
+        return document.getString("name");
     }
 
     @SneakyThrows
@@ -342,6 +357,8 @@ public class SMongoLoader
             profile.setName(Profile.getProfileNames().get(profile.uuid));
         });
 
+        owner.loadCookieStatus(profile);
+
 
         try {
             SUtil.runAsync(() -> profile.selected = owner.selectedProfile.getUuid().equals(profile.getUuid()));
@@ -387,6 +404,7 @@ public class SMongoLoader
                     .append("remaining", effect.getRemaining());
             effectsDocuments.add(effectDocument);
         }
+        User.getUser(profile.owner).saveCookie(profile);
         setProfileProperty("effects", effectsDocuments);
         setProfileProperty("skillFarmingXp", profile.farmingXP);
         setProfileProperty("skillMiningXp", profile.miningXP);

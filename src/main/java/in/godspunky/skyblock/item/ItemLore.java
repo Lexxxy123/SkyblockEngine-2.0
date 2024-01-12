@@ -339,6 +339,21 @@ public class ItemLore {
                 lore.add("");
             }
         }
+
+        List<String> KillBonusLore = this.parent.getType().getStatistics().killReplacementLore();
+        if (KillBonusLore != null) {
+            for (String line : KillBonusLore) {
+                String line1 = line.replaceAll("<SKYBLOCK_BONUS_DEFENSE>", String.valueOf(this.parent.getBonusDefense()))
+                        .replaceAll("<SKYBLOCK_NEXT_DEFENSE>", String.valueOf(this.parent.getNextDefense()))
+                        .replaceAll("<SKYBLOCK_CURRENT_KILLS>", String.valueOf(this.parent.getProgressKills()))
+                        .replaceAll("<SKYBLOCK_REQUIRED_KILLS>", String.valueOf(this.parent.getRequiredKills()));
+                lore.add(SUtil.color(ChatColor.GRAY + line1));
+            }
+            if (KillBonusLore.size() != 0) {
+                lore.add("");
+            }
+        }
+
         if (this.parent.getType() == SMaterial.HIDDEN_DONATOR_HELMET) {
             final String p = this.parent.getDataString("p_given");
             if (Bukkit.getPlayer(p) != null) {

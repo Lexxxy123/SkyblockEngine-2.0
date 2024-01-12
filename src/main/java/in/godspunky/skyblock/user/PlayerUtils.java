@@ -5,9 +5,7 @@ import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.dungeons.ItemSerial;
 import in.godspunky.skyblock.enchantment.Enchantment;
 import in.godspunky.skyblock.enchantment.EnchantmentType;
-import in.godspunky.skyblock.entity.EntityDrop;
-import in.godspunky.skyblock.entity.EntityDropType;
-import in.godspunky.skyblock.entity.EntityFunction;
+import in.godspunky.skyblock.entity.*;
 import in.godspunky.skyblock.entity.dungeons.watcher.Watcher;
 import in.godspunky.skyblock.entity.nms.SlayerBoss;
 import in.godspunky.skyblock.extra.protocol.PacketInvoker;
@@ -40,7 +38,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 import in.godspunky.skyblock.Repeater;
-import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.gui.SlayerGUI;
 import in.godspunky.skyblock.listener.PlayerListener;
 
@@ -263,6 +260,11 @@ public final class PlayerUtils {
             if (piece.getType() == SMaterial.WARDEN_HELMET || piece.getType() == SMaterial.HIDDEN_VOIDLINGS_WARDEN_HELMET) {
                 speed.sub(slot, Double.valueOf(statistics.getSpeed().addAll() / 2.0));
             }
+
+            if (piece.getBonusDefense() > 0) {
+                defense.add(slot, (double) piece.getBonusDefense());
+            }
+
             final TickingMaterial tickingMaterial = piece.getType().getTickingInstance();
             if (tickingMaterial != null) {
                 statistics.tickItem(slot, tickingMaterial.getInterval(), () -> tickingMaterial.tick(piece, Bukkit.getPlayer(statistics.getUuid())));
@@ -1237,9 +1239,553 @@ public final class PlayerUtils {
                     }
                     rare = true;
                 }
+
+                PlayerInventory inventory = damager.getInventory();
+
+                SItem helmet = null;
+                SItem chestplate = null;
+                SItem leggings = null;
+                SItem boots = null;
+
+                if (inventory.getHelmet() != null) {
+                    helmet = SItem.find(inventory.getHelmet());
+                }
+
+                if (inventory.getChestplate() != null) {
+                    chestplate = SItem.find(inventory.getChestplate());
+                }
+
+                if (inventory.getLeggings() != null) {
+                    leggings = SItem.find(inventory.getLeggings());
+                }
+
+                if (inventory.getBoots() != null) {
+                    boots = SItem.find(inventory.getBoots());
+                }
+
+                if(sEntity.getEntity().getType() == SEntityType.ENDERMAN.getCraftType()){
+                    if (SItem.find(inventory.getHelmet()) != null) {
+                        if (SItem.find(inventory.getHelmet()).getType().equals(SMaterial.FINAL_DESTINATION_HELMET)) {
+                            //Access Kills.
+                            int kills = SItem.find(inventory.getHelmet()).getDataInt("kills");
+
+                            kills++;
+                            SItem.find(inventory.getHelmet()).setKills(kills);
+
+                            SItem.find(inventory.getHelmet()).setProgressKills(kills);
+
+                            if (kills < 100) {
+                                SItem.find(inventory.getHelmet()).setRequiredKills(100);
+                                SItem.find(inventory.getHelmet()).setNextDefense(20);
+                            }
+
+                            if (kills == 100) {
+                                SItem.find(inventory.getHelmet()).setBonusDefense(20);
+                                SItem.find(inventory.getHelmet()).setRequiredKills(200);
+                                SItem.find(inventory.getHelmet()).setNextDefense(40);
+                            }
+
+                            if (kills == 200) {
+                                SItem.find(inventory.getHelmet()).setBonusDefense(40);
+                                SItem.find(inventory.getHelmet()).setRequiredKills(300);
+                                SItem.find(inventory.getHelmet()).setNextDefense(60);
+                            }
+
+                            if (kills == 300) {
+                                SItem.find(inventory.getHelmet()).setBonusDefense(60);
+                                SItem.find(inventory.getHelmet()).setRequiredKills(500);
+                                SItem.find(inventory.getHelmet()).setNextDefense(90);
+                            }
+
+                            if (kills == 500) {
+                                SItem.find(inventory.getHelmet()).setBonusDefense(90);
+                                SItem.find(inventory.getHelmet()).setRequiredKills(800);
+                                SItem.find(inventory.getHelmet()).setNextDefense(120);
+                            }
+
+                            if (kills == 800) {
+                                SItem.find(inventory.getHelmet()).setBonusDefense(120);
+                                SItem.find(inventory.getHelmet()).setRequiredKills(1200);
+                                SItem.find(inventory.getHelmet()).setNextDefense(150);
+                            }
+
+                            if (kills == 1200) {
+                                SItem.find(inventory.getHelmet()).setBonusDefense(150);
+                                SItem.find(inventory.getHelmet()).setRequiredKills(1750);
+                                SItem.find(inventory.getHelmet()).setNextDefense(180);
+                            }
+
+                            if (kills == 1750) {
+                                SItem.find(inventory.getHelmet()).setBonusDefense(180);
+                                SItem.find(inventory.getHelmet()).setRequiredKills(2500);
+                                SItem.find(inventory.getHelmet()).setNextDefense(210);
+                            }
+
+                            if (kills == 2500) {
+                                SItem.find(inventory.getHelmet()).setBonusDefense(210);
+                                SItem.find(inventory.getHelmet()).setRequiredKills(3500);
+                                SItem.find(inventory.getHelmet()).setNextDefense(240);
+                            }
+
+                            if (kills == 3500) {
+                                SItem.find(inventory.getHelmet()).setBonusDefense(240);
+                                SItem.find(inventory.getHelmet()).setRequiredKills(5000);
+                                SItem.find(inventory.getHelmet()).setNextDefense(270);
+                            }
+
+                            if (kills == 5000) {
+                                SItem.find(inventory.getHelmet()).setBonusDefense(270);
+                                SItem.find(inventory.getHelmet()).setRequiredKills(10000);
+                                SItem.find(inventory.getHelmet()).setNextDefense(310);
+                            }
+
+                            if (kills == 10000) {
+                                SItem.find(inventory.getHelmet()).setBonusDefense(310);
+                                SItem.find(inventory.getHelmet()).setRequiredKills(25000);
+                                SItem.find(inventory.getHelmet()).setNextDefense(335);
+                            }
+
+                            if (kills == 25000) {
+                                SItem.find(inventory.getHelmet()).setBonusDefense(335);
+                                SItem.find(inventory.getHelmet()).setRequiredKills(50000);
+                                SItem.find(inventory.getHelmet()).setNextDefense(355);
+                            }
+
+                            if (kills == 50000) {
+                                SItem.find(inventory.getHelmet()).setBonusDefense(355);
+                                SItem.find(inventory.getHelmet()).setRequiredKills(75000);
+                                SItem.find(inventory.getHelmet()).setNextDefense(370);
+                            }
+
+                            if (kills == 75000) {
+                                SItem.find(inventory.getHelmet()).setBonusDefense(370);
+                                SItem.find(inventory.getHelmet()).setRequiredKills(100000);
+                                SItem.find(inventory.getHelmet()).setNextDefense(380);
+                            }
+
+                            if (kills == 100000) {
+                                SItem.find(inventory.getHelmet()).setBonusDefense(380);
+                                SItem.find(inventory.getHelmet()).setRequiredKills(125000);
+                                SItem.find(inventory.getHelmet()).setNextDefense(390);
+                            }
+
+                            if (kills == 125000) {
+                                SItem.find(inventory.getHelmet()).setBonusDefense(390);
+                                SItem.find(inventory.getHelmet()).setRequiredKills(150000);
+                                SItem.find(inventory.getHelmet()).setNextDefense(395);
+                            }
+
+                            if (kills == 150000) {
+                                SItem.find(inventory.getHelmet()).setBonusDefense(395);
+                                SItem.find(inventory.getHelmet()).setRequiredKills(200000);
+                                SItem.find(inventory.getHelmet()).setNextDefense(400);
+                            }
+
+                            if (kills == 200000) {
+                                SItem.find(inventory.getHelmet()).setBonusDefense(400);
+                            }
+                        }
+                    }
+
+                    if (SItem.find(inventory.getChestplate()) != null) {
+                        if (SItem.find(inventory.getChestplate()).getType().equals(SMaterial.FINAL_DESTINATION_CHESTPLATE)) {
+                            //Access Kills.
+                            int kills = SItem.find(inventory.getChestplate()).getDataInt("kills");
+
+                            kills++;
+                            SItem.find(inventory.getChestplate()).setKills(kills);
+
+                            SItem.find(inventory.getChestplate()).setProgressKills(kills);
+
+                            if (kills < 100) {
+                                SItem.find(inventory.getChestplate()).setRequiredKills(100);
+                                SItem.find(inventory.getChestplate()).setNextDefense(20);
+                            }
+
+                            if (kills == 100) {
+                                SItem.find(inventory.getChestplate()).setBonusDefense(20);
+                                SItem.find(inventory.getChestplate()).setRequiredKills(200);
+                                SItem.find(inventory.getChestplate()).setNextDefense(40);
+                            }
+
+                            if (kills == 200) {
+                                SItem.find(inventory.getChestplate()).setBonusDefense(40);
+                                SItem.find(inventory.getChestplate()).setRequiredKills(300);
+                                SItem.find(inventory.getChestplate()).setNextDefense(60);
+                            }
+
+                            if (kills == 300) {
+                                SItem.find(inventory.getChestplate()).setBonusDefense(60);
+                                SItem.find(inventory.getChestplate()).setRequiredKills(500);
+                                SItem.find(inventory.getChestplate()).setNextDefense(90);
+                            }
+
+                            if (kills == 500) {
+                                SItem.find(inventory.getChestplate()).setBonusDefense(90);
+                                SItem.find(inventory.getChestplate()).setRequiredKills(800);
+                                SItem.find(inventory.getChestplate()).setNextDefense(120);
+                            }
+
+                            if (kills == 800) {
+                                SItem.find(inventory.getChestplate()).setBonusDefense(120);
+                                SItem.find(inventory.getChestplate()).setRequiredKills(1200);
+                                SItem.find(inventory.getChestplate()).setNextDefense(150);
+                            }
+
+                            if (kills == 1200) {
+                                SItem.find(inventory.getChestplate()).setBonusDefense(150);
+                                SItem.find(inventory.getChestplate()).setRequiredKills(1750);
+                                SItem.find(inventory.getChestplate()).setNextDefense(180);
+                            }
+
+                            if (kills == 1750) {
+                                SItem.find(inventory.getChestplate()).setBonusDefense(180);
+                                SItem.find(inventory.getChestplate()).setRequiredKills(2500);
+                                SItem.find(inventory.getChestplate()).setNextDefense(210);
+                            }
+
+                            if (kills == 2500) {
+                                SItem.find(inventory.getChestplate()).setBonusDefense(210);
+                                SItem.find(inventory.getChestplate()).setRequiredKills(3500);
+                                SItem.find(inventory.getChestplate()).setNextDefense(240);
+                            }
+
+                            if (kills == 3500) {
+                                SItem.find(inventory.getChestplate()).setBonusDefense(240);
+                                SItem.find(inventory.getChestplate()).setRequiredKills(5000);
+                                SItem.find(inventory.getChestplate()).setNextDefense(270);
+                            }
+
+                            if (kills == 5000) {
+                                SItem.find(inventory.getChestplate()).setBonusDefense(270);
+                                SItem.find(inventory.getChestplate()).setRequiredKills(10000);
+                                SItem.find(inventory.getChestplate()).setNextDefense(310);
+                            }
+
+                            if (kills == 10000) {
+                                SItem.find(inventory.getChestplate()).setBonusDefense(310);
+                                SItem.find(inventory.getChestplate()).setRequiredKills(25000);
+                                SItem.find(inventory.getChestplate()).setNextDefense(335);
+                            }
+
+                            if (kills == 25000) {
+                                SItem.find(inventory.getChestplate()).setBonusDefense(335);
+                                SItem.find(inventory.getChestplate()).setRequiredKills(50000);
+                                SItem.find(inventory.getChestplate()).setNextDefense(355);
+                            }
+
+                            if (kills == 50000) {
+                                SItem.find(inventory.getChestplate()).setBonusDefense(355);
+                                SItem.find(inventory.getChestplate()).setRequiredKills(75000);
+                                SItem.find(inventory.getChestplate()).setNextDefense(370);
+                            }
+
+                            if (kills == 75000) {
+                                SItem.find(inventory.getChestplate()).setBonusDefense(370);
+                                SItem.find(inventory.getChestplate()).setRequiredKills(100000);
+                                SItem.find(inventory.getChestplate()).setNextDefense(380);
+                            }
+
+                            if (kills == 100000) {
+                                SItem.find(inventory.getChestplate()).setBonusDefense(380);
+                                SItem.find(inventory.getChestplate()).setRequiredKills(125000);
+                                SItem.find(inventory.getChestplate()).setNextDefense(390);
+                            }
+
+                            if (kills == 125000) {
+                                SItem.find(inventory.getChestplate()).setBonusDefense(390);
+                                SItem.find(inventory.getChestplate()).setRequiredKills(150000);
+                                SItem.find(inventory.getChestplate()).setNextDefense(395);
+                            }
+
+                            if (kills == 150000) {
+                                SItem.find(inventory.getChestplate()).setBonusDefense(395);
+                                SItem.find(inventory.getChestplate()).setRequiredKills(200000);
+                                SItem.find(inventory.getChestplate()).setNextDefense(400);
+                            }
+
+                            if (kills == 200000) {
+                                SItem.find(inventory.getChestplate()).setBonusDefense(400);
+                            }
+                        }
+                    }
+
+                    if (SItem.find(inventory.getLeggings()) != null) {
+                        if (SItem.find(inventory.getLeggings()).getType().equals(SMaterial.FINAL_DESTINATION_LEGGINGS)) {
+                            //Access Kills.
+                            int kills = SItem.find(inventory.getLeggings()).getDataInt("kills");
+
+                            kills++;
+                            SItem.find(inventory.getLeggings()).setKills(kills);
+
+                            SItem.find(inventory.getLeggings()).setProgressKills(kills);
+
+                            if (kills < 100) {
+                                SItem.find(inventory.getLeggings()).setRequiredKills(100);
+                                SItem.find(inventory.getLeggings()).setNextDefense(20);
+                            }
+
+                            if (kills == 100) {
+                                SItem.find(inventory.getLeggings()).setBonusDefense(20);
+                                SItem.find(inventory.getLeggings()).setRequiredKills(200);
+                                SItem.find(inventory.getLeggings()).setNextDefense(40);
+                            }
+
+                            if (kills == 200) {
+                                SItem.find(inventory.getLeggings()).setBonusDefense(40);
+                                SItem.find(inventory.getLeggings()).setRequiredKills(300);
+                                SItem.find(inventory.getLeggings()).setNextDefense(60);
+                            }
+
+                            if (kills == 300) {
+                                SItem.find(inventory.getLeggings()).setBonusDefense(60);
+                                SItem.find(inventory.getLeggings()).setRequiredKills(500);
+                                SItem.find(inventory.getLeggings()).setNextDefense(90);
+                            }
+
+                            if (kills == 500) {
+                                SItem.find(inventory.getLeggings()).setBonusDefense(90);
+                                SItem.find(inventory.getLeggings()).setRequiredKills(800);
+                                SItem.find(inventory.getLeggings()).setNextDefense(120);
+                            }
+
+                            if (kills == 800) {
+                                SItem.find(inventory.getLeggings()).setBonusDefense(120);
+                                SItem.find(inventory.getLeggings()).setRequiredKills(1200);
+                                SItem.find(inventory.getLeggings()).setNextDefense(150);
+                            }
+
+                            if (kills == 1200) {
+                                SItem.find(inventory.getLeggings()).setBonusDefense(150);
+                                SItem.find(inventory.getLeggings()).setRequiredKills(1750);
+                                SItem.find(inventory.getLeggings()).setNextDefense(180);
+                            }
+
+                            if (kills == 1750) {
+                                SItem.find(inventory.getLeggings()).setBonusDefense(180);
+                                SItem.find(inventory.getLeggings()).setRequiredKills(2500);
+                                SItem.find(inventory.getLeggings()).setNextDefense(210);
+                            }
+
+                            if (kills == 2500) {
+                                SItem.find(inventory.getLeggings()).setBonusDefense(210);
+                                SItem.find(inventory.getLeggings()).setRequiredKills(3500);
+                                SItem.find(inventory.getLeggings()).setNextDefense(240);
+                            }
+
+                            if (kills == 3500) {
+                                SItem.find(inventory.getLeggings()).setBonusDefense(240);
+                                SItem.find(inventory.getLeggings()).setRequiredKills(5000);
+                                SItem.find(inventory.getLeggings()).setNextDefense(270);
+                            }
+
+                            if (kills == 5000) {
+                                SItem.find(inventory.getLeggings()).setBonusDefense(270);
+                                SItem.find(inventory.getLeggings()).setRequiredKills(10000);
+                                SItem.find(inventory.getLeggings()).setNextDefense(310);
+                            }
+
+                            if (kills == 10000) {
+                                SItem.find(inventory.getLeggings()).setBonusDefense(310);
+                                SItem.find(inventory.getLeggings()).setRequiredKills(25000);
+                                SItem.find(inventory.getLeggings()).setNextDefense(335);
+                            }
+
+                            if (kills == 25000) {
+                                SItem.find(inventory.getLeggings()).setBonusDefense(335);
+                                SItem.find(inventory.getLeggings()).setRequiredKills(50000);
+                                SItem.find(inventory.getLeggings()).setNextDefense(355);
+                            }
+
+                            if (kills == 50000) {
+                                SItem.find(inventory.getLeggings()).setBonusDefense(355);
+                                SItem.find(inventory.getLeggings()).setRequiredKills(75000);
+                                SItem.find(inventory.getLeggings()).setNextDefense(370);
+                            }
+
+                            if (kills == 75000) {
+                                SItem.find(inventory.getLeggings()).setBonusDefense(370);
+                                SItem.find(inventory.getLeggings()).setRequiredKills(100000);
+                                SItem.find(inventory.getLeggings()).setNextDefense(380);
+                            }
+
+                            if (kills == 100000) {
+                                SItem.find(inventory.getLeggings()).setBonusDefense(380);
+                                SItem.find(inventory.getLeggings()).setRequiredKills(125000);
+                                SItem.find(inventory.getLeggings()).setNextDefense(390);
+                            }
+
+                            if (kills == 125000) {
+                                SItem.find(inventory.getLeggings()).setBonusDefense(390);
+                                SItem.find(inventory.getLeggings()).setRequiredKills(150000);
+                                SItem.find(inventory.getLeggings()).setNextDefense(395);
+                            }
+
+                            if (kills == 150000) {
+                                SItem.find(inventory.getLeggings()).setBonusDefense(395);
+                                SItem.find(inventory.getLeggings()).setRequiredKills(200000);
+                                SItem.find(inventory.getLeggings()).setNextDefense(400);
+                            }
+
+                            if (kills == 200000) {
+                                SItem.find(inventory.getLeggings()).setBonusDefense(400);
+                            }
+                        }
+                    }
+
+                    if (SItem.find(inventory.getBoots()) != null) {
+                        if (SItem.find(inventory.getBoots()).getType().equals(SMaterial.FINAL_DESTINATION_BOOTS)) {
+                            //Access Kills.
+                            int kills = SItem.find(inventory.getBoots()).getDataInt("kills");
+
+                            kills++;
+                            SItem.find(inventory.getBoots()).setKills(kills);
+
+                            SItem.find(inventory.getBoots()).setProgressKills(kills);
+
+                            if (kills < 100) {
+                                SItem.find(inventory.getBoots()).setRequiredKills(100);
+                                SItem.find(inventory.getBoots()).setNextDefense(20);
+                            }
+
+                            if (kills == 100) {
+                                SItem.find(inventory.getBoots()).setBonusDefense(20);
+                                SItem.find(inventory.getBoots()).setRequiredKills(200);
+                                SItem.find(inventory.getBoots()).setNextDefense(40);
+                            }
+
+                            if (kills == 200) {
+                                SItem.find(inventory.getBoots()).setBonusDefense(40);
+                                SItem.find(inventory.getBoots()).setRequiredKills(300);
+                                SItem.find(inventory.getBoots()).setNextDefense(60);
+                            }
+
+                            if (kills == 300) {
+                                SItem.find(inventory.getBoots()).setBonusDefense(60);
+                                SItem.find(inventory.getBoots()).setRequiredKills(500);
+                                SItem.find(inventory.getBoots()).setNextDefense(90);
+                            }
+
+                            if (kills == 500) {
+                                SItem.find(inventory.getBoots()).setBonusDefense(90);
+                                SItem.find(inventory.getBoots()).setRequiredKills(800);
+                                SItem.find(inventory.getBoots()).setNextDefense(120);
+                            }
+
+                            if (kills == 800) {
+                                SItem.find(inventory.getBoots()).setBonusDefense(120);
+                                SItem.find(inventory.getBoots()).setRequiredKills(1200);
+                                SItem.find(inventory.getBoots()).setNextDefense(150);
+                            }
+
+                            if (kills == 1200) {
+                                SItem.find(inventory.getBoots()).setBonusDefense(150);
+                                SItem.find(inventory.getBoots()).setRequiredKills(1750);
+                                SItem.find(inventory.getBoots()).setNextDefense(180);
+                            }
+
+                            if (kills == 1750) {
+                                SItem.find(inventory.getBoots()).setBonusDefense(180);
+                                SItem.find(inventory.getBoots()).setRequiredKills(2500);
+                                SItem.find(inventory.getBoots()).setNextDefense(210);
+                            }
+
+                            if (kills == 2500) {
+                                SItem.find(inventory.getBoots()).setBonusDefense(210);
+                                SItem.find(inventory.getBoots()).setRequiredKills(3500);
+                                SItem.find(inventory.getBoots()).setNextDefense(240);
+                            }
+
+                            if (kills == 3500) {
+                                SItem.find(inventory.getBoots()).setBonusDefense(240);
+                                SItem.find(inventory.getBoots()).setRequiredKills(5000);
+                                SItem.find(inventory.getBoots()).setNextDefense(270);
+                            }
+
+                            if (kills == 5000) {
+                                SItem.find(inventory.getBoots()).setBonusDefense(270);
+                                SItem.find(inventory.getBoots()).setRequiredKills(10000);
+                                SItem.find(inventory.getBoots()).setNextDefense(310);
+                            }
+
+                            if (kills == 10000) {
+                                SItem.find(inventory.getBoots()).setBonusDefense(310);
+                                SItem.find(inventory.getBoots()).setRequiredKills(25000);
+                                SItem.find(inventory.getBoots()).setNextDefense(335);
+                            }
+
+                            if (kills == 25000) {
+                                SItem.find(inventory.getBoots()).setBonusDefense(335);
+                                SItem.find(inventory.getBoots()).setRequiredKills(50000);
+                                SItem.find(inventory.getBoots()).setNextDefense(355);
+                            }
+
+                            if (kills == 50000) {
+                                SItem.find(inventory.getBoots()).setBonusDefense(355);
+                                SItem.find(inventory.getBoots()).setRequiredKills(75000);
+                                SItem.find(inventory.getBoots()).setNextDefense(370);
+                            }
+
+                            if (kills == 75000) {
+                                SItem.find(inventory.getBoots()).setBonusDefense(370);
+                                SItem.find(inventory.getBoots()).setRequiredKills(100000);
+                                SItem.find(inventory.getBoots()).setNextDefense(380);
+                            }
+
+                            if (kills == 100000) {
+                                SItem.find(inventory.getBoots()).setBonusDefense(380);
+                                SItem.find(inventory.getBoots()).setRequiredKills(125000);
+                                SItem.find(inventory.getBoots()).setNextDefense(390);
+                            }
+
+                            if (kills == 125000) {
+                                SItem.find(inventory.getBoots()).setBonusDefense(390);
+                                SItem.find(inventory.getBoots()).setRequiredKills(150000);
+                                SItem.find(inventory.getBoots()).setNextDefense(395);
+                            }
+
+                            if (kills == 150000) {
+                                SItem.find(inventory.getBoots()).setBonusDefense(395);
+                                SItem.find(inventory.getBoots()).setRequiredKills(200000);
+                                SItem.find(inventory.getBoots()).setNextDefense(400);
+                            }
+
+                            if (kills == 200000) {
+                                SItem.find(inventory.getBoots()).setBonusDefense(400);
+                            }
+                        }
+                    }
+
+                    if (inventory.getHelmet() != null) {
+                        SItem.find(inventory.getHelmet()).update();
+                    }
+
+                    if (inventory.getChestplate() != null) {
+                        SItem.find(inventory.getChestplate()).update();
+                    }
+
+                    if (inventory.getLeggings() != null) {
+                        SItem.find(inventory.getLeggings()).update();
+                    }
+
+                    if (inventory.getBoots() != null) {
+                        SItem.find(inventory.getBoots()).update();
+                    }
+
+                    PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(damager.getUniqueId());
+
+                    updateArmorStatistics(SItem.find(inventory.getHelmet()), statistics, PlayerStatistic.HELMET);
+                    updateArmorStatistics(SItem.find(inventory.getChestplate()), statistics, PlayerStatistic.CHESTPLATE);
+                    updateArmorStatistics(SItem.find(inventory.getLeggings()), statistics, PlayerStatistic.LEGGINGS);
+                    updateArmorStatistics(SItem.find(inventory.getBoots()), statistics, PlayerStatistic.BOOTS);
+
+                    function.onDeath(sEntity, entity, damager);
+
+                }
             }
         }
     }
+
 
     public static void finishSlayerQuest(final UUID uuid) {
         final Player damager = Bukkit.getPlayer(uuid);
@@ -1350,7 +1896,7 @@ public final class PlayerUtils {
         return returnval;
     }
 
-    public static long getCookieDurationTicks(final Player p) {
+    public static Long getCookieDurationTicks(final Player p) {
         if (PlayerUtils.COOKIE_DURATION_CACHE.containsKey(p.getUniqueId())) {
             return PlayerUtils.COOKIE_DURATION_CACHE.get(p.getUniqueId());
         }
