@@ -27,6 +27,8 @@ import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.item.pet.Pet;
 import in.godspunky.skyblock.listener.PlayerListener;
 import in.godspunky.skyblock.minion.SkyblockMinion;
+
+import in.godspunky.skyblock.objectives.QuestLine;
 import in.godspunky.skyblock.potion.ActivePotionEffect;
 import in.godspunky.skyblock.potion.PotionEffect;
 import in.godspunky.skyblock.potion.PotionEffectType;
@@ -120,6 +122,9 @@ public class User {
     private double cataXP;
     private double berserkXP;
     private double healerXP;
+
+    private List<String> completedQuests;
+    private List<String> completedObjectives;
     //  @Getter
     //  private SkyblockIsland island;
     private double tankXP;
@@ -177,6 +182,8 @@ public class User {
         this.crystalLVL = new int[8];
         this.permanentCoins = false;
         this.pets = new ArrayList<Pet.PetItem>();
+        this.completedQuests = new ArrayList<>();
+        this.completedObjectives = new ArrayList<>();
         this.auctionSettings = new AuctionSettings();
         this.auctionCreationBIN = false;
         this.auctionEscrow = new AuctionEscrow();
@@ -219,6 +226,26 @@ public class User {
         } catch (final IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<String> getCompletedQuests() {
+        return completedQuests;
+    }
+
+    public void setCompletedQuests(List<String> completedQuests) {
+        this.completedQuests = completedQuests;
+    }
+
+    public List<String> getCompletedObjectives() {
+        return completedObjectives;
+    }
+
+    public void setCompletedObjectives(List<String> completedObjectives) {
+        this.completedObjectives = completedObjectives;
+    }
+
+    public QuestLine getQuestLine() {
+        return Skyblock.getPlugin().getQuestLineHandler().getFromPlayer(this);
     }
 
     public static User getUser(final UUID uuid) {
@@ -352,7 +379,7 @@ public class User {
     }
 
     /*public void loadEconomy() {
-        Economy eco = GodSpunkyEngine.getEconomy();
+        Economy eco = Skyblock.getEconomy();
         Player player = Bukkit.getPlayer(this.uuid);
         if (document.containsKey("database.godspunky_bits")) {
             eco.withdrawPlayer(player, eco.getBalance(player));
@@ -364,7 +391,7 @@ public class User {
         if (Bukkit.getPlayer(this.uuid) == null) {
             return;
         }
-        set("database.godspunky_bits", GodSpunkyEngine.getEconomy().getBalance((OfflinePlayer)Bukkit.getPlayer(this.uuid)));
+        set("database.godspunky_bits", Skyblock.getEconomy().getBalance((OfflinePlayer)Bukkit.getPlayer(this.uuid)));
     }*/
 
     public String getPureListFrom(Inventory piv) {
@@ -1423,6 +1450,14 @@ public class User {
             }
             return false;
         }).collect(Collectors.toList());
+    }
+
+    public Region getRegion() {
+        if (isOnIsland() || isOnUserIsland()) {
+            return Region.getIslandRegion();
+        }
+
+        return Region.getRegionOfEntity(Bukkit.getPlayer(this.uuid));
     }
 
     public List<AuctionItem> getAuctions() {

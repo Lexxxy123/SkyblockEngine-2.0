@@ -534,10 +534,6 @@ public class SItem implements Cloneable, ConfigurationSerializable {
     }
 
     public void setKills(Integer kills) {
-        if (!type.getStatistics().displayKills()) {
-            SLog.info("Cant Add kills (test)");
-            return;
-        }
         data.setInt("kills", kills);
         update();
     }

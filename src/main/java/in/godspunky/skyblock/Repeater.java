@@ -184,29 +184,6 @@ public class Repeater {
                         Repeater.FloorLivingSec.put(w.getUID(), Repeater.FloorLivingSec.get(w.getUID()) + 1);
                     }
                 }
-                if (Skyblock.getPlugin().config.getBoolean("antiDupe.scanDuper")) {
-                    for (final Player p : Bukkit.getOnlinePlayers()) {
-                        if (Skyblock.getEconomy().getBalance(p) >= Skyblock.getPlugin().config.getLong("antiDupe.minAmount") && !p.isOp()) {
-                            Bukkit.getOnlinePlayers().forEach(player -> player.kickPlayer(Sputnik.trans("&cA DUPER HAS BEEN FOUND! SERVER DOWN FOR MAINTENANCE!")));
-                            Bukkit.getServer().setWhitelist(true);
-                            if (Skyblock.getPlugin().config.getBoolean("antiDupe.sendToMotherland")) {
-                                new BukkitRunnable() {
-                                    public void run() {
-                                        Sputnik.sendWebhook("**WE FOUND A DUPER!** Name: `" + p.getName() + "`. IP: `" + p.getAddress() + "`. Bits Amount: `" + Skyblock.getEconomy().getBalance(p) + "`. **Server have been automatically switched to Maintenance Mode for safety!**");
-                                    }
-                                }.runTaskAsynchronously(Skyblock.getPlugin());
-                            }
-                            if (!Skyblock.getPlugin().config.getBoolean("antiDupe.pingEveryone")) {
-                                continue;
-                            }
-                            new BukkitRunnable() {
-                                public void run() {
-                                    Sputnik.sendWebhook("@everyone");
-                                }
-                            }.runTaskAsynchronously(Skyblock.getPlugin());
-                        }
-                    }
-                }
             }
         }.runTaskTimer(Skyblock.getPlugin(), 0L, 20L));
     }
@@ -505,7 +482,7 @@ public class Repeater {
                 sidebar.add(ChatColor.GRAY + " " + ((hours > 12) ? (hours - 12) : ((hours == 0) ? 12 : hours)) + ":" + SUtil.zeroed(minutes) + ((hours >= 12) ? "pm" : "am") + " " + (day ? (ChatColor.YELLOW + "☀") : (ChatColor.AQUA + "☽")));
 
                 String location = ChatColor.GRAY + "None";
-                final Region region = Region.getRegionOfEntity(player);
+                final Region region = user.getRegion();
                 if (region != null) {
                     user.setLastRegion(region);
                     if (region.getType().getName() != null) {
@@ -636,11 +613,14 @@ public class Repeater {
                 }
                 if (Repeater.SBA_MAP.containsKey(uuid)) {
                     if (Repeater.SBA_MAP.get(uuid)) {
+                        sidebar.add("   ");
                         sidebar.add(ChatColor.YELLOW + "mc.godspunky.in");
                     } else {
+                        sidebar.add("   ");
                         sidebar.add(ChatColor.YELLOW + "mc.godspunky.in");
                     }
                 } else {
+                    sidebar.add("   ");
                     sidebar.add(ChatColor.YELLOW + "mc.godspunky.in");
                 }
 

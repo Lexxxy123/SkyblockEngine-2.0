@@ -7,6 +7,10 @@ public enum GUIType {
     CRAFTING_TABLE(CraftingTableGUI.class),
     ITEM_BROWSE(ItemBrowserGUI.class),
 
+    WARP(FastTravelGUI.class),
+    FIRE_SALE(FireSaleGUI.class),
+
+
     Admin_Items(AdminItemGui.class),
     ANVIL(AnvilGUI.class),
     TRASH(TrashGUI.class),

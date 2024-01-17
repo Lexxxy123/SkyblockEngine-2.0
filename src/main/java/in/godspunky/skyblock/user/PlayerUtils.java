@@ -28,7 +28,6 @@ import in.godspunky.skyblock.skill.Skill;
 import in.godspunky.skyblock.slayer.SlayerBossType;
 import in.godspunky.skyblock.slayer.SlayerQuest;
 import in.godspunky.skyblock.util.*;
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -362,9 +361,8 @@ public final class PlayerUtils {
             } else if (pet2.getDisplayName().equals("Golden Tiger")) {
                 magicFind.add(7, Double.valueOf(strength2 / 100.0 / 100.0));
                 if (active.getRarity().isAtLeast(Rarity.MYTHIC)) {
-                    final Economy e = Skyblock.getEconomy();
                     int count = 0;
-                    for (long num = (long) e.getBalance(player); num != 0L; num /= 10L, ++count) {
+                    for (long num = user.getCoins(); num != 0L; num /= 10L, ++count) {
                     }
                     ferocity.add(7, Double.valueOf(count * (level2 * 0.1)));
                     magicFind.add(7, Double.valueOf(count * (level2 * 0.05) / 100.0));
@@ -1138,9 +1136,6 @@ public final class PlayerUtils {
                 final SItem sitem1 = SItem.find(damager.getItemInHand());
                 if (sitem1 != null && sitem1.getEnchantment(EnchantmentType.SOUL_EATER) != null && sitem1.getType() != SMaterial.ENCHANTED_BOOK) {
                     PlayerUtils.SOUL_EATER_MAP.put(damager.getUniqueId(), sEntity);
-                }
-                if (sitem1 != null && sitem1.getEnchantment(EnchantmentType.TURBO_GEM) != null && sitem1.getType() != SMaterial.ENCHANTED_BOOK) {
-                    Skyblock.getEconomy().depositPlayer(damager, sitem1.getEnchantment(EnchantmentType.TURBO_GEM).getLevel());
                 }
                 final User user = User.getUser(damager.getUniqueId());
                 double xpDropped = sEntity.getStatistics().getXPDropped();

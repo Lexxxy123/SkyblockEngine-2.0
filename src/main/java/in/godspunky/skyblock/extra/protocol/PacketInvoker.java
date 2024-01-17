@@ -102,10 +102,6 @@ public class PacketInvoker {
                                 final Item item = SUtil.spawnPersonalItem(eman.getStack(), drop.getLocation(), owner);
                                 item.setCustomNameVisible(true);
                                 item.setCustomName(Sputnik.trans("&e&ka&r &f1x &7[Lvl 1] &6Enderman &e&ka"));
-                            } else {
-                                final int pk = SUtil.random(80, 400);
-                                Skyblock.getEconomy().depositPlayer(owner, pk);
-                                owner.sendMessage(Sputnik.trans("&b&lBITS! &fYou found &b" + SUtil.commaify(pk) + " Bits&f inside the loot chest!"));
                             }
                         } else {
                             owner.getWorld().playEffect(owner.getLocation(), Effect.EXPLOSION_HUGE, 1);

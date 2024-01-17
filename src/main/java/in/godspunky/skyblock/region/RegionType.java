@@ -38,6 +38,7 @@ public enum RegionType {
     SLIMEHILL("Slimehill"),
     BIRCH_PARK("Birch Park", ChatColor.GREEN),
     SPRUCE_WOODS("Spruce Woods", ChatColor.GREEN),
+    PRIVATE_ISLAND("Private Island", ChatColor.GREEN),
     DARK_THICKET("Dark Thicket", ChatColor.GREEN),
     SAVANNA_WOODLAND("Savanna Woodland", ChatColor.GREEN),
     JUNGLE_ISLAND("Jungle Island", ChatColor.GREEN),

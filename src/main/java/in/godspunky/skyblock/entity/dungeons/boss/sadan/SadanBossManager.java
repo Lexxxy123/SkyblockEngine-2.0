@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class SadanBossManager {
     public static void startFloor(ArrayList<Player> plist) {
         String worldname = "f6_" + SadanFunction.generateRandom();
-//        MVWorldManager worldManager = GodSpunkyEngine.core.getMVWorldManager();
+//        MVWorldManager worldManager = Skyblock.core.getMVWorldManager();
 //        worldManager.cloneWorld("f6", worldname);
 //        worldManager.loadWorld(worldname);
         WorldCloneApi.copyWorld(Bukkit.getWorld("f6"), worldname);
@@ -56,7 +56,7 @@ public class SadanBossManager {
                 e.remove();
             }
             WorldCloneApi.deleteWorld(w.getName());
-            //GodSpunkyEngine.core.deleteWorld(w.getName());
+            //Skyblock.core.deleteWorld(w.getName());
             SLog.severe("[DUNGEON BOSSROOM] Deleted " + w.getName() + " and cleaned the memory !");
         }
     }

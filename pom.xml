@@ -27,7 +27,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.3.1-SNAPSHOT</version>
+				<version>3.5.0</version>
 				<configuration>
 					<relocations>
 						<relocation>
@@ -157,13 +157,6 @@
 			<groupId>org.xerial</groupId>
 			<artifactId>sqlite-jdbc</artifactId>
 			<version>3.32.3.2</version>
-		</dependency>
-		<dependency>
-			<groupId>com.onarandombox.multiversecore</groupId>
-			<artifactId>Multiverse-Core</artifactId>
-			<version>4.3.12</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/multiverse-core-4.3.12.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>net.citizensnpcs</groupId>

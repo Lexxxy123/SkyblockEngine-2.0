@@ -115,6 +115,22 @@ public class SUtil {
         return new Random().nextInt(max - min + 1) + min;
     }
 
+    public static String getTimeDifferenceAndColor(long start, long end) {
+        return getColorBasedOnSize((end - start), 20, 5000, 10000) + "" + (end - start) + "ms";
+    }
+
+    public static ChatColor getColorBasedOnSize(long num, int low, int med, int high) {
+        if (num <= low) {
+            return ChatColor.GREEN;
+        } else if (num <= med) {
+            return ChatColor.YELLOW;
+        } else if (num <= high) {
+            return ChatColor.RED;
+        } else {
+            return ChatColor.DARK_RED;
+        }
+    }
+
     public static boolean isUUID(String input) {
         try {
             // Try parsing the input as a UUID

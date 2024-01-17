@@ -357,7 +357,6 @@ public class PlayerListener extends PListener {
                 Skyblock.getPlugin().updateServerName(player);
             }
         }, 10L);
-
         SUtil.delay(() -> {
             PlayerUtils.USER_SESSION_ID.put(player.getUniqueId(), UUID.randomUUID());
             PlayerUtils.COOKIE_DURATION_CACHE.remove(player.getUniqueId());

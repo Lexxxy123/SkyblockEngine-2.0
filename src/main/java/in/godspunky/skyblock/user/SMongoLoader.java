@@ -19,6 +19,7 @@ import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.SaveQueue;
 import lombok.SneakyThrows;
 import org.bson.Document;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 
@@ -84,7 +85,9 @@ public class SMongoLoader {
 
             if (user.selectedProfile == null) {
                 createAndSaveNewProfile(uuid);
-                SkyblockIsland.getIsland(uuid).send();
+                Bukkit.getScheduler().runTaskLater(Skyblock.getPlugin(), () -> {
+                    SkyblockIsland.getIsland(uuid).send();
+                }, 5 * 20L); // 20 ticks per second, so 5 seconds = 5 * 20 ticks
                 return;
             }
 
@@ -96,7 +99,9 @@ public class SMongoLoader {
             user.toBukkitPlayer().sendMessage(ChatColor.AQUA + "You are playing on profile: " + ChatColor.YELLOW + getActiveProfile(UUID.fromString(user.selectedProfile.uuid)));
         } else {
             createAndSaveNewProfile(uuid);
-            SkyblockIsland.getIsland(uuid).send();
+            Bukkit.getScheduler().runTaskLater(Skyblock.getPlugin(), () -> {
+                SkyblockIsland.getIsland(uuid).send();
+            }, 5 * 20L);
         }
     }
 
@@ -239,6 +244,11 @@ public class SMongoLoader {
             owner.setLastRegion(profile.getLastRegion());
         });
 
+        SUtil.runAsync(() -> {
+            profile.setCompletedObjectives(getStringList(base, "completedObjectives", new ArrayList<>()));
+            profile.setCompletedQuests(getStringList(base, "completedQuests", new ArrayList<>()));
+        });
+
 
         SUtil.runAsync(() -> {
             Map<String, Integer> quiv = (Map<String, Integer>) get(base, "quiver", new HashMap<>());
@@ -247,6 +257,8 @@ public class SMongoLoader {
             });
             owner.quiver = profile.getQuiver();
         });
+
+
 
         SUtil.runAsync(() -> {
             profile.farmingXP = getDouble(base, "skillFarmingXp", 0.0);
@@ -427,6 +439,8 @@ public class SMongoLoader {
         setProfileProperty("bankCoins", profile.getBankCoins());
         if (profile.getLastRegion() != null)
             setProfileProperty("lastRegion", profile.getLastRegion().getName());
+        setProfileProperty("completedObjectives", profile.getCompletedObjectives());
+        setProfileProperty("completedQuests", profile.getCompletedQuests());
         Map<String, Integer> tempQuiv = new HashMap<>();
         profile.getQuiver().forEach((key, value) -> tempQuiv.put(key.name(), value));
         setProfileProperty("quiver", tempQuiv);
@@ -441,6 +455,8 @@ public class SMongoLoader {
         }
         User.getUser(profile.owner).saveCookie(profile);
         setProfileProperty("effects", effectsDocuments);
+        setProfileProperty("completedObjectives", new HashMap<>());
+        setProfileProperty("completedQuests", new HashMap<>());
         setProfileProperty("skillFarmingXp", profile.farmingXP);
         setProfileProperty("skillMiningXp", profile.miningXP);
         setProfileProperty("skillCombatXp", profile.combatXP);
@@ -463,6 +479,7 @@ public class SMongoLoader {
             setProfileProperty("pets", new ArrayList<Map<String, Object>>());
         }
         setProfileProperty("auctionSettings", profile.auctionSettings.serialize());
+
         //setProfileProperty("created", profile.created);
         setProfileProperty("auctionCreationBIN", profile.isAuctionCreationBIN());
         setProfileProperty("selected", profile.isSelected());
@@ -496,6 +513,14 @@ public class SMongoLoader {
         }
 
         return foundOrNot;
+    }
+
+    public List<String> getStringList(Document base, String key, List<String> def) {
+        Object value = get(base, key, def);
+        if (value instanceof List) {
+            return (List<String>) value;
+        }
+        return def;
     }
 
     public Object get(Document base, String key, Object def) {

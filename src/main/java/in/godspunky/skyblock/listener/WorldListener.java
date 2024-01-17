@@ -388,14 +388,15 @@ public class WorldListener extends PListener {
         e.setCancelled(true);
     }
 
-    public void onPortalEnter(final EntityPortalEnterEvent e) {
-        final Material portalType = e.getLocation().getBlock().getType();
-        final Entity entity = e.getEntity();
+    @EventHandler
+    public void onPortalEnter(EntityPortalEnterEvent e) {
+        Material portalType = e.getLocation().getBlock().getType();
+        Entity entity = e.getEntity();
         if (WorldListener.ALREADY_TELEPORTING.contains(entity.getUniqueId())) {
             return;
         }
         if (portalType == Material.PORTAL) {
-            final World hub = Bukkit.getWorld(this.plugin.config.getString("hub_world").isEmpty() ? "hub" : this.plugin.config.getString("hub_world"));
+            World hub = Bukkit.getWorld("world");
             if (hub == null) {
                 entity.sendMessage(ChatColor.RED + "Could not find a hub world to teleport you to!");
                 return;
@@ -411,7 +412,11 @@ public class WorldListener extends PListener {
             WorldListener.ALREADY_TELEPORTING.add(entity.getUniqueId());
             SUtil.delay(() -> WorldListener.ALREADY_TELEPORTING.remove(entity.getUniqueId()), 15L);
             entity.sendMessage(ChatColor.GRAY + "Sending you to your island...");
-            SkyblockIsland.getIsland(entity.getUniqueId()).send();
+            try {
+                SkyblockIsland.getIsland(entity.getUniqueId()).send();
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }
         }
     }
 

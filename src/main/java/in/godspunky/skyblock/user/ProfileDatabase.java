@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.user;
 
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
 import org.bson.Document;
 
 public class ProfileDatabase {
@@ -21,4 +22,19 @@ public class ProfileDatabase {
         MongoCollection<Document> userCollection = DatabaseManager.getCollection("users");
         return userCollection.find(new Document("uuid", id)).first();
     }
+
+    public void set(String key, Object value) {
+        MongoCollection<Document> userCollection = DatabaseManager.getCollection("profiles");
+        Document updateDoc = new Document("$set", new Document(key, value));
+        userCollection.updateOne(new Document("_id", id), updateDoc);
+    }
+
+    public Object get(String key, Object def) {
+        Document doc = collection.find(Filters.eq("_id", id)).first();
+        if (doc == null) {
+            return def;
+        }
+        return doc.get(key);
+    }
+
 }

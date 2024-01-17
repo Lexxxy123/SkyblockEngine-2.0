@@ -44,6 +44,7 @@ import in.godspunky.skyblock.nms.pingrep.PingEvent;
 import in.godspunky.skyblock.nms.pingrep.PingListener;
 import in.godspunky.skyblock.npc.SkyblockNPC;
 import in.godspunky.skyblock.npc.SkyblockNPCManager;
+import in.godspunky.skyblock.objectives.QuestLineHandler;
 import in.godspunky.skyblock.ranks.PlayerChatListener;
 import in.godspunky.skyblock.ranks.PlayerJoinQuitListener;
 import in.godspunky.skyblock.ranks.SetRankCommand;
@@ -124,6 +125,7 @@ public class Skyblock extends JavaPlugin implements PluginMessageListener, Bunge
     public CommandLoader cl;
     public Repeater repeater;
     public List<String> bannedUUID;
+
     @Getter
     private SlimePlugin slimePlugin;
     @Getter
@@ -131,6 +133,9 @@ public class Skyblock extends JavaPlugin implements PluginMessageListener, Bunge
     private int onlinePlayerAcrossServers;
     @Getter
     private BungeeChannel bc;
+
+    @Getter
+    private QuestLineHandler questLineHandler;
     @Getter
     @Setter
     private String serverName;
@@ -182,6 +187,7 @@ public class Skyblock extends JavaPlugin implements PluginMessageListener, Bunge
         this.bc = new BungeeChannel(this);
 
         this.setupEconomy();
+
         Skyblock.plugin = this;
         SLog.info("Performing world regeneration...");
         this.fixTheEnd();
@@ -202,6 +208,7 @@ public class Skyblock extends JavaPlugin implements PluginMessageListener, Bunge
         SLog.info("Loading SQL database...");
         DatabaseManager.connectToDatabase("mongodb://admin:admin@88.99.150.153:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2", "Godspunky");
         //DatabaseManager.connectToDatabase("mongodb://localhost:27017", "Godspunky");
+        initializeQuests();
         this.sql = new SQLDatabase();
         this.dataLoader = new SMongoLoader();
         this.regionData = new SQLRegionData();
@@ -357,6 +364,15 @@ public class Skyblock extends JavaPlugin implements PluginMessageListener, Bunge
         new BlankWorldCreator("f6").createWorld();
         new BlankWorldCreator("arena").createWorld();
         //new BlankWorldCreator("f1");
+    }
+
+    private void initializeQuests() {
+        SLog.info("Initializing quests...");
+        long start = System.currentTimeMillis();
+
+        this.questLineHandler = new QuestLineHandler();
+
+        SLog.info("Successfully registered " + ChatColor.GREEN + this.questLineHandler.getQuests().size() + ChatColor.WHITE + " quests [" + SUtil.getTimeDifferenceAndColor(start, System.currentTimeMillis()) + ChatColor.WHITE + "]");
     }
 
     public void onDisable() {
@@ -601,6 +617,7 @@ public class Skyblock extends JavaPlugin implements PluginMessageListener, Bunge
             }
         });
     }
+
 
     private void registerPingListener() {
         PingAPI.registerListener(new PingListener() {

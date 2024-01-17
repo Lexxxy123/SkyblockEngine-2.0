@@ -1,6 +1,5 @@
 package in.godspunky.skyblock.gui;
 
-import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;
@@ -25,13 +24,8 @@ public class ConfirmWitherRuins extends GUI {
             @Override
             public void run(final InventoryClickEvent e) {
                 final Player p = (Player) e.getWhoClicked();
-                if (Skyblock.getEconomy().getBalance(p) >= 2000.0) {
-                    Skyblock.getEconomy().withdrawPlayer(player, 2000.0);
                     p.sendMessage(Sputnik.trans("&eYou have travelled to the &cWithering Ruins&e!"));
                     p.teleport(new Location(Bukkit.getWorld("arena"), 234744.5, 158.0, 236558.5, 135.0f, 0.0f));
-                } else {
-                    p.sendMessage(Sputnik.trans("&cYou cannot afford for this ride!"));
-                }
             }
 
             @Override
@@ -41,7 +35,7 @@ public class ConfirmWitherRuins extends GUI {
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(Sputnik.trans("&aTravel to: &cWithering Ruins"), Material.MINECART, (short) 0, 1, Sputnik.trans("&7Following &dArlly &7rails and travel into"), Sputnik.trans("&7a mysterious place under the &eGiants Island"), Sputnik.trans("&cBe Careful! &4Something, is there..."), Sputnik.trans("&7"), Sputnik.trans("&7Cost for a Minecart Ride"), Sputnik.trans("&b2,000 Bits"), Sputnik.trans("&7"), Sputnik.trans((Skyblock.getEconomy().getBalance(player) >= 2000.0) ? "&eClick to travel" : "&cYou cannot afford this!"));
+                return SUtil.getStack(Sputnik.trans("&aTravel to: &cWithering Ruins"), Material.MINECART, (short) 0, 1, Sputnik.trans("&7Following &dArlly &7rails and travel into"), Sputnik.trans("&7a mysterious place under the &eGiants Island"), Sputnik.trans("&cBe Careful! &4Something, is there..."), Sputnik.trans("&7"), Sputnik.trans("&7Cost for a Minecart Ride"), Sputnik.trans("&b2,000 Bits"), Sputnik.trans("&7"), "&eClick to travel");
             }
         });
     }

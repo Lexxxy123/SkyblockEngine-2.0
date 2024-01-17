@@ -2,6 +2,8 @@ package in.godspunky.skyblock.region;
 
 import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.util.SUtil;
+import me.clip.placeholderapi.libs.kyori.adventure.text.BlockNBTComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -101,6 +103,21 @@ public class Region {
         for (final Region region : Region.plugin.regionData.getAll()) {
             Region.REGION_CACHE.put(region.getName(), region);
         }
+
+
+        World islandWorld = Bukkit.getWorld("island");
+        double islandX = 0;
+        double islandY = 0;
+        double islandZ = 0;
+
+        Location islandFirstLocation = new Location(islandWorld, islandX, islandY, islandZ);
+        Location islandSecondLocation = new Location(islandWorld, islandX, islandY, islandZ);
+
+        REGION_CACHE.put("island", new Region("island", islandFirstLocation, islandSecondLocation, RegionType.PRIVATE_ISLAND));
+    }
+
+    public static Region getIslandRegion() {
+        return REGION_CACHE.get("island");
     }
 
     public void save() {

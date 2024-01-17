@@ -227,12 +227,7 @@ public class HexGUI extends GUI {
             }
         });
 
-        if (item != null) {
-            set(22, item.getStack(), true);
-            this.upgradeableItem = item;
-        } else {
-            set(22, null);
-        }
+
 
         set(GUIClickableItem.getCloseItem(49));
 

@@ -140,6 +140,9 @@ public class Profile {
     @Getter
     private final List<String> unlockedRecipes;
     private boolean auctionCreationBIN;
+
+    private List<String> completedQuests;
+    private List<String> completedObjectives;
     private AuctionEscrow auctionEscrow;
     @Setter
     @Getter
@@ -177,6 +180,8 @@ public class Profile {
         this.quiver = new HashMap<SMaterial, Integer>();
         this.effects = new ArrayList<ActivePotionEffect>();
         this.unlockedRecipes = new ArrayList<>();
+        this.completedQuests = new ArrayList<>();
+        this.completedObjectives = new ArrayList<>();
         this.farmingXP = 0.0;
         this.miningXP = 0.0;
         this.combatXP = 0.0;
@@ -200,6 +205,23 @@ public class Profile {
 
     public static HashMap<String, String> getProfileNames() {
         return PROFILE_NAMES;
+    }
+
+
+    public List<String> getCompletedQuests() {
+        return completedQuests;
+    }
+
+    public void setCompletedQuests(List<String> completedQuests) {
+        this.completedQuests = completedQuests;
+    }
+
+    public List<String> getCompletedObjectives() {
+        return completedObjectives;
+    }
+
+    public void setCompletedObjectives(List<String> completedObjectives) {
+        this.completedObjectives = completedObjectives;
     }
 
     public static void updateProfileName(String profileUUID) {
