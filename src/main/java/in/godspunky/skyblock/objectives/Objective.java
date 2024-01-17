@@ -43,8 +43,9 @@ public class Objective implements Listener {
 
         Profile profile = player.selectedProfile;
 
-        List<String> completed = profile.getCompletedObjectives();
+        List<String> completed = player.getCompletedObjectives();
         completed.add(this.getId());
+        player.setCompletedObjectives(completed);
         profile.setCompletedObjectives(completed);
 
         if (next == null) {
