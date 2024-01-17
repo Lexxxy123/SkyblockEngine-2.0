@@ -73,7 +73,7 @@ public class QuestLineHandler {
             return null;
         }
 
-        List<String> completed = player.getCompletedQuests();
+        List<String> completed = profile.getCompletedQuests();
 
         for (QuestLine quest : lines) {
             if (completed.contains(quest.getName())) {

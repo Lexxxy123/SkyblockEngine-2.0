@@ -39,13 +39,10 @@ public class Objective implements Listener {
         User player = User.getUser(p.getUniqueId());
         Objective next = getNext();
 
-        String id = player.selectedProfile.uuid;
-
         Profile profile = player.selectedProfile;
 
-        List<String> completed = player.getCompletedObjectives();
+        List<String> completed = profile.getCompletedObjectives();
         completed.add(this.getId());
-        player.setCompletedObjectives(completed);
         profile.setCompletedObjectives(completed);
 
         if (next == null) {

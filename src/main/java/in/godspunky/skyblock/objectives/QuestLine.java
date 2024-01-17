@@ -27,7 +27,7 @@ public class QuestLine {
     public Objective getObjective(User skyblockPlayer) {
         Profile profile = skyblockPlayer.getSelectedProfile();
 
-        List<String> completed = skyblockPlayer.getCompletedObjectives();
+        List<String> completed = profile.getCompletedObjectives();
 
         for (Objective obj : line) {
             if (completed.contains(obj.getId())) continue;
@@ -52,10 +52,9 @@ public class QuestLine {
 
         Profile profile = skyblockPlayer.selectedProfile;
 
-        List<String> completedQuests = skyblockPlayer.getCompletedQuests();
+        List<String> completedQuests = profile.getCompletedQuests();
         completedQuests.add(getName());
         profile.setCompletedQuests(completedQuests);
-        skyblockPlayer.setCompletedQuests(completedQuests);
 
         if (!hasCompletionMessage()) return;
 
