@@ -576,7 +576,7 @@ public class Repeater {
                                 colorcode = "a";
                             }
                             final String backend = " &" + colorcode + (int) dungeonmate.getHealth() + "&c❤";
-                            if (dungeonmate.getName() == nameofplayer) {
+                            if (Objects.equals(dungeonmate.getName(), nameofplayer)) {
                                 continue;
                             }
                             sidebar.add(ChatColor.translateAlternateColorCodes('&', "&e[N/A&e] &b" + dungeonmate.getName() + backend));
@@ -649,7 +649,7 @@ public class Repeater {
     }
 
     public static String get(final Player p) {
-        if (VoidlingsWardenHelmet.getDisplay(p) != "") {
+        if (!Objects.equals(VoidlingsWardenHelmet.getDisplay(p), "")) {
             return " " + VoidlingsWardenHelmet.getDisplay(p);
         }
         return "";

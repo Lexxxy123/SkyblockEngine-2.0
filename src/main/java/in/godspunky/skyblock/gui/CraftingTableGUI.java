@@ -1,11 +1,14 @@
 package in.godspunky.skyblock.gui;
 
 import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.event.SkyBlockCraftEvent;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
@@ -111,6 +114,8 @@ public class CraftingTableGUI extends GUI implements BlockBasedGUI {
                         e.getWhoClicked().getWorld().dropItem(e.getWhoClicked().getLocation(), stack2).setVelocity(e.getWhoClicked().getLocation().getDirection());
                     }
                 }
+                SkyBlockCraftEvent skyBlockCraftEvent = new SkyBlockCraftEvent(recipe , (Player)e.getWhoClicked());
+                Bukkit.getPluginManager().callEvent(skyBlockCraftEvent);
                 CraftingTableGUI.this.update(inventory);
             }
 

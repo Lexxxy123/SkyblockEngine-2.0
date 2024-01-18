@@ -15,7 +15,6 @@ public class JerryObjective extends Objective {
     @EventHandler
     public void onInteract(PlayerInteractAtEntityEvent e) {
         if (!isThisObjective(e.getPlayer())) return;
-
         if (e.getRightClicked().getType().equals(EntityType.VILLAGER)) complete(e.getPlayer());
     }
 }

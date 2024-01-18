@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 
 @Getter
 @AllArgsConstructor
-public class CraftEvent extends SkyblockEvent {
+public class SkyBlockCraftEvent extends SkyblockEvent {
 
     private final Recipe recipe;
     private final Player player;

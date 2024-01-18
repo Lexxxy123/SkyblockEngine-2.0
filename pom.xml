@@ -241,10 +241,5 @@
 			<scope>system</scope>
 			<systemPath>${basedir}/lib/swoftyworldmanager-api-3.1.1.jar</systemPath>
 		</dependency>
-		<dependency>
-			<groupId>com.github.Swofty-Developments</groupId>
-			<artifactId>AtlasRedisAPI</artifactId>
-			<version>1.1.0</version>
-		</dependency>
 	</dependencies>
 </project>

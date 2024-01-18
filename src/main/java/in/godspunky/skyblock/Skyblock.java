@@ -20,6 +20,7 @@ import in.godspunky.skyblock.entity.SEntityType;
 import in.godspunky.skyblock.entity.StaticDragonManager;
 import in.godspunky.skyblock.entity.nms.VoidgloomSeraph;
 import in.godspunky.skyblock.gui.GUIListener;
+import in.godspunky.skyblock.island.SkyblockIsland;
 import in.godspunky.skyblock.item.ItemListener;
 import in.godspunky.skyblock.item.Rarity;
 import in.godspunky.skyblock.item.SItem;
@@ -584,10 +585,18 @@ public class Skyblock extends JavaPlugin implements PluginMessageListener, Bunge
         new BukkitRunnable() {
             public void run() {
                 for (final Player p : Bukkit.getOnlinePlayers()) {
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 1000000, 255));
+                    if (p.getWorld().getName().startsWith(SkyblockIsland.ISLAND_PREFIX)) {
+                        if (p.hasPotionEffect(PotionEffectType.SLOW_DIGGING)) {
+                            p.removePotionEffect(PotionEffectType.SLOW_DIGGING);
+                        }
+                    } else {
+                        if (!p.hasPotionEffect(PotionEffectType.SLOW_DIGGING)) {
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 1000000, 255));
+                        }
+                    }
                 }
             }
-        }.runTaskTimer(Skyblock.plugin, 0L, 1L);
+        }.runTaskTimer(Skyblock.plugin, 0L, 5L);
     }
 
     private boolean setupEconomy() {
