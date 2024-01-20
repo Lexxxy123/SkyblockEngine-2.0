@@ -27,7 +27,7 @@ public class ProfileCommand extends SCommand {
         }
         if (args[0].equals("switch")) {
             user.switchProfile(Profile.get(UUID.fromString(args[1]), user.getUuid()), User.SwitchReason.SWITCH);
-            SkyblockIsland.getIsland(user.getUuid()).send();
+            SkyblockIsland.getIsland(user.getUuid()).send(user.selectedProfile.getProfileId());
         }
         if (args[0].equals("help")) {
             send("list");

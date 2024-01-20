@@ -232,18 +232,18 @@ public class User {
         return completedQuests;
     }
 
-    public void setCompletedQuests(List<String> completedQuests) {
-        this.completedQuests = completedQuests;
-    }
+
 
     public List<String> getCompletedObjectives() {
         return completedObjectives;
     }
 
     public void setCompletedObjectives(List<String> completedObjectives) {
-        this.completedObjectives = completedObjectives;
+        this.completedObjectives.add(completedObjectives.toString()) ;
     }
-
+    public void setCompletedQuests(List<String> completedQuests) {
+        this.completedQuests.add(completedQuests.toString());
+    }
     public QuestLine getQuestLine() {
         return Skyblock.getPlugin().getQuestLineHandler().getFromPlayer(this);
     }
@@ -280,8 +280,9 @@ public class User {
         if (reason == SwitchReason.CREATE) {
 
             SUtil.runAsync(() -> {
+                UUID uuid1 = UUID.randomUUID();
 
-                Skyblock.getPlugin().dataLoader.createAndSaveNewProfile(uuid);
+                Skyblock.getPlugin().dataLoader.createAndSaveNewProfile(uuid, uuid1);
             });
         }
         if (reason == SwitchReason.SWITCH) {

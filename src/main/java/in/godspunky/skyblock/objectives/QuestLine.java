@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.objectives;
 
 
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.user.Profile;
 import in.godspunky.skyblock.user.ProfileDatabase;
 import in.godspunky.skyblock.user.User;
@@ -25,9 +26,7 @@ public class QuestLine {
     }
 
     public Objective getObjective(User skyblockPlayer) {
-        Profile profile = skyblockPlayer.getSelectedProfile();
-
-        List<String> completed = profile.getCompletedObjectives();
+        List<String> completed = skyblockPlayer.getCompletedObjectives();
 
         for (Objective obj : line) {
             if (completed.contains(obj.getId())) continue;
@@ -46,15 +45,11 @@ public class QuestLine {
         return null;
     }
 
-
     public void complete(Player player) {
-        User skyblockPlayer = User.getUser(player.getUniqueId());
+        User skyblockPlayer = User.getUser(player.getUniqueId());;
 
-        Profile profile = skyblockPlayer.selectedProfile;
-
-        List<String> completedQuests = profile.getCompletedQuests();
+        List<String> completedQuests = skyblockPlayer.getCompletedQuests();
         completedQuests.add(getName());
-        profile.setCompletedQuests(completedQuests);
 
         if (!hasCompletionMessage()) return;
 

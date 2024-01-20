@@ -57,9 +57,9 @@ public class SkyblockIsland {
     }
 
 
-    public void send() {
+    public void send(UUID uuid1) {
         owner = User.getUser(uuid);
-        final String worldName = ISLAND_PREFIX + owner.getSelectedProfileUUID();
+        final String worldName = ISLAND_PREFIX + uuid1;
         SlimePropertyMap properties = new SlimePropertyMap();
         properties.setValue(SlimeProperties.DIFFICULTY, "normal");
         properties.setValue(SlimeProperties.ALLOW_MONSTERS, false);
@@ -83,7 +83,7 @@ public class SkyblockIsland {
                     );
                     bukkitPlayer.sendMessage(ChatColor.GRAY + "Sending to Player Island...");
                     bukkitPlayer.sendMessage(ChatColor.YELLOW + "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
-                    bukkitPlayer.sendMessage(ChatColor.WHITE + "" + ChatColor.BOLD + "          Welcome to Skyblock, " + ChatColor.GRAY + bukkitPlayer.getName() + ChatColor.WHITE + ChatColor.BOLD + "!");
+                    bukkitPlayer.sendMessage(ChatColor.WHITE + "" + ChatColor.BOLD + "          Welcome to Skyblock, " +  bukkitPlayer.getDisplayName() + ChatColor.WHITE + ChatColor.BOLD + "!");
                     bukkitPlayer.sendMessage("");
                     bukkitPlayer.sendMessage(ChatColor.YELLOW + "               This is your Island, the Skyblock");
                     bukkitPlayer.sendMessage(ChatColor.YELLOW + "            universe has many lands to discover,");

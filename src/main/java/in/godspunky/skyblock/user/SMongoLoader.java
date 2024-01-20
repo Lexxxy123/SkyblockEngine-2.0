@@ -22,6 +22,7 @@ import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -84,9 +85,10 @@ public class SMongoLoader {
             user.selectedProfile.setSelected(true);
 
             if (user.selectedProfile == null) {
-                createAndSaveNewProfile(uuid);
+                UUID uuid1 = UUID.randomUUID();
+                createAndSaveNewProfile(uuid, uuid1);
                 Bukkit.getScheduler().runTaskLater(Skyblock.getPlugin(), () -> {
-                    SkyblockIsland.getIsland(uuid).send();
+                    SkyblockIsland.getIsland(uuid).send(uuid1);
                 }, 5 * 20L); // 20 ticks per second, so 5 seconds = 5 * 20 ticks
                 return;
             }
@@ -98,16 +100,16 @@ public class SMongoLoader {
             user.toBukkitPlayer().sendMessage(ChatColor.YELLOW + "Welcome to " + ChatColor.GREEN + "Godspunky Skyblock!");
             user.toBukkitPlayer().sendMessage(ChatColor.AQUA + "You are playing on profile: " + ChatColor.YELLOW + getActiveProfile(UUID.fromString(user.selectedProfile.uuid)));
         } else {
-            createAndSaveNewProfile(uuid);
+            UUID uuid1 = UUID.randomUUID();
+            createAndSaveNewProfile(uuid, uuid1);
             Bukkit.getScheduler().runTaskLater(Skyblock.getPlugin(), () -> {
-                SkyblockIsland.getIsland(uuid).send();
+                SkyblockIsland.getIsland(uuid).send(uuid1);
             }, 5 * 20L);
         }
     }
 
-    public void createAndSaveNewProfile(UUID uuid) {
+    public void createAndSaveNewProfile(UUID uuid, UUID id) {
         User user = User.getUser(uuid);
-        UUID id = UUID.randomUUID();
         String name = SUtil.generateRandomProfileNameFor();
         Profile profile = new Profile(id.toString(), uuid, name);
         user.selectedProfile = profile;
@@ -156,6 +158,8 @@ public class SMongoLoader {
         }
         selectedProfile = user.selectedProfile;
 
+        selectedProfile.getCompletedObjectives().addAll(user.getCompletedObjectives());
+        selectedProfile.getCompletedQuests().addAll(user.getCompletedQuests());
         selectedProfile.setLastRegion(user.getLastRegion());
         selectedProfile.setQuiver(user.getQuiver());
         selectedProfile.setEffects(user.getEffects());
@@ -244,10 +248,12 @@ public class SMongoLoader {
             owner.setLastRegion(profile.getLastRegion());
         });
 
-        SUtil.runAsync(() -> {
-            profile.setCompletedObjectives(getStringList(base, "completedObjectives", new ArrayList<>()));
-            profile.setCompletedQuests(getStringList(base, "completedQuests", new ArrayList<>()));
-        });
+        List<String> completedObjectives = getStringList(base, "completedObjectives", new ArrayList<>());
+        owner.getCompletedObjectives().addAll(completedObjectives);
+
+        // Load completedQuests as List<String>
+        List<String> completedQuests = getStringList(base, "completedQuests", new ArrayList<>());
+        owner.getCompletedQuests().addAll(completedQuests);
 
 
         SUtil.runAsync(() -> {
@@ -439,8 +445,8 @@ public class SMongoLoader {
         setProfileProperty("bankCoins", profile.getBankCoins());
         if (profile.getLastRegion() != null)
             setProfileProperty("lastRegion", profile.getLastRegion().getName());
-        setProfileProperty("completedObjectives", profile.getCompletedObjectives());
-        setProfileProperty("completedQuests", profile.getCompletedQuests());
+        setProfileProperty("completedObjectives", new ArrayList<>(profile.getCompletedObjectives()));
+        setProfileProperty("completedQuests", new ArrayList<>(profile.getCompletedQuests()));
         Map<String, Integer> tempQuiv = new HashMap<>();
         profile.getQuiver().forEach((key, value) -> tempQuiv.put(key.name(), value));
         setProfileProperty("quiver", tempQuiv);

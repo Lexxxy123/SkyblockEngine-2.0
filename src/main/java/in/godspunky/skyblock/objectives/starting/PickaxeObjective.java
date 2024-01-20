@@ -16,6 +16,6 @@ public class PickaxeObjective extends Objective {
     public void onCraft(SkyBlockCraftEvent e) {
         if (!isThisObjective(e.getPlayer())) return;
 
-        if (e.getRecipe().getResult().getType().equals(SMaterial.CRAFTING_TABLE)) complete(e.getPlayer());
+        if (e.getRecipe().getResult().getType().equals(SMaterial.WOOD_PICKAXE)) complete(e.getPlayer());
     }
 }

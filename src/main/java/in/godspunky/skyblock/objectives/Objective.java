@@ -41,9 +41,8 @@ public class Objective implements Listener {
 
         Profile profile = player.selectedProfile;
 
-        List<String> completed = profile.getCompletedObjectives();
+        List<String> completed = player.getCompletedObjectives();
         completed.add(this.getId());
-        profile.setCompletedObjectives(completed);
 
         if (next == null) {
             getQuest().complete(player.toBukkitPlayer());

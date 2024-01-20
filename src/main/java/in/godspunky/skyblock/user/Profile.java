@@ -213,7 +213,7 @@ public class Profile {
     }
 
     public void setCompletedQuests(List<String> completedQuests) {
-        this.completedQuests = completedQuests;
+        this.completedQuests.add(completedQuests.toString());
     }
 
     public List<String> getCompletedObjectives() {
@@ -221,7 +221,7 @@ public class Profile {
     }
 
     public void setCompletedObjectives(List<String> completedObjectives) {
-        this.completedObjectives = completedObjectives;
+        this.completedObjectives.add(completedObjectives.toString()) ;
     }
 
     public static void updateProfileName(String profileUUID) {

@@ -47,7 +47,7 @@ public class FastTravelGUI extends GUI{
             @Override
             public void run(InventoryClickEvent e) {
                 try {
-                    SkyblockIsland.getIsland(player.getUniqueId()).send();
+                    SkyblockIsland.getIsland(player.getUniqueId()).send(user.selectedProfile.getProfileId());
                 }catch (Exception ex){
                     ex.printStackTrace();
                 }

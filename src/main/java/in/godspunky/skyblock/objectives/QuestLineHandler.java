@@ -32,26 +32,6 @@ public class QuestLineHandler {
         }
     }
 
-    /*SUtil.runAsync(() -> {
-            Object completedObjectivesObj = get(base, "completedObjectives", new HashMap<>());
-            if (completedObjectivesObj instanceof List<?>) {
-                profile.setCompletedObjectives((List<String>) completedObjectivesObj);
-                owner.setCompletedObjectives((List<String>) completedObjectivesObj);
-            } else {
-                SLog.info("Quest aint working Redo!");
-            }
-        });
-
-        SUtil.runAsync(() -> {
-            Object completedQuestsObj = get(base, "completedQuests", new HashMap<>());
-            if (completedQuestsObj instanceof List<?>) {
-                profile.setCompletedQuests((List<String>) completedQuestsObj);
-                owner.setCompletedQuests((List<String>) completedQuestsObj);
-            } else {
-                SLog.info("Quest aint working Redo!");
-            }
-        });*/
-
     public void register(RegionType location, QuestLine line) {
         if (quests.containsKey(location)) {
             quests.get(location).add(line);
@@ -73,19 +53,18 @@ public class QuestLineHandler {
             return null;
         }
 
-        List<String> completed = profile.getCompletedQuests();
+        List<String> completed = player.getCompletedQuests();
+
+        if (lines == null) return null;
 
         for (QuestLine quest : lines) {
-            if (completed.contains(quest.getName())) {
-                continue;
-            }
+            if (completed.contains(quest.getName())) continue;
 
             return quest;
         }
 
         return null;
     }
-
 
     public QuestLine getQuest(Objective objective) {
         for (List<QuestLine> lines : quests.values()) {
