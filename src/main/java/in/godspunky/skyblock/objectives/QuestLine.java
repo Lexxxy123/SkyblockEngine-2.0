@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 import java.util.*;
 
 @Getter
-public class QuestLine {
+public abstract class QuestLine {
 
     protected final List<Objective> line;
     private final String name;
@@ -40,7 +40,7 @@ public class QuestLine {
     public Objective getNext(Objective obj) {
         try {
             return line.get(line.indexOf(obj) + 1);
-        } catch (ArrayIndexOutOfBoundsException igored) { }
+        } catch (ArrayIndexOutOfBoundsException ignored) { }
 
         return null;
     }
@@ -48,8 +48,8 @@ public class QuestLine {
     public void complete(Player player) {
         User skyblockPlayer = User.getUser(player.getUniqueId());;
 
-        List<String> completedQuests = skyblockPlayer.getCompletedQuests();
-        completedQuests.add(getName());
+
+        skyblockPlayer.addCompletedQuest(getName());
 
         if (!hasCompletionMessage()) return;
 
@@ -90,4 +90,5 @@ public class QuestLine {
 
     public void onDisable() {}
     public void onEnable() {}
+
 }

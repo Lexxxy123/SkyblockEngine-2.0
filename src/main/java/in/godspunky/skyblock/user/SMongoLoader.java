@@ -158,8 +158,12 @@ public class SMongoLoader {
         }
         selectedProfile = user.selectedProfile;
 
-        selectedProfile.getCompletedObjectives().addAll(user.getCompletedObjectives());
-        selectedProfile.getCompletedQuests().addAll(user.getCompletedQuests());
+        if (!new HashSet<>(selectedProfile.completedObjectives).containsAll(user.completedObjectives)) {
+            selectedProfile.completedObjectives.addAll(user.completedObjectives);
+        }
+        if (!new HashSet<>(selectedProfile.completedQuests).containsAll(user.completedQuests)) {
+            selectedProfile.completedQuests.addAll(user.completedQuests);
+        }
         selectedProfile.setLastRegion(user.getLastRegion());
         selectedProfile.setQuiver(user.getQuiver());
         selectedProfile.setEffects(user.getEffects());
@@ -248,12 +252,17 @@ public class SMongoLoader {
             owner.setLastRegion(profile.getLastRegion());
         });
 
-        List<String> completedObjectives = getStringList(base, "completedObjectives", new ArrayList<>());
-        owner.getCompletedObjectives().addAll(completedObjectives);
+        SUtil.runAsync(() -> {
+            List<String> lisht = getStringList(base, "completedObjectives", new ArrayList<>());
+            profile.completedObjectives = lisht;
+            owner.completedObjectives = lisht;
+        });
 
-        // Load completedQuests as List<String>
-        List<String> completedQuests = getStringList(base, "completedQuests", new ArrayList<>());
-        owner.getCompletedQuests().addAll(completedQuests);
+        SUtil.runAsync(() -> {
+            List<String> lisht = getStringList(base, "completedQuests", new ArrayList<>());
+            profile.completedQuests = lisht;
+            owner.completedQuests = lisht;
+        });
 
 
         SUtil.runAsync(() -> {
@@ -445,8 +454,9 @@ public class SMongoLoader {
         setProfileProperty("bankCoins", profile.getBankCoins());
         if (profile.getLastRegion() != null)
             setProfileProperty("lastRegion", profile.getLastRegion().getName());
-        setProfileProperty("completedObjectives", new ArrayList<>(profile.getCompletedObjectives()));
-        setProfileProperty("completedQuests", new ArrayList<>(profile.getCompletedQuests()));
+        User user = User.getUser(profile.owner);
+        setProfileProperty("completedObjectives", profile.completedObjectives);
+        setProfileProperty("completedQuests", profile.completedQuests);
         Map<String, Integer> tempQuiv = new HashMap<>();
         profile.getQuiver().forEach((key, value) -> tempQuiv.put(key.name(), value));
         setProfileProperty("quiver", tempQuiv);

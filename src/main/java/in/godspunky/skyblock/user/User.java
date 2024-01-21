@@ -28,6 +28,7 @@ import in.godspunky.skyblock.item.pet.Pet;
 import in.godspunky.skyblock.listener.PlayerListener;
 import in.godspunky.skyblock.minion.SkyblockMinion;
 
+import in.godspunky.skyblock.objectives.Objective;
 import in.godspunky.skyblock.objectives.QuestLine;
 import in.godspunky.skyblock.potion.ActivePotionEffect;
 import in.godspunky.skyblock.potion.PotionEffect;
@@ -72,7 +73,7 @@ public class User {
     public static final int ISLAND_SIZE = 125;
     public static final Map<UUID, User> USER_CACHE;
     private static final Skyblock plugin;
-    private static final File USER_FOLDER;
+    public static final File USER_FOLDER;
     private static final boolean multiServer = false;
 
     static {
@@ -122,9 +123,13 @@ public class User {
     private double cataXP;
     private double berserkXP;
     private double healerXP;
+    @Getter
+    @Setter
+    public List<String> completedQuests;
 
-    private List<String> completedQuests;
-    private List<String> completedObjectives;
+    @Getter
+    @Setter
+    public List<String> completedObjectives;
     //  @Getter
     //  private SkyblockIsland island;
     private double tankXP;
@@ -143,6 +148,8 @@ public class User {
     private boolean waitingForSign;
     private String signContent;
     private boolean isCompletedSign;
+
+    private final UserConfig userConfig;
 
     private User(final UUID uuid) {
         this.profiles = new HashMap<>();
@@ -187,6 +194,7 @@ public class User {
         this.auctionSettings = new AuctionSettings();
         this.auctionCreationBIN = false;
         this.auctionEscrow = new AuctionEscrow();
+        this.userConfig = new UserConfig(uuid);
         if (!User.USER_FOLDER.exists()) {
             User.USER_FOLDER.mkdirs();
         }
@@ -195,6 +203,43 @@ public class User {
         User.USER_CACHE.put(uuid, this);
     }
 
+    public List<String> getCompletedQuests() {
+        return userConfig.getCompletedQuests();
+    }
+
+    public List<String> getCompletedObjectives() {
+        return userConfig.getCompletedObjectives();
+    }
+
+    public void addCompletedQuest(String questName) {
+        userConfig.addCompletedQuest(questName);
+    }
+
+    public void addCompletedObjectives(String objectiveName) {
+        userConfig.addCompletedObjectives(objectiveName);
+    }
+
+    /*public List<String> getCompletedQuests() {
+        return completedQuests;
+    }
+
+
+
+    public List<String> getCompletedObjectives() {
+        return completedObjectives;
+    }
+
+    public void addCompletedQuest(String questName) {
+        this.completedQuests.add(questName);
+    }
+
+    public void addCompletedObjectives(String questName) {
+        this.completedObjectives.add(questName);
+    }*/
+
+    public QuestLine getQuestLine() {
+        return Skyblock.getPlugin().getQuestLineHandler().getFromPlayer(this);
+    }
     public static void dmgDimon(final LivingEntity entity, final Player damager) {
         final int bonusDamage = 0;
         if (damager != null && entity.hasMetadata("Dimoon") && Skyblock.getPlugin().dimoon != null) {
@@ -228,25 +273,7 @@ public class User {
         }
     }
 
-    public List<String> getCompletedQuests() {
-        return completedQuests;
-    }
 
-
-
-    public List<String> getCompletedObjectives() {
-        return completedObjectives;
-    }
-
-    public void setCompletedObjectives(List<String> completedObjectives) {
-        this.completedObjectives.add(completedObjectives.toString()) ;
-    }
-    public void setCompletedQuests(List<String> completedQuests) {
-        this.completedQuests.add(completedQuests.toString());
-    }
-    public QuestLine getQuestLine() {
-        return Skyblock.getPlugin().getQuestLineHandler().getFromPlayer(this);
-    }
 
     public static User getUser(final UUID uuid) {
         if (uuid == null) {

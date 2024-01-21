@@ -516,6 +516,7 @@ public class Skyblock extends JavaPlugin implements PluginMessageListener, Bunge
         cl.register(new AdminItemCommand());
         cl.register(new ProfileCommand());
         cl.register(new HexCommand());
+        cl.register(new Quest());
         // todo use reflection!
     }
 

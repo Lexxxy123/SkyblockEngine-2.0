@@ -392,9 +392,6 @@ public class PlayerListener extends PListener {
             SputnikPlayer.BonemerangFix(player);
             SputnikPlayer.KatanasFix(player);
             user.updateInventory();
-            if(user.getCompletedQuests().size() == 0){
-                user.getCompletedQuests().add("test");
-            }
             final SlayerQuest quest = user.getSlayerQuest();
             if (quest != null) {
                 quest.setLastKilled(null);

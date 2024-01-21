@@ -141,8 +141,13 @@ public class Profile {
     private final List<String> unlockedRecipes;
     private boolean auctionCreationBIN;
 
-    private List<String> completedQuests;
-    private List<String> completedObjectives;
+    @Getter
+    @Setter
+    public List<String> completedQuests;
+
+    @Getter
+    @Setter
+   public List<String> completedObjectives;
     private AuctionEscrow auctionEscrow;
     @Setter
     @Getter
@@ -212,16 +217,16 @@ public class Profile {
         return completedQuests;
     }
 
-    public void setCompletedQuests(List<String> completedQuests) {
-        this.completedQuests.add(completedQuests.toString());
-    }
-
     public List<String> getCompletedObjectives() {
         return completedObjectives;
     }
 
-    public void setCompletedObjectives(List<String> completedObjectives) {
-        this.completedObjectives.add(completedObjectives.toString()) ;
+    public void addCompletedQuest(String questName) {
+        this.completedQuests.add(questName);
+    }
+
+    public void addCompletedObjectives(String questName) {
+        this.completedObjectives.add(questName);
     }
 
     public static void updateProfileName(String profileUUID) {

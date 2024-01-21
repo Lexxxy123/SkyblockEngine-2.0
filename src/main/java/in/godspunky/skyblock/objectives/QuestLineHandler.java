@@ -3,6 +3,8 @@ package in.godspunky.skyblock.objectives;
 
 
 
+import in.godspunky.skyblock.objectives.hub.AuctioneerQuest;
+import in.godspunky.skyblock.objectives.hub.ExploreHubQuest;
 import in.godspunky.skyblock.objectives.starting.GettingStartedQuest;
 import in.godspunky.skyblock.region.Region;
 import in.godspunky.skyblock.region.RegionType;
@@ -20,6 +22,8 @@ public class QuestLineHandler {
 
     public QuestLineHandler() {
         register(RegionType.PRIVATE_ISLAND, new GettingStartedQuest());
+        register(RegionType.VILLAGE, new ExploreHubQuest());
+        register(RegionType.AUCTION_HOUSE, new AuctioneerQuest());
 
         for (List<QuestLine> quest : quests.values()) {
             quest.forEach(QuestLine::onEnable);
