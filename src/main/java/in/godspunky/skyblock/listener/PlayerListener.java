@@ -32,6 +32,7 @@ import in.godspunky.skyblock.npc.SkyblockNPC;
 import in.godspunky.skyblock.npc.SkyblockNPCManager;
 import in.godspunky.skyblock.ranks.GodspunkyPlayer;
 import in.godspunky.skyblock.ranks.PlayerRank;
+import in.godspunky.skyblock.region.RegionType;
 import in.godspunky.skyblock.skill.Skill;
 import in.godspunky.skyblock.slayer.SlayerQuest;
 import in.godspunky.skyblock.user.*;
@@ -1447,6 +1448,85 @@ public class PlayerListener extends PListener {
             if (skyblockNPC.isShown(player))
                 skyblockNPC.hideFrom(player);
         }
+    }
+
+    @EventHandler
+    public void RegionChange(PlayerMoveEvent e){
+        User player = User.getUser(e.getPlayer().getUniqueId());
+
+        List<String> discoveredZonesList = player.getdiscoveredzones();
+
+        if (discoveredZonesList.contains(player.getRegion().getType().getName())) {
+            return;
+        }
+        RegionType type = player.getRegion().getType();
+        player.addnewzone(player.getRegion().getType().getName());
+        if (type == RegionType.VILLAGE) {
+            onNewZone(player, RegionType.VILLAGE,
+                    "Purchase items at the Market.",
+                    "Visit the Auction House.",
+                    "Manage your Coins in the Bank.",
+                    "Enchant items at the Library.");
+        } else if (type == RegionType.AUCTION_HOUSE) {
+            onNewZone(player, RegionType.AUCTION_HOUSE,
+                    "Auction off your special items.",
+                    "Bid on other player's items.");
+        } else if (type == RegionType.BANK) {
+            onNewZone(player, RegionType.BANK,
+                    "Talk to the Banker.",
+                    "Store your coins to keep them safe.",
+                    "Earn interest on your coins.");
+        } else if (type == RegionType.GOLD_MINE) {
+            onNewZone(player, RegionType.GOLD_MINE,
+                    "Talk to the Lazy Miner.",
+                    "Find the hidden gold mine.");
+        } else if (type == RegionType.COAL_MINE) {
+            onNewZone(player, RegionType.COAL_MINE,
+                    "Mine coal.",
+                    "Travel to the Gold Mine.");
+        } else if (type == RegionType.FARM) {
+            onNewZone(player, RegionType.FARM,
+                    "Talk to the farmer.", "Travel to The Barn.");
+        } else if (type == RegionType.BIRCH_PARK) {
+            onNewZone(player, RegionType.BIRCH_PARK,
+                    "Chop down trees.",
+                    "Collect all Log types.");
+        } else if (type == RegionType.FOREST) {
+            onNewZone(player, RegionType.FOREST,
+                    "Visit the Lumberjack.",
+                    "Chop down trees.",
+                    "Travel to the Birch Park.");
+        } else if (type == RegionType.GRAVEYARD) {
+            onNewZone(player, RegionType.GRAVEYARD,
+                    "Fight Zombies.",
+                    "Travel to the Spider's Den.",
+                    "Talk to Pat.",
+                    "Investigate the Catacombs.");
+        } else if (type == RegionType.BAZAAR_ALLEY) {
+            onNewZone(player, RegionType.BAZAAR_ALLEY,
+                    "Buy and sell materials in bulk in the Bazaar.");
+        } else if (type == RegionType.WILDERNESS) {
+            onNewZone(player, RegionType.WILDERNESS,
+                    "Fish.",
+                    "Visit the Fisherman's Hut.",
+                    "Visit the fairy at the Fairy Pond.",
+                    "Discover hidden secrets.");
+        } else if (type == RegionType.RUINS) {
+            onNewZone(player, RegionType.RUINS,
+                    "Explore the ancient ruins.",
+                    "Watch out for the guard dogs!");
+        } else if (type == RegionType.THE_END) {
+            onNewZone(player, RegionType.THE_END,
+                    "Talk to the Pearl Dealer.",
+                    "Explore the End Shop.",
+                    "Kill Endermen.",
+                    "Fight Dragons!");
+        }
+    }
+
+
+    public void onNewZone(User p ,RegionType r , String... messages){
+        p.onNewZone(r,messages);
     }
 
     @EventHandler

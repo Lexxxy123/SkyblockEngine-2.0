@@ -525,8 +525,13 @@ public class Repeater {
                     final SlayerQuest quest = user.getSlayerQuest();
                     QuestLine line = user.getQuestLine();
                     if ((!StaticDragonManager.ACTIVE || StaticDragonManager.DRAGON == null || !player.getWorld().getName().equalsIgnoreCase("dragon")) && quest == null && line != null) {
+                        BossBar bar = new BossBar(ChatColor.WHITE + "Objective: " + ChatColor.YELLOW + line.getDisplay() + " " + line.getObjective(user).getSuffix(user));
+                        bar.addPlayer(player);
                         sidebar.add(ChatColor.WHITE + "Objective");
                         sidebar.add(ChatColor.YELLOW + line.getObjective(user).getDisplay());
+                        if(line.getObjective(user).hasSuffix(user)){
+                            sidebar.add(line.getObjective(user).getSuffix(user));
+                        }
                         sidebar.add("      ");
                     }
                     if ((!StaticDragonManager.ACTIVE || StaticDragonManager.DRAGON == null || !player.getWorld().getName().equalsIgnoreCase("dragon")) && quest != null && (quest.getDied() == 0L || quest.getKilled() != 0L)) {

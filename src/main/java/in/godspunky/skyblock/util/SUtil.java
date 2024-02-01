@@ -18,15 +18,18 @@ import com.sk89q.worldedit.world.registry.WorldData;
 import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.enchantment.Enchantment;
 import in.godspunky.skyblock.gui.GUI;
-import in.godspunky.skyblock.item.GenericItemType;
-import in.godspunky.skyblock.item.Rarity;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.merchant.MerchantItemHandler;
 import in.godspunky.skyblock.potion.PotionColor;
 import in.godspunky.skyblock.potion.PotionEffect;
+import in.godspunky.skyblock.user.User;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.trait.ArmorStandTrait;
+import net.citizensnpcs.trait.LookClose;
+import net.citizensnpcs.trait.SkinTrait;
 import net.minecraft.server.v1_8_R3.*;
 import org.apache.commons.lang3.StringUtils;
+import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -60,6 +63,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
@@ -113,6 +117,139 @@ public class SUtil {
             max = 0;
         }
         return new Random().nextInt(max - min + 1) + min;
+    }
+
+    public static List<Object> spawnSkyblockNpc(Location location, String name, String skinValue, String skinSignature, boolean skin, boolean look, boolean villager, Villager.Profession profession) {
+        net.citizensnpcs.api.npc.NPC npc = CitizensAPI.getNPCRegistry().createNPC(villager ? EntityType.VILLAGER : EntityType.PLAYER, "");
+        try {
+            npc.spawn(location);
+            npc.getEntity().setCustomNameVisible(false);
+            npc.getEntity().setMetadata("createdAt", new FixedMetadataValue(Skyblock.getPlugin(), System.currentTimeMillis()));
+
+            if (villager) ((Villager) npc.getEntity()).setProfession(profession);
+
+            npc.getEntity().getLocation().setDirection(location.getWorld().getSpawnLocation().toVector().subtract(location.toVector()).normalize());
+
+            net.citizensnpcs.api.npc.NPC standNPC = CitizensAPI.getNPCRegistry().createNPC(EntityType.ARMOR_STAND, name);
+            standNPC.spawn(npc.getEntity().getLocation().add(0, !villager ? 1.95 : 2.15, 0));
+
+            ArmorStandTrait stand = standNPC.getOrAddTrait(ArmorStandTrait.class);
+            stand.setGravity(false);
+            stand.setVisible(false);
+            stand.setMarker(true);
+
+            standNPC.getEntity().teleport(npc.getEntity().getLocation().add(0, !villager ? 1.95 : 2.15, 0));
+            standNPC.getEntity().setMetadata("merchant", new FixedMetadataValue(Skyblock.getPlugin(), true));
+            standNPC.getEntity().setMetadata("merchantName", new FixedMetadataValue(Skyblock.getPlugin(), name));
+            standNPC.getEntity().setMetadata("NPC", new FixedMetadataValue(Skyblock.getPlugin(), true));
+
+            net.citizensnpcs.api.npc.NPC clickNPC = CitizensAPI.getNPCRegistry().createNPC(EntityType.ARMOR_STAND, ChatColor.YELLOW + "" + ChatColor.BOLD + "CLICK");
+            clickNPC.spawn(npc.getEntity().getLocation().add(0, !villager ? 1.6 : 1.8, 0));
+
+            ArmorStandTrait click = clickNPC.getOrAddTrait(ArmorStandTrait.class);
+            click.setGravity(false);
+            click.setVisible(false);
+            click.setMarker(true);
+
+            clickNPC.getEntity().teleport(npc.getEntity().getLocation().add(0, !villager ? 1.7 : 1.8, 0));
+
+            if (skin) {
+                SkinTrait skinTrait = npc.getOrAddTrait(SkinTrait.class);
+                skinTrait.setSkinPersistent("npc", skinSignature, skinValue);
+
+                npc.addTrait(skinTrait);
+            }
+
+            npc.data().set(net.citizensnpcs.api.npc.NPC.NAMEPLATE_VISIBLE_METADATA, false);
+
+            if (look) {
+                LookClose lookClose = npc.getOrAddTrait(LookClose.class);
+                lookClose.lookClose(true);
+
+                npc.addTrait(lookClose);
+            }
+
+            Chunk chunk = npc.getEntity().getLocation().getChunk();
+            chunk.load();
+
+            return new ArrayList<>(Arrays.asList(npc, stand, click));
+        }catch (Exception ex){
+            System.out.println("Smthing went wrong while trying to load npc : " + name);
+        }
+        return null;
+    }
+
+    public void HelmetRecipe(SMaterial result, SMaterial material, int amount){
+        ShapedRecipe recipe = new ShapedRecipe(result);
+        recipe.shape("aaa", "a a");
+        recipe.set('a', material, amount);
+    }
+    public void HelmetRecipe(SMaterial result, SMaterial material){
+        ShapedRecipe recipe = new ShapedRecipe(result);
+        recipe.shape("aaa", "a a");
+        recipe.set('a', material, 1);
+    }
+    public void ChestplateRecipe(SMaterial result, SMaterial material, int amount){
+        ShapedRecipe recipe = new ShapedRecipe(result);
+        recipe.shape("a a", "aaa","aaa");
+        recipe.set('a', material, amount);
+    }
+    public void ChestplateRecipe(SMaterial result, SMaterial material){
+        ShapedRecipe recipe = new ShapedRecipe(result);
+        recipe.shape("a a", "aaa","aaa");
+        recipe.set('a', material, 1);
+    }
+    public void LeggingsRecipe(SMaterial result, SMaterial material, int amount){
+        ShapedRecipe recipe = new ShapedRecipe(result);
+        recipe.shape("aaa", "a a","a a");
+        recipe.set('a', material, amount);
+    }
+    public void LeggingsRecipe(SMaterial result, SMaterial material){
+        ShapedRecipe recipe = new ShapedRecipe(result);
+        recipe.shape("aaa", "a a","a a");
+        recipe.set('a', material, 1);
+    }
+    public void BootsRecipe(SMaterial result, SMaterial material, int amount){
+        ShapedRecipe recipe = new ShapedRecipe(result);
+        recipe.shape("a a", "a a");
+        recipe.set('a', material, amount);
+    }
+    public void BootsRecipe(SMaterial result, SMaterial material){
+        ShapedRecipe recipe = new ShapedRecipe(result);
+        recipe.shape("a a", "a a");
+        recipe.set('a', material, 1);
+    }
+
+    public static void sendDelayedMessages(Player player, String npc, String... messages) {
+        sendDelayedMessages(player, npc, (p) -> {
+        }, messages);
+    }
+
+    public static void sendDelayedMessages(Player player, String npc, Consumer<Player> action, String... messages) {
+        List<String> talked = (List<String>) User.getUser(player.getUniqueId()).getValue();
+        User skyblockPlayer = User.getUser(player.getUniqueId());
+
+        if (talked.contains(npc)) return;
+
+        skyblockPlayer.setisinteracting(true);
+
+        for (int i = 0; i < messages.length; i++) {
+            String message = messages[i];
+            sendDelayedMessage(player, npc, message, i);
+
+            if (i == messages.length - 1) {
+                SUtil.delay(() -> action.accept(player), (i + 1) * 30);
+            }
+        }
+
+        SUtil.delay(() -> skyblockPlayer.setisinteracting(false), messages.length * 30);
+    }
+
+    public static void sendDelayedMessage(Player player, String npc, String message, int delay) {
+        SUtil.delay(() -> {
+            player.sendMessage(ChatColor.YELLOW + "[NPC] " + npc + ChatColor.WHITE + ": " + message);
+            player.playSound(player.getLocation(), Sound.VILLAGER_YES, 10, 1);
+        }, delay * 20);
     }
 
     public static String getTimeDifferenceAndColor(long start, long end) {

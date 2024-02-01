@@ -989,13 +989,11 @@ public class Sputnik {
 
     public static void startRoom(final Player player) {
         if (runningFloors() >= 5) {
-            player.sendMessage(trans("&cSorry! The number of running rooms has reached 5, please try again in a moment. You can support the server so we can handle more rooms at &bhttps://store.skysim.sbs"));
+            player.sendMessage(trans("&cSorry! The number of running rooms has reached 5, please try again in a moment. You can support the server so we can handle more rooms at &bhttps://discord.gg/godspunky"));
             BossMenu.ableToJoin.put(player, true);
             return;
         }
         final Skyblock plugin = Skyblock.getPlugin();
-        plugin.config.set("runMade", plugin.config.getLong("runMade") + 1L);
-        plugin.config.save();
         final ArrayList<Player> plist = new ArrayList<Player>();
         plist.add(player);
         SUtil.delay(() -> player.sendMessage(ChatColor.GREEN + "Entering The Catacombs Demo - Floor 6!"), 10L);

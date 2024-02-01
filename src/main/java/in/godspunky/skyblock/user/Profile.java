@@ -73,7 +73,7 @@ public class Profile {
     private static final File USER_FOLDER;
     public static long cookieduration;
     @Getter
-    private static List<String> talked_npcs;
+    private final List<String> talked_npcs;
 
     static {
         plugin = Skyblock.getPlugin();
@@ -148,6 +148,10 @@ public class Profile {
     @Getter
     @Setter
    public List<String> completedObjectives;
+
+    public List<String> talkedvillagers;
+
+    public List<String> foundzone;
     private AuctionEscrow auctionEscrow;
     @Setter
     @Getter
@@ -157,6 +161,8 @@ public class Profile {
     private boolean waitingForSign;
     private String signContent;
     private boolean isCompletedSign;
+
+    private boolean isinteracting;
 
     public Profile(String uuid, UUID owner, String name) {
         this.uuid = uuid;
@@ -172,7 +178,9 @@ public class Profile {
         this.saveable = true;
         this.waitingForSign = false;
         this.signContent = null;
+        this.foundzone = new ArrayList<>();
         this.isCompletedSign = false;
+        this.isinteracting = false;
         this.collections = ItemCollection.getDefaultCollections();
         this.totalfloor6run = 0L;
         this.coins = 0L;
@@ -181,7 +189,8 @@ public class Profile {
         this.islandX = null;
         this.islandZ = null;
         this.lastRegion = null;
-        talked_npcs = new ArrayList<>();
+        this.talked_npcs = new ArrayList<>();
+        this.talkedvillagers = new ArrayList<>();
         this.quiver = new HashMap<SMaterial, Integer>();
         this.effects = new ArrayList<ActivePotionEffect>();
         this.unlockedRecipes = new ArrayList<>();
@@ -214,11 +223,23 @@ public class Profile {
 
 
     public List<String> getCompletedQuests() {
-        return completedQuests;
+        return this.completedQuests;
     }
 
+    public List<String> getdiscoveredzones(){return this.foundzone;}
+
+    public void  addnewzone(String q){this.foundzone.add(q);}
+
+    public void addTalkedNPC(String name) {
+        if (!talked_npcs.contains(name)) {
+            talked_npcs.add(name);
+        }
+    }
+
+
+
     public List<String> getCompletedObjectives() {
-        return completedObjectives;
+        return this.completedObjectives;
     }
 
     public void addCompletedQuest(String questName) {
@@ -227,6 +248,23 @@ public class Profile {
 
     public void addCompletedObjectives(String questName) {
         this.completedObjectives.add(questName);
+    }
+
+    public List<String> getValue(){
+        return talkedvillagers;
+    }
+
+    public void setValue(String npc){
+        this.talkedvillagers.add(npc);
+
+    }
+
+    public boolean isinteracting(){
+        return this.isinteracting;
+    }
+
+    public void setisinteracting(boolean tf){
+        this.isinteracting = tf;
     }
 
     public static void updateProfileName(String profileUUID) {

@@ -23,7 +23,7 @@ public class JerryChineGun implements ToolStatistics, MaterialFunction, Ability 
 
     @Override
     public String getDisplayName() {
-        return "Jerry-chine Gun (Removed)";
+        return "Jerry-chine Gun (Made In Fun By Epicportal)";
     }
 
     @Override

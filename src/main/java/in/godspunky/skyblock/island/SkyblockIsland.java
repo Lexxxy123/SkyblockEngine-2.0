@@ -1,6 +1,8 @@
 package in.godspunky.skyblock.island;
 
 import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.features.npc.NPC;
+import in.godspunky.skyblock.features.npc.NPCHandler;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import lombok.Data;
@@ -12,9 +14,11 @@ import net.swofty.swm.api.world.properties.SlimeProperties;
 import net.swofty.swm.api.world.properties.SlimePropertyMap;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -78,6 +82,7 @@ public class SkyblockIsland {
                     Location loc1 = new Location(bukkitWorld, 0, 100 + 4.0, +35.0);
                     Location loc2 = new Location(bukkitWorld, -2, 100, 35.0);
                     SUtil.setBlocks(loc1, loc2, Material.PORTAL, false);
+                    addJerry(uuid1.toString());
                     bukkitPlayer.teleport(
                             new Location(Bukkit.getWorld(worldName), 0, 100, 0)
                     );
@@ -106,6 +111,7 @@ public class SkyblockIsland {
                         properties
                 );
                 slimePlugin.generateWorld(slimeWorld).thenRun(() -> {
+                    addJerry(uuid1.toString());
                     bukkitPlayer.teleport(
                             new Location(Bukkit.getWorld(worldName), 0, 100, 0)
                     );
@@ -113,7 +119,7 @@ public class SkyblockIsland {
 
 
             } else if (Bukkit.getWorld(worldName) != null) {
-                bukkitPlayer.teleport(new Location(Bukkit.getWorld(ISLAND_PREFIX + uuid.toString()), 0, 100, 0));
+                bukkitPlayer.teleport(new Location(Bukkit.getWorld(ISLAND_PREFIX + owner.getSelectedProfileUUID().toString()), 0, 100, 0));
             }
         } catch (WorldAlreadyExistsException | IOException | CorruptedWorldException | NewerFormatException |
                  WorldInUseException | UnknownWorldException ex) {
@@ -131,6 +137,31 @@ public class SkyblockIsland {
             ex.printStackTrace();
         }
         return false;
+    }
+
+    private void addJerry(String uuid) {
+        NPCHandler npcs = Skyblock.getPlugin().getNpcHandler();
+        if (!npcs.getNPCs().containsKey("jerry_" + uuid) && getWorld(UUID.fromString(uuid)) != null) {
+            NPC jerry = new NPC("Jerry", true, false, true, Villager.Profession.FARMER,
+                    new Location(Bukkit.getWorld(ISLAND_PREFIX + uuid), 2.5, 100, 26.5),
+                    (p) -> {
+                        if (p.getUniqueId().equals(bukkitPlayer.getUniqueId())) {
+                            if (owner.getCompletedObjectives().contains("jerry")) {
+                            } else {
+                                NPC.sendMessages(p, "Jerry",
+                                        "Your Skyblock island is part of a much larger universe",
+                                        "The Skyblock universe is full of islands to explore and resources to discover!",
+                                        "Use the Portal to warp to the first of those islands - The Skyblock Hub!");
+                            }
+                        } else {
+                            NPC.sendMessage(p, "Jerry", "Jerry doesn't speak to strangers!", false);
+                            p.playSound(p.getLocation(), Sound.VILLAGER_NO, 10, 1);
+                        }
+                    }, "", "");
+
+            npcs.registerNPC("jerry_" + uuid, jerry);
+            jerry.spawn();
+        }
     }
 
     public void delete() {

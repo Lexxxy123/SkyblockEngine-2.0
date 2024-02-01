@@ -4,12 +4,9 @@ package in.godspunky.skyblock.objectives;
 
 
 import in.godspunky.skyblock.objectives.hub.AuctioneerQuest;
-import in.godspunky.skyblock.objectives.hub.ExploreHubQuest;
+import in.godspunky.skyblock.objectives.hub.IntroduceYourselfQuest;
 import in.godspunky.skyblock.objectives.starting.GettingStartedQuest;
-import in.godspunky.skyblock.region.Region;
 import in.godspunky.skyblock.region.RegionType;
-import in.godspunky.skyblock.user.Profile;
-import in.godspunky.skyblock.user.ProfileDatabase;
 import in.godspunky.skyblock.user.User;
 import lombok.Getter;
 
@@ -22,7 +19,7 @@ public class QuestLineHandler {
 
     public QuestLineHandler() {
         register(RegionType.PRIVATE_ISLAND, new GettingStartedQuest());
-        register(RegionType.VILLAGE, new ExploreHubQuest());
+        register(RegionType.VILLAGE, new IntroduceYourselfQuest());
         register(RegionType.AUCTION_HOUSE, new AuctioneerQuest());
 
         for (List<QuestLine> quest : quests.values()) {
@@ -49,7 +46,6 @@ public class QuestLineHandler {
 
     public QuestLine getFromPlayer(User player) {
         RegionType loc = player.getRegion().getType();
-        Profile profile = player.selectedProfile;
 
         List<QuestLine> lines = quests.get(loc);
 

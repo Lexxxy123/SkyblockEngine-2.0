@@ -3,6 +3,7 @@ package in.godspunky.skyblock.npc.hub.merchants;
 import in.godspunky.skyblock.merchant.FarmMerchantGUI;
 import in.godspunky.skyblock.npc.NPCParameters;
 import in.godspunky.skyblock.npc.SkyblockNPC;
+import in.godspunky.skyblock.user.User;
 import org.bukkit.entity.Player;
 
 public class FarmMerchant extends SkyblockNPC {
@@ -78,6 +79,7 @@ public class FarmMerchant extends SkyblockNPC {
 
             @Override
             public void onInteract(Player player, SkyblockNPC npc) {
+                User user = User.getUser(player.getUniqueId());
                 FarmMerchantGUI gui = new FarmMerchantGUI();
                 gui.open(player);
             }

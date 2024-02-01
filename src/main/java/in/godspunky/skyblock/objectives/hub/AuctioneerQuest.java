@@ -25,7 +25,7 @@ public class AuctioneerQuest extends QuestLine {
         public void onClick(SkyblockPlayerNPCClickEvent e) {
             if (!isThisObjective(e.getPlayer())) return;
 
-            if (e.getNpc().getName().endsWith("Auction Master")) complete(e.getPlayer());
+            if (e.getNpc().getName().startsWith("Auction Master")) complete(e.getPlayer());
         }
     }
 }

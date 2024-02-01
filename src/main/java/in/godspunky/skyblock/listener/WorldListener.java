@@ -355,7 +355,7 @@ public class WorldListener extends PListener {
         if (sBlock != null && !e.isCancelled()) {
             sBlock.delete();
         }
-        if (e.isCancelled() || player.getGameMode() == GameMode.CREATIVE) {
+        if (e.isCancelled() || player.getGameMode() == GameMode.CREATIVE || player.getWorld() == Bukkit.getWorld("islands")) {
             return;
         }
         e.setCancelled(true);
@@ -603,7 +603,6 @@ public class WorldListener extends PListener {
                 return 0;
         }
     }
-
     @EventHandler
     public void placeBlockEvent(final BlockPlaceEvent e) {
         final Player player = e.getPlayer();
