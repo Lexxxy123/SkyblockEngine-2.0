@@ -33,7 +33,7 @@ public abstract class Storage implements MaterialStatistics, MaterialFunction, I
 
     @Override
     public void onInteraction(final PlayerInteractEvent e) {
-        e.getPlayer().sendMessage(ChatColor.RED + "This item is currently disabled due to an exploit! Find out more " + ChatColor.WHITE + "https://bit.ly/skysim");
+        e.getPlayer().sendMessage(ChatColor.RED + "This item is currently disabled due to an exploit!");
     }
 
     @Override

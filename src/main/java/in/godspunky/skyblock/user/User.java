@@ -28,6 +28,7 @@ import in.godspunky.skyblock.item.pet.Pet;
 import in.godspunky.skyblock.listener.PlayerListener;
 import in.godspunky.skyblock.minion.SkyblockMinion;
 
+import in.godspunky.skyblock.objectives.Objective;
 import in.godspunky.skyblock.objectives.QuestLine;
 import in.godspunky.skyblock.potion.ActivePotionEffect;
 import in.godspunky.skyblock.potion.PotionEffect;
@@ -35,6 +36,7 @@ import in.godspunky.skyblock.potion.PotionEffectType;
 import in.godspunky.skyblock.reforge.Reforge;
 import in.godspunky.skyblock.reforge.ReforgeType;
 import in.godspunky.skyblock.region.Region;
+import in.godspunky.skyblock.region.RegionType;
 import in.godspunky.skyblock.skill.*;
 import in.godspunky.skyblock.slayer.SlayerBossType;
 import in.godspunky.skyblock.slayer.SlayerQuest;
@@ -46,6 +48,7 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.minecraft.server.v1_8_R3.EntityHuman;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
+import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
 import org.bson.Document;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -72,7 +75,7 @@ public class User {
     public static final int ISLAND_SIZE = 125;
     public static final Map<UUID, User> USER_CACHE;
     private static final Skyblock plugin;
-    private static final File USER_FOLDER;
+    public static final File USER_FOLDER;
     private static final boolean multiServer = false;
 
     static {
@@ -123,8 +126,17 @@ public class User {
     private double berserkXP;
     private double healerXP;
 
-    private List<String> completedQuests;
-    private List<String> completedObjectives;
+    public List<String> foundzone;
+
+    @Getter
+    @Setter
+    public List<String> completedQuests;
+
+    @Getter
+    @Setter
+    public List<String> completedObjectives;
+
+    public List<String> talkedvillagers;
     //  @Getter
     //  private SkyblockIsland island;
     private double tankXP;
@@ -134,6 +146,8 @@ public class User {
     private boolean fatalActive;
     private boolean permanentCoins;
     private SlayerQuest slayerQuest;
+
+    public int coalcollected;
     @Getter
     private final List<String> unlockedRecipes;
     private final AuctionSettings auctionSettings;
@@ -144,10 +158,13 @@ public class User {
     private String signContent;
     private boolean isCompletedSign;
 
+    public boolean isinteracting;
+
     private User(final UUID uuid) {
         this.profiles = new HashMap<>();
         this.stashedItems = new ArrayList<ItemStack>();
         this.cooldownAltar = 0;
+        this.coalcollected = 0;
         this.headShot = false;
         this.playingSong = false;
         this.inDanger = false;
@@ -157,8 +174,10 @@ public class User {
         this.waitingForSign = false;
         this.signContent = null;
         this.isCompletedSign = false;
+        this.isinteracting = false;
         this.uuid = uuid;
         this.minions = new ArrayList<>();
+        this.foundzone = new ArrayList<>();
         this.collections = ItemCollection.getDefaultCollections();
         this.totalfloor6run = 0L;
         this.coins = 0L;
@@ -168,6 +187,7 @@ public class User {
         this.islandZ = null;
         this.lastRegion = null;
         this.talked_npcs = new ArrayList<>();
+        this.talkedvillagers = new ArrayList<>();
         this.quiver = new HashMap<SMaterial, Integer>();
         this.effects = new ArrayList<ActivePotionEffect>();
         this.unlockedRecipes = new ArrayList<>();
@@ -195,6 +215,88 @@ public class User {
         User.USER_CACHE.put(uuid, this);
     }
 
+   /* public List<String> getCompletedQuests() {
+        return userConfig.getCompletedQuests();
+    }
+
+    public List<String> getValue() {
+        return userConfig.getcompletedtalkedvillagers();
+    }
+
+    public List<String> getCompletedObjectives() {
+        return userConfig.getCompletedObjectives();
+    }
+
+    public boolean isinteracting(){
+        return userConfig.isinteracting();
+    }
+
+    public void setisinteracting(boolean tf){
+        userConfig.setisinteracting(tf);
+    }
+
+    public void setValue(List<String> name){
+        userConfig.addVillagerstalked(name.toString());
+    }
+
+    public void addCompletedQuest(String questName) {
+        userConfig.addCompletedQuest(questName);
+    }
+
+    public List<String> getdiscoveredzones(){return userConfig.getDiscoveredZone();}
+
+    public void  addnewzone(String q){userConfig.addnewzone(q);}
+
+    public void addCompletedObjectives(String objectiveName) {
+        userConfig.addCompletedObjectives(objectiveName);
+    }*/
+
+    public List<String> getCompletedQuests() {
+        return this.completedQuests;
+    }
+
+    public List<String> getdiscoveredzones(){return this.foundzone;}
+
+    public int getCoalcollected(){return this.coalcollected;}
+
+    public void addCoalCollected(int x){this.coalcollected = x;}
+
+    public void  addnewzone(String q){this.foundzone.add(q);}
+
+
+
+    public List<String> getCompletedObjectives() {
+        return this.completedObjectives;
+    }
+
+    public void addCompletedQuest(String questName) {
+        this.completedQuests.add(questName);
+    }
+
+    public void addCompletedObjectives(String questName) {
+        this.completedObjectives.add(questName);
+    }
+
+    public List<String> getValue(){
+        return talkedvillagers;
+    }
+
+    public void setValue(String npc){
+        this.talkedvillagers.add(npc);
+
+    }
+
+    public boolean isinteracting(){
+        return this.isinteracting;
+    }
+
+    public void setisinteracting(boolean tf){
+        this.isinteracting = tf;
+    }
+
+    public QuestLine getQuestLine() {
+        return Skyblock.getPlugin().getQuestLineHandler().getFromPlayer(this);
+    }
     public static void dmgDimon(final LivingEntity entity, final Player damager) {
         final int bonusDamage = 0;
         if (damager != null && entity.hasMetadata("Dimoon") && Skyblock.getPlugin().dimoon != null) {
@@ -202,6 +304,32 @@ public class User {
             final int damage = 1 + dimoon.getParkoursCompleted() + bonusDamage;
             dimoon.damage(damage, damager.getName());
         }
+    }
+
+    public void send(String message, Object... args) {
+        Player player = Bukkit.getPlayer(uuid);
+        if (player == null) return;
+        player.sendMessage(Sputnik.trans(String.format(message, args)));
+    }
+
+    public void onNewZone(RegionType zone, String... features) {
+        send("");
+        send("§6§l NEW AREA DISCOVERED!");
+        send("§7  ⏣ " + zone.getColor() + zone.getName());
+        send("");
+        if (features.length > 0) {
+            for (String feature : features) {
+                send("§7   ⬛ §f%s", feature);
+            }
+        } else {
+            send("§7   ⬛ §cNot much yet!");
+        }
+        send("");
+
+        Bukkit.getPlayer(uuid).playSound(Bukkit.getPlayer(uuid).getLocation(), Sound.LEVEL_UP, 1f, 0f);
+        Player player = Bukkit.getPlayer(uuid);
+        SUtil.sendTypedTitle(player, zone.getColor() + zone.getName(), PacketPlayOutTitle.EnumTitleAction.TITLE);
+        SUtil.sendTypedTitle(player,  "§6§lNEW AREA DISCOVERED!", PacketPlayOutTitle.EnumTitleAction.SUBTITLE);
     }
 
     public static String generateRandom() {
@@ -228,25 +356,7 @@ public class User {
         }
     }
 
-    public List<String> getCompletedQuests() {
-        return completedQuests;
-    }
 
-    public void setCompletedQuests(List<String> completedQuests) {
-        this.completedQuests = completedQuests;
-    }
-
-    public List<String> getCompletedObjectives() {
-        return completedObjectives;
-    }
-
-    public void setCompletedObjectives(List<String> completedObjectives) {
-        this.completedObjectives = completedObjectives;
-    }
-
-    public QuestLine getQuestLine() {
-        return Skyblock.getPlugin().getQuestLineHandler().getFromPlayer(this);
-    }
 
     public static User getUser(final UUID uuid) {
         if (uuid == null) {
@@ -280,8 +390,9 @@ public class User {
         if (reason == SwitchReason.CREATE) {
 
             SUtil.runAsync(() -> {
+                UUID uuid1 = UUID.randomUUID();
 
-                Skyblock.getPlugin().dataLoader.createAndSaveNewProfile(uuid);
+                Skyblock.getPlugin().dataLoader.createAndSaveNewProfile(uuid, uuid1);
             });
         }
         if (reason == SwitchReason.SWITCH) {

@@ -21,7 +21,10 @@ import lombok.SneakyThrows;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -72,6 +75,9 @@ public class SMongoLoader {
         UUID selectedProfileUUID = base != null ? UUID.fromString(getString(base, "selectedProfile", null)) : null;
 
         if (selectedProfileUUID != null && SUtil.isUUID(selectedProfileUUID.toString())) {
+            try {
+                SUtil.runSync(() -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "cswm unload " + selectedProfileUUID));
+            } catch (Exception ignored) {}
 
             user.selectedProfile = Profile.get(selectedProfileUUID, uuid);
 
@@ -84,9 +90,10 @@ public class SMongoLoader {
             user.selectedProfile.setSelected(true);
 
             if (user.selectedProfile == null) {
-                createAndSaveNewProfile(uuid);
+                UUID uuid1 = UUID.randomUUID();
+                createAndSaveNewProfile(uuid, uuid1);
                 Bukkit.getScheduler().runTaskLater(Skyblock.getPlugin(), () -> {
-                    SkyblockIsland.getIsland(uuid).send();
+                    SkyblockIsland.getIsland(uuid).send(uuid1);
                 }, 5 * 20L); // 20 ticks per second, so 5 seconds = 5 * 20 ticks
                 return;
             }
@@ -98,16 +105,16 @@ public class SMongoLoader {
             user.toBukkitPlayer().sendMessage(ChatColor.YELLOW + "Welcome to " + ChatColor.GREEN + "Godspunky Skyblock!");
             user.toBukkitPlayer().sendMessage(ChatColor.AQUA + "You are playing on profile: " + ChatColor.YELLOW + getActiveProfile(UUID.fromString(user.selectedProfile.uuid)));
         } else {
-            createAndSaveNewProfile(uuid);
+            UUID uuid1 = UUID.randomUUID();
+            createAndSaveNewProfile(uuid, uuid1);
             Bukkit.getScheduler().runTaskLater(Skyblock.getPlugin(), () -> {
-                SkyblockIsland.getIsland(uuid).send();
+                SkyblockIsland.getIsland(uuid).send(uuid1);
             }, 5 * 20L);
         }
     }
 
-    public void createAndSaveNewProfile(UUID uuid) {
+    public void createAndSaveNewProfile(UUID uuid, UUID id) {
         User user = User.getUser(uuid);
-        UUID id = UUID.randomUUID();
         String name = SUtil.generateRandomProfileNameFor();
         Profile profile = new Profile(id.toString(), uuid, name);
         user.selectedProfile = profile;
@@ -131,6 +138,25 @@ public class SMongoLoader {
 
     @SneakyThrows
     public void save(UUID uuid) {
+        try {
+            if ((Bukkit.getPlayer(uuid).getWorld().getName().equalsIgnoreCase("world"))) {
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            World world = Bukkit.getWorld(User.getUser(uuid).getSelectedProfile().getUuid().toString());
+                            if (world != null) {
+                                if (world.getPlayers().size() < 1) {
+                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "cswm unload " + User.getUser(uuid).getSelectedProfile().getUuid().toString());
+                                }
+                            }
+                        } catch (Exception ignored) { }
+                    }
+                }.runTaskLater(Skyblock.getPlugin(), 20);
+
+                return;
+            }
+        } catch (Exception ignored) { }
         User user = User.getUser(uuid);
         if (user == null) return;
         Profile selectedProfile = user.selectedProfile;
@@ -156,6 +182,12 @@ public class SMongoLoader {
         }
         selectedProfile = user.selectedProfile;
 
+        selectedProfile.setCompletedQuests(user.getCompletedQuests());
+        selectedProfile.setCompletedObjectives(user.getCompletedObjectives());
+        selectedProfile.addnewzone(user.getdiscoveredzones().toString());
+        selectedProfile.addTalkedNPC(user.getTalked_npcs().toString());
+        selectedProfile.setisinteracting(user.isinteracting);
+        selectedProfile.setValue(user.getValue().toString());
         selectedProfile.setLastRegion(user.getLastRegion());
         selectedProfile.setQuiver(user.getQuiver());
         selectedProfile.setEffects(user.getEffects());
@@ -214,6 +246,9 @@ public class SMongoLoader {
 
         SUtil.runAsync(() -> profile.setSelected(getBoolean(base, "selected", false)));
 
+        SUtil.runAsync(() -> profile.setisinteracting(getBoolean(base,"isInteracting", false)));
+
+
         for (ItemCollection collection : ItemCollection.getCollections()) {
             profile.collections.put(collection, 0);
         }
@@ -243,11 +278,6 @@ public class SMongoLoader {
             }
             profile.setLastRegion(Region.get(name) == null ? null : Region.get(getString(base, "lastRegion", "none")));
             owner.setLastRegion(profile.getLastRegion());
-        });
-
-        SUtil.runAsync(() -> {
-            profile.setCompletedObjectives(getStringList(base, "completedObjectives", new ArrayList<>()));
-            profile.setCompletedQuests(getStringList(base, "completedQuests", new ArrayList<>()));
         });
 
 
@@ -381,6 +411,33 @@ public class SMongoLoader {
                 }
             }
         }
+
+        SUtil.runAsync(() -> {
+            Document questData = (Document) get(base, "quests", new Document());
+            List<String> completedQuests = questData.getList("completedQuests", String.class, new ArrayList<>());
+            List<String> completedObjectives = questData.getList("completedObjectives", String.class, new ArrayList<>());
+            List<String> talkedto = questData.getList("talkedto" , String.class , new ArrayList<>());
+
+            profile.setCompletedQuests(completedQuests);
+            profile.setCompletedObjectives(completedObjectives);
+            profile.setValue(talkedto.toString());
+
+        });
+
+        SUtil.runAsync(() -> {
+            Document data = (Document) get(base, "data" , new Document());
+            List<String> foundzone = data.getList("foundzone", String.class , new ArrayList<>());
+            List<String> talkednpc = data.getList("talkednpc" , String.class , new ArrayList<>());
+            profile.addTalkedNPC(talkednpc.toString());
+            owner.addTalkedNPC(profile.getTalked_npcs().toString());
+            profile.addnewzone(foundzone.toString());
+            owner.addnewzone(foundzone.toString());
+                });
+
+        SUtil.runAsync(() -> owner.setCompletedQuests(profile.getCompletedQuests()));
+        SUtil.runAsync(() -> owner.setCompletedObjectives(profile.getCompletedObjectives()));
+        SUtil.runAsync(() -> owner.setValue(profile.getValue().toString()));
+        SUtil.runAsync(() -> owner.setisinteracting(profile.isinteracting()));
         SUtil.runAsync(() -> owner.setBankCoins(profile.getBankCoins()));
         SUtil.runAsync(() -> owner.setCoins(profile.getCoins()));
         SUtil.runAsync(() -> owner.setCoins(profile.getCoins()));
@@ -440,8 +497,16 @@ public class SMongoLoader {
         setProfileProperty("bankCoins", profile.getBankCoins());
         if (profile.getLastRegion() != null)
             setProfileProperty("lastRegion", profile.getLastRegion().getName());
-        setProfileProperty("completedObjectives", profile.getCompletedObjectives());
-        setProfileProperty("completedQuests", profile.getCompletedQuests());
+        setProfileProperty("isInteracting", profile.isinteracting());
+        Map<String, Object> data = new HashMap<>();
+        data.put("foundzone", profile.getdiscoveredzones());
+        data.put("talkednpc", profile.getTalked_npcs());
+        setProfileProperty("data", data);
+        Map<String, Object> questData = new HashMap<>();
+        questData.put("completedQuests", profile.getCompletedQuests());
+        questData.put("completedObjectives", profile.getCompletedObjectives());
+        questData.put("talkedto", profile.getValue());
+        setProfileProperty("quests", questData);
         Map<String, Integer> tempQuiv = new HashMap<>();
         profile.getQuiver().forEach((key, value) -> tempQuiv.put(key.name(), value));
         setProfileProperty("quiver", tempQuiv);
@@ -456,8 +521,6 @@ public class SMongoLoader {
         }
         User.getUser(profile.owner).saveCookie(profile);
         setProfileProperty("effects", effectsDocuments);
-        setProfileProperty("completedObjectives", new HashMap<>());
-        setProfileProperty("completedQuests", new HashMap<>());
         setProfileProperty("skillFarmingXp", profile.farmingXP);
         setProfileProperty("skillMiningXp", profile.miningXP);
         setProfileProperty("skillCombatXp", profile.combatXP);
@@ -517,11 +580,7 @@ public class SMongoLoader {
     }
 
     public List<String> getStringList(Document base, String key, List<String> def) {
-        Object value = get(base, key, def);
-        if (value instanceof List) {
-            return (List<String>) value;
-        }
-        return def;
+        return Collections.singletonList(get(base, key, def).toString());
     }
 
     public Object get(Document base, String key, Object def) {

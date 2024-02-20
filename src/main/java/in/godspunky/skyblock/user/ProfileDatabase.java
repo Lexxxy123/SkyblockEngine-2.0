@@ -14,12 +14,12 @@ public class ProfileDatabase {
     }
 
     public boolean exists() {
-        MongoCollection<Document> userCollection = DatabaseManager.getCollection("users");
+        MongoCollection<Document> userCollection = DatabaseManager.getCollection("profiles");
         return userCollection.find(new Document("uuid", id)).first() != null;
     }
 
     public Document getDocument() {
-        MongoCollection<Document> userCollection = DatabaseManager.getCollection("users");
+        MongoCollection<Document> userCollection = DatabaseManager.getCollection("profiles");
         return userCollection.find(new Document("uuid", id)).first();
     }
 

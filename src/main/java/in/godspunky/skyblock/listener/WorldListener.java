@@ -355,7 +355,7 @@ public class WorldListener extends PListener {
         if (sBlock != null && !e.isCancelled()) {
             sBlock.delete();
         }
-        if (e.isCancelled() || player.getGameMode() == GameMode.CREATIVE) {
+        if (e.isCancelled() || player.getGameMode() == GameMode.CREATIVE || player.getWorld() == Bukkit.getWorld("islands")) {
             return;
         }
         e.setCancelled(true);
@@ -413,7 +413,8 @@ public class WorldListener extends PListener {
             SUtil.delay(() -> WorldListener.ALREADY_TELEPORTING.remove(entity.getUniqueId()), 15L);
             entity.sendMessage(ChatColor.GRAY + "Sending you to your island...");
             try {
-                SkyblockIsland.getIsland(entity.getUniqueId()).send();
+                User user = User.getUser(entity.getUniqueId());
+                SkyblockIsland.getIsland(entity.getUniqueId()).send(user.selectedProfile.getProfileId());
             }catch (Exception ex){
                 ex.printStackTrace();
             }
@@ -602,7 +603,6 @@ public class WorldListener extends PListener {
                 return 0;
         }
     }
-
     @EventHandler
     public void placeBlockEvent(final BlockPlaceEvent e) {
         final Player player = e.getPlayer();

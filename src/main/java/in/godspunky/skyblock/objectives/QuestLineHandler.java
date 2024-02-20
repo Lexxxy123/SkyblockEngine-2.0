@@ -3,11 +3,10 @@ package in.godspunky.skyblock.objectives;
 
 
 
+import in.godspunky.skyblock.objectives.hub.AuctioneerQuest;
+import in.godspunky.skyblock.objectives.hub.IntroduceYourselfQuest;
 import in.godspunky.skyblock.objectives.starting.GettingStartedQuest;
-import in.godspunky.skyblock.region.Region;
 import in.godspunky.skyblock.region.RegionType;
-import in.godspunky.skyblock.user.Profile;
-import in.godspunky.skyblock.user.ProfileDatabase;
 import in.godspunky.skyblock.user.User;
 import lombok.Getter;
 
@@ -20,6 +19,8 @@ public class QuestLineHandler {
 
     public QuestLineHandler() {
         register(RegionType.PRIVATE_ISLAND, new GettingStartedQuest());
+        register(RegionType.VILLAGE, new IntroduceYourselfQuest());
+        register(RegionType.AUCTION_HOUSE, new AuctioneerQuest());
 
         for (List<QuestLine> quest : quests.values()) {
             quest.forEach(QuestLine::onEnable);
@@ -31,26 +32,6 @@ public class QuestLineHandler {
             quest.forEach(QuestLine::onDisable);
         }
     }
-
-    /*SUtil.runAsync(() -> {
-            Object completedObjectivesObj = get(base, "completedObjectives", new HashMap<>());
-            if (completedObjectivesObj instanceof List<?>) {
-                profile.setCompletedObjectives((List<String>) completedObjectivesObj);
-                owner.setCompletedObjectives((List<String>) completedObjectivesObj);
-            } else {
-                SLog.info("Quest aint working Redo!");
-            }
-        });
-
-        SUtil.runAsync(() -> {
-            Object completedQuestsObj = get(base, "completedQuests", new HashMap<>());
-            if (completedQuestsObj instanceof List<?>) {
-                profile.setCompletedQuests((List<String>) completedQuestsObj);
-                owner.setCompletedQuests((List<String>) completedQuestsObj);
-            } else {
-                SLog.info("Quest aint working Redo!");
-            }
-        });*/
 
     public void register(RegionType location, QuestLine line) {
         if (quests.containsKey(location)) {
@@ -65,7 +46,6 @@ public class QuestLineHandler {
 
     public QuestLine getFromPlayer(User player) {
         RegionType loc = player.getRegion().getType();
-        Profile profile = player.selectedProfile;
 
         List<QuestLine> lines = quests.get(loc);
 
@@ -73,19 +53,18 @@ public class QuestLineHandler {
             return null;
         }
 
-        List<String> completed = profile.getCompletedQuests();
+        List<String> completed = player.getCompletedQuests();
+
+        if (lines == null) return null;
 
         for (QuestLine quest : lines) {
-            if (completed.contains(quest.getName())) {
-                continue;
-            }
+            if (completed.contains(quest.getName())) continue;
 
             return quest;
         }
 
         return null;
     }
-
 
     public QuestLine getQuest(Objective objective) {
         for (List<QuestLine> lines : quests.values()) {

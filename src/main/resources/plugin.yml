@@ -5,7 +5,7 @@ authors: [ Epicportal , Hamza ]
 description: this is a description, what do you want from me
 
 softdepend: [PlaceholderAPI]
-depend: [LibsDisguises, ProtocolLib]
+depend: [LibsDisguises, ProtocolLib , Citizens]
 commands:
   setrank:
 

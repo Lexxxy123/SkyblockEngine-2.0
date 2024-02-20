@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.objectives;
 
 
+import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.user.Profile;
 import in.godspunky.skyblock.user.ProfileDatabase;
 import in.godspunky.skyblock.user.User;
@@ -12,7 +13,7 @@ import org.bukkit.entity.Player;
 import java.util.*;
 
 @Getter
-public class QuestLine {
+public abstract class QuestLine {
 
     protected final List<Objective> line;
     private final String name;
@@ -25,9 +26,7 @@ public class QuestLine {
     }
 
     public Objective getObjective(User skyblockPlayer) {
-        Profile profile = skyblockPlayer.getSelectedProfile();
-
-        List<String> completed = profile.getCompletedObjectives();
+        List<String> completed = skyblockPlayer.getCompletedObjectives();
 
         for (Objective obj : line) {
             if (completed.contains(obj.getId())) continue;
@@ -41,20 +40,16 @@ public class QuestLine {
     public Objective getNext(Objective obj) {
         try {
             return line.get(line.indexOf(obj) + 1);
-        } catch (ArrayIndexOutOfBoundsException igored) { }
+        } catch (ArrayIndexOutOfBoundsException ignored) { }
 
         return null;
     }
 
-
     public void complete(Player player) {
-        User skyblockPlayer = User.getUser(player.getUniqueId());
+        User skyblockPlayer = User.getUser(player.getUniqueId());;
 
-        Profile profile = skyblockPlayer.selectedProfile;
 
-        List<String> completedQuests = profile.getCompletedQuests();
-        completedQuests.add(getName());
-        profile.setCompletedQuests(completedQuests);
+        skyblockPlayer.addCompletedQuest(getName());
 
         if (!hasCompletionMessage()) return;
 
@@ -95,4 +90,5 @@ public class QuestLine {
 
     public void onDisable() {}
     public void onEnable() {}
+
 }

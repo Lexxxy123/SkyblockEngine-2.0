@@ -1,10 +1,11 @@
 package in.godspunky.skyblock.event;
 
+import in.godspunky.skyblock.user.User;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class SkyblockEvent extends Event implements Cancellable {
+public abstract class SkyblockEvent extends Event implements Cancellable {
 
     private static final HandlerList HANDLERS = new HandlerList();
     private boolean isCancelled;

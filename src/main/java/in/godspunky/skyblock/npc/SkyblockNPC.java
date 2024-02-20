@@ -67,19 +67,19 @@ public class SkyblockNPC {
             );
         }
         PlayerInteractManager interactManager = new PlayerInteractManager(worldServer);
-        this.entityPlayer = new EntityPlayer(
-                minecraftServer,
-                worldServer,
-                gameProfile,
-                interactManager
-        );
-        entityPlayer.setLocation(
-                location.getX(),
-                location.getY(),
-                location.getZ(),
-                location.getYaw(),
-                location.getPitch()
-        );
+            this.entityPlayer = new EntityPlayer(
+                    minecraftServer,
+                    worldServer,
+                    gameProfile,
+                    interactManager
+            );
+            entityPlayer.setLocation(
+                    location.getX(),
+                    location.getY(),
+                    location.getZ(),
+                    location.getYaw(),
+                    location.getPitch()
+            );
         this.parameters = npc;
         SkyblockNPCManager.registerNPC(this);
 
