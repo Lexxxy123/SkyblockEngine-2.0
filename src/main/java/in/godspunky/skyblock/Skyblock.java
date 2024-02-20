@@ -93,7 +93,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
     private static SkyBlock plugin;
     private final PacketHelper packetInj;
 
-    private static final boolean dimoonEnabled = false;
+    public static final boolean dimoonEnabled = false;
 
     public Arena arena;
     public Dimoon dimoon;
@@ -134,7 +134,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
         this.sq = null;
         this.altarCooldown = false;
         this.serverVersion = new ServerVersion("beta", 0, 7, 2, 0);
-        this.serverName = "Loading...";
+        this.serverName = "dev";
         this.bannedUUID = Collections.singletonList("");
     }
 
@@ -597,12 +597,12 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
     }
 
     public void updateServerName(final Player player) {
-        SkySimBungee.getNewBungee().sendData(player, "GetServer", null);
+        // SkySimBungee.getNewBungee().sendData(player, "GetServer", null);
     }
 
     public void updateServerPlayerCount() {
-        if (Bukkit.getOnlinePlayers().size() > 0) {
-            SkySimBungee.getNewBungee().sendData(null, "PlayerCount", "ALL");
+        if (!Bukkit.getOnlinePlayers().isEmpty()) {
+           // SkySimBungee.getNewBungee().sendData(null, "PlayerCount", "ALL");
         }
     }
 

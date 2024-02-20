@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.nms.pingrep;
 
 import io.netty.channel.Channel;
+import lombok.SneakyThrows;
 import net.minecraft.server.v1_8_R3.MinecraftServer;
 import net.minecraft.server.v1_8_R3.NetworkManager;
 import net.minecraft.server.v1_8_R3.ServerConnection;
@@ -51,19 +52,16 @@ public class PingInjector implements Listener {
         }
     }
 
-    public Object getNetworkManagerList(final ServerConnection conn) {
+
+    public Object getNetworkManagerList(final ServerConnection serverConnection) {
+        Field field = null;
         try {
-            for (final Method method : conn.getClass().getDeclaredMethods()) {
-                method.setAccessible(true);
-                if (method.getReturnType() == List.class) {
-                    final Object object = method.invoke(null, conn);
-                    return object;
-                }
-            }
-        } catch (final IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+            field = serverConnection.getClass().getDeclaredField("h");
+            field.setAccessible(true);
+            return field.get(serverConnection);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            return null;
         }
-        return null;
     }
 
     @EventHandler

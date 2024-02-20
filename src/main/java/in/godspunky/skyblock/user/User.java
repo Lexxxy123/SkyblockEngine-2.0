@@ -34,6 +34,7 @@ import in.godspunky.skyblock.slayer.SlayerBossType;
 import in.godspunky.skyblock.slayer.SlayerQuest;
 import in.godspunky.skyblock.util.*;
 import lombok.Getter;
+import lombok.Setter;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -70,27 +71,44 @@ public class User {
     private static final Map<UUID, User> USER_CACHE;
     private static final SkyBlock plugin;
     private static final File USER_FOLDER;
+    @Getter
     private long sadancollections;
+    @Getter
     private long totalfloor6run;
+    @Getter
     private UUID uuid;
     private final Config config;
     private final Map<ItemCollection, Integer> collections;
+    @Getter
     private long coins;
+    @Getter
     private long bankCoins;
+    @Setter
+    @Getter
     private List<ItemStack> stashedItems;
+    @Setter
+    @Getter
     private int cooldownAltar;
+    @Setter
+    @Getter
     private boolean headShot;
     private static final boolean multiServer = false;
+    @Setter
+    @Getter
     private boolean playingSong;
+    @Setter
+    @Getter
     private boolean inDanger;
-    private Double islandX;
-    private Double islandZ;
+    @Getter
     private Region lastRegion;
+    @Getter
     private final Map<SMaterial, Integer> quiver;
+    @Getter
     private final List<ActivePotionEffect> effects;
 
     @Getter
     private List<String> talked_npcs;
+    @Getter
     private double farmingXP;
     private boolean boneToZeroDamage;
     private boolean cooldownAPI;
@@ -100,29 +118,53 @@ public class User {
     private double archerXP;
     private double cataXP;
     private double berserkXP;
+    @Getter
     private double healerXP;
     @Getter
-    private SkyblockIsland island;
     private double tankXP;
+    @Getter
     private double mageXP;
+    @Getter
     private double foragingXP;
     private final int[] highestSlayers;
     private final int[] slayerXP;
     private final int[] crystalLVL;
+    @Getter
+    @Setter
     private boolean saveable;
 
+    @Getter
+    @Setter
     private int bonusFerocity;
+    @Getter
+    @Setter
     private boolean fatalActive;
+    @Getter
+    @Setter
     private boolean permanentCoins;
+    @Setter
+    @Getter
     private SlayerQuest slayerQuest;
+    @Getter
     private List<Pet.PetItem> pets;
     @Getter
     private List<String> unlockedRecipes;
+    @Getter
     private AuctionSettings auctionSettings;
+    @Getter
+    @Setter
     private boolean auctionCreationBIN;
+    @Getter
+    @Setter
     private AuctionEscrow auctionEscrow;
+    @Getter
+    @Setter
     private boolean voidlingWardenActive;
+    @Getter
+    @Setter
     private boolean waitingForSign;
+    @Setter
+    @Getter
     private String signContent;
     private boolean isCompletedSign;
 
@@ -144,8 +186,6 @@ public class User {
         this.coins = 0L;
         this.bankCoins = 0L;
         this.sadancollections = 0L;
-        this.islandX = null;
-        this.islandZ = null;
         this.lastRegion = null;
         this.talked_npcs = new ArrayList<>();
         this.quiver = new HashMap<SMaterial, Integer>();
@@ -155,7 +195,6 @@ public class User {
         this.miningXP = 0.0;
         this.combatXP = 0.0;
         this.foragingXP = 0.0;
-        this.island = SkyblockIsland.getIsland(uuid);
         this.enchantXP = 0.0;
         this.highestSlayers = new int[4];
         this.slayerXP = new int[4];
@@ -205,8 +244,6 @@ public class User {
         }
         this.coins = this.config.getLong("coins");
         this.bankCoins = this.config.getLong("bankCoins");
-        this.islandX = (this.config.contains("island.x") ? Double.valueOf(this.config.getDouble("island.x")) : null);
-        this.islandZ = (this.config.contains("island.z") ? Double.valueOf(this.config.getDouble("island.z")) : null);
         this.lastRegion = ((this.config.getString("lastRegion") != null) ? Region.get(this.config.getString("lastRegion")) : null);
         if (this.config.contains("quiver")) {
             for (final String m : this.config.getConfigurationSection("quiver").getKeys(false)) {
@@ -239,14 +276,16 @@ public class User {
         this.slayerXP[1] = this.config.getInt("xp.slayer.tarantulaBroodfather");
         this.slayerXP[2] = this.config.getInt("xp.slayer.svenPackmaster");
         this.slayerXP[3] = this.config.getInt("xp.slayer.voidgloomSeraph");
-        this.crystalLVL[0] = this.config.getInt("crystals.level.health");
-        this.crystalLVL[1] = this.config.getInt("crystals.level.defense");
-        this.crystalLVL[2] = this.config.getInt("crystals.level.critdmg");
-        this.crystalLVL[3] = this.config.getInt("crystals.level.critchance");
-        this.crystalLVL[4] = this.config.getInt("crystals.level.intelligence");
-        this.crystalLVL[5] = this.config.getInt("crystals.level.ferocity");
-        this.crystalLVL[6] = this.config.getInt("crystals.level.magicfind");
-        this.crystalLVL[7] = this.config.getInt("crystals.level.strength");
+        if (SkyBlock.dimoonEnabled) {
+            this.crystalLVL[0] = this.config.getInt("crystals.level.health");
+            this.crystalLVL[1] = this.config.getInt("crystals.level.defense");
+            this.crystalLVL[2] = this.config.getInt("crystals.level.critdmg");
+            this.crystalLVL[3] = this.config.getInt("crystals.level.critchance");
+            this.crystalLVL[4] = this.config.getInt("crystals.level.intelligence");
+            this.crystalLVL[5] = this.config.getInt("crystals.level.ferocity");
+            this.crystalLVL[6] = this.config.getInt("crystals.level.magicfind");
+            this.crystalLVL[7] = this.config.getInt("crystals.level.strength");
+        }
         this.permanentCoins = this.config.getBoolean("permanentCoins");
         this.slayerQuest = (SlayerQuest) this.config.get("slayer.quest");
         if (this.config.contains("pets")) {
@@ -325,8 +364,6 @@ public class User {
         }
         this.config.set("coins", this.coins);
         this.config.set("bankCoins", this.bankCoins);
-        this.config.set("island.x", this.islandX);
-        this.config.set("island.z", this.islandZ);
         if (this.lastRegion != null) {
             this.config.set("lastRegion", this.lastRegion.getName());
         }
@@ -363,14 +400,16 @@ public class User {
         this.config.set("slayer.tarantulaBroodfather.highest", this.highestSlayers[1]);
         this.config.set("slayer.svenPackmaster.highest", this.highestSlayers[2]);
         this.config.set("slayer.voidgloomSeraph.highest", this.highestSlayers[3]);
-        this.config.set("crystals.level.health", this.crystalLVL[0]);
-        this.config.set("crystals.level.defense", this.crystalLVL[1]);
-        this.config.set("crystals.level.critdmg", this.crystalLVL[2]);
-        this.config.set("crystals.level.critchance", this.crystalLVL[3]);
-        this.config.set("crystals.level.intelligence", this.crystalLVL[4]);
-        this.config.set("crystals.level.ferocity", this.crystalLVL[5]);
-        this.config.set("crystals.level.magicfind", this.crystalLVL[6]);
-        this.config.set("crystals.level.strength", this.crystalLVL[7]);
+        if (SkyBlock.dimoonEnabled) {
+            this.config.set("crystals.level.health", this.crystalLVL[0]);
+            this.config.set("crystals.level.defense", this.crystalLVL[1]);
+            this.config.set("crystals.level.critdmg", this.crystalLVL[2]);
+            this.config.set("crystals.level.critchance", this.crystalLVL[3]);
+            this.config.set("crystals.level.intelligence", this.crystalLVL[4]);
+            this.config.set("crystals.level.ferocity", this.crystalLVL[5]);
+            this.config.set("crystals.level.magicfind", this.crystalLVL[6]);
+            this.config.set("crystals.level.strength", this.crystalLVL[7]);
+        }
         this.config.set("xp.slayer.revenantHorror", this.slayerXP[0]);
         this.config.set("xp.slayer.tarantulaBroodfather", this.slayerXP[1]);
         this.config.set("xp.slayer.svenPackmaster", this.slayerXP[2]);
@@ -394,10 +433,6 @@ public class User {
     public void saveStorageData(final int page) {
     }
 
-    public void setIslandLocation(final double x, final double z) {
-        this.islandX = x;
-        this.islandZ = z;
-    }
 
     public void saveInventory() {
         if (Bukkit.getPlayer(this.uuid) == null) {
@@ -1457,7 +1492,7 @@ public class User {
     }
 
     public boolean isOnIsland(final Location location) {
-        final World world = Bukkit.getWorld("island-" + uuid);
+        final World world = Bukkit.getWorld(SkyblockIsland.ISLAND_PREFIX + uuid);
         if (world == null) {
             return false;
         }
@@ -1469,7 +1504,7 @@ public class User {
         if (player == null) {
             return false;
         }
-        return player.getWorld().getName().startsWith(SkyblockIsland.ISLAND_PREFIX);
+        return player.getWorld().getName().startsWith(SkyblockIsland.ISLAND_PREFIX) && !isOnIsland(player.getLocation());
     }
 
     public List<AuctionItem> getBids() {
@@ -1501,8 +1536,8 @@ public class User {
             return;
         }
         if (this.isOnIsland()) {
-            final World world = Bukkit.getWorld("islands");
-            player.teleport(world.getHighestBlockAt(SUtil.blackMagic(this.islandX), SUtil.blackMagic(this.islandZ)).getLocation().add(0.5, 1.0, 0.5));
+            final World world = Bukkit.getWorld(SkyblockIsland.ISLAND_PREFIX + uuid.toString());
+            player.teleport(new Location(world , 0 , 100 , 0));
         } else if (this.lastRegion != null) {
             switch (this.lastRegion.getType()) {
                 case BANK:
@@ -1529,39 +1564,9 @@ public class User {
                 case GRAVEYARD:
                     player.teleport(player.getWorld().getSpawnLocation());
                     break;
-                case GOLD_MINE:
-                    player.teleport(player.getWorld().getSpawnLocation());
-                    break;
-                case DEEP_CAVERN:
-                case GUNPOWDER_MINES:
-                case LAPIS_QUARRY:
-                case PIGMENS_DEN:
-                case SLIMEHILL:
-                case DIAMOND_RESERVE:
-                case OBSIDIAN_SANCTUARY:
-                    player.teleport(player.getWorld().getSpawnLocation());
-                    break;
-                case THE_END:
-                case THE_END_NEST:
-                case DRAGONS_NEST:
-                    player.teleport(player.getWorld().getSpawnLocation());
-                    break;
                 case SPIDERS_DEN:
                     player.teleport(player.getWorld().getSpawnLocation());
                 case SPIDERS_DEN_HIVE:
-                    player.teleport(player.getWorld().getSpawnLocation());
-                    break;
-                case BIRCH_PARK:
-                case SPRUCE_WOODS:
-                case DARK_THICKET:
-                case SAVANNA_WOODLAND:
-                case JUNGLE_ISLAND:
-                    player.teleport(player.getWorld().getSpawnLocation());
-                    break;
-                case HOWLING_CAVE:
-                    player.teleport(player.getWorld().getSpawnLocation());
-                    break;
-                case BLAZING_FORTRESS:
                     player.teleport(player.getWorld().getSpawnLocation());
                     break;
                 default:
@@ -1893,89 +1898,6 @@ public class User {
         this.toBukkitPlayer().spigot().sendMessage(tcp);
     }
 
-    public long getSadancollections() {
-        return this.sadancollections;
-    }
-
-    public long getTotalfloor6run() {
-        return this.totalfloor6run;
-    }
-
-    public UUID getUuid() {
-        return this.uuid;
-    }
-
-    public long getCoins() {
-        return this.coins;
-    }
-
-    public long getBankCoins() {
-        return this.bankCoins;
-    }
-
-    public List<ItemStack> getStashedItems() {
-        return this.stashedItems;
-    }
-
-    public void setStashedItems(final List<ItemStack> stashedItems) {
-        this.stashedItems = stashedItems;
-    }
-
-    public int getCooldownAltar() {
-        return this.cooldownAltar;
-    }
-
-    public void setCooldownAltar(final int cooldownAltar) {
-        this.cooldownAltar = cooldownAltar;
-    }
-
-    public boolean isHeadShot() {
-        return this.headShot;
-    }
-
-    public void setHeadShot(final boolean headShot) {
-        this.headShot = headShot;
-    }
-
-    public boolean isPlayingSong() {
-        return this.playingSong;
-    }
-
-    public void setPlayingSong(final boolean playingSong) {
-        this.playingSong = playingSong;
-    }
-
-    public boolean isInDanger() {
-        return this.inDanger;
-    }
-
-    public void setInDanger(final boolean inDanger) {
-        this.inDanger = inDanger;
-    }
-
-    public Double getIslandX() {
-        return this.islandX;
-    }
-
-    public Double getIslandZ() {
-        return this.islandZ;
-    }
-
-    public Region getLastRegion() {
-        return this.lastRegion;
-    }
-
-    public Map<SMaterial, Integer> getQuiver() {
-        return this.quiver;
-    }
-
-    public List<ActivePotionEffect> getEffects() {
-        return this.effects;
-    }
-
-    public double getFarmingXP() {
-        return this.farmingXP;
-    }
 
     public boolean isBoneToZeroDamage() {
         return this.boneToZeroDamage;
@@ -2015,110 +1937,6 @@ public class User {
 
     public double getBerserkXP() {
         return this.berserkXP;
-    }
-
-    public double getHealerXP() {
-        return this.healerXP;
-    }
-
-    public double getTankXP() {
-        return this.tankXP;
-    }
-
-    public double getMageXP() {
-        return this.mageXP;
-    }
-
-    public double getForagingXP() {
-        return this.foragingXP;
-    }
-
-    public boolean isSaveable() {
-        return this.saveable;
-    }
-
-    public void setSaveable(final boolean saveable) {
-        this.saveable = saveable;
-    }
-
-    public int getBonusFerocity() {
-        return this.bonusFerocity;
-    }
-
-    public void setBonusFerocity(final int bonusFerocity) {
-        this.bonusFerocity = bonusFerocity;
-    }
-
-    public boolean isFatalActive() {
-        return this.fatalActive;
-    }
-
-    public void setFatalActive(final boolean fatalActive) {
-        this.fatalActive = fatalActive;
-    }
-
-    public boolean isPermanentCoins() {
-        return this.permanentCoins;
-    }
-
-    public void setPermanentCoins(final boolean permanentCoins) {
-        this.permanentCoins = permanentCoins;
-    }
-
-    public SlayerQuest getSlayerQuest() {
-        return this.slayerQuest;
-    }
-
-    public void setSlayerQuest(final SlayerQuest slayerQuest) {
-        this.slayerQuest = slayerQuest;
-    }
-
-    public List<Pet.PetItem> getPets() {
-        return this.pets;
-    }
-
-    public AuctionSettings getAuctionSettings() {
-        return this.auctionSettings;
-    }
-
-    public boolean isAuctionCreationBIN() {
-        return this.auctionCreationBIN;
-    }
-
-    public void setAuctionCreationBIN(final boolean auctionCreationBIN) {
-        this.auctionCreationBIN = auctionCreationBIN;
-    }
-
-    public AuctionEscrow getAuctionEscrow() {
-        return this.auctionEscrow;
-    }
-
-    public void setAuctionEscrow(final AuctionEscrow auctionEscrow) {
-        this.auctionEscrow = auctionEscrow;
-    }
-
-    public boolean isVoidlingWardenActive() {
-        return this.voidlingWardenActive;
-    }
-
-    public void setVoidlingWardenActive(final boolean voidlingWardenActive) {
-        this.voidlingWardenActive = voidlingWardenActive;
-    }
-
-    public boolean isWaitingForSign() {
-        return this.waitingForSign;
-    }
-
-    public void setWaitingForSign(final boolean waitingForSign) {
-        this.waitingForSign = waitingForSign;
-    }
-
-    public String getSignContent() {
-        return this.signContent;
-    }
-
-    public void setSignContent(final String signContent) {
-        this.signContent = signContent;
     }
 
     public boolean isCompletedSign() {

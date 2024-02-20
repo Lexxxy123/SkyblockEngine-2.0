@@ -23,7 +23,6 @@ import java.util.UUID;
 @Data
 public class SkyblockIsland {
 
-
     private User owner;
     private UUID uuid;
     private SlimePlugin slimePlugin;
