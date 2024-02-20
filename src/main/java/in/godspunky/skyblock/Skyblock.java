@@ -60,8 +60,7 @@ import in.godspunky.skyblock.user.DatabaseManager;
 import in.godspunky.skyblock.user.SMongoLoader;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import net.milkbowl.vault.economy.Economy;
 import net.swofty.swm.api.SlimePlugin;
 import org.bukkit.Bukkit;
@@ -92,13 +91,17 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
 
+@Setter
+@Getter
 @SuppressWarnings("deprecation")
 public class Skyblock extends JavaPlugin implements PluginMessageListener, BungeeChannel.ForwardConsumer {
     public static EffectManager effectManager;
     // public static MultiverseCore core;
     private static ProtocolManager protocolManager;
     private static Economy econ;
+    @Getter
     private static Skyblock plugin;
+    @Getter
     private static Skyblock instance;
 
     static {
@@ -152,16 +155,8 @@ public class Skyblock extends JavaPlugin implements PluginMessageListener, Bunge
         this.bannedUUID = Collections.singletonList("");
     }
 
-    public static Skyblock getPlugin() {
-        return Skyblock.plugin;
-    }
-
     public static ProtocolManager getPTC() {
         return Skyblock.protocolManager;
-    }
-
-    public static Skyblock getInstance() {
-        return Skyblock.instance;
     }
 
     public static Player findPlayerByIPAddress(final String ip) {
@@ -207,7 +202,7 @@ public class Skyblock extends JavaPlugin implements PluginMessageListener, Bunge
             e.printStackTrace();
         }
         SLog.info("Loading SQL database...");
-        DatabaseManager.connectToDatabase("mongodb://admin:admin@88.99.150.153:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2", "Godspunky");
+        DatabaseManager.connectToDatabase("mongodb://localhost:27017", "Godspunky");
         //DatabaseManager.connectToDatabase("mongodb://localhost:27017", "Godspunky");
         initializeQuests();
         this.sql = new SQLDatabase();

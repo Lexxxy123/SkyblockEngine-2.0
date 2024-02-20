@@ -369,7 +369,7 @@ public class Repeater {
         player.setHealthScale(Math.min(40.0, 20.0 + (health - 100.0) / 25.0));
         SputnikPlayer.updateScaledAHP(player);
         // walk speed to be run sync
-        SUtil.runSync(() -> player.setWalkSpeed(Math.min((float) (statistics2.getSpeed().addAll() / 5.0), 1.0f)));
+        player.setWalkSpeed(Math.min((float) (statistics2.getSpeed().addAll() / 5.0), 1.0f));
         final int defense = SUtil.blackMagic(statistics2.getDefense().addAll());
         final float absorption = SputnikPlayer.getCustomAbsorptionHP(player);
         final ChatColor color = (absorption > 0.0f) ? ChatColor.GOLD : ChatColor.RED;
@@ -450,7 +450,6 @@ public class Repeater {
             skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYBLOCK &b&lBETA");
         }
         String finalSkysim = skysim;
-        SUtil.runSync(() -> {
             Sidebar sidebar = new Sidebar(finalSkysim, "SKYBLOCK");
             SUtil.runAsync(() -> {
                 String strd = SUtil.getDate();
@@ -645,7 +644,7 @@ public class Repeater {
                     sidebar2.apply(player);
                 }
             });
-        });
+
     }
 
     public static String get(final Player p) {

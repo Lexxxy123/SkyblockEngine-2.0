@@ -29,12 +29,6 @@
 				<artifactId>maven-shade-plugin</artifactId>
 				<version>3.5.0</version>
 				<configuration>
-					<relocations>
-						<relocation>
-							<pattern>de.slikey.effectlib</pattern>
-							<shadedPattern>in.godspunky.libraries.effectlib</shadedPattern>
-						</relocation>
-					</relocations>
 					<outputDirectory>server/plugins</outputDirectory>
 					<finalName>SkyblockCore</finalName>
 				</configuration>

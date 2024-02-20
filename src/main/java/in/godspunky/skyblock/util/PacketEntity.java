@@ -72,8 +72,7 @@ public class PacketEntity {
         this.y = this.entity.locY;
         this.z = this.entity.locZ;
         final PacketPlayOutEntityTeleport teleport = new PacketPlayOutEntityTeleport(this.entity);
-        for (int i = 0; i < this.players.size(); ++i) {
-            final Player next = this.players.get(i);
+        for (final Player next : this.players) {
             ((CraftPlayer) next).getHandle().playerConnection.sendPacket(teleport);
         }
         return true;

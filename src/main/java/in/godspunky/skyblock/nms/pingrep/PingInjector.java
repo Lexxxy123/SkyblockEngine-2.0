@@ -52,17 +52,16 @@ public class PingInjector implements Listener {
     }
 
     public Object getNetworkManagerList(final ServerConnection conn) {
+        Field field = null;
         try {
-            for (final Method method : conn.getClass().getDeclaredMethods()) {
-                method.setAccessible(true);
-                if (method.getReturnType() == List.class) {
-                    final Object object = method.invoke(null, conn);
-                    return object;
-                }
+            field = conn.getClass().getDeclaredField("h");
+            field.setAccessible(true);
+        } catch (NoSuchFieldException ignored) {}
+        try {
+            if (field != null) {
+                return field.get(conn);
             }
-        } catch (final IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
+        } catch (IllegalAccessException ignored) {}
         return null;
     }
 

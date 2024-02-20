@@ -228,6 +228,7 @@ public class SMongoLoader {
             owner.setCoins(coins);
         });
 
+
         SUtil.runAsync(() -> {
             long e = getLong(base, "bankCoins", 0);
             profile.setBankCoins(e);

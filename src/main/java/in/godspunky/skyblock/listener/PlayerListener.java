@@ -453,8 +453,11 @@ public class PlayerListener extends PListener {
                         this.cancel();
                         return;
                     }
-                    SUtil.runAsync(() -> {
-                        Repeater.runPlayerTask(player, counters, counters2);
+                    SUtil.runAsync(new Runnable() {
+                        @Override
+                        public void run() {
+                            Repeater.runPlayerTask(player, counters, counters2);
+                        }
                     });
 
                     if (TemporaryStats.getFromPlayer(player) != null) {
