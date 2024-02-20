@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.extra.beam;
 
 import com.google.common.base.Preconditions;
-import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.SkyBlock;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -12,8 +12,8 @@ public class ClientBeam {
     private final UUID worldUID;
     private final double viewingRadiusSquared;
     private final long updateDelay;
-    private final LocationTargetBeam beam;
     private boolean isActive;
+    private final LocationTargetBeam beam;
     private Location startingPosition;
     private Location endingPosition;
     private Player player;
@@ -47,7 +47,7 @@ public class ClientBeam {
         Preconditions.checkState(!this.isActive, "The beam must be disabled in order to start it");
         Preconditions.checkState(this.player != null && !this.player.isOnline(), "The player must be online");
         this.isActive = true;
-        (this.runnable = new ClientBeamUpdater()).runTaskTimer(Skyblock.getPlugin(), 0L, this.updateDelay);
+        (this.runnable = new ClientBeamUpdater()).runTaskTimer(SkyBlock.getPlugin(), 0L, this.updateDelay);
     }
 
     public void stop() {

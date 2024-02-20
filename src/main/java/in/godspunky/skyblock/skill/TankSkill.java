@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.skill;
 
-import in.godspunky.skyblock.user.User;
 import org.bukkit.ChatColor;
+import in.godspunky.skyblock.user.User;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,10 +9,6 @@ import java.util.List;
 
 public class TankSkill extends Skill implements DungeonsSkill {
     public static final TankSkill INSTANCE;
-
-    static {
-        INSTANCE = new TankSkill();
-    }
 
     @Override
     public String getName() {
@@ -68,5 +64,9 @@ public class TankSkill extends Skill implements DungeonsSkill {
         t.add("Stun Potion");
         t.add("Absorption Potion");
         return t;
+    }
+
+    static {
+        INSTANCE = new TankSkill();
     }
 }

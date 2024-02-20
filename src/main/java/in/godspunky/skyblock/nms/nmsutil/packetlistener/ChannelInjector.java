@@ -1,9 +1,9 @@
 package in.godspunky.skyblock.nms.nmsutil.packetlistener;
 
-import in.godspunky.skyblock.nms.nmsutil.packetlistener.channel.ChannelAbstract;
 import in.godspunky.skyblock.nms.nmsutil.reflection.resolver.ClassResolver;
 import in.godspunky.skyblock.nms.nmsutil.reflection.resolver.ConstructorResolver;
 import org.bukkit.entity.Player;
+import in.godspunky.skyblock.nms.nmsutil.packetlistener.channel.ChannelAbstract;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -11,11 +11,6 @@ import java.util.List;
 
 public class ChannelInjector {
     private static final ClassResolver CLASS_RESOLVER;
-
-    static {
-        CLASS_RESOLVER = new ClassResolver();
-    }
-
     private ChannelAbstract channel;
 
     public boolean inject(final IPacketListener iPacketListener) {
@@ -48,5 +43,9 @@ public class ChannelInjector {
 
     public void addServerChannel() {
         this.channel.addServerChannel();
+    }
+
+    static {
+        CLASS_RESOLVER = new ClassResolver();
     }
 }

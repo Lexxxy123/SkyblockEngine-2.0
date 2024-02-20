@@ -2,18 +2,17 @@ package in.godspunky.skyblock.command;
 
 import in.godspunky.skyblock.enchantment.Enchantment;
 import in.godspunky.skyblock.enchantment.EnchantmentType;
-import in.godspunky.skyblock.item.GenericItemType;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.ranks.PlayerRank;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import in.godspunky.skyblock.item.GenericItemType;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.Sputnik;
 
-@CommandParameters(description = "Adds an enchantment from Spec to the specified item.", aliases = "rench", permission = PlayerRank.ADMIN)
+@CommandParameters(description = "Adds an enchantment from Spec to the specified item.", aliases = "rench", permission = "spt.item")
 public class RemoveEnchantCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

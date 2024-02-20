@@ -18,37 +18,6 @@ public class SlayerGUI extends GUI {
         super("Slayer", 36);
     }
 
-    public static String getTierText(final int highest) {
-        if (highest == 0) {
-            return ChatColor.GREEN + "Not played!";
-        }
-        ChatColor color = ChatColor.GREEN;
-        if (highest == 2) {
-            color = ChatColor.YELLOW;
-        }
-        if (highest == 3) {
-            color = ChatColor.RED;
-        }
-        if (highest == 4) {
-            color = ChatColor.DARK_RED;
-        }
-        if (highest == 5) {
-            color = ChatColor.DARK_PURPLE;
-        }
-        return color + "Tier " + SUtil.toRomanNumeral(highest);
-    }
-
-    public static void claimReward(final Player player) {
-        final User user = User.getUser(player.getUniqueId());
-        final SlayerQuest quest = user.getSlayerQuest();
-        user.setSlayerXP(quest.getType().getType(), user.getSlayerXP(quest.getType().getType()) + quest.getType().getRewardXP());
-        final int level = quest.getType().getType().getLevelForXP(user.getSlayerXP(quest.getType().getType()));
-        player.playSound(player.getLocation(), Sound.LEVEL_UP, 1.0f, 2.0f);
-        player.sendMessage("  " + ChatColor.GREEN + ChatColor.BOLD + "SLAYER QUEST COMPLETED!");
-        player.sendMessage("   " + ChatColor.YELLOW + quest.getType().getType().getName() + " Slayer LVL " + level + ChatColor.DARK_RED + " - " + ChatColor.GRAY + "Next LVL in " + ChatColor.LIGHT_PURPLE + SUtil.commaify(quest.getType().getXPReqForLevel(level) - user.getSlayerXP(quest.getType().getType())) + " XP" + ChatColor.GRAY + "!");
-        user.setSlayerQuest(null);
-    }
-
     @Override
     public void onOpen(final GUIOpenEvent e) {
         final Player player = e.getPlayer();
@@ -217,5 +186,36 @@ public class SlayerGUI extends GUI {
             }
         });
         this.fill(SUtil.getStack(ChatColor.RED + "Not released yet!", Material.COAL_BLOCK, (short) 0, 1, ChatColor.GRAY + "This boss is still in", ChatColor.GRAY + "development!"), 14, 16);
+    }
+
+    public static String getTierText(final int highest) {
+        if (highest == 0) {
+            return ChatColor.GREEN + "Not played!";
+        }
+        ChatColor color = ChatColor.GREEN;
+        if (highest == 2) {
+            color = ChatColor.YELLOW;
+        }
+        if (highest == 3) {
+            color = ChatColor.RED;
+        }
+        if (highest == 4) {
+            color = ChatColor.DARK_RED;
+        }
+        if (highest == 5) {
+            color = ChatColor.DARK_PURPLE;
+        }
+        return color + "Tier " + SUtil.toRomanNumeral(highest);
+    }
+
+    public static void claimReward(final Player player) {
+        final User user = User.getUser(player.getUniqueId());
+        final SlayerQuest quest = user.getSlayerQuest();
+        user.setSlayerXP(quest.getType().getType(), user.getSlayerXP(quest.getType().getType()) + quest.getType().getRewardXP());
+        final int level = quest.getType().getType().getLevelForXP(user.getSlayerXP(quest.getType().getType()));
+        player.playSound(player.getLocation(), Sound.LEVEL_UP, 1.0f, 2.0f);
+        player.sendMessage("  " + ChatColor.GREEN + ChatColor.BOLD + "SLAYER QUEST COMPLETED!");
+        player.sendMessage("   " + ChatColor.YELLOW + quest.getType().getType().getName() + " Slayer LVL " + level + ChatColor.DARK_RED + " - " + ChatColor.GRAY + "Next LVL in " + ChatColor.LIGHT_PURPLE + SUtil.commaify(quest.getType().getXPReqForLevel(level) - user.getSlayerXP(quest.getType().getType())) + " XP" + ChatColor.GRAY + "!");
+        user.setSlayerQuest(null);
     }
 }

@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.nms.pingrep;
 
-import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.util.SLog;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -15,12 +15,12 @@ public class PingAPI {
         try {
             PingAPI.listeners = new ArrayList<PingListener>();
             final Class<?> injector = PingInjector.class;
-            Bukkit.getPluginManager().registerEvents((Listener) injector.newInstance(), Skyblock.getPlugin());
+            Bukkit.getPluginManager().registerEvents((Listener) injector.newInstance(), SkyBlock.getPlugin());
             SLog.info("Successfully hooked into " + Bukkit.getServer().getName());
         } catch (final SecurityException | InstantiationException | IllegalAccessException |
                        IllegalArgumentException e) {
             SLog.severe("Non compatible server version!");
-            Bukkit.getPluginManager().disablePlugin(Skyblock.getPlugin());
+            Bukkit.getPluginManager().disablePlugin(SkyBlock.getPlugin());
         }
     }
 

@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.item.enchanted;
 
 import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.item.*;
 
 public class EnchantedObsidian implements EnchantedMaterialStatistics, MaterialFunction {
     @Override

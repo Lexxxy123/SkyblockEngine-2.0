@@ -2,7 +2,17 @@ package in.godspunky.skyblock.listener;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
-import in.godspunky.skyblock.Skyblock;
+import net.md_5.bungee.api.ChatColor;
+import net.minecraft.server.v1_8_R3.IChatBaseComponent;
+import net.minecraft.server.v1_8_R3.PacketPlayInCustomPayload;
+import net.minecraft.server.v1_8_R3.PacketPlayInSetCreativeSlot;
+import net.minecraft.server.v1_8_R3.PacketPlayInUpdateSign;
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.scheduler.BukkitRunnable;
+import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.command.RebootServerCommand;
 import in.godspunky.skyblock.nms.nmsutil.packetlistener.handler.ReceivedPacket;
 import in.godspunky.skyblock.nms.packetevents.PacketReceiveServerSideEvent;
@@ -14,16 +24,6 @@ import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.DiscordWebhook;
 import in.godspunky.skyblock.util.SLog;
 import in.godspunky.skyblock.util.Sputnik;
-import net.md_5.bungee.api.ChatColor;
-import net.minecraft.server.v1_8_R3.IChatBaseComponent;
-import net.minecraft.server.v1_8_R3.PacketPlayInCustomPayload;
-import net.minecraft.server.v1_8_R3.PacketPlayInSetCreativeSlot;
-import net.minecraft.server.v1_8_R3.PacketPlayInUpdateSign;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ public class PacketListener extends PListener {
             final String packetType = ((PacketPlayInCustomPayload) packet.getPacket()).a();
             if (packetType.toLowerCase().contains("bedit") || packetType.toLowerCase().contains("bsign")) {
                 packet.setCancelled(true);
-                final Player p = Skyblock.findPlayerByIPAddress(packet.getChannel().getRemoteAddress().toString());
+                final Player p = SkyBlock.findPlayerByIPAddress(packet.getChannel().getRemoteAddress().toString());
                 if (p != null) {
                     this.punish(p);
                 }
@@ -68,7 +68,7 @@ public class PacketListener extends PListener {
                     e.printStackTrace();
                 }
             }
-        }.runTaskAsynchronously(Skyblock.getPlugin());
+        }.runTaskAsynchronously(SkyBlock.getPlugin());
     }
 
     @EventHandler
@@ -92,12 +92,12 @@ public class PacketListener extends PListener {
     void onPing(final SkySimServerPingEvent e) {
         final PingReply pr = e.getPingReply();
         if (!Bukkit.getServer().getOnlineMode() && Bukkit.getOnlinePlayers().size() > 0) {
-            Skyblock.getPlugin().updateServerPlayerCount();
+            SkyBlock.getPlugin().updateServerPlayerCount();
         }
         if (Bukkit.getServer().hasWhitelist()) {
             pr.setProtocolName(ChatColor.RED + "Maintenance");
             final List<String> sample = new ArrayList<String>();
-            pr.setMOTD(Sputnik.trans("             &aGodspunky Network &c[1.8-1.20]&r\n       &c&lSERVER UNDER MAINTENANCE"));
+            pr.setMOTD(Sputnik.trans("             &aSkySim Network &c[1.8-1.17]&r\n       &c&lSERVER UNDER MAINTENANCE"));
             sample.add(Sputnik.trans("&bJoin our &9Discord &bserver for more info"));
             sample.add(Sputnik.trans("&6https://discord.skysim.sbs/"));
             pr.setPlayerSample(sample);
@@ -106,9 +106,9 @@ public class PacketListener extends PListener {
         }
         if (!RebootServerCommand.secondMap.containsKey(Bukkit.getServer())) {
             final List<String> sample = new ArrayList<String>();
-            sample.add(Sputnik.trans("&cPowered by &6Skyblock Engine&c"));
+            sample.add(Sputnik.trans("&cPowered by &6SkySim Engine&c"));
             pr.setPlayerSample(sample);
-            pr.setProtocolName(ChatColor.DARK_RED + "Skyblock 1.8.x - 1.20");
+            pr.setProtocolName(ChatColor.DARK_RED + "SkySimEngine 1.8.x - 1.17");
         } else {
             pr.setProtocolName(ChatColor.RED + "⚠ Restarting Soon!");
             final List<String> sample = new ArrayList<String>();
@@ -119,7 +119,7 @@ public class PacketListener extends PListener {
             pr.setPlayerSample(sample);
             pr.setProtocolVersion(-1);
         }
-        pr.setMOTD(Sputnik.trans("             &aGodspunky Network &c[1.8-1.20]&r\n     &6&lSKYBLOCK 0.0.1 ! &8➜ &a&lRELEASED!"));
+        pr.setMOTD(Sputnik.trans("             &aSkySim Network &c[1.8-1.17]&r\n  &c&lDIMOON & GIANTS ISLAND! &8➜ &a&lNOW LIVE!"));
         pr.setMaxPlayers(50);
     }
 
@@ -150,10 +150,10 @@ public class PacketListener extends PListener {
         final String subchannel = in.readUTF();
         if (subchannel.equals("GetServer")) {
             final String name = in.readUTF();
-            if (Skyblock.getPlugin().getServerName().contains("Loading...")) {
+            if (SkyBlock.getPlugin().getServerName().contains("Loading...")) {
                 SLog.info("Registered server instance name as " + name + " for this session!");
             }
-            Skyblock.getPlugin().setServerName(name);
+            SkyBlock.getPlugin().setServerName(name);
         }
     }
 }

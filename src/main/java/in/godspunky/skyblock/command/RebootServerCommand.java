@@ -1,41 +1,28 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.ranks.PlayerRank;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
+import in.godspunky.skyblock.SkyBlock;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@CommandParameters(description = "Spec test command.", aliases = "rebootserver", permission = PlayerRank.ADMIN)
+@CommandParameters(description = "Spec test command.", aliases = "rebootserver")
 public class RebootServerCommand extends SCommand {
     public static Map<Server, Integer> secondMap;
 
-    static {
-        RebootServerCommand.secondMap = new HashMap<Server, Integer>();
-    }
-
-    public static boolean isPrimeNumber(final int n) {
-        if (n < 2) {
-            return false;
-        }
-        for (int squareRoot = (int) Math.sqrt(n), i = 2; i <= squareRoot; ++i) {
-            if (n % i == 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     @Override
     public void run(final CommandSource sender, final String[] args) {
+        if (sender.getPlayer() != null) {
+            sender.getPlayer().sendMessage(ChatColor.RED + "This command is highly restricted!");
+            return;
+        }
         if (RebootServerCommand.secondMap.containsKey(Bukkit.getServer())) {
             this.send(ChatColor.RED + "You cannot schedule more than 1 server reboot at a time");
             return;
@@ -76,6 +63,22 @@ public class RebootServerCommand extends SCommand {
                     }, 10L);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 20L, 20L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 20L, 20L);
+    }
+
+    public static boolean isPrimeNumber(final int n) {
+        if (n < 2) {
+            return false;
+        }
+        for (int squareRoot = (int) Math.sqrt(n), i = 2; i <= squareRoot; ++i) {
+            if (n % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    static {
+        RebootServerCommand.secondMap = new HashMap<Server, Integer>();
     }
 }

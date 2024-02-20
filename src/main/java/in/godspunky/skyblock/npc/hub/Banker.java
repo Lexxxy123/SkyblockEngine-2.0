@@ -1,9 +1,9 @@
 package in.godspunky.skyblock.npc.hub;
 
+import org.bukkit.entity.Player;
 import in.godspunky.skyblock.gui.GUIType;
 import in.godspunky.skyblock.npc.NPCParameters;
 import in.godspunky.skyblock.npc.SkyblockNPC;
-import org.bukkit.entity.Player;
 
 public class Banker extends SkyblockNPC {
     public Banker() {
@@ -16,17 +16,16 @@ public class Banker extends SkyblockNPC {
 
             @Override
             public String[] messages() {
-                return new String[]{"Hello", "I am a banker", "you can deposit money to me"};
+                return new String[]{"Hello" , "I am a banker" , "you can deposit money to me"};
             }
 
             @Override
             public String[] holograms() {
                 return new String[]{
-                        "&fBanker",
+                        "&fBanker" ,
                         "&e&lCLICK"
                 };
             }
-
             @Override
             public String texture() {
                 return "ewogICJ0aW1lc3RhbXAiIDogMTY5Mjk3NzczOTE1MywKICAicHJvZmlsZUlkIiA6ICI2Njg5MDJmYjI1YTY0NDBhODBmM2Y2MjZhYTk0MzBmYyIsCiAgInByb2ZpbGVOYW1lIiA6ICJCYW5rZXIiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmZkODNhY2NhOWFmM2JiYWQ3MDVmNzE0MzU1ZDk0MTA3NDEyY2E0ZWJiZDRjZTkzOTE2MGMxYmUxMGNjZDFhMiIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9LAogICAgIkNBUEUiIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlL2U3ZGZlYTE2ZGM4M2M5N2RmMDFhMTJmYWJiZDEyMTYzNTljMGNkMGVhNDJmOTk5OWI2ZTk3YzU4NDk2M2U5ODAiCiAgICB9CiAgfQp9";

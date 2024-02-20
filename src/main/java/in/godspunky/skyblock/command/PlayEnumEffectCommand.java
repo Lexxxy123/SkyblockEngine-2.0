@@ -1,12 +1,11 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.ranks.PlayerRank;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-@CommandParameters(description = "Play a Bukkit enum sound.", usage = "/playenumsound <sound>", permission = PlayerRank.ADMIN)
+@CommandParameters(description = "Play a Bukkit enum sound.", usage = "/playenumsound <sound>")
 public class PlayEnumEffectCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

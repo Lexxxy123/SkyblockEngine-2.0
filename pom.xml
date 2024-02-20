@@ -4,11 +4,12 @@
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>SkyblockCore</groupId>
-	<artifactId>SkyblockCore</artifactId>
-	<version>1.0</version>
+	<groupId>com.skyblockengine</groupId>
+	<artifactId>SkyBlockEngine</artifactId>
+	<version>2.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<description>Core plugin</description>
+	<name>SkyBlock-Sandbox</name>
+	<description>A Hypixel SkyBlock sandbox plugin made by Team GodSpunky</description>
 	<properties>
 		<java.version>1.8</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -20,18 +21,14 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.1</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.5.0</version>
-				<configuration>
-					<outputDirectory>server/plugins</outputDirectory>
-					<finalName>SkyblockCore</finalName>
-				</configuration>
+				<version>3.2.4</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -39,10 +36,24 @@
 							<goal>shade</goal>
 						</goals>
 						<configuration>
+							<relocations>
+								<relocation>
+									<pattern>org.reflections</pattern>
+									<shadedPattern>com.skyblock.skyblock.reflections</shadedPattern>
+								</relocation>
+							</relocations>
 							<createDependencyReducedPom>false</createDependencyReducedPom>
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.2.0</version>
+				<configuration>
+					<outputDirectory>server/plugins</outputDirectory>
+				</configuration>
 			</plugin>
 		</plugins>
 		<resources>
@@ -58,10 +69,6 @@
 			<url>https://repo.codemc.io/repository/maven-releases/</url>
 		</repository>
 		<repository>
-			<id>Maven Central</id>
-			<url>https://repo1.maven.org/maven2/</url>
-		</repository>
-		<repository>
 			<id>jitpack.io</id>
 			<url>https://jitpack.io</url>
 		</repository>
@@ -69,26 +76,10 @@
 			<id>nms-repo</id>
 			<url>https://repo.codemc.io/repository/nms/</url>
 		</repository>
-		<repository>
-			<id>md_5-public</id>
-			<url>https://repo.md-5.net/content/groups/public/</url>
-		</repository>
+
 		<repository>
 			<id>spigotmc-repo</id>
 			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-		</repository>
-		<repository>
-			<id>placeholderapi</id>
-			<url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
-		</repository>
-		<repository>
-			<id>github</id>
-			<name>GitHub Packages</name>
-			<url>https://maven.pkg.github.com/AtlasNetworkDev/atlas-repo</url>
-		</repository>
-		<repository>
-			<id>OnARandomBox</id>
-			<url>https://repo.onarandombox.com/content/groups/public/</url>
 		</repository>
 		<repository>
 			<id>sonatype</id>
@@ -103,20 +94,8 @@
 			<url>https://repo.citizensnpcs.co/</url>
 		</repository>
 		<repository>
-			<id>githubxD</id>
-			<url>https://maven.pkg.github.com/Slikey/EffectLib</url>
-		</repository>
-		<repository>
 			<id>enginehub-maven</id>
 			<url>https://maven.enginehub.org/repo/</url>
-		</repository>
-		<repository>
-			<id>elMakers</id>
-			<url>http://maven.elmakers.com/repository/</url>
-		</repository>
-		<repository>
-			<id>dmulloy2-repo</id>
-			<url>https://repo.dmulloy2.net/repository/public/</url>
 		</repository>
 	</repositories>
 	<dependencies>
@@ -153,13 +132,23 @@
 			<version>3.32.3.2</version>
 		</dependency>
 		<dependency>
-			<groupId>net.citizensnpcs</groupId>
-			<artifactId>citizensapi</artifactId>
-			<version>2.0.26-b1995</version>
+			<groupId>com.onarandombox.multiversecore</groupId>
+			<!-- Don't forget to replace this -->
+			<artifactId>Multiverse-Core</artifactId>
+			<!-- Replace this as well -->
+			<version>4.3.1</version>
+			<!-- This too -->
 			<scope>system</scope>
-			<systemPath>${basedir}/lib/Citizens-2.0.30-b2765.jar</systemPath>
-		</dependency>
+			<systemPath>${basedir}/lib/Multiverse-Core-4.3.1 (1).jar</systemPath>
 
+		</dependency>
+		<dependency>
+			<groupId>net.citizensnpcs</groupId>
+			<artifactId>citizens-main</artifactId>
+			<version>2.0.30-SNAPSHOT</version>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>com.sk89q.worldedit</groupId>
 			<artifactId>worldedit-bukkit</artifactId>
@@ -175,38 +164,39 @@
 		<dependency>
 			<groupId>me.clip</groupId>
 			<artifactId>placeholderapi</artifactId>
-			<version>2.11.5</version>
-			<scope>provided</scope>
+			<version>2.11.3</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/PlaceholderAPI.jar</systemPath>
 		</dependency>
 		<dependency>
-			<groupId>com.github.koca2000</groupId>
+			<groupId>com.xxmicloxx</groupId>
 			<artifactId>NoteBlockAPI</artifactId>
 			<version>1.6.2-SNAPSHOT</version>
 			<scope>system</scope>
 			<systemPath>${basedir}/lib/NoteBlockAPI-1.6.1-SNAPSHOT.jar</systemPath>
 		</dependency>
 		<dependency>
-			<groupId>com.elmakers.mine.bukkit</groupId>
-			<artifactId>EffectLib</artifactId>
-			<version>5.9</version>
+			<groupId>sus.sa</groupId>
+			<artifactId>EffectLibAPI</artifactId>
+			<version>1.6.2-SNAPSHOT</version>
 			<scope>system</scope>
 			<systemPath>${basedir}/lib/EffectLib-5.9.jar</systemPath>
+
 		</dependency>
 		<dependency>
-			<groupId>LibsDisguises</groupId>
-			<artifactId>LibsDisguises</artifactId>
-			<version>8.6.7</version>
+			<groupId>com.spigot</groupId>
+			<artifactId>libdis</artifactId>
+			<version>1.0-SNAPSHOT</version>
 			<scope>system</scope>
 			<systemPath>${basedir}/lib/LibsDisguises.jar</systemPath>
 		</dependency>
 		<dependency>
-			<groupId>com.comphenix.protocol</groupId>
-			<artifactId>ProtocolLib</artifactId>
-			<version>4.3.0</version>
+			<groupId>com.spigot</groupId>
+			<artifactId>ptcl</artifactId>
+			<version>1.0-SNAPSHOT</version>
 			<scope>system</scope>
 			<systemPath>${basedir}/lib/ProtocolLib.jar</systemPath>
 		</dependency>
-
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
@@ -223,11 +213,6 @@
 			<artifactId>VaultAPI</artifactId>
 			<version>1.7</version>
 			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.mongodb</groupId>
-			<artifactId>mongodb-driver-sync</artifactId>
-			<version>4.11.0</version>
 		</dependency>
 		<dependency>
 			<groupId>net.swofty</groupId>

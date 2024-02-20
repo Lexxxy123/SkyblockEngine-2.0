@@ -21,11 +21,6 @@ import java.util.UUID;
 
 public class ItemLore {
     private static final String SSE_ID;
-
-    static {
-        SSE_ID = ChatColor.DARK_GRAY + "SKYSIM_ID: %s";
-    }
-
     private final SItem parent;
     private Player player;
     private User user;
@@ -344,21 +339,6 @@ public class ItemLore {
                 lore.add("");
             }
         }
-
-        List<String> KillBonusLore = this.parent.getType().getStatistics().killReplacementLore();
-        if (KillBonusLore != null) {
-            for (String line : KillBonusLore) {
-                String line1 = line.replaceAll("<SKYBLOCK_BONUS_DEFENSE>", String.valueOf(this.parent.getBonusDefense()))
-                        .replaceAll("<SKYBLOCK_NEXT_DEFENSE>", String.valueOf(this.parent.getNextDefense()))
-                        .replaceAll("<SKYBLOCK_CURRENT_KILLS>", String.valueOf(this.parent.getProgressKills()))
-                        .replaceAll("<SKYBLOCK_REQUIRED_KILLS>", String.valueOf(this.parent.getRequiredKills()));
-                lore.add(SUtil.color(ChatColor.GRAY + line1));
-            }
-            if (KillBonusLore.size() != 0) {
-                lore.add("");
-            }
-        }
-
         if (this.parent.getType() == SMaterial.HIDDEN_DONATOR_HELMET) {
             final String p = this.parent.getDataString("p_given");
             if (Bukkit.getPlayer(p) != null) {
@@ -454,7 +434,7 @@ public class ItemLore {
             }
             list.add(builder.toString());
             return true;
-        } else if (this.player.getWorld().getName().startsWith("f6") || this.player.getWorld().getName().contains("dungeon")) {
+        } else if (this.player.getWorld().getName().contains("f6") || this.player.getWorld().getName().contains("dungeon")) {
             i += r;
             i += this.getBoostStats(this.parent, name);
             if (i == 0.0) {
@@ -577,7 +557,7 @@ public class ItemLore {
             builder.append(" " + this.getBoostLore(this.parent, i, name));
             list.add(builder.toString());
             return true;
-        } else if (this.player.getWorld().getName().startsWith("f6") || this.player.getWorld().getName().contains("dungeon")) {
+        } else if (this.player.getWorld().getName().contains("f6") || this.player.getWorld().getName().contains("dungeon")) {
             i += r;
             i += this.getBoostStats(this.parent, name);
             if (i == 0.0) {
@@ -622,5 +602,9 @@ public class ItemLore {
         }
         list.add(builder.toString());
         return true;
+    }
+
+    static {
+        SSE_ID = ChatColor.DARK_GRAY + "SKYSIM_ID: %s";
     }
 }

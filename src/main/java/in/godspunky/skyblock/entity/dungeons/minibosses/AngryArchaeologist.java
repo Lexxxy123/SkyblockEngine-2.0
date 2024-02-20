@@ -3,15 +3,7 @@ package in.godspunky.skyblock.entity.dungeons.minibosses;
 import com.google.common.util.concurrent.AtomicDouble;
 import de.slikey.effectlib.effect.ConeEffect;
 import de.slikey.effectlib.util.ParticleEffect;
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
-import in.godspunky.skyblock.entity.zombie.BaseZombie;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
+import in.godspunky.skyblock.SkyBlock;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher;
 import net.minecraft.server.v1_8_R3.*;
@@ -34,6 +26,14 @@ import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.entity.zombie.BaseZombie;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.Random;
 
@@ -50,43 +50,6 @@ public class AngryArchaeologist extends BaseZombie {
         this.startedBattle = false;
         this.SplashCooldown = false;
         this.s = false;
-    }
-
-    public static void spawnHealthPotion(final Location location, final Entity en) {
-        final World world = location.getWorld();
-        final ItemStack item = new ItemStack(Material.POTION, 1);
-        final Potion pot = new Potion(1);
-        pot.setType(PotionType.INSTANT_HEAL);
-        pot.setSplash(true);
-        pot.apply(item);
-        final ThrownPotion thrownPotion = (ThrownPotion) world.spawnEntity(location.clone().add(0.0, -0.5, 0.0), EntityType.SPLASH_POTION);
-        thrownPotion.setShooter((ProjectileSource) en);
-        thrownPotion.setItem(item);
-    }
-
-    public static ItemStack getPot() {
-        final ItemStack item = new ItemStack(Material.POTION, 1);
-        final Potion pot = new Potion(1);
-        pot.setType(PotionType.INSTANT_HEAL);
-        pot.setSplash(true);
-        pot.apply(item);
-        return item;
-    }
-
-    public static ItemStack getStrPot() {
-        final ItemStack item = new ItemStack(Material.POTION, 1);
-        final Potion pot = new Potion(1);
-        pot.setType(PotionType.STRENGTH);
-        pot.setSplash(false);
-        pot.apply(item);
-        return item;
-    }
-
-    public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
-        final net.minecraft.server.v1_8_R3.Entity pl = ((CraftZombie) e).getHandle();
-        pl.setLocation(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), yaw, pitch);
-        final PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(pl);
-        Sputnik.sendPacket(e.getWorld(), packet);
     }
 
     @Override
@@ -113,8 +76,8 @@ public class AngryArchaeologist extends BaseZombie {
         final PlayerWatcher skywatch = pl.getWatcher();
         final LivingEntity target = ((CraftZombie) entity).getTarget();
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 95);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("LD", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -125,7 +88,7 @@ public class AngryArchaeologist extends BaseZombie {
                     entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 0.25, 0.0), Effect.MAGIC_CRIT, 0, 1, (float) SUtil.random(-0.5, 0.5), (float) SUtil.random(0.0, 0.6), (float) SUtil.random(-0.5, 0.5), 0.0f, 1, 20);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 15L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 15L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -143,7 +106,7 @@ public class AngryArchaeologist extends BaseZombie {
                             entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 65, 4));
                             entity.getWorld().playSound(entity.getLocation(), Sound.DRINK, 0.5f + 0.5f * random.nextInt(2), (random.nextFloat() - random.nextFloat()) * 0.2f + 1.0f);
                         }
-                    }.runTaskTimer(Skyblock.getPlugin(), 0L, 4L);
+                    }.runTaskTimer(SkyBlock.getPlugin(), 0L, 4L);
                     SUtil.delay(() -> {
                         final Object val$entity = entity;
                         entity.getEquipment().setItemInHand(new ItemStack(Material.GLASS_BOTTLE, 1));
@@ -165,7 +128,7 @@ public class AngryArchaeologist extends BaseZombie {
                     AngryArchaeologist.sendHeadRotation(entity, entity.getLocation().getYaw(), 90.0f);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -239,10 +202,10 @@ public class AngryArchaeologist extends BaseZombie {
                             }, 3L);
                             SUtil.delay(() -> AngryArchaeologist.this.SplashCooldown = false, SUtil.random(500, 900));
                         }
-                    }.runTaskLater(Skyblock.getPlugin(), 40L);
+                    }.runTaskLater(SkyBlock.getPlugin(), 40L);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 10L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 10L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -321,17 +284,17 @@ public class AngryArchaeologist extends BaseZombie {
                                     AngryArchaeologist.this.isBowing = false;
                                 }
                             }
-                        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+                        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
                     }
                 } else if (!AngryArchaeologist.this.isSplashing) {
                     AngryArchaeologist.this.isBowing = false;
                     entity.getEquipment().setItemInHand(SUtil.enchant(SItem.of(SMaterial.DIAMOND_SWORD).getStack()));
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
         new BukkitRunnable() {
-            final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
             Location loc = entity.getLocation();
+            final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
 
             public void run() {
                 if (entity.isDead()) {
@@ -375,7 +338,7 @@ public class AngryArchaeologist extends BaseZombie {
                 }
                 this.nms.setSprinting(false);
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 7L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 7L);
         new BukkitRunnable() {
             public void run() {
                 final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -420,7 +383,7 @@ public class AngryArchaeologist extends BaseZombie {
                     break;
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
     }
 
     @Override
@@ -461,7 +424,7 @@ public class AngryArchaeologist extends BaseZombie {
     }
 
     public void playPar(final Location l) {
-        final ConeEffect Effect = new ConeEffect(Skyblock.effectManager);
+        final ConeEffect Effect = new ConeEffect(SkyBlock.effectManager);
         Effect.setLocation(l.clone().add(l.getDirection().normalize().multiply(-0.25)).add(0.0, -0.1, 0.0));
         Effect.particle = ParticleEffect.FLAME;
         Effect.angularVelocity = 0.39269908169872414;
@@ -470,5 +433,42 @@ public class AngryArchaeologist extends BaseZombie {
         Effect.period = 3;
         Effect.iterations = 5;
         Effect.start();
+    }
+
+    public static void spawnHealthPotion(final Location location, final Entity en) {
+        final World world = location.getWorld();
+        final ItemStack item = new ItemStack(Material.POTION, 1);
+        final Potion pot = new Potion(1);
+        pot.setType(PotionType.INSTANT_HEAL);
+        pot.setSplash(true);
+        pot.apply(item);
+        final ThrownPotion thrownPotion = (ThrownPotion) world.spawnEntity(location.clone().add(0.0, -0.5, 0.0), EntityType.SPLASH_POTION);
+        thrownPotion.setShooter((ProjectileSource) en);
+        thrownPotion.setItem(item);
+    }
+
+    public static ItemStack getPot() {
+        final ItemStack item = new ItemStack(Material.POTION, 1);
+        final Potion pot = new Potion(1);
+        pot.setType(PotionType.INSTANT_HEAL);
+        pot.setSplash(true);
+        pot.apply(item);
+        return item;
+    }
+
+    public static ItemStack getStrPot() {
+        final ItemStack item = new ItemStack(Material.POTION, 1);
+        final Potion pot = new Potion(1);
+        pot.setType(PotionType.STRENGTH);
+        pot.setSplash(false);
+        pot.apply(item);
+        return item;
+    }
+
+    public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
+        final net.minecraft.server.v1_8_R3.Entity pl = ((CraftZombie) e).getHandle();
+        pl.setLocation(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), yaw, pitch);
+        final PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(pl);
+        Sputnik.sendPacket(e.getWorld(), packet);
     }
 }

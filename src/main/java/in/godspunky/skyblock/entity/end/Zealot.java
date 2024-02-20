@@ -2,11 +2,6 @@ package in.godspunky.skyblock.entity.end;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import in.godspunky.skyblock.entity.*;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.item.pet.Pet;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -14,6 +9,12 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
+import in.godspunky.skyblock.entity.*;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.item.pet.Pet;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.SUtil;
 
 import java.util.Arrays;
 import java.util.Collections;

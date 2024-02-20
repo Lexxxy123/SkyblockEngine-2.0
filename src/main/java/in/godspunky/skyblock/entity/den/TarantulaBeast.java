@@ -1,11 +1,11 @@
 package in.godspunky.skyblock.entity.den;
 
+import net.md_5.bungee.api.ChatColor;
 import in.godspunky.skyblock.entity.EntityDrop;
 import in.godspunky.skyblock.entity.EntityDropType;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.util.SUtil;
-import net.md_5.bungee.api.ChatColor;
 
 import java.util.Collections;
 import java.util.List;

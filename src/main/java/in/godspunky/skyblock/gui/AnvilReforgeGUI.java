@@ -1,11 +1,10 @@
 package in.godspunky.skyblock.gui;
 
-import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.enchantment.Enchantment;
 import in.godspunky.skyblock.enchantment.EnchantmentType;
 import in.godspunky.skyblock.item.GenericItemType;
 import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.skill.EnchantingSkill;
 import in.godspunky.skyblock.skill.Skill;
 import in.godspunky.skyblock.util.SUtil;
@@ -19,6 +18,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import in.godspunky.skyblock.item.SMaterial;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,13 +27,6 @@ public class AnvilReforgeGUI extends GUI implements BlockBasedGUI {
     private static final ItemStack ANVIL_BARRIER;
     private static final ItemStack DEFAULT_COMBINE_ITEMS;
     private static final String CANNOT_COMBINE;
-
-    static {
-        ANVIL_BARRIER = SUtil.getSingleLoreStack(ChatColor.RED + "Reforge Anvil", Material.BARRIER, (short) 0, 1, "Place a target item in the left slot and a sacrifice item in the right slot to combine Reforge Stones!");
-        DEFAULT_COMBINE_ITEMS = SUtil.getStack(ChatColor.GREEN + "Combine Items", Material.ANVIL, (short) 0, 1, ChatColor.GRAY + "Combine the items in the slots", ChatColor.GRAY + "to the left and right below.");
-        CANNOT_COMBINE = ChatColor.RED + "These items cannot be combined!";
-    }
-
     private boolean isApplied;
 
     public AnvilReforgeGUI() {
@@ -70,7 +63,7 @@ public class AnvilReforgeGUI extends GUI implements BlockBasedGUI {
                     public void run() {
                         inventory.setItem(e.getSlot(), AnvilReforgeGUI.ANVIL_BARRIER);
                     }
-                }.runTaskLater(Skyblock.getPlugin(), 1L);
+                }.runTaskLater(SkyBlock.getPlugin(), 1L);
             }
 
             @Override
@@ -134,16 +127,6 @@ public class AnvilReforgeGUI extends GUI implements BlockBasedGUI {
         });
     }
 
-    private static void setItemTo(final boolean upgrade, final boolean green, final Inventory inventory) {
-        for (final int i : upgrade ? Arrays.asList(11, 12, 20) : Arrays.asList(14, 15, 24)) {
-            inventory.setItem(i, SUtil.getSingleLoreStack(ChatColor.GOLD + "Item to " + (upgrade ? "Upgrade" : "Sacrifice"), Material.STAINED_GLASS_PANE, (short) (green ? 5 : 14), 1, upgrade ? "The item you want to upgrade should be placed in the slot on this side." : "The item you are sacrificing in order to upgrade the item on the left should be placed in the slot on this side."));
-        }
-    }
-
-    private static ItemStack getCombineItemsForXP(final int levels) {
-        return SUtil.getStack(ChatColor.GREEN + "Combine Items", Material.ANVIL, (short) 0, 1, ChatColor.GRAY + "Combine the items in the slots", ChatColor.GRAY + "to the left and right below.", "", ChatColor.GRAY + "Cost", ChatColor.DARK_AQUA + "" + levels + " Exp Level" + ((levels != 1) ? "s" : ""), "", ChatColor.YELLOW + "Click to combine!");
-    }
-
     @Override
     public void onOpen(final GUIOpenEvent e) {
         new BukkitRunnable() {
@@ -163,7 +146,7 @@ public class AnvilReforgeGUI extends GUI implements BlockBasedGUI {
                     SUtil.border(inventory, AnvilReforgeGUI.this, SUtil.createColoredStainedGlassPane((short) 5, ChatColor.RESET + " "), 50, 53, true, false);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 5L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 5L);
     }
 
     @Override
@@ -327,11 +310,27 @@ public class AnvilReforgeGUI extends GUI implements BlockBasedGUI {
                 inventory.setItem(13, display.getStack());
                 inventory.setItem(22, getCombineItemsForXP(0));
             }
-        }.runTaskLater(Skyblock.getPlugin(), 0L);
+        }.runTaskLater(SkyBlock.getPlugin(), 0L);
     }
 
     @Override
     public Material getBlock() {
         return Material.ANVIL;
+    }
+
+    private static void setItemTo(final boolean upgrade, final boolean green, final Inventory inventory) {
+        for (final int i : upgrade ? Arrays.asList(11, 12, 20) : Arrays.asList(14, 15, 24)) {
+            inventory.setItem(i, SUtil.getSingleLoreStack(ChatColor.GOLD + "Item to " + (upgrade ? "Upgrade" : "Sacrifice"), Material.STAINED_GLASS_PANE, (short) (green ? 5 : 14), 1, upgrade ? "The item you want to upgrade should be placed in the slot on this side." : "The item you are sacrificing in order to upgrade the item on the left should be placed in the slot on this side."));
+        }
+    }
+
+    private static ItemStack getCombineItemsForXP(final int levels) {
+        return SUtil.getStack(ChatColor.GREEN + "Combine Items", Material.ANVIL, (short) 0, 1, ChatColor.GRAY + "Combine the items in the slots", ChatColor.GRAY + "to the left and right below.", "", ChatColor.GRAY + "Cost", ChatColor.DARK_AQUA + "" + levels + " Exp Level" + ((levels != 1) ? "s" : ""), "", ChatColor.YELLOW + "Click to combine!");
+    }
+
+    static {
+        ANVIL_BARRIER = SUtil.getSingleLoreStack(ChatColor.RED + "Reforge Anvil", Material.BARRIER, (short) 0, 1, "Place a target item in the left slot and a sacrifice item in the right slot to combine Reforge Stones!");
+        DEFAULT_COMBINE_ITEMS = SUtil.getStack(ChatColor.GREEN + "Combine Items", Material.ANVIL, (short) 0, 1, ChatColor.GRAY + "Combine the items in the slots", ChatColor.GRAY + "to the left and right below.");
+        CANNOT_COMBINE = ChatColor.RED + "These items cannot be combined!";
     }
 }

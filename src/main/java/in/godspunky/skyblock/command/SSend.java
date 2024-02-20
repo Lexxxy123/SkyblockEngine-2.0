@@ -1,19 +1,18 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.ranks.PlayerRank;
+import in.godspunky.skyblock.SkyBlock;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SLog;
 import in.godspunky.skyblock.util.SUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-@CommandParameters(description = "Modify your coin amount.", usage = "", aliases = "ssend", permission = PlayerRank.ADMIN)
+@CommandParameters(description = "Modify your coin amount.", usage = "", aliases = "ssend")
 public class SSend
         extends SCommand {
     public Map<UUID, List<String>> servers = new HashMap<UUID, List<String>>();
@@ -22,7 +21,7 @@ public class SSend
     @Override
     public void run(CommandSource sender, String[] args) {
         UUID runUUID = UUID.randomUUID();
-        if (Skyblock.getPlugin().getBc() == null) {
+        if (SkyBlock.getPlugin().getBc() == null) {
             this.send("&cThis is not a BungeeCord based server!");
             return;
         }
@@ -39,7 +38,7 @@ public class SSend
             this.send("&cCorrect Command Usage: /ssend <all/current/specific player> <server name>");
             return;
         }
-        Skyblock.getPlugin().getBc().getServers().whenComplete((result, error) -> this.servers.put(runUUID, result));
+        SkyBlock.getPlugin().getBc().getServers().whenComplete((result, error) -> this.servers.put(runUUID, result));
         for (int i = 0; i < this.servers.get(runUUID).size(); ++i) {
             SLog.info(this.servers.get(runUUID).get(i));
         }
@@ -68,14 +67,14 @@ public class SSend
         }
         String finalTarget = targetServer;
         if (args[0].equalsIgnoreCase("all")) {
-            Skyblock.getPlugin().getBc().getPlayerList("ALL").whenComplete((result, error) -> this.players.put(runUUID, result));
+            SkyBlock.getPlugin().getBc().getPlayerList("ALL").whenComplete((result, error) -> this.players.put(runUUID, result));
             this.send("&7Hooking up request for all players you requested (All Servers)...");
             for (String player : this.players.get(runUUID)) {
-                Skyblock.getPlugin().getBc().forward("ALL", "savePlayerData", "ALL_PLAYERS".getBytes());
-                Skyblock.getPlugin().getBc().sendMessage(player, "&7Hooking up request...");
+                SkyBlock.getPlugin().getBc().forward("ALL", "savePlayerData", "ALL_PLAYERS".getBytes());
+                SkyBlock.getPlugin().getBc().sendMessage(player, "&7Hooking up request...");
                 SUtil.delay(() -> {
-                    Skyblock.getPlugin().getBc().sendMessage(player, "&7Sending you to " + finalTarget + "...");
-                    Skyblock.getPlugin().getBc().connectOther(player, finalTarget);
+                    SkyBlock.getPlugin().getBc().sendMessage(player, "&7Sending you to " + finalTarget + "...");
+                    SkyBlock.getPlugin().getBc().connectOther(player, finalTarget);
                 }, 8L);
             }
             this.servers.remove(runUUID);
@@ -88,7 +87,7 @@ public class SSend
                 u.syncSavingData();
                 SUtil.delay(() -> {
                     u.send("&7Sending you to " + finalTarget + "...");
-                    Skyblock.getPlugin().getBc().connect(player, finalTarget);
+                    SkyBlock.getPlugin().getBc().connect(player, finalTarget);
                 }, 8L);
             }
             this.servers.remove(runUUID);
@@ -97,10 +96,10 @@ public class SSend
             for (String player : this.players.get(runUUID)) {
                 if (!args[0].equalsIgnoreCase(player)) continue;
                 this.send("&7Hooking up request for " + player + "...");
-                Skyblock.getPlugin().getBc().sendMessage(player, "&7Hooking up request...");
+                SkyBlock.getPlugin().getBc().sendMessage(player, "&7Hooking up request...");
                 SUtil.delay(() -> {
-                    Skyblock.getPlugin().getBc().sendMessage(player, "&7Sending you to " + finalTarget + "...");
-                    Skyblock.getPlugin().getBc().connectOther(player, finalTarget);
+                    SkyBlock.getPlugin().getBc().sendMessage(player, "&7Sending you to " + finalTarget + "...");
+                    SkyBlock.getPlugin().getBc().connectOther(player, finalTarget);
                 }, 8L);
                 this.servers.remove(runUUID);
                 this.players.remove(runUUID);

@@ -1,11 +1,11 @@
 package in.godspunky.skyblock.entity;
 
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.config.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
+import in.godspunky.skyblock.SkyBlock;
+import in.godspunky.skyblock.config.Config;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -15,11 +15,6 @@ import java.util.UUID;
 public class EntitySpawner {
     private static final List<EntitySpawner> SPAWNER_CACHE;
     private static BukkitTask SPAWNER_TASK;
-
-    static {
-        SPAWNER_CACHE = new ArrayList<EntitySpawner>();
-    }
-
     private final UUID uuid;
     private final SEntityType type;
     private final Location location;
@@ -40,14 +35,33 @@ public class EntitySpawner {
         this.save();
     }
 
+    public void delete() {
+        final Config spawners = SkyBlock.getPlugin().spawners;
+        EntitySpawner.SPAWNER_CACHE.remove(this);
+        spawners.set(this.uuid.toString(), null);
+        spawners.save();
+    }
+
+    public void save() {
+        final Config spawners = SkyBlock.getPlugin().spawners;
+        spawners.set(this.uuid.toString() + ".type", this.type.name());
+        spawners.set(this.uuid + ".location", this.location);
+        spawners.save();
+    }
+
+    @Override
+    public String toString() {
+        return "EntitySpawner{uuid=" + this.uuid.toString() + ", type=" + this.type.name() + ", location=" + this.location.toString() + "}";
+    }
+
     public static EntitySpawner deserialize(final String key) {
-        final Config spawners = Skyblock.getPlugin().spawners;
+        final Config spawners = SkyBlock.getPlugin().spawners;
         return new EntitySpawner(UUID.fromString(key), SEntityType.getEntityType(spawners.getString(key + ".type")), (Location) spawners.get(key + ".location"));
     }
 
     public static List<EntitySpawner> getSpawners() {
         if (EntitySpawner.SPAWNER_CACHE.size() == 0) {
-            final Config spawners = Skyblock.getPlugin().spawners;
+            final Config spawners = SkyBlock.getPlugin().spawners;
             for (final String key : spawners.getKeys(false)) {
                 EntitySpawner.SPAWNER_CACHE.add(deserialize(key));
             }
@@ -59,7 +73,7 @@ public class EntitySpawner {
         if (EntitySpawner.SPAWNER_TASK != null) {
             return;
         }
-        EntitySpawner.SPAWNER_TASK = Skyblock.getPlugin().getServer().getScheduler().runTaskTimer(Skyblock.getPlugin(), () -> {
+        EntitySpawner.SPAWNER_TASK = SkyBlock.getPlugin().getServer().getScheduler().runTaskTimer(SkyBlock.getPlugin(), () -> {
             final ArrayList<Location> locations = new ArrayList<Location>(Bukkit.getOnlinePlayers().size());
 
             final Iterator<Player> iterator = (Iterator<Player>) Bukkit.getOnlinePlayers().iterator();
@@ -106,25 +120,6 @@ public class EntitySpawner {
         EntitySpawner.SPAWNER_TASK = null;
     }
 
-    public void delete() {
-        final Config spawners = Skyblock.getPlugin().spawners;
-        EntitySpawner.SPAWNER_CACHE.remove(this);
-        spawners.set(this.uuid.toString(), null);
-        spawners.save();
-    }
-
-    public void save() {
-        final Config spawners = Skyblock.getPlugin().spawners;
-        spawners.set(this.uuid.toString() + ".type", this.type.name());
-        spawners.set(this.uuid + ".location", this.location);
-        spawners.save();
-    }
-
-    @Override
-    public String toString() {
-        return "EntitySpawner{uuid=" + this.uuid.toString() + ", type=" + this.type.name() + ", location=" + this.location.toString() + "}";
-    }
-
     public UUID getUuid() {
         return this.uuid;
     }
@@ -135,5 +130,9 @@ public class EntitySpawner {
 
     public Location getLocation() {
         return this.location;
+    }
+
+    static {
+        SPAWNER_CACHE = new ArrayList<EntitySpawner>();
     }
 }

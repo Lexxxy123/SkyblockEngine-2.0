@@ -1,12 +1,11 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.gui.ItemBrowserGUI;
-import in.godspunky.skyblock.ranks.PlayerRank;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import in.godspunky.skyblock.gui.ItemBrowserGUI;
 
-@CommandParameters(description = "Browse from a catalog of items.", aliases = "browseitem,browseitems,browsei,bi,ib", permission = PlayerRank.ADMIN)
+@CommandParameters(description = "Browse from a catalog of items.", aliases = "browseitem,browseitems,browsei,bi,ib", permission = "spt.item")
 public class ItemBrowseCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

@@ -1,17 +1,7 @@
 package in.godspunky.skyblock.entity.dungeons.regularentity;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
-import in.godspunky.skyblock.entity.zombie.BaseZombie;
-import in.godspunky.skyblock.entity.zombie.NPCMobs;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
+import in.godspunky.skyblock.SkyBlock;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
 import net.minecraft.server.v1_8_R3.EntityLiving;
@@ -30,6 +20,16 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.entity.zombie.BaseZombie;
+import in.godspunky.skyblock.entity.zombie.NPCMobs;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 
 public class CryptUndead extends BaseZombie implements NPCMobs {
     private final boolean skullShoot;
@@ -38,14 +38,6 @@ public class CryptUndead extends BaseZombie implements NPCMobs {
     public CryptUndead() {
         this.skullShoot = false;
         this.skullShootCD = true;
-    }
-
-    public static ItemStack b(final int hexcolor, final Material m) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
     }
 
     @Override
@@ -63,6 +55,14 @@ public class CryptUndead extends BaseZombie implements NPCMobs {
         return 900000.0;
     }
 
+    public static ItemStack b(final int hexcolor, final Material m) {
+        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
+    }
+
     @Override
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
         SUtil.delay(() -> this.skullShootCD = false, 100L);
@@ -72,8 +72,8 @@ public class CryptUndead extends BaseZombie implements NPCMobs {
         final PlayerDisguise pl = Sputnik.applyPacketNPC(entity, "ewogICJ0aW1lc3RhbXAiIDogMTU4OTU4MzI0NzgyOCwKICAicHJvZmlsZUlkIiA6ICIyYzEwNjRmY2Q5MTc0MjgyODRlM2JmN2ZhYTdlM2UxYSIsCiAgInByb2ZpbGVOYW1lIiA6ICJOYWVtZSIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS8zMmUyZDBlZDE0YzIzODYyNjY2YjQwNWFlZmFiYzY1YTU3YTI3MWU4NDJmZGE1ZjRkMTllNmJjMTE4Y2UwYzk0IgogICAgfQogIH0KfQ==", "hOMbigWwioiZNvb7vlvx8wTeuvg+Kh0MXm9itzrMJ7U7NfeqvBwDxNQ58ICJGOT0ydWrwJFu4oZqsuBieWONmC/bRd3Fau6pB6WpxYeXbZaB4/VxV4eThMHxbC1/RpwPBhQ/Y0CdeQL/iOHUd4MZkfNSKcnPeqTWiPFiLNOrCOTAZOSK513OJ43CppajPfRx2nioP00NoSs3rFm48OYmm2lz1ZikATFoT96YveYgxQO5eFSFssV7gkNwhkHomdWpeKSjR+MavfhPBHbRli6AMuzYwmeSdKd7XIHp1C9pljetjYx2bvMRGtCmk8OMUvy0ni7bqhha9eNm6qn9UsrboSFYV0Q/ih3RVOKsRqvM7mKmlKhhbqP2Rik86nqp0wkap7PW31ywhhohnrrvbjH3H/0QBgkDCGsO9pgZZsensnXSSzr3mnt6hXSo7YFPb1Q8k+wVwVg7a+g9Awh8L/cvwrg4DkMKX++yuC9Vt/1RVns/AS/e9Y/no1offh/7EuoNtTXSazsVS+orD7E7z9W7ZKE9I8CXh2wttCE6EYCPiSIHHw6EO/a7gkaEz6rjTEtjowXflgiDMEoN0OL1U/YTPXS0sqGazUHf+ZufwxwcHX86y3yvR0wpnNo9QgeXhIit4kBv6oZskC6oytjcXknoQAKULPOTbCNlZkV9n/lyAg0=", true);
         pl.getWatcher().setRightClicking(false);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 70);
-        entity.setMetadata("LD", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("DungeonMobs", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("DungeonMobs", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -113,7 +113,7 @@ public class CryptUndead extends BaseZombie implements NPCMobs {
                     break;
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
     }
 
     @Override
@@ -227,7 +227,7 @@ public class CryptUndead extends BaseZombie implements NPCMobs {
             public synchronized void cancel() throws IllegalStateException {
                 super.cancel();
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
     }
 
     @Override

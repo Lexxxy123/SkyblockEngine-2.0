@@ -1,18 +1,8 @@
 package in.godspunky.skyblock.entity.end;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.entity.zombie.BaseZombie;
-import in.godspunky.skyblock.extra.protocol.PacketInvoker;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.BlockFallAPI;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
@@ -35,6 +25,16 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.extra.protocol.PacketInvoker;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.BlockFallAPI;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -44,14 +44,6 @@ import java.util.UUID;
 public class VoidlingsWardenMob extends BaseZombie {
     private ArmorStand tb;
     private long end;
-
-    public static ItemStack b(final int hexcolor, final Material m) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
-    }
 
     @Override
     public String getEntityName() {
@@ -68,6 +60,14 @@ public class VoidlingsWardenMob extends BaseZombie {
         return 2200000.0;
     }
 
+    public static ItemStack b(final int hexcolor, final Material m) {
+        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
+    }
+
     @Override
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
         this.end = System.currentTimeMillis() + 240000L;
@@ -77,11 +77,11 @@ public class VoidlingsWardenMob extends BaseZombie {
         followRange.setValue(40.0);
         final PlayerDisguise pl = Sputnik.applyPacketNPC(entity, "ewogICJ0aW1lc3RhbXAiIDogMTU5MzcxOTA2Njc2NSwKICAicHJvZmlsZUlkIiA6ICIyZGM3N2FlNzk0NjM0ODAyOTQyODBjODQyMjc0YjU2NyIsCiAgInByb2ZpbGVOYW1lIiA6ICJzYWR5MDYxMCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS81ZjI5NjU1YjE2ZjE1NTNjOTMzZDExMGNmOWM5Y2JmYjUxYzljY2IzMDZlZDZiYzI4NWNmZjI5ZjdmMDkyOTY3IgogICAgfQogIH0KfQ==", "shcQcCt+Scwb7+7jc3Ys2dRL6w+TTVCHhqV6d+oljDxD0FMZrUKZQ1IDIUF0dgptIjD3ptwVJ+2hzaiV7t1h28wNnv28KK1VbaLHOIi5CNTN/kKGFOEtrs2i3ycfG6L9jSSKx0HBMpmChoQo68JQ8LpKrL73x0z+1pHiIw5BFMnHWe3CrGR3QthwL1qvhtR+100sZTHHhziAJnhkiu4usPlxkWwfymw+HF9UQFDHTCMyn8aC/BfqdaCGw/fS5L+JHeiXa5yiscGwrcvnnNfg5A4o/U+W2NpoLWOxE7YVViV5NBXlFQtKzGW8XxxYvM7UkcxaLj9KheBm4RAyHX8Pzp5uc7lx06bexfrViVbnVcH3yUp+OXXuIGEoWT1lAbGreaWhQlN/gSwdAHc8nLI5R2Qt9ML3CxuMWbSv++/dw0S3CuyZ6ER0V1ckCp8ebuI6N3Lkgr1ef1jreRMz3uw/9tM5xa1CF4OCCIzDdZtgpuSLlkbBrPNvm7rwswxsQkr98GRlXZktFLaJCHIuzp4NZGmjTuuCu1r1yolqDKzso3y7edcCSa60WqyJwlqKO3viiRm5aZAWI1czPMeh4AiUyjEu5Yf2t3cyLTkbcScB0Zn6bmcAJ0PHi3Ik+wiH8SNFPrkJ//NW10YZwzmnz0j+Oi5AIHFF20Lm89Ka0OGb6wY=", true);
         pl.getWatcher().setRightClicking(false);
-        entity.setMetadata("NoAffect", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("LD", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("VWE", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("NoAffect", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("VWE", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 85);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -117,7 +117,7 @@ public class VoidlingsWardenMob extends BaseZombie {
                     break;
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 4L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 4L);
         final Entity e = entity;
         new BukkitRunnable() {
             public void run() {
@@ -129,7 +129,7 @@ public class VoidlingsWardenMob extends BaseZombie {
                     entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 0.25, 0.0), Effect.FLAME, 0, 1, (float) SUtil.random(-0.5, 0.5), (float) SUtil.random(0.0, 1.5), (float) SUtil.random(-0.5, 0.5), 0.0f, 1, 20);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 30L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 30L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -146,7 +146,7 @@ public class VoidlingsWardenMob extends BaseZombie {
                 }
                 this.cancel();
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 20L, 20L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 20L, 20L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -158,7 +158,7 @@ public class VoidlingsWardenMob extends BaseZombie {
                     entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 0.25, 0.0), Effect.MAGIC_CRIT, 0, 1, (float) SUtil.random(-0.5, 0.5), (float) SUtil.random(0.0, 1.5), (float) SUtil.random(-0.5, 0.5), 0.0f, 1, 20);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 10L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 10L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -197,7 +197,7 @@ public class VoidlingsWardenMob extends BaseZombie {
                     }, 140L);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 300L, 300L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 300L, 300L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -231,7 +231,7 @@ public class VoidlingsWardenMob extends BaseZombie {
                     }
                 }, 35L);
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 400L, 400L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 400L, 400L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -248,7 +248,7 @@ public class VoidlingsWardenMob extends BaseZombie {
                     }
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 150L, 150L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 150L, 150L);
         new BukkitRunnable() {
             float cout = e.getLocation().getYaw();
 
@@ -282,7 +282,7 @@ public class VoidlingsWardenMob extends BaseZombie {
                 }
                 this.cout += 18.0f;
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             float cout = e.getLocation().getYaw();
 
@@ -318,7 +318,7 @@ public class VoidlingsWardenMob extends BaseZombie {
                 e.getWorld().spigot().playEffect(loc.clone().add(0.0, 0.4, 0.0), Effect.FLYING_GLYPH, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                 this.cout += 8.0f;
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 1L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 1L, 1L);
     }
 
     public void cylinderReset(final Location loc, final int r) {
@@ -375,7 +375,7 @@ public class VoidlingsWardenMob extends BaseZombie {
                     }
                     ++this.t;
                 }
-            }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+            }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
         }
     }
 
@@ -440,7 +440,7 @@ public class VoidlingsWardenMob extends BaseZombie {
                 location.getWorld().spigot().playEffect(loc, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                 this.cout += 10.0f;
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
     }
 
     public List<Block> cylinder(final Location loc, final int r) {
@@ -535,7 +535,7 @@ public class VoidlingsWardenMob extends BaseZombie {
             public synchronized void cancel() throws IllegalStateException {
                 super.cancel();
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
     }
 
     @Override

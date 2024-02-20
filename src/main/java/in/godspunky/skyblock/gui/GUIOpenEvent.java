@@ -8,14 +8,9 @@ import org.bukkit.inventory.Inventory;
 
 public class GUIOpenEvent extends PlayerEvent implements Cancellable {
     private static final HandlerList handlers;
-
-    static {
-        handlers = new HandlerList();
-    }
-
     private final GUI opened;
-    private final Inventory inventory;
     private String title;
+    private final Inventory inventory;
     private boolean cancelled;
 
     public GUIOpenEvent(final Player player, final GUI opened, final Inventory inventory) {
@@ -23,10 +18,6 @@ public class GUIOpenEvent extends PlayerEvent implements Cancellable {
         this.opened = opened;
         this.title = opened.getTitle();
         this.inventory = inventory;
-    }
-
-    public static HandlerList getHandlerList() {
-        return GUIOpenEvent.handlers;
     }
 
     public HandlerList getHandlers() {
@@ -39,6 +30,10 @@ public class GUIOpenEvent extends PlayerEvent implements Cancellable {
 
     public void setCancelled(final boolean cancel) {
         this.cancelled = cancel;
+    }
+
+    public static HandlerList getHandlerList() {
+        return GUIOpenEvent.handlers;
     }
 
     public GUI getOpened() {
@@ -55,5 +50,9 @@ public class GUIOpenEvent extends PlayerEvent implements Cancellable {
 
     public Inventory getInventory() {
         return this.inventory;
+    }
+
+    static {
+        handlers = new HandlerList();
     }
 }

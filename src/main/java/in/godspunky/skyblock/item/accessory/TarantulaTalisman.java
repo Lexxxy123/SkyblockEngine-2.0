@@ -1,12 +1,12 @@
 package in.godspunky.skyblock.item.accessory;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import in.godspunky.skyblock.item.GenericItemType;
 import in.godspunky.skyblock.item.Rarity;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.SpecificItemType;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,10 +14,6 @@ import java.util.UUID;
 
 public class TarantulaTalisman implements AccessoryStatistics, AccessoryFunction {
     private static final Map<UUID, Integer> HITS;
-
-    static {
-        HITS = new HashMap<UUID, Integer>();
-    }
 
     @Override
     public String getDisplayName() {
@@ -51,5 +47,9 @@ public class TarantulaTalisman implements AccessoryStatistics, AccessoryFunction
             damage.addAndGet(damage.get() * 0.1);
             TarantulaTalisman.HITS.remove(damager.getUniqueId());
         }
+    }
+
+    static {
+        HITS = new HashMap<UUID, Integer>();
     }
 }

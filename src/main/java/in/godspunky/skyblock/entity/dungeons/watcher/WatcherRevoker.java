@@ -1,15 +1,7 @@
 package in.godspunky.skyblock.entity.dungeons.watcher;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
-import in.godspunky.skyblock.entity.zombie.BaseZombie;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
+import in.godspunky.skyblock.SkyBlock;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher;
 import net.minecraft.server.v1_8_R3.EntityLiving;
@@ -30,6 +22,14 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.entity.zombie.BaseZombie;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 
 public class WatcherRevoker extends BaseZombie {
     private boolean isBowing;
@@ -58,9 +58,9 @@ public class WatcherRevoker extends BaseZombie {
         final HeadsOnWall h = new HeadsOnWall(EnumWatcherType.REVOKER);
         final PlayerDisguise p = Sputnik.applyPacketNPC(entity, h.value, h.signature, true);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 99);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("LD", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("WATCHER_E", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("WATCHER_E", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         p.setReplaceSounds(false);
         new BukkitRunnable() {
             public void run() {
@@ -72,7 +72,7 @@ public class WatcherRevoker extends BaseZombie {
                     entity.teleport(((CraftZombie) entity).getTarget().getLocation());
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 100L, 100L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 100L, 100L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -149,14 +149,14 @@ public class WatcherRevoker extends BaseZombie {
                                     WatcherRevoker.this.isBowing = false;
                                 }
                             }
-                        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+                        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
                     }
                 } else {
                     WatcherRevoker.this.isBowing = false;
                     entity.getEquipment().setItemInHand(SItem.of(SMaterial.GOLD_SWORD).getStack());
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
         new BukkitRunnable() {
             public void run() {
                 final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -195,7 +195,7 @@ public class WatcherRevoker extends BaseZombie {
                     break;
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 3L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 3L);
     }
 
     @Override

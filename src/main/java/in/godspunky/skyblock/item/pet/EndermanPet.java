@@ -1,11 +1,6 @@
 package in.godspunky.skyblock.item.pet;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.item.GenericItemType;
-import in.godspunky.skyblock.item.Rarity;
-import in.godspunky.skyblock.item.RarityValue;
-import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.skill.CombatSkill;
 import in.godspunky.skyblock.skill.Skill;
 import in.godspunky.skyblock.util.Groups;
@@ -15,6 +10,11 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.item.GenericItemType;
+import in.godspunky.skyblock.item.Rarity;
+import in.godspunky.skyblock.item.RarityValue;
+import in.godspunky.skyblock.item.SItem;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

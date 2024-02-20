@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.item.armor.hardened;
 
 import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.item.*;
 
 public class HardenedDiamondChestplate implements ToolStatistics, MaterialFunction {
     @Override

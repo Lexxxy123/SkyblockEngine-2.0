@@ -4,23 +4,18 @@ import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import in.godspunky.skyblock.Repeater;
-import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.command.RebootServerCommand;
 import in.godspunky.skyblock.dungeons.BlessingChest;
 import in.godspunky.skyblock.dungeons.Blessings;
 import in.godspunky.skyblock.dungeons.ItemChest;
 import in.godspunky.skyblock.enchantment.Enchantment;
 import in.godspunky.skyblock.enchantment.EnchantmentType;
-import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.dungeons.watcher.Watcher;
 import in.godspunky.skyblock.entity.nms.VoidgloomSeraph;
 import in.godspunky.skyblock.extra.beam.Beam;
-import in.godspunky.skyblock.gui.PetsGUI;
-import in.godspunky.skyblock.gui.ProfileViewerGUI;
 import in.godspunky.skyblock.item.Ability;
-import in.godspunky.skyblock.item.SBlock;
 import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.item.accessory.AccessoryFunction;
 import in.godspunky.skyblock.item.armor.PrecursorEye;
 import in.godspunky.skyblock.item.armor.VoidlingsWardenHelmet;
@@ -28,11 +23,6 @@ import in.godspunky.skyblock.item.bow.BowFunction;
 import in.godspunky.skyblock.item.pet.Pet;
 import in.godspunky.skyblock.item.pet.PetAbility;
 import in.godspunky.skyblock.nms.packetevents.PacketReader;
-import in.godspunky.skyblock.npc.SkyblockNPC;
-import in.godspunky.skyblock.npc.SkyblockNPCManager;
-import in.godspunky.skyblock.ranks.GodspunkyPlayer;
-import in.godspunky.skyblock.ranks.PlayerRank;
-import in.godspunky.skyblock.region.RegionType;
 import in.godspunky.skyblock.skill.Skill;
 import in.godspunky.skyblock.slayer.SlayerQuest;
 import in.godspunky.skyblock.user.*;
@@ -59,271 +49,27 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.gui.PetsGUI;
+import in.godspunky.skyblock.gui.ProfileViewerGUI;
+import in.godspunky.skyblock.item.SBlock;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.npc.SkyblockNPC;
+import in.godspunky.skyblock.npc.SkyblockNPCManager;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class PlayerListener extends PListener {
-    public static final Map<Player, Double> LAST_DAMAGE_DEALT;
     private static final Map<UUID, BowShooting> BOW_MAP;
     private static final Map<UUID, CombatAction> COMBAT_MAP;
-
-    static {
-        BOW_MAP = new HashMap<UUID, BowShooting>();
-        COMBAT_MAP = new HashMap<UUID, CombatAction>();
-        LAST_DAMAGE_DEALT = new HashMap<Player, Double>();
-    }
-
     private final Map<UUID, Boolean> isNotLoaded;
+    public static final Map<Player, Double> LAST_DAMAGE_DEALT;
 
     public PlayerListener() {
         this.isNotLoaded = new HashMap<UUID, Boolean>();
-    }
-
-    public static void eshortBowActive(final Player p, final Entity damaged, final Arrow a) {
-        if (p == null) {
-            return;
-        }
-        final ItemStack weapon = p.getInventory().getItemInHand();
-        final PlayerUtils.DamageResult result = PlayerUtils.getDamageDealt(weapon, p, damaged, true);
-        final AtomicDouble finalDamage_ = new AtomicDouble(result.getFinalDamage());
-        double finalDamage = finalDamage_.get();
-        final Boolean crit = result.didCritDamage();
-        final LivingEntity le = (LivingEntity) damaged;
-        if (EntityManager.DEFENSE_PERCENTAGE.containsKey(damaged)) {
-            int defensepercent = EntityManager.DEFENSE_PERCENTAGE.get(damaged);
-            if (defensepercent > 100) {
-                defensepercent = 100;
-            }
-            finalDamage -= finalDamage * defensepercent / 100.0;
-        }
-        final SItem sItem = SItem.find(weapon);
-        if (sItem != null) {
-            if (sItem.getType().getFunction() != null) {
-                sItem.getType().getFunction().onDamage(damaged, p, finalDamage_, sItem);
-            }
-            if (sItem.getType().getFunction() instanceof BowFunction && a instanceof Arrow) {
-                ((BowFunction) sItem.getType().getFunction()).onBowHit(damaged, p, a, sItem, finalDamage_);
-            }
-        }
-        for (final SItem accessory : PlayerUtils.getAccessories(p)) {
-            if (accessory.getType().getFunction() instanceof AccessoryFunction) {
-                ((AccessoryFunction) accessory.getType().getFunction()).onDamageInInventory(sItem, p, damaged, accessory, finalDamage_);
-            }
-        }
-        FerocityCalculation.activeFerocityTimes(p, (LivingEntity) damaged, (int) finalDamage, result.didCritDamage());
-        final User user = User.getUser(p.getUniqueId());
-        user.damageEntityBowEman(le, finalDamage, p, a);
-        spawnDamageInd(damaged, finalDamage, crit);
-    }
-
-    public static void ferocityActive(final int times, final Player p, final double finalDMG, final Entity damaged, final Boolean crit) {
-        if (times > 0) {
-            p.playSound(p.getLocation(), Sound.FIRE_IGNITE, 0.4f, 0.0f);
-        }
-        for (int i = 0; i < times; ++i) {
-            final LivingEntity le = (LivingEntity) damaged;
-            if (le.isDead()) {
-                break;
-            }
-            if (le.isDead()) {
-                return;
-            }
-            final User user = User.getUser(p.getUniqueId());
-            new BukkitRunnable() {
-                public void run() {
-                    if (damaged.isDead()) {
-                        return;
-                    }
-                    p.playSound(p.getLocation(), Sound.FIRE_IGNITE, 0.4f, 0.0f);
-                    SUtil.delay(() -> {
-                        final Object val$damaged = damaged;
-                        final Object val$finalDMG = finalDMG;
-                        final Object val$p = p;
-                        final Object val$crit = crit;
-                        final Object val$user = user;
-                        if (!damaged.isDead()) {
-                            double finalDamage = finalDMG;
-                            if (EntityManager.DEFENSE_PERCENTAGE.containsKey(damaged)) {
-                                int defensepercent = EntityManager.DEFENSE_PERCENTAGE.get(damaged);
-                                if (defensepercent > 100) {
-                                    defensepercent = 100;
-                                }
-                                finalDamage -= finalDamage * defensepercent / 100.0;
-                            }
-                            if (VoidgloomSeraph.HIT_SHIELD.containsKey(damaged)) {
-                                VoidgloomSeraph.HIT_SHIELD.put(damaged, VoidgloomSeraph.HIT_SHIELD.get(damaged) - 1);
-                                damaged.getWorld().playSound(damaged.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 2.0f);
-                            }
-                            User.dmgDimon((LivingEntity) damaged, p);
-                            Sputnik.ferocityParticle((LivingEntity) damaged);
-                            PlayerListener.spawnDamageInd(damaged, finalDamage, crit);
-                            p.playSound(p.getLocation(), Sound.IRONGOLEM_THROW, 1.0f, 1.35f);
-                            user.damageEntityIgnoreShield((Damageable) damaged, finalDamage);
-                        }
-                    }, 10L);
-                }
-            }.runTaskLater(Skyblock.getPlugin(), 4L * i);
-        }
-    }
-
-    public static String replaceChatColors(String s) {
-        for (final ChatColor c : ChatColor.values()) {
-            s = s.replaceAll("&" + c.getChar(), s + ChatColor.getByChar(c.getChar()));
-        }
-        return s;
-    }
-
-//    @EventHandler
-//    public void onPlayerQuit2(PlayerQuitEvent e) {
-//        final Player player = e.getPlayer();
-//        SputnikPlayer.BonemerangFix(player);
-//        SputnikPlayer.KatanasFix(player);
-//    }
-
-    public static CombatAction getLastCombatAction(final Player player) {
-        return PlayerListener.COMBAT_MAP.get(player.getUniqueId());
-    }
-
-    private static CombatAction createCombatAction(final boolean attacked, final double damage, final boolean bowShot, final long timestamp) {
-        return new CombatAction() {
-            @Override
-            public boolean attacked() {
-                return attacked;
-            }
-
-            @Override
-            public double getDamageDealt() {
-                return damage;
-            }
-
-            @Override
-            public boolean isBowShot() {
-                return bowShot;
-            }
-
-            @Override
-            public long getTimeStamp() {
-                return timestamp;
-            }
-        };
-    }
-
-    public static Double COGCalculation(final Integer baseDmg, final Player player) {
-        final User user = User.getUser(player.getUniqueId());
-        final long coin = user.getCoins();
-        if (coin > baseDmg) {
-            user.subCoins(baseDmg);
-            Sputnik.CoinsTakenOut.put(player.getUniqueId(), baseDmg);
-            if (Sputnik.CoinsTakenOut.containsKey(player.getUniqueId())) {
-                SUtil.delay(() -> Sputnik.CoinsTakenOut.remove(player.getUniqueId()), 35L);
-            }
-            return baseDmg * 25.0 / 100.0;
-        }
-        return 0.0;
-    }
-
-    public static void spawnDamageInd(final Entity damaged, final double damage, final boolean isCrit) {
-        if (damaged.hasMetadata("Dimoon")) {
-            return;
-        }
-        final Location l_ = damaged.getLocation().clone();
-        l_.add(SUtil.random(-1.5, 1.5), 2.0, SUtil.random(-1.5, 1.5));
-        final EntityArmorStand stand = new EntityArmorStand(((CraftWorld) damaged.getWorld()).getHandle());
-        stand.setLocation(l_.getX(), l_.getY(), l_.getZ(), 0.0f, 0.0f);
-        ((ArmorStand) stand.getBukkitEntity()).setMarker(true);
-        stand.setCustomName(isCrit ? SUtil.rainbowize("✧" + (int) damage + "✧") : ("" + ChatColor.GRAY + (int) damage));
-        stand.setCustomNameVisible(true);
-        stand.setGravity(false);
-        stand.setInvisible(true);
-        final List<Player> prp = new ArrayList<Player>();
-        new BukkitRunnable() {
-            public void run() {
-                PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving(stand);
-                for (Entity e : damaged.getNearbyEntities(12.0, 12.0, 12.0)) {
-                    if (!(e instanceof Player)) continue;
-                    ((CraftPlayer) e).getHandle().playerConnection.sendPacket(packet);
-                    prp.add((Player) e);
-                }
-            }
-        }.runTaskAsynchronously(Skyblock.getPlugin());
-        new BukkitRunnable() {
-
-            public void run() {
-                PacketPlayOutEntityDestroy pa = new PacketPlayOutEntityDestroy(stand.getId());
-                for (Player e : prp) {
-                    if (!(e instanceof Player)) continue;
-                    ((CraftPlayer) e).getHandle().playerConnection.sendPacket(pa);
-                }
-            }
-        }.runTaskLaterAsynchronously(Skyblock.getPlugin(), 30L);
-    }
-
-    public static void spawnSpecialDamageInd(final Entity damaged, final double damage, final ChatColor c) {
-        final Location l_ = damaged.getLocation().clone();
-        l_.add(SUtil.random(-1.5, 1.5), 1.0, SUtil.random(-1.5, 1.5));
-        final EntityArmorStand stand = new EntityArmorStand(((CraftWorld) damaged.getWorld()).getHandle());
-        stand.setLocation(l_.getX(), l_.getY(), l_.getZ(), 0.0f, 0.0f);
-        ((ArmorStand) stand.getBukkitEntity()).setMarker(true);
-        stand.setCustomName(c + String.valueOf((int) Math.round(damage)));
-        stand.setCustomNameVisible(true);
-        stand.setGravity(false);
-        stand.setInvisible(true);
-        final List<Player> prp = new ArrayList<Player>();
-        new BukkitRunnable() {
-            public void run() {
-                PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving(stand);
-                for (Entity e : damaged.getNearbyEntities(12.0, 12.0, 12.0)) {
-                    if (!(e instanceof Player)) continue;
-                    ((CraftPlayer) e).getHandle().playerConnection.sendPacket(packet);
-                    prp.add((Player) e);
-                }
-            }
-        }.runTaskAsynchronously(Skyblock.getPlugin());
-        new BukkitRunnable() {
-            public void run() {
-                final PacketPlayOutEntityDestroy pa = new PacketPlayOutEntityDestroy(stand.getId());
-                for (final Player e : prp) {
-                    if (e instanceof Player) {
-                        ((CraftPlayer) e).getHandle().playerConnection.sendPacket(pa);
-                    }
-                }
-            }
-        }.runTaskLaterAsynchronously(Skyblock.getPlugin(), 30L);
-    }
-
-    public static void customDMGIND(final Entity damaged, final String text) {
-        final Location l_ = damaged.getLocation().clone();
-        l_.add(SUtil.random(-1.5, 1.5), 1.0, SUtil.random(-1.5, 1.5));
-        final EntityArmorStand stand = new EntityArmorStand(((CraftWorld) damaged.getWorld()).getHandle());
-        stand.setLocation(l_.getX(), l_.getY(), l_.getZ(), 0.0f, 0.0f);
-        ((ArmorStand) stand.getBukkitEntity()).setMarker(true);
-        stand.setCustomName(text);
-        stand.setCustomNameVisible(true);
-        stand.setGravity(false);
-        stand.setInvisible(true);
-        final List<Player> prp = new ArrayList<Player>();
-        new BukkitRunnable() {
-            public void run() {
-                PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving(stand);
-                for (Entity e : damaged.getNearbyEntities(12.0, 12.0, 12.0)) {
-                    if (!(e instanceof Player)) continue;
-                    ((CraftPlayer) e).getHandle().playerConnection.sendPacket(packet);
-                    prp.add((Player) e);
-                }
-            }
-        }.runTaskAsynchronously(Skyblock.getPlugin());
-        new BukkitRunnable() {
-            public void run() {
-                final PacketPlayOutEntityDestroy pa = new PacketPlayOutEntityDestroy(stand.getId());
-                for (final Player e : prp) {
-                    if (e instanceof Player) {
-                        ((CraftPlayer) e).getHandle().playerConnection.sendPacket(pa);
-                    }
-                }
-            }
-        }.runTaskLaterAsynchronously(Skyblock.getPlugin(), 30L);
     }
 
     @EventHandler
@@ -337,27 +83,27 @@ public class PlayerListener extends PListener {
         if (to == null || from.getBlockX() != to.getBlockX()
                 || from.getBlockY() != to.getBlockY()
                 || from.getBlockZ() != to.getBlockZ()) {
-            final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
-            //PlayerUtils.updateInventoryStatistics(player, statistics);
-            // It already getting called in repeater so no need to run again
+                final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
+                //PlayerUtils.updateInventoryStatistics(player, statistics);
+                // It already getting called in repeater so no need to run again
 
-            final SBlock block = SBlock.getBlock(player.getLocation().clone().subtract(0.0, 0.3, 0.0));
-            if (player.getGameMode() != GameMode.SPECTATOR && e.getTo().getY() <= -25.0) {
-                User.getUser(player.getUniqueId()).kill(EntityDamageEvent.DamageCause.VOID, null);
-            }
+                final SBlock block = SBlock.getBlock(player.getLocation().clone().subtract(0.0, 0.3, 0.0));
+                if (player.getGameMode() != GameMode.SPECTATOR && e.getTo().getY() <= -25.0) {
+                    User.getUser(player.getUniqueId()).kill(EntityDamageEvent.DamageCause.VOID, null);
+                }
         }
     }
 
     @EventHandler
     public void onPlayerJoin(final PlayerJoinEvent e) {
         final Player player = e.getPlayer();
-        e.setJoinMessage(null);
         this.getIsNotLoaded().put(player.getUniqueId(), true);
         SUtil.delay(() -> {
             if (player.isOnline()) {
-                Skyblock.getPlugin().updateServerName(player);
+                SkyBlock.getPlugin().updateServerName(player);
             }
         }, 10L);
+
         SUtil.delay(() -> {
             PlayerUtils.USER_SESSION_ID.put(player.getUniqueId(), UUID.randomUUID());
             PlayerUtils.COOKIE_DURATION_CACHE.remove(player.getUniqueId());
@@ -368,19 +114,18 @@ public class PlayerListener extends PListener {
             player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 1000000, 255));
             PrecursorEye.PrecursorLaser.put(player.getUniqueId(), false);
             final User user = User.getUser(player.getUniqueId());
-            user.loadStatic();
-            Skyblock.getPlugin().dataLoader.load(player.getUniqueId());
-
             if (!PlayerUtils.STATISTICS_CACHE.containsKey(player.getUniqueId())) {
                 PlayerUtils.STATISTICS_CACHE.put(player.getUniqueId(), PlayerUtils.getStatistics(player));
             }
             for (Skill skill : Skill.getSkills()) {
                 skill.onSkillUpdate(user, user.getSkillXP(skill));
             }
+            user.loadCookieStatus();
+            user.loadStatic();
             try {
-                // user.loadPlayerData();
-            } catch (final IllegalArgumentException e2) {
-                SLog.severe("============ GODSPUNKY DATA LOAD ERROR ============");
+                user.loadPlayerData();
+            } catch (final IllegalArgumentException | IOException e2) {
+                SLog.severe("============ SKYSIM DATA LOAD ERROR ============");
                 SLog.severe("Ah shit, here we go again.");
                 SLog.severe(" ");
                 SLog.severe("Some bullshit errors happended on this user!");
@@ -409,7 +154,7 @@ public class PlayerListener extends PListener {
                     }
                     UserStash.getStash(player.getUniqueId()).sendNotificationMessage();
                 }
-            }.runTaskTimer(Skyblock.getPlugin(), 600L, 550L);
+            }.runTaskTimer(SkyBlock.getPlugin(), 600L, 550L);
             new BukkitRunnable() {
 
                 public void run() {
@@ -442,7 +187,7 @@ public class PlayerListener extends PListener {
                         player.getInventory().setHelmet(smStack);
                     }
                 }
-            }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+            }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
             new BukkitRunnable() {
 
                 public void run() {
@@ -454,11 +199,8 @@ public class PlayerListener extends PListener {
                         this.cancel();
                         return;
                     }
-                    SUtil.runAsync(new Runnable() {
-                        @Override
-                        public void run() {
-                            Repeater.runPlayerTask(player, counters, counters2);
-                        }
+                    SUtil.runAsync(()->{
+                        Repeater.runPlayerTask(player, counters, counters2);
                     });
 
                     if (TemporaryStats.getFromPlayer(player) != null) {
@@ -484,7 +226,7 @@ public class PlayerListener extends PListener {
                         counters[1] = 1;
                     }
                 }
-            }.runTaskTimer(Skyblock.getPlugin(), 0L, 20L);
+            }.runTaskTimer(SkyBlock.getPlugin(), 0L, 20L);
             final Pet.PetItem pet = User.getUser(player.getUniqueId()).getActivePet();
             final Pet petclass = User.getUser(player.getUniqueId()).getActivePetClass();
             if (pet != null && petclass != null) {
@@ -500,61 +242,8 @@ public class PlayerListener extends PListener {
         }, 1L);
         new PacketReader().injectPlayer(player);
 
-        User user = User.getUser(player.getUniqueId());
-        new BukkitRunnable() {
-            public void run() {
-                if (!player.isOnline()) {
-                    this.cancel();
-                    return;
-                }
-
-                GodspunkyPlayer data = GodspunkyPlayer.getUser(player);
-                try {
-                    if (data != null) {
-                        PlayerRank rank = data.rank;
-                        player.setDisplayName(ChatColor.translateAlternateColorCodes('&', rank.getPrefix()) + " " + player.getName());
-                        player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', rank.getPrefix()) + " " + player.getName());
-                    }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-
-                User user = User.getUser(player.getUniqueId());
-                boolean hasActiveEffects = user.getEffects().size() > 0;
-                boolean hasActiveBuff = PlayerUtils.cookieBuffActive(player);
-                String cookieDuration = PlayerUtils.getCookieDurationDisplayGUI(player);
-
-                IChatBaseComponent header = new ChatComponentText(
-                        ChatColor.AQUA + "You are" + ChatColor.RESET + " " + ChatColor.AQUA + "playing on " + ChatColor.YELLOW + ChatColor.BOLD + "MC.GODSPUNKY.IN\n");
-
-                IChatBaseComponent footer = new ChatComponentText(
-                        "\n" + ChatColor.GREEN + ChatColor.BOLD + "Active Effects\n" +
-                                (hasActiveEffects ? ChatColor.GRAY + "You have " + ChatColor.YELLOW + user.getEffects().size() + ChatColor.GRAY + " active effects. Use\n" + ChatColor.GRAY + "\"" + ChatColor.GOLD + "/effects" + ChatColor.GRAY + "\" to see them!\n" + "\n" : ChatColor.GRAY + "No effects active. Drink potions or splash\n" + ChatColor.GRAY + "them on the ground to buff yourself!\n\n") +
-                                ChatColor.LIGHT_PURPLE + ChatColor.BOLD + "Cookie Buff\n" +
-                                (hasActiveBuff ?
-                                        ChatColor.WHITE + cookieDuration + "\n" :
-                                        ChatColor.GRAY + "Not active! Obtain booster cookies from the\n" + "community shop in the hub") + "\n" + "\n" +
-                                ChatColor.GREEN + "Ranks, Boosters, & MORE!" + ChatColor.RESET + " " + ChatColor.RED + ChatColor.BOLD + "STORE.GODSPUNKY.IN");
-
-                PacketPlayOutPlayerListHeaderFooter packet = new PacketPlayOutPlayerListHeaderFooter();
-
-                try {
-                    Field headerField = packet.getClass().getDeclaredField("a");
-                    Field footerField = packet.getClass().getDeclaredField("b");
-                    headerField.setAccessible(true);
-                    footerField.setAccessible(true);
-                    headerField.set(packet, header);
-                    footerField.set(packet, footer);
-                    headerField.setAccessible(!headerField.isAccessible());
-                    footerField.setAccessible(!footerField.isAccessible());
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-
-                ((CraftPlayer) user.toBukkitPlayer()).getHandle().playerConnection.sendPacket(packet);
-            }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 20L);
     }
+
 
     @EventHandler
     public void chunkLoad(final ChunkLoadEvent e) {
@@ -576,9 +265,9 @@ public class PlayerListener extends PListener {
             player.sendMessage("  " + ChatColor.RED + ChatColor.BOLD + "SLAYER QUEST FAILED!");
             player.sendMessage("   " + ChatColor.DARK_PURPLE + ChatColor.BOLD + "» " + ChatColor.GRAY + "You need to learn how to play this game first!");
         }
-        SMongoLoader.queue(player.getUniqueId().toString(), true);
-        //user.saveCookie();
-        //user.saveAllVanillaInstances();
+        user.save();
+        user.saveCookie();
+        user.saveAllVanillaInstances();
         Blessings.STAT_MAP.remove(player.getUniqueId());
         PrecursorEye.PrecursorLaser.remove(player.getUniqueId());
         PlayerUtils.COOKIE_DURATION_CACHE.remove(player.getUniqueId());
@@ -590,7 +279,14 @@ public class PlayerListener extends PListener {
         PlayerUtils.LAST_KILLED_MAPPING.remove(player.getUniqueId());
         Repeater.PTN_CACHE.remove(user.getUuid());
         PlayerUtils.STATISTICS_CACHE.remove(user.getUuid());
-        // user.unload();
+        user.unload();
+    }
+
+    @EventHandler
+    public void onPlayerQuit2(final PlayerQuitEvent e) {
+        final Player player = e.getPlayer();
+        SputnikPlayer.BonemerangFix(player);
+        SputnikPlayer.KatanasFix(player);
     }
 
     @EventHandler
@@ -645,7 +341,7 @@ public class PlayerListener extends PListener {
             final Player clicked = (Player) e.getRightClicked();
             if (performer.isSneaking()) {
                 Sputnik.tradeIntitize(clicked, performer);
-            } else if (!performer.getWorld().getName().startsWith("f6")) {
+            } else if (!performer.getWorld().getName().contains("f6")) {
                 new ProfileViewerGUI(clicked).open(performer);
             }
         }
@@ -947,6 +643,93 @@ public class PlayerListener extends PListener {
         PlayerListener.spawnDamageInd(damaged, e.getDamage(), result.didCritDamage());
     }
 
+    public static void eshortBowActive(final Player p, final Entity damaged, final Arrow a) {
+        if (p == null) {
+            return;
+        }
+        final ItemStack weapon = p.getInventory().getItemInHand();
+        final PlayerUtils.DamageResult result = PlayerUtils.getDamageDealt(weapon, p, damaged, true);
+        final AtomicDouble finalDamage_ = new AtomicDouble(result.getFinalDamage());
+        double finalDamage = finalDamage_.get();
+        final Boolean crit = result.didCritDamage();
+        final LivingEntity le = (LivingEntity) damaged;
+        if (EntityManager.DEFENSE_PERCENTAGE.containsKey(damaged)) {
+            int defensepercent = EntityManager.DEFENSE_PERCENTAGE.get(damaged);
+            if (defensepercent > 100) {
+                defensepercent = 100;
+            }
+            finalDamage -= finalDamage * defensepercent / 100.0;
+        }
+        final SItem sItem = SItem.find(weapon);
+        if (sItem != null) {
+            if (sItem.getType().getFunction() != null) {
+                sItem.getType().getFunction().onDamage(damaged, p, finalDamage_, sItem);
+            }
+            if (sItem.getType().getFunction() instanceof BowFunction && a instanceof Arrow) {
+                ((BowFunction) sItem.getType().getFunction()).onBowHit(damaged, p, a, sItem, finalDamage_);
+            }
+        }
+        for (final SItem accessory : PlayerUtils.getAccessories(p)) {
+            if (accessory.getType().getFunction() instanceof AccessoryFunction) {
+                ((AccessoryFunction) accessory.getType().getFunction()).onDamageInInventory(sItem, p, damaged, accessory, finalDamage_);
+            }
+        }
+        FerocityCalculation.activeFerocityTimes(p, (LivingEntity) damaged, (int) finalDamage, result.didCritDamage());
+        final User user = User.getUser(p.getUniqueId());
+        user.damageEntityBowEman(le, finalDamage, p, a);
+        spawnDamageInd(damaged, finalDamage, crit);
+    }
+
+    public static void ferocityActive(final int times, final Player p, final double finalDMG, final Entity damaged, final Boolean crit) {
+        if (times > 0) {
+            p.playSound(p.getLocation(), Sound.FIRE_IGNITE, 0.4f, 0.0f);
+        }
+        for (int i = 0; i < times; ++i) {
+            final LivingEntity le = (LivingEntity) damaged;
+            if (le.isDead()) {
+                break;
+            }
+            if (le.isDead()) {
+                return;
+            }
+            final User user = User.getUser(p.getUniqueId());
+            new BukkitRunnable() {
+                public void run() {
+                    if (damaged.isDead()) {
+                        return;
+                    }
+                    p.playSound(p.getLocation(), Sound.FIRE_IGNITE, 0.4f, 0.0f);
+                    SUtil.delay(() -> {
+                        final Object val$damaged = damaged;
+                        final Object val$finalDMG = finalDMG;
+                        final Object val$p = p;
+                        final Object val$crit = crit;
+                        final Object val$user = user;
+                        if (!damaged.isDead()) {
+                            double finalDamage = finalDMG;
+                            if (EntityManager.DEFENSE_PERCENTAGE.containsKey(damaged)) {
+                                int defensepercent = EntityManager.DEFENSE_PERCENTAGE.get(damaged);
+                                if (defensepercent > 100) {
+                                    defensepercent = 100;
+                                }
+                                finalDamage -= finalDamage * defensepercent / 100.0;
+                            }
+                            if (VoidgloomSeraph.HIT_SHIELD.containsKey(damaged)) {
+                                VoidgloomSeraph.HIT_SHIELD.put(damaged, VoidgloomSeraph.HIT_SHIELD.get(damaged) - 1);
+                                damaged.getWorld().playSound(damaged.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 2.0f);
+                            }
+                            User.dmgDimon((LivingEntity) damaged, p);
+                            Sputnik.ferocityParticle((LivingEntity) damaged);
+                            PlayerListener.spawnDamageInd(damaged, finalDamage, crit);
+                            p.playSound(p.getLocation(), Sound.IRONGOLEM_THROW, 1.0f, 1.35f);
+                            user.damageEntityIgnoreShield((Damageable) damaged, finalDamage);
+                        }
+                    }, 10L);
+                }
+            }.runTaskLater(SkyBlock.getPlugin(), 4L * i);
+        }
+    }
+
     @EventHandler
     public void onBoatPlace(final PlayerInteractEvent event) {
         if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
@@ -991,7 +774,7 @@ public class PlayerListener extends PListener {
                         user.subFromQuiver(SMaterial.ARROW);
                         player.getInventory().setItem(8, SUtil.setStackAmount(SItem.of(SMaterial.QUIVER_ARROW).getStack(), Math.min(64, user.getQuiver(SMaterial.ARROW))));
                     }
-                }.runTaskLater(Skyblock.getPlugin(), 1L);
+                }.runTaskLater(SkyBlock.getPlugin(), 1L);
             }
         }
     }
@@ -1031,7 +814,7 @@ public class PlayerListener extends PListener {
                     user.subFromQuiver(SMaterial.ARROW);
                     player.getInventory().setItem(8, SUtil.setStackAmount(SItem.of(SMaterial.QUIVER_ARROW).getStack(), Math.min(64, user.getQuiver(SMaterial.ARROW))));
                 }
-            }.runTaskLater(Skyblock.getPlugin(), 1L);
+            }.runTaskLater(SkyBlock.getPlugin(), 1L);
         }
         final SItem sItem = SItem.find(e.getBow());
         if (sItem != null) {
@@ -1064,7 +847,7 @@ public class PlayerListener extends PListener {
             ts.cleanStats();
         }
         final SlayerQuest quest = user.getSlayerQuest();
-        // user.saveAllVanillaInstances();
+        user.saveAllVanillaInstances();
         if (quest != null && quest.getXp() >= quest.getType().getSpawnXP() && quest.getKilled() == 0L) {
             User.getUser(e.getPlayer().getUniqueId()).failSlayerQuest();
         }
@@ -1175,6 +958,13 @@ public class PlayerListener extends PListener {
         }
     }
 
+    public static String replaceChatColors(String s) {
+        for (final ChatColor c : ChatColor.values()) {
+            s = s.replaceAll("&" + c.getChar(), String.valueOf(s) + ChatColor.getByChar(c.getChar()));
+        }
+        return s;
+    }
+
     @EventHandler(priority = EventPriority.MONITOR)
     public void onJoin(final PlayerLoginEvent event) {
         if (!event.getPlayer().isWhitelisted() && Bukkit.hasWhitelist()) {
@@ -1236,7 +1026,7 @@ public class PlayerListener extends PListener {
                 public void run() {
                     e.getEntity().remove();
                 }
-            }.runTaskLater(Skyblock.getPlugin(), 10L);
+            }.runTaskLater(SkyBlock.getPlugin(), 10L);
             return;
         }
         if (e.getEntity() instanceof Fireball && (e.getEntity().hasMetadata("dragon") || e.getEntity().hasMetadata("magma"))) {
@@ -1262,11 +1052,53 @@ public class PlayerListener extends PListener {
         }
     }
 
+    public static CombatAction getLastCombatAction(final Player player) {
+        return PlayerListener.COMBAT_MAP.get(player.getUniqueId());
+    }
+
+    private static CombatAction createCombatAction(final boolean attacked, final double damage, final boolean bowShot, final long timestamp) {
+        return new CombatAction() {
+            @Override
+            public boolean attacked() {
+                return attacked;
+            }
+
+            @Override
+            public double getDamageDealt() {
+                return damage;
+            }
+
+            @Override
+            public boolean isBowShot() {
+                return bowShot;
+            }
+
+            @Override
+            public long getTimeStamp() {
+                return timestamp;
+            }
+        };
+    }
+
     @EventHandler
     public void onEntityDamage1(final EntityDamageByEntityEvent event) {
         if (event.getEntity().hasMetadata("GiantSword")) {
             event.setCancelled(true);
         }
+    }
+
+    public static Double COGCalculation(final Integer baseDmg, final Player player) {
+        final User user = User.getUser(player.getUniqueId());
+        final long coin = user.getCoins();
+        if (coin > baseDmg) {
+            user.subCoins(baseDmg);
+            Sputnik.CoinsTakenOut.put(player.getUniqueId(), baseDmg);
+            if (Sputnik.CoinsTakenOut.containsKey(player.getUniqueId())) {
+                SUtil.delay(() -> Sputnik.CoinsTakenOut.remove(player.getUniqueId()), 35L);
+            }
+            return baseDmg * 25.0 / 100.0;
+        }
+        return 0.0;
     }
 
     @EventHandler
@@ -1363,6 +1195,108 @@ public class PlayerListener extends PListener {
         }
     }
 
+    public static void spawnDamageInd(final Entity damaged, final double damage, final boolean isCrit) {
+        if (damaged.hasMetadata("Dimoon")) {
+            return;
+        }
+        final Location l_ = damaged.getLocation().clone();
+        l_.add(SUtil.random(-1.5, 1.5), 2.0, SUtil.random(-1.5, 1.5));
+        final EntityArmorStand stand = new EntityArmorStand(((CraftWorld) damaged.getWorld()).getHandle());
+        stand.setLocation(l_.getX(), l_.getY(), l_.getZ(), 0.0f, 0.0f);
+        ((ArmorStand) stand.getBukkitEntity()).setMarker(true);
+        stand.setCustomName(isCrit ? SUtil.rainbowize("✧" + (int) damage + "✧") : ("" + ChatColor.GRAY + (int) damage));
+        stand.setCustomNameVisible(true);
+        stand.setGravity(false);
+        stand.setInvisible(true);
+        final List<Player> prp = new ArrayList<Player>();
+        new BukkitRunnable() {
+            public void run() {
+                PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving(stand);
+                for (Entity e : damaged.getNearbyEntities(12.0, 12.0, 12.0)) {
+                    if (!(e instanceof Player)) continue;
+                    ((CraftPlayer) e).getHandle().playerConnection.sendPacket(packet);
+                    prp.add((Player) e);
+                }
+            }
+        }.runTaskAsynchronously(SkyBlock.getPlugin());
+        new BukkitRunnable() {
+
+            public void run() {
+                PacketPlayOutEntityDestroy pa = new PacketPlayOutEntityDestroy(stand.getId());
+                for (Player e : prp) {
+                    if (!(e instanceof Player)) continue;
+                    ((CraftPlayer) e).getHandle().playerConnection.sendPacket(pa);
+                }
+            }
+        }.runTaskLaterAsynchronously(SkyBlock.getPlugin(), 30L);
+    }
+
+    public static void spawnSpecialDamageInd(final Entity damaged, final double damage, final ChatColor c) {
+        final Location l_ = damaged.getLocation().clone();
+        l_.add(SUtil.random(-1.5, 1.5), 1.0, SUtil.random(-1.5, 1.5));
+        final EntityArmorStand stand = new EntityArmorStand(((CraftWorld) damaged.getWorld()).getHandle());
+        stand.setLocation(l_.getX(), l_.getY(), l_.getZ(), 0.0f, 0.0f);
+        ((ArmorStand) stand.getBukkitEntity()).setMarker(true);
+        stand.setCustomName(c + String.valueOf((int) Math.round(damage)));
+        stand.setCustomNameVisible(true);
+        stand.setGravity(false);
+        stand.setInvisible(true);
+        final List<Player> prp = new ArrayList<Player>();
+        new BukkitRunnable() {
+            public void run() {
+                PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving(stand);
+                for (Entity e : damaged.getNearbyEntities(12.0, 12.0, 12.0)) {
+                    if (!(e instanceof Player)) continue;
+                    ((CraftPlayer) e).getHandle().playerConnection.sendPacket(packet);
+                    prp.add((Player) e);
+                }
+            }
+        }.runTaskAsynchronously(SkyBlock.getPlugin());
+        new BukkitRunnable() {
+            public void run() {
+                final PacketPlayOutEntityDestroy pa = new PacketPlayOutEntityDestroy(stand.getId());
+                for (final Player e : prp) {
+                    if (e instanceof Player) {
+                        ((CraftPlayer) e).getHandle().playerConnection.sendPacket(pa);
+                    }
+                }
+            }
+        }.runTaskLaterAsynchronously(SkyBlock.getPlugin(), 30L);
+    }
+
+    public static void customDMGIND(final Entity damaged, final String text) {
+        final Location l_ = damaged.getLocation().clone();
+        l_.add(SUtil.random(-1.5, 1.5), 1.0, SUtil.random(-1.5, 1.5));
+        final EntityArmorStand stand = new EntityArmorStand(((CraftWorld) damaged.getWorld()).getHandle());
+        stand.setLocation(l_.getX(), l_.getY(), l_.getZ(), 0.0f, 0.0f);
+        ((ArmorStand) stand.getBukkitEntity()).setMarker(true);
+        stand.setCustomName(text);
+        stand.setCustomNameVisible(true);
+        stand.setGravity(false);
+        stand.setInvisible(true);
+        final List<Player> prp = new ArrayList<Player>();
+        new BukkitRunnable() {
+            public void run() {
+                PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving(stand);
+                for (Entity e : damaged.getNearbyEntities(12.0, 12.0, 12.0)) {
+                    if (!(e instanceof Player)) continue;
+                    ((CraftPlayer) e).getHandle().playerConnection.sendPacket(packet);
+                    prp.add((Player) e);
+                }
+            }
+        }.runTaskAsynchronously(SkyBlock.getPlugin());
+        new BukkitRunnable() {
+            public void run() {
+                final PacketPlayOutEntityDestroy pa = new PacketPlayOutEntityDestroy(stand.getId());
+                for (final Player e : prp) {
+                    if (e instanceof Player) {
+                        ((CraftPlayer) e).getHandle().playerConnection.sendPacket(pa);
+                    }
+                }
+            }
+        }.runTaskLaterAsynchronously(SkyBlock.getPlugin(), 30L);
+    }
+
     @EventHandler
     public void onChunkLoad(final ChunkLoadEvent e) {
         for (final Entity en : e.getChunk().getEntities()) {
@@ -1433,7 +1367,7 @@ public class PlayerListener extends PListener {
                     beam.setEndingPosition(p2.getLocation().clone().add(0.0, 1.0, 0.0));
                     beam.update();
                 }
-            }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+            }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
         }
     }
 
@@ -1443,93 +1377,13 @@ public class PlayerListener extends PListener {
             e.setCancelled(true);
         }
     }
-
     @EventHandler
-    public void onQuit(PlayerQuitEvent event) {
+    public void onQuit(PlayerQuitEvent event){
         Player player = event.getPlayer();
-        for (SkyblockNPC skyblockNPC : SkyblockNPCManager.getNPCS()) {
+        for (SkyblockNPC skyblockNPC : SkyblockNPCManager.getNPCS()){
             if (skyblockNPC.isShown(player))
                 skyblockNPC.hideFrom(player);
         }
-    }
-
-    @EventHandler
-    public void RegionChange(PlayerMoveEvent e){
-        User player = User.getUser(e.getPlayer().getUniqueId());
-
-        List<String> discoveredZonesList = player.getdiscoveredzones();
-
-        if (discoveredZonesList.contains(player.getRegion().getType().getName())) {
-            return;
-        }
-        RegionType type = player.getRegion().getType();
-        player.addnewzone(player.getRegion().getType().getName());
-        if (type == RegionType.VILLAGE) {
-            onNewZone(player, RegionType.VILLAGE,
-                    "Purchase items at the Market.",
-                    "Visit the Auction House.",
-                    "Manage your Coins in the Bank.",
-                    "Enchant items at the Library.");
-        } else if (type == RegionType.AUCTION_HOUSE) {
-            onNewZone(player, RegionType.AUCTION_HOUSE,
-                    "Auction off your special items.",
-                    "Bid on other player's items.");
-        } else if (type == RegionType.BANK) {
-            onNewZone(player, RegionType.BANK,
-                    "Talk to the Banker.",
-                    "Store your coins to keep them safe.",
-                    "Earn interest on your coins.");
-        } else if (type == RegionType.GOLD_MINE) {
-            onNewZone(player, RegionType.GOLD_MINE,
-                    "Talk to the Lazy Miner.",
-                    "Find the hidden gold mine.");
-        } else if (type == RegionType.COAL_MINE) {
-            onNewZone(player, RegionType.COAL_MINE,
-                    "Mine coal.",
-                    "Travel to the Gold Mine.");
-        } else if (type == RegionType.FARM) {
-            onNewZone(player, RegionType.FARM,
-                    "Talk to the farmer.", "Travel to The Barn.");
-        } else if (type == RegionType.BIRCH_PARK) {
-            onNewZone(player, RegionType.BIRCH_PARK,
-                    "Chop down trees.",
-                    "Collect all Log types.");
-        } else if (type == RegionType.FOREST) {
-            onNewZone(player, RegionType.FOREST,
-                    "Visit the Lumberjack.",
-                    "Chop down trees.",
-                    "Travel to the Birch Park.");
-        } else if (type == RegionType.GRAVEYARD) {
-            onNewZone(player, RegionType.GRAVEYARD,
-                    "Fight Zombies.",
-                    "Travel to the Spider's Den.",
-                    "Talk to Pat.",
-                    "Investigate the Catacombs.");
-        } else if (type == RegionType.BAZAAR_ALLEY) {
-            onNewZone(player, RegionType.BAZAAR_ALLEY,
-                    "Buy and sell materials in bulk in the Bazaar.");
-        } else if (type == RegionType.WILDERNESS) {
-            onNewZone(player, RegionType.WILDERNESS,
-                    "Fish.",
-                    "Visit the Fisherman's Hut.",
-                    "Visit the fairy at the Fairy Pond.",
-                    "Discover hidden secrets.");
-        } else if (type == RegionType.RUINS) {
-            onNewZone(player, RegionType.RUINS,
-                    "Explore the ancient ruins.",
-                    "Watch out for the guard dogs!");
-        } else if (type == RegionType.THE_END) {
-            onNewZone(player, RegionType.THE_END,
-                    "Talk to the Pearl Dealer.",
-                    "Explore the End Shop.",
-                    "Kill Endermen.",
-                    "Fight Dragons!");
-        }
-    }
-
-
-    public void onNewZone(User p ,RegionType r , String... messages){
-        p.onNewZone(r,messages);
     }
 
     @EventHandler
@@ -1540,13 +1394,15 @@ public class PlayerListener extends PListener {
         if (!toWorld.equals(fromWorld)) {
             for (SkyblockNPC npc : SkyblockNPCManager.getNPCS()) {
                 if (npc.getWorld().equals(toWorld)) {
-                    SUtil.delay(() -> npc.showTo(player), 20);  // delay to let world load properly
+                    SUtil.delay(() -> npc.showTo(player) , 20);  // delay to let world load properly
                 } else if (npc.isShown(player) && npc.getWorld().equals(fromWorld)) {
                     npc.hideFrom(player);
                 }
             }
         }
     }
+
+
 
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
@@ -1558,17 +1414,18 @@ public class PlayerListener extends PListener {
         // as it is also called when the pitch or yaw change. This is worth it from a performance view.
         if (to == null || from.getBlockX() != to.getBlockX()
                 || from.getBlockY() != to.getBlockY()
-                || from.getBlockZ() != to.getBlockZ()) {
-            for (SkyblockNPC skyblockNPC : SkyblockNPCManager.getNPCS()) {
-                if (!skyblockNPC.getWorld().equals(player.getWorld())) continue;
-                if (!skyblockNPC.isShown(player) && skyblockNPC.inRangeOf(player)) {
-                    skyblockNPC.showTo(player);
-                } else if (skyblockNPC.isShown(player) && !skyblockNPC.inRangeOf(player)) {
-                    skyblockNPC.hideFrom(player);
+                || from.getBlockZ() != to.getBlockZ()){
+                for (SkyblockNPC skyblockNPC : SkyblockNPCManager.getNPCS()) {
+                    if (!skyblockNPC.getWorld().equals(player.getWorld())) continue;
+                    if (!skyblockNPC.isShown(player) && skyblockNPC.inRangeOf(player)) {
+                        skyblockNPC.showTo(player);
+                    } else if (skyblockNPC.isShown(player) && !skyblockNPC.inRangeOf(player)) {
+                        skyblockNPC.hideFrom(player);
+                    }
                 }
-            }
         }
     }
+
 
     @EventHandler
     public void swingSword(final PlayerInteractEvent e) {
@@ -1615,6 +1472,12 @@ public class PlayerListener extends PListener {
 
     public Map<UUID, Boolean> getIsNotLoaded() {
         return this.isNotLoaded;
+    }
+
+    static {
+        BOW_MAP = new HashMap<UUID, BowShooting>();
+        COMBAT_MAP = new HashMap<UUID, CombatAction>();
+        LAST_DAMAGE_DEALT = new HashMap<Player, Double>();
     }
 
     public interface CombatAction {

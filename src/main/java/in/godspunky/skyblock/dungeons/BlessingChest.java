@@ -1,8 +1,6 @@
 package in.godspunky.skyblock.dungeons;
 
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
+import in.godspunky.skyblock.SkyBlock;
 import net.minecraft.server.v1_8_R3.BlockPosition;
 import net.minecraft.server.v1_8_R3.Blocks;
 import net.minecraft.server.v1_8_R3.PacketPlayOutBlockAction;
@@ -13,6 +11,8 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -20,20 +20,15 @@ import java.util.Map;
 
 public class BlessingChest {
     public static final Map<Block, BlessingChest> CHEST_CACHE;
-
-    static {
-        CHEST_CACHE = new HashMap<Block, BlessingChest>();
-    }
-
+    private boolean opened;
+    private boolean locked;
     private final Blessings type;
     private final byte state;
     private final Block chest;
-    private final Skyblock sse;
-    private boolean opened;
-    private boolean locked;
+    private final SkyBlock sse;
 
     public BlessingChest(final Blessings type, final Block chest, final byte state) {
-        this.sse = Skyblock.getPlugin();
+        this.sse = SkyBlock.getPlugin();
         this.type = type;
         this.state = state;
         this.locked = false;
@@ -117,5 +112,9 @@ public class BlessingChest {
 
     public Blessings getType() {
         return this.type;
+    }
+
+    static {
+        CHEST_CACHE = new HashMap<Block, BlessingChest>();
     }
 }

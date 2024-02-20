@@ -1,14 +1,11 @@
 package in.godspunky.skyblock.gui;
 
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.event.SkyBlockCraftEvent;
+import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
@@ -25,12 +22,6 @@ public class CraftingTableGUI extends GUI implements BlockBasedGUI {
 
     private static final ItemStack LOCKED_RECIPE_ITEM;
     private static final int RESULT_SLOT = 24;
-
-    static {
-        RECIPE_REQUIRED = SUtil.createNamedItemStack(Material.BARRIER, ChatColor.RED + "Recipe Required");
-        LOCKED_RECIPE_ITEM = SUtil.createNamedItemStack(Material.BARRIER, ChatColor.RED + "Locked Recipe");
-        CRAFT_SLOTS = new int[]{10, 11, 12, 19, 20, 21, 28, 29, 30};
-    }
 
     public CraftingTableGUI() {
         super("Craft Item", 54);
@@ -114,8 +105,6 @@ public class CraftingTableGUI extends GUI implements BlockBasedGUI {
                         e.getWhoClicked().getWorld().dropItem(e.getWhoClicked().getLocation(), stack2).setVelocity(e.getWhoClicked().getLocation().getDirection());
                     }
                 }
-                SkyBlockCraftEvent skyBlockCraftEvent = new SkyBlockCraftEvent(recipe , (Player)e.getWhoClicked());
-                Bukkit.getPluginManager().callEvent(skyBlockCraftEvent);
                 CraftingTableGUI.this.update(inventory);
             }
 
@@ -135,20 +124,6 @@ public class CraftingTableGUI extends GUI implements BlockBasedGUI {
             }
         });
         this.set(GUIClickableItem.getCloseItem(49));
-    }
-
-    private static int indexOf(final Recipe<?> recipe, final List<MaterialQuantifiable> ingredients, final MaterialQuantifiable search) {
-        final List<SMaterial> exchangeables = Recipe.getExchangeablesOf(search.getMaterial());
-        for (int i = 0; i < ingredients.size(); ++i) {
-            final MaterialQuantifiable ingredient = ingredients.get(i);
-            if (recipe.isUseExchangeables() && exchangeables != null && exchangeables.contains(ingredient.getMaterial()) && search.getAmount() >= ingredient.getAmount()) {
-                return i;
-            }
-            if (ingredient.getMaterial() == search.getMaterial() && search.getAmount() >= ingredient.getAmount()) {
-                return i;
-            }
-        }
-        return -1;
     }
 
     @Override
@@ -181,9 +156,9 @@ public class CraftingTableGUI extends GUI implements BlockBasedGUI {
                         SUtil.border(inventory, gui, SUtil.createColoredStainedGlassPane((short) 5, ChatColor.RESET + " "), 45, 48, true, false);
                         SUtil.border(inventory, gui, SUtil.createColoredStainedGlassPane((short) 5, ChatColor.RESET + " "), 50, 53, true, false);
                     }
-                }.runTaskLaterAsynchronously(Skyblock.getPlugin(), 1L);
+                }.runTaskLaterAsynchronously(SkyBlock.getPlugin(), 1L);
             }
-        }.runTaskTimerAsynchronously(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimerAsynchronously(SkyBlock.getPlugin(), 0L, 1L);
     }
 
     @Override
@@ -199,6 +174,20 @@ public class CraftingTableGUI extends GUI implements BlockBasedGUI {
         return stacks;
     }
 
+    private static int indexOf(final Recipe<?> recipe, final List<MaterialQuantifiable> ingredients, final MaterialQuantifiable search) {
+        final List<SMaterial> exchangeables = Recipe.getExchangeablesOf(search.getMaterial());
+        for (int i = 0; i < ingredients.size(); ++i) {
+            final MaterialQuantifiable ingredient = ingredients.get(i);
+            if (recipe.isUseExchangeables() && exchangeables != null && exchangeables.contains(ingredient.getMaterial()) && search.getAmount() >= ingredient.getAmount()) {
+                return i;
+            }
+            if (ingredient.getMaterial() == search.getMaterial() && search.getAmount() >= ingredient.getAmount()) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     private boolean isVanilla(Recipe<?> recipe) {
         if (recipe instanceof ShapedRecipe) {
             return ((ShapedRecipe) recipe).isVanilla();
@@ -206,5 +195,11 @@ public class CraftingTableGUI extends GUI implements BlockBasedGUI {
             return ((ShapelessRecipe) recipe).isVanilla();
         }
         return false;
+    }
+
+    static {
+        RECIPE_REQUIRED = SUtil.createNamedItemStack(Material.BARRIER, ChatColor.RED + "Recipe Required");
+        LOCKED_RECIPE_ITEM = SUtil.createNamedItemStack(Material.BARRIER, ChatColor.RED + "Locked Recipe");
+        CRAFT_SLOTS = new int[]{10, 11, 12, 19, 20, 21, 28, 29, 30};
     }
 }

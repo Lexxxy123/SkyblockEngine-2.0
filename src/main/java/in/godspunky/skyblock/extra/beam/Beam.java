@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.extra.beam;
 
 import com.google.common.base.Preconditions;
-import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.SkyBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -16,11 +16,11 @@ public class Beam {
     private final String worldname;
     private final double viewingRadiusSquared;
     private final long updateDelay;
-    private final LocationTargetBeam beam;
-    private final Set<UUID> viewers;
     private boolean isActive;
+    private final LocationTargetBeam beam;
     private Location startingPosition;
     private Location endingPosition;
+    private final Set<UUID> viewers;
     private BukkitRunnable runnable;
 
     public Beam(final Location startingPosition, final Location endingPosition) {
@@ -46,7 +46,7 @@ public class Beam {
     public void start() {
         Preconditions.checkState(!this.isActive, "The beam must be disabled in order to start it");
         this.isActive = true;
-        (this.runnable = new BeamUpdater()).runTaskTimer(Skyblock.getPlugin(), 0L, this.updateDelay);
+        (this.runnable = new BeamUpdater()).runTaskTimer(SkyBlock.getPlugin(), 0L, this.updateDelay);
     }
 
     public void stop() {

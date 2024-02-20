@@ -1,22 +1,17 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.ranks.PlayerRank;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import in.godspunky.skyblock.region.Region;
 import in.godspunky.skyblock.region.RegionGenerator;
 import in.godspunky.skyblock.region.RegionType;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@CommandParameters(description = "Manage world regions.", usage = "/<command> [create <name> <type> | update <name> [type] | delete <name>]", aliases = "reg", permission = PlayerRank.ADMIN)
+@CommandParameters(description = "Manage world regions.", usage = "/<command> [create <name> <type> | update <name> [type] | delete <name>]", aliases = "reg", permission = "spt.region")
 public class RegionCommand extends SCommand {
     public static Map<CommandSender, RegionGenerator> REGION_GENERATION_MAP;
-
-    static {
-        RegionCommand.REGION_GENERATION_MAP = new HashMap<CommandSender, RegionGenerator>();
-    }
 
     @Override
     public void run(final CommandSource sender, final String[] args) {
@@ -29,7 +24,7 @@ public class RegionCommand extends SCommand {
                     if (name.length() > 100) {
                         throw new CommandFailException("Name too long!");
                     }
-                    if (plugin.regionData.exists(name)) {
+                    if (RegionCommand.plugin.regionData.exists(name)) {
                         throw new CommandFailException("There is already a region named that!");
                     }
                     RegionCommand.REGION_GENERATION_MAP.put(sender.getSender(), new RegionGenerator("create", name, type));
@@ -72,5 +67,9 @@ public class RegionCommand extends SCommand {
             }
             this.send(result.toString());
         }
+    }
+
+    static {
+        RegionCommand.REGION_GENERATION_MAP = new HashMap<CommandSender, RegionGenerator>();
     }
 }

@@ -17,10 +17,6 @@ import java.util.Map;
 public class SputnikPlayer {
     public static final Map<Player, Integer> AbsHP;
 
-    static {
-        AbsHP = new HashMap<Player, Integer>();
-    }
-
     public static void sendTranslated(final Player p, final String content) {
         p.sendMessage(ChatColor.translateAlternateColorCodes('&', content));
     }
@@ -107,5 +103,9 @@ public class SputnikPlayer {
         if (SputnikPlayer.AbsHP.get(p) == 0) {
             human.setAbsorptionHearts(0.0f);
         }
+    }
+
+    static {
+        AbsHP = new HashMap<Player, Integer>();
     }
 }

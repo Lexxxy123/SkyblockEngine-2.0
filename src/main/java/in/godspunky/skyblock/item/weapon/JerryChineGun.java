@@ -3,6 +3,7 @@ package in.godspunky.skyblock.item.weapon;
 import in.godspunky.skyblock.item.*;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import in.godspunky.skyblock.item.*;
 
 public class JerryChineGun implements ToolStatistics, MaterialFunction, Ability {
     String ACT;
@@ -23,7 +24,7 @@ public class JerryChineGun implements ToolStatistics, MaterialFunction, Ability 
 
     @Override
     public String getDisplayName() {
-        return "Jerry-chine Gun (Made In Fun By Epicportal)";
+        return "Jerry-chine Gun (Removed)";
     }
 
     @Override

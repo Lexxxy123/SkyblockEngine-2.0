@@ -32,48 +32,24 @@ public class PingReply {
         return this.onlinePlayers;
     }
 
-    public void setOnlinePlayers(final int onlinePlayers) {
-        this.onlinePlayers = onlinePlayers;
-    }
-
     public int getMaxPlayers() {
         return this.maxPlayers;
-    }
-
-    public void setMaxPlayers(final int maxPlayers) {
-        this.maxPlayers = maxPlayers;
     }
 
     public String getMOTD() {
         return this.motd;
     }
 
-    public void setMOTD(final String motd) {
-        this.motd = motd;
-    }
-
     public int getProtocolVersion() {
         return this.protocolVersion;
-    }
-
-    public void setProtocolVersion(final int protocolVersion) {
-        this.protocolVersion = protocolVersion;
     }
 
     public String getProtocolName() {
         return this.protocolName;
     }
 
-    public void setProtocolName(final String protocolName) {
-        this.protocolName = protocolName;
-    }
-
     public List<String> getPlayerSample() {
         return this.playerSample;
-    }
-
-    public void setPlayerSample(final List<String> playerSample) {
-        this.playerSample = playerSample;
     }
 
     public boolean isPlayerSampleHidden() {
@@ -84,11 +60,35 @@ public class PingReply {
         return this.icon;
     }
 
-    public void setIcon(final CachedServerIcon icon) {
-        this.icon = icon;
+    public void setOnlinePlayers(final int onlinePlayers) {
+        this.onlinePlayers = onlinePlayers;
+    }
+
+    public void setMaxPlayers(final int maxPlayers) {
+        this.maxPlayers = maxPlayers;
+    }
+
+    public void setMOTD(final String motd) {
+        this.motd = motd;
+    }
+
+    public void setProtocolVersion(final int protocolVersion) {
+        this.protocolVersion = protocolVersion;
+    }
+
+    public void setProtocolName(final String protocolName) {
+        this.protocolName = protocolName;
+    }
+
+    public void setPlayerSample(final List<String> playerSample) {
+        this.playerSample = playerSample;
     }
 
     public void hidePlayerSample(final boolean hidePlayerSample) {
         this.hidePlayerSample = hidePlayerSample;
+    }
+
+    public void setIcon(final CachedServerIcon icon) {
+        this.icon = icon;
     }
 }

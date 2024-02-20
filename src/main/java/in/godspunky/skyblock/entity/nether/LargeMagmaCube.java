@@ -1,9 +1,6 @@
 package in.godspunky.skyblock.entity.nether;
 
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.entity.EntityFunction;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SlimeStatistics;
+import in.godspunky.skyblock.SkyBlock;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftMagmaCube;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
@@ -11,6 +8,9 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
+import in.godspunky.skyblock.entity.EntityFunction;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SlimeStatistics;
 
 public class LargeMagmaCube implements SlimeStatistics, EntityFunction {
     @Override
@@ -56,13 +56,13 @@ public class LargeMagmaCube implements SlimeStatistics, EntityFunction {
                                 return;
                             }
                             final Fireball fireball = (Fireball) entity.getWorld().spawn(entity.getEyeLocation().add(entity.getEyeLocation().getDirection().multiply(3.0)), (Class) Fireball.class);
-                            fireball.setMetadata("magma", new FixedMetadataValue(Skyblock.getPlugin(), sEntity));
+                            fireball.setMetadata("magma", new FixedMetadataValue(SkyBlock.getPlugin(), sEntity));
                             fireball.setDirection(target.getLocation().getDirection().multiply(-1.0).normalize());
                         }
-                    }.runTaskLater(Skyblock.getPlugin(), (i + 1) * 10);
+                    }.runTaskLater(SkyBlock.getPlugin(), (i + 1) * 10);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 60L, 100L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 60L, 100L);
     }
 
     @Override

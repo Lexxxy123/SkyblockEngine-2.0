@@ -1,16 +1,16 @@
 package in.godspunky.skyblock.entity.dungeons.boss.sadan;
 
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityType;
-import in.godspunky.skyblock.entity.zombie.BaseZombie;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.Sputnik;
+import in.godspunky.skyblock.SkyBlock;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.metadata.FixedMetadataValue;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityType;
+import in.godspunky.skyblock.entity.zombie.BaseZombie;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.Sputnik;
 
 public class SleepingGolem_S extends BaseZombie {
     @Override
@@ -37,7 +37,7 @@ public class SleepingGolem_S extends BaseZombie {
         EntityManager.noAI(entity);
         Sputnik.applyPacketGolem(entity);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 0);
-        entity.setMetadata("NNP", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("NNP", new FixedMetadataValue(SkyBlock.getPlugin(), true));
     }
 
     @Override

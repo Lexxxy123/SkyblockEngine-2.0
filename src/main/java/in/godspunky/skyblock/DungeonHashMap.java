@@ -23,23 +23,6 @@ public class DungeonHashMap {
     public static final Map<Player, ItemStack[]> PlayerInventory;
     public static final Map<Player, ItemStack[]> PlayerArmorInventory;
 
-    static {
-        IsPlayingDungeon = new HashMap<>();
-        DungeonScore = new HashMap<>();
-        ExperienceEarned = new HashMap<>();
-        DeathCount = new HashMap<>();
-        IsAGhost = new HashMap<>();
-        SecretFound = new HashMap<>();
-        MaximumSecrets = new HashMap<>();
-        WorldRespawnSecond = new HashMap<>();
-        RespawnSecondLeft = new HashMap<>();
-        PlayerReady = new HashMap<>();
-        PlayerBeingRevived = new HashMap<>();
-        AutoRevived = new HashMap<>();
-        PlayerInventory = new HashMap<>();
-        PlayerArmorInventory = new HashMap<>();
-    }
-
     public static boolean isDead(final Player player) {
         return DungeonHashMap.IsAGhost.containsKey(player) && DungeonHashMap.IsAGhost.get(player);
     }
@@ -78,5 +61,22 @@ public class DungeonHashMap {
             }
         }
         return null;
+    }
+
+    static {
+        IsPlayingDungeon = new HashMap<Player, Boolean>();
+        DungeonScore = new HashMap<World, Integer>();
+        ExperienceEarned = new HashMap<Player, Double>();
+        DeathCount = new HashMap<Player, Integer>();
+        IsAGhost = new HashMap<Player, Boolean>();
+        SecretFound = new HashMap<World, Integer>();
+        MaximumSecrets = new HashMap<World, Integer>();
+        WorldRespawnSecond = new HashMap<World, Integer>();
+        RespawnSecondLeft = new HashMap<Player, Integer>();
+        PlayerReady = new HashMap<Player, Boolean>();
+        PlayerBeingRevived = new HashMap<Player, Boolean>();
+        AutoRevived = new HashMap<Player, Boolean>();
+        PlayerInventory = new HashMap<Player, ItemStack[]>();
+        PlayerArmorInventory = new HashMap<Player, ItemStack[]>();
     }
 }

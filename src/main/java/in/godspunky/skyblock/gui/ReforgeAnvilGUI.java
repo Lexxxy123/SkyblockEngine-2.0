@@ -1,8 +1,7 @@
 package in.godspunky.skyblock.gui;
 
-import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.item.Rarity;
-import in.godspunky.skyblock.item.Reforgable;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.reforge.ReforgeType;
 import in.godspunky.skyblock.user.User;
@@ -17,6 +16,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import in.godspunky.skyblock.item.Reforgable;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -26,20 +26,12 @@ public class ReforgeAnvilGUI extends GUI {
     private static final Map<Rarity, Integer> COST_MAP;
     private static final List<UUID> COOLDOWN;
 
-    static {
-        DEFAULT_REFORGE_ITEM = SUtil.getStack(ChatColor.YELLOW + "Reforge Item", Material.ANVIL, (short) 0, 1, ChatColor.GRAY + "Place an item above to reforge", ChatColor.GRAY + "it! Reforging items adds a", ChatColor.GRAY + "random modifier to the item that", ChatColor.GRAY + "grants stat boosts.");
-        COST_MAP = new HashMap<Rarity, Integer>();
-        COOLDOWN = new ArrayList<UUID>();
-        ReforgeAnvilGUI.COST_MAP.put(Rarity.COMMON, 250);
-        ReforgeAnvilGUI.COST_MAP.put(Rarity.UNCOMMON, 500);
-        ReforgeAnvilGUI.COST_MAP.put(Rarity.RARE, 1000);
-        ReforgeAnvilGUI.COST_MAP.put(Rarity.EPIC, 2500);
-        ReforgeAnvilGUI.COST_MAP.put(Rarity.LEGENDARY, 5000);
-        ReforgeAnvilGUI.COST_MAP.put(Rarity.MYTHIC, 10000);
-        ReforgeAnvilGUI.COST_MAP.put(Rarity.SUPREME, 15000);
-        ReforgeAnvilGUI.COST_MAP.put(Rarity.SPECIAL, 25000);
-        ReforgeAnvilGUI.COST_MAP.put(Rarity.VERY_SPECIAL, 50000);
-        ReforgeAnvilGUI.COST_MAP.put(Rarity.EXCLUSIVE, 1000000);
+    public void fillFrom(final Inventory i, final int startFromSlot, final int height, final ItemStack stacc) {
+        i.setItem(startFromSlot, stacc);
+        i.setItem(startFromSlot + 9, stacc);
+        i.setItem(startFromSlot + 9 + 9, stacc);
+        i.setItem(startFromSlot + 9 + 9 + 9, stacc);
+        i.setItem(startFromSlot + 9 + 9 + 9 + 9, stacc);
     }
 
     public ReforgeAnvilGUI() {
@@ -97,18 +89,10 @@ public class ReforgeAnvilGUI extends GUI {
                     public void run() {
                         ReforgeAnvilGUI.COOLDOWN.remove(player.getUniqueId());
                     }
-                }.runTaskLater(Skyblock.getPlugin(), 20L);
+                }.runTaskLater(SkyBlock.getPlugin(), 20L);
             }
         });
         this.set(13, null);
-    }
-
-    public void fillFrom(final Inventory i, final int startFromSlot, final int height, final ItemStack stacc) {
-        i.setItem(startFromSlot, stacc);
-        i.setItem(startFromSlot + 9, stacc);
-        i.setItem(startFromSlot + 9 + 9, stacc);
-        i.setItem(startFromSlot + 9 + 9 + 9, stacc);
-        i.setItem(startFromSlot + 9 + 9 + 9 + 9, stacc);
     }
 
     @Override
@@ -126,7 +110,7 @@ public class ReforgeAnvilGUI extends GUI {
                 }
                 inventory.setItem(22, stack);
             }
-        }.runTaskLater(Skyblock.getPlugin(), 1L);
+        }.runTaskLater(SkyBlock.getPlugin(), 1L);
     }
 
     @Override
@@ -150,7 +134,7 @@ public class ReforgeAnvilGUI extends GUI {
                     ReforgeAnvilGUI.this.fillFrom(inventory, 8, 5, SUtil.createColoredStainedGlassPane((short) 5, ChatColor.RESET + " "));
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 5L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 5L);
     }
 
     @EventHandler
@@ -165,5 +149,21 @@ public class ReforgeAnvilGUI extends GUI {
         }
         gui.onClose(e);
         GUI_MAP.remove(player.getUniqueId());
+    }
+
+    static {
+        DEFAULT_REFORGE_ITEM = SUtil.getStack(ChatColor.YELLOW + "Reforge Item", Material.ANVIL, (short) 0, 1, ChatColor.GRAY + "Place an item above to reforge", ChatColor.GRAY + "it! Reforging items adds a", ChatColor.GRAY + "random modifier to the item that", ChatColor.GRAY + "grants stat boosts.");
+        COST_MAP = new HashMap<Rarity, Integer>();
+        COOLDOWN = new ArrayList<UUID>();
+        ReforgeAnvilGUI.COST_MAP.put(Rarity.COMMON, 250);
+        ReforgeAnvilGUI.COST_MAP.put(Rarity.UNCOMMON, 500);
+        ReforgeAnvilGUI.COST_MAP.put(Rarity.RARE, 1000);
+        ReforgeAnvilGUI.COST_MAP.put(Rarity.EPIC, 2500);
+        ReforgeAnvilGUI.COST_MAP.put(Rarity.LEGENDARY, 5000);
+        ReforgeAnvilGUI.COST_MAP.put(Rarity.MYTHIC, 10000);
+        ReforgeAnvilGUI.COST_MAP.put(Rarity.SUPREME, 15000);
+        ReforgeAnvilGUI.COST_MAP.put(Rarity.SPECIAL, 25000);
+        ReforgeAnvilGUI.COST_MAP.put(Rarity.VERY_SPECIAL, 50000);
+        ReforgeAnvilGUI.COST_MAP.put(Rarity.EXCLUSIVE, 1000000);
     }
 }

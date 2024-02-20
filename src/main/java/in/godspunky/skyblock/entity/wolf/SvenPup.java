@@ -1,11 +1,11 @@
 package in.godspunky.skyblock.entity.wolf;
 
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.nms.SvenPackmaster;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Wolf;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.nms.SvenPackmaster;
 
 public class SvenPup extends BaseWolf {
     private final double health;

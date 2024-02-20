@@ -1,20 +1,15 @@
 package in.godspunky.skyblock.item;
 
-import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.inventory.ItemStack;
+import in.godspunky.skyblock.util.SUtil;
 
 import java.util.*;
 
 public class ShapedRecipe extends Recipe<ShapedRecipe> {
     public static final List<ShapedRecipe> CACHED_RECIPES;
-
-    static {
-        CACHED_RECIPES = new ArrayList<ShapedRecipe>();
-    }
-
-    private final Map<Character, MaterialQuantifiable> ingredientMap;
     protected String[] shape;
     private boolean isVanilla;
+    private final Map<Character, MaterialQuantifiable> ingredientMap;
 
     public ShapedRecipe(final SItem result, final boolean usesExchangeables) {
         super(result, usesExchangeables);
@@ -32,6 +27,59 @@ public class ShapedRecipe extends Recipe<ShapedRecipe> {
 
     public ShapedRecipe(final SMaterial material) {
         this(SItem.of(material));
+    }
+
+    public ShapedRecipe shape(final String... lines) {
+        this.shape = lines;
+        return this;
+    }
+
+    @Override
+    public ShapedRecipe setResult(final SItem result) {
+        this.result = result;
+        return this;
+    }
+
+    @Override
+    public List<MaterialQuantifiable> getIngredients() {
+        return new ArrayList<MaterialQuantifiable>(this.ingredientMap.values());
+    }
+
+    public ShapedRecipe set(final char k, final MaterialQuantifiable material, boolean isVanilla) {
+        this.ingredientMap.put(k, material.clone());
+        this.isVanilla = isVanilla;
+        return this;
+    }
+
+    public ShapedRecipe set(final char k, final SMaterial material, final int amount) {
+        return this.set(k, new MaterialQuantifiable(material, amount), false);
+    }
+
+    public ShapedRecipe set(final char k, final SMaterial material, final int amount, boolean isVanilla) {
+        return this.set(k, new MaterialQuantifiable(material, amount), isVanilla);
+    }
+
+    public boolean isVanilla() {
+        return isVanilla;
+    }
+
+    public ShapedRecipe set(final char k, final SMaterial material) {
+        return this.set(k, new MaterialQuantifiable(material), false);
+    }
+
+    public MaterialQuantifiable[][] toMQ2DArray() {
+        final MaterialQuantifiable[][] materials = new MaterialQuantifiable[3][3];
+        final String l1 = SUtil.pad(SUtil.getOrDefault(this.shape, 0, "   "), 3);
+        final String l2 = SUtil.pad(SUtil.getOrDefault(this.shape, 1, "   "), 3);
+        final String l3 = SUtil.pad(SUtil.getOrDefault(this.shape, 2, "   "), 3);
+        final String[] ls = {l1, l2, l3};
+        for (int i = 0; i < ls.length; ++i) {
+            final String[] lps = ls[i].split("");
+            for (int j = 0; j < lps.length; ++j) {
+                materials[i][j] = this.ingredientMap.getOrDefault(lps[j].charAt(0), new MaterialQuantifiable(SMaterial.AIR, 1));
+            }
+        }
+        return materials;
     }
 
     protected static ShapedRecipe parseShapedRecipe(final ItemStack[] stacks) {
@@ -134,64 +182,15 @@ public class ShapedRecipe extends Recipe<ShapedRecipe> {
         return found;
     }
 
-    public ShapedRecipe shape(final String... lines) {
-        this.shape = lines;
-        return this;
-    }
-
-    @Override
-    public ShapedRecipe setResult(final SItem result) {
-        this.result = result;
-        return this;
-    }
-
-    @Override
-    public List<MaterialQuantifiable> getIngredients() {
-        return new ArrayList<MaterialQuantifiable>(this.ingredientMap.values());
-    }
-
-    public ShapedRecipe set(final char k, final MaterialQuantifiable material, boolean isVanilla) {
-        this.ingredientMap.put(k, material.clone());
-        this.isVanilla = isVanilla;
-        return this;
-    }
-
-    public ShapedRecipe set(final char k, final SMaterial material, final int amount) {
-        return this.set(k, new MaterialQuantifiable(material, amount), false);
-    }
-
-    public ShapedRecipe set(final char k, final SMaterial material, final int amount, boolean isVanilla) {
-        return this.set(k, new MaterialQuantifiable(material, amount), isVanilla);
-    }
-
-    public boolean isVanilla() {
-        return isVanilla;
-    }
-
-    public ShapedRecipe set(final char k, final SMaterial material) {
-        return this.set(k, new MaterialQuantifiable(material), false);
-    }
-
-    public MaterialQuantifiable[][] toMQ2DArray() {
-        final MaterialQuantifiable[][] materials = new MaterialQuantifiable[3][3];
-        final String l1 = SUtil.pad(SUtil.getOrDefault(this.shape, 0, "   "), 3);
-        final String l2 = SUtil.pad(SUtil.getOrDefault(this.shape, 1, "   "), 3);
-        final String l3 = SUtil.pad(SUtil.getOrDefault(this.shape, 2, "   "), 3);
-        final String[] ls = {l1, l2, l3};
-        for (int i = 0; i < ls.length; ++i) {
-            final String[] lps = ls[i].split("");
-            for (int j = 0; j < lps.length; ++j) {
-                materials[i][j] = this.ingredientMap.getOrDefault(lps[j].charAt(0), new MaterialQuantifiable(SMaterial.AIR, 1));
-            }
-        }
-        return materials;
-    }
-
     public String[] getShape() {
         return this.shape;
     }
 
     public Map<Character, MaterialQuantifiable> getIngredientMap() {
         return this.ingredientMap;
+    }
+
+    static {
+        CACHED_RECIPES = new ArrayList<ShapedRecipe>();
     }
 }

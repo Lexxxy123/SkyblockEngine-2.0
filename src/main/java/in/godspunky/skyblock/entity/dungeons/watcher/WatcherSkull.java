@@ -1,16 +1,7 @@
 package in.godspunky.skyblock.entity.dungeons.watcher;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
-import in.godspunky.skyblock.entity.zombie.BaseZombie;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
+import in.godspunky.skyblock.SkyBlock;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
@@ -25,6 +16,15 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.entity.zombie.BaseZombie;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 
 public class WatcherSkull extends BaseZombie {
     @Override
@@ -47,9 +47,9 @@ public class WatcherSkull extends BaseZombie {
         final HeadsOnWall h = new HeadsOnWall(EnumWatcherType.SKULL);
         final PlayerDisguise p = Sputnik.applyPacketNPC(entity, h.value, h.signature, true);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 99);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("LD", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("WATCHER_E", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("WATCHER_E", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         p.setReplaceSounds(false);
         new BukkitRunnable() {
             public void run() {
@@ -61,7 +61,7 @@ public class WatcherSkull extends BaseZombie {
                     WatcherSkull.this.throwThickAssBone(entity);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 240L, 240L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 240L, 240L);
         new BukkitRunnable() {
             public void run() {
                 final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -97,7 +97,7 @@ public class WatcherSkull extends BaseZombie {
                     break;
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 3L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 3L);
     }
 
     @Override
@@ -223,6 +223,6 @@ public class WatcherSkull extends BaseZombie {
             public synchronized void cancel() throws IllegalStateException {
                 super.cancel();
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
     }
 }

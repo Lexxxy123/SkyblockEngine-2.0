@@ -9,7 +9,7 @@ public class ZSHash {
     public static final Map<UUID, Integer> Cooldown;
 
     static {
-        Charges = new HashMap<>();
-        Cooldown = new HashMap<>();
+        Charges = new HashMap<UUID, Integer>();
+        Cooldown = new HashMap<UUID, Integer>();
     }
 }

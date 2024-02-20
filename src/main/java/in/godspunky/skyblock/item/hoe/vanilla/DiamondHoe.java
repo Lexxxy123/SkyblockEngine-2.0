@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.item.hoe.vanilla;
 
 import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.item.*;
 
 public class DiamondHoe implements ToolStatistics, MaterialFunction {
     @Override

@@ -8,11 +8,6 @@ import java.util.List;
 
 public class AnimationSequenceType {
     private static final List<AnimationSequenceType> TYPES;
-
-    static {
-        TYPES = new ArrayList<AnimationSequenceType>();
-    }
-
     private final String namespace;
     private final AnimationSequence sequence;
 
@@ -20,15 +15,6 @@ public class AnimationSequenceType {
         this.namespace = namespace;
         this.sequence = sequence;
         AnimationSequenceType.TYPES.add(this);
-    }
-
-    public static AnimationSequenceType getByNamespace(final String namespace) {
-        for (final AnimationSequenceType type : AnimationSequenceType.TYPES) {
-            if (namespace.equalsIgnoreCase(type.namespace)) {
-                return type;
-            }
-        }
-        return null;
     }
 
     public String getNamespace() {
@@ -45,5 +31,18 @@ public class AnimationSequenceType {
 
     public void play(final Entity entity) {
         this.sequence.play(entity);
+    }
+
+    public static AnimationSequenceType getByNamespace(final String namespace) {
+        for (final AnimationSequenceType type : AnimationSequenceType.TYPES) {
+            if (namespace.equalsIgnoreCase(type.namespace)) {
+                return type;
+            }
+        }
+        return null;
+    }
+
+    static {
+        TYPES = new ArrayList<AnimationSequenceType>();
     }
 }

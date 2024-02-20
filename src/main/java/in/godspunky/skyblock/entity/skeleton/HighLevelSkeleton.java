@@ -1,10 +1,6 @@
 package in.godspunky.skyblock.entity.skeleton;
 
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.entity.EntityFunction;
-import in.godspunky.skyblock.entity.EntityStatistics;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityType;
+import in.godspunky.skyblock.SkyBlock;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,6 +8,10 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import in.godspunky.skyblock.entity.EntityFunction;
+import in.godspunky.skyblock.entity.EntityStatistics;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityType;
 
 public class HighLevelSkeleton implements EntityStatistics, EntityFunction {
     @Override
@@ -49,6 +49,6 @@ public class HighLevelSkeleton implements EntityStatistics, EntityFunction {
                 new SEntity(spawn, SEntityType.HIGH_LEVEL_SKELETON);
                 item.remove();
             }
-        }.runTaskLater(Skyblock.getPlugin(), 100L);
+        }.runTaskLater(SkyBlock.getPlugin(), 100L);
     }
 }

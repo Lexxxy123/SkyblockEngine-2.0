@@ -3,18 +3,7 @@ package in.godspunky.skyblock.entity.dungeons.minibosses;
 import com.google.common.util.concurrent.AtomicDouble;
 import de.slikey.effectlib.effect.ConeEffect;
 import de.slikey.effectlib.util.ParticleEffect;
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
-import in.godspunky.skyblock.entity.zombie.BaseZombie;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.user.PlayerStatistics;
-import in.godspunky.skyblock.user.PlayerUtils;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
+import in.godspunky.skyblock.SkyBlock;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher;
 import net.minecraft.server.v1_8_R3.*;
@@ -35,6 +24,17 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.entity.zombie.BaseZombie;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.user.PlayerStatistics;
+import in.godspunky.skyblock.user.PlayerUtils;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 
 public class Unstable extends BaseZombie {
     private boolean isEating;
@@ -75,8 +75,8 @@ public class Unstable extends BaseZombie {
         final PlayerWatcher skywatch = pl.getWatcher();
         final LivingEntity target = ((CraftZombie) entity).getTarget();
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 82);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("LD", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -89,7 +89,7 @@ public class Unstable extends BaseZombie {
                     Sputnik.sendEatingAnimation(entity);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 4L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 4L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -124,10 +124,10 @@ public class Unstable extends BaseZombie {
                             }, 5L);
                             SUtil.delay(() -> Unstable.this.EatingCooldown = false, SUtil.random(600, 800));
                         }
-                    }.runTaskLater(Skyblock.getPlugin(), 60L);
+                    }.runTaskLater(SkyBlock.getPlugin(), 60L);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 10L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 10L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -203,7 +203,7 @@ public class Unstable extends BaseZombie {
                                     Unstable.this.isBowing = false;
                                 }
                             }
-                        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+                        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
                     }
                     if (target1.getLocation().distance(entity.getLocation()) <= 10.0 && !Unstable.this.isBowing && !Unstable.this.isEating && SUtil.random(0, 100) < 5 && !Unstable.this.CDLS) {
                         Unstable.this.CDLS = true;
@@ -249,10 +249,10 @@ public class Unstable extends BaseZombie {
                     entity.getEquipment().setItemInHand(SUtil.enchant(SItem.of(SMaterial.ASPECT_OF_THE_DRAGONS).getStack()));
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
         new BukkitRunnable() {
-            final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
             Location loc = entity.getLocation();
+            final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
 
             public void run() {
                 if (entity.isDead()) {
@@ -296,7 +296,7 @@ public class Unstable extends BaseZombie {
                 }
                 this.nms.setSprinting(false);
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 7L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 7L);
         new BukkitRunnable() {
             public void run() {
                 final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -338,7 +338,7 @@ public class Unstable extends BaseZombie {
                     break;
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
     }
 
     @Override
@@ -379,7 +379,7 @@ public class Unstable extends BaseZombie {
     }
 
     public void playPar(final Location l) {
-        final ConeEffect Effect = new ConeEffect(Skyblock.effectManager);
+        final ConeEffect Effect = new ConeEffect(SkyBlock.effectManager);
         Effect.setLocation(l.clone().add(l.getDirection().normalize().multiply(-0.25)).add(0.0, -0.1, 0.0));
         Effect.particle = ParticleEffect.FLAME;
         Effect.angularVelocity = 0.39269908169872414;

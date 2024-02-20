@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.sequence;
 
-import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.SkyBlock;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
@@ -61,7 +61,7 @@ public class SoundSequence implements Sequence {
                 public void run() {
                     location.getWorld().playSound(location, DelayedSound.this.sound, DelayedSound.this.volume, DelayedSound.this.pitch);
                 }
-            }.runTaskLater(Skyblock.getPlugin(), this.delay);
+            }.runTaskLater(SkyBlock.getPlugin(), this.delay);
         }
 
         public void play(final Player entity) {
@@ -69,7 +69,7 @@ public class SoundSequence implements Sequence {
                 public void run() {
                     entity.playSound(entity.getLocation(), DelayedSound.this.sound, DelayedSound.this.volume, DelayedSound.this.pitch);
                 }
-            }.runTaskLater(Skyblock.getPlugin(), this.delay);
+            }.runTaskLater(SkyBlock.getPlugin(), this.delay);
         }
     }
 }

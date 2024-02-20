@@ -1,14 +1,13 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.ranks.PlayerRank;
-import in.godspunky.skyblock.util.SputnikPlayer;
 import net.minecraft.server.v1_8_R3.EntityHuman;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftHumanEntity;
 import org.bukkit.entity.Player;
+import in.godspunky.skyblock.util.SputnikPlayer;
 
-@CommandParameters(description = "Modify your absorption amount.", permission = PlayerRank.ADMIN)
+@CommandParameters(description = "Modify your absorption amount.", permission = "spt.player")
 public class AbsorptionCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

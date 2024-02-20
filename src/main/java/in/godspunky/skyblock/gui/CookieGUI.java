@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.gui;
 
-import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
@@ -22,18 +22,6 @@ public class CookieGUI extends GUI {
     public CookieGUI(final String query, final int page) {
         super("Booster Cookie", 36);
         this.fill(CookieGUI.BLACK_STAINED_GLASS_PANE);
-    }
-
-    public CookieGUI(final String query) {
-        this(query, 1);
-    }
-
-    public CookieGUI(final int page) {
-        this("", page);
-    }
-
-    public CookieGUI() {
-        this(1);
     }
 
     @Override
@@ -179,6 +167,18 @@ public class CookieGUI extends GUI {
                 meta.setLore(Arrays.asList(ChatColor.GRAY + "Aquire booster cookies from", ChatColor.GRAY + "the community shop in the hub.", "", Sputnik.trans("&dCookie Buff:"), Sputnik.trans("&8▶ &b+35% &7Bonus Combat XP"), Sputnik.trans("&8▶ &b+30✯ &7Bonus Magic Find"), Sputnik.trans("&8▶ &c+100❁ &7Bonus Strength"), Sputnik.trans("&8▶ &a+200❈ &7Bonus Defense"), Sputnik.trans("&8▶ &9+25☠ &7Bonus Crit Damage"), Sputnik.trans("&8▶ &c+35⫽ &7Bonus Ferocity"), Sputnik.trans("&8▶ &b+2000✎ &7Bonus Intelligence"), Sputnik.trans("&8▶ &7Keep &6coins &7and &deffects &7on death"), Sputnik.trans("&8▶ &7Access to &6/auh &7and &6/fm"), Sputnik.trans("&8▶ &7Access to &6/av &7and &6/bin &7(Trash Bin)"), Sputnik.trans("&8▶ &7A shiny &e✪ &6Badge &7on your &aname tag."), "", Sputnik.trans("&7" + text_ + ": " + PlayerUtils.getCookieDurationDisplayGUI(player)), "", Sputnik.trans("&8NOTE: All effects listed above given"), Sputnik.trans("&8by the cookie will NOT stack!")));
                 craftStack.setItemMeta(meta);
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 20L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 20L);
+    }
+
+    public CookieGUI(final String query) {
+        this(query, 1);
+    }
+
+    public CookieGUI(final int page) {
+        this("", page);
+    }
+
+    public CookieGUI() {
+        this(1);
     }
 }

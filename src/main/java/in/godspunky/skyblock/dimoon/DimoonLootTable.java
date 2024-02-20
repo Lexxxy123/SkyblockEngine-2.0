@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.dimoon;
 
-import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.entity.Player;
+import in.godspunky.skyblock.util.SUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,16 +10,10 @@ import java.util.List;
 public class DimoonLootTable {
     public static List<DimoonLootItem> lowQualitylootTable;
     public static List<DimoonLootItem> highQualitylootTable;
-
-    static {
-        DimoonLootTable.lowQualitylootTable = null;
-        DimoonLootTable.highQualitylootTable = null;
-    }
-
-    private final int cp;
-    private final int plm;
     private int weight;
     private Player p;
+    private final int cp;
+    private final int plm;
 
     public DimoonLootTable(final Player p, final int placement, final int catalPlaced) {
         this.weight = 0;
@@ -83,5 +77,10 @@ public class DimoonLootTable {
 
     public int getWeight() {
         return this.weight;
+    }
+
+    static {
+        DimoonLootTable.lowQualitylootTable = null;
+        DimoonLootTable.highQualitylootTable = null;
     }
 }

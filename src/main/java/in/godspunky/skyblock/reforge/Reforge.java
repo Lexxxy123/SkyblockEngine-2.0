@@ -7,10 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public interface Reforge {
-    static Reforge blank() {
-        return () -> "Blank";
-    }
-
     String getName();
 
     default RarityValue<Double> getStrength() {
@@ -39,5 +35,9 @@ public interface Reforge {
 
     default List<GenericItemType> getCompatibleTypes() {
         return Arrays.asList(GenericItemType.values());
+    }
+
+    static Reforge blank() {
+        return () -> "Blank";
     }
 }

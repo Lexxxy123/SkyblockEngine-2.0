@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.sequence;
 
-import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.SkyBlock;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -54,7 +54,7 @@ public class AnimationSequence implements Sequence {
                 public void run() {
                     location.getWorld().spigot().playEffect(location, DelayedAnimation.this.effect, 1, DelayedAnimation.this.data, 0.0f, 0.0f, 0.0f, DelayedAnimation.this.speed, DelayedAnimation.this.particleCount, 16);
                 }
-            }.runTaskLater(Skyblock.getPlugin(), this.delay);
+            }.runTaskLater(SkyBlock.getPlugin(), this.delay);
         }
 
         public void play(final Entity entity) {

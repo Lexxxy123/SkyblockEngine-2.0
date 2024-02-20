@@ -17,10 +17,6 @@ import java.util.List;
 public class RecipeBookListGUI extends GUI {
     private static final int[] INTERIOR;
 
-    static {
-        INTERIOR = new int[]{10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43};
-    }
-
     public RecipeBookListGUI(String query, int page, Player player) {
         super("Recipe Book", 54);
         this.border(BLACK_STAINED_GLASS_PANE);
@@ -104,6 +100,13 @@ public class RecipeBookListGUI extends GUI {
         }
     }
 
+    @Override
+    public void onOpen(final GUIOpenEvent e) {
+        final Player player = e.getPlayer();
+
+        this.set(GUIClickableItem.createGUIOpenerItem(GUIType.SKYBLOCK_MENU, player, ChatColor.GREEN + "Go Back", 48, Material.ARROW, ChatColor.GRAY + "To SkySim Menu"));
+    }
+
     public RecipeBookListGUI(final String query, Player player) {
         this(query, 1, player);
     }
@@ -120,10 +123,7 @@ public class RecipeBookListGUI extends GUI {
         this("", 1, player);
     }
 
-    @Override
-    public void onOpen(final GUIOpenEvent e) {
-        final Player player = e.getPlayer();
-
-        this.set(GUIClickableItem.createGUIOpenerItem(GUIType.SKYBLOCK_MENU, player, ChatColor.GREEN + "Go Back", 48, Material.ARROW, ChatColor.GRAY + "To SkySim Menu"));
+    static {
+        INTERIOR = new int[]{10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43};
     }
 }

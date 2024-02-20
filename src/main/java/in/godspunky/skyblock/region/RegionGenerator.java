@@ -25,36 +25,36 @@ public class RegionGenerator {
         return this.name;
     }
 
-    public void setName(final String name) {
-        this.name = name;
-    }
-
     public Location getFirstLocation() {
         return this.firstLocation;
-    }
-
-    public void setFirstLocation(final Location firstLocation) {
-        this.firstLocation = firstLocation;
     }
 
     public Location getSecondLocation() {
         return this.secondLocation;
     }
 
-    public void setSecondLocation(final Location secondLocation) {
-        this.secondLocation = secondLocation;
-    }
-
     public RegionType getType() {
         return this.type;
     }
 
-    public void setType(final RegionType type) {
-        this.type = type;
-    }
-
     public int getPhase() {
         return this.phase;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public void setFirstLocation(final Location firstLocation) {
+        this.firstLocation = firstLocation;
+    }
+
+    public void setSecondLocation(final Location secondLocation) {
+        this.secondLocation = secondLocation;
+    }
+
+    public void setType(final RegionType type) {
+        this.type = type;
     }
 
     public void setPhase(final int phase) {

@@ -1,22 +1,17 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.ranks.PlayerRank;
-import in.godspunky.skyblock.region.RegionGenerator;
-import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
+import in.godspunky.skyblock.region.RegionGenerator;
+import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@CommandParameters(description = "Manage world regions.", usage = "", aliases = "hub", permission = PlayerRank.DEFAULT)
+@CommandParameters(description = "Manage world regions.", usage = "", aliases = "hub")
 public class HubCommand extends SCommand {
     public static Map<CommandSender, RegionGenerator> REGION_GENERATION_MAP;
-
-    static {
-        HubCommand.REGION_GENERATION_MAP = new HashMap<CommandSender, RegionGenerator>();
-    }
 
     @Override
     public void run(final CommandSource sender, final String[] args) {
@@ -25,5 +20,9 @@ public class HubCommand extends SCommand {
         if (sender.getPlayer() != null) {
             sender.getPlayer().teleport(l);
         }
+    }
+
+    static {
+        HubCommand.REGION_GENERATION_MAP = new HashMap<CommandSender, RegionGenerator>();
     }
 }

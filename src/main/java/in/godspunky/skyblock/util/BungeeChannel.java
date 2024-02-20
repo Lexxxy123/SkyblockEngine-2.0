@@ -17,16 +17,20 @@ import java.util.function.BiFunction;
 
 public class BungeeChannel {
     private static WeakHashMap<Plugin, BungeeChannel> registeredInstances;
-
-    static {
-        BungeeChannel.registeredInstances = new WeakHashMap<Plugin, BungeeChannel>();
-    }
-
     private final PluginMessageListener messageListener;
     private final Plugin plugin;
     private final Map<String, Queue<CompletableFuture<?>>> callbackMap;
     private Map<String, ForwardConsumer> forwardListeners;
     private ForwardConsumer globalForwardListener;
+
+    public static synchronized BungeeChannel of(final Plugin plugin) {
+        return BungeeChannel.registeredInstances.compute(plugin, (k, v) -> {
+            if (v == null) {
+                v = new BungeeChannel(plugin);
+            }
+            return v;
+        });
+    }
 
     public BungeeChannel(final Plugin plugin) {
         this.plugin = Objects.requireNonNull(plugin, "plugin cannot be null");
@@ -43,15 +47,6 @@ public class BungeeChannel {
         final Messenger messenger = Bukkit.getServer().getMessenger();
         messenger.registerOutgoingPluginChannel(plugin, "BungeeCord");
         messenger.registerIncomingPluginChannel(plugin, "BungeeCord", this.messageListener);
-    }
-
-    public static synchronized BungeeChannel of(final Plugin plugin) {
-        return BungeeChannel.registeredInstances.compute(plugin, (k, v) -> {
-            if (v == null) {
-                v = new BungeeChannel(plugin);
-            }
-            return v;
-        });
     }
 
     public void registerForwardListener(final ForwardConsumer globalListener) {
@@ -339,6 +334,10 @@ public class BungeeChannel {
 
     private Player getFirstPlayer0(final Collection<? extends Player> playerCollection) {
         return (Player) Iterables.getFirst(playerCollection, (Object) null);
+    }
+
+    static {
+        BungeeChannel.registeredInstances = new WeakHashMap<Plugin, BungeeChannel>();
     }
 
     @FunctionalInterface

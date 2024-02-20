@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.sql;
 
-import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.region.Region;
 import in.godspunky.skyblock.region.RegionType;
 import org.bukkit.Location;
@@ -13,12 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SQLRegionData {
-    private static final Skyblock plugin;
-
-    static {
-        plugin = Skyblock.getPlugin();
-    }
-
+    private static final SkyBlock plugin;
     private final String SELECT = "SELECT * FROM `regions` WHERE name=?";
     private final String SELECT_TYPE = "SELECT * FROM `regions` WHERE type=?";
     private final String INSERT = "INSERT INTO `regions` (`name`, `x1`, `y1`, `z1`, `x2`, `y2`, `z2`, `world`, `type`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
@@ -165,5 +160,9 @@ public class SQLRegionData {
             ex.printStackTrace();
             return 0;
         }
+    }
+
+    static {
+        plugin = SkyBlock.getPlugin();
     }
 }

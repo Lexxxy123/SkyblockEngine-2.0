@@ -1,19 +1,15 @@
 package in.godspunky.skyblock.skill;
 
+import org.bukkit.ChatColor;
 import in.godspunky.skyblock.user.PlayerStatistics;
 import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.user.User;
-import org.bukkit.ChatColor;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class EnchantingSkill extends Skill {
     public static final EnchantingSkill INSTANCE;
-
-    static {
-        INSTANCE = new EnchantingSkill();
-    }
 
     @Override
     public String getName() {
@@ -47,5 +43,9 @@ public class EnchantingSkill extends Skill {
         statistics.zeroAll(14);
         statistics.getAbilityDamage().set(14, Double.valueOf(0.5 * getLevel(user.getEnchantXP(), false)));
         statistics.getIntelligence().set(14, Double.valueOf(2 * getLevel(user.getEnchantXP(), false)));
+    }
+
+    static {
+        INSTANCE = new EnchantingSkill();
     }
 }

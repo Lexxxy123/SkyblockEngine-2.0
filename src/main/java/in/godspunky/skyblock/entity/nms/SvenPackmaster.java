@@ -1,15 +1,10 @@
 package in.godspunky.skyblock.entity.nms;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.enchantment.EnchantmentType;
 import in.godspunky.skyblock.entity.*;
 import in.godspunky.skyblock.entity.wolf.WolfStatistics;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 import net.minecraft.server.v1_8_R3.Entity;
 import net.minecraft.server.v1_8_R3.EntityWolf;
 import net.minecraft.server.v1_8_R3.GenericAttributes;
@@ -22,6 +17,11 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,23 +32,15 @@ public class SvenPackmaster extends EntityWolf implements SNMSEntity, EntityFunc
     private static final TieredValue<Double> DAMAGE_VALUES;
     private static final TieredValue<Double> TRUE_DAMAGE_VALUES;
     private static final TieredValue<Double> SPEED_VALUES;
-
-    static {
-        MAX_HEALTH_VALUES = new TieredValue<Double>(2000.0, 40000.0, 750000.0, 2000000.0);
-        DAMAGE_VALUES = new TieredValue<Double>(60.0, 200.0, 450.0, 1100.0);
-        TRUE_DAMAGE_VALUES = new TieredValue<Double>(0.0, 10.0, 50.0, 200.0);
-        SPEED_VALUES = new TieredValue<Double>(0.35, 0.4, 0.45, 0.55);
-    }
-
     private final int tier;
     private final long end;
-    private final UUID spawnerUUID;
-    private final List<SEntity> pups;
     private SEntity hologram;
     private SEntity hologram_name;
+    private final UUID spawnerUUID;
     private long lastDamage;
     private boolean pupsSpawned;
     private boolean isActive;
+    private final List<SEntity> pups;
 
     public SvenPackmaster(final Integer tier, final UUID spawnerUUID) {
         super(((CraftWorld) Bukkit.getPlayer(spawnerUUID).getWorld()).getHandle());
@@ -111,8 +103,8 @@ public class SvenPackmaster extends EntityWolf implements SNMSEntity, EntityFunc
     }
 
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
-        entity.setMetadata("BOSS_OWNER_" + Bukkit.getPlayer(this.getSpawnerUUID()).getUniqueId().toString(), new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("BOSS_OWNER_" + Bukkit.getPlayer(this.getSpawnerUUID()).getUniqueId().toString(), new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         final Player player = Bukkit.getPlayer(this.spawnerUUID);
         if (player != null) {
             player.playSound(player.getLocation(), Sound.WOLF_HOWL, 1.0f, 5.0f);
@@ -121,7 +113,7 @@ public class SvenPackmaster extends EntityWolf implements SNMSEntity, EntityFunc
         ((ArmorStand) this.hologram.getEntity()).setVisible(false);
         ((ArmorStand) this.hologram.getEntity()).setGravity(false);
         this.hologram.getEntity().setCustomNameVisible(true);
-        entity.setMetadata("notDisplay", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("notDisplay", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         final Entity e = this.getBukkitEntity().getHandle();
         final double height = e.getBoundingBox().e - e.getBoundingBox().b;
         this.hologram_name = new SEntity(entity.getLocation().add(0.0, height, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND);
@@ -136,7 +128,7 @@ public class SvenPackmaster extends EntityWolf implements SNMSEntity, EntityFunc
                     this.cancel();
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
     }
 
     public String getEntityName() {
@@ -278,5 +270,12 @@ public class SvenPackmaster extends EntityWolf implements SNMSEntity, EntityFunc
 
     public List<SEntity> getPups() {
         return this.pups;
+    }
+
+    static {
+        MAX_HEALTH_VALUES = new TieredValue<Double>(2000.0, 40000.0, 750000.0, 2000000.0);
+        DAMAGE_VALUES = new TieredValue<Double>(60.0, 200.0, 450.0, 1100.0);
+        TRUE_DAMAGE_VALUES = new TieredValue<Double>(0.0, 10.0, 50.0, 200.0);
+        SPEED_VALUES = new TieredValue<Double>(0.35, 0.4, 0.45, 0.55);
     }
 }

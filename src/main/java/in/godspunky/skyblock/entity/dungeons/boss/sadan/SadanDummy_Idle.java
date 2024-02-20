@@ -1,12 +1,6 @@
 package in.godspunky.skyblock.entity.dungeons.boss.sadan;
 
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
-import in.godspunky.skyblock.entity.zombie.BaseZombie;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
+import in.godspunky.skyblock.SkyBlock;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,44 +8,14 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.entity.zombie.BaseZombie;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 
 public class SadanDummy_Idle extends BaseZombie {
-    public static void t(final LivingEntity e) {
-        SUtil.delay(() -> e.teleport(new Location(e.getWorld(), 191.0, 54.0, 266.0)), 1L);
-        SUtil.delay(() -> e.teleport(new Location(e.getWorld(), 191.0, 56.0, 266.0)), 20L);
-        SUtil.delay(() -> e.teleport(new Location(e.getWorld(), 191.0, 58.0, 266.0)), 40L);
-        SUtil.delay(() -> e.teleport(new Location(e.getWorld(), 191.0, 60.0, 266.0)), 60L);
-        SUtil.delay(() -> e.teleport(new Location(e.getWorld(), 191.0, 62.0, 266.0)), 80L);
-        SUtil.delay(() -> e.teleport(new Location(e.getWorld(), 191.0, 64.0, 266.0)), 100L);
-        SUtil.delay(() -> e.teleport(new Location(e.getWorld(), 191.0, 66.0, 266.0)), 120L);
-        SUtil.delay(() -> e.teleport(new Location(e.getWorld(), 191.0, 68.0, 266.0)), 140L);
-        SUtil.delay(() -> e.teleport(new Location(e.getWorld(), 191.0, 69.0, 266.0)), 160L);
-    }
-
-    public static ItemStack buildColorStack(final int hexcolor) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
-    }
-
-    public static ItemStack b(final int hexcolor, final Material m) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
-    }
-
-    public static ItemStack c(final Material m) {
-        final ItemStack stack = new ItemStack(m);
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
-    }
-
     @Override
     public String getEntityName() {
         return Sputnik.trans("");
@@ -74,14 +38,14 @@ public class SadanDummy_Idle extends BaseZombie {
         Sputnik.applyPacketGiant(entity);
         EntityManager.noAI(entity);
         EntityManager.noHit(entity);
-        entity.setMetadata("GiantSword", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("NoAffect", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("GiantSword", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("NoAffect", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         EntityManager.shutTheFuckUp(entity);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 100);
         l.setYaw(180.0f);
         entity.teleport(l);
-        entity.setMetadata("notDisplay", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("dummy_r", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("notDisplay", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("dummy_r", new FixedMetadataValue(SkyBlock.getPlugin(), true));
     }
 
     @Override
@@ -97,6 +61,18 @@ public class SadanDummy_Idle extends BaseZombie {
         SUtil.delay(() -> e.getEquipment().setHelmet(buildColorStack(array_colors[1])), 330L);
         SUtil.delay(() -> e.getEquipment().setHelmet(buildColorStack(array_colors[0])), 350L);
         SUtil.delay(() -> e.getEquipment().setHelmet(b(15249075, Material.LEATHER_HELMET)), 370L);
+    }
+
+    public static void t(final LivingEntity e) {
+        SUtil.delay(() -> e.teleport(new Location(e.getWorld(), 191.0, 54.0, 266.0)), 1L);
+        SUtil.delay(() -> e.teleport(new Location(e.getWorld(), 191.0, 56.0, 266.0)), 20L);
+        SUtil.delay(() -> e.teleport(new Location(e.getWorld(), 191.0, 58.0, 266.0)), 40L);
+        SUtil.delay(() -> e.teleport(new Location(e.getWorld(), 191.0, 60.0, 266.0)), 60L);
+        SUtil.delay(() -> e.teleport(new Location(e.getWorld(), 191.0, 62.0, 266.0)), 80L);
+        SUtil.delay(() -> e.teleport(new Location(e.getWorld(), 191.0, 64.0, 266.0)), 100L);
+        SUtil.delay(() -> e.teleport(new Location(e.getWorld(), 191.0, 66.0, 266.0)), 120L);
+        SUtil.delay(() -> e.teleport(new Location(e.getWorld(), 191.0, 68.0, 266.0)), 140L);
+        SUtil.delay(() -> e.teleport(new Location(e.getWorld(), 191.0, 69.0, 266.0)), 160L);
     }
 
     @Override
@@ -122,5 +98,29 @@ public class SadanDummy_Idle extends BaseZombie {
     @Override
     public double getMovementSpeed() {
         return 0.0;
+    }
+
+    public static ItemStack buildColorStack(final int hexcolor) {
+        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB(hexcolor));
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
+    }
+
+    public static ItemStack b(final int hexcolor, final Material m) {
+        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
+    }
+
+    public static ItemStack c(final Material m) {
+        final ItemStack stack = new ItemStack(m);
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
     }
 }

@@ -1,10 +1,10 @@
 package in.godspunky.skyblock.user;
 
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.item.armor.ArmorSet;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import in.godspunky.skyblock.SkyBlock;
+import in.godspunky.skyblock.item.armor.ArmorSet;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,10 +24,10 @@ public class PlayerStatistics {
     private final DoublePlayerStatistic attackSpeed;
     private final DoublePlayerStatistic intelligence;
     private final DoublePlayerStatistic trueDefense;
-    private final Map<Integer, BukkitTask> itemTicker;
     private double healthRegenerationPercentBonus;
     private double manaRegenerationPercentBonus;
     private ArmorSet armorSet;
+    private final Map<Integer, BukkitTask> itemTicker;
 
     public PlayerStatistics(final UUID uuid, final DoublePlayerStatistic maxHealth, final DoublePlayerStatistic defense, final DoublePlayerStatistic strength, final DoublePlayerStatistic speed, final DoublePlayerStatistic critChance, final DoublePlayerStatistic critDamage, final DoublePlayerStatistic magicFind, final DoublePlayerStatistic intelligence, final DoublePlayerStatistic trueDefense, final DoublePlayerStatistic ferocity, final DoublePlayerStatistic abilityDamage, final DoublePlayerStatistic attackSpeed, final double healthRegenerationPercentBonus, final double manaRegenerationPercentBonus, final ArmorSet armorSet) {
         this.uuid = uuid;
@@ -49,10 +49,6 @@ public class PlayerStatistics {
         this.itemTicker = new HashMap<Integer, BukkitTask>();
     }
 
-    public static PlayerStatistics blank(final UUID uuid) {
-        return new PlayerStatistics(uuid, new DoublePlayerStatistic(100.0), new DoublePlayerStatistic(), new DoublePlayerStatistic(), new DoublePlayerStatistic(1.0), new DoublePlayerStatistic(0.3), new DoublePlayerStatistic(0.5), new DoublePlayerStatistic(), new DoublePlayerStatistic(), new DoublePlayerStatistic(), new DoublePlayerStatistic(), new DoublePlayerStatistic(), new DoublePlayerStatistic(), 0.0, 0.0, null);
-    }
-
     public void tickItem(final int slot, final long interval, final Runnable runnable) {
         this.itemTicker.put(slot, new BukkitRunnable() {
             public void run() {
@@ -62,7 +58,7 @@ public class PlayerStatistics {
                 }
                 runnable.run();
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, interval));
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, interval));
     }
 
     public void cancelTickingItem(final int slot) {
@@ -99,7 +95,7 @@ public class PlayerStatistics {
             public void run() {
                 PlayerStatistics.this.manaRegenerationPercentBonus -= percent;
             }
-        }.runTaskLater(Skyblock.getPlugin(), ticks);
+        }.runTaskLater(SkyBlock.getPlugin(), ticks);
     }
 
     public void boostHealthRegeneration(final double percent, final long ticks) {
@@ -108,7 +104,11 @@ public class PlayerStatistics {
             public void run() {
                 PlayerStatistics.this.healthRegenerationPercentBonus -= percent;
             }
-        }.runTaskLater(Skyblock.getPlugin(), ticks);
+        }.runTaskLater(SkyBlock.getPlugin(), ticks);
+    }
+
+    public static PlayerStatistics blank(final UUID uuid) {
+        return new PlayerStatistics(uuid, new DoublePlayerStatistic(100.0), new DoublePlayerStatistic(), new DoublePlayerStatistic(), new DoublePlayerStatistic(1.0), new DoublePlayerStatistic(0.3), new DoublePlayerStatistic(0.5), new DoublePlayerStatistic(), new DoublePlayerStatistic(), new DoublePlayerStatistic(), new DoublePlayerStatistic(), new DoublePlayerStatistic(), new DoublePlayerStatistic(), 0.0, 0.0, null);
     }
 
     public UUID getUuid() {
@@ -167,27 +167,27 @@ public class PlayerStatistics {
         return this.healthRegenerationPercentBonus;
     }
 
-    public void setHealthRegenerationPercentBonus(final double healthRegenerationPercentBonus) {
-        this.healthRegenerationPercentBonus = healthRegenerationPercentBonus;
-    }
-
     public double getManaRegenerationPercentBonus() {
         return this.manaRegenerationPercentBonus;
-    }
-
-    public void setManaRegenerationPercentBonus(final double manaRegenerationPercentBonus) {
-        this.manaRegenerationPercentBonus = manaRegenerationPercentBonus;
     }
 
     public ArmorSet getArmorSet() {
         return this.armorSet;
     }
 
-    public void setArmorSet(final ArmorSet armorSet) {
-        this.armorSet = armorSet;
-    }
-
     public Map<Integer, BukkitTask> getItemTicker() {
         return this.itemTicker;
+    }
+
+    public void setHealthRegenerationPercentBonus(final double healthRegenerationPercentBonus) {
+        this.healthRegenerationPercentBonus = healthRegenerationPercentBonus;
+    }
+
+    public void setManaRegenerationPercentBonus(final double manaRegenerationPercentBonus) {
+        this.manaRegenerationPercentBonus = manaRegenerationPercentBonus;
+    }
+
+    public void setArmorSet(final ArmorSet armorSet) {
+        this.armorSet = armorSet;
     }
 }

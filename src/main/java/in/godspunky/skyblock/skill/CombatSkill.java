@@ -1,19 +1,15 @@
 package in.godspunky.skyblock.skill;
 
+import org.bukkit.ChatColor;
 import in.godspunky.skyblock.user.PlayerStatistics;
 import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.user.User;
-import org.bukkit.ChatColor;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class CombatSkill extends Skill {
     public static final CombatSkill INSTANCE;
-
-    static {
-        INSTANCE = new CombatSkill();
-    }
 
     @Override
     public String getName() {
@@ -46,5 +42,9 @@ public class CombatSkill extends Skill {
         final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(user.getUuid());
         statistics.zeroAll(12);
         statistics.getCritChance().set(12, Double.valueOf(0.005 * getLevel(user.getCombatXP(), false)));
+    }
+
+    static {
+        INSTANCE = new CombatSkill();
     }
 }

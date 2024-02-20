@@ -1,6 +1,5 @@
 package in.godspunky.skyblock.nms.pingrep;
 
-import in.godspunky.skyblock.nms.pingrep.reflect.ReflectUtils;
 import io.netty.channel.Channel;
 import net.minecraft.server.v1_8_R3.MinecraftServer;
 import net.minecraft.server.v1_8_R3.NetworkManager;
@@ -10,6 +9,7 @@ import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServerListPingEvent;
+import in.godspunky.skyblock.nms.pingrep.reflect.ReflectUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -52,16 +52,17 @@ public class PingInjector implements Listener {
     }
 
     public Object getNetworkManagerList(final ServerConnection conn) {
-        Field field = null;
         try {
-            field = conn.getClass().getDeclaredField("h");
-            field.setAccessible(true);
-        } catch (NoSuchFieldException ignored) {}
-        try {
-            if (field != null) {
-                return field.get(conn);
+            for (final Method method : conn.getClass().getDeclaredMethods()) {
+                method.setAccessible(true);
+                if (method.getReturnType() == List.class) {
+                    final Object object = method.invoke(null, conn);
+                    return object;
+                }
             }
-        } catch (IllegalAccessException ignored) {}
+        } catch (final IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

@@ -1,8 +1,8 @@
 package in.godspunky.skyblock.enchantment;
 
-import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import in.godspunky.skyblock.util.SUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,31 +16,6 @@ public class Enchantment implements ConfigurationSerializable {
     public Enchantment(final EnchantmentType type, final int level) {
         this.type = type;
         this.level = level;
-    }
-
-    public static Enchantment getByIdentifiable(final String identifiable) {
-        final String[] spl = identifiable.split("\\.");
-        return new Enchantment(EnchantmentType.getByNamespace(spl[0]), Integer.parseInt(spl[1]));
-    }
-
-    public static List<Enchantment> ultimateEnchantsListFromList(final List<Enchantment> list) {
-        final List<Enchantment> filteredList_ultimate = new ArrayList<Enchantment>();
-        for (final Enchantment enchantment : list) {
-            if (enchantment.getDisplayName().contains(ChatColor.LIGHT_PURPLE.toString())) {
-                filteredList_ultimate.add(enchantment);
-            }
-        }
-        return filteredList_ultimate;
-    }
-
-    public static List<Enchantment> normalEnchantsListFromList(final List<Enchantment> list) {
-        final List<Enchantment> filteredList_normal = new ArrayList<Enchantment>();
-        for (final Enchantment enchantment : list) {
-            if (!enchantment.getDisplayName().contains(ChatColor.LIGHT_PURPLE.toString())) {
-                filteredList_normal.add(enchantment);
-            }
-        }
-        return filteredList_normal;
     }
 
     @Override
@@ -126,6 +101,11 @@ public class Enchantment implements ConfigurationSerializable {
         return this.type.getDescription();
     }
 
+    public static Enchantment getByIdentifiable(final String identifiable) {
+        final String[] spl = identifiable.split("\\.");
+        return new Enchantment(EnchantmentType.getByNamespace(spl[0]), Integer.parseInt(spl[1]));
+    }
+
     public boolean equalsType(final Enchantment enchantment) {
         return enchantment.type.equals(this.type);
     }
@@ -144,6 +124,26 @@ public class Enchantment implements ConfigurationSerializable {
         map.put("type", this.type.getNamespace());
         map.put("level", this.level);
         return null;
+    }
+
+    public static List<Enchantment> ultimateEnchantsListFromList(final List<Enchantment> list) {
+        final List<Enchantment> filteredList_ultimate = new ArrayList<Enchantment>();
+        for (final Enchantment enchantment : list) {
+            if (enchantment.getDisplayName().contains(ChatColor.LIGHT_PURPLE.toString())) {
+                filteredList_ultimate.add(enchantment);
+            }
+        }
+        return filteredList_ultimate;
+    }
+
+    public static List<Enchantment> normalEnchantsListFromList(final List<Enchantment> list) {
+        final List<Enchantment> filteredList_normal = new ArrayList<Enchantment>();
+        for (final Enchantment enchantment : list) {
+            if (!enchantment.getDisplayName().contains(ChatColor.LIGHT_PURPLE.toString())) {
+                filteredList_normal.add(enchantment);
+            }
+        }
+        return filteredList_normal;
     }
 
     public EnchantmentType getType() {

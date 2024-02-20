@@ -1,13 +1,7 @@
 package in.godspunky.skyblock.entity.dungeons.boss.sadan;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
-import in.godspunky.skyblock.entity.zombie.BaseZombie;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
+import in.godspunky.skyblock.SkyBlock;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.GenericAttributes;
@@ -28,6 +22,12 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.entity.zombie.BaseZombie;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,38 +40,6 @@ public class JollyPinkGiant extends BaseZombie {
     public JollyPinkGiant() {
         this.terToss = false;
         this.terTossCD = true;
-    }
-
-    public static ItemStack buildColorStack(final int hexcolor) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
-    }
-
-    public static ItemStack b(final int hexcolor, final Material m) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
-    }
-
-    public static ItemStack c(final Material m) {
-        final ItemStack stack = new ItemStack(m);
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
-    }
-
-    public static void applyEffect(final PotionEffectType e, final Entity en, final int ticks, final int amp) {
-        ((LivingEntity) en).addPotionEffect(new PotionEffect(e, ticks, amp));
-    }
-
-    public static void damagePlayer(final Player p) {
-        p.sendMessage(Sputnik.trans("&d&lJolly Pink Giant &chit you with &eBoulder Toss &cfor " + SUtil.commaify(SadanFunction.dmgc(30000, p, JollyPinkGiant.e)) + " &cdamage."));
     }
 
     @Override
@@ -105,9 +73,9 @@ public class JollyPinkGiant extends BaseZombie {
         SUtil.delay(() -> this.terTossCD = false, 60L);
         Sputnik.applyPacketGiant(entity);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 30);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("highername", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("Giant_", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("highername", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("Giant_", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 final LivingEntity target = ((CraftZombie) entity).getTarget();
@@ -122,7 +90,7 @@ public class JollyPinkGiant extends BaseZombie {
                     JollyPinkGiant.this.launchTerrain(entity);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -152,7 +120,7 @@ public class JollyPinkGiant extends BaseZombie {
                     break;
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 5L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 5L);
     }
 
     @Override
@@ -210,7 +178,39 @@ public class JollyPinkGiant extends BaseZombie {
                     JollyPinkGiant.this.throwTerrain(e, t);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 30L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 30L);
+    }
+
+    public static ItemStack buildColorStack(final int hexcolor) {
+        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB(hexcolor));
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
+    }
+
+    public static ItemStack b(final int hexcolor, final Material m) {
+        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
+    }
+
+    public static ItemStack c(final Material m) {
+        final ItemStack stack = new ItemStack(m);
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
+    }
+
+    public static void applyEffect(final PotionEffectType e, final Entity en, final int ticks, final int amp) {
+        ((LivingEntity) en).addPotionEffect(new PotionEffect(e, ticks, amp));
+    }
+
+    public static void damagePlayer(final Player p) {
+        p.sendMessage(Sputnik.trans("&d&lJolly Pink Giant &chit you with &eBoulder Toss &cfor " + SUtil.commaify(SadanFunction.dmgc(30000, p, JollyPinkGiant.e)) + " &cdamage."));
     }
 
     public void throwTerrain(final LivingEntity e, final Entity target) {
@@ -264,7 +264,7 @@ public class JollyPinkGiant extends BaseZombie {
             final Location endPos = endList.get(pos);
             final FallingBlock block2 = world.spawnFallingBlock(origin, material, blockData);
             block2.setDropItem(false);
-            block2.setMetadata("t", new FixedMetadataValue(Skyblock.getPlugin(), true));
+            block2.setMetadata("t", new FixedMetadataValue(SkyBlock.getPlugin(), true));
             block2.setVelocity(Sputnik.calculateVelocityBlock(origin.toVector(), endPos.toVector(), 3));
         });
     }

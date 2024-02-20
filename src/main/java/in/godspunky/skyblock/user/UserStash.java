@@ -1,9 +1,9 @@
 package in.godspunky.skyblock.user;
 
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.inventory.ItemStack;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,13 +13,13 @@ public class UserStash {
     private final UUID user;
     private final User u;
 
+    public static UserStash getStash(final UUID u) {
+        return new UserStash(u);
+    }
+
     public UserStash(final UUID uuid) {
         this.user = uuid;
         this.u = User.getUser(this.user);
-    }
-
-    public static UserStash getStash(final UUID u) {
-        return new UserStash(u);
     }
 
     public void sendNotificationMessage() {

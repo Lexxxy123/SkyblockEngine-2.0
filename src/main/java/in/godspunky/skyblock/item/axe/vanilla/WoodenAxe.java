@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.item.axe.vanilla;
 
 import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.item.*;
 
 public class WoodenAxe implements ToolStatistics, MaterialFunction {
     @Override

@@ -1,15 +1,14 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.ranks.PlayerRank;
-import in.godspunky.skyblock.user.SMongoLoader;
-import in.godspunky.skyblock.user.User;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import in.godspunky.skyblock.user.User;
 
-@CommandParameters(description = "bruhbu", aliases = "datarec", permission = PlayerRank.ADMIN)
+import java.io.IOException;
+
+@CommandParameters(description = "bruhbu", aliases = "datarec")
 public class InvRecovery extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
@@ -30,10 +29,10 @@ public class InvRecovery extends SCommand {
         if (target != null) {
             final User user2 = User.getUser(target.getUniqueId());
             try {
-                Skyblock.getPlugin().dataLoader.load(target.getUniqueId());
+                user2.loadPlayerData();
                 user.send("&aSuccess!");
                 user2.send("&eData Recovered, now disconnect and join back.");
-            } catch (final IllegalArgumentException e) {
+            } catch (final IllegalArgumentException | IOException e) {
                 e.printStackTrace();
                 user.send("&cError! Check Console!");
             }

@@ -1,13 +1,7 @@
 package in.godspunky.skyblock.item.armor;
 
-import in.godspunky.skyblock.Repeater;
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityType;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.skill.Skill;
-import in.godspunky.skyblock.user.PlayerUtils;
-import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.*;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Effect;
@@ -16,6 +10,12 @@ import org.bukkit.Sound;
 import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.Repeater;
+import in.godspunky.skyblock.SkyBlock;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityType;
+import in.godspunky.skyblock.user.PlayerUtils;
+import in.godspunky.skyblock.user.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,12 +25,6 @@ import java.util.UUID;
 public class PrecursorEye implements MaterialFunction, SkullStatistics, ToolStatistics, Ability, TickingMaterial {
     public static final Map<UUID, Boolean> PrecursorLaser;
     public static final Map<UUID, Integer> PrecursorLivingSeconds;
-
-    static {
-        PrecursorLaser = new HashMap<UUID, Boolean>();
-        PrecursorLivingSeconds = new HashMap<UUID, Integer>();
-    }
-
     int boosting;
 
     @Override
@@ -131,7 +125,7 @@ public class PrecursorEye implements MaterialFunction, SkullStatistics, ToolStat
                 }
                 PrecursorEye.this.ticking(sItem, player);
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 15L, 15L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 15L, 15L);
     }
 
     public void ticking(final SItem item, final Player player) {
@@ -262,7 +256,7 @@ public class PrecursorEye implements MaterialFunction, SkullStatistics, ToolStat
                             stands.remove();
                             this.cancel();
                         }
-                    }.runTaskLater(Skyblock.getPlugin(), 30L);
+                    }.runTaskLater(SkyBlock.getPlugin(), 30L);
                     ACT = "false";
                 }
                 player.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply(i / count)), Effect.COLOURED_DUST, 0, 1, 0.5882353f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
@@ -274,5 +268,10 @@ public class PrecursorEye implements MaterialFunction, SkullStatistics, ToolStat
     @Override
     public int getManaCost() {
         return 0;
+    }
+
+    static {
+        PrecursorLaser = new HashMap<UUID, Boolean>();
+        PrecursorLivingSeconds = new HashMap<UUID, Integer>();
     }
 }

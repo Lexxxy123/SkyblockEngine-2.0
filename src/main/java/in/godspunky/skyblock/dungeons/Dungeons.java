@@ -1,23 +1,16 @@
 package in.godspunky.skyblock.dungeons;
 
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityType;
 import in.godspunky.skyblock.util.SLog;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityType;
 
 import java.util.*;
 
 public class Dungeons {
     private static Map<World, Dungeons> DUNGEONS_CACHE;
-
-    static {
-        Dungeons.DUNGEONS_CACHE = new HashMap<World, Dungeons>();
-    }
-
-    private final World world;
-    private final UUID runUUID;
     public List<Player> players;
     public int witherKeys;
     public boolean bloodKey;
@@ -26,6 +19,8 @@ public class Dungeons {
     public int deaths;
     public int cryptsBlown;
     public int score;
+    private final World world;
+    private final UUID runUUID;
 
     public Dungeons(final World world, final List<Player> listPlayers) {
         this.players = new ArrayList<Player>();
@@ -64,36 +59,36 @@ public class Dungeons {
         return this.players;
     }
 
-    public int getWitherKeys() {
-        return this.witherKeys;
-    }
-
     public void setWitherKeys(final int witherKeys) {
         this.witherKeys = witherKeys;
     }
 
-    public boolean isBloodKey() {
-        return this.bloodKey;
+    public int getWitherKeys() {
+        return this.witherKeys;
     }
 
     public void setBloodKey(final boolean bloodKey) {
         this.bloodKey = bloodKey;
     }
 
-    public boolean isBloodCleared() {
-        return this.isBloodCleared;
+    public boolean isBloodKey() {
+        return this.bloodKey;
     }
 
     public void setBloodCleared(final boolean isBloodCleared) {
         this.isBloodCleared = isBloodCleared;
     }
 
-    public List<String> getOpenedRooms() {
-        return this.openedRooms;
+    public boolean isBloodCleared() {
+        return this.isBloodCleared;
     }
 
     public void setOpenedRooms(final List<String> openedRooms) {
         this.openedRooms = openedRooms;
+    }
+
+    public List<String> getOpenedRooms() {
+        return this.openedRooms;
     }
 
     public int getDeaths() {
@@ -118,5 +113,9 @@ public class Dungeons {
 
     public void setScore(final int score) {
         this.score = score;
+    }
+
+    static {
+        Dungeons.DUNGEONS_CACHE = new HashMap<World, Dungeons>();
     }
 }

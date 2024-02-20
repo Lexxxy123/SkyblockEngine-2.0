@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.item.oddities;
 
 import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.item.*;
 
 public class JudgementCore implements MaterialStatistics, MaterialFunction, SkullStatistics {
     @Override

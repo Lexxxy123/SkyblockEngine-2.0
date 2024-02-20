@@ -1,17 +1,17 @@
 package in.godspunky.skyblock.slayer;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityType;
 import in.godspunky.skyblock.sequence.SoundSequenceType;
-import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitRunnable;
+import in.godspunky.skyblock.SkyBlock;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityType;
+import in.godspunky.skyblock.util.SUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,6 +41,18 @@ public class SlayerQuest implements ConfigurationSerializable {
         this.died = died;
         this.lastKilled = null;
         this.entity = null;
+    }
+
+    public Map<String, Object> serialize() {
+        final Map<String, Object> map = new HashMap<String, Object>();
+        map.put("type", this.type.getNamespace());
+        map.put("started", this.started);
+        map.put("xp", this.xp);
+        map.put("spawned", this.spawned);
+        map.put("killed", this.killed);
+        map.put("died", this.died);
+        map.put("lastKilled", null);
+        return map;
     }
 
     public static SlayerQuest deserialize(Map<String, Object> map) {
@@ -85,19 +97,7 @@ public class SlayerQuest implements ConfigurationSerializable {
                 world.playEffect(clone, Effect.EXPLOSION_HUGE, (Object) Effect.EXPLOSION_HUGE.getData());
                 world.playEffect(clone, Effect.EXPLOSION_HUGE, (Object) Effect.EXPLOSION_HUGE.getData());
             }
-        }.runTaskLater(Skyblock.getPlugin(), 28L);
-    }
-
-    public Map<String, Object> serialize() {
-        final Map<String, Object> map = new HashMap<String, Object>();
-        map.put("type", this.type.getNamespace());
-        map.put("started", this.started);
-        map.put("xp", this.xp);
-        map.put("spawned", this.spawned);
-        map.put("killed", this.killed);
-        map.put("died", this.died);
-        map.put("lastKilled", null);
-        return map;
+        }.runTaskLater(SkyBlock.getPlugin(), 28L);
     }
 
     public SlayerBossType getType() {
@@ -112,44 +112,44 @@ public class SlayerQuest implements ConfigurationSerializable {
         return this.xp;
     }
 
-    public void setXp(final double xp) {
-        this.xp = xp;
-    }
-
     public long getSpawned() {
         return this.spawned;
-    }
-
-    public void setSpawned(final long spawned) {
-        this.spawned = spawned;
     }
 
     public long getKilled() {
         return this.killed;
     }
 
-    public void setKilled(final long killed) {
-        this.killed = killed;
-    }
-
     public long getDied() {
         return this.died;
-    }
-
-    public void setDied(final long died) {
-        this.died = died;
     }
 
     public SEntityType getLastKilled() {
         return this.lastKilled;
     }
 
-    public void setLastKilled(final SEntityType lastKilled) {
-        this.lastKilled = lastKilled;
-    }
-
     public SEntity getEntity() {
         return this.entity;
+    }
+
+    public void setXp(final double xp) {
+        this.xp = xp;
+    }
+
+    public void setSpawned(final long spawned) {
+        this.spawned = spawned;
+    }
+
+    public void setKilled(final long killed) {
+        this.killed = killed;
+    }
+
+    public void setDied(final long died) {
+        this.died = died;
+    }
+
+    public void setLastKilled(final SEntityType lastKilled) {
+        this.lastKilled = lastKilled;
     }
 
     public void setEntity(final SEntity entity) {

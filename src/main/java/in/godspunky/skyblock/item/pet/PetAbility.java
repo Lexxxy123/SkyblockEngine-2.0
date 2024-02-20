@@ -1,9 +1,9 @@
 package in.godspunky.skyblock.item.pet;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import in.godspunky.skyblock.item.SItem;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import in.godspunky.skyblock.item.SItem;
 
 import java.util.List;
 

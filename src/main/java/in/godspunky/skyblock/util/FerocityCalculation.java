@@ -1,13 +1,13 @@
 package in.godspunky.skyblock.util;
 
 import in.godspunky.skyblock.entity.nms.VoidgloomSeraph;
-import in.godspunky.skyblock.listener.PlayerListener;
-import in.godspunky.skyblock.user.PlayerStatistics;
-import in.godspunky.skyblock.user.PlayerUtils;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import in.godspunky.skyblock.listener.PlayerListener;
+import in.godspunky.skyblock.user.PlayerStatistics;
+import in.godspunky.skyblock.user.PlayerUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,10 +15,6 @@ import java.util.UUID;
 
 public class FerocityCalculation {
     public static final Map<UUID, Integer> ONE_TYPE_FEROCITY_BONUS_ENDERMAN;
-
-    static {
-        ONE_TYPE_FEROCITY_BONUS_ENDERMAN = new HashMap<>();
-    }
 
     @Deprecated
     public static void test(final int i) {
@@ -28,14 +24,16 @@ public class FerocityCalculation {
         if (ferocity == 0) {
             return 0;
         }
-        return Math.round((float) (ferocity / 100)) + 1;
+        final int feroDiv = Math.round((float) (ferocity / 100)) + 1;
+        return feroDiv;
     }
 
     public static Integer ferocityStrikeCurrent(final int ferocity) {
         if (ferocity < 100) {
             return 0;
         }
-        return Math.round((float) (ferocity / 100));
+        final int feroDiv = Math.round((float) (ferocity / 100));
+        return feroDiv;
     }
 
     public static Double ferocityPercentCurrent(final int ferocity) {
@@ -106,5 +104,9 @@ public class FerocityCalculation {
             finalhittime = ferocityStrikeNext((int) Math.round(fer) + 1);
         }
         PlayerListener.ferocityActive(finalhittime, p, finalDamage, damaged, crit);
+    }
+
+    static {
+        ONE_TYPE_FEROCITY_BONUS_ENDERMAN = new HashMap<UUID, Integer>();
     }
 }

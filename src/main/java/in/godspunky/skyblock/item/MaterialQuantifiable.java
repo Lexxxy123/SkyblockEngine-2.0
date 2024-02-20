@@ -16,23 +16,14 @@ public class MaterialQuantifiable {
         this(material, 1);
     }
 
-    public static MaterialQuantifiable of(final ItemStack stack) {
-        if (stack == null || stack.getType() == Material.AIR) {
-            return new MaterialQuantifiable(SMaterial.AIR, (stack != null) ? stack.getAmount() : 1);
-        }
-        SItem found = SItem.find(stack);
-        if (found == null) {
-            found = SItem.of(SMaterial.getSpecEquivalent(stack.getType(), stack.getDurability()));
-        }
-        return new MaterialQuantifiable(found.getType(), stack.getAmount());
+    public MaterialQuantifiable setMaterial(final SMaterial material) {
+        this.material = material;
+        return this;
     }
 
-    public static MaterialQuantifiable[] of(final ItemStack[] stacks) {
-        final MaterialQuantifiable[] materials = new MaterialQuantifiable[stacks.length];
-        for (int i = 0; i < stacks.length; ++i) {
-            materials[i] = of(stacks[i]);
-        }
-        return materials;
+    public MaterialQuantifiable setAmount(final int amount) {
+        this.amount = amount;
+        return this;
     }
 
     @Override
@@ -53,21 +44,30 @@ public class MaterialQuantifiable {
         return "MQ{material=" + ((this.material != null) ? this.material.name() : "?") + ", amount=" + this.amount + "}";
     }
 
+    public static MaterialQuantifiable of(final ItemStack stack) {
+        if (stack == null || stack.getType() == Material.AIR) {
+            return new MaterialQuantifiable(SMaterial.AIR, (stack != null) ? stack.getAmount() : 1);
+        }
+        SItem found = SItem.find(stack);
+        if (found == null) {
+            found = SItem.of(SMaterial.getSpecEquivalent(stack.getType(), stack.getDurability()));
+        }
+        return new MaterialQuantifiable(found.getType(), stack.getAmount());
+    }
+
+    public static MaterialQuantifiable[] of(final ItemStack[] stacks) {
+        final MaterialQuantifiable[] materials = new MaterialQuantifiable[stacks.length];
+        for (int i = 0; i < stacks.length; ++i) {
+            materials[i] = of(stacks[i]);
+        }
+        return materials;
+    }
+
     public SMaterial getMaterial() {
         return this.material;
     }
 
-    public MaterialQuantifiable setMaterial(final SMaterial material) {
-        this.material = material;
-        return this;
-    }
-
     public int getAmount() {
         return this.amount;
-    }
-
-    public MaterialQuantifiable setAmount(final int amount) {
-        this.amount = amount;
-        return this;
     }
 }

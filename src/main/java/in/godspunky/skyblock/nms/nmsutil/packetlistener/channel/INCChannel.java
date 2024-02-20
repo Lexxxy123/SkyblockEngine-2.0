@@ -16,10 +16,6 @@ import java.util.ArrayList;
 public class INCChannel extends ChannelAbstract {
     private static final Field channelField;
 
-    static {
-        channelField = INCChannel.networkManagerFieldResolver.resolveByFirstTypeSilent(Channel.class);
-    }
-
     public INCChannel(final IPacketListener iPacketListener) {
         super(iPacketListener);
     }
@@ -73,6 +69,10 @@ public class INCChannel extends ChannelAbstract {
     @Override
     public IListenerList newListenerList() {
         return new ListenerList();
+    }
+
+    static {
+        channelField = INCChannel.networkManagerFieldResolver.resolveByFirstTypeSilent(Channel.class);
     }
 
     class ListenerList<E> extends ArrayList<E> implements IListenerList<E> {

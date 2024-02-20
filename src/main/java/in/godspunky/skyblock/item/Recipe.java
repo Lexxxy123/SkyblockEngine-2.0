@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.item;
 
-import in.godspunky.skyblock.user.User;
 import org.bukkit.inventory.ItemStack;
+import in.godspunky.skyblock.user.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,11 +10,6 @@ import java.util.List;
 
 public abstract class Recipe<T> {
     protected static final List<List<SMaterial>> EXCHANGEABLES;
-
-    static {
-        EXCHANGEABLES = new ArrayList<List<SMaterial>>(Arrays.asList(Arrays.asList(SMaterial.OAK_WOOD, SMaterial.SPRUCE_WOOD, SMaterial.BIRCH_WOOD, SMaterial.JUNGLE_WOOD, SMaterial.ACACIA_WOOD, SMaterial.DARK_OAK_WOOD), Arrays.asList(SMaterial.OAK_WOOD_PLANKS, SMaterial.SPRUCE_WOOD_PLANKS, SMaterial.BIRCH_WOOD_PLANKS, SMaterial.JUNGLE_WOOD_PLANKS, SMaterial.ACACIA_WOOD_PLANKS, SMaterial.DARK_OAK_WOOD_PLANKS)));
-    }
-
     protected SItem result;
     protected boolean useExchangeables;
 
@@ -27,12 +22,20 @@ public abstract class Recipe<T> {
         this(result, false);
     }
 
+    public abstract T setResult(final SItem p0);
+
+    public abstract List<MaterialQuantifiable> getIngredients();
+
     public static Recipe<?> parseRecipe(final ItemStack[] stacks) {
         final ShapedRecipe shaped = ShapedRecipe.parseShapedRecipe(stacks);
         if (shaped != null) {
             return shaped;
         }
         return ShapelessRecipe.parseShapelessRecipe(stacks);
+    }
+
+    public boolean isUnlockedForPlayer(User user) {
+        return user.getUnlockedRecipes().contains(result.getDisplayName());
     }
 
     protected static MaterialQuantifiable[][] airless(final MaterialQuantifiable[][] grid) {
@@ -86,14 +89,6 @@ public abstract class Recipe<T> {
         return null;
     }
 
-    public abstract T setResult(final SItem p0);
-
-    public abstract List<MaterialQuantifiable> getIngredients();
-
-    public boolean isUnlockedForPlayer(User user) {
-        return user.getUnlockedRecipes().contains(result.getDisplayName());
-    }
-
     public SItem getResult() {
         return this.result;
     }
@@ -104,5 +99,9 @@ public abstract class Recipe<T> {
 
     public void setUseExchangeables(final boolean useExchangeables) {
         this.useExchangeables = useExchangeables;
+    }
+
+    static {
+        EXCHANGEABLES = new ArrayList<List<SMaterial>>(Arrays.asList(Arrays.asList(SMaterial.OAK_WOOD, SMaterial.SPRUCE_WOOD, SMaterial.BIRCH_WOOD, SMaterial.JUNGLE_WOOD, SMaterial.ACACIA_WOOD, SMaterial.DARK_OAK_WOOD), Arrays.asList(SMaterial.OAK_WOOD_PLANKS, SMaterial.SPRUCE_WOOD_PLANKS, SMaterial.BIRCH_WOOD_PLANKS, SMaterial.JUNGLE_WOOD_PLANKS, SMaterial.ACACIA_WOOD_PLANKS, SMaterial.DARK_OAK_WOOD_PLANKS)));
     }
 }

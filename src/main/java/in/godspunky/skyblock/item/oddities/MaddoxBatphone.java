@@ -3,13 +3,14 @@ package in.godspunky.skyblock.item.oddities;
 import in.godspunky.skyblock.command.BatphoneCommand;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.sequence.SoundSequenceType;
-import in.godspunky.skyblock.util.SUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.util.SUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,17 +18,10 @@ import java.util.List;
 import java.util.UUID;
 
 public class MaddoxBatphone implements SkullStatistics, MaterialFunction, Ability {
-    public static final List<UUID> RING_COOLDOWN;
-    public static final List<UUID> CALL_COOLDOWN;
     private static final List<String> SUCCESSFUL_RESPONSES;
     private static final List<String> FAILED_RESPONSES;
-
-    static {
-        SUCCESSFUL_RESPONSES = Arrays.asList("Hello?", "Someone answers!", "How does a lobster answer? Shello!", "Hey what do you need?", "You hear the line pick up...", "You again? What do you want this time?");
-        FAILED_RESPONSES = Arrays.asList("Please leave your message after the beep.", "How can you tell if a bee is on the phone? You get a buzzy signal!", "The phone keeps ringing, is it broken?", "The phone picks up but it immediately hands up!", "What did the cat say on the phone? Can you hear meow?", "No answer.", "Seems like it's not picking up!", "\"Your call is important to us, please stay on the line\", so you hang up.");
-        RING_COOLDOWN = new ArrayList<UUID>();
-        CALL_COOLDOWN = new ArrayList<UUID>();
-    }
+    public static final List<UUID> RING_COOLDOWN;
+    public static final List<UUID> CALL_COOLDOWN;
 
     @Override
     public String getURL() {
@@ -79,9 +73,10 @@ public class MaddoxBatphone implements SkullStatistics, MaterialFunction, Abilit
         return false;
     }
 
+
     @Override
     public void onAbilityUse(Player player, SItem sItem) {
-        if (player.getWorld().getName().startsWith("f6")) {
+        if (player.getWorld().getName().contains("f6")) {
             player.playSound(player.getLocation(), Sound.WOOD_CLICK, 1.0f, 1.0f);
             player.sendMessage(ChatColor.RED + "No service here!");
             return;
@@ -106,5 +101,12 @@ public class MaddoxBatphone implements SkullStatistics, MaterialFunction, Abilit
         SUtil.delay(() -> BatphoneCommand.KEYS.remove(key), 460L);
         message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/batphone " + BatphoneCommand.ACCESS_KEY + " " + key));
         SUtil.delay(() -> player.spigot().sendMessage(new TextComponent(new TextComponent(ChatColor.GREEN + "\u2706 " + SUtil.getRandom(SUCCESSFUL_RESPONSES)), message)), 52L);
+    }
+
+    static {
+        SUCCESSFUL_RESPONSES = Arrays.asList("Hello?", "Someone answers!", "How does a lobster answer? Shello!", "Hey what do you need?", "You hear the line pick up...", "You again? What do you want this time?");
+        FAILED_RESPONSES = Arrays.asList("Please leave your message after the beep.", "How can you tell if a bee is on the phone? You get a buzzy signal!", "The phone keeps ringing, is it broken?", "The phone picks up but it immediately hands up!", "What did the cat say on the phone? Can you hear meow?", "No answer.", "Seems like it's not picking up!", "\"Your call is important to us, please stay on the line\", so you hang up.");
+        RING_COOLDOWN = new ArrayList<UUID>();
+        CALL_COOLDOWN = new ArrayList<UUID>();
     }
 }

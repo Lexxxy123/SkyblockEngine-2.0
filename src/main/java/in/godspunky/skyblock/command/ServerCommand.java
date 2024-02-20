@@ -1,17 +1,16 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.ranks.PlayerRank;
+import in.godspunky.skyblock.SkyBlock;
+import org.bukkit.entity.Player;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
-import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-@CommandParameters(description = "Modify your coin amount.", usage = "", aliases = "ss", permission = PlayerRank.ADMIN)
+@CommandParameters(description = "Modify your coin amount.", usage = "", aliases = "ss")
 public class ServerCommand extends SCommand {
     public Map<UUID, List<String>> servers;
 
@@ -22,7 +21,7 @@ public class ServerCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         final UUID runUUID = UUID.randomUUID();
-        if (Skyblock.getPlugin().getBc() == null) {
+        if (SkyBlock.getPlugin().getBc() == null) {
             this.send("&cThis is not a BungeeCord based server!");
             return;
         }
@@ -39,7 +38,7 @@ public class ServerCommand extends SCommand {
             this.send("&cCorrect Command Usage: /ss <server name>");
             return;
         }
-        Skyblock.getPlugin().getBc().getServers().whenComplete((result, error) -> this.servers.put(runUUID, result));
+        SkyBlock.getPlugin().getBc().getServers().whenComplete((result, error) -> this.servers.put(runUUID, result));
         boolean isExist = false;
         String targetServer = null;
         for (final String sv : this.servers.get(runUUID)) {
@@ -63,7 +62,7 @@ public class ServerCommand extends SCommand {
             return;
         }
         final String finalTarget = targetServer;
-        if (Skyblock.getPlugin().getServerName().equalsIgnoreCase(args[0])) {
+        if (SkyBlock.getPlugin().getServerName().equalsIgnoreCase(args[0])) {
             this.servers.remove(runUUID);
             this.send("&cYou're already playing on this server");
             return;
@@ -73,7 +72,7 @@ public class ServerCommand extends SCommand {
         u.syncSavingData();
         SUtil.delay(() -> {
             this.send("&7Sending you to " + finalTarget + "...");
-            Skyblock.getPlugin().getBc().connect(p, finalTarget);
+            SkyBlock.getPlugin().getBc().connect(p, finalTarget);
         }, 8L);
         this.servers.remove(runUUID);
     }

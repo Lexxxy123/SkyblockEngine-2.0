@@ -1,17 +1,17 @@
 package in.godspunky.skyblock.item.weapon;
 
-import in.godspunky.skyblock.Repeater;
-import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.listener.PlayerListener;
-import in.godspunky.skyblock.user.PlayerUtils;
-import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.*;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.Repeater;
+import in.godspunky.skyblock.listener.PlayerListener;
+import in.godspunky.skyblock.user.PlayerUtils;
+import in.godspunky.skyblock.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,8 +114,8 @@ public class FlowerOfTruth implements ToolStatistics, MaterialFunction, Ability 
         this.teleportTo = bukkitPlayer.getLocation().getDirection().normalize().multiply(1);
         final List<LivingEntity> le = new ArrayList<LivingEntity>();
         new BukkitRunnable() {
-            int entityhit = 0;
             private int run = -1;
+            int entityhit = 0;
 
             public void run() {
                 final Vector teleportTo = armorStand1.getLocation().getDirection().normalize().multiply(1);
@@ -245,7 +245,7 @@ public class FlowerOfTruth implements ToolStatistics, MaterialFunction, Ability 
                     }
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 1L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 1L, 1L);
         new BukkitRunnable() {
             public void run() {
                 if (armorStand1.isDead()) {
@@ -258,7 +258,7 @@ public class FlowerOfTruth implements ToolStatistics, MaterialFunction, Ability 
                 armorStand1.remove();
                 this.cancel();
             }
-        }.runTaskLater(Skyblock.getPlugin(), 40L);
+        }.runTaskLater(SkyBlock.getPlugin(), 40L);
     }
 
     @Override

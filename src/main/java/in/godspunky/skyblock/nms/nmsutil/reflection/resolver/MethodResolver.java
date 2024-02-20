@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.nms.nmsutil.reflection.resolver;
 
-import in.godspunky.skyblock.nms.nmsutil.reflection.resolver.wrapper.MethodWrapper;
 import in.godspunky.skyblock.nms.nmsutil.reflection.util.AccessUtil;
+import in.godspunky.skyblock.nms.nmsutil.reflection.resolver.wrapper.MethodWrapper;
 
 import java.lang.reflect.Method;
 
@@ -12,20 +12,6 @@ public class MethodResolver extends MemberResolver<Method> {
 
     public MethodResolver(final String className) throws ClassNotFoundException {
         super(className);
-    }
-
-    static boolean ClassListEqual(final Class<?>[] l1, final Class<?>[] l2) {
-        boolean equal = true;
-        if (l1.length != l2.length) {
-            return false;
-        }
-        for (int i = 0; i < l1.length; ++i) {
-            if (l1[i] != l2[i]) {
-                equal = false;
-                break;
-            }
-        }
-        return equal;
     }
 
     public Method resolveSignature(final String... signatures) throws ReflectiveOperationException {
@@ -120,5 +106,19 @@ public class MethodResolver extends MemberResolver<Method> {
     @Override
     protected NoSuchMethodException notFoundException(final String joinedNames) {
         return new NoSuchMethodException("Could not resolve method for " + joinedNames + " in class " + this.clazz);
+    }
+
+    static boolean ClassListEqual(final Class<?>[] l1, final Class<?>[] l2) {
+        boolean equal = true;
+        if (l1.length != l2.length) {
+            return false;
+        }
+        for (int i = 0; i < l1.length; ++i) {
+            if (l1[i] != l2[i]) {
+                equal = false;
+                break;
+            }
+        }
+        return equal;
     }
 }

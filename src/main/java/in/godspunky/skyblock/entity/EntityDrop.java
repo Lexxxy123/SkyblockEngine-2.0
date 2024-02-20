@@ -1,9 +1,9 @@
 package in.godspunky.skyblock.entity;
 
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
 
 public class EntityDrop {
     private final ItemStack stack;

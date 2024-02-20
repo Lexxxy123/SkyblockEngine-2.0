@@ -1,10 +1,7 @@
 package in.godspunky.skyblock.entity.nms;
 
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.entity.zombie.BaseZombie;
-import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.*;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -18,6 +15,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.user.User;
 
 import java.util.*;
 
@@ -42,105 +42,6 @@ public class Giant extends BaseZombie {
         this.terTossCD = true;
         this.swordActiv = false;
         this.swordSlamCD = true;
-    }
-
-    public static ItemStack buildColorStack(final int hexcolor) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
-    }
-
-    public static ItemStack b(final int hexcolor, final Material m) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
-    }
-
-    public static ItemStack c(final Material m) {
-        final ItemStack stack = new ItemStack(m);
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
-    }
-
-    public static void drawLine(final Location point1, final Location point2, final double space) {
-        final Location blockLocation = point1;
-        final Location crystalLocation = point2;
-        final Vector vector = blockLocation.clone().add(0.1, 0.0, 0.1).toVector().subtract(crystalLocation.clone().toVector());
-        final double count = 90.0;
-        for (int i = 1; i <= (int) count; ++i) {
-            point1.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply(i / count)), Effect.COLOURED_DUST, 0, 1, 0.8627451f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
-            point1.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply(i / count)), Effect.COLOURED_DUST, 0, 1, 1.0196079f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
-        }
-    }
-
-    public static void getEntity(final Location finaldestination, final Location ended, final LivingEntity e) {
-        final Location blockLocation = finaldestination;
-        final Location crystalLocation = ended;
-        final Vector vector = blockLocation.clone().add(0.1, 0.1, 0.1).toVector().subtract(crystalLocation.clone().toVector());
-        final double count = 90.0;
-        for (int i = 1; i <= (int) count; ++i) {
-            for (final Entity entity : ended.getWorld().getNearbyEntities(crystalLocation.clone().add(vector.clone().multiply(i / count)), 0.17, 0.0, 0.17)) {
-                if (entity instanceof Player) {
-                    final Player p = (Player) entity;
-                    final double damage = SUtil.random(200, 700) + p.getMaxHealth() / 100.0;
-                    User.getUser(p.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, e);
-                    p.damage(1.0E-6, null);
-                    p.sendMessage(Sputnik.trans("&7Terrorant's Laser Eye have hit you for &c" + SUtil.commaify(Math.round(damage)) + " &7true damage."));
-                    return;
-                }
-            }
-        }
-    }
-
-    public static void applyEffect(final PotionEffectType e, final Entity en, final int ticks, final int amp) {
-        ((LivingEntity) en).addPotionEffect(new PotionEffect(e, ticks, amp));
-    }
-
-    public static void createBlockTornado(final Entity e, final Material mat, final byte id) {
-        for (int i = 0; i <= 30; ++i) {
-            final int random = SUtil.random(0, 3);
-            double range = 0.0;
-            final Location loc = e.getLocation().clone();
-            loc.setYaw((float) SUtil.random(0, 360));
-            if (random == 1) {
-                range = 0.6;
-            }
-            if (random == 2) {
-                range = 0.7;
-            }
-            if (random == 3) {
-                range = 0.8;
-            }
-            final Vector vec = loc.getDirection().normalize().multiply(range);
-            vec.setY(1.1);
-            BlockFallAPI.sendVelocityBlock(e.getLocation(), mat, id, e.getWorld(), 70, vec);
-        }
-    }
-
-    public static void damagePlayer(final Player p) {
-        final double damage = SUtil.random(200, 700) + p.getMaxHealth() * 25.0 / 100.0;
-        User.getUser(p.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, Giant.e);
-        p.damage(1.0E-6, null);
-        p.sendMessage(Sputnik.trans("&7Terrorant's Terrain Toss have hit you for &c" + SUtil.commaify(Math.round(damage)) + " &7true damage."));
-    }
-
-    public static void playLaserSound(final Player p, final Entity e) {
-        new BukkitRunnable() {
-            public void run() {
-                if (e.isDead()) {
-                    this.cancel();
-                    return;
-                }
-                p.playSound(p.getLocation(), "mob.guardian.elder.idle", 0.3f, 2.0f);
-                p.playSound(p.getLocation(), "mob.guardian.elder.idle", 0.3f, 0.0f);
-            }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     @Override
@@ -188,8 +89,8 @@ public class Giant extends BaseZombie {
         entity.getEquipment().setItemInHand(SUtil.enchant(new ItemStack(Material.DIAMOND_SWORD)));
         Sputnik.applyPacketGiant(entity);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 60);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("highername", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("highername", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 if (entity.getHealth() > 0.0) {
@@ -234,7 +135,7 @@ public class Giant extends BaseZombie {
                     Giant.this.launchTerrain(entity);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
     }
 
     @Override
@@ -385,22 +286,22 @@ public class Giant extends BaseZombie {
                         public void run() {
                             Giant.createBlockTornado(e, e.getLocation().add(0.0, -1.0, 0.0).getBlock().getType(), e.getLocation().add(0.0, -1.0, 0.0).getBlock().getData());
                         }
-                    }.runTaskLater(Skyblock.getPlugin(), 5L);
+                    }.runTaskLater(SkyBlock.getPlugin(), 5L);
                     new BukkitRunnable() {
                         public void run() {
                             Giant.createBlockTornado(e, e.getLocation().add(0.0, -2.0, 0.0).getBlock().getType(), e.getLocation().add(0.0, -2.0, 0.0).getBlock().getData());
                         }
-                    }.runTaskLater(Skyblock.getPlugin(), 6L);
+                    }.runTaskLater(SkyBlock.getPlugin(), 6L);
                     new BukkitRunnable() {
                         public void run() {
                             Giant.createBlockTornado(e, e.getLocation().add(0.0, -2.0, 0.0).getBlock().getType(), e.getLocation().add(0.0, -2.0, 0.0).getBlock().getData());
                         }
-                    }.runTaskLater(Skyblock.getPlugin(), 7L);
+                    }.runTaskLater(SkyBlock.getPlugin(), 7L);
                     new BukkitRunnable() {
                         public void run() {
                             Giant.createBlockTornado(e, e.getLocation().add(0.0, -1.0, 0.0).getBlock().getType(), e.getLocation().add(0.0, -1.0, 0.0).getBlock().getData());
                         }
-                    }.runTaskLater(Skyblock.getPlugin(), 8L);
+                    }.runTaskLater(SkyBlock.getPlugin(), 8L);
                     SUtil.delay(() -> {
                         final Object val$e4 = e;
                         e.getWorld().playSound(e.getLocation(), Sound.EXPLODE, 3.0f, 0.0f);
@@ -448,7 +349,7 @@ public class Giant extends BaseZombie {
                     }
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
     }
 
     public void laserAni(final LivingEntity e) {
@@ -471,7 +372,7 @@ public class Giant extends BaseZombie {
                     p2.playSound(e.getLocation(), "mob.guardian.elder.idle", 0.3f, 0.0f);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
         new BukkitRunnable() {
             public void run() {
                 if (e.isDead()) {
@@ -500,7 +401,7 @@ public class Giant extends BaseZombie {
                     Giant.drawLine(loc2, en2, 0.0);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 5L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 5L);
         new BukkitRunnable() {
             public void run() {
                 if (e.isDead()) {
@@ -537,7 +438,7 @@ public class Giant extends BaseZombie {
                     Giant.getEntity(loc2, en2, e);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 20L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 20L);
     }
 
     public void launchTerrain(final LivingEntity e) {
@@ -557,7 +458,93 @@ public class Giant extends BaseZombie {
                     Giant.this.throwTerrain(e, t);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 30L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 30L);
+    }
+
+    public static ItemStack buildColorStack(final int hexcolor) {
+        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB(hexcolor));
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
+    }
+
+    public static ItemStack b(final int hexcolor, final Material m) {
+        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
+    }
+
+    public static ItemStack c(final Material m) {
+        final ItemStack stack = new ItemStack(m);
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
+    }
+
+    public static void drawLine(final Location point1, final Location point2, final double space) {
+        final Location blockLocation = point1;
+        final Location crystalLocation = point2;
+        final Vector vector = blockLocation.clone().add(0.1, 0.0, 0.1).toVector().subtract(crystalLocation.clone().toVector());
+        final double count = 90.0;
+        for (int i = 1; i <= (int) count; ++i) {
+            point1.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply(i / count)), Effect.COLOURED_DUST, 0, 1, 0.8627451f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
+            point1.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply(i / count)), Effect.COLOURED_DUST, 0, 1, 1.0196079f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
+        }
+    }
+
+    public static void getEntity(final Location finaldestination, final Location ended, final LivingEntity e) {
+        final Location blockLocation = finaldestination;
+        final Location crystalLocation = ended;
+        final Vector vector = blockLocation.clone().add(0.1, 0.1, 0.1).toVector().subtract(crystalLocation.clone().toVector());
+        final double count = 90.0;
+        for (int i = 1; i <= (int) count; ++i) {
+            for (final Entity entity : ended.getWorld().getNearbyEntities(crystalLocation.clone().add(vector.clone().multiply(i / count)), 0.17, 0.0, 0.17)) {
+                if (entity instanceof Player) {
+                    final Player p = (Player) entity;
+                    final double damage = SUtil.random(200, 700) + p.getMaxHealth() / 100.0;
+                    User.getUser(p.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, e);
+                    p.damage(1.0E-6, null);
+                    p.sendMessage(Sputnik.trans("&7Terrorant's Laser Eye have hit you for &c" + SUtil.commaify(Math.round(damage)) + " &7true damage."));
+                    return;
+                }
+            }
+        }
+    }
+
+    public static void applyEffect(final PotionEffectType e, final Entity en, final int ticks, final int amp) {
+        ((LivingEntity) en).addPotionEffect(new PotionEffect(e, ticks, amp));
+    }
+
+    public static void createBlockTornado(final Entity e, final Material mat, final byte id) {
+        for (int i = 0; i <= 30; ++i) {
+            final int random = SUtil.random(0, 3);
+            double range = 0.0;
+            final Location loc = e.getLocation().clone();
+            loc.setYaw((float) SUtil.random(0, 360));
+            if (random == 1) {
+                range = 0.6;
+            }
+            if (random == 2) {
+                range = 0.7;
+            }
+            if (random == 3) {
+                range = 0.8;
+            }
+            final Vector vec = loc.getDirection().normalize().multiply(range);
+            vec.setY(1.1);
+            BlockFallAPI.sendVelocityBlock(e.getLocation(), mat, id, e.getWorld(), 70, vec);
+        }
+    }
+
+    public static void damagePlayer(final Player p) {
+        final double damage = SUtil.random(200, 700) + p.getMaxHealth() * 25.0 / 100.0;
+        User.getUser(p.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, Giant.e);
+        p.damage(1.0E-6, null);
+        p.sendMessage(Sputnik.trans("&7Terrorant's Terrain Toss have hit you for &c" + SUtil.commaify(Math.round(damage)) + " &7true damage."));
     }
 
     public void throwTerrain(final LivingEntity e, final Entity target) {
@@ -611,9 +598,22 @@ public class Giant extends BaseZombie {
             final Location endPos = endList.get(pos);
             final FallingBlock block2 = world.spawnFallingBlock(origin, material, blockData);
             block2.setDropItem(false);
-            block2.setMetadata("t", new FixedMetadataValue(Skyblock.getPlugin(), true));
+            block2.setMetadata("t", new FixedMetadataValue(SkyBlock.getPlugin(), true));
             block2.setVelocity(Sputnik.calculateVelocityBlock(origin.toVector(), endPos.toVector(), 3));
         });
+    }
+
+    public static void playLaserSound(final Player p, final Entity e) {
+        new BukkitRunnable() {
+            public void run() {
+                if (e.isDead()) {
+                    this.cancel();
+                    return;
+                }
+                p.playSound(p.getLocation(), "mob.guardian.elder.idle", 0.3f, 2.0f);
+                p.playSound(p.getLocation(), "mob.guardian.elder.idle", 0.3f, 0.0f);
+            }
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
     }
 
     public void swordSlamAC(final LivingEntity e, final LivingEntity tar) {
@@ -634,8 +634,8 @@ public class Giant extends BaseZombie {
         armorStand.getEquipment().setItemInHand(SUtil.enchant(new ItemStack(Material.DIAMOND_SWORD)));
         Sputnik.applyPacketGiant(armorStand);
         armorStand.setCustomName("Dinnerbone");
-        armorStand.setMetadata("GiantSword", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        armorStand.setMetadata("NoAffect", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        armorStand.setMetadata("GiantSword", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        armorStand.setMetadata("NoAffect", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         EntityManager.Woosh(armorStand);
         EntityManager.noHit(armorStand);
         EntityManager.shutTheFuckUp(armorStand);
@@ -664,8 +664,8 @@ public class Giant extends BaseZombie {
                     EntityManager.noHit(sword);
                     EntityManager.shutTheFuckUp(sword);
                     sword.setCustomName("Dinnerbone");
-                    sword.setMetadata("GiantSword", new FixedMetadataValue(Skyblock.getPlugin(), true));
-                    sword.setMetadata("NoAffect", new FixedMetadataValue(Skyblock.getPlugin(), true));
+                    sword.setMetadata("GiantSword", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+                    sword.setMetadata("NoAffect", new FixedMetadataValue(SkyBlock.getPlugin(), true));
                     final ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(armorStand.getLocation(), EntityType.ARMOR_STAND);
                     stand.setVisible(false);
                     stand.setGravity(true);
@@ -708,6 +708,6 @@ public class Giant extends BaseZombie {
                     }, 60L);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
     }
 }

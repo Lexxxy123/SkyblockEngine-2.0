@@ -21,36 +21,36 @@ public class SEntityEquipment {
         return this.itemInHand;
     }
 
-    public void setItemInHand(final ItemStack itemInHand) {
-        this.itemInHand = itemInHand;
-    }
-
     public ItemStack getHelmet() {
         return this.helmet;
-    }
-
-    public void setHelmet(final ItemStack helmet) {
-        this.helmet = helmet;
     }
 
     public ItemStack getChestplate() {
         return this.chestplate;
     }
 
-    public void setChestplate(final ItemStack chestplate) {
-        this.chestplate = chestplate;
-    }
-
     public ItemStack getLeggings() {
         return this.leggings;
     }
 
-    public void setLeggings(final ItemStack leggings) {
-        this.leggings = leggings;
-    }
-
     public ItemStack getBoots() {
         return this.boots;
+    }
+
+    public void setItemInHand(final ItemStack itemInHand) {
+        this.itemInHand = itemInHand;
+    }
+
+    public void setHelmet(final ItemStack helmet) {
+        this.helmet = helmet;
+    }
+
+    public void setChestplate(final ItemStack chestplate) {
+        this.chestplate = chestplate;
+    }
+
+    public void setLeggings(final ItemStack leggings) {
+        this.leggings = leggings;
     }
 
     public void setBoots(final ItemStack boots) {

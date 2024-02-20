@@ -1,9 +1,6 @@
 package in.godspunky.skyblock.region;
 
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.util.SUtil;
-import me.clip.placeholderapi.libs.kyori.adventure.text.BlockNBTComponent;
-import org.bukkit.Bukkit;
+import in.godspunky.skyblock.SkyBlock;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -11,19 +8,14 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import in.godspunky.skyblock.util.SUtil;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Region {
-    protected static final Skyblock plugin;
     private static final Map<String, Region> REGION_CACHE;
-
-    static {
-        REGION_CACHE = new HashMap<String, Region>();
-        plugin = Skyblock.getPlugin();
-    }
-
+    protected static final SkyBlock plugin;
     protected final String name;
     protected Location firstLocation;
     protected Location secondLocation;
@@ -37,6 +29,15 @@ public class Region {
         this.type = type;
         this.capture = null;
         Region.REGION_CACHE.put(this.name, this);
+    }
+
+    public void save() {
+        Region.plugin.regionData.save(this);
+    }
+
+    public void delete() {
+        Region.REGION_CACHE.remove(this.name);
+        Region.plugin.regionData.delete(this);
     }
 
     public static List<Entity> getPlayersWithinRegionType(final RegionType type) {
@@ -78,55 +79,6 @@ public class Region {
         possible.sort(Comparator.comparingInt(r -> r.getType().ordinal()));
         Collections.reverse(possible);
         return (possible.size() != 0) ? possible.get(0) : null;
-    }
-
-    public static Region create(final String name, final Location firstLocation, final Location secondLocation, final RegionType type) {
-        return Region.plugin.regionData.create(name, firstLocation, secondLocation, type);
-    }
-
-    public static Region get(final String name) {
-        if (Region.REGION_CACHE.containsKey(name)) {
-            return Region.REGION_CACHE.get(name);
-        }
-        return Region.plugin.regionData.get(name);
-    }
-
-    public static List<Region> getRegions() {
-        return new ArrayList<Region>(Region.REGION_CACHE.values());
-    }
-
-    public static List<Region> getRegionsOfType(final RegionType type) {
-        return getRegions().stream().filter(region -> region.getType() == type).collect(Collectors.toList());
-    }
-
-    public static void cacheRegions() {
-        for (final Region region : Region.plugin.regionData.getAll()) {
-            Region.REGION_CACHE.put(region.getName(), region);
-        }
-
-
-        World islandWorld = Bukkit.getWorld("island");
-        double islandX = 0;
-        double islandY = 0;
-        double islandZ = 0;
-
-        Location islandFirstLocation = new Location(islandWorld, islandX, islandY, islandZ);
-        Location islandSecondLocation = new Location(islandWorld, islandX, islandY, islandZ);
-
-        REGION_CACHE.put("island", new Region("island", islandFirstLocation, islandSecondLocation, RegionType.PRIVATE_ISLAND));
-    }
-
-    public static Region getIslandRegion() {
-        return REGION_CACHE.get("island");
-    }
-
-    public void save() {
-        Region.plugin.regionData.save(this);
-    }
-
-    public void delete() {
-        Region.REGION_CACHE.remove(this.name);
-        Region.plugin.regionData.delete(this);
     }
 
     public boolean insideRegion(final Entity entity) {
@@ -247,6 +199,31 @@ public class Region {
         return entities.stream().filter((this::insideRegion)).collect(Collectors.toList());
     }
 
+    public static Region create(final String name, final Location firstLocation, final Location secondLocation, final RegionType type) {
+        return Region.plugin.regionData.create(name, firstLocation, secondLocation, type);
+    }
+
+    public static Region get(final String name) {
+        if (Region.REGION_CACHE.containsKey(name)) {
+            return Region.REGION_CACHE.get(name);
+        }
+        return Region.plugin.regionData.get(name);
+    }
+
+    public static List<Region> getRegions() {
+        return new ArrayList<Region>(Region.REGION_CACHE.values());
+    }
+
+    public static List<Region> getRegionsOfType(final RegionType type) {
+        return getRegions().stream().filter(region -> region.getType() == type).collect(Collectors.toList());
+    }
+
+    public static void cacheRegions() {
+        for (final Region region : Region.plugin.regionData.getAll()) {
+            Region.REGION_CACHE.put(region.getName(), region);
+        }
+    }
+
     public String getName() {
         return this.name;
     }
@@ -255,20 +232,20 @@ public class Region {
         return this.firstLocation;
     }
 
-    public void setFirstLocation(final Location firstLocation) {
-        this.firstLocation = firstLocation;
-    }
-
     public Location getSecondLocation() {
         return this.secondLocation;
     }
 
-    public void setSecondLocation(final Location secondLocation) {
-        this.secondLocation = secondLocation;
-    }
-
     public RegionType getType() {
         return this.type;
+    }
+
+    public void setFirstLocation(final Location firstLocation) {
+        this.firstLocation = firstLocation;
+    }
+
+    public void setSecondLocation(final Location secondLocation) {
+        this.secondLocation = secondLocation;
     }
 
     public void setType(final RegionType type) {
@@ -277,5 +254,10 @@ public class Region {
 
     public List<BlockState> getCapture() {
         return this.capture;
+    }
+
+    static {
+        REGION_CACHE = new HashMap<String, Region>();
+        plugin = SkyBlock.getPlugin();
     }
 }

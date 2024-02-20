@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.item.weapon;
 
 import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.util.Sputnik;
 
 public class RevantusSword implements ToolStatistics, MaterialFunction {

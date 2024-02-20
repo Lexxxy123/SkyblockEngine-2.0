@@ -1,15 +1,7 @@
 package in.godspunky.skyblock.entity.zombie;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.extra.beam.Beam;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
+import in.godspunky.skyblock.SkyBlock;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.entity.ArmorStand;
@@ -22,16 +14,20 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.extra.beam.Beam;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class TheWatcher extends BaseZombie {
     public static final Map<Entity, String> DIALOUGE_BOSS;
-
-    static {
-        DIALOUGE_BOSS = new HashMap<Entity, String>();
-    }
 
     @Override
     public String getEntityName() {
@@ -68,7 +64,7 @@ public class TheWatcher extends BaseZombie {
                         public void run() {
                             hologram.remove();
                         }
-                    }.runTaskLater(Skyblock.getPlugin(), 20L);
+                    }.runTaskLater(SkyBlock.getPlugin(), 20L);
                 }
                 if (hologram.isDead()) {
                     this.cancel();
@@ -83,7 +79,7 @@ public class TheWatcher extends BaseZombie {
                 hologram.teleport(entity.getLocation().clone().add(0.0, height, 0.0));
                 hologram.setCustomName(Sputnik.trans("&e﴾ &c&lThe Watcher &e﴿"));
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 0L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 0L);
         final ArmorStand hologram_d = (ArmorStand) entity.getWorld().spawn(entity.getLocation().add(0.0, height + 0.3, 0.0), (Class) ArmorStand.class);
         hologram_d.setVisible(false);
         hologram_d.setGravity(false);
@@ -98,7 +94,7 @@ public class TheWatcher extends BaseZombie {
                         public void run() {
                             hologram_d.remove();
                         }
-                    }.runTaskLater(Skyblock.getPlugin(), 20L);
+                    }.runTaskLater(SkyBlock.getPlugin(), 20L);
                 }
                 if (hologram.isDead()) {
                     this.cancel();
@@ -115,10 +111,10 @@ public class TheWatcher extends BaseZombie {
                 hologram_d.teleport(entity.getLocation().clone().add(0.0, height + 0.3, 0.0));
                 hologram_d.teleport(entity.getLocation().clone().add(0.0, height + 0.3, 0.0));
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
         EntityManager.noAI(entity);
-        entity.setMetadata("NoAffect", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("notDisplay", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("NoAffect", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("notDisplay", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         EntityManager.shutTheFuckUp(entity);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 100);
         final ArmorStand stand = (ArmorStand) entity.getWorld().spawn(entity.getLocation(), (Class) ArmorStand.class);
@@ -133,7 +129,7 @@ public class TheWatcher extends BaseZombie {
                         public void run() {
                             stand.remove();
                         }
-                    }.runTaskLater(Skyblock.getPlugin(), 0L);
+                    }.runTaskLater(SkyBlock.getPlugin(), 0L);
                 }
                 for (final Entity target : stand.getNearbyEntities(20.0, 20.0, 20.0)) {
                     if (target instanceof Player) {
@@ -146,7 +142,7 @@ public class TheWatcher extends BaseZombie {
                 }
                 stand.teleport(entity.getLocation().clone().add(0.0, 0.0, 0.0));
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
     }
 
     @Override
@@ -181,5 +177,9 @@ public class TheWatcher extends BaseZombie {
     @Override
     public double getXPDropped() {
         return 20.0;
+    }
+
+    static {
+        DIALOUGE_BOSS = new HashMap<Entity, String>();
     }
 }

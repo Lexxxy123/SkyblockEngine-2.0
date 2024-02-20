@@ -1,9 +1,9 @@
 package in.godspunky.skyblock.entity;
 
-import in.godspunky.skyblock.Skyblock;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import in.godspunky.skyblock.SkyBlock;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,12 +14,6 @@ public final class StaticDragonManager {
     public static boolean ACTIVE;
     public static Map<UUID, List<Location>> EYES;
     public static SEntity DRAGON;
-
-    static {
-        StaticDragonManager.ACTIVE = false;
-        StaticDragonManager.EYES = new HashMap<UUID, List<Location>>();
-        StaticDragonManager.DRAGON = null;
-    }
 
     public static void endFight() {
         if (StaticDragonManager.DRAGON == null) {
@@ -32,10 +26,16 @@ public final class StaticDragonManager {
                 final BlockState s = b.getState();
                 s.setRawData((byte) 0);
                 s.update();
-                b.removeMetadata("placer", Skyblock.getPlugin());
+                b.removeMetadata("placer", SkyBlock.getPlugin());
             }
         }
         StaticDragonManager.EYES.clear();
+        StaticDragonManager.DRAGON = null;
+    }
+
+    static {
+        StaticDragonManager.ACTIVE = false;
+        StaticDragonManager.EYES = new HashMap<UUID, List<Location>>();
         StaticDragonManager.DRAGON = null;
     }
 }

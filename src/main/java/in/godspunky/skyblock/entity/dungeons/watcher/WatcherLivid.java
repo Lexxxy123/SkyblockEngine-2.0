@@ -1,16 +1,7 @@
 package in.godspunky.skyblock.entity.dungeons.watcher;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
-import in.godspunky.skyblock.entity.zombie.BaseZombie;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
+import in.godspunky.skyblock.SkyBlock;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
@@ -27,6 +18,15 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.entity.zombie.BaseZombie;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 
 public class WatcherLivid extends BaseZombie {
     @Override
@@ -49,9 +49,9 @@ public class WatcherLivid extends BaseZombie {
         final HeadsOnWall h = new HeadsOnWall(EnumWatcherType.LIVID);
         final PlayerDisguise p = Sputnik.applyPacketNPC(entity, h.value, h.signature, true);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 87);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("LD", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("WATCHER_E", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("WATCHER_E", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         p.setReplaceSounds(true);
         new BukkitRunnable() {
             public void run() {
@@ -73,7 +73,7 @@ public class WatcherLivid extends BaseZombie {
                     }, 30L);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 150L, 150L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 150L, 150L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -84,7 +84,7 @@ public class WatcherLivid extends BaseZombie {
                     entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 0.1, 0.0), Effect.WITCH_MAGIC, 0, 1, (float) SUtil.random(-1, 1), (float) SUtil.random(-1, 2), (float) SUtil.random(-1, 1), 0.0f, 1, 20);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 10L, 10L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 10L, 10L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -107,7 +107,7 @@ public class WatcherLivid extends BaseZombie {
                     }
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 220L, 220L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 220L, 220L);
         new BukkitRunnable() {
             public void run() {
                 final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -143,7 +143,7 @@ public class WatcherLivid extends BaseZombie {
                     break;
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 3L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 3L);
     }
 
     @Override
@@ -272,6 +272,6 @@ public class WatcherLivid extends BaseZombie {
             public synchronized void cancel() throws IllegalStateException {
                 super.cancel();
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
     }
 }

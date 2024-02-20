@@ -1,8 +1,7 @@
 package in.godspunky.skyblock.item.weapon;
 
-import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.util.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,6 +10,7 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
+import in.godspunky.skyblock.user.PlayerUtils;
 
 public class MidasStaff implements ToolStatistics, MaterialFunction, Ability {
     @Override
@@ -41,45 +41,45 @@ public class MidasStaff implements ToolStatistics, MaterialFunction, Ability {
         stand.setVisible(false);
         stand.setGravity(false);
         stand.setMarker(true);
-        stand.setMetadata("GoldMol", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        stand.setMetadata("GoldMol", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         ArmorStand stand2 = (ArmorStand) player.getWorld().spawn(stand.getLocation().add(stand.getLocation().getDirection().multiply(1)), (Class) ArmorStand.class);
         stand2.setVisible(false);
         stand2.setGravity(false);
         stand2.setMarker(true);
-        stand2.setMetadata("GoldMol", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        stand2.setMetadata("GoldMol", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         ArmorStand stand3 = (ArmorStand) player.getWorld().spawn(stand2.getLocation().add(stand2.getLocation().getDirection().multiply(1)), (Class) ArmorStand.class);
         stand3.setVisible(false);
         stand3.setGravity(false);
         stand3.setMarker(true);
-        stand3.setMetadata("GoldMol", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        stand3.setMetadata("GoldMol", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         ArmorStand stand4 = (ArmorStand) player.getWorld().spawn(stand3.getLocation().add(stand3.getLocation().getDirection().multiply(1)), (Class) ArmorStand.class);
         stand4.setVisible(false);
         stand4.setGravity(false);
-        stand4.setMetadata("GoldMol", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        stand4.setMetadata("GoldMol", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         ArmorStand stand5 = (ArmorStand) player.getWorld().spawn(stand4.getLocation().add(stand4.getLocation().getDirection().multiply(1)), (Class) ArmorStand.class);
         stand5.setVisible(false);
         stand5.setGravity(false);
-        stand5.setMetadata("GoldMol", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        stand5.setMetadata("GoldMol", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         ArmorStand stand6 = (ArmorStand) player.getWorld().spawn(stand5.getLocation().add(stand5.getLocation().getDirection().multiply(1)), (Class) ArmorStand.class);
         stand6.setVisible(false);
         stand6.setGravity(false);
-        stand6.setMetadata("GoldMol", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        stand6.setMetadata("GoldMol", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         ArmorStand stand7 = (ArmorStand) player.getWorld().spawn(stand6.getLocation().add(stand6.getLocation().getDirection().multiply(1)), (Class) ArmorStand.class);
         stand7.setVisible(false);
         stand7.setGravity(false);
-        stand7.setMetadata("GoldMol", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        stand7.setMetadata("GoldMol", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         ArmorStand stand8 = (ArmorStand) player.getWorld().spawn(stand7.getLocation().add(stand7.getLocation().getDirection().multiply(1)), (Class) ArmorStand.class);
         stand8.setVisible(false);
         stand8.setGravity(false);
-        stand8.setMetadata("GoldMol", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        stand8.setMetadata("GoldMol", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         ArmorStand stand9 = (ArmorStand) player.getWorld().spawn(stand8.getLocation().add(stand8.getLocation().getDirection().multiply(1)), (Class) ArmorStand.class);
         stand9.setVisible(false);
         stand9.setGravity(false);
-        stand9.setMetadata("GoldMol", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        stand9.setMetadata("GoldMol", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         ArmorStand stand10 = (ArmorStand) player.getWorld().spawn(stand9.getLocation().add(stand9.getLocation().getDirection().multiply(1)), (Class) ArmorStand.class);
         stand10.setVisible(false);
         stand10.setGravity(false);
-        stand10.setMetadata("GoldMol", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        stand10.setMetadata("GoldMol", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         SUtil.delay(() -> BlockFallAPI.sendBlock(stand2.getLocation(), Material.GOLD_BLOCK, (byte) 0, player.getWorld(), 15), 3L);
         float angle = stand2.getEyeLocation().getYaw() / 60.0f;
         Location loc1_1 = stand2.getEyeLocation().add(Math.cos(angle), 0.0, Math.sin(angle));
@@ -173,7 +173,7 @@ public class MidasStaff implements ToolStatistics, MaterialFunction, Ability {
                     }
                 }
             }
-        }.runTaskLater(Skyblock.getPlugin(), 26L);
+        }.runTaskLater(SkyBlock.getPlugin(), 26L);
     }
 
     @Override

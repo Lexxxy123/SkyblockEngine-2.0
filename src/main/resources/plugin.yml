@@ -1,11 +1,9 @@
-name: Skyblock
-version: 1.0-SNAPSHOT
-main: in.godspunky.skyblock.Skyblock
-authors: [ Epicportal , Hamza ]
-description: this is a description, what do you want from me
+name: SkyBlockEngine
+version: 1.2-SNAPSHOT
+main: in.godspunky.skyblock.SkyBlock
+authors: [ Hamza , EpicPortal , Dumbo]
+description: GodSpunky SkyBlock Sandbox plugin Developed by Team GodSpunky
 
 softdepend: [PlaceholderAPI]
-depend: [LibsDisguises, ProtocolLib , Citizens]
-commands:
-  setrank:
+depend: [LibsDisguises, Multiverse-Core, ProtocolLib]
 

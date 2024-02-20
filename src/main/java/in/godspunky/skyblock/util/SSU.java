@@ -23,21 +23,6 @@ public class SSU extends EntityFireworks {
         this.a(0.25f, 0.25f);
     }
 
-    public static void spawn(final Location location, final FireworkEffect effect, final Player... players) {
-        try {
-            final SSU firework = new SSU(((CraftWorld) location.getWorld()).getHandle(), players);
-            final FireworkMeta meta = ((Firework) firework.getBukkitEntity()).getFireworkMeta();
-            meta.addEffect(effect);
-            ((Firework) firework.getBukkitEntity()).setFireworkMeta(meta);
-            firework.setPosition(location.getX(), location.getY(), location.getZ());
-            if (((CraftWorld) location.getWorld()).getHandle().addEntity(firework)) {
-                firework.setInvisible(true);
-            }
-        } catch (final Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public void t_() {
         if (this.gone) {
             return;
@@ -54,6 +39,21 @@ public class SSU extends EntityFireworks {
                 }
             }
             this.die();
+        }
+    }
+
+    public static void spawn(final Location location, final FireworkEffect effect, final Player... players) {
+        try {
+            final SSU firework = new SSU(((CraftWorld) location.getWorld()).getHandle(), players);
+            final FireworkMeta meta = ((Firework) firework.getBukkitEntity()).getFireworkMeta();
+            meta.addEffect(effect);
+            ((Firework) firework.getBukkitEntity()).setFireworkMeta(meta);
+            firework.setPosition(location.getX(), location.getY(), location.getZ());
+            if (((CraftWorld) location.getWorld()).getHandle().addEntity(firework)) {
+                firework.setInvisible(true);
+            }
+        } catch (final Exception e) {
+            e.printStackTrace();
         }
     }
 }

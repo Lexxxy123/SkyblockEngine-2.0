@@ -1,11 +1,12 @@
 package in.godspunky.skyblock.gui;
 
-import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.item.Rarity;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -26,21 +27,13 @@ public class DungeonsItemConverting extends GUI {
     private static final Map<Rarity, Integer> COST_MAP;
     private static final List<UUID> COOLDOWN;
 
-    static {
-        DEFAULT_REFORGE_ITEM = SUtil.getStack(ChatColor.RED + "Upgrade Item", Material.ANVIL, (short) 0, 1, Sputnik.trans("&7Upgrades items using"), Sputnik.trans("&bBits &7place a weapon or"), Sputnik.trans("&7armor piece above to upgrade it"), Sputnik.trans("&7to a &dDungeon item&7, improving"), Sputnik.trans("&7its stats while in Dungeons. You"), Sputnik.trans("&7can also upgrade an existing"), Sputnik.trans("&7Dungeon item's stats!"));
-        ANVIL_BARRIER = SUtil.getStack(ChatColor.RED + "Upgrade Item", Material.BARRIER, (short) 0, 1, Sputnik.trans("&7Upgrades items using"), Sputnik.trans("&bBits &7place a weapon or"), Sputnik.trans("&7armor piece above to upgrade it"), Sputnik.trans("&7to a &dDungeon item&7, improving"), Sputnik.trans("&7its stats while in Dungeons. You"), Sputnik.trans("&7can also upgrade an existing"), Sputnik.trans("&7Dungeon item's stats!"));
-        COST_MAP = new HashMap<Rarity, Integer>();
-        COOLDOWN = new ArrayList<UUID>();
-        DungeonsItemConverting.COST_MAP.put(Rarity.COMMON, 400);
-        DungeonsItemConverting.COST_MAP.put(Rarity.UNCOMMON, 750);
-        DungeonsItemConverting.COST_MAP.put(Rarity.RARE, 1050);
-        DungeonsItemConverting.COST_MAP.put(Rarity.EPIC, 1470);
-        DungeonsItemConverting.COST_MAP.put(Rarity.LEGENDARY, 1820);
-        DungeonsItemConverting.COST_MAP.put(Rarity.MYTHIC, 2150);
-        DungeonsItemConverting.COST_MAP.put(Rarity.SUPREME, 4100);
-        DungeonsItemConverting.COST_MAP.put(Rarity.SPECIAL, 4600);
-        DungeonsItemConverting.COST_MAP.put(Rarity.VERY_SPECIAL, 7000);
-        DungeonsItemConverting.COST_MAP.put(Rarity.EXCLUSIVE, 100000);
+    public void fillFrom(final Inventory i, final int startFromSlot, final int height, final ItemStack stacc) {
+        i.setItem(startFromSlot, stacc);
+        i.setItem(startFromSlot + 9, stacc);
+        i.setItem(startFromSlot + 9 + 9, stacc);
+        i.setItem(startFromSlot + 9 + 9 + 9, stacc);
+        i.setItem(startFromSlot + 9 + 9 + 9 + 9, stacc);
+        i.setItem(startFromSlot + 9 + 9 + 9 + 9 + 9, stacc);
     }
 
     public DungeonsItemConverting() {
@@ -82,10 +75,9 @@ public class DungeonsItemConverting extends GUI {
                     return;
                 }
                 if (e.getClickedInventory().getItem(31) != null && e.getClickedInventory().getItem(31).getType() != Material.BARRIER) {
-                    User user = User.getUser(player.getUniqueId());
-
+                    final Economy econ = SkyBlock.getEconomy();
                     final long add = (long) DungeonsItemConverting.COST_MAP.get(sItem.getRarity()) * (sItem.getStar() + 1);
-                    final double cur = user.getCoins();
+                    final double cur = econ.getBalance(player);
                     if (!sItem.isStarrable() || sItem.getStar() >= 5) {
                         player.sendMessage(ChatColor.RED + "You cannot upgrade this item.");
                         return;
@@ -96,7 +88,7 @@ public class DungeonsItemConverting extends GUI {
                         return;
                     }
                     player.playSound(player.getLocation(), Sound.ANVIL_USE, 1.0f, 1.0f);
-                    user.subCoins(add);
+                    econ.withdrawPlayer(player, (double) add);
                     e.getClickedInventory().setItem(13, null);
                     final SItem build = sItem;
                     if (build.isDungeonsItem()) {
@@ -111,15 +103,6 @@ public class DungeonsItemConverting extends GUI {
                 }
             }
         });
-    }
-
-    public void fillFrom(final Inventory i, final int startFromSlot, final int height, final ItemStack stacc) {
-        i.setItem(startFromSlot, stacc);
-        i.setItem(startFromSlot + 9, stacc);
-        i.setItem(startFromSlot + 9 + 9, stacc);
-        i.setItem(startFromSlot + 9 + 9 + 9, stacc);
-        i.setItem(startFromSlot + 9 + 9 + 9 + 9, stacc);
-        i.setItem(startFromSlot + 9 + 9 + 9 + 9 + 9, stacc);
     }
 
     @Override
@@ -180,7 +163,7 @@ public class DungeonsItemConverting extends GUI {
                 inventory.setItem(22, stack);
                 inventory.setItem(31, barrierStack);
             }
-        }.runTaskLater(Skyblock.getPlugin(), 1L);
+        }.runTaskLater(SkyBlock.getPlugin(), 1L);
     }
 
     @Override
@@ -205,7 +188,7 @@ public class DungeonsItemConverting extends GUI {
                     DungeonsItemConverting.this.fillFrom(inventory, 8, 5, SUtil.createColoredStainedGlassPane((short) 5, ChatColor.RESET + " "));
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 5L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 5L);
         this.set(new GUIClickableItem() {
             @Override
             public void run(final InventoryClickEvent e) {
@@ -227,7 +210,7 @@ public class DungeonsItemConverting extends GUI {
                     public void run() {
                         inventory.setItem(e.getSlot(), DungeonsItemConverting.ANVIL_BARRIER);
                     }
-                }.runTaskLater(Skyblock.getPlugin(), 1L);
+                }.runTaskLater(SkyBlock.getPlugin(), 1L);
             }
 
             @Override
@@ -259,5 +242,22 @@ public class DungeonsItemConverting extends GUI {
         }
         gui.onClose(e);
         GUI_MAP.remove(player.getUniqueId());
+    }
+
+    static {
+        DEFAULT_REFORGE_ITEM = SUtil.getStack(ChatColor.RED + "Upgrade Item", Material.ANVIL, (short) 0, 1, Sputnik.trans("&7Upgrades items using"), Sputnik.trans("&bBits &7place a weapon or"), Sputnik.trans("&7armor piece above to upgrade it"), Sputnik.trans("&7to a &dDungeon item&7, improving"), Sputnik.trans("&7its stats while in Dungeons. You"), Sputnik.trans("&7can also upgrade an existing"), Sputnik.trans("&7Dungeon item's stats!"));
+        ANVIL_BARRIER = SUtil.getStack(ChatColor.RED + "Upgrade Item", Material.BARRIER, (short) 0, 1, Sputnik.trans("&7Upgrades items using"), Sputnik.trans("&bBits &7place a weapon or"), Sputnik.trans("&7armor piece above to upgrade it"), Sputnik.trans("&7to a &dDungeon item&7, improving"), Sputnik.trans("&7its stats while in Dungeons. You"), Sputnik.trans("&7can also upgrade an existing"), Sputnik.trans("&7Dungeon item's stats!"));
+        COST_MAP = new HashMap<Rarity, Integer>();
+        COOLDOWN = new ArrayList<UUID>();
+        DungeonsItemConverting.COST_MAP.put(Rarity.COMMON, 400);
+        DungeonsItemConverting.COST_MAP.put(Rarity.UNCOMMON, 750);
+        DungeonsItemConverting.COST_MAP.put(Rarity.RARE, 1050);
+        DungeonsItemConverting.COST_MAP.put(Rarity.EPIC, 1470);
+        DungeonsItemConverting.COST_MAP.put(Rarity.LEGENDARY, 1820);
+        DungeonsItemConverting.COST_MAP.put(Rarity.MYTHIC, 2150);
+        DungeonsItemConverting.COST_MAP.put(Rarity.SUPREME, 4100);
+        DungeonsItemConverting.COST_MAP.put(Rarity.SPECIAL, 4600);
+        DungeonsItemConverting.COST_MAP.put(Rarity.VERY_SPECIAL, 7000);
+        DungeonsItemConverting.COST_MAP.put(Rarity.EXCLUSIVE, 100000);
     }
 }

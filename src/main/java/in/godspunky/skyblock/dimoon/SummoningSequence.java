@@ -1,41 +1,36 @@
 package in.godspunky.skyblock.dimoon;
 
-import in.godspunky.skyblock.Skyblock;
+import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
+import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.BlockFallAPI;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;
-import org.bukkit.*;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 import java.util.List;
 import java.util.UUID;
 
 public class SummoningSequence {
-    public static double[] wl;
-
-    static {
-        SummoningSequence.wl = new double[]{234668.5, 154.0, 236481.5};
-    }
-
-    private final Skyblock plugin;
-    private final World w;
     public UUID[] __qch__;
     double[] di;
     double[] em;
     double[] gl;
     double[] rb;
+    public static double[] wl;
+    private final SkyBlock plugin;
     private boolean acE;
     private boolean acD;
     private boolean acR;
     private boolean acG;
     private boolean bossSpawning;
     private boolean bossSpawned;
+    private final World w;
 
     public SummoningSequence(final World w) {
         this.__qch__ = new UUID[8];
@@ -43,7 +38,7 @@ public class SummoningSequence {
         this.em = new double[]{234666.5, 191.0, 236549.5};
         this.gl = new double[]{234600.5, 191.0, 236480.5};
         this.rb = new double[]{234672.5, 191.0, 236414.5};
-        this.plugin = Skyblock.getPlugin();
+        this.plugin = SkyBlock.getPlugin();
         this.acE = false;
         this.acD = false;
         this.acR = false;
@@ -261,7 +256,7 @@ public class SummoningSequence {
     }
 
     public void interactCatalyst(final Player p, final int slot, final boolean rightClick) {
-        if (this.haveCatal(p) && Skyblock.getPlugin().altarCooldown) {
+        if (this.haveCatal(p) && SkyBlock.getPlugin().altarCooldown) {
             p.playSound(p.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 2.0f);
             p.sendMessage(Sputnik.trans("&cYou cannot use the altar right now! Let it cool down for a while!"));
             return;
@@ -343,51 +338,55 @@ public class SummoningSequence {
         }.runTaskTimerAsynchronously(this.plugin, 0L, 20L);
     }
 
-    public boolean isAcE() {
-        return this.acE;
-    }
-
     public void setAcE(final boolean acE) {
         this.acE = acE;
     }
 
-    public boolean isAcD() {
-        return this.acD;
+    public boolean isAcE() {
+        return this.acE;
     }
 
     public void setAcD(final boolean acD) {
         this.acD = acD;
     }
 
-    public boolean isAcR() {
-        return this.acR;
+    public boolean isAcD() {
+        return this.acD;
     }
 
     public void setAcR(final boolean acR) {
         this.acR = acR;
     }
 
-    public boolean isAcG() {
-        return this.acG;
+    public boolean isAcR() {
+        return this.acR;
     }
 
     public void setAcG(final boolean acG) {
         this.acG = acG;
     }
 
-    public boolean isBossSpawning() {
-        return this.bossSpawning;
+    public boolean isAcG() {
+        return this.acG;
     }
 
     public void setBossSpawning(final boolean bossSpawning) {
         this.bossSpawning = bossSpawning;
     }
 
-    public boolean isBossSpawned() {
-        return this.bossSpawned;
+    public boolean isBossSpawning() {
+        return this.bossSpawning;
     }
 
     public void setBossSpawned(final boolean bossSpawned) {
         this.bossSpawned = bossSpawned;
+    }
+
+    public boolean isBossSpawned() {
+        return this.bossSpawned;
+    }
+
+    static {
+        SummoningSequence.wl = new double[]{234668.5, 154.0, 236481.5};
     }
 }

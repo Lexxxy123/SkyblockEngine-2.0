@@ -9,18 +9,18 @@ import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
 import com.sk89q.worldedit.util.io.Closer;
 import com.sk89q.worldedit.world.World;
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.dimoon.utils.Utils;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityType;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
+import in.godspunky.skyblock.SkyBlock;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import in.godspunky.skyblock.dimoon.utils.Utils;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityType;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -28,10 +28,10 @@ import java.util.Iterator;
 import java.util.List;
 
 public class Arena {
-    private final List<Block> parkourBlocks;
-    public int highestY;
     private int currentParkour;
+    private final List<Block> parkourBlocks;
     private boolean isCollapsing;
+    public int highestY;
     private BukkitTask parkourTask;
 
     public Arena() {
@@ -41,56 +41,9 @@ public class Arena {
         this.highestY = -1;
     }
 
-    public static void cleanArena() {
-        for (int i = 1; i < 4; ++i) {
-            try {
-                rp(i);
-            } catch (final IOException e) {
-                e.printStackTrace();
-            }
-        }
-        Sputnik.pasteSchematicRep("egg3", true, 234666.0f, 155.0f, 236479.0f, Bukkit.getWorld("arena")).forEach(block -> block.setType(Material.AIR));
-        final Block[] a = Altar.altarList;
-        for (int j = 0; j < a.length; ++j) {
-            final Block c = Bukkit.getWorld("arena").getBlockAt(a[j].getLocation().clone().add(0.0, 1.0, 0.0));
-            c.setType(Material.AIR);
-        }
-    }
-
-    private static void rp(final int s) throws IOException {
-        final File parkour = new File("plugins/dimoon/parkours/parkour" + s + ".schematic");
-        final Location location = new Location(Bukkit.getWorld("arena"), 234668.5, 155.0, 236481.5);
-        final World world = new BukkitWorld(location.getWorld());
-        final Closer closer = Closer.create();
-        final FileInputStream fis = (FileInputStream) closer.register((Closeable) new FileInputStream(parkour));
-        final BufferedInputStream bis = (BufferedInputStream) closer.register((Closeable) new BufferedInputStream(fis));
-        final ClipboardReader reader = ClipboardFormat.SCHEMATIC.getReader(bis);
-        final Clipboard clipboard = reader.read(world.getWorldData());
-        for (int x = 0; x < clipboard.getRegion().getWidth(); ++x) {
-            for (int y = 0; y < clipboard.getRegion().getHeight(); ++y) {
-                for (int z = 0; z < clipboard.getRegion().getLength(); ++z) {
-                    final Vector minimumPoint = clipboard.getMinimumPoint();
-                    final Vector clipboardLoc = new Vector(minimumPoint.getBlockX() + x, minimumPoint.getBlockY() + y, minimumPoint.getBlockZ() + z);
-                    final BaseBlock baseBlock = clipboard.getBlock(clipboardLoc);
-                    if (baseBlock.getId() != 0) {
-                        final Location newLocation = location.clone().subtract(57.0, 0.0, 57.0).add(x, y, z);
-                        final Vector loc = new Vector(newLocation.getBlockX(), newLocation.getBlockY(), newLocation.getBlockZ());
-                        try {
-                            world.setBlock(loc, baseBlock);
-                            location.getWorld().getBlockAt(newLocation).setType(Material.AIR);
-                        } catch (final WorldEditException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-        }
-        closer.close();
-    }
-
     public void pasteParkour() throws IOException {
         final File parkour = new File("plugins/dimoon/parkours/parkour" + this.currentParkour + ".schematic");
-        final Dimoon dimoon = Skyblock.getPlugin().dimoon;
+        final Dimoon dimoon = SkyBlock.getPlugin().dimoon;
         if (dimoon == null) {
             return;
         }
@@ -161,29 +114,29 @@ public class Arena {
         final int hc = highestYC;
         this.currentParkour = this.currentParkour % 3 + 1;
         SUtil.delay(() -> this.highestY = hc, 1L);
-        final Skyblock plugin = Skyblock.getPlugin();
+        final SkyBlock plugin = SkyBlock.getPlugin();
         this.parkourTask = new BukkitRunnable() {
             public void run() {
                 Arena.this.collapseParkour();
                 Arena.this.collapseFloor();
-                for (final Player p : Skyblock.getPlugin().dimoon.getEntity().getWorld().getPlayers()) {
+                for (final Player p : SkyBlock.getPlugin().dimoon.getEntity().getWorld().getPlayers()) {
                     p.sendMessage(Utils.format("&cYou couldn't complete the parkour in time, the boss regained 5,000 HP that sucks!"));
                 }
-                Skyblock.getPlugin().arena.highestY = -1;
+                SkyBlock.getPlugin().arena.highestY = -1;
                 dimoon.getTasks().add(new BukkitRunnable() {
                     public void run() {
                         try {
-                            Skyblock.getPlugin().arena.pasteParkour();
+                            SkyBlock.getPlugin().arena.pasteParkour();
                         } catch (final IOException e) {
                             throw new RuntimeException(e);
                         }
                     }
-                }.runTaskLater(Skyblock.getPlugin(), 1200L));
+                }.runTaskLater(SkyBlock.getPlugin(), 1200L));
                 if (plugin.dimoon != null) {
                     plugin.dimoon.heal(5000);
                 }
             }
-        }.runTaskLater(Skyblock.getPlugin(), 12000L);
+        }.runTaskLater(SkyBlock.getPlugin(), 12000L);
     }
 
     public void collapseParkour() {
@@ -192,7 +145,7 @@ public class Arena {
         }
         this.isCollapsing = true;
         final Iterator<Block> iterator = this.parkourBlocks.iterator();
-        final Skyblock plugin = Skyblock.getPlugin();
+        final SkyBlock plugin = SkyBlock.getPlugin();
         new BukkitRunnable() {
             public void run() {
                 if (!iterator.hasNext()) {
@@ -208,11 +161,11 @@ public class Arena {
                 }
                 block.setType(Material.AIR);
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 1L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 1L, 1L);
     }
 
     public void collapseFloor() {
-        final Dimoon dimoon = Skyblock.getPlugin().dimoon;
+        final Dimoon dimoon = SkyBlock.getPlugin().dimoon;
         if (dimoon == null) {
         }
     }
@@ -220,7 +173,7 @@ public class Arena {
     public void spawnDimoonaize(final Entity entity) {
         Utils.bossMessage("DIMOONAIZE! GO!");
         final List<Location> locList = new ArrayList<Location>();
-        final Dimoon dimoon = Skyblock.getPlugin().dimoon;
+        final Dimoon dimoon = SkyBlock.getPlugin().dimoon;
         if (dimoon == null) {
             return;
         }
@@ -240,8 +193,8 @@ public class Arena {
                 final org.bukkit.World world = entity.getWorld();
                 final org.bukkit.util.Vector[] velocity = {loc.toVector().subtract(entity.getLocation().toVector()).normalize()};
                 new BukkitRunnable() {
-                    final double multiplier;
                     private final Location particleLocation;
+                    final double multiplier;
 
                     {
                         this.particleLocation = entity.getLocation().add(0.0, 2.0, 0.0).clone();
@@ -271,13 +224,13 @@ public class Arena {
                             this.cancel();
                         }
                     }
-                }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+                }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
             }, i * 5L);
         }
     }
 
     public void fixFloor() {
-        final Dimoon dimoon = Skyblock.getPlugin().dimoon;
+        final Dimoon dimoon = SkyBlock.getPlugin().dimoon;
         if (dimoon == null) {
             return;
         }
@@ -290,6 +243,53 @@ public class Arena {
                 }
             }
         }
+    }
+
+    public static void cleanArena() {
+        for (int i = 1; i < 4; ++i) {
+            try {
+                rp(i);
+            } catch (final IOException e) {
+                e.printStackTrace();
+            }
+        }
+        Sputnik.pasteSchematicRep("egg3", true, 234666.0f, 155.0f, 236479.0f, Bukkit.getWorld("arena")).forEach(block -> block.setType(Material.AIR));
+        final Block[] a = Altar.altarList;
+        for (int j = 0; j < a.length; ++j) {
+            final Block c = Bukkit.getWorld("arena").getBlockAt(a[j].getLocation().clone().add(0.0, 1.0, 0.0));
+            c.setType(Material.AIR);
+        }
+    }
+
+    private static void rp(final int s) throws IOException {
+        final File parkour = new File("plugins/dimoon/parkours/parkour" + s + ".schematic");
+        final Location location = new Location(Bukkit.getWorld("arena"), 234668.5, 155.0, 236481.5);
+        final World world = new BukkitWorld(location.getWorld());
+        final Closer closer = Closer.create();
+        final FileInputStream fis = (FileInputStream) closer.register((Closeable) new FileInputStream(parkour));
+        final BufferedInputStream bis = (BufferedInputStream) closer.register((Closeable) new BufferedInputStream(fis));
+        final ClipboardReader reader = ClipboardFormat.SCHEMATIC.getReader(bis);
+        final Clipboard clipboard = reader.read(world.getWorldData());
+        for (int x = 0; x < clipboard.getRegion().getWidth(); ++x) {
+            for (int y = 0; y < clipboard.getRegion().getHeight(); ++y) {
+                for (int z = 0; z < clipboard.getRegion().getLength(); ++z) {
+                    final Vector minimumPoint = clipboard.getMinimumPoint();
+                    final Vector clipboardLoc = new Vector(minimumPoint.getBlockX() + x, minimumPoint.getBlockY() + y, minimumPoint.getBlockZ() + z);
+                    final BaseBlock baseBlock = clipboard.getBlock(clipboardLoc);
+                    if (baseBlock.getId() != 0) {
+                        final Location newLocation = location.clone().subtract(57.0, 0.0, 57.0).add(x, y, z);
+                        final Vector loc = new Vector(newLocation.getBlockX(), newLocation.getBlockY(), newLocation.getBlockZ());
+                        try {
+                            world.setBlock(loc, baseBlock);
+                            location.getWorld().getBlockAt(newLocation).setType(Material.AIR);
+                        } catch (final WorldEditException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+        closer.close();
     }
 
     public BukkitTask getParkourTask() {

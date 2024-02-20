@@ -1,14 +1,13 @@
 package in.godspunky.skyblock.listener;
 
-import in.godspunky.skyblock.command.RegionCommand;
-import in.godspunky.skyblock.region.Region;
-import in.godspunky.skyblock.region.RegionGenerator;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import in.godspunky.skyblock.command.RegionCommand;
+import in.godspunky.skyblock.region.Region;
+import in.godspunky.skyblock.region.RegionGenerator;
 
 public class BlockListener extends PListener {
     @EventHandler
@@ -45,11 +44,5 @@ public class BlockListener extends PListener {
                 RegionCommand.REGION_GENERATION_MAP.remove(player);
                 break;
         }
-    }
-
-    @EventHandler
-    public void onBlockPlace(BlockPlaceEvent event) {
-        Player player = event.getPlayer();
-        event.setCancelled(!player.getWorld().getName().equals("island-" + player.getUniqueId()));
     }
 }

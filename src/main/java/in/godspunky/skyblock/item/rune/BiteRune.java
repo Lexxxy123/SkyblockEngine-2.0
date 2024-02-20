@@ -1,10 +1,10 @@
 package in.godspunky.skyblock.item.rune;
 
+import org.bukkit.ChatColor;
 import in.godspunky.skyblock.item.GenericItemType;
 import in.godspunky.skyblock.item.Rarity;
 import in.godspunky.skyblock.item.Rune;
 import in.godspunky.skyblock.item.SpecificItemType;
-import org.bukkit.ChatColor;
 
 public class BiteRune implements Rune {
     @Override

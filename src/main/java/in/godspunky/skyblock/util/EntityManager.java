@@ -14,10 +14,6 @@ import java.util.Map;
 public class EntityManager {
     public static final Map<Entity, Integer> DEFENSE_PERCENTAGE;
 
-    static {
-        DEFENSE_PERCENTAGE = new HashMap<Entity, Integer>();
-    }
-
     public static void noAI(final Entity bukkitEntity) {
         final net.minecraft.server.v1_8_R3.Entity nmsEntity = ((CraftEntity) bukkitEntity).getHandle();
         NBTTagCompound tag = nmsEntity.getNBTTag();
@@ -87,5 +83,9 @@ public class EntityManager {
 
     public static void NoWoosh(final LivingEntity player) {
         player.removePotionEffect(PotionEffectType.INVISIBILITY);
+    }
+
+    static {
+        DEFENSE_PERCENTAGE = new HashMap<Entity, Integer>();
     }
 }

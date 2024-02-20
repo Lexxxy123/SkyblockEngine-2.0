@@ -1,14 +1,14 @@
 package in.godspunky.skyblock.item.exclusive;
 
+import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityType;
 import in.godspunky.skyblock.item.GenericItemType;
 import in.godspunky.skyblock.item.MaterialFunction;
 import in.godspunky.skyblock.item.Rarity;
 import in.godspunky.skyblock.item.SkullStatistics;
-import org.bukkit.entity.Player;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
 
 public abstract class FloatingCrystal implements SkullStatistics, MaterialFunction {
     @Override

@@ -1,24 +1,24 @@
 package in.godspunky.skyblock.util;
 
-import in.godspunky.skyblock.Skyblock;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import in.godspunky.skyblock.SkyBlock;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class BossBar extends BukkitRunnable {
-    private final HashMap<Player, EntityWither> withers;
     private String title;
+    private final HashMap<Player, EntityWither> withers;
 
     public BossBar(final String title) {
-        this.withers = new HashMap<>();
+        this.withers = new HashMap<Player, EntityWither>();
         this.title = title;
-        this.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        this.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
     }
 
     public void addPlayer(final Player p) {

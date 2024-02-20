@@ -1,18 +1,18 @@
 package in.godspunky.skyblock.item.weapon;
 
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityType;
+import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.user.PlayerStatistics;
-import in.godspunky.skyblock.user.PlayerUtils;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitRunnable;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityType;
+import in.godspunky.skyblock.user.PlayerUtils;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.SUtil;
 
 public class AspectOfTheDragons implements ToolStatistics, MaterialFunction, Ability {
     @Override
@@ -107,7 +107,7 @@ public class AspectOfTheDragons implements ToolStatistics, MaterialFunction, Abi
                     stands.remove();
                     this.cancel();
                 }
-            }.runTaskLater(Skyblock.getPlugin(), 30L);
+            }.runTaskLater(SkyBlock.getPlugin(), 30L);
             user.damageEntity((Damageable) entity, baseDamage);
         }
     }

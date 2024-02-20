@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.skill;
 
-import in.godspunky.skyblock.user.User;
 import org.bukkit.ChatColor;
+import in.godspunky.skyblock.user.User;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,10 +9,6 @@ import java.util.List;
 
 public class ArcherSkill extends Skill implements DungeonsSkill {
     public static final ArcherSkill INSTANCE;
-
-    static {
-        INSTANCE = new ArcherSkill();
-    }
 
     @Override
     public String getName() {
@@ -67,5 +63,9 @@ public class ArcherSkill extends Skill implements DungeonsSkill {
         t.add("Stun Bow");
         t.add("Healing Bow");
         return t;
+    }
+
+    static {
+        INSTANCE = new ArcherSkill();
     }
 }

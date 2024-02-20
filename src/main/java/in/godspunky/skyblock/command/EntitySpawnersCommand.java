@@ -1,16 +1,15 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.entity.EntitySpawner;
-import in.godspunky.skyblock.entity.SEntityType;
-import in.godspunky.skyblock.ranks.PlayerRank;
-import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import in.godspunky.skyblock.entity.EntitySpawner;
+import in.godspunky.skyblock.entity.SEntityType;
+import in.godspunky.skyblock.util.SUtil;
 
 import java.util.List;
 
-@CommandParameters(description = "Manage entity spawners.", usage = "/<command> [create <type> | delete <index>]", aliases = "entityspawner,es,spawner,spawners", permission = PlayerRank.ADMIN)
+@CommandParameters(description = "Manage entity spawners.", usage = "/<command> [create <type> | delete <index>]", aliases = "entityspawner,es,spawner,spawners", permission = "spt.entity")
 public class EntitySpawnersCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

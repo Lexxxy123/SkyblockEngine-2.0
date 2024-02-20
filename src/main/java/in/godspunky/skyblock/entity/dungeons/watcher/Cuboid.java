@@ -356,55 +356,17 @@ public class Cuboid implements Iterable<Block>, Cloneable, ConfigurationSerializ
         return "Cuboid: " + this.worldName + "," + this.x1 + "," + this.y1 + "," + this.z1 + "=>" + this.x2 + "," + this.y2 + "," + this.z2;
     }
 
-    public enum CuboidDirection {
-        North,
-        East,
-        South,
-        West,
-        Up,
-        Down,
-        Horizontal,
-        Vertical,
-        Both,
-        Unknown;
-
-        public CuboidDirection opposite() {
-            switch (this) {
-                case North:
-                    return CuboidDirection.South;
-                case East:
-                    return CuboidDirection.West;
-                case South:
-                    return CuboidDirection.North;
-                case West:
-                    return CuboidDirection.East;
-                case Horizontal:
-                    return CuboidDirection.Vertical;
-                case Vertical:
-                    return CuboidDirection.Horizontal;
-                case Up:
-                    return CuboidDirection.Down;
-                case Down:
-                    return CuboidDirection.Up;
-                case Both:
-                    return CuboidDirection.Both;
-                default:
-                    return CuboidDirection.Unknown;
-            }
-        }
-    }
-
     public class CuboidIterator implements Iterator<Block> {
         private final World w;
         private final int baseX;
         private final int baseY;
         private final int baseZ;
-        private final int sizeX;
-        private final int sizeY;
-        private final int sizeZ;
         private int x;
         private int y;
         private int z;
+        private final int sizeX;
+        private final int sizeY;
+        private final int sizeZ;
 
         public CuboidIterator(final World w, final int x1, final int y1, final int z1, final int x2, final int y2, final int z2) {
             this.w = w;
@@ -440,6 +402,44 @@ public class Cuboid implements Iterable<Block>, Cloneable, ConfigurationSerializ
 
         @Override
         public void remove() {
+        }
+    }
+
+    public enum CuboidDirection {
+        North,
+        East,
+        South,
+        West,
+        Up,
+        Down,
+        Horizontal,
+        Vertical,
+        Both,
+        Unknown;
+
+        public CuboidDirection opposite() {
+            switch (this) {
+                case North:
+                    return CuboidDirection.South;
+                case East:
+                    return CuboidDirection.West;
+                case South:
+                    return CuboidDirection.North;
+                case West:
+                    return CuboidDirection.East;
+                case Horizontal:
+                    return CuboidDirection.Vertical;
+                case Vertical:
+                    return CuboidDirection.Horizontal;
+                case Up:
+                    return CuboidDirection.Down;
+                case Down:
+                    return CuboidDirection.Up;
+                case Both:
+                    return CuboidDirection.Both;
+                default:
+                    return CuboidDirection.Unknown;
+            }
         }
     }
 }

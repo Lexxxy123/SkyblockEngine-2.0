@@ -1,13 +1,7 @@
 package in.godspunky.skyblock.entity.dungeons.boss.sadan;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
-import in.godspunky.skyblock.entity.zombie.BaseZombie;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
+import in.godspunky.skyblock.SkyBlock;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.GenericAttributes;
@@ -26,6 +20,12 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.entity.zombie.BaseZombie;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 
 public class DiamondGiant extends BaseZombie {
     private static LivingEntity e;
@@ -35,34 +35,6 @@ public class DiamondGiant extends BaseZombie {
     public DiamondGiant() {
         this.swordActiv = false;
         this.swordSlamCD = true;
-    }
-
-    public static ItemStack buildColorStack(final int hexcolor) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
-    }
-
-    public static ItemStack b(final int hexcolor, final Material m) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
-    }
-
-    public static ItemStack c(final Material m) {
-        final ItemStack stack = new ItemStack(m);
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
-    }
-
-    public static void applyEffect(final PotionEffectType e, final Entity en, final int ticks, final int amp) {
-        ((LivingEntity) en).addPotionEffect(new PotionEffect(e, ticks, amp));
     }
 
     @Override
@@ -97,10 +69,10 @@ public class DiamondGiant extends BaseZombie {
         entity.getEquipment().setItemInHand(SUtil.enchant(new ItemStack(Material.DIAMOND_SWORD)));
         Sputnik.applyPacketGiant(entity);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 50);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("highername", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("RedNameTag", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("Giant_", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("highername", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("RedNameTag", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("Giant_", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 final LivingEntity target = ((CraftZombie) entity).getTarget();
@@ -114,7 +86,7 @@ public class DiamondGiant extends BaseZombie {
                     DiamondGiant.this.swordSlamAC(entity, target);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -144,7 +116,7 @@ public class DiamondGiant extends BaseZombie {
                     break;
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 8L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 8L);
     }
 
     @Override
@@ -185,6 +157,34 @@ public class DiamondGiant extends BaseZombie {
         return 0.35;
     }
 
+    public static ItemStack buildColorStack(final int hexcolor) {
+        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB(hexcolor));
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
+    }
+
+    public static ItemStack b(final int hexcolor, final Material m) {
+        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
+    }
+
+    public static ItemStack c(final Material m) {
+        final ItemStack stack = new ItemStack(m);
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
+    }
+
+    public static void applyEffect(final PotionEffectType e, final Entity en, final int ticks, final int amp) {
+        ((LivingEntity) en).addPotionEffect(new PotionEffect(e, ticks, amp));
+    }
+
     public void swordSlamAC(final LivingEntity e, final LivingEntity tar) {
         SUtil.delay(() -> this.swordSlamF(e, tar), 60L);
     }
@@ -199,8 +199,8 @@ public class DiamondGiant extends BaseZombie {
         armorStand.getEquipment().setItemInHand(SUtil.enchant(new ItemStack(Material.DIAMOND_SWORD)));
         Sputnik.applyPacketGiant(armorStand);
         armorStand.setCustomName("Dinnerbone");
-        armorStand.setMetadata("GiantSword", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        armorStand.setMetadata("NoAffect", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        armorStand.setMetadata("GiantSword", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        armorStand.setMetadata("NoAffect", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         EntityManager.Woosh(armorStand);
         EntityManager.noHit(armorStand);
         EntityManager.shutTheFuckUp(armorStand);
@@ -215,8 +215,8 @@ public class DiamondGiant extends BaseZombie {
         final Vector vectorBetween = secondLocation.toVector().subtract(mobsVector);
         vectorBetween.divide(new Vector(10, 10, 10));
         vectorBetween.add(new Vector(0, 0, 0));
-        final int id = Bukkit.getScheduler().scheduleSyncRepeatingTask(Skyblock.getPlugin(), () -> armorStand.setVelocity(vectorBetween), 10L, 10L);
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Skyblock.getPlugin(), () -> Bukkit.getScheduler().cancelTask(id), 40L);
+        final int id = Bukkit.getScheduler().scheduleSyncRepeatingTask(SkyBlock.getPlugin(), () -> armorStand.setVelocity(vectorBetween), 10L, 10L);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(SkyBlock.getPlugin(), () -> Bukkit.getScheduler().cancelTask(id), 40L);
         new BukkitRunnable() {
             public void run() {
                 if (!DiamondGiant.this.swordActiv) {
@@ -234,8 +234,8 @@ public class DiamondGiant extends BaseZombie {
                     EntityManager.noHit(sword);
                     EntityManager.shutTheFuckUp(sword);
                     sword.setCustomName("Dinnerbone");
-                    sword.setMetadata("GiantSword", new FixedMetadataValue(Skyblock.getPlugin(), true));
-                    sword.setMetadata("NoAffect", new FixedMetadataValue(Skyblock.getPlugin(), true));
+                    sword.setMetadata("GiantSword", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+                    sword.setMetadata("NoAffect", new FixedMetadataValue(SkyBlock.getPlugin(), true));
                     final ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(armorStand.getLocation(), EntityType.ARMOR_STAND);
                     stand.setVisible(false);
                     stand.setGravity(true);
@@ -272,7 +272,7 @@ public class DiamondGiant extends BaseZombie {
                     }, 35L);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
     }
 
     @Override

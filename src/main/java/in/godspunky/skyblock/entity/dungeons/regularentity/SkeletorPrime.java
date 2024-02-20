@@ -1,17 +1,7 @@
 package in.godspunky.skyblock.entity.dungeons.regularentity;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
-import in.godspunky.skyblock.entity.zombie.BaseZombie;
-import in.godspunky.skyblock.entity.zombie.NPCMobs;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
+import in.godspunky.skyblock.SkyBlock;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
 import net.minecraft.server.v1_8_R3.EntityLiving;
@@ -30,6 +20,16 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.entity.zombie.BaseZombie;
+import in.godspunky.skyblock.entity.zombie.NPCMobs;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.Iterator;
 
@@ -40,14 +40,6 @@ public class SkeletorPrime extends BaseZombie implements NPCMobs {
     public SkeletorPrime() {
         this.skullShoot = false;
         this.skullShootCD = true;
-    }
-
-    public static ItemStack b(final int hexcolor, final Material m) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
     }
 
     @Override
@@ -65,6 +57,14 @@ public class SkeletorPrime extends BaseZombie implements NPCMobs {
         return 1500000.0;
     }
 
+    public static ItemStack b(final int hexcolor, final Material m) {
+        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
+    }
+
     @Override
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
         SUtil.delay(() -> this.skullShootCD = false, 100L);
@@ -74,8 +74,8 @@ public class SkeletorPrime extends BaseZombie implements NPCMobs {
         final PlayerDisguise pl = Sputnik.applyPacketNPC(entity, "ewogICJ0aW1lc3RhbXAiIDogMTYwMDc3NTY0NTk5OSwKICAicHJvZmlsZUlkIiA6ICJiZWNkZGIyOGEyYzg0OWI0YTliMDkyMmE1ODA1MTQyMCIsCiAgInByb2ZpbGVOYW1lIiA6ICJTdFR2IiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzFiZDNhNGY4ZTIyZGIxNWU0ODZhY2FjNWQ0NTZmZjM1ZjM0ZWQ5YWI1YzY0ZWVjMDU3YWZkMjg2NmQ1NTk0MDEiCiAgICB9CiAgfQp9", "bkd1w8Lzr1TL+oMkoE2pflrNwAGgbYNzUSt61YgdGJk+FyI93yZ2G+WLgSFCFPMNGlYfB9a87EtNDP1c1iCXkpQd0/nEOQN5/dkl74BRS0XMgVFdD5K1xR7fnlKt0pnHLCcM4Rnr8AJd7vOhBRi2Lr9q7IeIn13bDImXLtJH0OS7hbW8nHL1PeLNGmiBMZI8t9adWM8JdLoFU2MDL6xottFdJuj8gypTyq1GhEErTrJT2LuSqwZt8gi3Mjavct9omQtR6hPViP5VY/wPI/C3LDODamwIr4/vlTZikM3OnmE5CeY8TAgpmGn97rpwSSTE1HuZvZyzdD6n4xyuLw49qw8REmry8SaSO1IbF5yfsYhc4MmQltiEqvARGwC4dTVXWNQVbCbttzyuVYK0ZsGQYELqj7r0gfw3P11/gEVeuywjeTZSUfaTdu7auLb9FXDdURBXs4fTflWA+66ePpSKHjUCGG/6x7qUzjiSbIA4O+OvCSjRxzJMnSrJH/mVuxDItqBt2AtBnO7XD5zWAoFzm3HaIej3vmt5P7OVfF+IZCyW3EUps5D08OdGAytZQGwmrs72qYRc+2JwiJ6XGC7iwrwYhco73nzMKKui5mTNxnKsnWhCxffRZveNfVf5F2GRd/uG4tSdu5JvGi+MLiG5WSnC8Se5gOPuh8pKDcPcIh4=", true);
         pl.getWatcher().setRightClicking(false);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 70);
-        entity.setMetadata("LD", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("DungeonMobs", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("DungeonMobs", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -86,7 +86,7 @@ public class SkeletorPrime extends BaseZombie implements NPCMobs {
                     entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 0.25, 0.0), Effect.COLOURED_DUST, 0, 1, (float) SUtil.random(-0.5, 0.5), (float) SUtil.random(0.0, 0.6), (float) SUtil.random(-0.5, 0.5), 0.0f, 1, 20);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 15L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 15L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -108,7 +108,7 @@ public class SkeletorPrime extends BaseZombie implements NPCMobs {
                     }, 20L);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 2L, 100L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 2L, 100L);
         new BukkitRunnable() {
             public void run() {
                 final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -148,7 +148,7 @@ public class SkeletorPrime extends BaseZombie implements NPCMobs {
                     break;
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
     }
 
     @Override
@@ -262,7 +262,7 @@ public class SkeletorPrime extends BaseZombie implements NPCMobs {
             public synchronized void cancel() throws IllegalStateException {
                 super.cancel();
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
     }
 
     @Override

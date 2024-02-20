@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.gui;
 
-import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.pet.Pet;
 import in.godspunky.skyblock.user.User;
@@ -35,30 +35,10 @@ import java.util.Map;
 import java.util.UUID;
 
 public class PetsGUI extends GUI {
-    public static final Map<UUID, Boolean> PET_SHOWN;
     private static final int[] INTERIOR;
-
-    static {
-        INTERIOR = new int[]{10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43};
-        PET_SHOWN = new HashMap<UUID, Boolean>();
-    }
-
-    private final boolean pickup;
+    public static final Map<UUID, Boolean> PET_SHOWN;
     private int page;
-
-    public PetsGUI(final int page, final boolean pickup) {
-        super("Pets", 54);
-        this.page = page;
-        this.pickup = pickup;
-    }
-
-    public PetsGUI(final boolean pickup) {
-        this(1, pickup);
-    }
-
-    public PetsGUI() {
-        this(false);
-    }
+    private final boolean pickup;
 
     public static void setShowPets(final Player p, final boolean bo) {
         if (p == null) {
@@ -78,152 +58,18 @@ public class PetsGUI extends GUI {
         return true;
     }
 
-    public static void applyThingy(final ArmorStand as, final boolean a) {
-        as.setCustomNameVisible(a);
-        as.setMarker(true);
-        as.setVisible(false);
-        as.setGravity(false);
-        as.setArms(true);
-        as.setRightArmPose(new EulerAngle(0.0, 45.0, 0.0));
-        as.setMetadata("pets", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        as.setRemoveWhenFarAway(false);
+    public PetsGUI(final int page, final boolean pickup) {
+        super("Pets", 54);
+        this.page = page;
+        this.pickup = pickup;
     }
 
-    public static BukkitTask spawnFlyingHeads(final Player player, final Pet petclass, final ItemStack stacc) {
-        destroyArmorStandWithUUID(player.getUniqueId(), player.getWorld());
-        final Pet.PetItem active = User.getUser(player.getUniqueId()).getActivePet();
-        final int level = Pet.getLevel(active.getXp(), active.getRarity());
-        final Location location = player.getLocation();
-        final ArmorStand name = (ArmorStand) player.getWorld().spawn(player.getLocation(), (Class) ArmorStand.class);
-        applyThingy(name, true);
-        name.setSmall(true);
-        name.setMetadata(player.getUniqueId().toString() + "_pets", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        final ArmorStand stand = (ArmorStand) player.getWorld().spawn(player.getLocation(), (Class) ArmorStand.class);
-        applyThingy(stand, false);
-        stand.setMetadata(player.getUniqueId().toString() + "_pets", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        final String displayname = Sputnik.trans("&8[&7Lv" + level + "&8] " + active.toItem().getRarity().getColor() + player.getName() + "'s " + petclass.getDisplayName());
-        stand.getEquipment().setItemInHand(stacc);
-        name.setCustomName(displayname);
-        stand.setMetadata(player.getUniqueId().toString(), new FixedMetadataValue(Skyblock.getPlugin(), true));
-        return new BukkitRunnable() {
-            int count = 0;
-            int stat = 0;
-
-            public void run() {
-                final Pet.PetItem active1 = User.getUser(player.getUniqueId()).getActivePet();
-                if (active1 == null || !player.isOnline() || !player.getWorld().equals(stand.getWorld())) {
-                    name.remove();
-                    stand.remove();
-                    this.cancel();
-                    return;
-                }
-                if (name.isDead()) {
-                    stand.remove();
-                    this.cancel();
-                    return;
-                }
-                if (!player.getWorld().getEntities().contains(name)) {
-                    name.remove();
-                    stand.remove();
-                    if (active1 != null) {
-                        Sputnik.createPet(player);
-                    }
-                    this.cancel();
-                    return;
-                }
-                if (player.getWorld().getName().startsWith("f6")) {
-                    name.setCustomNameVisible(false);
-                }
-                final Pet.PetItem active2 = User.getUser(player.getUniqueId()).getActivePet();
-                final int level1 = Pet.getLevel(active2.getXp(), active2.getRarity());
-                name.setCustomName(Sputnik.trans("&8[&7Lv" + level1 + "&8] " + active2.toItem().getRarity().getColor() + player.getName() + "'s " + petclass.getDisplayName()));
-                stand.getEquipment().setItemInHand(stacc);
-                final Location target = player.getLocation();
-                target.setPitch(0.0f);
-                target.add(target.getDirection().multiply(-1));
-                final double distance = target.distance(location);
-                final double yoffset = Math.sin(this.count / 4.0f) / 1.7 + 1.0;
-                if ((distance < 5.0 && this.stat >= 1) || distance < 0.6) {
-                    if (this.stat < 5) {
-                        ++this.stat;
-                        return;
-                    }
-                    ++this.count;
-                    if (this.count > 24) {
-                        this.count = 0;
-                    }
-                    location.setY((location.getY() + target.getY()) / 2.0);
-                } else {
-                    this.stat = 0;
-                    final Vector v = target.toVector().subtract(location.toVector()).normalize().multiply(Math.min(9.0, Math.min(15.0, distance / 2.0) / 4.0 + 0.2));
-                    location.setDirection(v);
-                    location.add(v);
-                    if (this.count > 13) {
-                        this.count /= (int) 1.1;
-                    } else if (this.count < 11) {
-                        this.count *= (int) 1.1;
-                    }
-                }
-                final Location nameLoc = location.clone();
-                if (nameLoc.distanceSquared(target) > 25.0) {
-                    name.setCustomNameVisible(false);
-                } else if (!target.getWorld().getName().startsWith("f6")) {
-                    name.setCustomNameVisible(true);
-                }
-                nameLoc.setPitch(0.0f);
-                nameLoc.add(nameLoc.getDirection().multiply(0.15));
-                nameLoc.setYaw(nameLoc.getYaw() + 90.0f);
-                nameLoc.add(nameLoc.getDirection().multiply(0.527));
-                name.teleport(nameLoc.add(0.0, yoffset + 0.85, 0.0));
-                stand.teleport(location.clone().add(0.0, yoffset, 0.0));
-                final Pet pet_ = User.getUser(player.getUniqueId()).getActivePetClass();
-                if ((distance < 5.0 && this.stat >= 1) || distance < 0.6) {
-                    PetsGUI.spawnParticle(pet_, nameLoc.clone().add(0.0, -0.2, 0.0));
-                } else {
-                    PetsGUI.spawnParticle(pet_, nameLoc.clone().add(0.0, -0.2, 0.0).add(location.clone().add(0.0, yoffset, 0.0).getDirection().clone().multiply(-0.6)));
-                }
-                PetsGUI.sendDestroyPacket(stand, name, player.getWorld(), player);
-            }
-        }.runTaskTimer(Skyblock.getPlugin(), 3L, 3L);
+    public PetsGUI(final boolean pickup) {
+        this(1, pickup);
     }
 
-    public static void destroyArmorStandWithUUID(final UUID uuid, final World w) {
-        final String uuidString = uuid.toString() + "_pets";
-        for (final Entity e : w.getEntities()) {
-            if (e.hasMetadata(uuidString)) {
-                e.remove();
-            }
-        }
-    }
-
-    public static void spawnParticle(final Pet pet, final Location l) {
-        final World w = l.getWorld();
-        for (final Entity e : w.getNearbyEntities(l, 30.0, 35.0, 30.0)) {
-            if (e instanceof Player) {
-                final Player p = (Player) e;
-                if (!getShowPet(p)) {
-                    continue;
-                }
-                pet.particleBelowA(p, l);
-            }
-        }
-    }
-
-    public static void sendDestroyPacket(final Entity as1, final Entity as2, final World w, final Player owner) {
-        final net.minecraft.server.v1_8_R3.Entity el = ((CraftEntity) as1).getHandle();
-        final net.minecraft.server.v1_8_R3.Entity el_ = ((CraftEntity) as2).getHandle();
-        final PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy(el.getId());
-        final PacketPlayOutEntityDestroy packet_ = new PacketPlayOutEntityDestroy(el_.getId());
-        for (final Entity e : w.getNearbyEntities(as1.getLocation(), 30.0, 35.0, 30.0)) {
-            if (e instanceof Player) {
-                final Player p = (Player) e;
-                if (getShowPet(p)) {
-                    continue;
-                }
-                ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
-                ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet_);
-            }
-        }
+    public PetsGUI() {
+        this(false);
     }
 
     @Override
@@ -410,6 +256,154 @@ public class PetsGUI extends GUI {
         }
     }
 
+    public static void applyThingy(final ArmorStand as, final boolean a) {
+        as.setCustomNameVisible(a);
+        as.setMarker(true);
+        as.setVisible(false);
+        as.setGravity(false);
+        as.setArms(true);
+        as.setRightArmPose(new EulerAngle(0.0, 45.0, 0.0));
+        as.setMetadata("pets", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        as.setRemoveWhenFarAway(false);
+    }
+
+    public static BukkitTask spawnFlyingHeads(final Player player, final Pet petclass, final ItemStack stacc) {
+        destroyArmorStandWithUUID(player.getUniqueId(), player.getWorld());
+        final Pet.PetItem active = User.getUser(player.getUniqueId()).getActivePet();
+        final int level = Pet.getLevel(active.getXp(), active.getRarity());
+        final Location location = player.getLocation();
+        final ArmorStand name = (ArmorStand) player.getWorld().spawn(player.getLocation(), (Class) ArmorStand.class);
+        applyThingy(name, true);
+        name.setSmall(true);
+        name.setMetadata(player.getUniqueId().toString() + "_pets", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        final ArmorStand stand = (ArmorStand) player.getWorld().spawn(player.getLocation(), (Class) ArmorStand.class);
+        applyThingy(stand, false);
+        stand.setMetadata(player.getUniqueId().toString() + "_pets", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        final String displayname = Sputnik.trans("&8[&7Lv" + level + "&8] " + active.toItem().getRarity().getColor() + player.getName() + "'s " + petclass.getDisplayName());
+        stand.getEquipment().setItemInHand(stacc);
+        name.setCustomName(displayname);
+        stand.setMetadata(player.getUniqueId().toString(), new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        return new BukkitRunnable() {
+            int count = 0;
+            int stat = 0;
+
+            public void run() {
+                final Pet.PetItem active1 = User.getUser(player.getUniqueId()).getActivePet();
+                if (active1 == null || !player.isOnline() || !player.getWorld().equals(stand.getWorld())) {
+                    name.remove();
+                    stand.remove();
+                    this.cancel();
+                    return;
+                }
+                if (name.isDead()) {
+                    stand.remove();
+                    this.cancel();
+                    return;
+                }
+                if (!player.getWorld().getEntities().contains(name)) {
+                    name.remove();
+                    stand.remove();
+                    if (active1 != null) {
+                        Sputnik.createPet(player);
+                    }
+                    this.cancel();
+                    return;
+                }
+                if (player.getWorld().getName().contains("f6")) {
+                    name.setCustomNameVisible(false);
+                }
+                final Pet.PetItem active2 = User.getUser(player.getUniqueId()).getActivePet();
+                final int level1 = Pet.getLevel(active2.getXp(), active2.getRarity());
+                name.setCustomName(Sputnik.trans("&8[&7Lv" + level1 + "&8] " + active2.toItem().getRarity().getColor() + player.getName() + "'s " + petclass.getDisplayName()));
+                stand.getEquipment().setItemInHand(stacc);
+                final Location target = player.getLocation();
+                target.setPitch(0.0f);
+                target.add(target.getDirection().multiply(-1));
+                final double distance = target.distance(location);
+                final double yoffset = Math.sin(this.count / 4.0f) / 1.7 + 1.0;
+                if ((distance < 5.0 && this.stat >= 1) || distance < 0.6) {
+                    if (this.stat < 5) {
+                        ++this.stat;
+                        return;
+                    }
+                    ++this.count;
+                    if (this.count > 24) {
+                        this.count = 0;
+                    }
+                    location.setY((location.getY() + target.getY()) / 2.0);
+                } else {
+                    this.stat = 0;
+                    final Vector v = target.toVector().subtract(location.toVector()).normalize().multiply(Math.min(9.0, Math.min(15.0, distance / 2.0) / 4.0 + 0.2));
+                    location.setDirection(v);
+                    location.add(v);
+                    if (this.count > 13) {
+                        this.count /= (int) 1.1;
+                    } else if (this.count < 11) {
+                        this.count *= (int) 1.1;
+                    }
+                }
+                final Location nameLoc = location.clone();
+                if (nameLoc.distanceSquared(target) > 25.0) {
+                    name.setCustomNameVisible(false);
+                } else if (!target.getWorld().getName().contains("f6")) {
+                    name.setCustomNameVisible(true);
+                }
+                nameLoc.setPitch(0.0f);
+                nameLoc.add(nameLoc.getDirection().multiply(0.15));
+                nameLoc.setYaw(nameLoc.getYaw() + 90.0f);
+                nameLoc.add(nameLoc.getDirection().multiply(0.527));
+                name.teleport(nameLoc.add(0.0, yoffset + 0.85, 0.0));
+                stand.teleport(location.clone().add(0.0, yoffset, 0.0));
+                final Pet pet_ = User.getUser(player.getUniqueId()).getActivePetClass();
+                if ((distance < 5.0 && this.stat >= 1) || distance < 0.6) {
+                    PetsGUI.spawnParticle(pet_, nameLoc.clone().add(0.0, -0.2, 0.0));
+                } else {
+                    PetsGUI.spawnParticle(pet_, nameLoc.clone().add(0.0, -0.2, 0.0).add(location.clone().add(0.0, yoffset, 0.0).getDirection().clone().multiply(-0.6)));
+                }
+                PetsGUI.sendDestroyPacket(stand, name, player.getWorld(), player);
+            }
+        }.runTaskTimer(SkyBlock.getPlugin(), 3L, 3L);
+    }
+
+    public static void destroyArmorStandWithUUID(final UUID uuid, final World w) {
+        final String uuidString = uuid.toString() + "_pets";
+        for (final Entity e : w.getEntities()) {
+            if (e.hasMetadata(uuidString)) {
+                e.remove();
+            }
+        }
+    }
+
+    public static void spawnParticle(final Pet pet, final Location l) {
+        final World w = l.getWorld();
+        for (final Entity e : w.getNearbyEntities(l, 30.0, 35.0, 30.0)) {
+            if (e instanceof Player) {
+                final Player p = (Player) e;
+                if (!getShowPet(p)) {
+                    continue;
+                }
+                pet.particleBelowA(p, l);
+            }
+        }
+    }
+
+    public static void sendDestroyPacket(final Entity as1, final Entity as2, final World w, final Player owner) {
+        final net.minecraft.server.v1_8_R3.Entity el = ((CraftEntity) as1).getHandle();
+        final net.minecraft.server.v1_8_R3.Entity el_ = ((CraftEntity) as2).getHandle();
+        final PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy(el.getId());
+        final PacketPlayOutEntityDestroy packet_ = new PacketPlayOutEntityDestroy(el_.getId());
+        for (final Entity e : w.getNearbyEntities(as1.getLocation(), 30.0, 35.0, 30.0)) {
+            if (e instanceof Player) {
+                final Player p = (Player) e;
+                if (getShowPet(p)) {
+                    continue;
+                }
+                ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
+                ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet_);
+            }
+        }
+    }
+
     public void showPetInRange(final Player p) {
         for (final Entity e : p.getNearbyEntities(30.0, 35.0, 30.0)) {
             if (e.hasMetadata("pets")) {
@@ -422,5 +416,10 @@ public class PetsGUI extends GUI {
                 ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet2);
             }
         }
+    }
+
+    static {
+        INTERIOR = new int[]{10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43};
+        PET_SHOWN = new HashMap<UUID, Boolean>();
     }
 }

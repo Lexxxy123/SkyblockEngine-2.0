@@ -1,34 +1,17 @@
 package in.godspunky.skyblock.slayer;
 
-import in.godspunky.skyblock.entity.SEntityType;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
+import in.godspunky.skyblock.entity.SEntityType;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class SlayerBossType {
-    public static final SlayerBossType REVENANT_HORROR_I;
-    public static final SlayerBossType REVENANT_HORROR_II;
-    public static final SlayerBossType REVENANT_HORROR_III;
-    public static final SlayerBossType REVENANT_HORROR_IV;
-    public static final SlayerBossType REVENANT_HORROR_V;
-    public static final SlayerBossType TARANTULA_BROODFATHER_I;
-    public static final SlayerBossType TARANTULA_BROODFATHER_II;
-    public static final SlayerBossType TARANTULA_BROODFATHER_III;
-    public static final SlayerBossType TARANTULA_BROODFATHER_IV;
-    public static final SlayerBossType SVEN_PACKMASTER_I;
-    public static final SlayerBossType SVEN_PACKMASTER_II;
-    public static final SlayerBossType SVEN_PACKMASTER_III;
-    public static final SlayerBossType SVEN_PACKMASTER_IV;
-    public static final SlayerBossType VOIDGLOOM_SERAPH_I;
-    public static final SlayerBossType VOIDGLOOM_SERAPH_II;
-    public static final SlayerBossType VOIDGLOOM_SERAPH_III;
-    public static final SlayerBossType VOIDGLOOM_SERAPH_IV;
     private static final List<SlayerBossType> TYPES;
     private static final SlayerAbility LIFE_DRAIN;
     private static final SlayerAbility PESTILENCE;
@@ -47,45 +30,23 @@ public class SlayerBossType {
     private static final SlayerAbility YANG_GLYPHS;
     private static final SlayerAbility HITSHIELD;
     private static final SlayerAbility HEART_RADI;
-
-    static {
-        TYPES = new ArrayList<SlayerBossType>();
-        LIFE_DRAIN = new SlayerAbility(ChatColor.RED + "Life Drain", "Drains health every few seconds.");
-        PESTILENCE = new SlayerAbility(ChatColor.GREEN + "Pestilence", "Deals AOE damage every second,", "shredding armor by 25%.");
-        ENRAGE = new SlayerAbility(ChatColor.RED + "Enrage", "Gets real mad once in a while.");
-        COMBAT_JUMP = new SlayerAbility(ChatColor.YELLOW + "Combat Jump", "The spider will often attempt to", "jump behind you.");
-        NOXIOUS = new SlayerAbility(ChatColor.RED + "Noxious", "Deals AOE damage every second,", "reducing your healing by 50%.");
-        AGILE = new SlayerAbility(ChatColor.GREEN + "Agile", "The wolf is small and fast, making", "it hard to hit.");
-        TRUE_DAMAGE = new SlayerAbility(ChatColor.WHITE + "True Damage", "Ignores your defense. Very painful.");
-        CALL_THE_PUPS = new SlayerAbility(ChatColor.AQUA + "Call the pups!", "At 50% health, calls its deadly pack", "of pups.");
-        DISSONANCE = new SlayerAbility(ChatColor.RED + "Dissonance", "Once in a while, teleport behind ", "or to the sides of the player.");
-        HEAL = new SlayerAbility(ChatColor.GREEN + "Redemption", "Heals rapidly.");
-        EXPLOSION = new SlayerAbility(ChatColor.RED + "Explosive Assault", "Throws explosive TNT.");
-        ONEHIT = new SlayerAbility(ChatColor.DARK_PURPLE + "Thermonuclear", "Charges up and releases a massive", "explosion.");
-        COMING_SOON = new SlayerAbility(ChatColor.RED + "Coming Soon!", "More abilities coming soon!");
-        NUKEKUBI = new SlayerAbility(ChatColor.YELLOW + "Nukekubi Fixations", "Spawn weird heads.", "Clear them by looking at them or", "suffer damage.");
-        YANG_GLYPHS = new SlayerAbility(ChatColor.RED + "Yang Glyphs", "Throw glyphs down.", "Stand next to them or die.");
-        HITSHIELD = new SlayerAbility(ChatColor.GREEN + "Malevolent Hitshield", "Immunity shield dropped by hits", "regardless of damage.");
-        HEART_RADI = new SlayerAbility(ChatColor.LIGHT_PURPLE + "Broken Heart Radiation", "Becomes immune to damage and", "casts dangerous moving beams.", "", Sputnik.trans("Touching a beam deals &c25% &7of"), Sputnik.trans("your &c❤&7 as true damage."), "", Sputnik.trans("Touching a beam also decreases"), Sputnik.trans("your incoming healing by &212%"), Sputnik.trans("for &a90s&7."));
-        REVENANT_HORROR_I = new SlayerBossType("revenant_horror_i", "Revenant Horror", SEntityType.REVENANT_HORROR, 1, "Beginner", SlayerMobType.ZOMBIE, 500, 15, 5, 150, 100, SlayerBossType.LIFE_DRAIN);
-        REVENANT_HORROR_II = new SlayerBossType("revenant_horror_ii", "Revenant Horror", SEntityType.REVENANT_HORROR, 2, "Strong", SlayerMobType.ZOMBIE, 20000, 50, 25, 1440, 2000, SlayerBossType.LIFE_DRAIN, SlayerBossType.PESTILENCE);
-        REVENANT_HORROR_III = new SlayerBossType("revenant_horror_iii", "Revenant Horror", SEntityType.REVENANT_HORROR, 3, "Challenging", SlayerMobType.ZOMBIE, 400000, 300, 100, 2400, 10000, SlayerBossType.LIFE_DRAIN, SlayerBossType.PESTILENCE, SlayerBossType.ENRAGE);
-        REVENANT_HORROR_IV = new SlayerBossType("revenant_horror_iv", "Revenant Horror", SEntityType.REVENANT_HORROR, 4, "Deadly", SlayerMobType.ZOMBIE, 1500000, 1000, 500, 4800, 50000, SlayerBossType.LIFE_DRAIN, SlayerBossType.PESTILENCE, SlayerBossType.ENRAGE);
-        REVENANT_HORROR_V = new SlayerBossType("revenant_horror_v", "Revenant Horror", SEntityType.ATONED_HORROR, 5, "Excruiating", SlayerMobType.ZOMBIE, 10000000, 3400, 1500, 6000, 95000, SlayerBossType.HEAL, SlayerBossType.EXPLOSION, SlayerBossType.ONEHIT);
-        TARANTULA_BROODFATHER_I = new SlayerBossType("tarantula_broodfather_i", "Tarantula Broodfather", SEntityType.TARANTULA_BROODFATHER, 1, "Beginner", SlayerMobType.SPIDER, 750, 35, 5, 250, 100, SlayerBossType.COMBAT_JUMP);
-        TARANTULA_BROODFATHER_II = new SlayerBossType("tarantula_broodfather_ii", "Tarantula Broodfather", SEntityType.TARANTULA_BROODFATHER, 2, "Strong", SlayerMobType.SPIDER, 30000, 110, 25, 600, 2000, SlayerBossType.COMBAT_JUMP, SlayerBossType.NOXIOUS);
-        TARANTULA_BROODFATHER_III = new SlayerBossType("tarantula_broodfather_iii", "Tarantula Broodfather", SEntityType.TARANTULA_BROODFATHER, 3, "Challenging", SlayerMobType.SPIDER, 900000, 525, 100, 1000, 10000, SlayerBossType.COMBAT_JUMP, SlayerBossType.NOXIOUS);
-        TARANTULA_BROODFATHER_IV = new SlayerBossType("tarantula_broodfather_iv", "Tarantula Broodfather", SEntityType.TARANTULA_BROODFATHER, 4, "Debilitating", SlayerMobType.SPIDER, 2400000, 1325, 500, 2000, 50000, SlayerBossType.COMBAT_JUMP, SlayerBossType.NOXIOUS);
-        SVEN_PACKMASTER_I = new SlayerBossType("sven_packmaster_i", "Sven Packmaster", SEntityType.SVEN_PACKMASTER, 1, "Beginner", SlayerMobType.WOLF, 2000, 60, 5, 250, 100, SlayerBossType.AGILE);
-        SVEN_PACKMASTER_II = new SlayerBossType("sven_packmaster_ii", "Sven Packmaster", SEntityType.SVEN_PACKMASTER, 2, "Strong", SlayerMobType.WOLF, 40000, 200, 10, 25, 600, 2000, SlayerBossType.AGILE, SlayerBossType.TRUE_DAMAGE);
-        SVEN_PACKMASTER_III = new SlayerBossType("sven_packmaster_iii", "Sven Packmaster", SEntityType.SVEN_PACKMASTER, 3, "Challenging", SlayerMobType.WOLF, 750000, 450, 50, 100, 1500, 10000, SlayerBossType.AGILE, SlayerBossType.TRUE_DAMAGE, SlayerBossType.CALL_THE_PUPS);
-        SVEN_PACKMASTER_IV = new SlayerBossType("sven_packmaster_iv", "Sven Packmaster", SEntityType.SVEN_PACKMASTER, 4, "Truly Painful", SlayerMobType.WOLF, 2000000, 1100, 200, 500, 3000, 50000, SlayerBossType.AGILE, SlayerBossType.TRUE_DAMAGE, SlayerBossType.CALL_THE_PUPS);
-        VOIDGLOOM_SERAPH_I = new SlayerBossType("voidgloom_seraph_i", "Voidgloom Seraph", SEntityType.VOIDGLOOM_SERAPH, 1, "Beginner", SlayerMobType.ENDERMAN, 30000000, 120000, 5, 2750, 100, SlayerBossType.DISSONANCE, SlayerBossType.HITSHIELD);
-        VOIDGLOOM_SERAPH_II = new SlayerBossType("voidgloom_seraph_ii", "Voidgloom Seraph", SEntityType.VOIDGLOOM_SERAPH, 2, "Strong", SlayerMobType.ENDERMAN, 150000000, 1000000, 25, 6600, 2000, SlayerBossType.DISSONANCE, SlayerBossType.HITSHIELD, SlayerBossType.YANG_GLYPHS);
-        VOIDGLOOM_SERAPH_III = new SlayerBossType("voidgloom_seraph_iii", "Voidgloom Seraph", SEntityType.VOIDGLOOM_SERAPH, 3, "Challenging", SlayerMobType.ENDERMAN, 666000000, 1200000, 100, 11000, 10000, SlayerBossType.DISSONANCE, SlayerBossType.HITSHIELD, SlayerBossType.YANG_GLYPHS, SlayerBossType.NUKEKUBI);
-        VOIDGLOOM_SERAPH_IV = new SlayerBossType("voidgloom_seraph_iv", "Voidgloom Seraph", SEntityType.VOIDGLOOM_SERAPH, 4, "Guaranteed Doom", SlayerMobType.ENDERMAN, 1000000000, 1500000, 500, 22000, 50000, SlayerBossType.DISSONANCE, SlayerBossType.HITSHIELD, SlayerBossType.YANG_GLYPHS, SlayerBossType.NUKEKUBI, SlayerBossType.HEART_RADI);
-    }
-
+    public static final SlayerBossType REVENANT_HORROR_I;
+    public static final SlayerBossType REVENANT_HORROR_II;
+    public static final SlayerBossType REVENANT_HORROR_III;
+    public static final SlayerBossType REVENANT_HORROR_IV;
+    public static final SlayerBossType REVENANT_HORROR_V;
+    public static final SlayerBossType TARANTULA_BROODFATHER_I;
+    public static final SlayerBossType TARANTULA_BROODFATHER_II;
+    public static final SlayerBossType TARANTULA_BROODFATHER_III;
+    public static final SlayerBossType TARANTULA_BROODFATHER_IV;
+    public static final SlayerBossType SVEN_PACKMASTER_I;
+    public static final SlayerBossType SVEN_PACKMASTER_II;
+    public static final SlayerBossType SVEN_PACKMASTER_III;
+    public static final SlayerBossType SVEN_PACKMASTER_IV;
+    public static final SlayerBossType VOIDGLOOM_SERAPH_I;
+    public static final SlayerBossType VOIDGLOOM_SERAPH_II;
+    public static final SlayerBossType VOIDGLOOM_SERAPH_III;
+    public static final SlayerBossType VOIDGLOOM_SERAPH_IV;
     private final String namespace;
     private final String name;
     private final SEntityType specType;
@@ -136,6 +97,21 @@ public class SlayerBossType {
         }
     }
 
+    public int getXPReqForLevel(final int level) {
+        switch (this.type) {
+            case ZOMBIE:
+                return SUtil.<Integer>getOrDefault(Arrays.asList(5, 15, 200, 1000, 5000, 20000, 100000, 400000, 1000000), level, 1000000);
+            case SPIDER:
+                return SUtil.<Integer>getOrDefault(Arrays.asList(5, 25, 200, 1000, 5000, 20000, 100000, 400000, 1000000), level, 1000000);
+            case WOLF:
+                return SUtil.<Integer>getOrDefault(Arrays.asList(10, 30, 250, 1500, 5000, 20000, 100000, 400000, 1000000), level, 1000000);
+            case ENDERMAN:
+                return SUtil.<Integer>getOrDefault(Arrays.asList(10, 30, 250, 1500, 5000, 20000, 100000, 400000, 1000000), level, 1000000);
+            default:
+                return 1000000;
+        }
+    }
+
     public static int staticGetXPReqForLevel(final int level, final EntityType type) {
         switch (type) {
             case ZOMBIE:
@@ -158,21 +134,6 @@ public class SlayerBossType {
             }
         }
         return null;
-    }
-
-    public int getXPReqForLevel(final int level) {
-        switch (this.type) {
-            case ZOMBIE:
-                return SUtil.<Integer>getOrDefault(Arrays.asList(5, 15, 200, 1000, 5000, 20000, 100000, 400000, 1000000), level, 1000000);
-            case SPIDER:
-                return SUtil.<Integer>getOrDefault(Arrays.asList(5, 25, 200, 1000, 5000, 20000, 100000, 400000, 1000000), level, 1000000);
-            case WOLF:
-                return SUtil.<Integer>getOrDefault(Arrays.asList(10, 30, 250, 1500, 5000, 20000, 100000, 400000, 1000000), level, 1000000);
-            case ENDERMAN:
-                return SUtil.<Integer>getOrDefault(Arrays.asList(10, 30, 250, 1500, 5000, 20000, 100000, 400000, 1000000), level, 1000000);
-            default:
-                return 1000000;
-        }
     }
 
     public String getDisplayName() {
@@ -273,6 +234,44 @@ public class SlayerBossType {
 
     public List<SlayerAbility> getAbilities() {
         return this.abilities;
+    }
+
+    static {
+        TYPES = new ArrayList<SlayerBossType>();
+        LIFE_DRAIN = new SlayerAbility(ChatColor.RED + "Life Drain", "Drains health every few seconds.");
+        PESTILENCE = new SlayerAbility(ChatColor.GREEN + "Pestilence", "Deals AOE damage every second,", "shredding armor by 25%.");
+        ENRAGE = new SlayerAbility(ChatColor.RED + "Enrage", "Gets real mad once in a while.");
+        COMBAT_JUMP = new SlayerAbility(ChatColor.YELLOW + "Combat Jump", "The spider will often attempt to", "jump behind you.");
+        NOXIOUS = new SlayerAbility(ChatColor.RED + "Noxious", "Deals AOE damage every second,", "reducing your healing by 50%.");
+        AGILE = new SlayerAbility(ChatColor.GREEN + "Agile", "The wolf is small and fast, making", "it hard to hit.");
+        TRUE_DAMAGE = new SlayerAbility(ChatColor.WHITE + "True Damage", "Ignores your defense. Very painful.");
+        CALL_THE_PUPS = new SlayerAbility(ChatColor.AQUA + "Call the pups!", "At 50% health, calls its deadly pack", "of pups.");
+        DISSONANCE = new SlayerAbility(ChatColor.RED + "Dissonance", "Once in a while, teleport behind ", "or to the sides of the player.");
+        HEAL = new SlayerAbility(ChatColor.GREEN + "Redemption", "Heals rapidly.");
+        EXPLOSION = new SlayerAbility(ChatColor.RED + "Explosive Assault", "Throws explosive TNT.");
+        ONEHIT = new SlayerAbility(ChatColor.DARK_PURPLE + "Thermonuclear", "Charges up and releases a massive", "explosion.");
+        COMING_SOON = new SlayerAbility(ChatColor.RED + "Coming Soon!", "More abilities coming soon!");
+        NUKEKUBI = new SlayerAbility(ChatColor.YELLOW + "Nukekubi Fixations", "Spawn weird heads.", "Clear them by looking at them or", "suffer damage.");
+        YANG_GLYPHS = new SlayerAbility(ChatColor.RED + "Yang Glyphs", "Throw glyphs down.", "Stand next to them or die.");
+        HITSHIELD = new SlayerAbility(ChatColor.GREEN + "Malevolent Hitshield", "Immunity shield dropped by hits", "regardless of damage.");
+        HEART_RADI = new SlayerAbility(ChatColor.LIGHT_PURPLE + "Broken Heart Radiation", "Becomes immune to damage and", "casts dangerous moving beams.", "", Sputnik.trans("Touching a beam deals &c25% &7of"), Sputnik.trans("your &c❤&7 as true damage."), "", Sputnik.trans("Touching a beam also decreases"), Sputnik.trans("your incoming healing by &212%"), Sputnik.trans("for &a90s&7."));
+        REVENANT_HORROR_I = new SlayerBossType("revenant_horror_i", "Revenant Horror", SEntityType.REVENANT_HORROR, 1, "Beginner", SlayerMobType.ZOMBIE, 500, 15, 5, 150, 100, SlayerBossType.LIFE_DRAIN);
+        REVENANT_HORROR_II = new SlayerBossType("revenant_horror_ii", "Revenant Horror", SEntityType.REVENANT_HORROR, 2, "Strong", SlayerMobType.ZOMBIE, 20000, 50, 25, 1440, 2000, SlayerBossType.LIFE_DRAIN, SlayerBossType.PESTILENCE);
+        REVENANT_HORROR_III = new SlayerBossType("revenant_horror_iii", "Revenant Horror", SEntityType.REVENANT_HORROR, 3, "Challenging", SlayerMobType.ZOMBIE, 400000, 300, 100, 2400, 10000, SlayerBossType.LIFE_DRAIN, SlayerBossType.PESTILENCE, SlayerBossType.ENRAGE);
+        REVENANT_HORROR_IV = new SlayerBossType("revenant_horror_iv", "Revenant Horror", SEntityType.REVENANT_HORROR, 4, "Deadly", SlayerMobType.ZOMBIE, 1500000, 1000, 500, 4800, 50000, SlayerBossType.LIFE_DRAIN, SlayerBossType.PESTILENCE, SlayerBossType.ENRAGE);
+        REVENANT_HORROR_V = new SlayerBossType("revenant_horror_v", "Revenant Horror", SEntityType.ATONED_HORROR, 5, "Excruiating", SlayerMobType.ZOMBIE, 10000000, 3400, 1500, 6000, 95000, SlayerBossType.HEAL, SlayerBossType.EXPLOSION, SlayerBossType.ONEHIT);
+        TARANTULA_BROODFATHER_I = new SlayerBossType("tarantula_broodfather_i", "Tarantula Broodfather", SEntityType.TARANTULA_BROODFATHER, 1, "Beginner", SlayerMobType.SPIDER, 750, 35, 5, 250, 100, SlayerBossType.COMBAT_JUMP);
+        TARANTULA_BROODFATHER_II = new SlayerBossType("tarantula_broodfather_ii", "Tarantula Broodfather", SEntityType.TARANTULA_BROODFATHER, 2, "Strong", SlayerMobType.SPIDER, 30000, 110, 25, 600, 2000, SlayerBossType.COMBAT_JUMP, SlayerBossType.NOXIOUS);
+        TARANTULA_BROODFATHER_III = new SlayerBossType("tarantula_broodfather_iii", "Tarantula Broodfather", SEntityType.TARANTULA_BROODFATHER, 3, "Challenging", SlayerMobType.SPIDER, 900000, 525, 100, 1000, 10000, SlayerBossType.COMBAT_JUMP, SlayerBossType.NOXIOUS);
+        TARANTULA_BROODFATHER_IV = new SlayerBossType("tarantula_broodfather_iv", "Tarantula Broodfather", SEntityType.TARANTULA_BROODFATHER, 4, "Debilitating", SlayerMobType.SPIDER, 2400000, 1325, 500, 2000, 50000, SlayerBossType.COMBAT_JUMP, SlayerBossType.NOXIOUS);
+        SVEN_PACKMASTER_I = new SlayerBossType("sven_packmaster_i", "Sven Packmaster", SEntityType.SVEN_PACKMASTER, 1, "Beginner", SlayerMobType.WOLF, 2000, 60, 5, 250, 100, SlayerBossType.AGILE);
+        SVEN_PACKMASTER_II = new SlayerBossType("sven_packmaster_ii", "Sven Packmaster", SEntityType.SVEN_PACKMASTER, 2, "Strong", SlayerMobType.WOLF, 40000, 200, 10, 25, 600, 2000, SlayerBossType.AGILE, SlayerBossType.TRUE_DAMAGE);
+        SVEN_PACKMASTER_III = new SlayerBossType("sven_packmaster_iii", "Sven Packmaster", SEntityType.SVEN_PACKMASTER, 3, "Challenging", SlayerMobType.WOLF, 750000, 450, 50, 100, 1500, 10000, SlayerBossType.AGILE, SlayerBossType.TRUE_DAMAGE, SlayerBossType.CALL_THE_PUPS);
+        SVEN_PACKMASTER_IV = new SlayerBossType("sven_packmaster_iv", "Sven Packmaster", SEntityType.SVEN_PACKMASTER, 4, "Truly Painful", SlayerMobType.WOLF, 2000000, 1100, 200, 500, 3000, 50000, SlayerBossType.AGILE, SlayerBossType.TRUE_DAMAGE, SlayerBossType.CALL_THE_PUPS);
+        VOIDGLOOM_SERAPH_I = new SlayerBossType("voidgloom_seraph_i", "Voidgloom Seraph", SEntityType.VOIDGLOOM_SERAPH, 1, "Beginner", SlayerMobType.ENDERMAN, 30000000, 120000, 5, 2750, 100, SlayerBossType.DISSONANCE, SlayerBossType.HITSHIELD);
+        VOIDGLOOM_SERAPH_II = new SlayerBossType("voidgloom_seraph_ii", "Voidgloom Seraph", SEntityType.VOIDGLOOM_SERAPH, 2, "Strong", SlayerMobType.ENDERMAN, 150000000, 1000000, 25, 6600, 2000, SlayerBossType.DISSONANCE, SlayerBossType.HITSHIELD, SlayerBossType.YANG_GLYPHS);
+        VOIDGLOOM_SERAPH_III = new SlayerBossType("voidgloom_seraph_iii", "Voidgloom Seraph", SEntityType.VOIDGLOOM_SERAPH, 3, "Challenging", SlayerMobType.ENDERMAN, 666000000, 1200000, 100, 11000, 10000, SlayerBossType.DISSONANCE, SlayerBossType.HITSHIELD, SlayerBossType.YANG_GLYPHS, SlayerBossType.NUKEKUBI);
+        VOIDGLOOM_SERAPH_IV = new SlayerBossType("voidgloom_seraph_iv", "Voidgloom Seraph", SEntityType.VOIDGLOOM_SERAPH, 4, "Guaranteed Doom", SlayerMobType.ENDERMAN, 1000000000, 1500000, 500, 22000, 50000, SlayerBossType.DISSONANCE, SlayerBossType.HITSHIELD, SlayerBossType.YANG_GLYPHS, SlayerBossType.NUKEKUBI, SlayerBossType.HEART_RADI);
     }
 
     public enum SlayerMobType {

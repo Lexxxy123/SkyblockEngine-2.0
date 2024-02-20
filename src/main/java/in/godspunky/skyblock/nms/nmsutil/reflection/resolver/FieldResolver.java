@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.nms.nmsutil.reflection.resolver;
 
-import in.godspunky.skyblock.nms.nmsutil.reflection.resolver.wrapper.FieldWrapper;
 import in.godspunky.skyblock.nms.nmsutil.reflection.util.AccessUtil;
+import in.godspunky.skyblock.nms.nmsutil.reflection.resolver.wrapper.FieldWrapper;
 
 import java.lang.reflect.Field;
 

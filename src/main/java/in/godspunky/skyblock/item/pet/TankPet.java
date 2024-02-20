@@ -1,21 +1,21 @@
 package in.godspunky.skyblock.item.pet;
 
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.item.GenericItemType;
-import in.godspunky.skyblock.item.Rarity;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.listener.PlayerListener;
 import in.godspunky.skyblock.skill.CombatSkill;
 import in.godspunky.skyblock.skill.Skill;
-import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.SkyBlock;
+import in.godspunky.skyblock.item.GenericItemType;
+import in.godspunky.skyblock.item.Rarity;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.listener.PlayerListener;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -23,36 +23,6 @@ import java.util.*;
 
 public class TankPet extends Pet {
     public static final Map<Player, Boolean> COOLDOWN;
-
-    static {
-        COOLDOWN = new HashMap<Player, Boolean>();
-    }
-
-    public static List<Entity> scanEntityNear(final Entity e, final int arg0, final int arg1, final int arg2) {
-        final List<Entity> re = new ArrayList<Entity>();
-        for (final Entity entity1 : e.getNearbyEntities(arg0, arg1, arg2)) {
-            if (entity1.isDead()) {
-                continue;
-            }
-            if (!(entity1 instanceof LivingEntity)) {
-                continue;
-            }
-            if (entity1 instanceof Player || entity1 instanceof EnderDragonPart || entity1 instanceof Villager || entity1 instanceof ArmorStand || entity1 instanceof Item) {
-                continue;
-            }
-            if (entity1 instanceof ItemFrame) {
-                continue;
-            }
-            if (entity1.hasMetadata("GiantSword")) {
-                continue;
-            }
-            if (entity1.hasMetadata("NoAffect")) {
-                continue;
-            }
-            re.add(entity1);
-        }
-        return re;
-    }
 
     @Override
     public List<PetAbility> getPetAbilities(final SItem instance) {
@@ -265,7 +235,7 @@ public class TankPet extends Pet {
                 stand.getWorld().spigot().playEffect(stand.getLocation().add(0.0, 2.0, 0.0), Effect.LARGE_SMOKE, 21, 0, 0.1f, 0.0f, 0.1f, 0.01f, 1, 30);
                 stand.teleport(stand.getLocation().add(stand.getLocation().getDirection().normalize().multiply(1)));
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
     }
 
     public void dmgEntityInRange(final Entity e, final Player owner, double damage) {
@@ -310,8 +280,38 @@ public class TankPet extends Pet {
         }
     }
 
+    public static List<Entity> scanEntityNear(final Entity e, final int arg0, final int arg1, final int arg2) {
+        final List<Entity> re = new ArrayList<Entity>();
+        for (final Entity entity1 : e.getNearbyEntities(arg0, arg1, arg2)) {
+            if (entity1.isDead()) {
+                continue;
+            }
+            if (!(entity1 instanceof LivingEntity)) {
+                continue;
+            }
+            if (entity1 instanceof Player || entity1 instanceof EnderDragonPart || entity1 instanceof Villager || entity1 instanceof ArmorStand || entity1 instanceof Item) {
+                continue;
+            }
+            if (entity1 instanceof ItemFrame) {
+                continue;
+            }
+            if (entity1.hasMetadata("GiantSword")) {
+                continue;
+            }
+            if (entity1.hasMetadata("NoAffect")) {
+                continue;
+            }
+            re.add(entity1);
+        }
+        return re;
+    }
+
     public void playParticleAndSound(final Entity e) {
         e.getLocation().getWorld().playSound(e.getLocation(), Sound.EXPLODE, 2.0f, 1.3f);
         e.getWorld().playEffect(e.getLocation(), Effect.EXPLOSION_HUGE, 0);
+    }
+
+    static {
+        COOLDOWN = new HashMap<Player, Boolean>();
     }
 }

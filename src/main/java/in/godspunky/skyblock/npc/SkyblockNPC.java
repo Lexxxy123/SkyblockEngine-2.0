@@ -2,7 +2,6 @@ package in.godspunky.skyblock.npc;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import lombok.Getter;
@@ -18,6 +17,7 @@ import org.bukkit.craftbukkit.v1_8_R3.scoreboard.CraftScoreboard;
 import org.bukkit.craftbukkit.v1_8_R3.scoreboard.CraftScoreboardManager;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import in.godspunky.skyblock.SkyBlock;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -26,9 +26,10 @@ import java.util.concurrent.CompletableFuture;
 public class SkyblockNPC {
 
 
-    private final static Set<UUID> ALREADY_TALKING = new HashSet<>();
     private final Set<UUID> viewers = new HashSet<>();
+    private final static Set<UUID> ALREADY_TALKING = new HashSet<>();
     private final List<EntityArmorStand> holograms = new ArrayList<>();
+    protected double cosFOV = Math.cos(Math.toRadians(60));
     private final String[] messages;
     private final UUID uuid;
     private final String name;
@@ -39,10 +40,9 @@ public class SkyblockNPC {
     private final EntityPlayer entityPlayer;
     private final GameProfile gameProfile;
     private final NPCParameters parameters;
-    protected double cosFOV = Math.cos(Math.toRadians(60));
 
 
-    public SkyblockNPC(NPCParameters npc) {
+    public SkyblockNPC(NPCParameters npc){
         this.uuid = UUID.randomUUID();
         this.name = npc.name();
         this.world = Bukkit.getWorld(npc.world());
@@ -50,12 +50,12 @@ public class SkyblockNPC {
         if (world == null) {
             throw new NullPointerException("World cannot be null for npc : " + name);
         }
-        this.location = new Location(world, npc.x(), npc.y(), npc.z(), npc.yaw(), npc.pitch());
+        this.location = new Location(world, npc.x() , npc.y() , npc.z() , npc.yaw() , npc.pitch());
         this.texture = npc.texture();
         this.signature = npc.signature();
         MinecraftServer minecraftServer = ((CraftServer) Bukkit.getServer()).getServer();
         WorldServer worldServer = ((CraftWorld) location.getWorld()).getHandle();
-        this.gameProfile = new GameProfile(uuid, name);
+        this.gameProfile = new GameProfile(uuid , name);
         // skin
         if (texture != null && signature != null) {
             gameProfile.getProperties().put(
@@ -67,29 +67,24 @@ public class SkyblockNPC {
             );
         }
         PlayerInteractManager interactManager = new PlayerInteractManager(worldServer);
-            this.entityPlayer = new EntityPlayer(
-                    minecraftServer,
-                    worldServer,
-                    gameProfile,
-                    interactManager
-            );
-            entityPlayer.setLocation(
-                    location.getX(),
-                    location.getY(),
-                    location.getZ(),
-                    location.getYaw(),
-                    location.getPitch()
-            );
+        this.entityPlayer = new EntityPlayer(
+                minecraftServer,
+                worldServer,
+                gameProfile,
+                interactManager
+        );
+        entityPlayer.setLocation(
+                location.getX(),
+                location.getY(),
+                location.getZ(),
+                location.getYaw(),
+                location.getPitch()
+        );
         this.parameters = npc;
         SkyblockNPCManager.registerNPC(this);
 
     }
-
-    public static void sendPacket(Player player, Packet<?> packet) {
-        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
-    }
-
-    public void showTo(Player player) {
+    public void showTo(Player player){
         if (viewers.contains(player.getUniqueId())) return;
         PacketPlayOutPlayerInfo packetPlayOutPlayerInfo = new PacketPlayOutPlayerInfo(
                 PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER,
@@ -98,16 +93,16 @@ public class SkyblockNPC {
         PacketPlayOutNamedEntitySpawn packetPlayOutNamedEntitySpawn = new PacketPlayOutNamedEntitySpawn(
                 entityPlayer
         );
-        sendPacket(player, packetPlayOutPlayerInfo);
-        sendPacket(player, packetPlayOutNamedEntitySpawn);
+        sendPacket(player , packetPlayOutPlayerInfo);
+        sendPacket(player , packetPlayOutNamedEntitySpawn);
 
         CraftScoreboardManager scoreboardManager = ((CraftServer) Bukkit.getServer()).getScoreboardManager();
         CraftScoreboard craftScoreboard = scoreboardManager.getMainScoreboard();
         Scoreboard scoreboard = craftScoreboard.getHandle();
 
         ScoreboardTeam scoreboardTeam = scoreboard.getTeam(name);
-        if (scoreboardTeam == null) {
-            scoreboardTeam = new ScoreboardTeam(scoreboard, name);
+        if (scoreboardTeam == null){
+            scoreboardTeam = new ScoreboardTeam(scoreboard , name);
         }
         scoreboardTeam.setNameTagVisibility(ScoreboardTeamBase.EnumNameTagVisibility.NEVER);
         scoreboardTeam.setPrefix("[NPC] ");
@@ -115,7 +110,7 @@ public class SkyblockNPC {
         sendPacket(player, new PacketPlayOutScoreboardTeam(scoreboardTeam, 1));
         sendPacket(player, new PacketPlayOutScoreboardTeam(scoreboardTeam, 0));
         sendPacket(player, new PacketPlayOutScoreboardTeam(scoreboardTeam, Collections.singletonList(name), 3));
-        sendHologram(player, getParameters().holograms());
+        sendHologram(player , getParameters().holograms());
         this.viewers.add(player.getUniqueId());
         new BukkitRunnable() {
             @Override
@@ -128,7 +123,7 @@ public class SkyblockNPC {
                     sendHeadRotationPacket(player);
                 }
             }
-        }.runTaskTimerAsynchronously(Skyblock.getPlugin(), 0, 2);
+        }.runTaskTimerAsynchronously(SkyBlock.getPlugin(), 0, 2);
 
     }
 
@@ -162,11 +157,10 @@ public class SkyblockNPC {
         sendPacket(player, lookPacket);
     }
 
-    private int getId() {
+    private int getId(){
         return entityPlayer.getId();
     }
-
-    public int getEntityID() {
+    public int getEntityID(){
         return entityPlayer.getBukkitEntity().getEntityId();
     }
 
@@ -176,11 +170,9 @@ public class SkyblockNPC {
         double distanceSquared = npcLocation.distanceSquared(playerLocation);
         return distanceSquared <= 35.0;
     }
-
-    public boolean isShown(Player player) {
+    public boolean isShown(Player player){
         return viewers.contains(player.getUniqueId());
     }
-
     // #inRangeOf method is used from npc-lib because mine method is not that good and I am not good at math
     public boolean inRangeOf(Player player) {
         if (player == null) return false;
@@ -198,6 +190,13 @@ public class SkyblockNPC {
         return distanceSquared <= SUtil.square(hideDistance) && distanceSquared <= SUtil.square(bukkitRange);
     }
 
+
+
+
+    public static void sendPacket(Player player, Packet<?> packet) {
+        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
+    }
+
     public void sendHologram(Player player, String[] lines) {
         double yOffset = 0.0;
         double DELTA = 0.3;
@@ -206,7 +205,7 @@ public class SkyblockNPC {
             EntityArmorStand armorStand = new EntityArmorStand(((CraftPlayer) player).getHandle().getWorld());
             Location hologramLocation = getLocation().clone().add(0, yOffset, 0);
             armorStand.setLocation(hologramLocation.getX(), hologramLocation.getY(), hologramLocation.getZ(), 0, 0);
-            armorStand.setCustomName(ChatColor.translateAlternateColorCodes('&', text));
+            armorStand.setCustomName(ChatColor.translateAlternateColorCodes('&' , text));
             armorStand.setCustomNameVisible(true);
             armorStand.setInvisible(true);
 
@@ -253,7 +252,7 @@ public class SkyblockNPC {
     }
 
 
-    public void sendMessage(Player player, String message) {
+    public void sendMessage(Player player , String message){
         player.sendMessage(ChatColor.YELLOW + "[NPC] " + name + ChatColor.WHITE + ": " + message);
     }
 

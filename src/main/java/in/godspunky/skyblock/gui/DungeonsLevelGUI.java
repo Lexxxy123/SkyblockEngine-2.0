@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionType;
+import in.godspunky.skyblock.skill.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,12 +21,32 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class DungeonsLevelGUI extends GUI {
     public static final ItemStack CATA_HEAD;
 
-    static {
-        CATA_HEAD = SUtil.getSkullURL("964e1c3e315c8d8fffc37985b6681c5bd16a6f97ffd07199e8a05efbef103793");
-    }
-
     public DungeonsLevelGUI() {
         super("Dungeoneering", 54);
+    }
+
+    @Override
+    public void onOpen(final GUIOpenEvent e) {
+        this.fill(BLACK_STAINED_GLASS_PANE);
+        final Player player = e.getPlayer();
+        final User user = User.getUser(player.getUniqueId());
+        this.set(GUIClickableItem.getCloseItem(49));
+        final AtomicInteger found = new AtomicInteger();
+        final Collection<ItemCollection> collections = ItemCollection.getCollections();
+        for (final ItemCollection collection : collections) {
+            if (user.getCollection(collection) > 0) {
+                found.incrementAndGet();
+            }
+        }
+        this.set(GUIClickableItem.createGUIOpenerItem(GUIType.SKILL_MENU, player, ChatColor.GREEN + "Go Back", 48, Material.ARROW, ChatColor.GRAY + "To Skills"));
+        this.set(createCollectionClickable(new SkillDetails(CatacombsSkill.INSTANCE, player, 1), CatacombsSkill.INSTANCE, 12, player));
+        this.set(13, RED_STAINED_GLASS_PANE);
+        this.set(14, RED_STAINED_GLASS_PANE);
+        this.set(createCollectionClickableForClasses(null, HealerSkill.INSTANCE, 29, player));
+        this.set(createCollectionClickableForClasses(null, MageSkill.INSTANCE, 30, player));
+        this.set(createCollectionClickableForClasses(null, BerserkSkill.INSTANCE, 31, player));
+        this.set(createCollectionClickableForClasses(null, ArcherSkill.INSTANCE, 32, player));
+        this.set(createCollectionClickableForClasses(null, TankSkill.INSTANCE, 33, player));
     }
 
     private static GUIClickableItem createCollectionClickableForClasses(final GUI gui, final Skill skill, final int slot, final Player player) {
@@ -154,27 +175,7 @@ public class DungeonsLevelGUI extends GUI {
         return GUIClickableItem.createGUIOpenerItemHead(gui, player, ChatColor.RED + name, slot, "964e1c3e315c8d8fffc37985b6681c5bd16a6f97ffd07199e8a05efbef103793", 1, SUtil.toArray(l, String.class));
     }
 
-    @Override
-    public void onOpen(final GUIOpenEvent e) {
-        this.fill(BLACK_STAINED_GLASS_PANE);
-        final Player player = e.getPlayer();
-        final User user = User.getUser(player.getUniqueId());
-        this.set(GUIClickableItem.getCloseItem(49));
-        final AtomicInteger found = new AtomicInteger();
-        final Collection<ItemCollection> collections = ItemCollection.getCollections();
-        for (final ItemCollection collection : collections) {
-            if (user.getCollection(collection) > 0) {
-                found.incrementAndGet();
-            }
-        }
-        this.set(GUIClickableItem.createGUIOpenerItem(GUIType.SKILL_MENU, player, ChatColor.GREEN + "Go Back", 48, Material.ARROW, ChatColor.GRAY + "To Skills"));
-        this.set(createCollectionClickable(new SkillDetails(CatacombsSkill.INSTANCE, player, 1), CatacombsSkill.INSTANCE, 12, player));
-        this.set(13, RED_STAINED_GLASS_PANE);
-        this.set(14, RED_STAINED_GLASS_PANE);
-        this.set(createCollectionClickableForClasses(null, HealerSkill.INSTANCE, 29, player));
-        this.set(createCollectionClickableForClasses(null, MageSkill.INSTANCE, 30, player));
-        this.set(createCollectionClickableForClasses(null, BerserkSkill.INSTANCE, 31, player));
-        this.set(createCollectionClickableForClasses(null, ArcherSkill.INSTANCE, 32, player));
-        this.set(createCollectionClickableForClasses(null, TankSkill.INSTANCE, 33, player));
+    static {
+        CATA_HEAD = SUtil.getSkullURL("964e1c3e315c8d8fffc37985b6681c5bd16a6f97ffd07199e8a05efbef103793");
     }
 }

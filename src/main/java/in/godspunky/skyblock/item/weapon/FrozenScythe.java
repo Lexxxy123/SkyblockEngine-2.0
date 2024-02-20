@@ -1,12 +1,8 @@
 package in.godspunky.skyblock.item.weapon;
 
-import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.listener.PlayerListener;
-import in.godspunky.skyblock.user.PlayerUtils;
-import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SLog;
-import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
@@ -16,24 +12,16 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.listener.PlayerListener;
+import in.godspunky.skyblock.user.PlayerUtils;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.Sputnik;
 
 public class FrozenScythe implements ToolStatistics, MaterialFunction, Ability {
     String ACT3;
 
     public FrozenScythe() {
         this.ACT3 = "true";
-    }
-
-    public static void throwIce(final ArmorStand stand1, final ArmorStand stand2, final ArmorStand stand3, final ArmorStand stand4, final ArmorStand stand5, final Player p, final Vector vecTo, final Vector back) {
-        new BukkitRunnable() {
-            public void run() {
-                stand1.remove();
-                stand2.remove();
-                stand3.remove();
-                stand4.remove();
-                stand5.remove();
-            }
-        }.runTaskLater(Skyblock.getPlugin(), 80L);
     }
 
     @Override
@@ -195,7 +183,19 @@ public class FrozenScythe implements ToolStatistics, MaterialFunction, Ability {
                     p.getWorld().spigot().playEffect(loc, Effect.SNOW_SHOVEL, 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, 40);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 1L, 0L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 1L, 0L);
+    }
+
+    public static void throwIce(final ArmorStand stand1, final ArmorStand stand2, final ArmorStand stand3, final ArmorStand stand4, final ArmorStand stand5, final Player p, final Vector vecTo, final Vector back) {
+        new BukkitRunnable() {
+            public void run() {
+                stand1.remove();
+                stand2.remove();
+                stand3.remove();
+                stand4.remove();
+                stand5.remove();
+            }
+        }.runTaskLater(SkyBlock.getPlugin(), 80L);
     }
 
     @Override

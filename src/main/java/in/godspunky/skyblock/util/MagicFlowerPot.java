@@ -10,7 +10,7 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.inventory.ItemStack;
 
 public class MagicFlowerPot {
-    public static boolean changePot(final Block flowerPot, final boolean refreshChunk, final ArmorStand s) {
+    public static final boolean changePot(final Block flowerPot, final boolean refreshChunk, final ArmorStand s) {
         if (s.isDead()) {
             return false;
         }
@@ -32,7 +32,7 @@ public class MagicFlowerPot {
         return false;
     }
 
-    public static boolean changePotAir(final Block flowerPot, final boolean refreshChunk) {
+    public static final boolean changePotAir(final Block flowerPot, final boolean refreshChunk) {
         if (flowerPot.getType() == Material.FLOWER_POT) {
             try {
                 final ItemStack is = new ItemStack(Material.AIR);

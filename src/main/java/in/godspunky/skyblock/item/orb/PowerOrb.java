@@ -1,10 +1,7 @@
 package in.godspunky.skyblock.item.orb;
 
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityType;
+import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -15,6 +12,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityType;
+import in.godspunky.skyblock.util.SUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,11 +24,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public abstract class PowerOrb implements SkullStatistics, MaterialFunction, Ability, OrbBuff {
     private static final Map<UUID, ArmorStand> USING_POWER_ORB_MAP;
     private static final Map<UUID, PowerOrbInstance> POWER_ORB_MAP;
-
-    static {
-        USING_POWER_ORB_MAP = new HashMap<UUID, ArmorStand>();
-        POWER_ORB_MAP = new HashMap<UUID, PowerOrbInstance>();
-    }
 
     @Override
     public String getAbilityName() {
@@ -90,7 +85,7 @@ public abstract class PowerOrb implements SkullStatistics, MaterialFunction, Abi
         stand.setCustomNameVisible(true);
         stand.setHelmet(SUtil.getSkull(this.getURL(), null));
         stand.setVelocity(new Vector(0.0, 0.1, 0.0));
-        stand.setMetadata(player.getUniqueId().toString() + "_powerorb", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        stand.setMetadata(player.getUniqueId().toString() + "_powerorb", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 if (stand.isDead()) {
@@ -100,7 +95,7 @@ public abstract class PowerOrb implements SkullStatistics, MaterialFunction, Abi
                 final Vector velClone = stand.getVelocity().clone();
                 stand.setVelocity(new Vector(0.0, (velClone.getY() < 0.0) ? 0.1 : -0.1, 0.0));
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 25L, 25L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 25L, 25L);
         new BukkitRunnable() {
             public void run() {
                 if (stand.isDead()) {
@@ -112,7 +107,7 @@ public abstract class PowerOrb implements SkullStatistics, MaterialFunction, Abi
                 stand.teleport(location);
                 PowerOrb.this.playEffect(stand.getEyeLocation().clone().add(stand.getLocation().getDirection().divide(new Vector(2, 2, 2))));
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 if (stand.isDead()) {
@@ -137,7 +132,7 @@ public abstract class PowerOrb implements SkullStatistics, MaterialFunction, Abi
                         public void run() {
                             PowerOrb.USING_POWER_ORB_MAP.remove(p.getUniqueId());
                         }
-                    }.runTaskLater(Skyblock.getPlugin(), 20L);
+                    }.runTaskLater(SkyBlock.getPlugin(), 20L);
                     PowerOrb.this.buff(p);
                     for (int i = 0; i < 8; ++i) {
                         PowerOrb.this.playEffect(p.getLocation().add(SUtil.random(-0.5, 0.5), 0.1, SUtil.random(-0.5, 0.5)));
@@ -145,13 +140,13 @@ public abstract class PowerOrb implements SkullStatistics, MaterialFunction, Abi
                 }
                 stand.setCustomName(sItem.getRarity().getColor() + ((PowerOrb.this.getCustomOrbName() == null) ? PowerOrb.this.getBuffName() : PowerOrb.this.getCustomOrbName()) + " " + ChatColor.YELLOW + Math.max(0, seconds.decrementAndGet()) + "s");
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 20L, 20L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 20L, 20L);
         new BukkitRunnable() {
             public void run() {
                 PowerOrb.POWER_ORB_MAP.remove(player.getUniqueId());
                 stand.remove();
             }
-        }.runTaskLater(Skyblock.getPlugin(), this.getOrbLifeTicks() + 15L);
+        }.runTaskLater(SkyBlock.getPlugin(), this.getOrbLifeTicks() + 15L);
     }
 
     protected abstract void buff(final Player p0);
@@ -178,6 +173,11 @@ public abstract class PowerOrb implements SkullStatistics, MaterialFunction, Abi
         player.playEffect(loc2, Effect.POTION_SWIRL, 0);
         player.playEffect(loc2, Effect.POTION_SWIRL, 0);
         player.playEffect(loc2, Effect.POTION_SWIRL, 0);
+    }
+
+    static {
+        USING_POWER_ORB_MAP = new HashMap<UUID, ArmorStand>();
+        POWER_ORB_MAP = new HashMap<UUID, PowerOrbInstance>();
     }
 
     private interface PowerOrbInstance {

@@ -1,13 +1,13 @@
 package in.godspunky.skyblock.item.accessory;
 
+import in.godspunky.skyblock.region.Region;
+import in.godspunky.skyblock.region.RegionType;
+import org.bukkit.entity.Player;
 import in.godspunky.skyblock.item.GenericItemType;
 import in.godspunky.skyblock.item.PlayerBoostStatistics;
 import in.godspunky.skyblock.item.Rarity;
 import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.region.Region;
-import in.godspunky.skyblock.region.RegionType;
 import in.godspunky.skyblock.user.PlayerUtils;
-import org.bukkit.entity.Player;
 
 public class FarmingTalisman implements AccessoryStatistics, AccessoryFunction {
     @Override

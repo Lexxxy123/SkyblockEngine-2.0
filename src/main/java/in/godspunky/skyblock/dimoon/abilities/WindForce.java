@@ -1,7 +1,6 @@
 package in.godspunky.skyblock.dimoon.abilities;
 
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.dimoon.Dimoon;
+import in.godspunky.skyblock.SkyBlock;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -10,6 +9,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.dimoon.Dimoon;
 
 public class WindForce implements Ability {
     @Override
@@ -32,7 +32,7 @@ public class WindForce implements Ability {
                 this.multiplier -= 0.05;
                 world.spigot().playEffect(this.particleLocation, Effect.FIREWORKS_SPARK, 24, 1, 0.0f, 0.0f, 0.0f, 1.0f, 0, 64);
                 world.spigot().playEffect(this.particleLocation, Effect.HAPPY_VILLAGER, 24, 1, 0.0f, 0.0f, 0.0f, 1.0f, 0, 64);
-                if (Skyblock.getPlugin().dimoon == null) {
+                if (SkyBlock.getPlugin().dimoon == null) {
                     this.cancel();
                     return;
                 }
@@ -43,7 +43,7 @@ public class WindForce implements Ability {
                     this.cancel();
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
     }
 
     @Override

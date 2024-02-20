@@ -1,12 +1,6 @@
 package in.godspunky.skyblock.entity.dungeons.boss.sadan;
 
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
-import in.godspunky.skyblock.entity.zombie.BaseZombie;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
+import in.godspunky.skyblock.SkyBlock;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -16,32 +10,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.entity.zombie.BaseZombie;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 
 public class SadanDummy extends BaseZombie {
-    public static ItemStack buildColorStack(final int hexcolor) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
-    }
-
-    public static ItemStack b(final int hexcolor, final Material m) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
-    }
-
-    public static ItemStack c(final Material m) {
-        final ItemStack stack = new ItemStack(m);
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
-    }
-
     @Override
     public String getEntityName() {
         return Sputnik.trans("");
@@ -64,12 +40,12 @@ public class SadanDummy extends BaseZombie {
         Sputnik.applyPacketGiant(entity);
         EntityManager.noAI(entity);
         EntityManager.noHit(entity);
-        entity.setMetadata("GiantSword", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("NoAffect", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("GiantSword", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("NoAffect", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 100);
         EntityManager.shutTheFuckUp(entity);
-        entity.setMetadata("dummyforphase3", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("notDisplay", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("dummyforphase3", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("notDisplay", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         SUtil.delay(() -> this.t(entity), 30L);
         SUtil.delay(() -> this.helmetcolor(entity), 220L);
     }
@@ -134,7 +110,7 @@ public class SadanDummy extends BaseZombie {
                 }
                 e.teleport(e.getLocation().add(teleportTo).multiply(1.0));
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 3L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 3L);
     }
 
     @Override
@@ -160,5 +136,29 @@ public class SadanDummy extends BaseZombie {
     @Override
     public double getMovementSpeed() {
         return 0.0;
+    }
+
+    public static ItemStack buildColorStack(final int hexcolor) {
+        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB(hexcolor));
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
+    }
+
+    public static ItemStack b(final int hexcolor, final Material m) {
+        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
+    }
+
+    public static ItemStack c(final Material m) {
+        final ItemStack stack = new ItemStack(m);
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
     }
 }

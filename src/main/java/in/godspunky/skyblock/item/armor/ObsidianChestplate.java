@@ -1,13 +1,13 @@
 package in.godspunky.skyblock.item.armor;
 
-import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.user.PlayerStatistics;
-import in.godspunky.skyblock.user.PlayerUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import in.godspunky.skyblock.SkyBlock;
+import in.godspunky.skyblock.user.PlayerUtils;
 
 import java.util.Map;
 
@@ -59,7 +59,7 @@ public class ObsidianChestplate implements LeatherArmorStatistics, TickingMateri
                 }
                 statistics.getSpeed().zero(9);
             }
-        }.runTaskLater(Skyblock.getPlugin(), 13L);
+        }.runTaskLater(SkyBlock.getPlugin(), 13L);
     }
 
     @Override

@@ -9,10 +9,6 @@ import java.util.List;
 public class BerserkSkill extends Skill implements DungeonsSkill {
     public static final BerserkSkill INSTANCE;
 
-    static {
-        INSTANCE = new BerserkSkill();
-    }
-
     @Override
     public String getName() {
         return "Berserk";
@@ -65,5 +61,9 @@ public class BerserkSkill extends Skill implements DungeonsSkill {
         t.add("Throwing Axe");
         t.add("Strength Potion");
         return t;
+    }
+
+    static {
+        INSTANCE = new BerserkSkill();
     }
 }

@@ -41,10 +41,6 @@ public interface MaterialStatistics {
         return true;
     }
 
-    default List<String> killReplacementLore() {
-        return null;
-    }
-
     default ItemCategory getCategory() {
         return ItemCategory.TOOLS_MISC;
     }

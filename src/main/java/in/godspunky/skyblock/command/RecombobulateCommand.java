@@ -1,14 +1,13 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.item.GenericItemType;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.ranks.PlayerRank;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import in.godspunky.skyblock.item.GenericItemType;
+import in.godspunky.skyblock.item.SItem;
 
-@CommandParameters(description = "Recombobulate an item from Spec.", aliases = "recom", permission = PlayerRank.ADMIN)
+@CommandParameters(description = "Recombobulate an item from Spec.", aliases = "recom", permission = "spt.item")
 public class RecombobulateCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

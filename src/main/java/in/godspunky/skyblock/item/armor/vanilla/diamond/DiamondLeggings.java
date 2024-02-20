@@ -1,6 +1,7 @@
 package in.godspunky.skyblock.item.armor.vanilla.diamond;
 
 import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.item.*;
 
 public class DiamondLeggings implements ToolStatistics, MaterialFunction {
     @Override

@@ -1,8 +1,6 @@
 package in.godspunky.skyblock.gui;
 
 import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -10,6 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.SUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -22,6 +22,19 @@ public class ShopTradingOptionsGUI extends GUI {
         super("Shop Trading Options", 54);
         this.item = item;
         this.ret = ret;
+    }
+
+    @Override
+    public void onOpen(final GUIOpenEvent e) {
+        final Player player = e.getPlayer();
+        this.fill(BLACK_STAINED_GLASS_PANE);
+        this.set(createTrade(this.item, 20, 1, player));
+        this.set(createTrade(this.item, 21, 5, player));
+        this.set(createTrade(this.item, 22, 10, player));
+        this.set(createTrade(this.item, 23, 32, player));
+        this.set(createTrade(this.item, 24, 64, player));
+        this.set(GUIClickableItem.createGUIOpenerItem(this.ret, player, ChatColor.GREEN + "Go Back", 48, Material.ARROW, (short) 0, ChatColor.GRAY + "To " + this.ret.getTitle()));
+        this.set(GUIClickableItem.getCloseItem(49));
     }
 
     private static GUIClickableItem createTrade(final SItem item, final int slot, final int amount, final Player player) {
@@ -68,18 +81,5 @@ public class ShopTradingOptionsGUI extends GUI {
                 return display.getStack();
             }
         };
-    }
-
-    @Override
-    public void onOpen(final GUIOpenEvent e) {
-        final Player player = e.getPlayer();
-        this.fill(BLACK_STAINED_GLASS_PANE);
-        this.set(createTrade(this.item, 20, 1, player));
-        this.set(createTrade(this.item, 21, 5, player));
-        this.set(createTrade(this.item, 22, 10, player));
-        this.set(createTrade(this.item, 23, 32, player));
-        this.set(createTrade(this.item, 24, 64, player));
-        this.set(GUIClickableItem.createGUIOpenerItem(this.ret, player, ChatColor.GREEN + "Go Back", 48, Material.ARROW, (short) 0, ChatColor.GRAY + "To " + this.ret.getTitle()));
-        this.set(GUIClickableItem.getCloseItem(49));
     }
 }

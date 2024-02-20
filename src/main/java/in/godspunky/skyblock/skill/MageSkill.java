@@ -9,10 +9,6 @@ import java.util.List;
 public class MageSkill extends Skill implements DungeonsSkill {
     public static final MageSkill INSTANCE;
 
-    static {
-        INSTANCE = new MageSkill();
-    }
-
     @Override
     public String getName() {
         return "Mage";
@@ -65,5 +61,9 @@ public class MageSkill extends Skill implements DungeonsSkill {
         t.add("Pop-up Wall");
         t.add("Fireball");
         return t;
+    }
+
+    static {
+        INSTANCE = new MageSkill();
     }
 }

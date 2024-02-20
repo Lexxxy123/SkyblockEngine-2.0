@@ -1,16 +1,16 @@
 package in.godspunky.skyblock.config;
 
-import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.SkyBlock;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 
 public class Config extends YamlConfiguration {
-    private final Skyblock plugin;
+    private final SkyBlock plugin;
     private final File file;
 
     public Config(final File parent, final String name) {
-        this.plugin = Skyblock.getPlugin();
+        this.plugin = SkyBlock.getPlugin();
         this.file = new File(parent, name);
         if (!this.file.exists()) {
             this.options().copyDefaults(true);
@@ -20,7 +20,7 @@ public class Config extends YamlConfiguration {
     }
 
     public Config(final String name) {
-        this(Skyblock.getPlugin().getDataFolder(), name);
+        this(SkyBlock.getPlugin().getDataFolder(), name);
     }
 
     public void load() {

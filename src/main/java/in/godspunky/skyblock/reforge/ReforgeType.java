@@ -36,6 +36,15 @@ public enum ReforgeType {
         this(clazz, true);
     }
 
+    public Reforge getReforge() {
+        try {
+            return this.clazz.newInstance();
+        } catch (final InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static ReforgeType getReforgeType(final String name) {
         return valueOf(name.toUpperCase());
     }
@@ -47,15 +56,6 @@ public enum ReforgeType {
             }
         }
         return null;
-    }
-
-    public Reforge getReforge() {
-        try {
-            return this.clazz.newInstance();
-        } catch (final InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     public boolean isAccessible() {

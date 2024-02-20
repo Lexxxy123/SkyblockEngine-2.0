@@ -1,18 +1,9 @@
 package in.godspunky.skyblock.entity.nms;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import in.godspunky.skyblock.Repeater;
-import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.enchantment.EnchantmentType;
 import in.godspunky.skyblock.entity.*;
-import in.godspunky.skyblock.entity.end.EndermanStatistics;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.BlockFallAPI;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 import net.minecraft.server.v1_8_R3.World;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Material;
@@ -31,48 +22,31 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.Repeater;
+import in.godspunky.skyblock.entity.end.EndermanStatistics;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.BlockFallAPI;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.*;
 
 public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, EntityFunction, SlayerBoss, EndermanStatistics {
+    private static final TieredValue<Double> MAX_HEALTH_VALUES;
+    private static final TieredValue<Double> DAMAGE_VALUES;
+    private static final TieredValue<Double> SPEED_VALUES;
+    private static final TieredValue<Double> XP_DROPS;
     public static final Map<Entity, Player> BEACON_THROW;
     public static final Map<Entity, Integer> HIT_SHIELD;
     public static final Map<Entity, Integer> HIT_SHIELD_MAX;
     public static final Map<UUID, Entity> OWNER_BOSS;
     public static final Map<Entity, Player> NUKEKUBI_TARGET;
     public static final Map<Entity, Integer> NUKEKUBI_DAMAGE;
-    public static final Map<UUID, List<Entity>> LivingSkulls;
-    public static final Map<Entity, Block> CACHED_BLOCK;
-    public static final Map<Entity, Integer> CACHED_BLOCK_ID;
-    public static final Map<Entity, Byte> CACHED_BLOCK_DATA;
-    private static final TieredValue<Double> MAX_HEALTH_VALUES;
-    private static final TieredValue<Double> DAMAGE_VALUES;
-    private static final TieredValue<Double> SPEED_VALUES;
-    private static final TieredValue<Double> XP_DROPS;
-    static UUID spawnerUUID2;
-
-    static {
-        MAX_HEALTH_VALUES = new TieredValue<Double>(3.0E7, 1.5E8, 6.66E8, 1.0E9);
-        DAMAGE_VALUES = new TieredValue<Double>(120000.0, 1000000.0, 1200000.0, 1500000.0);
-        SPEED_VALUES = new TieredValue<Double>(0.2, 0.2, 0.2, 0.2);
-        XP_DROPS = new TieredValue<Double>(750.0, 1600.0, 2900.4, 10900.0);
-        BEACON_THROW = new HashMap<Entity, Player>();
-        HIT_SHIELD = new HashMap<Entity, Integer>();
-        HIT_SHIELD_MAX = new HashMap<Entity, Integer>();
-        OWNER_BOSS = new HashMap<UUID, Entity>();
-        NUKEKUBI_TARGET = new HashMap<Entity, Player>();
-        NUKEKUBI_DAMAGE = new HashMap<Entity, Integer>();
-        LivingSkulls = new HashMap<UUID, List<Entity>>();
-        CACHED_BLOCK = new HashMap<Entity, Block>();
-        CACHED_BLOCK_ID = new HashMap<Entity, Integer>();
-        CACHED_BLOCK_DATA = new HashMap<Entity, Byte>();
-    }
-
     private final int tier;
     private final long end;
-    private final ArrayList<Entity> Ar1;
-    private final ArrayList<Entity> Ar2;
-    private final UUID spawnerUUID;
     private boolean CooldownSkill;
     private boolean CooldownSkill2;
     private boolean CooldownSkill3;
@@ -85,6 +59,14 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
     private boolean isBroken;
     private SEntity hologram;
     private SEntity hologram_name;
+    private final ArrayList<Entity> Ar1;
+    public static final Map<UUID, List<Entity>> LivingSkulls;
+    private final ArrayList<Entity> Ar2;
+    private final UUID spawnerUUID;
+    static UUID spawnerUUID2;
+    public static final Map<Entity, Block> CACHED_BLOCK;
+    public static final Map<Entity, Integer> CACHED_BLOCK_ID;
+    public static final Map<Entity, Byte> CACHED_BLOCK_DATA;
 
     public VoidgloomSeraph(final Integer tier, final UUID spawnerUUID) {
         super(((CraftWorld) Bukkit.getPlayer(spawnerUUID).getWorld()).getHandle());
@@ -138,203 +120,6 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
 
     public static Player getPlayer() {
         return Bukkit.getPlayer(VoidgloomSeraph.spawnerUUID2);
-    }
-
-    public static void spawnNukekubi(final Entity e, final Player p, final Integer damage, final Integer spawnCouples) {
-        if (spawnCouples <= 2) {
-            final Location loc1_ = p.getLocation();
-            loc1_.setYaw(loc1_.getYaw() + SUtil.random(0, 360));
-            final Location loc2_ = p.getLocation();
-            loc2_.setYaw(loc1_.getYaw() + SUtil.random(0, 360));
-            final Location loc1 = loc1_.add(loc1_.getDirection().multiply(5));
-            final Location loc2 = loc2_.add(loc2_.getDirection().multiply(-5));
-            moveHeadAround(spawnHeads(e, loc1, p), p, damage);
-            moveHeadAround(spawnHeads(e, loc2, p), p, damage);
-        } else {
-            for (int i = 0; i < spawnCouples; ++i) {
-                if (SUtil.random(1, 2) == 1) {
-                    final Location loc1_2 = p.getLocation();
-                    loc1_2.setYaw(loc1_2.getYaw() + SUtil.random(0, 360));
-                    final Location loc2_2 = p.getLocation();
-                    loc2_2.setYaw(loc1_2.getYaw() + SUtil.random(0, 360));
-                    final Location loc3 = loc1_2.add(loc1_2.getDirection().multiply(5));
-                    final Location loc4 = loc2_2.add(loc2_2.getDirection().multiply(-5));
-                    moveHeadAround(spawnHeads(e, loc3, p), p, damage);
-                } else {
-                    final Location loc1_2 = p.getLocation();
-                    loc1_2.setYaw(loc1_2.getYaw() + SUtil.random(0, 360));
-                    final Location loc2_2 = p.getLocation();
-                    loc2_2.setYaw(loc1_2.getYaw() + SUtil.random(0, 360));
-                    final Location loc3 = loc1_2.add(loc1_2.getDirection().multiply(5));
-                    final Location loc4 = loc2_2.add(loc2_2.getDirection().multiply(-5));
-                    moveHeadAround(spawnHeads(e, loc4, p), p, damage);
-                }
-            }
-        }
-    }
-
-    public static void destroyArmorStandWithUUID(final UUID uuid, final org.bukkit.World w) {
-        final String uuidString = uuid.toString() + "_NUKEKUBI";
-        for (final Entity e : w.getEntities()) {
-            if (e.hasMetadata(uuidString)) {
-                e.remove();
-            }
-        }
-    }
-
-    public static LivingEntity spawnHeads(final Entity e, final Location loc, final Player p) {
-        final ArmorStand entity = (ArmorStand) loc.getWorld().spawnEntity(e.getLocation().add(e.getLocation().getDirection().normalize().multiply(-1)), EntityType.ARMOR_STAND);
-        loc.setY(loc.getY() + SUtil.random(0.0, 0.6));
-        entity.setCustomName(Sputnik.trans("&c☠ &bVoidgloom Seraph"));
-        entity.setVisible(false);
-        entity.setGravity(false);
-        entity.getEquipment().setHelmet(SItem.of(SMaterial.NUKEKUBI).getStack());
-        entity.getEquipment().setItemInHand(new ItemStack(Material.AIR));
-        entity.setMetadata("Nukekubi", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata(p.getUniqueId().toString() + "_NUKEKUBI", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        VoidgloomSeraph.NUKEKUBI_TARGET.put(entity, p);
-        if (!VoidgloomSeraph.LivingSkulls.containsKey(p.getUniqueId())) {
-            VoidgloomSeraph.LivingSkulls.put(p.getUniqueId(), new ArrayList<Entity>());
-        }
-        VoidgloomSeraph.LivingSkulls.get(p.getUniqueId()).add(entity);
-        moveToLoc(entity, loc, 3, 0, 1.0);
-        new BukkitRunnable() {
-            public void run() {
-                if (entity.isDead()) {
-                    this.cancel();
-                    return;
-                }
-                if (entity.hasMetadata("Nukekubi")) {
-                    final Location l = entity.getLocation().setDirection(p.getLocation().toVector().subtract(entity.getLocation().toVector()));
-                    entity.teleport(l);
-                    double x = 0.0;
-                    final double y = 0.0;
-                    final double z = 0.0;
-                    x = Math.toRadians(l.getPitch());
-                    entity.setHeadPose(new EulerAngle(x, y, z));
-                    entity.getWorld().playEffect(entity.getLocation().add(0.0, 1.1, 0.0), Effect.WITCH_MAGIC, 1);
-                    entity.getWorld().playEffect(entity.getLocation().add(0.0, 1.2, 0.0), Effect.WITCH_MAGIC, 1);
-                    entity.getWorld().playEffect(entity.getLocation().add(0.0, 1.2, 0.0), Effect.WITCH_MAGIC, 1);
-                    entity.getWorld().playEffect(entity.getLocation().add(0.0, 1.4, 0.0), Effect.WITCH_MAGIC, 1);
-                    entity.getWorld().playEffect(entity.getLocation().add(0.0, 1.4, 0.0), Effect.WITCH_MAGIC, 1);
-                }
-            }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
-        return entity;
-    }
-
-    public static void moveToLoc(final Entity e, final Location target, final int tickingRad, final int firstTickRad, final double jump) {
-        final Location l = e.getLocation().setDirection(target.toVector().subtract(e.getLocation().toVector()));
-        new BukkitRunnable() {
-            public void run() {
-                final Vector teleportTo = l.getDirection().normalize().multiply(jump);
-                if (e.isDead()) {
-                    this.cancel();
-                    return;
-                }
-                if (e.getWorld().getNearbyEntities(target, 1.5, 1.5, 1.5).contains(e)) {
-                    this.cancel();
-                    return;
-                }
-                e.teleport(e.getLocation().add(teleportTo).multiply(jump));
-                e.getWorld().spigot().playEffect(e.getLocation().add(0.0, 1.1, 0.0), Effect.FLAME, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
-                e.getWorld().spigot().playEffect(e.getLocation().add(0.0, 1.0, 0.0), Effect.FLAME, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
-                e.getWorld().spigot().playEffect(e.getLocation().add(0.0, 1.0, 0.0), Effect.FLAME, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
-            }
-        }.runTaskTimer(Skyblock.getPlugin(), firstTickRad, tickingRad);
-    }
-
-    public static void moveHeadAround(final Entity head, final Player p, final Integer damage) {
-        new BukkitRunnable() {
-            public void run() {
-                if (head.isDead()) {
-                    this.cancel();
-                    return;
-                }
-                int i1 = 0;
-                if (VoidgloomSeraph.NUKEKUBI_DAMAGE.containsKey(p)) {
-                    i1 = VoidgloomSeraph.NUKEKUBI_DAMAGE.get(p);
-                }
-                if (head.getWorld().equals(p.getWorld())) {
-                    Sputnik.drawLineforMovingPoints(head.getLocation().add(head.getLocation().getDirection().multiply(0.1)).add(0.0, 2.0, 0.0), p.getLocation().add(0.0, 1.8, 0.0), 20.0, p, damage, head);
-                    Sputnik.dmgc(i1, p, head);
-                } else {
-                    head.remove();
-                }
-            }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 20L);
-    }
-
-    public static void damageUpdate(final double formula) {
-        VoidgloomSeraph.NUKEKUBI_DAMAGE.put(getPlayer(), (int) formula);
-    }
-
-    public static void targetSelect(final Entity entity, final LivingEntity target) {
-        if (!(entity instanceof Creature)) {
-            return;
-        }
-        ((Creature) entity).setTarget(target);
-    }
-
-    public static void updateSkill(final List<Entity> list) {
-        for (final Entity e : list) {
-            VoidgloomSeraph.NUKEKUBI_TARGET.remove(e);
-        }
-    }
-
-    public static BukkitTask a(final ArmorStand entity) {
-        return new BukkitRunnable() {
-            public void run() {
-                if (entity.isDead()) {
-                    this.cancel();
-                    return;
-                }
-                final org.bukkit.World world = entity.getWorld();
-                if (entity.hasMetadata("BeaconSkill") && entity.isOnGround()) {
-                    entity.remove();
-                    if (VoidgloomSeraph.getPlayer() != null) {
-                        VoidgloomSeraph.getPlayer().getWorld().playSound(VoidgloomSeraph.getPlayer().getLocation(), Sound.ITEM_BREAK, 0.5f, 0.67f);
-                    }
-                    final Location loc = entity.getLocation().getBlock().getLocation().add(0.5, 0.0, 0.5);
-                    final ArmorStand armorStand2 = (ArmorStand) entity.getWorld().spawnEntity(loc, EntityType.ARMOR_STAND);
-                    VoidgloomSeraph.CACHED_BLOCK.put(armorStand2, loc.getBlock());
-                    VoidgloomSeraph.CACHED_BLOCK_ID.put(armorStand2, loc.getBlock().getTypeId());
-                    VoidgloomSeraph.CACHED_BLOCK_DATA.put(armorStand2, loc.getBlock().getData());
-                    armorStand2.setGravity(true);
-                    armorStand2.setVisible(false);
-                    armorStand2.setCustomName(ChatColor.translateAlternateColorCodes('&', "&c☠ &fTEST"));
-                    armorStand2.setMetadata("BeaconSkill2", new FixedMetadataValue(Skyblock.getPlugin(), true));
-                    loc.getBlock().setType(Material.BARRIER);
-                    Repeater.BEACON_THROW2.put(Repeater.BEACON_OWNER.get(entity).getUniqueId(), armorStand2);
-                    VoidgloomSeraph.b(armorStand2);
-                    Repeater.BEACON.put(armorStand2, BlockFallAPI.sendBlockDestroyWithSignal(loc, Material.BEACON, (byte) 0, world));
-                }
-            }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
-    }
-
-    public static void b(final Entity armorStand2) {
-        new BukkitRunnable() {
-            public void run() {
-                if (armorStand2.isDead()) {
-                    this.cancel();
-                    return;
-                }
-                final org.bukkit.World world = armorStand2.getWorld();
-                world.playEffect(armorStand2.getLocation().add(0.0, 1.0, 0.0), Effect.FLYING_GLYPH, 3);
-                world.playEffect(armorStand2.getLocation().add(0.0, 1.0, 0.0), Effect.FLYING_GLYPH, 3);
-                world.playEffect(armorStand2.getLocation().add(0.0, 1.0, 0.0), Effect.FLYING_GLYPH, 3);
-                world.playEffect(armorStand2.getLocation().add(0.0, 1.0, 0.0), Effect.FLYING_GLYPH, 3);
-                world.playEffect(armorStand2.getLocation().add(0.0, 1.0, 0.0), Effect.FLYING_GLYPH, 3);
-                world.playEffect(armorStand2.getLocation().add(0.0, 1.0, 0.0), Effect.FLYING_GLYPH, 3);
-                world.playEffect(armorStand2.getLocation().add(0.0, 1.0, 0.0), Effect.FLYING_GLYPH, 3);
-                world.playEffect(armorStand2.getLocation().add(0.0, 1.0, 0.0), Effect.FLYING_GLYPH, 3);
-                world.playEffect(armorStand2.getLocation().add(0.0, 1.0, 0.0), Effect.FLYING_GLYPH, 3);
-                world.playEffect(armorStand2.getLocation().add(0.0, 1.0, 0.0), Effect.FLYING_GLYPH, 3);
-                world.playEffect(armorStand2.getLocation().add(0.0, 1.0, 0.0), Effect.FLYING_GLYPH, 3);
-                world.playEffect(armorStand2.getLocation().add(0.0, 1.0, 0.0), Effect.FLYING_GLYPH, 3);
-            }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public void t_() {
@@ -432,7 +217,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     armorStand1.setVisible(false);
                     armorStand1.setCustomName(ChatColor.translateAlternateColorCodes('&', ""));
                     final Vector vec = armorStand1.getLocation().getDirection().normalize().multiply(1.25);
-                    armorStand1.setMetadata("BeaconSkill", new FixedMetadataValue(Skyblock.getPlugin(), true));
+                    armorStand1.setMetadata("BeaconSkill", new FixedMetadataValue(SkyBlock.getPlugin(), true));
                     vec.setY(0.55);
                     armorStand1.setVelocity(vec);
                     Sputnik.endermanCarryBlock((Enderman) entity, Material.AIR);
@@ -457,7 +242,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     Repeater.BEACON_OWNER.put(armorStand1, player);
                     VoidgloomSeraph.a(armorStand1);
                 }
-            }.runTaskLater(Skyblock.getPlugin(), 80L);
+            }.runTaskLater(SkyBlock.getPlugin(), 80L);
             new BukkitRunnable() {
                 public void run() {
                     if (entity.isDead()) {
@@ -498,14 +283,14 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     }
                     VoidgloomSeraph.this.activebea = false;
                 }
-            }.runTaskLater(Skyblock.getPlugin(), 185L);
+            }.runTaskLater(SkyBlock.getPlugin(), 185L);
             new BukkitRunnable() {
                 public void run() {
                     if (VoidgloomSeraph.this.CooldownSkill) {
                         VoidgloomSeraph.this.CooldownSkill = false;
                     }
                 }
-            }.runTaskLater(Skyblock.getPlugin(), 400L);
+            }.runTaskLater(SkyBlock.getPlugin(), 400L);
         }
         int amounths = 30;
         if (this.tier == 2) {
@@ -541,7 +326,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                         VoidgloomSeraph.this.CooldownSkill2 = false;
                     }
                 }
-            }.runTaskLater(Skyblock.getPlugin(), 850L);
+            }.runTaskLater(SkyBlock.getPlugin(), 850L);
         }
         if (this.bukkitEntity.getWorld() == player.getWorld() && this.getBukkitEntity().getLocation().distance(player.getLocation()) > 20.0 && this.HeartRadi) {
             User.getUser(player.getUniqueId()).damage(player.getMaxHealth() * 90.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, entity);
@@ -579,12 +364,12 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     }
                     stand_sit.setPassenger(entity);
                 }
-            }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+            }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
             final ArmorStand stand3 = (ArmorStand) stand_sit.getWorld().spawn(stand_sit.getLocation().add(0.0, 0.0, 0.0), (Class) ArmorStand.class);
             stand3.setVisible(false);
             stand3.setGravity(false);
             stand3.setMarker(true);
-            stand3.setMetadata("HeartRadiAS", new FixedMetadataValue(Skyblock.getPlugin(), true));
+            stand3.setMetadata("HeartRadiAS", new FixedMetadataValue(SkyBlock.getPlugin(), true));
             this.Ar1.add(stand3);
             this.Ar2.add(stand3);
             final ArmorStand stand4 = (ArmorStand) entity.getWorld().spawn(stand3.getLocation().add(0.0, 1.5, 0.0), (Class) ArmorStand.class);
@@ -593,14 +378,14 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
             stand4.setMarker(true);
             this.Ar1.add(stand4);
             this.Ar2.add(stand4);
-            stand4.setMetadata("HeartRadiAS", new FixedMetadataValue(Skyblock.getPlugin(), true));
+            stand4.setMetadata("HeartRadiAS", new FixedMetadataValue(SkyBlock.getPlugin(), true));
             final ArmorStand stand5 = (ArmorStand) entity.getWorld().spawn(stand4.getLocation().add(0.0, 1.5, 0.0), (Class) ArmorStand.class);
             stand5.setVisible(false);
             stand5.setGravity(false);
             stand5.setMarker(true);
             this.Ar1.add(stand5);
             this.Ar2.add(stand5);
-            stand5.setMetadata("HeartRadiAS", new FixedMetadataValue(Skyblock.getPlugin(), true));
+            stand5.setMetadata("HeartRadiAS", new FixedMetadataValue(SkyBlock.getPlugin(), true));
             final Location l2 = l;
             l2.setYaw(l.getYaw() + 90.0f);
             final ArmorStand stand1_ = (ArmorStand) stand_sit.getWorld().spawn(l2, (Class) ArmorStand.class);
@@ -609,14 +394,14 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
             stand1_.setMarker(true);
             this.Ar1.add(stand1_);
             this.Ar2.add(stand1_);
-            stand4.setMetadata("HeartRadiAS", new FixedMetadataValue(Skyblock.getPlugin(), true));
+            stand4.setMetadata("HeartRadiAS", new FixedMetadataValue(SkyBlock.getPlugin(), true));
             final ArmorStand stand6 = (ArmorStand) entity.getWorld().spawn(stand1_.getLocation().add(0.0, 1.5, 0.0), (Class) ArmorStand.class);
             stand6.setVisible(false);
             stand6.setGravity(false);
             stand6.setMarker(true);
             this.Ar1.add(stand6);
             this.Ar2.add(stand6);
-            stand6.setMetadata("HeartRadiAS", new FixedMetadataValue(Skyblock.getPlugin(), true));
+            stand6.setMetadata("HeartRadiAS", new FixedMetadataValue(SkyBlock.getPlugin(), true));
             final ArmorStand stand7 = (ArmorStand) entity.getWorld().spawn(stand6.getLocation().add(0.0, 1.5, 0.0), (Class) ArmorStand.class);
             stand7.setVisible(false);
             stand7.setGravity(false);
@@ -628,7 +413,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     player.playSound(player.getLocation(), Sound.FIREWORK_LARGE_BLAST, 1.0f, 0.5f);
                     Sputnik.playFuckingSoundOfVoidgloomThatTookForeverToMake(player, stand_sit);
                 }
-            }.runTaskLater(Skyblock.getPlugin(), 15L);
+            }.runTaskLater(SkyBlock.getPlugin(), 15L);
             new BukkitRunnable() {
                 public void run() {
                     if (entity.isDead()) {
@@ -663,9 +448,9 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                                 Sputnik.IsInsideTheBeam.remove(player.getUniqueId());
                             }
                         }
-                    }.runTaskTimer(Skyblock.getPlugin(), 0L, 3L);
+                    }.runTaskTimer(SkyBlock.getPlugin(), 0L, 3L);
                 }
-            }.runTaskLater(Skyblock.getPlugin(), 25L);
+            }.runTaskLater(SkyBlock.getPlugin(), 25L);
             new BukkitRunnable() {
                 public void run() {
                     VoidgloomSeraph.this.HeartRadi = false;
@@ -677,9 +462,9 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                                 VoidgloomSeraph.this.CooldownSkill3 = false;
                             }
                         }
-                    }.runTaskLater(Skyblock.getPlugin(), 700L);
+                    }.runTaskLater(SkyBlock.getPlugin(), 700L);
                 }
-            }.runTaskLater(Skyblock.getPlugin(), 200L);
+            }.runTaskLater(SkyBlock.getPlugin(), 200L);
         }
         if (this.activeskull) {
             int damagefin = 800;
@@ -717,21 +502,21 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                                     VoidgloomSeraph.this.CooldownSkill4 = false;
                                 }
                             }
-                        }.runTaskLater(Skyblock.getPlugin(), 400L);
+                        }.runTaskLater(SkyBlock.getPlugin(), 400L);
                     }
                 }
-            }.runTaskLater(Skyblock.getPlugin(), 300L);
+            }.runTaskLater(SkyBlock.getPlugin(), 300L);
         }
     }
 
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
-        entity.setMetadata("NoAffect", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("Voidgloom", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("BOSS_OWNER_" + Bukkit.getPlayer(this.getSpawnerUUID()).getUniqueId().toString(), new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("GiantSword", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("NoAffect", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("Voidgloom", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("BOSS_OWNER_" + Bukkit.getPlayer(this.getSpawnerUUID()).getUniqueId().toString(), new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("GiantSword", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         VoidgloomSeraph.LivingSkulls.put(this.spawnerUUID, new ArrayList<Entity>());
-        SUtil.delay(() -> entity.removeMetadata("GiantSword", Skyblock.getPlugin()), 20L);
+        SUtil.delay(() -> entity.removeMetadata("GiantSword", SkyBlock.getPlugin()), 20L);
         SUtil.delay(() -> {
             int amounths = 30;
             if (this.tier == 2) {
@@ -763,7 +548,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
         ((ArmorStand) this.hologram.getEntity()).setVisible(false);
         ((ArmorStand) this.hologram.getEntity()).setGravity(false);
         this.hologram.getEntity().setCustomNameVisible(true);
-        entity.setMetadata("notDisplay", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("notDisplay", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         final net.minecraft.server.v1_8_R3.Entity e = this.getBukkitEntity().getHandle();
         final double height_ = e.getBoundingBox().e - e.getBoundingBox().b;
         this.hologram_name = new SEntity(entity.getLocation().add(0.0, height_, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND);
@@ -788,7 +573,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     Repeater.BEACON_OWNER.remove(entity);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -800,7 +585,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     }
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -816,7 +601,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     VoidgloomSeraph.getPlayer().damage(VoidgloomSeraph.DAMAGE_VALUES.getByNumber(VoidgloomSeraph.this.tier), entity);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 20L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 20L);
     }
 
     public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
@@ -918,6 +703,203 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
         return this.spawnerUUID;
     }
 
+    public static void spawnNukekubi(final Entity e, final Player p, final Integer damage, final Integer spawnCouples) {
+        if (spawnCouples <= 2) {
+            final Location loc1_ = p.getLocation();
+            loc1_.setYaw(loc1_.getYaw() + SUtil.random(0, 360));
+            final Location loc2_ = p.getLocation();
+            loc2_.setYaw(loc1_.getYaw() + SUtil.random(0, 360));
+            final Location loc1 = loc1_.add(loc1_.getDirection().multiply(5));
+            final Location loc2 = loc2_.add(loc2_.getDirection().multiply(-5));
+            moveHeadAround(spawnHeads(e, loc1, p), p, damage);
+            moveHeadAround(spawnHeads(e, loc2, p), p, damage);
+        } else {
+            for (int i = 0; i < spawnCouples; ++i) {
+                if (SUtil.random(1, 2) == 1) {
+                    final Location loc1_2 = p.getLocation();
+                    loc1_2.setYaw(loc1_2.getYaw() + SUtil.random(0, 360));
+                    final Location loc2_2 = p.getLocation();
+                    loc2_2.setYaw(loc1_2.getYaw() + SUtil.random(0, 360));
+                    final Location loc3 = loc1_2.add(loc1_2.getDirection().multiply(5));
+                    final Location loc4 = loc2_2.add(loc2_2.getDirection().multiply(-5));
+                    moveHeadAround(spawnHeads(e, loc3, p), p, damage);
+                } else {
+                    final Location loc1_2 = p.getLocation();
+                    loc1_2.setYaw(loc1_2.getYaw() + SUtil.random(0, 360));
+                    final Location loc2_2 = p.getLocation();
+                    loc2_2.setYaw(loc1_2.getYaw() + SUtil.random(0, 360));
+                    final Location loc3 = loc1_2.add(loc1_2.getDirection().multiply(5));
+                    final Location loc4 = loc2_2.add(loc2_2.getDirection().multiply(-5));
+                    moveHeadAround(spawnHeads(e, loc4, p), p, damage);
+                }
+            }
+        }
+    }
+
+    public static void destroyArmorStandWithUUID(final UUID uuid, final org.bukkit.World w) {
+        final String uuidString = uuid.toString() + "_NUKEKUBI";
+        for (final Entity e : w.getEntities()) {
+            if (e.hasMetadata(uuidString)) {
+                e.remove();
+            }
+        }
+    }
+
+    public static LivingEntity spawnHeads(final Entity e, final Location loc, final Player p) {
+        final ArmorStand entity = (ArmorStand) loc.getWorld().spawnEntity(e.getLocation().add(e.getLocation().getDirection().normalize().multiply(-1)), EntityType.ARMOR_STAND);
+        loc.setY(loc.getY() + SUtil.random(0.0, 0.6));
+        entity.setCustomName(Sputnik.trans("&c☠ &bVoidgloom Seraph"));
+        entity.setVisible(false);
+        entity.setGravity(false);
+        entity.getEquipment().setHelmet(SItem.of(SMaterial.NUKEKUBI).getStack());
+        entity.getEquipment().setItemInHand(new ItemStack(Material.AIR));
+        entity.setMetadata("Nukekubi", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata(p.getUniqueId().toString() + "_NUKEKUBI", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        VoidgloomSeraph.NUKEKUBI_TARGET.put(entity, p);
+        if (!VoidgloomSeraph.LivingSkulls.containsKey(p.getUniqueId())) {
+            VoidgloomSeraph.LivingSkulls.put(p.getUniqueId(), new ArrayList<Entity>());
+        }
+        VoidgloomSeraph.LivingSkulls.get(p.getUniqueId()).add(entity);
+        moveToLoc(entity, loc, 3, 0, 1.0);
+        new BukkitRunnable() {
+            public void run() {
+                if (entity.isDead()) {
+                    this.cancel();
+                    return;
+                }
+                if (entity.hasMetadata("Nukekubi")) {
+                    final Location l = entity.getLocation().setDirection(p.getLocation().toVector().subtract(entity.getLocation().toVector()));
+                    entity.teleport(l);
+                    double x = 0.0;
+                    final double y = 0.0;
+                    final double z = 0.0;
+                    x = Math.toRadians(l.getPitch());
+                    entity.setHeadPose(new EulerAngle(x, y, z));
+                    entity.getWorld().playEffect(entity.getLocation().add(0.0, 1.1, 0.0), Effect.WITCH_MAGIC, 1);
+                    entity.getWorld().playEffect(entity.getLocation().add(0.0, 1.2, 0.0), Effect.WITCH_MAGIC, 1);
+                    entity.getWorld().playEffect(entity.getLocation().add(0.0, 1.2, 0.0), Effect.WITCH_MAGIC, 1);
+                    entity.getWorld().playEffect(entity.getLocation().add(0.0, 1.4, 0.0), Effect.WITCH_MAGIC, 1);
+                    entity.getWorld().playEffect(entity.getLocation().add(0.0, 1.4, 0.0), Effect.WITCH_MAGIC, 1);
+                }
+            }
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
+        return entity;
+    }
+
+    public static void moveToLoc(final Entity e, final Location target, final int tickingRad, final int firstTickRad, final double jump) {
+        final Location l = e.getLocation().setDirection(target.toVector().subtract(e.getLocation().toVector()));
+        new BukkitRunnable() {
+            public void run() {
+                final Vector teleportTo = l.getDirection().normalize().multiply(jump);
+                if (e.isDead()) {
+                    this.cancel();
+                    return;
+                }
+                if (e.getWorld().getNearbyEntities(target, 1.5, 1.5, 1.5).contains(e)) {
+                    this.cancel();
+                    return;
+                }
+                e.teleport(e.getLocation().add(teleportTo).multiply(jump));
+                e.getWorld().spigot().playEffect(e.getLocation().add(0.0, 1.1, 0.0), Effect.FLAME, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                e.getWorld().spigot().playEffect(e.getLocation().add(0.0, 1.0, 0.0), Effect.FLAME, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                e.getWorld().spigot().playEffect(e.getLocation().add(0.0, 1.0, 0.0), Effect.FLAME, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+            }
+        }.runTaskTimer(SkyBlock.getPlugin(), firstTickRad, tickingRad);
+    }
+
+    public static void moveHeadAround(final Entity head, final Player p, final Integer damage) {
+        new BukkitRunnable() {
+            public void run() {
+                if (head.isDead()) {
+                    this.cancel();
+                    return;
+                }
+                int i1 = 0;
+                if (VoidgloomSeraph.NUKEKUBI_DAMAGE.containsKey(p)) {
+                    i1 = VoidgloomSeraph.NUKEKUBI_DAMAGE.get(p);
+                }
+                if (head.getWorld().equals(p.getWorld())) {
+                    Sputnik.drawLineforMovingPoints(head.getLocation().add(head.getLocation().getDirection().multiply(0.1)).add(0.0, 2.0, 0.0), p.getLocation().add(0.0, 1.8, 0.0), 20.0, p, damage, head);
+                    Sputnik.dmgc(i1, p, head);
+                } else {
+                    head.remove();
+                }
+            }
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 20L);
+    }
+
+    public static void damageUpdate(final double formula) {
+        VoidgloomSeraph.NUKEKUBI_DAMAGE.put(getPlayer(), (int) formula);
+    }
+
+    public static void targetSelect(final Entity entity, final LivingEntity target) {
+        if (!(entity instanceof Creature)) {
+            return;
+        }
+        ((Creature) entity).setTarget(target);
+    }
+
+    public static void updateSkill(final List<Entity> list) {
+        for (final Entity e : list) {
+            VoidgloomSeraph.NUKEKUBI_TARGET.remove(e);
+        }
+    }
+
+    public static BukkitTask a(final ArmorStand entity) {
+        return new BukkitRunnable() {
+            public void run() {
+                if (entity.isDead()) {
+                    this.cancel();
+                    return;
+                }
+                final org.bukkit.World world = entity.getWorld();
+                if (entity.hasMetadata("BeaconSkill") && entity.isOnGround()) {
+                    entity.remove();
+                    if (VoidgloomSeraph.getPlayer() != null) {
+                        VoidgloomSeraph.getPlayer().getWorld().playSound(VoidgloomSeraph.getPlayer().getLocation(), Sound.ITEM_BREAK, 0.5f, 0.67f);
+                    }
+                    final Location loc = entity.getLocation().getBlock().getLocation().add(0.5, 0.0, 0.5);
+                    final ArmorStand armorStand2 = (ArmorStand) entity.getWorld().spawnEntity(loc, EntityType.ARMOR_STAND);
+                    VoidgloomSeraph.CACHED_BLOCK.put(armorStand2, loc.getBlock());
+                    VoidgloomSeraph.CACHED_BLOCK_ID.put(armorStand2, loc.getBlock().getTypeId());
+                    VoidgloomSeraph.CACHED_BLOCK_DATA.put(armorStand2, loc.getBlock().getData());
+                    armorStand2.setGravity(true);
+                    armorStand2.setVisible(false);
+                    armorStand2.setCustomName(ChatColor.translateAlternateColorCodes('&', "&c☠ &fTEST"));
+                    armorStand2.setMetadata("BeaconSkill2", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+                    loc.getBlock().setType(Material.BARRIER);
+                    Repeater.BEACON_THROW2.put(Repeater.BEACON_OWNER.get(entity).getUniqueId(), armorStand2);
+                    VoidgloomSeraph.b(armorStand2);
+                    Repeater.BEACON.put(armorStand2, BlockFallAPI.sendBlockDestroyWithSignal(loc, Material.BEACON, (byte) 0, world));
+                }
+            }
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
+    }
+
+    public static void b(final Entity armorStand2) {
+        new BukkitRunnable() {
+            public void run() {
+                if (armorStand2.isDead()) {
+                    this.cancel();
+                    return;
+                }
+                final org.bukkit.World world = armorStand2.getWorld();
+                world.playEffect(armorStand2.getLocation().add(0.0, 1.0, 0.0), Effect.FLYING_GLYPH, 3);
+                world.playEffect(armorStand2.getLocation().add(0.0, 1.0, 0.0), Effect.FLYING_GLYPH, 3);
+                world.playEffect(armorStand2.getLocation().add(0.0, 1.0, 0.0), Effect.FLYING_GLYPH, 3);
+                world.playEffect(armorStand2.getLocation().add(0.0, 1.0, 0.0), Effect.FLYING_GLYPH, 3);
+                world.playEffect(armorStand2.getLocation().add(0.0, 1.0, 0.0), Effect.FLYING_GLYPH, 3);
+                world.playEffect(armorStand2.getLocation().add(0.0, 1.0, 0.0), Effect.FLYING_GLYPH, 3);
+                world.playEffect(armorStand2.getLocation().add(0.0, 1.0, 0.0), Effect.FLYING_GLYPH, 3);
+                world.playEffect(armorStand2.getLocation().add(0.0, 1.0, 0.0), Effect.FLYING_GLYPH, 3);
+                world.playEffect(armorStand2.getLocation().add(0.0, 1.0, 0.0), Effect.FLYING_GLYPH, 3);
+                world.playEffect(armorStand2.getLocation().add(0.0, 1.0, 0.0), Effect.FLYING_GLYPH, 3);
+                world.playEffect(armorStand2.getLocation().add(0.0, 1.0, 0.0), Effect.FLYING_GLYPH, 3);
+                world.playEffect(armorStand2.getLocation().add(0.0, 1.0, 0.0), Effect.FLYING_GLYPH, 3);
+            }
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
+    }
+
     public void teleportSkill(final Entity e, final Player p) {
         final int LOR = SUtil.random(0, 1);
         new BukkitRunnable() {
@@ -947,7 +929,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                 a.getWorld().playSound(a, Sound.ENDERMAN_TELEPORT, 0.2f, 1.0f);
                 ++this.cout;
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
     }
 
     public void drawPointerAt(final Location loc) {
@@ -1005,7 +987,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                 }
                 this.cout += 18.0f;
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
     }
 
     public void playBossParticle_1(final Entity e) {
@@ -1025,7 +1007,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                 e.getWorld().spigot().playEffect(loc, Effect.CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                 this.cout += 9.0f;
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
     }
 
     public void playBossParticle_2(final Entity e) {
@@ -1045,10 +1027,27 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                 e.getWorld().spigot().playEffect(loc.clone().add(0.0, 0.6, 0.0), Effect.CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                 this.cout -= 9.0f;
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
     }
 
     public int getTier() {
         return this.tier;
+    }
+
+    static {
+        MAX_HEALTH_VALUES = new TieredValue<Double>(3.0E7, 1.5E8, 6.66E8, 1.0E9);
+        DAMAGE_VALUES = new TieredValue<Double>(120000.0, 1000000.0, 1200000.0, 1500000.0);
+        SPEED_VALUES = new TieredValue<Double>(0.2, 0.2, 0.2, 0.2);
+        XP_DROPS = new TieredValue<Double>(750.0, 1600.0, 2900.4, 10900.0);
+        BEACON_THROW = new HashMap<Entity, Player>();
+        HIT_SHIELD = new HashMap<Entity, Integer>();
+        HIT_SHIELD_MAX = new HashMap<Entity, Integer>();
+        OWNER_BOSS = new HashMap<UUID, Entity>();
+        NUKEKUBI_TARGET = new HashMap<Entity, Player>();
+        NUKEKUBI_DAMAGE = new HashMap<Entity, Integer>();
+        LivingSkulls = new HashMap<UUID, List<Entity>>();
+        CACHED_BLOCK = new HashMap<Entity, Block>();
+        CACHED_BLOCK_ID = new HashMap<Entity, Integer>();
+        CACHED_BLOCK_DATA = new HashMap<Entity, Byte>();
     }
 }

@@ -1,6 +1,5 @@
 package in.godspunky.skyblock.entity.dungeons.watcher;
 
-import in.godspunky.skyblock.Skyblock;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -8,6 +7,7 @@ import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import in.godspunky.skyblock.SkyBlock;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,17 +15,17 @@ import java.util.List;
 import java.util.Map;
 
 public class GlobalBossBar extends BukkitRunnable {
-    private final HashMap<Player, EntityWither> withers;
-    private final World w;
-    public List<Player> players;
     private String title;
+    private final HashMap<Player, EntityWither> withers;
+    public List<Player> players;
+    private final World w;
 
     public GlobalBossBar(final String title, final World w) {
         this.withers = new HashMap<Player, EntityWither>();
         this.players = new ArrayList<Player>();
         this.title = title;
         this.w = w;
-        this.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        this.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
     }
 
     public void addPlayer(final Player p) {

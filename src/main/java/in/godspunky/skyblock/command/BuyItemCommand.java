@@ -1,15 +1,14 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.ranks.PlayerRank;
-import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.util.Sputnik;
 
-@CommandParameters(description = "", aliases = "bcb", permission = PlayerRank.ADMIN)
+@CommandParameters(description = "", aliases = "bcb", permission = "sse.cc")
 public class BuyItemCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

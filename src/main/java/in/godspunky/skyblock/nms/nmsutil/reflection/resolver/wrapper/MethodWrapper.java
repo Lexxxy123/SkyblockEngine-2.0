@@ -13,14 +13,6 @@ public class MethodWrapper<R> extends WrapperAbstract {
         this.method = method;
     }
 
-    public static String getMethodSignature(final Method method, final boolean fullClassNames) {
-        return MethodSignature.of(method, fullClassNames).getSignature();
-    }
-
-    public static String getMethodSignature(final Method method) {
-        return getMethodSignature(method, false);
-    }
-
     @Override
     public boolean exists() {
         return this.method != null;
@@ -67,13 +59,16 @@ public class MethodWrapper<R> extends WrapperAbstract {
         return (this.method != null) ? this.method.hashCode() : 0;
     }
 
+    public static String getMethodSignature(final Method method, final boolean fullClassNames) {
+        return MethodSignature.of(method, fullClassNames).getSignature();
+    }
+
+    public static String getMethodSignature(final Method method) {
+        return getMethodSignature(method, false);
+    }
+
     public static class MethodSignature {
         static final Pattern SIGNATURE_STRING_PATTERN;
-
-        static {
-            SIGNATURE_STRING_PATTERN = Pattern.compile("(.+) (.*)\\((.*)\\)");
-        }
-
         private final String returnType;
         private final Pattern returnTypePattern;
         private final String name;
@@ -212,6 +207,10 @@ public class MethodWrapper<R> extends WrapperAbstract {
         @Override
         public String toString() {
             return this.getSignature();
+        }
+
+        static {
+            SIGNATURE_STRING_PATTERN = Pattern.compile("(.+) (.*)\\((.*)\\)");
         }
     }
 }

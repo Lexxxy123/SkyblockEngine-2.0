@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.gui;
 
-import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
@@ -15,9 +15,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class CookieConfirmGUI extends GUI {
+    String[] suffix;
     private final int cookieSlot;
     private final ItemStack stack;
-    String[] suffix;
 
     public CookieConfirmGUI(final int cookieSlot, final ItemStack stack) {
         super("Consume Booster Cookie?", 27);
@@ -54,7 +54,7 @@ public class CookieConfirmGUI extends GUI {
                 e.getWhoClicked().closeInventory();
                 ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.CLICK, 1.0f, 1.0f);
                 CookieConfirmGUI.this.playParticle((Player) e.getWhoClicked());
-                //user.saveCookie();
+                user.saveCookie();
             }
 
             @Override
@@ -128,6 +128,6 @@ public class CookieConfirmGUI extends GUI {
                 p.getWorld().playEffect(p.getLocation().add(0.0, 0.5, 0.0), Effect.LAVA_POP, 5);
                 ++this.count;
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
     }
 }

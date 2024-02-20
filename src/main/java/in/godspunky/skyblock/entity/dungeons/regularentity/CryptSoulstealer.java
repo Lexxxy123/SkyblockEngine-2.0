@@ -1,16 +1,6 @@
 package in.godspunky.skyblock.entity.dungeons.regularentity;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
-import in.godspunky.skyblock.entity.zombie.BaseZombie;
-import in.godspunky.skyblock.entity.zombie.NPCMobs;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher;
 import net.minecraft.server.v1_8_R3.*;
@@ -30,27 +20,22 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import in.godspunky.skyblock.SkyBlock;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.entity.zombie.BaseZombie;
+import in.godspunky.skyblock.entity.zombie.NPCMobs;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 
 public class CryptSoulstealer extends BaseZombie implements NPCMobs {
     private boolean isBowing;
 
     public CryptSoulstealer() {
         this.isBowing = false;
-    }
-
-    public static ItemStack b(final int hexcolor, final Material m) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
-    }
-
-    public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
-        final net.minecraft.server.v1_8_R3.Entity pl = ((CraftZombie) e).getHandle();
-        pl.setLocation(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), yaw, pitch);
-        final PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(pl);
-        Sputnik.sendPacket(e.getWorld(), packet);
     }
 
     @Override
@@ -68,6 +53,14 @@ public class CryptSoulstealer extends BaseZombie implements NPCMobs {
         return 1000000.0;
     }
 
+    public static ItemStack b(final int hexcolor, final Material m) {
+        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
+    }
+
     @Override
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
         ((CraftZombie) entity).setBaby(false);
@@ -77,9 +70,9 @@ public class CryptSoulstealer extends BaseZombie implements NPCMobs {
         pl.getWatcher().setRightClicking(false);
         final PlayerWatcher skywatch = pl.getWatcher();
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 70);
-        entity.setMetadata("LD", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("DungeonMobs", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("DungeonMobs", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -106,8 +99,8 @@ public class CryptSoulstealer extends BaseZombie implements NPCMobs {
                         entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 10000, 4));
                         entity.getEquipment().setItemInHand(SItem.of(SMaterial.BOW).getStack());
                         new BukkitRunnable() {
-                            final int atkCharge = 20;
                             int t = 0;
+                            final int atkCharge = 20;
 
                             public void run() {
                                 ++this.t;
@@ -139,11 +132,11 @@ public class CryptSoulstealer extends BaseZombie implements NPCMobs {
                                     CryptSoulstealer.this.isBowing = false;
                                 }
                             }
-                        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+                        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
                     }
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
         new BukkitRunnable() {
             public void run() {
                 final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -183,7 +176,7 @@ public class CryptSoulstealer extends BaseZombie implements NPCMobs {
                     break;
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
     }
 
     @Override
@@ -228,5 +221,12 @@ public class CryptSoulstealer extends BaseZombie implements NPCMobs {
         final WitherSkull skull = (WitherSkull) e.launchProjectile((Class) WitherSkull.class);
         skull.setShooter(e);
         e.getWorld().playSound(e.getLocation(), Sound.WITHER_SHOOT, 1.0f, 1.0f);
+    }
+
+    public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
+        final net.minecraft.server.v1_8_R3.Entity pl = ((CraftZombie) e).getHandle();
+        pl.setLocation(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), yaw, pitch);
+        final PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(pl);
+        Sputnik.sendPacket(e.getWorld(), packet);
     }
 }

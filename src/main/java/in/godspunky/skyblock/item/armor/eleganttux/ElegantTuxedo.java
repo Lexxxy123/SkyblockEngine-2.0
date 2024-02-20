@@ -1,10 +1,10 @@
 package in.godspunky.skyblock.item.armor.eleganttux;
 
+import net.md_5.bungee.api.ChatColor;
+import org.bukkit.entity.Player;
 import in.godspunky.skyblock.item.MaterialStatistics;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.armor.TickingSet;
-import net.md_5.bungee.api.ChatColor;
-import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;

@@ -6,12 +6,6 @@ import in.godspunky.skyblock.util.SUtil;
 public enum GUIType {
     CRAFTING_TABLE(CraftingTableGUI.class),
     ITEM_BROWSE(ItemBrowserGUI.class),
-
-    WARP(FastTravelGUI.class),
-    FIRE_SALE(FireSaleGUI.class),
-
-
-    Admin_Items(AdminItemGui.class),
     ANVIL(AnvilGUI.class),
     TRASH(TrashGUI.class),
     COOKIE_GUI(CookieGUI.class),
@@ -52,15 +46,6 @@ public enum GUIType {
         this.gui = gui;
     }
 
-    public static GUI getGUI(final String title) {
-        for (final GUIType type : values()) {
-            if (type.getGUI().getTitle().contains(title)) {
-                return type.getGUI();
-            }
-        }
-        return null;
-    }
-
     public GUI getGUI() {
         try {
             return this.gui.newInstance();
@@ -72,5 +57,14 @@ public enum GUIType {
 
     public GUI getGUI(final Object... params) {
         return SUtil.instance(GUI.class, params);
+    }
+
+    public static GUI getGUI(final String title) {
+        for (final GUIType type : values()) {
+            if (type.getGUI().getTitle().contains(title)) {
+                return type.getGUI();
+            }
+        }
+        return null;
     }
 }

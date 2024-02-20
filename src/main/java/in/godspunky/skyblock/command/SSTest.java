@@ -1,40 +1,42 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.dimoon.Arena;
-import in.godspunky.skyblock.dimoon.DimoonLootTable;
+import in.godspunky.skyblock.SkyBlock;
+import in.godspunky.skyblock.collection.ItemCollection;
 import in.godspunky.skyblock.dungeons.BlessingType;
 import in.godspunky.skyblock.dungeons.Blessings;
 import in.godspunky.skyblock.dungeons.ItemSerial;
-import in.godspunky.skyblock.extra.protocol.PacketInvoker;
-import in.godspunky.skyblock.gui.ConfirmWitherRuins;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.minion.SkyblockMinion;
-import in.godspunky.skyblock.ranks.PlayerRank;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.user.UserStash;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import in.godspunky.skyblock.dimoon.Arena;
+import in.godspunky.skyblock.dimoon.DimoonLootTable;
+import in.godspunky.skyblock.entity.dungeons.watcher.Watcher;
+import in.godspunky.skyblock.extra.protocol.PacketInvoker;
+import in.godspunky.skyblock.gui.ConfirmWitherRuins;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.user.UserStash;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 
 import java.io.File;
 
-@CommandParameters(description = "Modify your absorption amount.", permission = PlayerRank.ADMIN)
+@CommandParameters(description = "Modify your absorption amount.", permission = "spt.player")
 public class SSTest extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         final Player player = sender.getPlayer();
         if (player.isOp()) {
-            if (args[0].contains("minioninventory")) {
-                User user = User.getUser(player.getUniqueId());
-                if (user.minions.isEmpty()) return;
-                user.minions.get(0).openInventory(player);
-
+            if (args[0].contains("sp")) {
+                player.sendMessage(ChatColor.YELLOW + "Intizing Map...");
+                final long s = System.currentTimeMillis();
+                final Watcher w = new Watcher(new Location(player.getWorld(), 96.0, 99.0, 96.0), new Location(player.getWorld(), 126.0, 66.0, 126.0), 69);
+                w.intitize();
+                final long s_ = System.currentTimeMillis() - s;
+                player.sendMessage(ChatColor.GREEN + "All actions completed (Loop, placing heads, spawn Watcher)! This took " + ChatColor.YELLOW + s_ + "ms");
             } else if (args[0].contains("pl")) {
                 player.sendMessage(ChatColor.YELLOW + "Done!");
                 for (final Entity e : player.getWorld().getEntities()) {
@@ -49,13 +51,13 @@ public class SSTest extends SCommand {
                     is.saveTo(sitem);
                     sitem.setStarAmount(5);
                 }
-            } else if (args[0].contains("minion")) {
-                new SkyblockMinion(SMaterial.COBBLE_STONE_MINION, 1, player.getLocation().add(0, Double.parseDouble(args[1]), 0), User.getUser(player.getUniqueId())).spawn();
+            } else if (args[0].contains("collectionup")) {
+                User.getUser(player.getUniqueId()).addToCollection(ItemCollection.WHEAT, 50);
             } else if (!args[0].contains("wipe")) {
                 if (args[0].contains("vlw")) {
                     PacketInvoker.dropVoidSpawner(player, player.getLocation());
                 } else if (args[0].contains("bung")) {
-                    Skyblock.getPlugin().updateServerName(player);
+                    SkyBlock.getPlugin().updateServerName(player);
                 } else if (args[0].contains("putitemstash")) {
                     if (player.getItemInHand() != null) {
                         if (player.getItemInHand().getType() == Material.AIR) {
@@ -94,7 +96,7 @@ public class SSTest extends SCommand {
                             this.send("&d[♫] &cYou're currently playing a song already! Use /sstest musicbgm stop to stop it!");
                             return;
                         }
-                        final File s2 = new File(Skyblock.getPlugin().getDataFolder() + File.separator + "/songs/" + args[2] + ".nbs");
+                        final File s2 = new File(SkyBlock.getPlugin().getDataFolder() + File.separator + "/songs/" + args[2] + ".nbs");
                         if (!s2.exists()) {
                             this.send("&d[♫] &cThe specified BGM file does not exist!");
                             return;

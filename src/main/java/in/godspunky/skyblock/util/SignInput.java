@@ -1,10 +1,6 @@
 package in.godspunky.skyblock.util;
 
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.gui.GUI;
-import in.godspunky.skyblock.gui.GUISignItem;
-import in.godspunky.skyblock.gui.TradeMenu;
-import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.SkyBlock;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Location;
@@ -13,23 +9,22 @@ import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import in.godspunky.skyblock.gui.GUI;
+import in.godspunky.skyblock.gui.GUISignItem;
+import in.godspunky.skyblock.gui.TradeMenu;
+import in.godspunky.skyblock.user.User;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 public class SignInput {
-    public static final Map<UUID, GUISignItem> SIGN_INPUT_QUERY;
-
-    static {
-        SIGN_INPUT_QUERY = new HashMap<UUID, GUISignItem>();
-    }
-
     private final Player player;
+    private Location signLoc;
     private final int timeoutSec;
     private final UUID tradeUUID;
     private final User user;
-    private Location signLoc;
+    public static final Map<UUID, GUISignItem> SIGN_INPUT_QUERY;
 
     public SignInput(final Player p, final String[] text, final int timeoutSec, final UUID tradeUUID) {
         this.player = p;
@@ -99,6 +94,10 @@ public class SignInput {
                     SignInput.this.user.setCompletedSign(false);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
+    }
+
+    static {
+        SIGN_INPUT_QUERY = new HashMap<UUID, GUISignItem>();
     }
 }

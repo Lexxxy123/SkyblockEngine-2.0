@@ -9,25 +9,21 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import in.godspunky.skyblock.skill.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class SkillDetails extends GUI {
-    static final int[] slots;
-
-    static {
-        slots = new int[]{9, 18, 27, 28, 29, 20, 11, 2, 3, 4, 13, 22, 31, 32, 33, 24, 15, 6, 7, 8, 17, 26, 35, 44, 53};
-    }
-
     private final Skill skill;
     private final UUID uuid;
-    private final Player player;
-    private final int page;
     private Material skillInstanceMat;
     private Material skillLvlMat;
     private short data;
+    private final Player player;
+    private final int page;
+    static final int[] slots;
 
     public SkillDetails(final Skill skill, final Player player, final int index) {
         super(skill.getName() + " Skill", 54);
@@ -211,5 +207,9 @@ public class SkillDetails extends GUI {
                 ++i;
             }
         }
+    }
+
+    static {
+        slots = new int[]{9, 18, 27, 28, 29, 20, 11, 2, 3, 4, 13, 22, 31, 32, 33, 24, 15, 6, 7, 8, 17, 26, 35, 44, 53};
     }
 }

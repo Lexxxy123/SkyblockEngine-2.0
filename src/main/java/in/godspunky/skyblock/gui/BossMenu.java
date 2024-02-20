@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.gui;
 
-import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.skill.CombatSkill;
 import in.godspunky.skyblock.skill.Skill;
 import in.godspunky.skyblock.user.PlayerStatistics;
@@ -23,11 +23,6 @@ public class BossMenu extends GUI {
     public static final Map<Player, Boolean> ableToJoin;
     public static final Map<Player, Boolean> cooldownCata;
 
-    static {
-        ableToJoin = new HashMap<Player, Boolean>();
-        cooldownCata = new HashMap<Player, Boolean>();
-    }
-
     public BossMenu() {
         super("The Catacombs Demo", 36);
     }
@@ -39,7 +34,7 @@ public class BossMenu extends GUI {
         final User user = User.getUser(player.getUniqueId());
         final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
         this.set(GUIClickableItem.getCloseItem(31));
-        final Skyblock plugin = Skyblock.getPlugin();
+        final SkyBlock plugin = SkyBlock.getPlugin();
         final long runMade = plugin.config.getLong("runMade");
         this.set(new GUIClickableItem() {
             @Override
@@ -100,7 +95,7 @@ public class BossMenu extends GUI {
                 if (!BossMenu.cooldownCata.containsKey(player)) {
                     BossMenu.cooldownCata.put(player, false);
                 }
-                if (!BossMenu.cooldownCata.get(player) && BossMenu.ableToJoin.get(player) && !player.getWorld().getName().startsWith("f6")) {
+                if (!BossMenu.cooldownCata.get(player) && BossMenu.ableToJoin.get(player) && !player.getWorld().getName().contains("f6")) {
                     player.sendMessage(ChatColor.GREEN + "Requesting the server...");
                     Sputnik.startRoom(player);
                     BossMenu.ableToJoin.put(player, false);
@@ -144,5 +139,10 @@ public class BossMenu extends GUI {
                 return itemstack;
             }
         });
+    }
+
+    static {
+        ableToJoin = new HashMap<Player, Boolean>();
+        cooldownCata = new HashMap<Player, Boolean>();
     }
 }

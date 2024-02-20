@@ -1,11 +1,12 @@
 package in.godspunky.skyblock.item.oddities;
 
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.user.PlayerUtils;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.user.PlayerUtils;
 
 public class WeirdTuba implements MaterialStatistics, MaterialFunction, Ability {
     @Override

@@ -1,14 +1,6 @@
 package in.godspunky.skyblock.dungeons;
 
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityType;
-import in.godspunky.skyblock.user.PlayerStatistics;
-import in.godspunky.skyblock.user.PlayerUtils;
-import in.godspunky.skyblock.user.TemporaryStats;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
+import in.godspunky.skyblock.SkyBlock;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
@@ -17,225 +9,31 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityType;
+import in.godspunky.skyblock.user.PlayerStatistics;
+import in.godspunky.skyblock.user.PlayerUtils;
+import in.godspunky.skyblock.user.TemporaryStats;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.*;
 
 public class Blessings {
-    public static final Skyblock sse;
-    public static final Map<World, List<Blessings>> BLESSINGS_MAP;
-    public static final Map<UUID, float[]> STAT_MAP;
-
-    static {
-        sse = Skyblock.getPlugin();
-        BLESSINGS_MAP = new HashMap<World, List<Blessings>>();
-        STAT_MAP = new HashMap<UUID, float[]>();
-    }
-
     private final BlessingType type;
-    private final World world;
     private int level;
     private double buffPercent;
+    private final World world;
+    public static final SkyBlock sse;
+    public static final Map<World, List<Blessings>> BLESSINGS_MAP;
+    public static final Map<UUID, float[]> STAT_MAP;
 
     public Blessings(final BlessingType type, final int level, final World operatedWorld) {
         this.level = 1;
         this.type = type;
         this.world = operatedWorld;
         this.level = level;
-    }
-
-    public static List<Blessings> getFrom(final World w) {
-        if (Blessings.BLESSINGS_MAP.containsKey(w)) {
-            return Blessings.BLESSINGS_MAP.get(w);
-        }
-        return null;
-    }
-
-    public static void resetForWorld(final World w) {
-        Blessings.BLESSINGS_MAP.remove(w);
-        for (final Player p : w.getPlayers()) {
-            TemporaryStats ts = null;
-            final User u = User.getUser(p.getUniqueId());
-            if (u == null) {
-                continue;
-            }
-            if (TemporaryStats.getFromPlayer(u.toBukkitPlayer()) != null) {
-                ts = TemporaryStats.getFromPlayer(u.toBukkitPlayer());
-            } else {
-                ts = new TemporaryStats(User.getUser(u.toBukkitPlayer().getUniqueId()));
-            }
-            ts.cleanStats();
-        }
-    }
-
-    public static void update() {
-        sse.async(() -> {
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                World w = p.getWorld();
-                if (User.getUser(p.getUniqueId()) == null || !BLESSINGS_MAP.containsKey(w)) continue;
-                List<Blessings> bls = BLESSINGS_MAP.get(w);
-                TemporaryStats ts = null;
-                ts = TemporaryStats.getFromPlayer(p) != null ? TemporaryStats.getFromPlayer(p) : new TemporaryStats(User.getUser(p.getUniqueId()));
-                float def = 0.0f;
-                float spd = 0.0f;
-                float intel = 0.0f;
-                float cd = 0.0f;
-                float str = 0.0f;
-                float hpg = 0.0f;
-                float hp = 0.0f;
-                for (Blessings bl : bls) {
-                    ts.cleanStats();
-                    float[] statsarray = bl.calculate(User.getUser(p.getUniqueId()));
-                    hp += statsarray[0];
-                    hpg += statsarray[1];
-                    str += statsarray[2];
-                    cd += statsarray[3];
-                    intel += statsarray[4];
-                    spd += statsarray[5];
-                    def += statsarray[6];
-                    STAT_MAP.put(p.getUniqueId(), statsarray);
-                }
-                ts.cleanStats();
-                ts.setHealth(Math.max(0.0f, hp));
-                ts.setDefense(def);
-                ts.setStrength(str);
-                ts.setSpeed(spd);
-                ts.setCritDamage(cd);
-                ts.setIntelligence(intel);
-                ts.update();
-            }
-        });
-    }
-
-    public static void openBlessingChest(final Block chest, final Blessings bless, final Player e) {
-        final Location loc = chest.getLocation().add(0.5, 0.0, 0.5);
-        final SEntity sEntity = new SEntity(loc.clone().add(0.0, -1.0, 0.0), SEntityType.VELOCITY_ARMOR_STAND);
-        final ArmorStand drop = (ArmorStand) sEntity.getEntity();
-        drop.setVisible(false);
-        drop.setCustomNameVisible(false);
-        drop.setMetadata("ss_drop", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        drop.getEquipment().setHelmet(SUtil.getSkullURLStack("asadas", "e93e2068617872c542ecda1d27df4ece91c699907bf327c4ddb85309412d3939", 1));
-        final ArmorStand as = Sputnik.spawnStaticDialougeBox(drop, loc.clone().add(0.0, 1.65, 0.0));
-        as.setCustomName(Sputnik.trans("&d" + bless.toText()));
-        as.setCustomNameVisible(false);
-        as.setMetadata("ss_drop", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        drop.setVelocity(new Vector(0.0, 0.058, 0.0));
-        SUtil.delay(() -> drop.remove(), 150L);
-        SUtil.delay(() -> {
-            bless.active();
-            final User u = User.getUser(e.getUniqueId());
-            if (u == null) {
-                return;
-            }
-            for (Player p : loc.getWorld().getPlayers()) {
-                if (User.getUser(p.getUniqueId()) == null) continue;
-                p.sendMessage(bless.buildPickupMessage(User.getUser(p.getUniqueId()), u));
-            }
-        }, 20L);
-        new BukkitRunnable() {
-            public void run() {
-                if (drop.isDead()) {
-                    as.remove();
-                    this.cancel();
-                    return;
-                }
-                as.setCustomNameVisible(true);
-                final Vector velClone = drop.getVelocity().clone();
-                drop.setVelocity(new Vector(0.0, (velClone.getY() < 0.0) ? 0.045 : -0.045, 0.0));
-            }
-        }.runTaskTimer(Skyblock.getPlugin(), 20L, 20L);
-        new BukkitRunnable() {
-            public void run() {
-                if (drop.isDead()) {
-                    as.remove();
-                    this.cancel();
-                    return;
-                }
-                final Location l = drop.getLocation();
-                l.setYaw(l.getYaw() + 5.0f);
-                drop.teleport(l);
-            }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
-        new BukkitRunnable() {
-            public void run() {
-                if (drop.isDead()) {
-                    as.remove();
-                    this.cancel();
-                    return;
-                }
-                drop.getWorld().spigot().playEffect(drop.getLocation().clone().add(0.0, 1.5, 0.0), Effect.CLOUD, 21, 0, 0.3f, 0.0f, 0.3f, 0.01f, 1, 30);
-            }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
-    }
-
-    public static void dropBlessingPickable(final Location loc, final Blessings bless) {
-        final SEntity sEntity = new SEntity(loc.clone().add(0.0, -0.8, 0.0), SEntityType.VELOCITY_ARMOR_STAND);
-        final ArmorStand drop = (ArmorStand) sEntity.getEntity();
-        drop.setVisible(false);
-        drop.setCustomNameVisible(false);
-        drop.setMetadata("ss_drop", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        drop.getEquipment().setHelmet(SUtil.getSkullURLStack("asadas", "e93e2068617872c542ecda1d27df4ece91c699907bf327c4ddb85309412d3939", 1));
-        final ArmorStand as = Sputnik.spawnStaticDialougeBox(drop, 2.35);
-        as.setCustomName(Sputnik.trans("&d" + bless.toText()));
-        as.setCustomNameVisible(true);
-        as.setMetadata("ss_drop", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        drop.setVelocity(new Vector(0.0, 0.03, 0.0));
-        SUtil.delay(() -> {
-            if (!drop.isDead()) {
-                for (Player p : loc.getWorld().getPlayers()) {
-                    if (User.getUser(p.getUniqueId()) == null) continue;
-                    p.sendMessage(bless.buildPickupMessage(User.getUser(p.getUniqueId()), null));
-                    bless.active();
-                }
-                drop.remove();
-            }
-        }, 2000L);
-        new BukkitRunnable() {
-            public void run() {
-                if (drop.isDead()) {
-                    as.remove();
-                    this.cancel();
-                    return;
-                }
-                final Vector velClone = drop.getVelocity().clone();
-                drop.setVelocity(new Vector(0.0, (velClone.getY() < 0.0) ? 0.035 : -0.035, 0.0));
-            }
-        }.runTaskTimer(Skyblock.getPlugin(), 25L, 25L);
-        new BukkitRunnable() {
-            public void run() {
-                if (drop.isDead()) {
-                    as.remove();
-                    this.cancel();
-                    return;
-                }
-                if (!loc.getWorld().getEntities().contains(drop)) {
-                    this.cancel();
-                    return;
-                }
-                final Location l = drop.getLocation();
-                l.setYaw(l.getYaw() + 2.5f);
-                drop.teleport(l);
-                l.getWorld().spigot().playEffect(drop.getLocation().add(0.0, 1.0, 0.0), Effect.FIREWORKS_SPARK, 0, 1, (float) SUtil.random(-1.0, 1.0), 1.0f, (float) SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
-                for (final Entity e : drop.getNearbyEntities(0.07, 0.07, 0.07)) {
-                    if (e instanceof Player) {
-                        final User u = User.getUser(e.getUniqueId());
-                        if (u == null) {
-                            continue;
-                        }
-                        for (final Player p : loc.getWorld().getPlayers()) {
-                            if (User.getUser(p.getUniqueId()) == null) {
-                                continue;
-                            }
-                            p.sendMessage(bless.buildPickupMessage(User.getUser(p.getUniqueId()), u));
-                        }
-                        bless.active();
-                        drop.getWorld().playEffect(loc, Effect.LAVA_POP, 0);
-                        drop.getWorld().playEffect(loc, Effect.LAVA_POP, 0);
-                        drop.getWorld().playSound(drop.getLocation(), Sound.ITEM_PICKUP, 1.0f, 1.0f);
-                        drop.remove();
-                    }
-                }
-            }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
     }
 
     public void active() {
@@ -254,9 +52,33 @@ public class Blessings {
         }
     }
 
+    public static List<Blessings> getFrom(final World w) {
+        if (Blessings.BLESSINGS_MAP.containsKey(w)) {
+            return Blessings.BLESSINGS_MAP.get(w);
+        }
+        return null;
+    }
+
     public void remove() {
         Blessings.BLESSINGS_MAP.get(this.world).remove(this);
         for (final Player p : this.world.getPlayers()) {
+            TemporaryStats ts = null;
+            final User u = User.getUser(p.getUniqueId());
+            if (u == null) {
+                continue;
+            }
+            if (TemporaryStats.getFromPlayer(u.toBukkitPlayer()) != null) {
+                ts = TemporaryStats.getFromPlayer(u.toBukkitPlayer());
+            } else {
+                ts = new TemporaryStats(User.getUser(u.toBukkitPlayer().getUniqueId()));
+            }
+            ts.cleanStats();
+        }
+    }
+
+    public static void resetForWorld(final World w) {
+        Blessings.BLESSINGS_MAP.remove(w);
+        for (final Player p : w.getPlayers()) {
             TemporaryStats ts = null;
             final User u = User.getUser(p.getUniqueId());
             if (u == null) {
@@ -341,6 +163,45 @@ public class Blessings {
         }
     }
 
+    public static void update() {
+        sse.async(() -> {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                World w = p.getWorld();
+                if (User.getUser(p.getUniqueId()) == null || !BLESSINGS_MAP.containsKey(w)) continue;
+                List<Blessings> bls = BLESSINGS_MAP.get(w);
+                TemporaryStats ts = null;
+                ts = TemporaryStats.getFromPlayer(p) != null ? TemporaryStats.getFromPlayer(p) : new TemporaryStats(User.getUser(p.getUniqueId()));
+                float def = 0.0f;
+                float spd = 0.0f;
+                float intel = 0.0f;
+                float cd = 0.0f;
+                float str = 0.0f;
+                float hpg = 0.0f;
+                float hp = 0.0f;
+                for (Blessings bl : bls) {
+                    ts.cleanStats();
+                    float[] statsarray = bl.calculate(User.getUser(p.getUniqueId()));
+                    hp += statsarray[0];
+                    hpg += statsarray[1];
+                    str += statsarray[2];
+                    cd += statsarray[3];
+                    intel += statsarray[4];
+                    spd += statsarray[5];
+                    def += statsarray[6];
+                    STAT_MAP.put(p.getUniqueId(), statsarray);
+                }
+                ts.cleanStats();
+                ts.setHealth(Math.max(0.0f, hp));
+                ts.setDefense(def);
+                ts.setStrength(str);
+                ts.setSpeed(spd);
+                ts.setCritDamage(cd);
+                ts.setIntelligence(intel);
+                ts.update();
+            }
+        });
+    }
+
     public String buildPickupMessage(final User targetUser, final User picker) {
         final Blessings type = this;
         final StringBuilder sb = new StringBuilder();
@@ -372,6 +233,138 @@ public class Blessings {
         return sb.toString();
     }
 
+    public static void openBlessingChest(final Block chest, final Blessings bless, final Player e) {
+        final Location loc = chest.getLocation().add(0.5, 0.0, 0.5);
+        final SEntity sEntity = new SEntity(loc.clone().add(0.0, -1.0, 0.0), SEntityType.VELOCITY_ARMOR_STAND);
+        final ArmorStand drop = (ArmorStand) sEntity.getEntity();
+        drop.setVisible(false);
+        drop.setCustomNameVisible(false);
+        drop.setMetadata("ss_drop", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        drop.getEquipment().setHelmet(SUtil.getSkullURLStack("asadas", "e93e2068617872c542ecda1d27df4ece91c699907bf327c4ddb85309412d3939", 1));
+        final ArmorStand as = Sputnik.spawnStaticDialougeBox(drop, loc.clone().add(0.0, 1.65, 0.0));
+        as.setCustomName(Sputnik.trans("&d" + bless.toText()));
+        as.setCustomNameVisible(false);
+        as.setMetadata("ss_drop", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        drop.setVelocity(new Vector(0.0, 0.058, 0.0));
+        SUtil.delay(() -> drop.remove(), 150L);
+        SUtil.delay(() -> {
+            bless.active();
+            final User u = User.getUser(e.getUniqueId());
+            if (u == null) {
+                return;
+            }
+            for (Player p : loc.getWorld().getPlayers()) {
+                if (User.getUser(p.getUniqueId()) == null) continue;
+                p.sendMessage(bless.buildPickupMessage(User.getUser(p.getUniqueId()), u));
+            }
+        }, 20L);
+        new BukkitRunnable() {
+            public void run() {
+                if (drop.isDead()) {
+                    as.remove();
+                    this.cancel();
+                    return;
+                }
+                as.setCustomNameVisible(true);
+                final Vector velClone = drop.getVelocity().clone();
+                drop.setVelocity(new Vector(0.0, (velClone.getY() < 0.0) ? 0.045 : -0.045, 0.0));
+            }
+        }.runTaskTimer(SkyBlock.getPlugin(), 20L, 20L);
+        new BukkitRunnable() {
+            public void run() {
+                if (drop.isDead()) {
+                    as.remove();
+                    this.cancel();
+                    return;
+                }
+                final Location l = drop.getLocation();
+                l.setYaw(l.getYaw() + 5.0f);
+                drop.teleport(l);
+            }
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
+        new BukkitRunnable() {
+            public void run() {
+                if (drop.isDead()) {
+                    as.remove();
+                    this.cancel();
+                    return;
+                }
+                drop.getWorld().spigot().playEffect(drop.getLocation().clone().add(0.0, 1.5, 0.0), Effect.CLOUD, 21, 0, 0.3f, 0.0f, 0.3f, 0.01f, 1, 30);
+            }
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
+    }
+
+    public static void dropBlessingPickable(final Location loc, final Blessings bless) {
+        final SEntity sEntity = new SEntity(loc.clone().add(0.0, -0.8, 0.0), SEntityType.VELOCITY_ARMOR_STAND);
+        final ArmorStand drop = (ArmorStand) sEntity.getEntity();
+        drop.setVisible(false);
+        drop.setCustomNameVisible(false);
+        drop.setMetadata("ss_drop", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        drop.getEquipment().setHelmet(SUtil.getSkullURLStack("asadas", "e93e2068617872c542ecda1d27df4ece91c699907bf327c4ddb85309412d3939", 1));
+        final ArmorStand as = Sputnik.spawnStaticDialougeBox(drop, 2.35);
+        as.setCustomName(Sputnik.trans("&d" + bless.toText()));
+        as.setCustomNameVisible(true);
+        as.setMetadata("ss_drop", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        drop.setVelocity(new Vector(0.0, 0.03, 0.0));
+        SUtil.delay(() -> {
+            if (!drop.isDead()) {
+                for (Player p : loc.getWorld().getPlayers()) {
+                    if (User.getUser(p.getUniqueId()) == null) continue;
+                    p.sendMessage(bless.buildPickupMessage(User.getUser(p.getUniqueId()), null));
+                    bless.active();
+                }
+                drop.remove();
+            }
+        }, 2000L);
+        new BukkitRunnable() {
+            public void run() {
+                if (drop.isDead()) {
+                    as.remove();
+                    this.cancel();
+                    return;
+                }
+                final Vector velClone = drop.getVelocity().clone();
+                drop.setVelocity(new Vector(0.0, (velClone.getY() < 0.0) ? 0.035 : -0.035, 0.0));
+            }
+        }.runTaskTimer(SkyBlock.getPlugin(), 25L, 25L);
+        new BukkitRunnable() {
+            public void run() {
+                if (drop.isDead()) {
+                    as.remove();
+                    this.cancel();
+                    return;
+                }
+                if (!loc.getWorld().getEntities().contains(drop)) {
+                    this.cancel();
+                    return;
+                }
+                final Location l = drop.getLocation();
+                l.setYaw(l.getYaw() + 2.5f);
+                drop.teleport(l);
+                l.getWorld().spigot().playEffect(drop.getLocation().add(0.0, 1.0, 0.0), Effect.FIREWORKS_SPARK, 0, 1, (float) SUtil.random(-1.0, 1.0), 1.0f, (float) SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
+                for (final Entity e : drop.getNearbyEntities(0.07, 0.07, 0.07)) {
+                    if (e instanceof Player) {
+                        final User u = User.getUser(e.getUniqueId());
+                        if (u == null) {
+                            continue;
+                        }
+                        for (final Player p : loc.getWorld().getPlayers()) {
+                            if (User.getUser(p.getUniqueId()) == null) {
+                                continue;
+                            }
+                            p.sendMessage(bless.buildPickupMessage(User.getUser(p.getUniqueId()), u));
+                        }
+                        bless.active();
+                        drop.getWorld().playEffect(loc, Effect.LAVA_POP, 0);
+                        drop.getWorld().playEffect(loc, Effect.LAVA_POP, 0);
+                        drop.getWorld().playSound(drop.getLocation(), Sound.ITEM_PICKUP, 1.0f, 1.0f);
+                        drop.remove();
+                    }
+                }
+            }
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
+    }
+
     public BlessingType getType() {
         return this.type;
     }
@@ -382,5 +375,11 @@ public class Blessings {
 
     public void setLevel(final int level) {
         this.level = level;
+    }
+
+    static {
+        sse = SkyBlock.getPlugin();
+        BLESSINGS_MAP = new HashMap<World, List<Blessings>>();
+        STAT_MAP = new HashMap<UUID, float[]>();
     }
 }

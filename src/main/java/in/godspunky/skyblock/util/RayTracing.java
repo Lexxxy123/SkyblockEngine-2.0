@@ -15,10 +15,6 @@ public class RayTracing {
         this.direction = direction;
     }
 
-    public static boolean intersects(final Vector position, final Vector min, final Vector max) {
-        return position.getX() >= min.getX() && position.getX() <= max.getX() && position.getY() >= min.getY() && position.getY() <= max.getY() && position.getZ() >= min.getZ() && position.getZ() <= max.getZ();
-    }
-
     public Vector getPostion(final double blocksAway) {
         return this.origin.clone().add(this.direction.clone().multiply(blocksAway));
     }
@@ -74,6 +70,10 @@ public class RayTracing {
             }
         }
         return false;
+    }
+
+    public static boolean intersects(final Vector position, final Vector min, final Vector max) {
+        return position.getX() >= min.getX() && position.getX() <= max.getX() && position.getY() >= min.getY() && position.getY() <= max.getY() && position.getZ() >= min.getZ() && position.getZ() <= max.getZ();
     }
 
     public void highlight(final World world, final double blocksAway, final double accuracy) {

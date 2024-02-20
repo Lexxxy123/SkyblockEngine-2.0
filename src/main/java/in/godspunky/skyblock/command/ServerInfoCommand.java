@@ -1,15 +1,14 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.ranks.PlayerRank;
+import in.godspunky.skyblock.SkyBlock;
 
-@CommandParameters(description = "", aliases = "ssi", permission = PlayerRank.ADMIN)
+@CommandParameters(description = "", aliases = "ssi", permission = "sse.cc")
 public class ServerInfoCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
         this.send("&aYou're playing on &cSkySim Network &bBeta 2");
         try {
-            this.send("&7Server Version: &a" + Skyblock.getPlugin().getServerVersion().readableString());
+            this.send("&7Server Version: &a" + SkyBlock.getPlugin().getServerVersion().readableString());
         } catch (final Exception e) {
             e.printStackTrace();
         }

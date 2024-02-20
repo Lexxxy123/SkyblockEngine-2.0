@@ -3,18 +3,7 @@ package in.godspunky.skyblock.entity.dungeons.minibosses;
 import com.google.common.util.concurrent.AtomicDouble;
 import de.slikey.effectlib.effect.ConeEffect;
 import de.slikey.effectlib.util.ParticleEffect;
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
-import in.godspunky.skyblock.entity.zombie.BaseZombie;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.user.PlayerStatistics;
-import in.godspunky.skyblock.user.PlayerUtils;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
+import in.godspunky.skyblock.SkyBlock;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher;
 import net.minecraft.server.v1_8_R3.*;
@@ -35,6 +24,17 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.entity.zombie.BaseZombie;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.user.PlayerStatistics;
+import in.godspunky.skyblock.user.PlayerUtils;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.List;
 
@@ -51,22 +51,6 @@ public class FrozenAdv extends BaseZombie {
         this.EatingCooldown = false;
         this.CDDR = false;
         this.CDLA = false;
-    }
-
-    public static ItemStack st(final int hexcolor, final Material m, final String name) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.setDisplayName(name);
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
-    }
-
-    public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
-        final net.minecraft.server.v1_8_R3.Entity pl = ((CraftZombie) e).getHandle();
-        pl.setLocation(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), yaw, pitch);
-        final PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(pl);
-        Sputnik.sendPacket(e.getWorld(), packet);
     }
 
     @Override
@@ -93,8 +77,8 @@ public class FrozenAdv extends BaseZombie {
         final PlayerWatcher skywatch = pl.getWatcher();
         final LivingEntity target = ((CraftZombie) entity).getTarget();
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 87);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("LD", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -107,7 +91,7 @@ public class FrozenAdv extends BaseZombie {
                     Sputnik.sendEatingAnimation(entity);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 4L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 4L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -118,7 +102,7 @@ public class FrozenAdv extends BaseZombie {
                     entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 0.25, 0.0), Effect.FLAME, 0, 1, (float) SUtil.random(-0.5, 0.5), (float) SUtil.random(0.0, 1.5), (float) SUtil.random(-0.5, 0.5), 0.0f, 1, 20);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 20L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 20L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -153,10 +137,10 @@ public class FrozenAdv extends BaseZombie {
                             }, 5L);
                             SUtil.delay(() -> FrozenAdv.this.EatingCooldown = false, SUtil.random(600, 800));
                         }
-                    }.runTaskLater(Skyblock.getPlugin(), 60L);
+                    }.runTaskLater(SkyBlock.getPlugin(), 60L);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 10L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 10L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -232,7 +216,7 @@ public class FrozenAdv extends BaseZombie {
                                     FrozenAdv.this.isBowing = false;
                                 }
                             }
-                        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+                        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
                     }
                     if (target1.getLocation().distance(entity.getLocation()) <= 10.0 && !FrozenAdv.this.isBowing && !FrozenAdv.this.isEating && SUtil.random(0, 100) < 10 && !FrozenAdv.this.CDLA) {
                         FrozenAdv.this.CDLA = true;
@@ -274,7 +258,7 @@ public class FrozenAdv extends BaseZombie {
                                     stands.getEquipment().setItemInHand(new ItemStack(Material.PACKED_ICE));
                                     SUtil.delay(() -> {
                                         stands.remove();
-                                        player.removeMetadata("frozen", Skyblock.getPlugin());
+                                        player.removeMetadata("frozen", SkyBlock.getPlugin());
                                     }, 100L);
                                     new BukkitRunnable() {
                                         public void run() {
@@ -288,17 +272,17 @@ public class FrozenAdv extends BaseZombie {
                                             }
                                             if (stands.isDead()) {
                                                 player.removePotionEffect(PotionEffectType.SLOW);
-                                                player.removeMetadata("frozen", Skyblock.getPlugin());
+                                                player.removeMetadata("frozen", SkyBlock.getPlugin());
                                                 this.cancel();
                                                 return;
                                             }
                                             if (player.isDead() || entity.isDead()) {
                                                 stands.remove();
-                                                player.removeMetadata("frozen", Skyblock.getPlugin());
+                                                player.removeMetadata("frozen", SkyBlock.getPlugin());
                                             }
                                             stands.teleport(player.getLocation().add(0.0, c + 1.0, 0.0));
                                         }
-                                    }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+                                    }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
                                 }
                                 final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
                                 if (statistics == null) {
@@ -307,7 +291,7 @@ public class FrozenAdv extends BaseZombie {
                                 final double defense = statistics.getDefense().addAll();
                                 final int dmglater = (int) Math.round(FrozenAdv.this.getDamageDealt() * 3.0 - FrozenAdv.this.getDamageDealt() * 3.0 * (defense / (defense + 100.0)));
                                 User.getUser(player.getUniqueId()).damage(dmglater, EntityDamageEvent.DamageCause.ENTITY_ATTACK, entity);
-                                player.setMetadata("frozen", new FixedMetadataValue(Skyblock.getPlugin(), true));
+                                player.setMetadata("frozen", new FixedMetadataValue(SkyBlock.getPlugin(), true));
                                 ((LivingEntity) e).damage(1.0E-6, null);
                             }
                         }
@@ -324,10 +308,10 @@ public class FrozenAdv extends BaseZombie {
                     entity.getEquipment().setItemInHand(SUtil.enchant(SItem.of(SMaterial.ICE_WAND).getStack()));
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
         new BukkitRunnable() {
-            final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
             Location loc = entity.getLocation();
+            final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
 
             public void run() {
                 if (entity.isDead()) {
@@ -371,7 +355,7 @@ public class FrozenAdv extends BaseZombie {
                 }
                 this.nms.setSprinting(false);
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 7L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 7L);
         new BukkitRunnable() {
             public void run() {
                 final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -413,7 +397,7 @@ public class FrozenAdv extends BaseZombie {
                     break;
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
     }
 
     @Override
@@ -426,6 +410,15 @@ public class FrozenAdv extends BaseZombie {
     @Override
     public SEntityEquipment getEntityEquipment() {
         return new SEntityEquipment(SUtil.enchant(SItem.of(SMaterial.ICE_WAND).getStack()), SUtil.enchant(SUtil.getSkullURLStack("Frozen Blaze Helmet", "55a13bb48e3595b55de8dd6943fc38db5235371278c695bd453e49a0999", 1, "")), SUtil.enchant(st(10541807, Material.LEATHER_CHESTPLATE, "Frozen Blaze Chestplate")), SUtil.enchant(st(10541807, Material.LEATHER_LEGGINGS, "Frozen Blaze Leggings")), SUtil.enchant(st(10541807, Material.LEATHER_BOOTS, "Frozen Blaze Boots")));
+    }
+
+    public static ItemStack st(final int hexcolor, final Material m, final String name) {
+        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.setDisplayName(name);
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
     }
 
     @Override
@@ -454,7 +447,7 @@ public class FrozenAdv extends BaseZombie {
     }
 
     public void playPar(final Location l) {
-        final ConeEffect Effect = new ConeEffect(Skyblock.effectManager);
+        final ConeEffect Effect = new ConeEffect(SkyBlock.effectManager);
         Effect.setLocation(l.clone().add(l.getDirection().normalize().multiply(-0.25)).add(0.0, -0.1, 0.0));
         Effect.particle = ParticleEffect.SNOW_SHOVEL;
         Effect.color = Color.WHITE;
@@ -481,5 +474,12 @@ public class FrozenAdv extends BaseZombie {
                 User.getUser(p.getUniqueId()).damage(p.getMaxHealth() * 10.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, e);
             }
         }
+    }
+
+    public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
+        final net.minecraft.server.v1_8_R3.Entity pl = ((CraftZombie) e).getHandle();
+        pl.setLocation(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), yaw, pitch);
+        final PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(pl);
+        Sputnik.sendPacket(e.getWorld(), packet);
     }
 }

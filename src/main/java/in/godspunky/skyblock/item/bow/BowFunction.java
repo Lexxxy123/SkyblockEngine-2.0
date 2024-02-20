@@ -1,12 +1,12 @@
 package in.godspunky.skyblock.item.bow;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import in.godspunky.skyblock.item.MaterialFunction;
 import in.godspunky.skyblock.item.SItem;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityShootBowEvent;
+import in.godspunky.skyblock.item.MaterialFunction;
 
 public interface BowFunction extends MaterialFunction {
     default void onBowShoot(final SItem bow, final EntityShootBowEvent e) {

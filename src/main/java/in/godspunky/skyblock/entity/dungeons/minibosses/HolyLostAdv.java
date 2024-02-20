@@ -3,18 +3,6 @@ package in.godspunky.skyblock.entity.dungeons.minibosses;
 import com.google.common.util.concurrent.AtomicDouble;
 import de.slikey.effectlib.effect.ConeEffect;
 import de.slikey.effectlib.util.ParticleEffect;
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.entity.SEntityEquipment;
-import in.godspunky.skyblock.entity.zombie.BaseZombie;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.user.PlayerStatistics;
-import in.godspunky.skyblock.user.PlayerUtils;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher;
 import net.minecraft.server.v1_8_R3.*;
@@ -36,6 +24,18 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.SkyBlock;
+import in.godspunky.skyblock.entity.SEntity;
+import in.godspunky.skyblock.entity.SEntityEquipment;
+import in.godspunky.skyblock.entity.zombie.BaseZombie;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.user.PlayerStatistics;
+import in.godspunky.skyblock.user.PlayerUtils;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 
 public class HolyLostAdv extends BaseZombie {
     private boolean isEating;
@@ -48,15 +48,6 @@ public class HolyLostAdv extends BaseZombie {
         this.isBowing = false;
         this.EatingCooldown = false;
         this.CDDR = false;
-    }
-
-    public static ItemStack st(final int hexcolor, final Material m, final String name) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
-        itemMeta.setDisplayName(name);
-        itemMeta.spigot().setUnbreakable(true);
-        stack.setItemMeta(itemMeta);
-        return stack;
     }
 
     @Override
@@ -83,8 +74,8 @@ public class HolyLostAdv extends BaseZombie {
         final PlayerWatcher skywatch = pl.getWatcher();
         final LivingEntity target = ((CraftZombie) entity).getTarget();
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 90);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("LD", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("LD", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -97,7 +88,7 @@ public class HolyLostAdv extends BaseZombie {
                     Sputnik.sendEatingAnimation(entity);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 4L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 4L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -132,10 +123,10 @@ public class HolyLostAdv extends BaseZombie {
                             }, 5L);
                             SUtil.delay(() -> HolyLostAdv.this.EatingCooldown = false, SUtil.random(600, 800));
                         }
-                    }.runTaskLater(Skyblock.getPlugin(), 60L);
+                    }.runTaskLater(SkyBlock.getPlugin(), 60L);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 10L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 10L);
         new BukkitRunnable() {
             public void run() {
                 if (entity.isDead()) {
@@ -211,7 +202,7 @@ public class HolyLostAdv extends BaseZombie {
                                     HolyLostAdv.this.isBowing = false;
                                 }
                             }
-                        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+                        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
                     }
                     if (target1.getLocation().distance(entity.getLocation()) <= 5.0 && !HolyLostAdv.this.isBowing && !HolyLostAdv.this.isEating) {
                         if (SUtil.random(0, 100) > 30) {
@@ -252,10 +243,10 @@ public class HolyLostAdv extends BaseZombie {
                     entity.getEquipment().setItemInHand(SUtil.enchant(SItem.of(SMaterial.ASPECT_OF_THE_DRAGONS).getStack()));
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
         new BukkitRunnable() {
-            final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
             Location loc = entity.getLocation();
+            final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
 
             public void run() {
                 if (entity.isDead()) {
@@ -299,7 +290,7 @@ public class HolyLostAdv extends BaseZombie {
                 }
                 this.nms.setSprinting(false);
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 7L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 7L);
         new BukkitRunnable() {
             public void run() {
                 final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -341,7 +332,7 @@ public class HolyLostAdv extends BaseZombie {
                     break;
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
     }
 
     @Override
@@ -354,6 +345,15 @@ public class HolyLostAdv extends BaseZombie {
     @Override
     public SEntityEquipment getEntityEquipment() {
         return new SEntityEquipment(SUtil.enchant(SItem.of(SMaterial.ASPECT_OF_THE_DRAGONS).getStack()), SUtil.enchant(SUtil.getSkullURLStack("Holy Dragon Helmet", "d13ad4fa48118d10a1ef42fd6d585472203bd88a98a087ab43182aa0493ea842", 1, "")), SUtil.enchant(st(4706631, Material.LEATHER_CHESTPLATE, "Holy Dragon Chestplate")), SUtil.enchant(st(4706631, Material.LEATHER_LEGGINGS, "Holy Dragon Leggings")), SUtil.enchant(st(4706631, Material.LEATHER_BOOTS, "Holy Dragon Boots")));
+    }
+
+    public static ItemStack st(final int hexcolor, final Material m, final String name) {
+        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
+        final ItemMeta itemMeta = stack.getItemMeta();
+        itemMeta.setDisplayName(name);
+        itemMeta.spigot().setUnbreakable(true);
+        stack.setItemMeta(itemMeta);
+        return stack;
     }
 
     @Override
@@ -382,7 +382,7 @@ public class HolyLostAdv extends BaseZombie {
     }
 
     public void playPar(final Location l) {
-        final ConeEffect Effect = new ConeEffect(Skyblock.effectManager);
+        final ConeEffect Effect = new ConeEffect(SkyBlock.effectManager);
         Effect.setLocation(l.clone().add(l.getDirection().normalize().multiply(-0.25)).add(0.0, -0.1, 0.0));
         Effect.particle = ParticleEffect.FLAME;
         Effect.angularVelocity = 0.39269908169872414;

@@ -11,11 +11,11 @@ import java.util.*;
 
 public class DiscordWebhook {
     private final String url;
-    private final List<EmbedObject> embeds;
     private String content;
     private String username;
     private String avatarUrl;
     private boolean tts;
+    private final List<EmbedObject> embeds;
 
     public DiscordWebhook(final String url) {
         this.embeds = new ArrayList<EmbedObject>();
@@ -121,7 +121,6 @@ public class DiscordWebhook {
     }
 
     public static class EmbedObject {
-        private final List<Field> fields;
         private String title;
         private String description;
         private String url;
@@ -130,6 +129,7 @@ public class DiscordWebhook {
         private Thumbnail thumbnail;
         private Image image;
         private Author author;
+        private final List<Field> fields;
 
         public EmbedObject() {
             this.fields = new ArrayList<Field>();
@@ -139,36 +139,16 @@ public class DiscordWebhook {
             return this.title;
         }
 
-        public EmbedObject setTitle(final String title) {
-            this.title = title;
-            return this;
-        }
-
         public String getDescription() {
             return this.description;
-        }
-
-        public EmbedObject setDescription(final String description) {
-            this.description = description;
-            return this;
         }
 
         public String getUrl() {
             return this.url;
         }
 
-        public EmbedObject setUrl(final String url) {
-            this.url = url;
-            return this;
-        }
-
         public Color getColor() {
             return this.color;
-        }
-
-        public EmbedObject setColor(final Color color) {
-            this.color = color;
-            return this;
         }
 
         public Footer getFooter() {
@@ -179,18 +159,8 @@ public class DiscordWebhook {
             return this.thumbnail;
         }
 
-        public EmbedObject setThumbnail(final String url) {
-            this.thumbnail = new Thumbnail(url);
-            return this;
-        }
-
         public Image getImage() {
             return this.image;
-        }
-
-        public EmbedObject setImage(final String url) {
-            this.image = new Image(url);
-            return this;
         }
 
         public Author getAuthor() {
@@ -201,8 +171,38 @@ public class DiscordWebhook {
             return this.fields;
         }
 
+        public EmbedObject setTitle(final String title) {
+            this.title = title;
+            return this;
+        }
+
+        public EmbedObject setDescription(final String description) {
+            this.description = description;
+            return this;
+        }
+
+        public EmbedObject setUrl(final String url) {
+            this.url = url;
+            return this;
+        }
+
+        public EmbedObject setColor(final Color color) {
+            this.color = color;
+            return this;
+        }
+
         public EmbedObject setFooter(final String text, final String icon) {
             this.footer = new Footer(text, icon);
+            return this;
+        }
+
+        public EmbedObject setThumbnail(final String url) {
+            this.thumbnail = new Thumbnail(url);
+            return this;
+        }
+
+        public EmbedObject setImage(final String url) {
+            this.image = new Image(url);
             return this;
         }
 

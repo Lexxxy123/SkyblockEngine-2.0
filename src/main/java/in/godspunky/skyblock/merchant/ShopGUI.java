@@ -1,14 +1,7 @@
 package in.godspunky.skyblock.merchant;
 
-import in.godspunky.skyblock.gui.GUI;
-import in.godspunky.skyblock.gui.GUIClickableItem;
-import in.godspunky.skyblock.gui.GUIOpenEvent;
-import in.godspunky.skyblock.gui.ShopTradingOptionsGUI;
 import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SpecificItemType;
-import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.PaginationList;
-import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.StackArrayList;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -18,6 +11,13 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import in.godspunky.skyblock.gui.GUI;
+import in.godspunky.skyblock.gui.GUIClickableItem;
+import in.godspunky.skyblock.gui.GUIOpenEvent;
+import in.godspunky.skyblock.gui.ShopTradingOptionsGUI;
+import in.godspunky.skyblock.item.SpecificItemType;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.SUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,12 +27,6 @@ import java.util.UUID;
 public class ShopGUI extends GUI {
     private static final Map<UUID, StackArrayList<SItem>> BUYBACK_HISTORY;
     private static final int[] INTERIOR;
-
-    static {
-        BUYBACK_HISTORY = new HashMap<UUID, StackArrayList<SItem>>();
-        INTERIOR = new int[]{10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43};
-    }
-
     private final SItem[] items;
     private int page;
 
@@ -234,5 +228,10 @@ public class ShopGUI extends GUI {
         player.sendMessage(ChatColor.GREEN + "You sold " + item.getFullName() + ChatColor.DARK_GRAY + " x" + item.getStack().getAmount() + ChatColor.GREEN + " for " + ChatColor.GOLD + SUtil.commaify(value) + " Coin" + ((value != 1L) ? "s" : "") + ChatColor.GREEN + "!");
         player.getInventory().setItem(e.getSlot(), new ItemStack(Material.AIR));
         new ShopGUI(this.title, this.page, this.items).open(player);
+    }
+
+    static {
+        BUYBACK_HISTORY = new HashMap<UUID, StackArrayList<SItem>>();
+        INTERIOR = new int[]{10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43};
     }
 }

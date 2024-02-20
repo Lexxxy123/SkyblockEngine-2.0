@@ -1,14 +1,9 @@
 package in.godspunky.skyblock.entity.nms;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.enchantment.EnchantmentType;
 import in.godspunky.skyblock.entity.*;
-import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.SUtil;
-import in.godspunky.skyblock.util.Sputnik;
 import net.minecraft.server.v1_8_R3.Entity;
 import net.minecraft.server.v1_8_R3.EntitySpider;
 import net.minecraft.server.v1_8_R3.World;
@@ -23,6 +18,11 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.SUtil;
+import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,18 +31,12 @@ import java.util.UUID;
 public class TarantulaBroodfather extends EntitySpider implements SNMSEntity, EntityFunction, EntityStatistics, SlayerBoss {
     private static final TieredValue<Double> MAX_HEALTH_VALUES;
     private static final TieredValue<Double> DAMAGE_VALUES;
-
-    static {
-        MAX_HEALTH_VALUES = new TieredValue<Double>(750.0, 30000.0, 900000.0, 2400000.0);
-        DAMAGE_VALUES = new TieredValue<Double>(35.0, 110.0, 525.0, 1325.0);
-    }
-
     private final int tier;
     private final long end;
-    private final UUID spawnerUUID;
     private SEntity hologram;
     private SEntity top;
     private SEntity hologram_name;
+    private final UUID spawnerUUID;
 
     public TarantulaBroodfather(final Integer tier, final UUID spawnerUUID) {
         super(((CraftWorld) Bukkit.getPlayer(spawnerUUID).getWorld()).getHandle());
@@ -85,8 +79,8 @@ public class TarantulaBroodfather extends EntitySpider implements SNMSEntity, En
     }
 
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
-        entity.setMetadata("BOSS_OWNER_" + Bukkit.getPlayer(this.getSpawnerUUID()).getUniqueId().toString(), new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("BOSS_OWNER_" + Bukkit.getPlayer(this.getSpawnerUUID()).getUniqueId().toString(), new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         this.top = new SEntity(entity, SEntityType.TOP_CAVE_SPIDER, this);
         this.hologram = new SEntity(entity.getLocation().add(0.0, 1.3, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND);
         ((ArmorStand) this.hologram.getEntity()).setVisible(false);
@@ -94,7 +88,7 @@ public class TarantulaBroodfather extends EntitySpider implements SNMSEntity, En
         this.hologram.getEntity().setCustomNameVisible(true);
         final Entity e = this.getBukkitEntity().getHandle();
         final double height = e.getBoundingBox().e - e.getBoundingBox().b;
-        entity.setMetadata("notDisplay", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("notDisplay", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         this.hologram_name = new SEntity(entity.getLocation().add(0.0, height, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND);
         ((ArmorStand) this.hologram_name.getEntity()).setVisible(false);
         ((ArmorStand) this.hologram_name.getEntity()).setGravity(false);
@@ -107,7 +101,7 @@ public class TarantulaBroodfather extends EntitySpider implements SNMSEntity, En
                     this.cancel();
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
         final Player player = Bukkit.getPlayer(this.spawnerUUID);
         if (player == null) {
             return;
@@ -121,7 +115,7 @@ public class TarantulaBroodfather extends EntitySpider implements SNMSEntity, En
                 }
                 entity.setPassenger(TarantulaBroodfather.this.top.getEntity());
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 5L, 5L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 5L, 5L);
         if (this.tier >= 2) {
             new BukkitRunnable() {
                 public void run() {
@@ -134,7 +128,7 @@ public class TarantulaBroodfather extends EntitySpider implements SNMSEntity, En
                     }
                     player.damage(TarantulaBroodfather.this.getDamageDealt() * 0.5, entity);
                 }
-            }.runTaskTimer(Skyblock.getPlugin(), 20L, 20L);
+            }.runTaskTimer(SkyBlock.getPlugin(), 20L, 20L);
         }
         new BukkitRunnable() {
             public void run() {
@@ -159,7 +153,7 @@ public class TarantulaBroodfather extends EntitySpider implements SNMSEntity, En
                 }
                 e.setVelocity(e.getVelocity().add(vector));
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 40L, 40L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 40L, 40L);
     }
 
     public void onDeath(final SEntity sEntity, final org.bukkit.entity.Entity killed, final org.bukkit.entity.Entity damager) {
@@ -248,6 +242,11 @@ public class TarantulaBroodfather extends EntitySpider implements SNMSEntity, En
         return this.tier;
     }
 
+    static {
+        MAX_HEALTH_VALUES = new TieredValue<Double>(750.0, 30000.0, 900000.0, 2400000.0);
+        DAMAGE_VALUES = new TieredValue<Double>(35.0, 110.0, 525.0, 1325.0);
+    }
+
     public static class TopCaveSpider implements EntityStatistics, EntityFunction {
         private final TarantulaBroodfather parent;
 
@@ -283,8 +282,8 @@ public class TarantulaBroodfather extends EntitySpider implements SNMSEntity, En
         @Override
         public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
             entity.setCustomNameVisible(false);
-            entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
-            entity.setMetadata("notDisplay", new FixedMetadataValue(Skyblock.getPlugin(), true));
+            entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+            entity.setMetadata("notDisplay", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         }
 
         @Override

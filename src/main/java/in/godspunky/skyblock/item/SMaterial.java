@@ -3,10 +3,6 @@ package in.godspunky.skyblock.item;
 import in.godspunky.skyblock.entity.SEntityType;
 import in.godspunky.skyblock.item.accessory.*;
 import in.godspunky.skyblock.item.armor.*;
-import in.godspunky.skyblock.item.armor.final_destination.FinalDestinationBoots;
-import in.godspunky.skyblock.item.armor.final_destination.FinalDestinationChestplate;
-import in.godspunky.skyblock.item.armor.final_destination.FinalDestinationHelmet;
-import in.godspunky.skyblock.item.armor.final_destination.FinalDestinationLeggings;
 import in.godspunky.skyblock.item.armor.gigachad.*;
 import in.godspunky.skyblock.item.armor.hardened.HardenedDiamondBoots;
 import in.godspunky.skyblock.item.armor.hardened.HardenedDiamondChestplate;
@@ -39,7 +35,6 @@ import in.godspunky.skyblock.item.armor.vanilla.leather.LeatherChestplate;
 import in.godspunky.skyblock.item.armor.vanilla.leather.LeatherHelmet;
 import in.godspunky.skyblock.item.armor.vanilla.leather.LeatherLeggings;
 import in.godspunky.skyblock.item.axe.vanilla.*;
-import in.godspunky.skyblock.item.bow.Terminator;
 import in.godspunky.skyblock.item.bow.*;
 import in.godspunky.skyblock.item.dragon.old.*;
 import in.godspunky.skyblock.item.dragon.protector.*;
@@ -55,7 +50,6 @@ import in.godspunky.skyblock.item.farming.*;
 import in.godspunky.skyblock.item.foraging.*;
 import in.godspunky.skyblock.item.hoe.vanilla.*;
 import in.godspunky.skyblock.item.mining.*;
-import in.godspunky.skyblock.item.minions.CobbleStoneMinion;
 import in.godspunky.skyblock.item.oddities.*;
 import in.godspunky.skyblock.item.orb.*;
 import in.godspunky.skyblock.item.pet.*;
@@ -71,6 +65,43 @@ import in.godspunky.skyblock.item.weapon.vanilla.*;
 import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.Material;
 import org.bukkit.inventory.PlayerInventory;
+import in.godspunky.skyblock.item.accessory.*;
+import in.godspunky.skyblock.item.armor.*;
+import in.godspunky.skyblock.item.armor.gigachad.*;
+import in.godspunky.skyblock.item.armor.lapis.*;
+import in.godspunky.skyblock.item.armor.miner.*;
+import in.godspunky.skyblock.item.armor.minichad.*;
+import in.godspunky.skyblock.item.armor.necron.*;
+import in.godspunky.skyblock.item.armor.sorrow.*;
+import in.godspunky.skyblock.item.armor.storm.*;
+import in.godspunky.skyblock.item.axe.vanilla.*;
+import in.godspunky.skyblock.item.bow.Terminator;
+import in.godspunky.skyblock.item.bow.*;
+import in.godspunky.skyblock.item.dragon.old.*;
+import in.godspunky.skyblock.item.dragon.protector.*;
+import in.godspunky.skyblock.item.dragon.strong.*;
+import in.godspunky.skyblock.item.dragon.superior.*;
+import in.godspunky.skyblock.item.dragon.unstable.*;
+import in.godspunky.skyblock.item.dragon.wise.*;
+import in.godspunky.skyblock.item.dragon.young.*;
+import in.godspunky.skyblock.item.enchanted.*;
+import in.godspunky.skyblock.item.entity.*;
+import in.godspunky.skyblock.item.farming.*;
+import in.godspunky.skyblock.item.foraging.*;
+import in.godspunky.skyblock.item.hoe.vanilla.*;
+import in.godspunky.skyblock.item.mining.*;
+import in.godspunky.skyblock.item.oddities.*;
+import in.godspunky.skyblock.item.orb.*;
+import in.godspunky.skyblock.item.pet.*;
+import in.godspunky.skyblock.item.pickaxe.vanilla.*;
+import in.godspunky.skyblock.item.revenant.*;
+import in.godspunky.skyblock.item.rune.*;
+import in.godspunky.skyblock.item.shovel.vanilla.*;
+import in.godspunky.skyblock.item.storage.*;
+import in.godspunky.skyblock.item.sven.*;
+import in.godspunky.skyblock.item.tarantula.*;
+import in.godspunky.skyblock.item.weapon.*;
+import in.godspunky.skyblock.item.weapon.vanilla.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -78,9 +109,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public enum SMaterial {
-
-    //Minions
-    COBBLE_STONE_MINION(Material.SKULL_ITEM, CobbleStoneMinion.class),
     DWARVEN_MITRIL(Material.PRISMARINE_CRYSTALS, Mitril.class),
     DWARVEN_TITANIUM(Material.SKULL_ITEM, Titanium.class),
     HIDDEN_BOOSTER_COOKIE(Material.COOKIE, BoosterCookie.class),
@@ -242,11 +270,6 @@ public enum SMaterial {
     MINER_HELMET(Material.DIAMOND_HELMET, MinerHelmet.class),
     MINER_CHESTPLATE(Material.DIAMOND_CHESTPLATE, MinerChestplate.class),
     MINER_LEGGINGS(Material.DIAMOND_LEGGINGS, MinerLeggings.class),
-
-    FINAL_DESTINATION_HELMET(Material.SKULL_ITEM, FinalDestinationHelmet.class),
-    FINAL_DESTINATION_CHESTPLATE(Material.LEATHER_CHESTPLATE, FinalDestinationChestplate.class),
-    FINAL_DESTINATION_LEGGINGS(Material.LEATHER_LEGGINGS, FinalDestinationLeggings.class),
-    FINAL_DESTINATION_BOOTS(Material.LEATHER_BOOTS, FinalDestinationBoots.class),
     MINER_BOOTS(Material.DIAMOND_BOOTS, MinerBoots.class),
     HARDENED_DIAMOND_HELMET(Material.DIAMOND_HELMET, HardenedDiamondHelmet.class),
     HARDENED_DIAMOND_CHESTPLATE(Material.DIAMOND_CHESTPLATE, HardenedDiamondChestplate.class),
@@ -956,25 +979,6 @@ public enum SMaterial {
     public static SorrowArmorSet SORROW_SET;
     public static GigachadSet GIGACHAD_SET;
     public static MinichadSet MINICHAD_SET;
-
-    static {
-        CACHED_SETS = new ArrayList<ArmorSet>();
-        SMaterial.YOUNG_DRAGON_SET = SMaterial.registerArmorSet(YoungDragonSet.class);
-        SMaterial.SUPERIOR_DRAGON_SET = SMaterial.registerArmorSet(SuperiorDragonSet.class);
-        SMaterial.WISE_DRAGON_SET = SMaterial.registerArmorSet(WiseDragonSet.class);
-        SMaterial.UNSTABLE_DRAGON_SET = SMaterial.registerArmorSet(UnstableDragonSet.class);
-        SMaterial.STRONG_DRAGON_SET = SMaterial.registerArmorSet(StrongDragonSet.class);
-        SMaterial.OLD_DRAGON_SET = SMaterial.registerArmorSet(OldDragonSet.class);
-        SMaterial.PROTECTOR_DRAGON_SET = SMaterial.registerArmorSet(ProtectorDragonSet.class);
-        SMaterial.LAPIS_ARMOR_SET = SMaterial.registerArmorSet(LapisArmorSet.class);
-        SMaterial.MINER_SET = SMaterial.registerArmorSet(MinerSet.class);
-        SMaterial.NECRONS_SET = SMaterial.registerArmorSet(NecronFullSet.class);
-        SMaterial.STORMS_SET = SMaterial.registerArmorSet(StormFullSet.class);
-        SMaterial.SORROW_SET = SMaterial.registerArmorSet(SorrowArmorSet.class);
-        SMaterial.GIGACHAD_SET = SMaterial.registerArmorSet(GigachadSet.class);
-        SMaterial.MINICHAD_SET = SMaterial.registerArmorSet(MinichadSet.class);
-    }
-
     private final Material craftMaterial;
     private final short data;
     private final Class<?> clazz;
@@ -1062,28 +1066,6 @@ public enum SMaterial {
             return null;
         }
         return subList.get(0);
-    }
-
-    public static ArmorSet getIncompleteArmorSet(final PlayerInventory inventory) {
-        final SItem helmet = SItem.find(inventory.getHelmet());
-        final SItem chestplate = SItem.find(inventory.getChestplate());
-        final SItem leggings = SItem.find(inventory.getLeggings());
-        final SItem boots = SItem.find(inventory.getBoots());
-        for (final ArmorSet set : SMaterial.CACHED_SETS) {
-            if (set.getHelmet() != null && helmet != null && helmet.getType().getStatistics().getClass() == set.getHelmet()) {
-                return set;
-            }
-            if (set.getChestplate() != null && chestplate != null && chestplate.getType().getStatistics().getClass() == set.getChestplate()) {
-                return set;
-            }
-            if (set.getLeggings() != null && leggings != null && leggings.getType().getStatistics().getClass() == set.getLeggings()) {
-                return set;
-            }
-            if (set.getBoots() != null && boots != null && boots.getType().getStatistics().getClass() == set.getBoots()) {
-                return set;
-            }
-        }
-        return null;
     }
 
     public MaterialFunction getFunction() {
@@ -1189,17 +1171,6 @@ public enum SMaterial {
         return null;
     }
 
-    public SMinion getSMinion() {
-        if (!this.hasClass()) {
-            return null;
-        }
-        Object generic = getGenericInstance();
-        if (generic instanceof SMinion) {
-            return (SMinion) generic;
-        }
-        return null;
-    }
-
     public Object getGenericInstance() {
         if (this.clazz == null) {
             return null;
@@ -1213,6 +1184,28 @@ public enum SMaterial {
 
     public boolean hasClass() {
         return this.clazz != null;
+    }
+
+    public static ArmorSet getIncompleteArmorSet(final PlayerInventory inventory) {
+        final SItem helmet = SItem.find(inventory.getHelmet());
+        final SItem chestplate = SItem.find(inventory.getChestplate());
+        final SItem leggings = SItem.find(inventory.getLeggings());
+        final SItem boots = SItem.find(inventory.getBoots());
+        for (final ArmorSet set : SMaterial.CACHED_SETS) {
+            if (set.getHelmet() != null && helmet != null && helmet.getType().getStatistics().getClass() == set.getHelmet()) {
+                return set;
+            }
+            if (set.getChestplate() != null && chestplate != null && chestplate.getType().getStatistics().getClass() == set.getChestplate()) {
+                return set;
+            }
+            if (set.getLeggings() != null && leggings != null && leggings.getType().getStatistics().getClass() == set.getLeggings()) {
+                return set;
+            }
+            if (set.getBoots() != null && boots != null && boots.getType().getStatistics().getClass() == set.getBoots()) {
+                return set;
+            }
+        }
+        return null;
     }
 
     public Material getCraftMaterial() {
@@ -1229,6 +1222,24 @@ public enum SMaterial {
 
     public String getBaseName() {
         return this.baseName;
+    }
+
+    static {
+        CACHED_SETS = new ArrayList<ArmorSet>();
+        SMaterial.YOUNG_DRAGON_SET = SMaterial.registerArmorSet(YoungDragonSet.class);
+        SMaterial.SUPERIOR_DRAGON_SET = SMaterial.registerArmorSet(SuperiorDragonSet.class);
+        SMaterial.WISE_DRAGON_SET = SMaterial.registerArmorSet(WiseDragonSet.class);
+        SMaterial.UNSTABLE_DRAGON_SET = SMaterial.registerArmorSet(UnstableDragonSet.class);
+        SMaterial.STRONG_DRAGON_SET = SMaterial.registerArmorSet(StrongDragonSet.class);
+        SMaterial.OLD_DRAGON_SET = SMaterial.registerArmorSet(OldDragonSet.class);
+        SMaterial.PROTECTOR_DRAGON_SET = SMaterial.registerArmorSet(ProtectorDragonSet.class);
+        SMaterial.LAPIS_ARMOR_SET = SMaterial.registerArmorSet(LapisArmorSet.class);
+        SMaterial.MINER_SET = SMaterial.registerArmorSet(MinerSet.class);
+        SMaterial.NECRONS_SET = SMaterial.registerArmorSet(NecronFullSet.class);
+        SMaterial.STORMS_SET = SMaterial.registerArmorSet(StormFullSet.class);
+        SMaterial.SORROW_SET = SMaterial.registerArmorSet(SorrowArmorSet.class);
+        SMaterial.GIGACHAD_SET = SMaterial.registerArmorSet(GigachadSet.class);
+        SMaterial.MINICHAD_SET = SMaterial.registerArmorSet(MinichadSet.class);
     }
 
     public enum VagueEntityMaterial {

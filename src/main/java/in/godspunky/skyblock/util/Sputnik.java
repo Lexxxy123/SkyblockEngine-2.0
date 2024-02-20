@@ -18,7 +18,7 @@ import com.sk89q.worldedit.world.registry.WorldData;
 import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.PositionSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
-import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.command.AccessTimedCommand;
 import in.godspunky.skyblock.dungeons.BlessingChest;
 import in.godspunky.skyblock.dungeons.Blessings;
@@ -26,16 +26,10 @@ import in.godspunky.skyblock.dungeons.ItemChest;
 import in.godspunky.skyblock.entity.dungeons.boss.sadan.SadanBossManager;
 import in.godspunky.skyblock.entity.nms.VoidgloomSeraph;
 import in.godspunky.skyblock.extra.beam.Beam;
-import in.godspunky.skyblock.gui.BossMenu;
-import in.godspunky.skyblock.gui.PetsGUI;
-import in.godspunky.skyblock.gui.TradeMenu;
 import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.item.pet.Pet;
-import in.godspunky.skyblock.listener.PlayerListener;
 import in.godspunky.skyblock.user.PlayerStatistics;
 import in.godspunky.skyblock.user.PlayerUtils;
-import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.user.UserStash;
 import me.libraryaddict.disguise.disguisetypes.FlagWatcher;
 import me.libraryaddict.disguise.disguisetypes.MobDisguise;
@@ -64,6 +58,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.gui.BossMenu;
+import in.godspunky.skyblock.gui.PetsGUI;
+import in.godspunky.skyblock.gui.TradeMenu;
+import in.godspunky.skyblock.item.SMaterial;
+import in.godspunky.skyblock.listener.PlayerListener;
+import in.godspunky.skyblock.user.User;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -74,6 +74,7 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 public class Sputnik {
+    public Random random;
     public static final Map<Server, Integer> RunThisSession;
     public static final Map<SItem, Integer> MidasStaff;
     public static final Map<SItem, Long> MidasStaffDmg;
@@ -83,53 +84,12 @@ public class Sputnik {
     public static final Map<UUID, Boolean> HaveDMGReduction;
     public static final Map<Entity, Location> MAP_PARTICLE_1;
 
-    static {
-        RunThisSession = new HashMap<Server, Integer>();
-        MidasStaff = new HashMap<SItem, Integer>();
-        MidasStaffDmg = new HashMap<SItem, Long>();
-        CoinsTakenOut = new HashMap<UUID, Integer>();
-        IsInsideTheBeam = new HashMap<UUID, Boolean>();
-        CooldownAbs = new HashMap<UUID, Boolean>();
-        HaveDMGReduction = new HashMap<UUID, Boolean>();
-        MAP_PARTICLE_1 = new HashMap<Entity, Location>();
-    }
-
-    public Random random;
-
     public Sputnik() {
         this.random = new Random();
     }
 
-    public static String trans(String content) {
+    public static String trans(final String content) {
         return ChatColor.translateAlternateColorCodes('&', content);
-    }
-
-    public static String trans4(String content, String arg1, String arg2, String arg3) {
-        content = ChatColor.translateAlternateColorCodes('&', content);
-        arg1 = ChatColor.translateAlternateColorCodes('&', arg1);
-        arg2 = ChatColor.translateAlternateColorCodes('&', arg2);
-        arg3 = ChatColor.translateAlternateColorCodes('&', arg3);
-
-        return String.format(content, arg1, arg2, arg3);
-    }
-
-    public static String trans3(String content, String arg1, String arg2) {
-        content = ChatColor.translateAlternateColorCodes('&', content);
-        arg1 = ChatColor.translateAlternateColorCodes('&', arg1);
-        arg2 = ChatColor.translateAlternateColorCodes('&', arg2);
-
-
-        return String.format(content, arg1, arg2);
-    }
-
-    public static String trans5(String content, String arg1, String arg2, String arg3, String arg4) {
-        content = ChatColor.translateAlternateColorCodes('&', content);
-        arg1 = ChatColor.translateAlternateColorCodes('&', arg1);
-        arg2 = ChatColor.translateAlternateColorCodes('&', arg2);
-        arg3 = ChatColor.translateAlternateColorCodes('&', arg3);
-        arg4 = ChatColor.translateAlternateColorCodes('&', arg4);
-
-        return String.format(content, arg1, arg2, arg3, arg4);
     }
 
     public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
@@ -329,7 +289,7 @@ public class Sputnik {
                     beam.update();
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
     }
 
     public static int findArgo(final Location arg0, final Location arg1) {
@@ -482,7 +442,7 @@ public class Sputnik {
                     }
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 5L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 5L);
     }
 
     public static void witherShieldActive2(final Player p) {
@@ -512,9 +472,9 @@ public class Sputnik {
                             public void run() {
                                 Sputnik.CooldownAbs.put(p.getUniqueId(), false);
                             }
-                        }.runTaskLater(Skyblock.getPlugin(), 100L);
+                        }.runTaskLater(SkyBlock.getPlugin(), 100L);
                     }
-                }.runTaskLater(Skyblock.getPlugin(), 100L);
+                }.runTaskLater(SkyBlock.getPlugin(), 100L);
             }
         } else {
             Sputnik.CooldownAbs.put(p.getUniqueId(), false);
@@ -549,9 +509,9 @@ public class Sputnik {
                             public void run() {
                                 Sputnik.CooldownAbs.put(p.getUniqueId(), false);
                             }
-                        }.runTaskLater(Skyblock.getPlugin(), 100L);
+                        }.runTaskLater(SkyBlock.getPlugin(), 100L);
                     }
-                }.runTaskLater(Skyblock.getPlugin(), 100L);
+                }.runTaskLater(SkyBlock.getPlugin(), 100L);
             }
         } else {
             Sputnik.CooldownAbs.put(p.getUniqueId(), false);
@@ -631,7 +591,7 @@ public class Sputnik {
                     }
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 1L, 5L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 1L, 5L);
     }
 
     public static void moveTo(final LivingEntity entity, final Location moveTo, final float speed) {
@@ -768,7 +728,7 @@ public class Sputnik {
                     }
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 0L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 0L);
     }
 
     public static final float getAngle(final Vector point1, final Vector point2) {
@@ -860,7 +820,7 @@ public class Sputnik {
 
     public static List<Block> pasteSchematicRep(final String schematic, final boolean withAir, final float lx, final float ly, final float lz, final World w) {
         final List<Block> lb = new ArrayList<Block>();
-        final File schem = new File(Skyblock.getPlugin().getDataFolder() + File.separator + "/schematics/" + schematic + ".schematic");
+        final File schem = new File(SkyBlock.getPlugin().getDataFolder() + File.separator + "/schematics/" + schematic + ".schematic");
         final com.sk89q.worldedit.world.World world = new BukkitWorld(w);
         final Closer closer = Closer.create();
         FileInputStream fis = null;
@@ -921,7 +881,7 @@ public class Sputnik {
             final com.sk89q.worldedit.Vector pasteLocation = new com.sk89q.worldedit.Vector(location.getX(), location.getY(), location.getZ());
             final BukkitWorld pasteWorld = new BukkitWorld(location.getWorld());
             final WorldData pasteWorldData = pasteWorld.getWorldData();
-            final File schem = new File(Skyblock.getPlugin().getDataFolder() + File.separator + "/schematics/" + schematic + ".schematic");
+            final File schem = new File(SkyBlock.getPlugin().getDataFolder() + File.separator + "/schematics/" + schematic + ".schematic");
             Clipboard clipboard;
             try {
                 clipboard = ClipboardFormat.SCHEMATIC.getReader(new FileInputStream(schem)).read(pasteWorldData);
@@ -970,7 +930,7 @@ public class Sputnik {
     public static int runningFloors() {
         int i = 0;
         for (final World w : Bukkit.getWorlds()) {
-            if (w.getName().startsWith("f6") && !w.getName().equals("f6")) {
+            if (w.getName().contains("f6") && !w.getName().equals("f6")) {
                 ++i;
             }
         }
@@ -989,11 +949,13 @@ public class Sputnik {
 
     public static void startRoom(final Player player) {
         if (runningFloors() >= 5) {
-            player.sendMessage(trans("&cSorry! The number of running rooms has reached 5, please try again in a moment. You can support the server so we can handle more rooms at &bhttps://discord.gg/godspunky"));
+            player.sendMessage(trans("&cSorry! The number of running rooms has reached 5, please try again in a moment. You can support the server so we can handle more rooms at &bhttps://store.skysim.sbs"));
             BossMenu.ableToJoin.put(player, true);
             return;
         }
-        final Skyblock plugin = Skyblock.getPlugin();
+        final SkyBlock plugin = SkyBlock.getPlugin();
+        plugin.config.set("runMade", plugin.config.getLong("runMade") + 1L);
+        plugin.config.save();
         final ArrayList<Player> plist = new ArrayList<Player>();
         plist.add(player);
         SUtil.delay(() -> player.sendMessage(ChatColor.GREEN + "Entering The Catacombs Demo - Floor 6!"), 10L);
@@ -1067,18 +1029,18 @@ public class Sputnik {
                     this.loc = 0;
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
     }
 
     public static void playSoulWell(final Entity e, final String id) {
         final HashMap<Integer, Integer> S = new HashMap<Integer, Integer>();
         Sputnik.MAP_PARTICLE_1.put(e, e.getLocation());
-        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Skyblock.getPlugin(), new Runnable() {
+        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(SkyBlock.getPlugin(), new Runnable() {
             final Random random = new Random();
 
             void startSoulWell() {
                 final int num = this.random.nextInt(Integer.MAX_VALUE);
-                S.put(num, Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(Skyblock.getPlugin(), new Runnable() {
+                S.put(num, Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(SkyBlock.getPlugin(), new Runnable() {
                     final Location height = Sputnik.MAP_PARTICLE_1.get(e);
                     int loc = 0;
                     int lifeSpan = 0;
@@ -1110,7 +1072,7 @@ public class Sputnik {
             public void run() {
                 Sputnik.MAP_PARTICLE_1.put(e, e.getLocation());
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
     }
 
     private static ArrayList<Location> getCircle(final Location center, final double radius, final int amount) {
@@ -1204,6 +1166,10 @@ public class Sputnik {
     }
 
     public static void tradeIntitize(final Player target, final Player p) {
+        if (SkyBlock.getPlugin() != null && !SkyBlock.getPlugin().config.getBoolean("enableTrade")) {
+            p.sendMessage(trans("&cTrading has been temporary disabled!"));
+            return;
+        }
         if (p == target) {
             p.sendMessage(trans("&cYou cannot trade with yourself!"));
             p.playSound(p.getLocation(), Sound.VILLAGER_NO, 1.0f, 1.0f);
@@ -1249,7 +1215,7 @@ public class Sputnik {
                     TradeUtil.resetTrade(target);
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
         if (TradeUtil.hasRequest(p, target)) {
             p.playSound(p.getLocation(), Sound.VILLAGER_HAGGLE, 1.0f, 1.0f);
             target.playSound(target.getLocation(), Sound.VILLAGER_HAGGLE, 1.0f, 1.0f);
@@ -1289,7 +1255,7 @@ public class Sputnik {
                     this.cancel();
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
         return as;
     }
 
@@ -1313,7 +1279,7 @@ public class Sputnik {
                     this.cancel();
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
         return as;
     }
 
@@ -1339,7 +1305,7 @@ public class Sputnik {
                 }
                 as.teleport(e.getLocation().add(0.0, yoffset, 0.0));
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
         return as;
     }
 
@@ -1465,7 +1431,7 @@ public class Sputnik {
                     e.printStackTrace();
                 }
             }
-        }.runTaskAsynchronously(Skyblock.getPlugin());
+        }.runTaskAsynchronously(SkyBlock.getPlugin());
     }
 
     public static void sendEatingAnimation(final LivingEntity e) {
@@ -1484,7 +1450,7 @@ public class Sputnik {
                 vec3d2 = vec3d2.a(-pitch * 3.141593f / 180.0f);
                 vec3d2 = vec3d2.b(-yaw * 3.141593f / 180.0f);
                 vec3d2 = vec3d2.add(l.getX(), l.getY() + 1.690000057220459, l.getZ());
-                sendPacket(e.getWorld(), new PacketPlayOutWorldParticles(EnumParticle.ITEM_CRACK, true, (float) vec3d2.a, (float) vec3d2.b, (float) vec3d2.c, (float) vec3d.a, (float) ((float) vec3d.b + 0.05), (float) vec3d.c, 0.75f, 0, Item.getId(itemstack.getItem()), itemstack.getData()));
+                sendPacket(e.getWorld(), new PacketPlayOutWorldParticles(EnumParticle.ITEM_CRACK, true, (float) vec3d2.a, (float) vec3d2.b, (float) vec3d2.c, (float) vec3d.a, (float) ((float) vec3d.b + 0.05), (float) vec3d.c, 0.75f, 0, new int[]{Item.getId(itemstack.getItem()), itemstack.getData()}));
             }
             e.getWorld().playSound(l, Sound.EAT, 0.5f + 0.5f * random.nextInt(2), (random.nextFloat() - random.nextFloat()) * 0.2f + 1.0f);
         }
@@ -1513,7 +1479,7 @@ public class Sputnik {
     }
 
     public static boolean tpAbilUsable(final Player p) {
-        return !p.getWorld().getName().contains("arena") || Skyblock.getPlugin().dimoon == null || Skyblock.getPlugin().dimoon.stunned;
+        return !p.getWorld().getName().contains("arena") || SkyBlock.getPlugin().dimoon == null || SkyBlock.getPlugin().dimoon.stunned;
     }
 
     public static void teleport(final Player p, final Location loc) {
@@ -1525,7 +1491,7 @@ public class Sputnik {
     }
 
     public static PositionSongPlayer playNativeSound(final String filename, final int radius, final int volume, final boolean loop, final Location loc) {
-        final Song song = NBSDecoder.parse(new File(Skyblock.getPlugin().getDataFolder() + File.separator + "/songs/" + filename + ".nbs"));
+        final Song song = NBSDecoder.parse(new File(SkyBlock.getPlugin().getDataFolder() + File.separator + "/songs/" + filename + ".nbs"));
         final PositionSongPlayer esp = new PositionSongPlayer(song);
         esp.setDistance(radius);
         esp.setVolume((byte) 100);
@@ -1545,7 +1511,7 @@ public class Sputnik {
                     }
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
         return esp;
     }
 
@@ -1577,6 +1543,17 @@ public class Sputnik {
                     }
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
+    }
+
+    static {
+        RunThisSession = new HashMap<Server, Integer>();
+        MidasStaff = new HashMap<SItem, Integer>();
+        MidasStaffDmg = new HashMap<SItem, Long>();
+        CoinsTakenOut = new HashMap<UUID, Integer>();
+        IsInsideTheBeam = new HashMap<UUID, Boolean>();
+        CooldownAbs = new HashMap<UUID, Boolean>();
+        HaveDMGReduction = new HashMap<UUID, Boolean>();
+        MAP_PARTICLE_1 = new HashMap<Entity, Location>();
     }
 }

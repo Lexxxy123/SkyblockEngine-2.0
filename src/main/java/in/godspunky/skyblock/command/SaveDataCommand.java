@@ -1,15 +1,13 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.ranks.PlayerRank;
-import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.SLog;
-import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.util.SLog;
+import in.godspunky.skyblock.util.Sputnik;
 
-@CommandParameters(description = "Spec test command.", aliases = "fsd", permission = PlayerRank.ADMIN)
+@CommandParameters(description = "Spec test command.", aliases = "fsd")
 public class SaveDataCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
@@ -21,7 +19,9 @@ public class SaveDataCommand extends SCommand {
                 for (final Player p : Bukkit.getOnlinePlayers()) {
                     final User user = User.getUser(p.getUniqueId());
                     if (user != null) {
-                        Skyblock.getPlugin().dataLoader.save(p.getUniqueId());
+                        user.saveCookie();
+                        user.save();
+                        user.saveAllVanillaInstances();
                     }
                 }
                 Bukkit.broadcastMessage(Sputnik.trans("&b[SKYSIM D.C] &aAll players data have been saved! Action performed by " + player.getDisplayName() + "&a!"));
@@ -31,7 +31,9 @@ public class SaveDataCommand extends SCommand {
             for (final Player p : Bukkit.getOnlinePlayers()) {
                 final User user = User.getUser(p.getUniqueId());
                 if (user != null) {
-                    Skyblock.getPlugin().getDataLoader().save(p.getUniqueId());
+                    user.saveCookie();
+                    user.save();
+                    user.saveAllVanillaInstances();
                 }
             }
             Bukkit.broadcastMessage(Sputnik.trans("&b[SKYSIM D.C] &aAll players data have been saved! Action performed by &cCONSOLE&a!"));

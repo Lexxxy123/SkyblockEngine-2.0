@@ -1,53 +1,40 @@
 package in.godspunky.skyblock.util;
 
-import in.godspunky.skyblock.Skyblock;
-import in.godspunky.skyblock.user.User;
-import lombok.Getter;
+import in.godspunky.skyblock.SkyBlock;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
+import in.godspunky.skyblock.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PEntity {
-    static final int showRadius = 50;
-    public static List<PEntity> managers;
-
-    static {
-        PEntity.managers = new ArrayList<PEntity>();
-    }
-
-    public PEntity manager;
     Entity entity;
-    @Getter
     List<Player> players;
     Packet spawn;
     List<Packet> spawnPackets;
     BukkitTask tickTask;
     String permission;
+    static final int showRadius = 50;
+    public static List<PEntity> managers;
     double x;
     double y;
     double z;
+    public PEntity manager;
 
     public PEntity(final Entity e) {
         this.entity = e;
         this.players = new ArrayList<Player>();
         this.updateSpawnPacket();
         PEntity.managers.add(this);
-        this.tickTask = Bukkit.getScheduler().runTaskTimer(Skyblock.getPlugin(), this::tick, 1L, 5L);
+        this.tickTask = Bukkit.getScheduler().runTaskTimer(SkyBlock.getPlugin(), () -> this.tick(), 1L, 5L);
     }
 
     public PEntity(final Location location) {
-    }
-
-    public static void removePlayer(final Player player) {
-        for (final PEntity manager : PEntity.managers) {
-            manager.players.remove(player);
-        }
     }
 
     public void setShowPermission(final String permission) {
@@ -77,7 +64,8 @@ public class PEntity {
         this.y = this.entity.locY;
         this.z = this.entity.locZ;
         final PacketPlayOutEntityTeleport teleport = new PacketPlayOutEntityTeleport(this.entity);
-        for (final Player next : this.players) {
+        for (int i = 0; i < this.players.size(); ++i) {
+            final Player next = this.players.get(i);
             ((CraftPlayer) next).getHandle().playerConnection.sendPacket(teleport);
         }
         return true;
@@ -88,7 +76,8 @@ public class PEntity {
             return false;
         }
         final PacketPlayOutAnimation teleport = new PacketPlayOutAnimation(this.entity, anim);
-        for (final Player next : this.players) {
+        for (int i = 0; i < this.players.size(); ++i) {
+            final Player next = this.players.get(i);
             ((CraftPlayer) next).getHandle().playerConnection.sendPacket(teleport);
         }
         return true;
@@ -126,13 +115,18 @@ public class PEntity {
     }
 
     public void hide() {
-        for (final Player next : this.players) {
+        for (int i = 0; i < this.players.size(); ++i) {
+            final Player next = this.players.get(i);
             this.sendDestroyPacket(next);
         }
     }
 
     protected void updateSpawnPacket() {
         this.spawn = new PacketPlayOutSpawnEntityLiving((EntityLiving) this.entity);
+    }
+
+    public List<Player> getPlayers() {
+        return this.players;
     }
 
     public void spawn() {
@@ -162,6 +156,16 @@ public class PEntity {
     }
 
     protected void sendDestroyPacket(final Player player) {
-        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(this.entity.getId()));
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(new int[]{this.entity.getId()}));
+    }
+
+    public static void removePlayer(final Player player) {
+        for (final PEntity manager : PEntity.managers) {
+            manager.players.remove(player);
+        }
+    }
+
+    static {
+        PEntity.managers = new ArrayList<PEntity>();
     }
 }

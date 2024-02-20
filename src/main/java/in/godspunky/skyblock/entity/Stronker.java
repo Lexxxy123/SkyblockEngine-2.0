@@ -1,10 +1,7 @@
 package in.godspunky.skyblock.entity;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import in.godspunky.skyblock.Skyblock;
 import in.godspunky.skyblock.entity.zombie.BaseZombie;
-import in.godspunky.skyblock.util.EntityManager;
-import in.godspunky.skyblock.util.Sputnik;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -20,6 +17,9 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.SkyBlock;
+import in.godspunky.skyblock.util.EntityManager;
+import in.godspunky.skyblock.util.Sputnik;
 
 public class Stronker extends BaseZombie {
     @Override
@@ -44,11 +44,11 @@ public class Stronker extends BaseZombie {
         followRange.setValue(500.0);
         Sputnik.applyPacketGolem(entity);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 0);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(Skyblock.getPlugin(), true));
-        entity.setMetadata("NNPS", new FixedMetadataValue(Skyblock.getPlugin(), true));
+        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        entity.setMetadata("NNPS", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         new BukkitRunnable() {
-            final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
             Location loc = entity.getLocation();
+            final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
 
             public void run() {
                 if (entity.isDead()) {
@@ -92,7 +92,7 @@ public class Stronker extends BaseZombie {
                 }
                 this.nms.setSprinting(false);
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 7L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 7L);
         new BukkitRunnable() {
             public void run() {
                 final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
@@ -122,7 +122,7 @@ public class Stronker extends BaseZombie {
                     break;
                 }
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 2L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.entity;
 
-import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.entity.end.EndermanStatistics;
 import in.godspunky.skyblock.entity.nms.SNMSEntity;
 import in.godspunky.skyblock.entity.wolf.WolfStatistics;
@@ -23,22 +23,16 @@ import java.util.Map;
 import java.util.UUID;
 
 public class SEntity {
+    private static final SkyBlock plugin;
     public static final Map<Entity, Boolean> isStarred;
-    private static final Skyblock plugin;
-
-    static {
-        plugin = Skyblock.getPlugin();
-        isStarred = new HashMap<Entity, Boolean>();
-    }
-
     private final SEntityType specType;
     private final LivingEntity entity;
     private final Map<UUID, Double> damageDealt;
+    private BukkitTask task;
+    private BukkitTask ticker;
     private final Object genericInstance;
     private final EntityStatistics statistics;
     private final EntityFunction function;
-    private BukkitTask task;
-    private BukkitTask ticker;
 
     public SEntity(final Location location, final SEntityType specType, final Object... params) {
         this.specType = specType;
@@ -81,7 +75,7 @@ public class SEntity {
                     }
                     function.tick(SEntity.this.entity);
                 }
-            }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+            }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
         }
         if (statistics instanceof SlimeStatistics && this.entity instanceof Slime) {
             ((Slime) this.entity).setSize(((SlimeStatistics) statistics).getSize());
@@ -117,7 +111,7 @@ public class SEntity {
                     ((CraftLivingEntity) SEntity.this.entity).getHandle().setInvisible(true);
                 }
             }
-        }.runTaskLater(Skyblock.getPlugin(), 2L);
+        }.runTaskLater(SkyBlock.getPlugin(), 2L);
         int rand = 0;
         if (this.entity.hasMetadata("WATCHER_E")) {
             rand = SUtil.random(7, 12);
@@ -135,18 +129,11 @@ public class SEntity {
                     SEntity.this.entity.setCustomNameVisible(false);
                 }
             }
-        }.runTaskLater(Skyblock.getPlugin(), 2L);
+        }.runTaskLater(SkyBlock.getPlugin(), 2L);
     }
 
     public SEntity(final Entity e, final SEntityType type, final Object... params) {
         this(e.getLocation(), type, params);
-    }
-
-    public static SEntity findSEntity(final Entity entity) {
-        if (!entity.hasMetadata("specEntityObject") || entity.getMetadata("specEntityObject").size() == 0 || !(entity.getMetadata("specEntityObject").get(0).value() instanceof SEntity)) {
-            return null;
-        }
-        return (SEntity) entity.getMetadata("specEntityObject").get(0).value();
     }
 
     public void addDamageFor(final Player player, double damage) {
@@ -163,7 +150,7 @@ public class SEntity {
             public void run() {
                 ((CraftLivingEntity) SEntity.this.entity).getHandle().setInvisible(!visible);
             }
-        }.runTaskLater(Skyblock.getPlugin(), 2L);
+        }.runTaskLater(SkyBlock.getPlugin(), 2L);
     }
 
     public void setTarget(final LivingEntity target) {
@@ -200,6 +187,13 @@ public class SEntity {
     public void setDamage(final int damage) {
     }
 
+    public static SEntity findSEntity(final Entity entity) {
+        if (!entity.hasMetadata("specEntityObject") || entity.getMetadata("specEntityObject").size() == 0 || !(entity.getMetadata("specEntityObject").get(0).value() instanceof SEntity)) {
+            return null;
+        }
+        return (SEntity) entity.getMetadata("specEntityObject").get(0).value();
+    }
+
     public SEntityType getSpecType() {
         return this.specType;
     }
@@ -230,5 +224,10 @@ public class SEntity {
 
     public EntityFunction getFunction() {
         return this.function;
+    }
+
+    static {
+        plugin = SkyBlock.getPlugin();
+        isStarred = new HashMap<Entity, Boolean>();
     }
 }

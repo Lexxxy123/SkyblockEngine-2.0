@@ -19,11 +19,6 @@ public class ReflectionAnnotations {
     public static final ReflectionAnnotations INSTANCE;
     static final Pattern classRefPattern;
 
-    static {
-        INSTANCE = new ReflectionAnnotations();
-        classRefPattern = Pattern.compile("@Class\\((.*)\\)");
-    }
-
     private ReflectionAnnotations() {
     }
 
@@ -184,5 +179,10 @@ public class ReflectionAnnotations {
 
     void throwReflectionException(final String annotation, final java.lang.reflect.Field field, final Object toLoad, final ReflectiveOperationException exception) {
         throw new RuntimeException("Failed to set " + annotation + " field " + field.getName() + " in " + toLoad.getClass(), exception);
+    }
+
+    static {
+        INSTANCE = new ReflectionAnnotations();
+        classRefPattern = Pattern.compile("@Class\\((.*)\\)");
     }
 }

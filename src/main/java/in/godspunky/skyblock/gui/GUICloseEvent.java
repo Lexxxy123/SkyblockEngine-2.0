@@ -6,11 +6,6 @@ import org.bukkit.event.player.PlayerEvent;
 
 public class GUICloseEvent extends PlayerEvent {
     private static final HandlerList handlers;
-
-    static {
-        handlers = new HandlerList();
-    }
-
     private final GUI closed;
 
     public GUICloseEvent(final Player player, final GUI opened) {
@@ -18,15 +13,19 @@ public class GUICloseEvent extends PlayerEvent {
         this.closed = opened;
     }
 
-    public static HandlerList getHandlerList() {
+    public HandlerList getHandlers() {
         return GUICloseEvent.handlers;
     }
 
-    public HandlerList getHandlers() {
+    public static HandlerList getHandlerList() {
         return GUICloseEvent.handlers;
     }
 
     public GUI getClosed() {
         return this.closed;
+    }
+
+    static {
+        handlers = new HandlerList();
     }
 }

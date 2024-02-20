@@ -15,21 +15,16 @@ import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.registry.WorldData;
-import in.godspunky.skyblock.Skyblock;
+import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.enchantment.Enchantment;
-import in.godspunky.skyblock.gui.GUI;
-import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.item.GenericItemType;
+import in.godspunky.skyblock.item.Rarity;
+import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.merchant.MerchantItemHandler;
 import in.godspunky.skyblock.potion.PotionColor;
 import in.godspunky.skyblock.potion.PotionEffect;
-import in.godspunky.skyblock.user.User;
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.trait.ArmorStandTrait;
-import net.citizensnpcs.trait.LookClose;
-import net.citizensnpcs.trait.SkinTrait;
 import net.minecraft.server.v1_8_R3.*;
 import org.apache.commons.lang3.StringUtils;
-import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -51,6 +46,8 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
+import in.godspunky.skyblock.gui.GUI;
+import in.godspunky.skyblock.item.SMaterial;
 
 import java.io.*;
 import java.lang.reflect.*;
@@ -63,7 +60,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
@@ -74,20 +70,6 @@ public class SUtil {
     private static final NumberFormat COMMA_FORMAT;
     private static final List<ChatColor> CRIT_SPECTRUM;
     private static final List<ChatColor> VISIBLE_COLOR_SPECTRUM;
-    private static final String[] FRUITS = {
-            "Apple", "Banana", "Blueberry", "Coconut", "Cucumber", "Grapes", "Kiwi",
-            "Lemon", "Lime", "Mango", "Orange", "Papaya", "Peach", "Pear",
-            "Pineapple", "Pomegranate", "Raspberry", "Strawberry", "Tomato",
-            "Watermelon", "Zucchini"
-    };
-
-    static {
-        DATE_FORMAT = new SimpleDateFormat("MM/dd/yy");
-        COMMA_FORMAT = NumberFormat.getInstance();
-        CRIT_SPECTRUM = Arrays.asList(ChatColor.WHITE, ChatColor.WHITE, ChatColor.YELLOW, ChatColor.GOLD, ChatColor.RED, ChatColor.RED);
-        VISIBLE_COLOR_SPECTRUM = Arrays.asList(ChatColor.DARK_GREEN, ChatColor.DARK_AQUA, ChatColor.DARK_RED, ChatColor.DARK_PURPLE, ChatColor.GOLD, ChatColor.GREEN, ChatColor.AQUA, ChatColor.RED, ChatColor.LIGHT_PURPLE, ChatColor.YELLOW, ChatColor.WHITE);
-        SUtil.COMMA_FORMAT.setGroupingUsed(true);
-    }
 
     public static String commaify(final int i) {
         return SUtil.COMMA_FORMAT.format(i);
@@ -119,179 +101,13 @@ public class SUtil {
         return new Random().nextInt(max - min + 1) + min;
     }
 
-    public static List<Object> spawnSkyblockNpc(Location location, String name, String skinValue, String skinSignature, boolean skin, boolean look, boolean villager, Villager.Profession profession) {
-        net.citizensnpcs.api.npc.NPC npc = CitizensAPI.getNPCRegistry().createNPC(villager ? EntityType.VILLAGER : EntityType.PLAYER, "");
-        try {
-            npc.spawn(location);
-            npc.getEntity().setCustomNameVisible(false);
-            npc.getEntity().setMetadata("createdAt", new FixedMetadataValue(Skyblock.getPlugin(), System.currentTimeMillis()));
-
-            if (villager) ((Villager) npc.getEntity()).setProfession(profession);
-
-            npc.getEntity().getLocation().setDirection(location.getWorld().getSpawnLocation().toVector().subtract(location.toVector()).normalize());
-
-            net.citizensnpcs.api.npc.NPC standNPC = CitizensAPI.getNPCRegistry().createNPC(EntityType.ARMOR_STAND, name);
-            standNPC.spawn(npc.getEntity().getLocation().add(0, !villager ? 1.95 : 2.15, 0));
-
-            ArmorStandTrait stand = standNPC.getOrAddTrait(ArmorStandTrait.class);
-            stand.setGravity(false);
-            stand.setVisible(false);
-            stand.setMarker(true);
-
-            standNPC.getEntity().teleport(npc.getEntity().getLocation().add(0, !villager ? 1.95 : 2.15, 0));
-            standNPC.getEntity().setMetadata("merchant", new FixedMetadataValue(Skyblock.getPlugin(), true));
-            standNPC.getEntity().setMetadata("merchantName", new FixedMetadataValue(Skyblock.getPlugin(), name));
-            standNPC.getEntity().setMetadata("NPC", new FixedMetadataValue(Skyblock.getPlugin(), true));
-
-            net.citizensnpcs.api.npc.NPC clickNPC = CitizensAPI.getNPCRegistry().createNPC(EntityType.ARMOR_STAND, ChatColor.YELLOW + "" + ChatColor.BOLD + "CLICK");
-            clickNPC.spawn(npc.getEntity().getLocation().add(0, !villager ? 1.6 : 1.8, 0));
-
-            ArmorStandTrait click = clickNPC.getOrAddTrait(ArmorStandTrait.class);
-            click.setGravity(false);
-            click.setVisible(false);
-            click.setMarker(true);
-
-            clickNPC.getEntity().teleport(npc.getEntity().getLocation().add(0, !villager ? 1.7 : 1.8, 0));
-
-            if (skin) {
-                SkinTrait skinTrait = npc.getOrAddTrait(SkinTrait.class);
-                skinTrait.setSkinPersistent("npc", skinSignature, skinValue);
-
-                npc.addTrait(skinTrait);
-            }
-
-            npc.data().set(net.citizensnpcs.api.npc.NPC.NAMEPLATE_VISIBLE_METADATA, false);
-
-            if (look) {
-                LookClose lookClose = npc.getOrAddTrait(LookClose.class);
-                lookClose.lookClose(true);
-
-                npc.addTrait(lookClose);
-            }
-
-            Chunk chunk = npc.getEntity().getLocation().getChunk();
-            chunk.load();
-
-            return new ArrayList<>(Arrays.asList(npc, stand, click));
-        }catch (Exception ex){
-            System.out.println("Smthing went wrong while trying to load npc : " + name);
-        }
-        return null;
-    }
-
-    public void HelmetRecipe(SMaterial result, SMaterial material, int amount){
-        ShapedRecipe recipe = new ShapedRecipe(result);
-        recipe.shape("aaa", "a a");
-        recipe.set('a', material, amount);
-    }
-    public void HelmetRecipe(SMaterial result, SMaterial material){
-        ShapedRecipe recipe = new ShapedRecipe(result);
-        recipe.shape("aaa", "a a");
-        recipe.set('a', material, 1);
-    }
-    public void ChestplateRecipe(SMaterial result, SMaterial material, int amount){
-        ShapedRecipe recipe = new ShapedRecipe(result);
-        recipe.shape("a a", "aaa","aaa");
-        recipe.set('a', material, amount);
-    }
-    public void ChestplateRecipe(SMaterial result, SMaterial material){
-        ShapedRecipe recipe = new ShapedRecipe(result);
-        recipe.shape("a a", "aaa","aaa");
-        recipe.set('a', material, 1);
-    }
-    public void LeggingsRecipe(SMaterial result, SMaterial material, int amount){
-        ShapedRecipe recipe = new ShapedRecipe(result);
-        recipe.shape("aaa", "a a","a a");
-        recipe.set('a', material, amount);
-    }
-    public void LeggingsRecipe(SMaterial result, SMaterial material){
-        ShapedRecipe recipe = new ShapedRecipe(result);
-        recipe.shape("aaa", "a a","a a");
-        recipe.set('a', material, 1);
-    }
-    public void BootsRecipe(SMaterial result, SMaterial material, int amount){
-        ShapedRecipe recipe = new ShapedRecipe(result);
-        recipe.shape("a a", "a a");
-        recipe.set('a', material, amount);
-    }
-    public void BootsRecipe(SMaterial result, SMaterial material){
-        ShapedRecipe recipe = new ShapedRecipe(result);
-        recipe.shape("a a", "a a");
-        recipe.set('a', material, 1);
-    }
-
-    public static void sendDelayedMessages(Player player, String npc, String... messages) {
-        sendDelayedMessages(player, npc, (p) -> {
-        }, messages);
-    }
-
-    public static void sendDelayedMessages(Player player, String npc, Consumer<Player> action, String... messages) {
-        List<String> talked = (List<String>) User.getUser(player.getUniqueId()).getValue();
-        User skyblockPlayer = User.getUser(player.getUniqueId());
-
-        if (talked.contains(npc)) return;
-
-        skyblockPlayer.setisinteracting(true);
-
-        for (int i = 0; i < messages.length; i++) {
-            String message = messages[i];
-            sendDelayedMessage(player, npc, message, i);
-
-            if (i == messages.length - 1) {
-                SUtil.delay(() -> action.accept(player), (i + 1) * 30);
-            }
-        }
-
-        SUtil.delay(() -> skyblockPlayer.setisinteracting(false), messages.length * 30);
-    }
-
-    public static void sendDelayedMessage(Player player, String npc, String message, int delay) {
-        SUtil.delay(() -> {
-            player.sendMessage(ChatColor.YELLOW + "[NPC] " + npc + ChatColor.WHITE + ": " + message);
-            player.playSound(player.getLocation(), Sound.VILLAGER_YES, 10, 1);
-        }, delay * 20);
-    }
-
-    public static String getTimeDifferenceAndColor(long start, long end) {
-        return getColorBasedOnSize((end - start), 20, 5000, 10000) + "" + (end - start) + "ms";
-    }
-
-    public static ChatColor getColorBasedOnSize(long num, int low, int med, int high) {
-        if (num <= low) {
-            return ChatColor.GREEN;
-        } else if (num <= med) {
-            return ChatColor.YELLOW;
-        } else if (num <= high) {
-            return ChatColor.RED;
-        } else {
-            return ChatColor.DARK_RED;
-        }
-    }
-
-    public static boolean isUUID(String input) {
-        try {
-            // Try parsing the input as a UUID
-            UUID.fromString(input);
-            return true;
-        } catch (IllegalArgumentException e) {
-            // If an exception is thrown, it's not a valid UUID
-            return false;
-        }
-    }
-
-    public static String generateRandomProfileNameFor() {
-        Random random = new Random();
-        int index = random.nextInt(FRUITS.length);
-        return FRUITS[index];
-    }
-
     public static double random(final double min, final double max) {
         return Math.random() * (max - min) + min;
     }
 
     public static ItemStack getSkull(final String texture, final ItemStack stack, final SMaterial material) {
         final SkullMeta meta = (SkullMeta) stack.getItemMeta();
-        final Skyblock plugin = Skyblock.getPlugin();
+        final SkyBlock plugin = SkyBlock.getPlugin();
         String stringUUID;
         if (material != null) {
             if (!plugin.heads.contains(material.name().toLowerCase())) {
@@ -450,14 +266,6 @@ public class SUtil {
         return stack;
     }
 
-    public static ItemStack colorLeatherArmor(ItemStack stack, Color color) {
-        LeatherArmorMeta meta = (LeatherArmorMeta) stack.getItemMeta();
-        meta.setColor(color);
-        stack.setItemMeta(meta);
-
-        return stack;
-    }
-
     public static void border(final Inventory inventory, final GUI gui, final ItemStack stack, final int cornerSlot, final int cornerSlot2, final boolean overwrite, final boolean pickup) {
         if (cornerSlot < 0 || cornerSlot > inventory.getSize()) {
             throw new IllegalArgumentException("Corner 1 of the border described is out of bounds");
@@ -510,9 +318,9 @@ public class SUtil {
 
     public static void generate(Location loc, String filename) {
         try {
-            FileInputStream fis = new FileInputStream(new File(Skyblock.getPlugin().getDataFolder(), filename));
+            FileInputStream fis = new FileInputStream(new File(SkyBlock.getPlugin().getDataFolder(), filename));
             Object nbtData = NBTCompressedStreamTools.class.getMethod("a", InputStream.class).invoke(null, fis);
-            Method getShort = nbtData.getClass().getMethod("getShort", String.class);
+            Method getShort  = nbtData.getClass().getMethod("getShort", String.class);
             Method getByteArray = nbtData.getClass().getMethod("getByteArray", String.class);
 
             short width = ((short) getShort.invoke(nbtData, "Width"));
@@ -532,9 +340,9 @@ public class SUtil {
                         if (m != Material.AIR) {
 
                             Block block = new Location(loc.getWorld(),
-                                    loc.getBlockX() - (width / 2) + x,
-                                    loc.getBlockY() + y - 19,
-                                    loc.getBlockZ() - (length / 2) + z + 14).getBlock();
+                                    loc.getBlockX() - ((int) (width / 2)) + x,
+                                    loc.getBlockY()  + y - 19,
+                                    loc.getBlockZ() - ((int) (length / 2)) + z + 14).getBlock();
                             block.setType(m, true);
                             block.setData(data[index]);
 
@@ -556,7 +364,7 @@ public class SUtil {
                     location.getWorld().strikeLightning(location);
                 }
             }
-        }.runTaskLater(Skyblock.getPlugin(), delay);
+        }.runTaskLater(SkyBlock.getPlugin(), delay);
     }
 
     public static void runIntervalForTicks(final Runnable runnable, final long interval, final long end) {
@@ -569,12 +377,12 @@ public class SUtil {
                 }
                 runnable.run();
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, interval);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, interval);
         new BukkitRunnable() {
             public void run() {
                 stop.set(true);
             }
-        }.runTaskLater(Skyblock.getPlugin(), end);
+        }.runTaskLater(SkyBlock.getPlugin(), end);
     }
 
     public static String getDate() {
@@ -583,7 +391,7 @@ public class SUtil {
 
     public static Item spawnPersonalItem(final ItemStack stack, final Location location, final Player player) {
         final Item item = location.getWorld().dropItem(location, stack);
-        item.setMetadata("owner", new FixedMetadataValue(Skyblock.getPlugin(), player.getUniqueId().toString()));
+        item.setMetadata("owner", new FixedMetadataValue(SkyBlock.getPlugin(), player.getUniqueId().toString()));
         return item;
     }
 
@@ -685,7 +493,7 @@ public class SUtil {
                 projectile.teleport(location);
                 projectile.setVelocity(vector.clone().multiply(-1.0).multiply(0.2));
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
     }
 
     public static void giantsHitboxFix(final Projectile projectile) {
@@ -714,12 +522,12 @@ public class SUtil {
                 projectile.teleport(location);
                 projectile.setVelocity(vector.clone().multiply(-1.0).multiply(0.5));
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 projectile.remove();
             }
-        }.runTaskLater(Skyblock.getPlugin(), 140L);
+        }.runTaskLater(SkyBlock.getPlugin(), 140L);
     }
 
     public static void markAimingArrow(final Projectile projectile, final in.godspunky.skyblock.enchantment.Enchantment aiming) {
@@ -760,12 +568,12 @@ public class SUtil {
                 projectile.teleport(location);
                 projectile.setVelocity(vector.clone().multiply(-1.0).multiply(0.15));
             }
-        }.runTaskTimer(Skyblock.getPlugin(), 0L, 1L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
         new BukkitRunnable() {
             public void run() {
                 projectile.remove();
             }
-        }.runTaskLater(Skyblock.getPlugin(), 80L);
+        }.runTaskLater(SkyBlock.getPlugin(), 80L);
     }
 
     public static ItemStack getStack(final String name, final Material material, final short data, final int amount, final List<String> lore) {
@@ -1130,19 +938,17 @@ public class SUtil {
             public void run() {
                 runnable.run();
             }
-        }.runTaskLater(Skyblock.getPlugin(), delay);
+        }.runTaskLater(SkyBlock.getPlugin(), delay);
     }
-
     public static double square(double val) {
         return val * val;
     }
-
-    public static SItem toShopItem(SMaterial smaterial, int amount, Long price, Long value) {
+    public static SItem toShopItem(SMaterial smaterial , int amount , Long price , Long value){
         SItem item = SItem.of(smaterial);
         item.getStack().setAmount(amount);
         item.setPrice(price);
         item.setItemValue(value);
-        MerchantItemHandler.ITEMS.put(smaterial, item);
+        MerchantItemHandler.ITEMS.put(smaterial , item);
         return item;
     }
 
@@ -1227,15 +1033,14 @@ public class SUtil {
     public static void runAsync(Runnable runnable) {
         new Thread(runnable).start();
     }
-
-    public static void runSync(Runnable runnable) {
-        new BukkitRunnable() {
+    public static void runSync(Runnable runnable){
+        new BukkitRunnable(){
 
             @Override
             public void run() {
                 runnable.run();
             }
-        }.runTask(Skyblock.getPlugin());
+        }.runTask(SkyBlock.getPlugin());
     }
 
     public static ItemStack idToSkull(ItemStack head, String id) {
@@ -1257,6 +1062,7 @@ public class SUtil {
         head.setItemMeta(headMeta);
         return head;
     }
+
 
     public static String createProgressText(final String text, final int current, final int max) {
         double percent;
@@ -1401,7 +1207,7 @@ public class SUtil {
             public void run() {
                 runnable.run();
             }
-        }.runTaskTimer(Skyblock.getPlugin(), delay, interval);
+        }.runTaskTimer(SkyBlock.getPlugin(), delay, interval);
     }
 
     public static int blackMagic(final double d) {
@@ -1478,5 +1284,13 @@ public class SUtil {
             }
         }
         return dur;
+    }
+
+    static {
+        DATE_FORMAT = new SimpleDateFormat("MM/dd/yy");
+        COMMA_FORMAT = NumberFormat.getInstance();
+        CRIT_SPECTRUM = Arrays.asList(ChatColor.WHITE, ChatColor.WHITE, ChatColor.YELLOW, ChatColor.GOLD, ChatColor.RED, ChatColor.RED);
+        VISIBLE_COLOR_SPECTRUM = Arrays.asList(ChatColor.DARK_GREEN, ChatColor.DARK_AQUA, ChatColor.DARK_RED, ChatColor.DARK_PURPLE, ChatColor.GOLD, ChatColor.GREEN, ChatColor.AQUA, ChatColor.RED, ChatColor.LIGHT_PURPLE, ChatColor.YELLOW, ChatColor.WHITE);
+        SUtil.COMMA_FORMAT.setGroupingUsed(true);
     }
 }
