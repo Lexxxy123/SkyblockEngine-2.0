@@ -3,7 +3,6 @@ package in.godspunky.skyblock;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.google.common.io.Files;
-import com.onarandombox.MultiverseCore.MultiverseCore;
 import de.slikey.effectlib.EffectManager;
 import in.godspunky.skyblock.auction.AuctionBid;
 import in.godspunky.skyblock.auction.AuctionEscrow;
@@ -41,6 +40,7 @@ import in.godspunky.skyblock.util.Groups;
 import in.godspunky.skyblock.util.SLog;
 import in.godspunky.skyblock.util.SerialNBTTagCompound;
 import lombok.Getter;
+import lombok.Setter;
 import net.milkbowl.vault.economy.Economy;
 import net.swofty.swm.api.SlimePlugin;
 import org.bukkit.Bukkit;
@@ -88,17 +88,21 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 public class SkyBlock extends JavaPlugin implements PluginMessageListener, BungeeChannel.ForwardConsumer {
-    public static MultiverseCore core;
     private static ProtocolManager protocolManager;
     private static Economy econ;
     private static SkyBlock plugin;
     private final PacketHelper packetInj;
+
+    private static final boolean dimoonEnabled = false;
+
     public Arena arena;
     public Dimoon dimoon;
     public SummoningSequence sq;
     public boolean altarCooldown;
+    @Getter
     private final ServerVersion serverVersion;
     public static EffectManager effectManager;
+    @Getter
     private static SkyBlock instance;
     public Config config;
     @Getter
@@ -106,6 +110,8 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
     public Config heads;
     public Config blocks;
     public Config spawners;
+    @Setter
+    @Getter
     private int onlinePlayerAcrossServers;
     public CommandMap commandMap;
     public SQLDatabase sql;
@@ -113,7 +119,10 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
     public SQLWorldData worldData;
     public CommandLoader cl;
     public Repeater repeater;
+    @Getter
     private BungeeChannel bc;
+    @Setter
+    @Getter
     private String serverName;
 
     public List<String> bannedUUID;
@@ -139,154 +148,149 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
     }
 
     public void onEnable() {
+        this.setupEconomy();
+        SLog.info("===================================");
+        SLog.info("SKYSIM ENGINE - MADE BY GIAKHANHVN");
+        SLog.info(" ");
+        SLog.info("SputnikSkySim found! Hooking into...");
+        SLog.info("If it's take more than 5s to execute this");
+        SLog.info("contact developers!");
+        SLog.info("===================================");
+        SkyBlock.plugin = this;
+        SLog.info("Hooked successfully into SputnikSkySim!");
+        SLog.info("Performing world regeneration...");
+        SLog.info("Loading YAML data from disk...");
+        this.config = new Config("config.yml");
+        this.heads = new Config("heads.yml");
+        this.blocks = new Config("blocks.yml");
+        this.spawners = new Config("spawners.yml");
+        SLog.info("Loading Command map...");
         try {
-            this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-            this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", this);
-            this.bc = new BungeeChannel(this);
-
-            this.setupEconomy();
-            SLog.info("===================================");
-            SLog.info("SKYSIM ENGINE - MADE BY GIAKHANHVN");
-            SLog.info(" ");
-            SLog.info("SputnikSkySim found! Hooking into...");
-            SLog.info("If it's take more than 5s to execute this");
-            SLog.info("contact developers!");
-            SLog.info("===================================");
-            SkyBlock.plugin = this;
-            SLog.info("Hooked successfully into SputnikSkySim!");
-            SLog.info("Performing world regeneration...");
-            this.fixTheEnd();
-            SLog.info("Loading YAML data from disk...");
-            this.config = new Config("config.yml");
-            this.heads = new Config("heads.yml");
-            this.blocks = new Config("blocks.yml");
-            this.spawners = new Config("spawners.yml");
-            SLog.info("Loading Command map...");
-            try {
-                final Field f = Bukkit.getServer().getClass().getDeclaredField("commandMap");
-                f.setAccessible(true);
-                this.commandMap = (CommandMap) f.get(Bukkit.getServer());
-            } catch (final IllegalAccessException | NoSuchFieldException e) {
-                SLog.severe("Couldn't load command map: ");
-                e.printStackTrace();
+            final Field f = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+            f.setAccessible(true);
+            this.commandMap = (CommandMap) f.get(Bukkit.getServer());
+        } catch (final IllegalAccessException | NoSuchFieldException e) {
+            SLog.severe("Couldn't load command map: ");
+            e.printStackTrace();
+        }
+        SLog.info("Loading SQL database...");
+        this.sql = new SQLDatabase();
+        this.regionData = new SQLRegionData();
+        this.worldData = new SQLWorldData();
+        this.cl = new CommandLoader();
+        SLog.info("Begin Protocol injection... (SkySimProtocol v0.6.2)");
+        APIManager.registerAPI(this.packetInj, this);
+        if (!this.packetInj.injected) {
+            this.getLogger().warning("[FATAL ERROR] Protocol Injection failed. Disabling the plugin for safety...");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+        this.slimePlugin = (SlimePlugin) Bukkit.getPluginManager().getPlugin("SwoftyWorldManager");
+        SLog.info("Injecting...");
+        PingAPI.register();
+        new Metrics(this);
+        APIManager.initAPI(PacketHelper.class);
+        SLog.info("Starting server loop...");
+        this.repeater = new Repeater();
+        VoidlingsWardenHelmet.startCounting();
+        SLog.info("Loading commands...");
+        this.loadCommands();
+        SLog.info("Loading listeners...");
+        this.loadListeners();
+        SLog.info("Injecting Packet/Ping Listener into the core...");
+        this.registerPacketListener();
+        this.registerPingListener();
+        SLog.info("Starting entity spawners...");
+        EntitySpawner.startSpawnerTask();
+        SLog.info("Establishing player regions...");
+        Region.cacheRegions();
+        SLog.info("Loading NPCS...");
+        registerNPCS();
+        SLog.info("Loading auction items from disk...");
+        SkyBlock.effectManager = new EffectManager(this);
+        AuctionItem.loadAuctionsFromDisk();
+        SLog.info("Loading merchants prices...");
+        MerchantItemHandler.init();
+        SkyBlockCalendar.ELAPSED = SkyBlock.plugin.config.getLong("timeElapsed");
+        SLog.info("Synchronizing world time with calendar time and removing world entities...");
+        for (final World world : Bukkit.getWorlds()) {
+            for (final Entity entity : world.getEntities()) {
+                if (entity instanceof HumanEntity) {
+                    continue;
+                }
+                entity.remove();
             }
-            SLog.info("Loading SQL database...");
-            this.sql = new SQLDatabase();
-            this.regionData = new SQLRegionData();
-            this.worldData = new SQLWorldData();
-            this.cl = new CommandLoader();
-            SLog.info("Begin Protocol injection... (SkySimProtocol v0.6.2)");
-            APIManager.registerAPI(this.packetInj, this);
-            if (!this.packetInj.injected) {
-                this.getLogger().warning("[FATAL ERROR] Protocol Injection failed. Disabling the plugin for safety...");
-                Bukkit.getPluginManager().disablePlugin(this);
-                return;
+            int time = (int) (SkyBlockCalendar.ELAPSED % 24000L - 6000L);
+            if (time < 0) {
+                time += 24000;
             }
-            this.slimePlugin = (SlimePlugin) Bukkit.getPluginManager().getPlugin("SwoftyWorldManager");
-            SLog.info("Injecting...");
-            PingAPI.register();
-            new Metrics(this);
-            APIManager.initAPI(PacketHelper.class);
-            SLog.info("Starting server loop...");
-            this.repeater = new Repeater();
-            VoidlingsWardenHelmet.startCounting();
-            SLog.info("Loading commands...");
-            this.loadCommands();
-            SLog.info("Loading listeners...");
-            this.loadListeners();
-            SLog.info("Injecting Packet/Ping Listener into the core...");
-            this.registerPacketListener();
-            this.registerPingListener();
-            SLog.info("Starting entity spawners...");
-            EntitySpawner.startSpawnerTask();
-            SLog.info("Establishing player regions...");
-            Region.cacheRegions();
-            SLog.info("Loading NPCS...");
-            registerNPCS();
-            SLog.info("Loading auction items from disk...");
-            SkyBlock.effectManager = new EffectManager(this);
-            AuctionItem.loadAuctionsFromDisk();
-            SLog.info("Loading merchants prices...");
-            MerchantItemHandler.init();
-            SkyBlockCalendar.ELAPSED = SkyBlock.plugin.config.getLong("timeElapsed");
-            SLog.info("Synchronizing world time with calendar time and removing world entities...");
-            for (final World world : Bukkit.getWorlds()) {
-                for (final Entity entity : world.getEntities()) {
-                    if (entity instanceof HumanEntity) {
+            world.setTime(time);
+        }
+        SLog.info("Loading items...");
+        try {
+            Class.forName("in.godspunky.skyblock.item.SMaterial");
+        } catch (final ClassNotFoundException e2) {
+            e2.printStackTrace();
+        }
+        for (final SMaterial material : SMaterial.values()) {
+            if (material.hasClass()) {
+                material.getStatistics().load();
+            }
+        }
+        SLog.info("Converting CraftRecipes into custom recipes...");
+        final Iterator<Recipe> iter = Bukkit.recipeIterator();
+        while (iter.hasNext()) {
+            final Recipe recipe = iter.next();
+            if (recipe.getResult() == null) {
+                continue;
+            }
+            final Material result = recipe.getResult().getType();
+            if (recipe instanceof ShapedRecipe) {
+                final ShapedRecipe shaped = (ShapedRecipe) recipe;
+                final in.godspunky.skyblock.item.ShapedRecipe specShaped = new in.godspunky.skyblock.item.ShapedRecipe(SItem.convert(shaped.getResult()), Groups.EXCHANGEABLE_RECIPE_RESULTS.contains(result)).shape(shaped.getShape());
+                for (final Map.Entry<Character, ItemStack> entry : shaped.getIngredientMap().entrySet()) {
+                    if (entry.getValue() == null) {
                         continue;
                     }
-                    entity.remove();
-                }
-                int time = (int) (SkyBlockCalendar.ELAPSED % 24000L - 6000L);
-                if (time < 0) {
-                    time += 24000;
-                }
-                world.setTime(time);
-            }
-            SLog.info("Loading items...");
-            try {
-                Class.forName("in.godspunky.skyblock.item.SMaterial");
-            } catch (final ClassNotFoundException e2) {
-                e2.printStackTrace();
-            }
-            for (final SMaterial material : SMaterial.values()) {
-                if (material.hasClass()) {
-                    material.getStatistics().load();
+                    final ItemStack stack = entry.getValue();
+                    specShaped.set(entry.getKey(), SMaterial.getSpecEquivalent(stack.getType(), stack.getDurability()), stack.getAmount(), true);
                 }
             }
-            SLog.info("Converting CraftRecipes into custom recipes...");
-            final Iterator<Recipe> iter = Bukkit.recipeIterator();
-            while (iter.hasNext()) {
-                final Recipe recipe = iter.next();
-                if (recipe.getResult() == null) {
-                    continue;
-                }
-                final Material result = recipe.getResult().getType();
-                if (recipe instanceof ShapedRecipe) {
-                    final ShapedRecipe shaped = (ShapedRecipe) recipe;
-                    final in.godspunky.skyblock.item.ShapedRecipe specShaped = new in.godspunky.skyblock.item.ShapedRecipe(SItem.convert(shaped.getResult()), Groups.EXCHANGEABLE_RECIPE_RESULTS.contains(result)).shape(shaped.getShape());
-                    for (final Map.Entry<Character, ItemStack> entry : shaped.getIngredientMap().entrySet()) {
-                        if (entry.getValue() == null) {
-                            continue;
-                        }
-                        final ItemStack stack = entry.getValue();
-                        specShaped.set(entry.getKey(), SMaterial.getSpecEquivalent(stack.getType(), stack.getDurability()), stack.getAmount(), true);
-                    }
-                }
-                if (!(recipe instanceof ShapelessRecipe)) {
-                    continue;
-                }
-                final ShapelessRecipe shapeless = (ShapelessRecipe) recipe;
-                final in.godspunky.skyblock.item.ShapelessRecipe specShapeless = new in.godspunky.skyblock.item.ShapelessRecipe(SItem.convert(shapeless.getResult()), Groups.EXCHANGEABLE_RECIPE_RESULTS.contains(result));
-                for (final ItemStack stack2 : shapeless.getIngredientList()) {
-                    specShapeless.add(SMaterial.getSpecEquivalent(stack2.getType(), stack2.getDurability()), stack2.getAmount(), true);
-                }
+            if (!(recipe instanceof ShapelessRecipe)) {
+                continue;
             }
-            SLog.info("Hooking SkySimEngine to PlaceholderAPI and registering...");
-            if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-                new placeholding().register();
-                SLog.info("Hooked to PAPI successfully!");
-            } else {
-                SLog.info("ERROR! PlaceholderAPI plugin does not exist, disabing placeholder request!");
+            final ShapelessRecipe shapeless = (ShapelessRecipe) recipe;
+            final in.godspunky.skyblock.item.ShapelessRecipe specShapeless = new in.godspunky.skyblock.item.ShapelessRecipe(SItem.convert(shapeless.getResult()), Groups.EXCHANGEABLE_RECIPE_RESULTS.contains(result));
+            for (final ItemStack stack2 : shapeless.getIngredientList()) {
+                specShapeless.add(SMaterial.getSpecEquivalent(stack2.getType(), stack2.getDurability()), stack2.getAmount(), true);
             }
-            SkyBlock.protocolManager = ProtocolLibrary.getProtocolManager();
-            this.beginLoopA();
-            WorldListener.blb.add(Material.BEDROCK);
-            WorldListener.blb.add(Material.COMMAND);
-            WorldListener.blb.add(Material.BARRIER);
-            WorldListener.blb.add(Material.ENDER_PORTAL_FRAME);
-            WorldListener.blb.add(Material.ENDER_PORTAL);
-            WorldListener.c();
-            SLog.info("Successfully enabled " + this.getDescription().getFullName());
-            SLog.info("===================================");
-            SLog.info("SKYSIM ENGINE - MADE BY GIAKHANHVN");
-            SLog.info("PLUGIN ENABLED! HOOKED INTO SSS!");
-            SLog.info(" ");
-            SLog.info("This plugin provide SkySim most functions!");
-            SLog.info("Originally made by super (Slayers code used)");
-            SLog.info("Made by GiaKhanhVN (C) 2021");
-            SLog.info("Any illegal usage will be suppressed! DO NOT LEAK IT!");
-            SLog.info("===================================");
+        }
+        SLog.info("Hooking SkySimEngine to PlaceholderAPI and registering...");
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new placeholding().register();
+            SLog.info("Hooked to PAPI successfully!");
+        } else {
+            SLog.info("ERROR! PlaceholderAPI plugin does not exist, disabing placeholder request!");
+        }
+        SkyBlock.protocolManager = ProtocolLibrary.getProtocolManager();
+        this.beginLoopA();
+        WorldListener.blb.add(Material.BEDROCK);
+        WorldListener.blb.add(Material.COMMAND);
+        WorldListener.blb.add(Material.BARRIER);
+        WorldListener.blb.add(Material.ENDER_PORTAL_FRAME);
+        WorldListener.blb.add(Material.ENDER_PORTAL);
+        WorldListener.c();
+        SLog.info("Successfully enabled " + this.getDescription().getFullName());
+        SLog.info("===================================");
+        SLog.info("SKYSIM ENGINE - MADE BY GIAKHANHVN");
+        SLog.info("PLUGIN ENABLED! HOOKED INTO SSS!");
+        SLog.info(" ");
+        SLog.info("This plugin provide SkySim most functions!");
+        SLog.info("Originally made by super (Slayers code used)");
+        SLog.info("Made by GiaKhanhVN (C) 2021");
+        SLog.info("Any illegal usage will be suppressed! DO NOT LEAK IT!");
+        SLog.info("===================================");
+        if (dimoonEnabled) {
             this.sq = new SummoningSequence(Bukkit.getWorld("arena"));
             Bukkit.getWorld("arena").setAutoSave(false);
             this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
@@ -316,8 +320,6 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
             lucki9.addEnchantment(EnchantmentType.LUCKINESS, 6);
             DimoonLootTable.lowQualitylootTable = new ArrayList<DimoonLootItem>(Arrays.asList(new DimoonLootItem(lucki9, 20, 150), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOON_GEM), 20, 100), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOON_FRAG), 1, 1, 0, true)));
             Arena.cleanArena();
-        } catch (final Throwable $ex) {
-            throw $ex;
         }
     }
 
@@ -345,8 +347,8 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
                     VoidgloomSeraph.CACHED_BLOCK.get(stand).getLocation().getBlock().setTypeIdAndData(VoidgloomSeraph.CACHED_BLOCK_ID.get(stand), VoidgloomSeraph.CACHED_BLOCK_DATA.get(stand), true);
                 }
             }
-            this.getServer().getMessenger().unregisterOutgoingPluginChannel(this);
-            this.getServer().getMessenger().unregisterIncomingPluginChannel(this);
+            //this.getServer().getMessenger().unregisterOutgoingPluginChannel(this);
+            //this.getServer().getMessenger().unregisterIncomingPluginChannel(this);
             SLog.info("Stopping entity spawners...");
             EntitySpawner.stopSpawnerTask();
             SLog.info("Ending Dragons fight... (If one is currently active)");
@@ -378,7 +380,6 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
             }
         }
         SLog.info(ChatColor.GREEN + "Successfully loaded " + ChatColor.YELLOW + SkyblockNPCManager.getNPCS().size() + ChatColor.GREEN + " NPCs");
-
     }
 
 
@@ -521,14 +522,6 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
         ConfigurationSerialization.registerClass(AuctionBid.class, "AuctionBid");
     }
 
-    public static SkyBlock getInstance() {
-        return SkyBlock.instance;
-    }
-
-    public void fixTheEnd() {
-        SLog.info("No Tasks");
-    }
-
     public void beginLoopA() {
         new BukkitRunnable() {
             public void run() {
@@ -539,16 +532,15 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
         }.runTaskTimer(SkyBlock.plugin, 0L, 1L);
     }
 
-    private boolean setupEconomy() {
+    private void setupEconomy() {
         if (this.getServer().getPluginManager().getPlugin("Vault") == null) {
-            return false;
+            return;
         }
         final RegisteredServiceProvider<Economy> rsp = (RegisteredServiceProvider<Economy>) this.getServer().getServicesManager().getRegistration((Class) Economy.class);
         if (rsp == null) {
-            return false;
+            return;
         }
         SkyBlock.econ = rsp.getProvider();
-        return SkyBlock.econ != null;
     }
 
     private void registerPacketListener() {
@@ -598,21 +590,6 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
         }.runTaskAsynchronously(SkyBlock.plugin);
     }
 
-    public BukkitTask syncLoop(final Runnable runnable, final int i0, final int i1) {
-        return new BukkitRunnable() {
-            public void run() {
-                runnable.run();
-            }
-        }.runTaskTimer(SkyBlock.plugin, i0, i1);
-    }
-
-    public BukkitTask asyncLoop(final Runnable runnable, final int i0, final int i1) {
-        return new BukkitRunnable() {
-            public void run() {
-                runnable.run();
-            }
-        }.runTaskTimerAsynchronously(SkyBlock.plugin, i0, i1);
-    }
 
     public void onPluginMessageReceived(final String channel, final Player player, final byte[] message) {
         final PluginMessageReceived e = new PluginMessageReceived(new WrappedPluginMessage(channel, player, message));
@@ -637,34 +614,5 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
                 u.syncSavingData();
             }
         }
-    }
-
-    public ServerVersion getServerVersion() {
-        return this.serverVersion;
-    }
-
-    public int getOnlinePlayerAcrossServers() {
-        return this.onlinePlayerAcrossServers;
-    }
-
-    public void setOnlinePlayerAcrossServers(final int onlinePlayerAcrossServers) {
-        this.onlinePlayerAcrossServers = onlinePlayerAcrossServers;
-    }
-
-    public BungeeChannel getBc() {
-        return this.bc;
-    }
-
-    public String getServerName() {
-        return this.serverName;
-    }
-
-    public void setServerName(final String serverName) {
-        this.serverName = serverName;
-    }
-
-    static {
-        SkyBlock.core = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
-        SkyBlock.econ = null;
     }
 }

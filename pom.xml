@@ -131,17 +131,7 @@
 			<artifactId>sqlite-jdbc</artifactId>
 			<version>3.32.3.2</version>
 		</dependency>
-		<dependency>
-			<groupId>com.onarandombox.multiversecore</groupId>
-			<!-- Don't forget to replace this -->
-			<artifactId>Multiverse-Core</artifactId>
-			<!-- Replace this as well -->
-			<version>4.3.1</version>
-			<!-- This too -->
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/Multiverse-Core-4.3.1 (1).jar</systemPath>
 
-		</dependency>
 		<dependency>
 			<groupId>net.citizensnpcs</groupId>
 			<artifactId>citizens-main</artifactId>

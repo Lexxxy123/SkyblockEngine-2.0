@@ -1,7 +1,5 @@
 package in.godspunky.skyblock.entity.dungeons.boss.sadan;
 
-import com.onarandombox.MultiverseCore.api.MVWorldManager;
-import in.godspunky.skyblock.SkyBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -18,9 +16,10 @@ import java.util.ArrayList;
 public class SadanBossManager {
     public static void startFloor(final ArrayList<Player> plist) {
         final String worldname = "f6_" + SadanFunction.generateRandom();
-        final MVWorldManager worldManager = SkyBlock.core.getMVWorldManager();
-        worldManager.cloneWorld("f6", worldname);
-        worldManager.loadWorld(worldname);
+        // todo - enable it
+//        final MVWorldManager worldManager = SkyBlock.core.getMVWorldManager();
+//        worldManager.cloneWorld("f6", worldname);
+//        worldManager.loadWorld(worldname);
         final World world = Bukkit.getWorld(worldname);
         for (final Player tm : plist) {
             tm.teleport(new Location(world, 213.0, 71.0, 221.0, 0.0f, 0.0f));
@@ -46,7 +45,7 @@ public class SadanBossManager {
                 }
                 e.remove();
             }
-            SkyBlock.core.deleteWorld(w.getName());
+//            SkyBlock.core.deleteWorld(w.getName());
             SLog.severe("[DUNGEON BOSSROOM] Deleted " + w.getName() + " and cleaned the memory !");
         }
     }
