@@ -35,10 +35,7 @@ import in.godspunky.skyblock.region.RegionType;
 import in.godspunky.skyblock.slayer.SlayerQuest;
 import in.godspunky.skyblock.user.AuctionSettings;
 import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.BungeeChannel;
-import in.godspunky.skyblock.util.Groups;
-import in.godspunky.skyblock.util.SLog;
-import in.godspunky.skyblock.util.SerialNBTTagCompound;
+import in.godspunky.skyblock.util.*;
 import lombok.Getter;
 import lombok.Setter;
 import net.milkbowl.vault.economy.Economy;
@@ -149,16 +146,9 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
 
     public void onEnable() {
         this.setupEconomy();
-        SLog.info("===================================");
-        SLog.info("SKYSIM ENGINE - MADE BY GIAKHANHVN");
-        SLog.info(" ");
-        SLog.info("SputnikSkySim found! Hooking into...");
-        SLog.info("If it's take more than 5s to execute this");
-        SLog.info("contact developers!");
-        SLog.info("===================================");
         SkyBlock.plugin = this;
-        SLog.info("Hooked successfully into SputnikSkySim!");
-        SLog.info("Performing world regeneration...");
+        SLog.info("Loading SkyBlock worlds...");
+        SkyBlockWorldManager.loadWorlds();
         SLog.info("Loading YAML data from disk...");
         this.config = new Config("config.yml");
         this.heads = new Config("heads.yml");
@@ -282,7 +272,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
         WorldListener.c();
         SLog.info("Successfully enabled " + this.getDescription().getFullName());
         SLog.info("===================================");
-        SLog.info("SKYSIM ENGINE - MADE BY GIAKHANHVN");
+        SLog.info("SKYSIM ENGINE - MADE BY EpicPortal & Hamza");
         SLog.info("PLUGIN ENABLED! HOOKED INTO SSS!");
         SLog.info(" ");
         SLog.info("This plugin provide SkySim most functions!");

@@ -1,5 +1,7 @@
 package in.godspunky.skyblock.entity.dungeons.boss.sadan;
 
+import in.godspunky.skyblock.SkyBlock;
+import in.godspunky.skyblock.util.SkyBlockWorldManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -16,10 +18,9 @@ import java.util.ArrayList;
 public class SadanBossManager {
     public static void startFloor(final ArrayList<Player> plist) {
         final String worldname = "f6_" + SadanFunction.generateRandom();
-        // todo - enable it
-//        final MVWorldManager worldManager = SkyBlock.core.getMVWorldManager();
-//        worldManager.cloneWorld("f6", worldname);
-//        worldManager.loadWorld(worldname);
+        World source = Bukkit.getWorld("f6");
+        SkyBlockWorldManager skyBlockWorldManager = new SkyBlockWorldManager(source);
+        skyBlockWorldManager.cloneWorld(worldname);
         final World world = Bukkit.getWorld(worldname);
         for (final Player tm : plist) {
             tm.teleport(new Location(world, 213.0, 71.0, 221.0, 0.0f, 0.0f));
@@ -38,14 +39,14 @@ public class SadanBossManager {
     }
 
     public static void endFloor(final World w) {
-        if (w.getName().toLowerCase().contains("f6") && !w.getName().equalsIgnoreCase("f6")) {
+        if (w.getName().toLowerCase().startsWith("f6") && !w.getName().equalsIgnoreCase("f6")) {
             for (final Entity e : w.getEntities()) {
                 if (e instanceof Player) {
                     continue;
                 }
                 e.remove();
             }
-//            SkyBlock.core.deleteWorld(w.getName());
+            new SkyBlockWorldManager(w).delete();
             SLog.severe("[DUNGEON BOSSROOM] Deleted " + w.getName() + " and cleaned the memory !");
         }
     }
