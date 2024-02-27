@@ -25,26 +25,26 @@ import java.util.List;
 
 public class VoidlingsPet extends Pet {
     @Override
-    public List<PetAbility> getPetAbilities(final SItem instance) {
-        final RarityValue<Double> enderianMul = new RarityValue<Double>(0.1, 0.2, 0.2, 0.3, 0.3, 0.3);
-        final RarityValue<Double> savvyMul = new RarityValue<Double>(0.0, 0.0, 0.4, 0.5, 0.5, 0.5);
-        final int level = getLevel(instance);
-        final BigDecimal enderian = new BigDecimal(level * enderianMul.getForRarity(instance.getRarity())).setScale(1, RoundingMode.HALF_EVEN);
-        final BigDecimal savvy = new BigDecimal(level * savvyMul.getForRarity(instance.getRarity())).setScale(1, RoundingMode.HALF_EVEN);
-        final BigDecimal zealot = new BigDecimal(level * 0.25).setScale(2, RoundingMode.HALF_EVEN);
-        final List<PetAbility> abilities = new ArrayList<PetAbility>(Collections.singletonList(new PetAbility() {
+    public List<PetAbility> getPetAbilities(SItem instance) {
+        RarityValue<Double> enderianMul = new RarityValue<Double>(0.1, 0.2, 0.2, 0.3, 0.3, 0.3);
+        RarityValue<Double> savvyMul = new RarityValue<Double>(0.0, 0.0, 0.4, 0.5, 0.5, 0.5);
+        int level = getLevel(instance);
+        BigDecimal enderian = new BigDecimal(level * enderianMul.getForRarity(instance.getRarity())).setScale(1, RoundingMode.HALF_EVEN);
+        BigDecimal savvy = new BigDecimal(level * savvyMul.getForRarity(instance.getRarity())).setScale(1, RoundingMode.HALF_EVEN);
+        BigDecimal zealot = new BigDecimal(level * 0.25).setScale(2, RoundingMode.HALF_EVEN);
+        List<PetAbility> abilities = new ArrayList<PetAbility>(Collections.singletonList(new PetAbility() {
             @Override
             public String getName() {
                 return "Voidling's Summoner";
             }
 
             @Override
-            public List<String> getDescription(final SItem instance) {
+            public List<String> getDescription(SItem instance) {
                 return Arrays.asList("Gives you a chance to summon " + ChatColor.DARK_PURPLE + "Voidling's", ChatColor.DARK_PURPLE + "Altars " + ChatColor.GRAY + "while killing " + ChatColor.LIGHT_PURPLE + "Voidling Extremist", Sputnik.trans("&4☠ &cRequires &5Enderman Slayer 6."));
             }
 
             @Override
-            public void onHurt(final EntityDamageByEntityEvent e, final Entity damager) {
+            public void onHurt(EntityDamageByEntityEvent e, Entity damager) {
             }
         }));
         if (instance.getRarity().isAtLeast(Rarity.RARE)) {
@@ -55,15 +55,15 @@ public class VoidlingsPet extends Pet {
                 }
 
                 @Override
-                public List<String> getDescription(final SItem instance) {
-                    final BigDecimal e = new BigDecimal(0.3 * level).setScale(1, RoundingMode.HALF_EVEN);
+                public List<String> getDescription(SItem instance) {
+                    BigDecimal e = new BigDecimal(0.3 * level).setScale(1, RoundingMode.HALF_EVEN);
                     return Collections.singletonList(Sputnik.trans("&7Take &a" + e.toPlainString() + "% &7less damage from ender mobs."));
                 }
 
                 @Override
-                public void onHurt(final EntityDamageByEntityEvent e, final Entity damager) {
-                    final SEntity entity = SEntity.findSEntity(damager);
-                    if (entity == null) {
+                public void onHurt(EntityDamageByEntityEvent e, Entity damager) {
+                    SEntity entity = SEntity.findSEntity(damager);
+                    if (null == entity) {
                         return;
                     }
                     if (Groups.END_MOBS.contains(entity.getSpecType())) {
@@ -116,7 +116,7 @@ public class VoidlingsPet extends Pet {
     }
 
     @Override
-    public void particleBelowA(final Player p, final Location l) {
+    public void particleBelowA(Player p, Location l) {
         p.spigot().playEffect(l, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
         p.spigot().playEffect(l, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
         p.spigot().playEffect(l, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);

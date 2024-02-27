@@ -3,19 +3,19 @@ package in.godspunky.skyblock.gui;
 import org.bukkit.plugin.Plugin;
 
 public class SkySimBrainCell {
-    public void accessAIFrom(final BrainCellFor bcf) {
+    public void accessAIFrom(BrainCellFor bcf) {
     }
 
-    public static void applyAIToNMSPlayer(final Object p, final int limit, final SkySimBrainCell sbc) {
+    public static void applyAIToNMSPlayer(Object p, int limit, SkySimBrainCell sbc) {
     }
 
     public void getModules() {
     }
 
-    public void startTraining(final int level, final Plugin pl, final int limit, final BrainCellFor bcf) {
+    public void startTraining(int level, Plugin pl, int limit, BrainCellFor bcf) {
     }
 
-    public static SkySimBrainCell loadFromDB(final String str) {
+    public static SkySimBrainCell loadFromDB(String str) {
         return new SkySimBrainCell();
     }
 

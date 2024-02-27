@@ -126,8 +126,8 @@ public class ReflectionAnnotations {
     <A extends Annotation> List<String> parseAnnotationVersions(final java.lang.Class<A> clazz, final A annotation) {
         final List<String> list = new ArrayList<String>();
         try {
-            final String[] names = (String[]) clazz.getMethod("value", new java.lang.Class[0]).invoke(annotation);
-            final Minecraft.Version[] versions = (Minecraft.Version[]) clazz.getMethod("versions", new java.lang.Class[0]).invoke(annotation);
+            final String[] names = (String[]) clazz.getMethod("value").invoke(annotation);
+            final Minecraft.Version[] versions = (Minecraft.Version[]) clazz.getMethod("versions").invoke(annotation);
             if (versions.length == 0) {
                 Collections.addAll(list, names);
             } else {
@@ -152,7 +152,7 @@ public class ReflectionAnnotations {
 
     <A extends Annotation> String parseClass(final java.lang.Class<A> clazz, final A annotation, final Object toLoad) {
         try {
-            final String className = (String) clazz.getMethod("className", new java.lang.Class[0]).invoke(annotation);
+            final String className = (String) clazz.getMethod("className").invoke(annotation);
             final Matcher matcher = ReflectionAnnotations.classRefPattern.matcher(className);
             while (matcher.find()) {
                 if (matcher.groupCount() != 1) {

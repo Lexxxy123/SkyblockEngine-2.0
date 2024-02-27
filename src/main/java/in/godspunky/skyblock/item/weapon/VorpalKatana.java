@@ -60,9 +60,9 @@ public class VorpalKatana implements ToolStatistics, MaterialFunction, Ability {
     }
 
     @Override
-    public void onAbilityUse(final Player player, final SItem sItem) {
-        final ItemStack item = player.getInventory().getItemInHand();
-        final Integer itemslot = player.getInventory().getHeldItemSlot();
+    public void onAbilityUse(Player player, SItem sItem) {
+        ItemStack item = player.getInventory().getItemInHand();
+        Integer itemslot = player.getInventory().getHeldItemSlot();
         this.start(player, item, itemslot);
         Sputnik.playActivateSound(player);
         FerocityCalculation.ONE_TYPE_FEROCITY_BONUS_ENDERMAN.put(player.getUniqueId(), 300);
@@ -100,27 +100,27 @@ public class VorpalKatana implements ToolStatistics, MaterialFunction, Ability {
         return 200;
     }
 
-    public void start(final Player player, final ItemStack stack, final Integer slot) {
-        final net.minecraft.server.v1_8_R3.ItemStack tagStack = CraftItemStack.asNMSCopy(stack);
-        final NBTTagCompound tagCompound = tagStack.hasTag() ? tagStack.getTag() : new NBTTagCompound();
+    public void start(Player player, ItemStack stack, Integer slot) {
+        net.minecraft.server.v1_8_R3.ItemStack tagStack = CraftItemStack.asNMSCopy(stack);
+        NBTTagCompound tagCompound = tagStack.hasTag() ? tagStack.getTag() : new NBTTagCompound();
         tagCompound.set("isGoldSword", new NBTTagInt(1));
         tagStack.setTag(tagCompound);
-        final ItemStack itemStack = CraftItemStack.asBukkitCopy(tagStack);
-        if (tagStack.getTag().getInt("isGoldSword") == 1) {
+        ItemStack itemStack = CraftItemStack.asBukkitCopy(tagStack);
+        if (1 == tagStack.getTag().getInt("isGoldSword")) {
             itemStack.setType(Material.GOLD_SWORD);
             player.getInventory().setItem(slot, itemStack);
         }
     }
 
-    public void done(final Player player, final ItemStack stack, final Integer slot) {
-        final net.minecraft.server.v1_8_R3.ItemStack tagStack = CraftItemStack.asNMSCopy(stack);
-        final NBTTagCompound tagCompound = tagStack.hasTag() ? tagStack.getTag() : new NBTTagCompound();
+    public void done(Player player, ItemStack stack, Integer slot) {
+        net.minecraft.server.v1_8_R3.ItemStack tagStack = CraftItemStack.asNMSCopy(stack);
+        NBTTagCompound tagCompound = tagStack.hasTag() ? tagStack.getTag() : new NBTTagCompound();
         tagCompound.set("isGoldSword", new NBTTagInt(0));
         tagStack.setTag(tagCompound);
-        final SItem sitem = SItem.find(player.getInventory().getItem(slot));
-        if (sitem != null && sitem.getType() == SMaterial.VORPAL_KATANA) {
-            final ItemStack itemStack = CraftItemStack.asBukkitCopy(tagStack);
-            if (tagStack.getTag().getInt("isGoldSword") == 0) {
+        SItem sitem = SItem.find(player.getInventory().getItem(slot));
+        if (null != sitem && SMaterial.VORPAL_KATANA == sitem.getType()) {
+            ItemStack itemStack = CraftItemStack.asBukkitCopy(tagStack);
+            if (0 == tagStack.getTag().getInt("isGoldSword")) {
                 itemStack.setType(Material.DIAMOND_SWORD);
                 player.getInventory().setItem(slot, itemStack);
             }

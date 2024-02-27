@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.command;
 
 public class CommandFailException extends RuntimeException {
-    public CommandFailException(final String message) {
+    public CommandFailException(String message) {
         super(message);
     }
 }

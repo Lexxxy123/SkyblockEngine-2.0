@@ -22,7 +22,7 @@ public class Launcher implements MaterialStatistics, MaterialFunction, ItemData 
 
     @Override
     public NBTTagCompound getData() {
-        final NBTTagCompound compound = new NBTTagCompound();
+        NBTTagCompound compound = new NBTTagCompound();
         compound.setFloat("velX", 1.0f);
         compound.setFloat("velY", 1.0f);
         compound.setFloat("velZ", 1.0f);

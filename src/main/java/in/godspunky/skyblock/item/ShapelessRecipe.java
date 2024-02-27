@@ -12,46 +12,46 @@ public class ShapelessRecipe extends Recipe<ShapelessRecipe> {
     private final List<MaterialQuantifiable> ingredientList;
     private boolean isVanilla;
 
-    public ShapelessRecipe(final SItem result, final boolean usesExchangeables) {
+    public ShapelessRecipe(SItem result, boolean usesExchangeables) {
         super(result, usesExchangeables);
         this.ingredientList = new ArrayList<MaterialQuantifiable>();
-        ShapelessRecipe.CACHED_RECIPES.add(this);
+        CACHED_RECIPES.add(this);
     }
 
-    public ShapelessRecipe(final SItem result) {
+    public ShapelessRecipe(SItem result) {
         this(result, false);
     }
 
-    public ShapelessRecipe(final SMaterial material, final int amount) {
+    public ShapelessRecipe(SMaterial material, int amount) {
         this(SUtil.setSItemAmount(SItem.of(material), amount));
     }
 
-    public ShapelessRecipe(final SMaterial material) {
+    public ShapelessRecipe(SMaterial material) {
         this(SItem.of(material));
     }
 
     @Override
-    public ShapelessRecipe setResult(final SItem result) {
+    public ShapelessRecipe setResult(SItem result) {
         this.result = result;
         return this;
     }
 
-    public ShapelessRecipe add(final MaterialQuantifiable material, boolean isVanilla) {
+    public ShapelessRecipe add(MaterialQuantifiable material, final boolean isVanilla) {
         this.ingredientList.add(material.clone());
         this.isVanilla = isVanilla;
         return this;
     }
 
-    public ShapelessRecipe add(final MaterialQuantifiable material) {
+    public ShapelessRecipe add(MaterialQuantifiable material) {
         this.ingredientList.add(material.clone());
         return this;
     }
 
-    public ShapelessRecipe add(final SMaterial material, final int amount) {
+    public ShapelessRecipe add(SMaterial material, int amount) {
         return this.add(new MaterialQuantifiable(material, amount), false);
     }
 
-    public ShapelessRecipe add(final SMaterial material, final int amount, boolean isVanilla) {
+    public ShapelessRecipe add(SMaterial material, int amount, final boolean isVanilla) {
         return this.add(new MaterialQuantifiable(material, amount), isVanilla);
     }
 
@@ -65,19 +65,19 @@ public class ShapelessRecipe extends Recipe<ShapelessRecipe> {
         return "ShapelessRecipe{" + this.ingredientList.toString() + "}";
     }
 
-    protected static ShapelessRecipe parseShapelessRecipe(final ItemStack[] stacks) {
-        if (stacks.length != 9) {
+    protected static ShapelessRecipe parseShapelessRecipe(ItemStack[] stacks) {
+        if (9 != stacks.length) {
             throw new UnsupportedOperationException("Recipe parsing requires a 9 element array!");
         }
-        final MaterialQuantifiable[] materials = SUtil.unnest(Recipe.airless(new MaterialQuantifiable[][]{MaterialQuantifiable.of(Arrays.copyOfRange(stacks, 0, 3)), MaterialQuantifiable.of(Arrays.copyOfRange(stacks, 3, 6)), MaterialQuantifiable.of(Arrays.copyOfRange(stacks, 6, 9))}), MaterialQuantifiable.class);
-        for (final ShapelessRecipe recipe : ShapelessRecipe.CACHED_RECIPES) {
-            final List<MaterialQuantifiable> ingredients = recipe.getIngredientList();
+        MaterialQuantifiable[] materials = SUtil.unnest(Recipe.airless(new MaterialQuantifiable[][]{MaterialQuantifiable.of(Arrays.copyOfRange(stacks, 0, 3)), MaterialQuantifiable.of(Arrays.copyOfRange(stacks, 3, 6)), MaterialQuantifiable.of(Arrays.copyOfRange(stacks, 6, 9))}), MaterialQuantifiable.class);
+        for (ShapelessRecipe recipe : CACHED_RECIPES) {
+            List<MaterialQuantifiable> ingredients = recipe.getIngredientList();
             if (materials.length != ingredients.size()) {
                 continue;
             }
             boolean found = true;
-            final MaterialQuantifiable[] copy = Arrays.copyOf(materials, materials.length);
-            for (final MaterialQuantifiable ingredient : ingredients) {
+            MaterialQuantifiable[] copy = Arrays.copyOf(materials, materials.length);
+            for (MaterialQuantifiable ingredient : ingredients) {
                 if (!contains(recipe.useExchangeables, copy, ingredient)) {
                     found = false;
                     break;
@@ -91,12 +91,12 @@ public class ShapelessRecipe extends Recipe<ShapelessRecipe> {
         return null;
     }
 
-    private static boolean contains(final boolean usesExchangeables, final MaterialQuantifiable[] grid, final MaterialQuantifiable test) {
-        final List<SMaterial> exchangeables = Recipe.getExchangeablesOf(test.getMaterial());
+    private static boolean contains(boolean usesExchangeables, MaterialQuantifiable[] grid, MaterialQuantifiable test) {
+        List<SMaterial> exchangeables = Recipe.getExchangeablesOf(test.getMaterial());
         for (int i = 0; i < grid.length; ++i) {
-            final MaterialQuantifiable material = grid[i];
-            if (material != null) {
-                if (usesExchangeables && exchangeables != null && exchangeables.contains(material.getMaterial()) && material.getAmount() >= test.getAmount()) {
+            MaterialQuantifiable material = grid[i];
+            if (null != material) {
+                if (usesExchangeables && null != exchangeables && exchangeables.contains(material.getMaterial()) && material.getAmount() >= test.getAmount()) {
                     grid[i] = null;
                     return true;
                 }

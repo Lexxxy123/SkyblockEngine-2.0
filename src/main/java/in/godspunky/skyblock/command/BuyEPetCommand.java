@@ -9,8 +9,8 @@ import in.godspunky.skyblock.util.Sputnik;
 @CommandParameters(description = "", aliases = "purce", permission = "sse.cc")
 public class BuyEPetCommand extends SCommand {
     @Override
-    public void run(final CommandSource sender, final String[] args) {
-        final Player player = sender.getPlayer();
+    public void run(CommandSource sender, String[] args) {
+        Player player = sender.getPlayer();
         if (player.isOp()) {
             Sputnik.smartGiveItem(SItem.of(SMaterial.HIDDEN_VOIDLINGS_PET).getStack(), player);
         } else {

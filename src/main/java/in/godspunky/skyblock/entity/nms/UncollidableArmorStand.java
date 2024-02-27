@@ -11,7 +11,7 @@ import in.godspunky.skyblock.entity.EntityFunction;
 import in.godspunky.skyblock.entity.EntityStatistics;
 
 public class UncollidableArmorStand extends EntityArmorStand implements EntityStatistics, EntityFunction, SNMSEntity {
-    public UncollidableArmorStand(final World world) {
+    public UncollidableArmorStand(World world) {
         super(world);
         this.n(true);
     }
@@ -40,7 +40,7 @@ public class UncollidableArmorStand extends EntityArmorStand implements EntitySt
         return 0.0;
     }
 
-    public LivingEntity spawn(final Location location) {
+    public LivingEntity spawn(Location location) {
         this.world = ((CraftWorld) location.getWorld()).getHandle();
         this.setPosition(location.getX(), location.getY(), location.getZ());
         this.world.addEntity(this, CreatureSpawnEvent.SpawnReason.CUSTOM);

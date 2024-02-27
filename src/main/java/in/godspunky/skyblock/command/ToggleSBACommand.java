@@ -9,10 +9,10 @@ import java.util.UUID;
 @CommandParameters(description = "Spec test command.", aliases = "tsba")
 public class ToggleSBACommand extends SCommand {
     @Override
-    public void run(final CommandSource sender, final String[] args) {
-        final Player player = sender.getPlayer();
-        if (player != null) {
-            final UUID uuid = player.getUniqueId();
+    public void run(CommandSource sender, String[] args) {
+        Player player = sender.getPlayer();
+        if (null != player) {
+            UUID uuid = player.getUniqueId();
             if (Repeater.SBA_MAP.get(uuid)) {
                 Repeater.SBA_MAP.put(uuid, false);
                 this.send(Sputnik.trans("&cNo longer support SkyblockAddons Mods!"));

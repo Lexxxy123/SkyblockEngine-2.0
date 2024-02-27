@@ -27,23 +27,23 @@ public class BlessingChest {
     private final Block chest;
     private final SkyBlock sse;
 
-    public BlessingChest(final Blessings type, final Block chest, final byte state) {
+    public BlessingChest(Blessings type, Block chest, byte state) {
         this.sse = SkyBlock.getPlugin();
         this.type = type;
         this.state = state;
         this.locked = false;
         this.opened = false;
         this.chest = chest;
-        BlessingChest.CHEST_CACHE.put(chest, this);
+        CHEST_CACHE.put(chest, this);
         new BukkitRunnable() {
             public void run() {
-                if (!BlessingChest.CHEST_CACHE.containsKey(chest)) {
+                if (!CHEST_CACHE.containsKey(chest)) {
                     this.cancel();
                     return;
                 }
-                final Collection<Entity> ce = chest.getWorld().getNearbyEntities(chest.getLocation(), 10.0, 10.0, 10.0);
+                Collection<Entity> ce = chest.getWorld().getNearbyEntities(chest.getLocation(), 10.0, 10.0, 10.0);
                 ce.removeIf(entity -> !(entity instanceof Player));
-                if (ce.size() > 0) {
+                if (0 < ce.size()) {
                     BlessingChest.this.show();
                 } else {
                     BlessingChest.this.hide();
@@ -52,7 +52,7 @@ public class BlessingChest {
         }.runTaskTimer(this.sse, 0L, 1L);
     }
 
-    public void open(final Player opener) {
+    public void open(Player opener) {
         if (!this.opened && !this.locked) {
             Blessings.openBlessingChest(this.chest, this.type, opener);
             this.opened = true;
@@ -69,7 +69,7 @@ public class BlessingChest {
 
     public void destroy() {
         this.chest.setType(Material.AIR);
-        BlessingChest.CHEST_CACHE.remove(this.chest);
+        CHEST_CACHE.remove(this.chest);
     }
 
     public void hide() {
@@ -77,16 +77,16 @@ public class BlessingChest {
     }
 
     public void show() {
-        if (this.chest.getType() != Material.CHEST) {
+        if (Material.CHEST != this.chest.getType()) {
             this.chest.getLocation().getBlock().setType(Material.CHEST);
             this.chest.setData(this.state);
-            Location chestLocation = this.chest.getLocation();
+            final Location chestLocation = this.chest.getLocation();
             if (this.isOpened()) {
                 SUtil.delay(() -> {
                     // todo : fix it
-                    BlockPosition pos = new BlockPosition(chestLocation.getBlockX(), chestLocation.getBlockY(), chestLocation.getBlockZ());
-                    PacketPlayOutBlockAction packet = new PacketPlayOutBlockAction(pos, Blocks.CHEST, 1, 1);
-                    for (Player p : chestLocation.getWorld().getPlayers()) {
+                    final BlockPosition pos = new BlockPosition(chestLocation.getBlockX(), chestLocation.getBlockY(), chestLocation.getBlockZ());
+                    final PacketPlayOutBlockAction packet = new PacketPlayOutBlockAction(pos, Blocks.CHEST, 1, 1);
+                    for (final Player p : chestLocation.getWorld().getPlayers()) {
                         ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
                     }
                 }, 1L);
@@ -98,7 +98,7 @@ public class BlessingChest {
         return this.opened;
     }
 
-    public void setOpened(final boolean opened) {
+    public void setOpened(boolean opened) {
         this.opened = opened;
     }
 
@@ -106,7 +106,7 @@ public class BlessingChest {
         return this.locked;
     }
 
-    public void setLocked(final boolean locked) {
+    public void setLocked(boolean locked) {
         this.locked = locked;
     }
 

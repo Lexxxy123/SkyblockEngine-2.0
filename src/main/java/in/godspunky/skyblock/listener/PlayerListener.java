@@ -960,7 +960,7 @@ public class PlayerListener extends PListener {
 
     public static String replaceChatColors(String s) {
         for (final ChatColor c : ChatColor.values()) {
-            s = s.replaceAll("&" + c.getChar(), String.valueOf(s) + ChatColor.getByChar(c.getChar()));
+            s = s.replaceAll("&" + c.getChar(), s + ChatColor.getByChar(c.getChar()));
         }
         return s;
     }

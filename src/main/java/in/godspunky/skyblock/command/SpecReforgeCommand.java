@@ -11,23 +11,23 @@ import in.godspunky.skyblock.item.SItem;
 @CommandParameters(description = "Reforge an item from Spec.", aliases = "sref", permission = "spt.item")
 public class SpecReforgeCommand extends SCommand {
     @Override
-    public void run(final CommandSource sender, final String[] args) {
-        if (args.length != 1) {
+    public void run(CommandSource sender, String[] args) {
+        if (1 != args.length) {
             throw new CommandArgumentException();
         }
         if (sender instanceof ConsoleCommandSender) {
             throw new CommandFailException("Console senders cannot use this command!");
         }
-        final Player player = sender.getPlayer();
-        final ItemStack stack = player.getInventory().getItemInHand();
-        if (stack == null) {
+        Player player = sender.getPlayer();
+        ItemStack stack = player.getInventory().getItemInHand();
+        if (null == stack) {
             throw new CommandFailException(ChatColor.RED + "You don't have anything in your hand!");
         }
-        final SItem sItem = SItem.find(stack);
-        if (sItem == null) {
+        SItem sItem = SItem.find(stack);
+        if (null == sItem) {
             throw new CommandFailException(ChatColor.RED + "That item is un-reforgeable!");
         }
-        final Reforge reforge = ReforgeType.getReforgeType(args[0]).getReforge();
+        Reforge reforge = ReforgeType.getReforgeType(args[0]).getReforge();
         sItem.setReforge(reforge);
         this.send(ChatColor.GREEN + "Your " + sItem.getType().getDisplayName(sItem.getVariant()) + " now has " + reforge.getName() + " on it.");
     }

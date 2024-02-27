@@ -18,12 +18,12 @@ public class RebootServerCommand extends SCommand {
     public static Map<Server, Integer> secondMap;
 
     @Override
-    public void run(final CommandSource sender, final String[] args) {
-        if (sender.getPlayer() != null) {
+    public void run(CommandSource sender, String[] args) {
+        if (null != sender.getPlayer()) {
             sender.getPlayer().sendMessage(ChatColor.RED + "This command is highly restricted!");
             return;
         }
-        if (RebootServerCommand.secondMap.containsKey(Bukkit.getServer())) {
+        if (secondMap.containsKey(Bukkit.getServer())) {
             this.send(ChatColor.RED + "You cannot schedule more than 1 server reboot at a time");
             return;
         }
@@ -38,20 +38,20 @@ public class RebootServerCommand extends SCommand {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ptitle3");
             reasonraw = "Unknown Reason!";
         }
-        for (final Player p : Bukkit.getOnlinePlayers()) {
+        for (Player p : Bukkit.getOnlinePlayers()) {
             p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 0.0f);
         }
-        final String reason = reasonraw;
+        String reason = reasonraw;
         Bukkit.broadcastMessage(Sputnik.trans("&c[Important] &eThe server will restart soon: &b" + reason));
         Bukkit.broadcastMessage(Sputnik.trans("&eYou have &a30 seconds &eto disconnect to prevent &cdata corruptions &ethat can result to inventories wipes!"));
-        RebootServerCommand.secondMap.put(Bukkit.getServer(), 30);
+        secondMap.put(Bukkit.getServer(), 30);
         new BukkitRunnable() {
             public void run() {
-                RebootServerCommand.secondMap.put(Bukkit.getServer(), RebootServerCommand.secondMap.get(Bukkit.getServer()) - 1);
-                if (RebootServerCommand.secondMap.get(Bukkit.getServer()) <= 5 && RebootServerCommand.secondMap.get(Bukkit.getServer()) > 0) {
+                secondMap.put(Bukkit.getServer(), secondMap.get(Bukkit.getServer()) - 1);
+                if (5 >= RebootServerCommand.secondMap.get(Bukkit.getServer()) && 0 < RebootServerCommand.secondMap.get(Bukkit.getServer())) {
                     Bukkit.broadcastMessage(Sputnik.trans("&c[Important] &eThe server will restart soon: &b" + reason));
-                    Bukkit.broadcastMessage(Sputnik.trans("&eServer closing down in &c" + RebootServerCommand.secondMap.get(Bukkit.getServer()) + " &eseconds"));
-                } else if (RebootServerCommand.secondMap.get(Bukkit.getServer()) <= 0) {
+                    Bukkit.broadcastMessage(Sputnik.trans("&eServer closing down in &c" + secondMap.get(Bukkit.getServer()) + " &eseconds"));
+                } else if (0 >= RebootServerCommand.secondMap.get(Bukkit.getServer())) {
                     Bukkit.broadcastMessage(Sputnik.trans("&c[Important] &eThe server will restart soon: &b" + reason));
                     Bukkit.broadcastMessage(Sputnik.trans("&eServer is &cshutting down&e!"));
                     this.cancel();
@@ -66,12 +66,12 @@ public class RebootServerCommand extends SCommand {
         }.runTaskTimer(SkyBlock.getPlugin(), 20L, 20L);
     }
 
-    public static boolean isPrimeNumber(final int n) {
-        if (n < 2) {
+    public static boolean isPrimeNumber(int n) {
+        if (2 > n) {
             return false;
         }
         for (int squareRoot = (int) Math.sqrt(n), i = 2; i <= squareRoot; ++i) {
-            if (n % i == 0) {
+            if (0 == n % i) {
                 return false;
             }
         }
@@ -79,6 +79,6 @@ public class RebootServerCommand extends SCommand {
     }
 
     static {
-        RebootServerCommand.secondMap = new HashMap<Server, Integer>();
+        secondMap = new HashMap<Server, Integer>();
     }
 }

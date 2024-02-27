@@ -7,7 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 
 public class UnstableDragon extends Dragon {
-    public UnstableDragon(final World world) {
+    public UnstableDragon(World world) {
         super(world, 1.4, (Range<Double>) Range.between((Comparable) 0.6, (Comparable) 0.9), 300L);
     }
 

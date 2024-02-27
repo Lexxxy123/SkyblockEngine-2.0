@@ -267,7 +267,7 @@ public class WorldListener extends PListener {
             WorldListener.ALREADY_TELEPORTING.add(entity.getUniqueId());
             SUtil.delay(() -> WorldListener.ALREADY_TELEPORTING.remove(entity.getUniqueId()), 15L);
             entity.sendMessage(ChatColor.GRAY + "Sending you to your island...");
-            SkyblockIsland.getIsland(((Player)entity).getUniqueId()).send();
+            SkyblockIsland.getIsland(entity.getUniqueId()).send();
         }
     }
 
@@ -424,7 +424,7 @@ public class WorldListener extends PListener {
     }
 
     public static void c() {
-        SkyBlock.getPTC().addPacketListener(new PacketAdapter(SkyBlock.getPlugin(), ListenerPriority.HIGHEST, new PacketType[]{PacketType.Play.Client.BLOCK_DIG}) {
+        SkyBlock.getPTC().addPacketListener(new PacketAdapter(SkyBlock.getPlugin(), ListenerPriority.HIGHEST, PacketType.Play.Client.BLOCK_DIG) {
             public void onPacketReceiving(final PacketEvent event) {
                 final PacketContainer packet = event.getPacket();
                 final EnumWrappers.PlayerDigType digType = packet.getPlayerDigTypes().getValues().get(0);

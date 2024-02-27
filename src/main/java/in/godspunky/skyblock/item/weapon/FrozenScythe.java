@@ -65,20 +65,20 @@ public class FrozenScythe implements ToolStatistics, MaterialFunction, Ability {
     }
 
     @Override
-    public void onAbilityUse(final Player p, final SItem sItem) {
+    public void onAbilityUse(Player p, SItem sItem) {
         p.getWorld().playSound(p.getLocation(), Sound.FIREWORK_LAUNCH, 1.0f, 10.0f);
         Location loc = p.getLocation();
         loc.setY(loc.getY() + 1.0);
-        final Vector vecTo1 = loc.getDirection().normalize().multiply(0.3);
-        final Vector vecTo2 = loc.getDirection().normalize().multiply(1);
-        final Vector back = loc.getDirection().normalize().multiply(-1);
-        final ItemStack item = new ItemStack(Material.ICE);
-        final ItemMeta meta = item.getItemMeta();
+        Vector vecTo1 = loc.getDirection().normalize().multiply(0.3);
+        Vector vecTo2 = loc.getDirection().normalize().multiply(1);
+        Vector back = loc.getDirection().normalize().multiply(-1);
+        ItemStack item = new ItemStack(Material.ICE);
+        ItemMeta meta = item.getItemMeta();
         meta.setDisplayName("ice");
         item.setItemMeta(meta);
         loc = loc.add(vecTo1);
-        final Entity ent1 = p.getWorld().spawn(loc, (Class) ArmorStand.class);
-        final ArmorStand stand1 = (ArmorStand) ent1;
+        Entity ent1 = p.getWorld().spawn(loc, (Class) ArmorStand.class);
+        ArmorStand stand1 = (ArmorStand) ent1;
         stand1.setVisible(false);
         stand1.setArms(true);
         stand1.setGravity(false);
@@ -86,8 +86,8 @@ public class FrozenScythe implements ToolStatistics, MaterialFunction, Ability {
         stand1.setSmall(true);
         item.setType(Material.PACKED_ICE);
         loc = loc.add(vecTo1);
-        final Entity ent2 = p.getWorld().spawn(loc, (Class) ArmorStand.class);
-        final ArmorStand stand2 = (ArmorStand) ent2;
+        Entity ent2 = p.getWorld().spawn(loc, (Class) ArmorStand.class);
+        ArmorStand stand2 = (ArmorStand) ent2;
         stand2.setVisible(false);
         stand2.setArms(true);
         stand2.setGravity(false);
@@ -95,8 +95,8 @@ public class FrozenScythe implements ToolStatistics, MaterialFunction, Ability {
         stand2.setSmall(true);
         item.setType(Material.ICE);
         loc = loc.add(vecTo1);
-        final Entity ent3 = p.getWorld().spawn(loc, (Class) ArmorStand.class);
-        final ArmorStand stand3 = (ArmorStand) ent3;
+        Entity ent3 = p.getWorld().spawn(loc, (Class) ArmorStand.class);
+        ArmorStand stand3 = (ArmorStand) ent3;
         stand3.setVisible(false);
         stand3.setArms(true);
         stand3.setGravity(false);
@@ -104,8 +104,8 @@ public class FrozenScythe implements ToolStatistics, MaterialFunction, Ability {
         stand3.setSmall(true);
         item.setType(Material.PACKED_ICE);
         loc = loc.add(vecTo1);
-        final Entity ent4 = p.getWorld().spawn(loc, (Class) ArmorStand.class);
-        final ArmorStand stand4 = (ArmorStand) ent4;
+        Entity ent4 = p.getWorld().spawn(loc, (Class) ArmorStand.class);
+        ArmorStand stand4 = (ArmorStand) ent4;
         stand4.setVisible(false);
         stand4.setArms(true);
         stand4.setGravity(false);
@@ -113,8 +113,8 @@ public class FrozenScythe implements ToolStatistics, MaterialFunction, Ability {
         stand4.setSmall(true);
         item.setType(Material.ICE);
         loc = loc.add(vecTo1);
-        final Entity ent5 = p.getWorld().spawn(loc, (Class) ArmorStand.class);
-        final ArmorStand stand5 = (ArmorStand) ent5;
+        Entity ent5 = p.getWorld().spawn(loc, (Class) ArmorStand.class);
+        ArmorStand stand5 = (ArmorStand) ent5;
         stand5.setVisible(false);
         stand5.setArms(true);
         stand5.setGravity(false);
@@ -137,9 +137,9 @@ public class FrozenScythe implements ToolStatistics, MaterialFunction, Ability {
         throwIce(stand1, stand2, stand3, stand4, stand5, p, vecTo2, back);
         new BukkitRunnable() {
             public void run() {
-                if (stand1.getLocation().getBlock().getType() == Material.AIR || stand1.getLocation().getBlock().getType().isTransparent()) {
+                if (Material.AIR == stand1.getLocation().getBlock().getType() || stand1.getLocation().getBlock().getType().isTransparent()) {
                     if (!stand1.isDead()) {
-                        final Location loc = stand1.getLocation();
+                        Location loc = stand1.getLocation();
                         loc.setY(loc.getY() + 0.5);
                         p.getWorld().spigot().playEffect(loc, Effect.SNOW_SHOVEL, 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, 40);
                         p.getWorld().spigot().playEffect(loc, Effect.SNOW_SHOVEL, 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, 40);
@@ -150,7 +150,7 @@ public class FrozenScythe implements ToolStatistics, MaterialFunction, Ability {
                     stand3.teleport(stand3.getLocation().add(vecTo2));
                     stand4.teleport(stand4.getLocation().add(vecTo2));
                     stand5.teleport(stand5.getLocation().add(vecTo2));
-                    for (final Entity entity : stand1.getWorld().getNearbyEntities(stand1.getLocation().add(stand1.getLocation().getDirection().multiply(1.0)), 0.3, 0.3, 0.3)) {
+                    for (Entity entity : stand1.getWorld().getNearbyEntities(stand1.getLocation().add(stand1.getLocation().getDirection().multiply(1.0)), 0.3, 0.3, 0.3)) {
                         if (entity.isDead()) {
                             continue;
                         }
@@ -166,9 +166,9 @@ public class FrozenScythe implements ToolStatistics, MaterialFunction, Ability {
                         if (entity instanceof ArmorStand) {
                             continue;
                         }
-                        final User user = User.getUser(p.getUniqueId());
+                        User user = User.getUser(p.getUniqueId());
                         ((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 1));
-                        final double baseDamage = Sputnik.calculateMagicDamage(entity, p, 1000, 0.3);
+                        double baseDamage = Sputnik.calculateMagicDamage(entity, p, 1000, 0.3);
                         user.damageEntityIgnoreShield((Damageable) entity, (int) baseDamage);
                         if (PlayerUtils.Debugmsg.debugmsg) {
                             SLog.info("[DEBUG] " + p.getName() + " have dealt " + (float) baseDamage + " damage! (Frozen Scythe Ability)");
@@ -176,7 +176,7 @@ public class FrozenScythe implements ToolStatistics, MaterialFunction, Ability {
                         PlayerListener.spawnDamageInd(entity, baseDamage, false);
                     }
                 } else if (!stand1.isDead()) {
-                    final Location loc = stand1.getLocation();
+                    Location loc = stand1.getLocation();
                     loc.setY(loc.getY() + 0.5);
                     p.getWorld().spigot().playEffect(loc, Effect.SNOW_SHOVEL, 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, 40);
                     p.getWorld().spigot().playEffect(loc, Effect.SNOW_SHOVEL, 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, 40);
@@ -186,7 +186,7 @@ public class FrozenScythe implements ToolStatistics, MaterialFunction, Ability {
         }.runTaskTimer(SkyBlock.getPlugin(), 1L, 0L);
     }
 
-    public static void throwIce(final ArmorStand stand1, final ArmorStand stand2, final ArmorStand stand3, final ArmorStand stand4, final ArmorStand stand5, final Player p, final Vector vecTo, final Vector back) {
+    public static void throwIce(ArmorStand stand1, ArmorStand stand2, ArmorStand stand3, ArmorStand stand4, ArmorStand stand5, Player p, Vector vecTo, Vector back) {
         new BukkitRunnable() {
             public void run() {
                 stand1.remove();

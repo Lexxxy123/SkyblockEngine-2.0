@@ -231,24 +231,24 @@ public class SkeletorPrime extends BaseZombie implements NPCMobs {
                     final int angle = i * 20 - num;
                     final boolean back = true;
                 }
-                if (locof.getBlock().getType() != Material.AIR && locof.getBlock().getType() != Material.WATER) {
+                if (locof.getBlock().getType() != Material.AIR && Material.WATER != locof.getBlock().getType()) {
                     armorStand1.remove();
                     this.cancel();
                     return;
                 }
-                if (i % 2 == 0 && i < 13) {
+                if (0 == i % 2 && 13 > i) {
                     armorStand1.teleport(armorStand1.getLocation().add(teleportTo).multiply(1.0));
                     armorStand1.teleport(armorStand1.getLocation().add(teleportTo).multiply(1.0));
-                } else if (i % 2 == 0) {
+                } else if (0 == i % 2) {
                     armorStand1.teleport(armorStand1.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                     armorStand1.teleport(armorStand1.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                 }
-                for (int j = 0; j < 20; ++j) {
+                for (int j = 0; 20 > j; ++j) {
                     armorStand1.getWorld().spigot().playEffect(armorStand1.getLocation().clone().add(0.0, 1.75, 0.0), Effect.CRIT, 0, 1, (float) SUtil.random(-0.5, 0.5), (float) SUtil.random(0.0, 0.5), (float) SUtil.random(-0.5, 0.5), 0.0f, 1, 20);
                 }
-                for (final Entity en : armorStand1.getNearbyEntities(1.0, 1.0, 1.0)) {
+                for (Entity en : armorStand1.getNearbyEntities(1.0, 1.0, 1.0)) {
                     if (en instanceof Player) {
-                        final Player p = (Player) en;
+                        Player p = (Player) en;
                         p.getWorld().playSound(p.getLocation(), Sound.ITEM_BREAK, 1.0f, 1.0f);
                         User.getUser(p.getUniqueId()).damage(p.getMaxHealth() * 25.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, e);
                         p.damage(1.0E-5);

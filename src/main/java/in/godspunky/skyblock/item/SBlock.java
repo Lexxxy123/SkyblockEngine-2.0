@@ -12,35 +12,35 @@ public class SBlock {
     private SMaterial type;
     private final NBTTagCompound data;
 
-    public SBlock(final Location location, final SMaterial type, final NBTTagCompound data) {
+    public SBlock(Location location, SMaterial type, NBTTagCompound data) {
         this.location = location;
         this.type = type;
         this.data = data;
     }
 
-    public float getDataFloat(final String key) {
+    public float getDataFloat(String key) {
         return this.data.getFloat(key);
     }
 
-    public long getDataLong(final String key) {
+    public long getDataLong(String key) {
         return this.data.getLong(key);
     }
 
-    public double getDataDouble(final String key) {
+    public double getDataDouble(String key) {
         return this.data.getDouble(key);
     }
 
-    public String getDataString(final String key) {
+    public String getDataString(String key) {
         return this.data.getString(key);
     }
 
-    public static SBlock getBlock(final Location location) {
-        final ConfigurationSection cs = SBlock.plugin.blocks.getConfigurationSection(toLocationString(location));
-        if (cs == null) {
+    public static SBlock getBlock(Location location) {
+        ConfigurationSection cs = plugin.blocks.getConfigurationSection(toLocationString(location));
+        if (null == cs) {
             return null;
         }
-        final NBTTagCompound compound = new NBTTagCompound();
-        for (final String key : cs.getKeys(false)) {
+        NBTTagCompound compound = new NBTTagCompound();
+        for (String key : cs.getKeys(false)) {
             if (key.equals("type")) {
                 continue;
             }
@@ -50,27 +50,27 @@ public class SBlock {
     }
 
     public void save() {
-        SBlock.plugin.blocks.set(this.toLocationString() + ".type", this.type.name());
-        for (final String key : this.data.c()) {
-            final Object o = SUtil.getObjectFromCompound(this.data, key);
+        plugin.blocks.set(this.toLocationString() + ".type", this.type.name());
+        for (String key : this.data.c()) {
+            Object o = SUtil.getObjectFromCompound(this.data, key);
             if (o instanceof NBTTagCompound) {
                 continue;
             }
-            SBlock.plugin.blocks.set(this.toLocationString() + "." + key, o);
+            plugin.blocks.set(this.toLocationString() + "." + key, o);
         }
-        SBlock.plugin.blocks.save();
+        plugin.blocks.save();
     }
 
     public void delete() {
-        SBlock.plugin.blocks.set(this.toLocationString(), null);
-        SBlock.plugin.blocks.save();
+        plugin.blocks.set(this.toLocationString(), null);
+        plugin.blocks.save();
     }
 
     private String toLocationString() {
         return toLocationString(this.location);
     }
 
-    private static String toLocationString(final Location location) {
+    private static String toLocationString(Location location) {
         return location.getBlockX() + "," + location.getBlockY() + "," + location.getBlockZ() + "," + location.getWorld().getName();
     }
 
@@ -86,7 +86,7 @@ public class SBlock {
         return this.data;
     }
 
-    public void setType(final SMaterial type) {
+    public void setType(SMaterial type) {
         this.type = type;
     }
 

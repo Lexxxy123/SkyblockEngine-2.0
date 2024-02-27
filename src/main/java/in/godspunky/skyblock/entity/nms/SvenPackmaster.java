@@ -42,7 +42,7 @@ public class SvenPackmaster extends EntityWolf implements SNMSEntity, EntityFunc
     private boolean isActive;
     private final List<SEntity> pups;
 
-    public SvenPackmaster(final Integer tier, final UUID spawnerUUID) {
+    public SvenPackmaster(Integer tier, UUID spawnerUUID) {
         super(((CraftWorld) Bukkit.getPlayer(spawnerUUID).getWorld()).getHandle());
         this.tier = tier;
         this.end = System.currentTimeMillis() + 240000L;
@@ -53,7 +53,7 @@ public class SvenPackmaster extends EntityWolf implements SNMSEntity, EntityFunc
         this.pups = new ArrayList<SEntity>();
     }
 
-    public SvenPackmaster(final World world) {
+    public SvenPackmaster(World world) {
         super(world);
         this.tier = 1;
         this.end = System.currentTimeMillis() + 240000L;
@@ -66,8 +66,8 @@ public class SvenPackmaster extends EntityWolf implements SNMSEntity, EntityFunc
 
     public void t_() {
         super.t_();
-        final Player player = Bukkit.getPlayer(this.spawnerUUID);
-        if (player == null) {
+        Player player = Bukkit.getPlayer(this.spawnerUUID);
+        if (null == player) {
             return;
         }
         if (System.currentTimeMillis() > this.end) {
@@ -76,7 +76,7 @@ public class SvenPackmaster extends EntityWolf implements SNMSEntity, EntityFunc
             this.hologram.remove();
             return;
         }
-        if (((Wolf) this.bukkitEntity).getWorld() == player.getWorld() && this.getBukkitEntity().getLocation().distance(player.getLocation()) >= 20.0 && SUtil.random(0, 10) == 0) {
+        if (((Wolf) this.bukkitEntity).getWorld() == player.getWorld() && 20.0 <= this.getBukkitEntity().getLocation().distance(player.getLocation()) && 0 == SUtil.random(0, 10)) {
             this.getBukkitEntity().teleport(player.getLocation());
         }
         if (System.currentTimeMillis() > this.lastDamage && (this.pups.isEmpty() || !this.pupsSpawned)) {
@@ -90,8 +90,8 @@ public class SvenPackmaster extends EntityWolf implements SNMSEntity, EntityFunc
         this.getBukkitEntity().getWorld().spigot().playEffect(this.getBukkitEntity().getLocation(), Effect.FLAME, 0, 1, (float) SUtil.random(-1.0, 1.0), 0.0f, (float) SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
         this.getBukkitEntity().getWorld().spigot().playEffect(this.getBukkitEntity().getLocation(), Effect.FIREWORKS_SPARK, 0, 1, (float) SUtil.random(-1.0, 1.0), 0.0f, (float) SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
         ((Wolf) this.getBukkitEntity()).setTarget(player);
-        final Entity entity = this.getBukkitEntity().getHandle();
-        final double height = entity.getBoundingBox().e - entity.getBoundingBox().b;
+        Entity entity = this.getBukkitEntity().getHandle();
+        double height = entity.getBoundingBox().e - entity.getBoundingBox().b;
         this.hologram_name.getEntity().teleport(this.getBukkitEntity().getLocation().clone().add(0.0, height, 0.0));
         this.hologram_name.getEntity().setCustomName(Sputnik.trans(Sputnik.entityNameTag((LivingEntity) this.getBukkitEntity(), Sputnik.buildcustomString(this.getEntityName(), 0, true))));
         this.hologram.getEntity().teleport(this.getBukkitEntity().getLocation().clone().add(0.0, 1.1, 0.0));
@@ -102,11 +102,11 @@ public class SvenPackmaster extends EntityWolf implements SNMSEntity, EntityFunc
         }
     }
 
-    public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
+    public void onSpawn(LivingEntity entity, SEntity sEntity) {
         entity.setMetadata("BOSS_OWNER_" + Bukkit.getPlayer(this.getSpawnerUUID()).getUniqueId().toString(), new FixedMetadataValue(SkyBlock.getPlugin(), true));
         entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        final Player player = Bukkit.getPlayer(this.spawnerUUID);
-        if (player != null) {
+        Player player = Bukkit.getPlayer(this.spawnerUUID);
+        if (null != player) {
             player.playSound(player.getLocation(), Sound.WOLF_HOWL, 1.0f, 5.0f);
         }
         this.hologram = new SEntity(entity.getLocation().add(0.0, 1.1, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND);
@@ -114,8 +114,8 @@ public class SvenPackmaster extends EntityWolf implements SNMSEntity, EntityFunc
         ((ArmorStand) this.hologram.getEntity()).setGravity(false);
         this.hologram.getEntity().setCustomNameVisible(true);
         entity.setMetadata("notDisplay", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        final Entity e = this.getBukkitEntity().getHandle();
-        final double height = e.getBoundingBox().e - e.getBoundingBox().b;
+        Entity e = this.getBukkitEntity().getHandle();
+        double height = e.getBoundingBox().e - e.getBoundingBox().b;
         this.hologram_name = new SEntity(entity.getLocation().add(0.0, height, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND);
         ((ArmorStand) this.hologram_name.getEntity()).setVisible(false);
         ((ArmorStand) this.hologram_name.getEntity()).setGravity(false);
@@ -136,53 +136,53 @@ public class SvenPackmaster extends EntityWolf implements SNMSEntity, EntityFunc
     }
 
     public double getEntityMaxHealth() {
-        return SvenPackmaster.MAX_HEALTH_VALUES.getByNumber(this.tier);
+        return MAX_HEALTH_VALUES.getByNumber(this.tier);
     }
 
     public double getDamageDealt() {
-        return SvenPackmaster.DAMAGE_VALUES.getByNumber(this.tier);
+        return DAMAGE_VALUES.getByNumber(this.tier);
     }
 
     public double getMovementSpeed() {
-        return SvenPackmaster.SPEED_VALUES.getByNumber(this.tier);
+        return SPEED_VALUES.getByNumber(this.tier);
     }
 
-    public void onDeath(final SEntity sEntity, final org.bukkit.entity.Entity killed, final org.bukkit.entity.Entity damager) {
+    public void onDeath(SEntity sEntity, org.bukkit.entity.Entity killed, org.bukkit.entity.Entity damager) {
         SUtil.delay(() -> this.hologram_name.remove(), 20L);
         this.hologram.remove();
-        for (final SEntity pup : this.pups) {
+        for (SEntity pup : this.pups) {
             pup.getEntity().setHealth(0.0);
         }
     }
 
-    public void onAttack(final EntityDamageByEntityEvent e) {
+    public void onAttack(EntityDamageByEntityEvent e) {
         if (!(e.getEntity() instanceof Player)) {
             return;
         }
-        final Player player = (Player) e.getEntity();
-        User.getUser(player.getUniqueId()).damage(SvenPackmaster.TRUE_DAMAGE_VALUES.getByNumber(this.tier), EntityDamageEvent.DamageCause.ENTITY_ATTACK, this.getBukkitEntity());
+        Player player = (Player) e.getEntity();
+        User.getUser(player.getUniqueId()).damage(TRUE_DAMAGE_VALUES.getByNumber(this.tier), EntityDamageEvent.DamageCause.ENTITY_ATTACK, this.getBukkitEntity());
         if (player.getUniqueId().equals(this.spawnerUUID)) {
             this.lastDamage = System.currentTimeMillis() + 15000L;
         }
     }
 
-    public LivingEntity spawn(final Location location) {
+    public LivingEntity spawn(Location location) {
         this.world = ((CraftWorld) location.getWorld()).getHandle();
         this.setPosition(location.getX(), location.getY(), location.getZ());
         this.world.addEntity(this, CreatureSpawnEvent.SpawnReason.CUSTOM);
         return (LivingEntity) this.getBukkitEntity();
     }
 
-    public void onDamage(final SEntity sEntity, final org.bukkit.entity.Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
+    public void onDamage(SEntity sEntity, org.bukkit.entity.Entity damager, EntityDamageByEntityEvent e, AtomicDouble damage) {
         if (e.getDamager() instanceof Arrow) {
             e.setCancelled(true);
             return;
         }
-        final Player player = Bukkit.getPlayer(this.spawnerUUID);
-        if (player == null) {
+        Player player = Bukkit.getPlayer(this.spawnerUUID);
+        if (null == player) {
             return;
         }
-        if (this.tier >= 3 && sEntity.getEntity().getHealth() - damage.get() < this.getEntityMaxHealth() / 2.0 && !this.pupsSpawned) {
+        if (3 <= this.tier && sEntity.getEntity().getHealth() - damage.get() < this.getEntityMaxHealth() / 2.0 && !this.pupsSpawned) {
             this.isActive = true;
             this.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).setValue(0.0);
             player.playSound(player.getLocation(), Sound.WOLF_HOWL, 1.0f, 1.0f);
@@ -190,13 +190,13 @@ public class SvenPackmaster extends EntityWolf implements SNMSEntity, EntityFunc
             SUtil.delay(() -> this.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).setValue(this.getMovementSpeed()), 120L);
             SUtil.delay(() -> this.isActive = false, 120L);
             this.pupsSpawned = true;
-            for (int i = 0; i < 10; ++i) {
+            for (int i = 0; 10 > i; ++i) {
                 SUtil.delay(() -> {
                     if (this.bukkitEntity.isDead()) {
                     } else {
-                        final List<SEntity> pups = this.pups;
+                        List<SEntity> pups = this.pups;
 
-                        final SEntity sEntity2 = new SEntity(sEntity.getEntity(), SEntityType.SVEN_PUP, this.getEntityMaxHealth() * 0.1, this.getDamageDealt() * 0.5, player, this);
+                        SEntity sEntity2 = new SEntity(sEntity.getEntity(), SEntityType.SVEN_PUP, this.getEntityMaxHealth() * 0.1, this.getDamageDealt() * 0.5, player, this);
                         pups.add(sEntity2);
                     }
                 }, i * 20);
@@ -205,40 +205,40 @@ public class SvenPackmaster extends EntityWolf implements SNMSEntity, EntityFunc
     }
 
     public List<EntityDrop> drops() {
-        final List<EntityDrop> drops = new ArrayList<EntityDrop>();
+        List<EntityDrop> drops = new ArrayList<EntityDrop>();
         int teeth = SUtil.random(1, 3);
-        if (this.tier == 2) {
+        if (2 == this.tier) {
             teeth = SUtil.random(9, 18);
         }
-        if (this.tier == 3) {
+        if (3 == this.tier) {
             teeth = SUtil.random(30, 50);
         }
-        if (this.tier == 4) {
+        if (4 == this.tier) {
             teeth = SUtil.random(50, 64);
         }
         drops.add(new EntityDrop(SUtil.setStackAmount(SItem.of(SMaterial.WOLF_TOOTH).getStack(), teeth), EntityDropType.GUARANTEED, 1.0));
-        if (this.tier >= 2) {
+        if (2 <= this.tier) {
             int hamsterWheel = 1;
-            if (this.tier == 3) {
+            if (3 == this.tier) {
                 hamsterWheel = SUtil.random(2, 4);
             }
-            if (this.tier == 4) {
+            if (4 == this.tier) {
                 hamsterWheel = SUtil.random(4, 5);
             }
             drops.add(new EntityDrop(SUtil.setStackAmount(SItem.of(SMaterial.HAMSTER_WHEEL).getStack(), hamsterWheel), EntityDropType.OCCASIONAL, 0.2));
             drops.add(new EntityDrop(SMaterial.SPIRIT_RUNE, EntityDropType.RARE, 0.05));
         }
-        if (this.tier >= 3) {
-            final SItem critBook = SItem.of(SMaterial.ENCHANTED_BOOK);
+        if (3 <= this.tier) {
+            SItem critBook = SItem.of(SMaterial.ENCHANTED_BOOK);
             critBook.addEnchantment(EnchantmentType.CRITICAL, 6);
             drops.add(new EntityDrop(critBook.getStack(), EntityDropType.EXTRAORDINARILY_RARE, 0.005));
-            drops.add(new EntityDrop(SMaterial.RED_CLAW_EGG, EntityDropType.CRAZY_RARE, (this.tier == 3) ? 0.0025 : 0.002));
+            drops.add(new EntityDrop(SMaterial.RED_CLAW_EGG, EntityDropType.CRAZY_RARE, (3 == this.tier) ? 0.0025 : 0.002));
         }
-        if (this.tier >= 4) {
-            final SItem chimBook = SItem.of(SMaterial.ENCHANTED_BOOK);
+        if (4 <= this.tier) {
+            SItem chimBook = SItem.of(SMaterial.ENCHANTED_BOOK);
             chimBook.addEnchantment(EnchantmentType.CHIMERA, 1);
             drops.add(new EntityDrop(chimBook.getStack(), EntityDropType.CRAZY_RARE, 0.002));
-            final SItem chimBook2 = SItem.of(SMaterial.ENCHANTED_BOOK);
+            SItem chimBook2 = SItem.of(SMaterial.ENCHANTED_BOOK);
             chimBook2.addEnchantment(EnchantmentType.CHIMERA, 2);
             drops.add(new EntityDrop(chimBook2.getStack(), EntityDropType.INSANE_RARE, 0.0016666666666666668));
             drops.add(new EntityDrop(SMaterial.COUTURE_RUNE, EntityDropType.CRAZY_RARE, 0.00625));

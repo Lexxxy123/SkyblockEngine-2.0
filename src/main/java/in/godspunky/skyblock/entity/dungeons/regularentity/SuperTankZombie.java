@@ -37,7 +37,7 @@ public class SuperTankZombie implements EntityFunction, EntityStatistics {
     }
 
     @Override
-    public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
+    public void onSpawn(LivingEntity entity, SEntity sEntity) {
         entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 98);
         entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1000000, 1));

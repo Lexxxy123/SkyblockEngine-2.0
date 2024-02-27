@@ -7,7 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 
 public class StrongDragon extends Dragon {
-    public StrongDragon(final World world) {
+    public StrongDragon(World world) {
         super(world, 1.4, (Range<Double>) Range.between((Comparable) 0.5, (Comparable) 0.8), 300L);
     }
 

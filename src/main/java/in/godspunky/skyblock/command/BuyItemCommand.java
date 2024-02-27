@@ -11,13 +11,13 @@ import in.godspunky.skyblock.util.Sputnik;
 @CommandParameters(description = "", aliases = "bcb", permission = "sse.cc")
 public class BuyItemCommand extends SCommand {
     @Override
-    public void run(final CommandSource sender, final String[] args) {
-        final Player player = sender.getPlayer();
+    public void run(CommandSource sender, String[] args) {
+        Player player = sender.getPlayer();
         if (player.isOp()) {
-            final int amount = Integer.parseInt(args[0]);
-            final PlayerInventory inv = player.getInventory();
+            int amount = Integer.parseInt(args[0]);
+            PlayerInventory inv = player.getInventory();
             for (int i = 0; i < amount; ++i) {
-                final ItemStack stack = SItem.of(SMaterial.HIDDEN_COMPRESSED_BITS).getStack();
+                ItemStack stack = SItem.of(SMaterial.HIDDEN_COMPRESSED_BITS).getStack();
                 Sputnik.smartGiveItem(stack, player);
             }
         } else {

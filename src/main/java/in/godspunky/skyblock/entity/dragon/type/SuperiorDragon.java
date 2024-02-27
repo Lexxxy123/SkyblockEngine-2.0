@@ -6,7 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 
 public class SuperiorDragon extends Dragon {
-    public SuperiorDragon(final World world) {
+    public SuperiorDragon(World world) {
         super(world, 1.6, DEFAULT_DAMAGE_DEGREE_RANGE, 300L);
     }
 

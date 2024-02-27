@@ -20,22 +20,22 @@ import java.util.List;
 
 public class EnderDragonPet2 extends Pet {
     @Override
-    public List<PetAbility> getPetAbilities(final SItem instance) {
-        final RarityValue<Double> enderianMul = new RarityValue<Double>(0.1, 0.2, 0.2, 0.3, 0.3, 0.3);
-        final RarityValue<Double> savvyMul = new RarityValue<Double>(0.0, 0.0, 0.4, 0.5, 0.5, 0.5);
-        final int level = getLevel(instance);
-        final BigDecimal endstrike = new BigDecimal(level * 0.25).setScale(1, RoundingMode.HALF_EVEN);
-        final BigDecimal aotd1 = new BigDecimal(level * 0.5).setScale(1, RoundingMode.HALF_EVEN);
-        final BigDecimal aotd2 = new BigDecimal(level * 0.3).setScale(1, RoundingMode.HALF_EVEN);
-        final BigDecimal buffstat = new BigDecimal(level * 0.1).setScale(2, RoundingMode.HALF_EVEN);
-        final List<PetAbility> abilities = new ArrayList<PetAbility>(Collections.singletonList(new PetAbility() {
+    public List<PetAbility> getPetAbilities(SItem instance) {
+        RarityValue<Double> enderianMul = new RarityValue<Double>(0.1, 0.2, 0.2, 0.3, 0.3, 0.3);
+        RarityValue<Double> savvyMul = new RarityValue<Double>(0.0, 0.0, 0.4, 0.5, 0.5, 0.5);
+        int level = getLevel(instance);
+        BigDecimal endstrike = new BigDecimal(level * 0.25).setScale(1, RoundingMode.HALF_EVEN);
+        BigDecimal aotd1 = new BigDecimal(level * 0.5).setScale(1, RoundingMode.HALF_EVEN);
+        BigDecimal aotd2 = new BigDecimal(level * 0.3).setScale(1, RoundingMode.HALF_EVEN);
+        BigDecimal buffstat = new BigDecimal(level * 0.1).setScale(2, RoundingMode.HALF_EVEN);
+        List<PetAbility> abilities = new ArrayList<PetAbility>(Collections.singletonList(new PetAbility() {
             @Override
             public String getName() {
                 return "End Strike";
             }
 
             @Override
-            public List<String> getDescription(final SItem instance) {
+            public List<String> getDescription(SItem instance) {
                 return Arrays.asList("Deal +" + ChatColor.GREEN + endstrike.toPlainString() + "%" + ChatColor.GRAY + " more damage to", "end mobs.");
             }
         }));
@@ -47,7 +47,7 @@ public class EnderDragonPet2 extends Pet {
                 }
 
                 @Override
-                public List<String> getDescription(final SItem instance) {
+                public List<String> getDescription(SItem instance) {
                     return Arrays.asList("Buffs the Aspect of the", "Dragons sword by " + ChatColor.GREEN + aotd1.toPlainString() + ChatColor.RED + " ❁", ChatColor.RED + "Damage" + ChatColor.GRAY + " and " + ChatColor.GREEN + aotd2.toPlainString() + ChatColor.RED + " ❁ Strength");
                 }
             });
@@ -60,7 +60,7 @@ public class EnderDragonPet2 extends Pet {
                 }
 
                 @Override
-                public List<String> getDescription(final SItem instance) {
+                public List<String> getDescription(SItem instance) {
                     return Collections.singletonList("Increases most stats by " + ChatColor.GREEN + buffstat.toPlainString() + "%");
                 }
             });
@@ -109,7 +109,7 @@ public class EnderDragonPet2 extends Pet {
     }
 
     @Override
-    public void particleBelowA(final Player p, final Location l) {
+    public void particleBelowA(Player p, Location l) {
         p.spigot().playEffect(l, Effect.LARGE_SMOKE, 21, 0, 0.1f, 0.0f, 0.1f, 0.01f, 1, 30);
         p.spigot().playEffect(l, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
     }

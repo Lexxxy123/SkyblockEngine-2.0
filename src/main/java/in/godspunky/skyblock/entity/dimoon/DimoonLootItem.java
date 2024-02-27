@@ -9,15 +9,15 @@ public class DimoonLootItem {
     private int amount;
     private boolean isRandomizedAmount;
 
-    public DimoonLootItem(final SItem item, final int chancePer, final int minimumWeight) {
+    public DimoonLootItem(SItem item, int chancePer, int minimumWeight) {
         this(item, 1, chancePer, minimumWeight, false);
     }
 
-    public DimoonLootItem(final SItem item, final int amount, final int chancePer, final int minimumWeight) {
+    public DimoonLootItem(SItem item, int amount, int chancePer, int minimumWeight) {
         this(item, amount, chancePer, minimumWeight, false);
     }
 
-    public DimoonLootItem(final SItem item, final int amount, final int chancePer, final int minimumWeight, final boolean randomAmount) {
+    public DimoonLootItem(SItem item, int amount, int chancePer, int minimumWeight, boolean randomAmount) {
         this.amount = 1;
         this.isRandomizedAmount = false;
         this.item = item;
@@ -43,7 +43,7 @@ public class DimoonLootItem {
         return this.amount;
     }
 
-    public void setAmount(final int amount) {
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 

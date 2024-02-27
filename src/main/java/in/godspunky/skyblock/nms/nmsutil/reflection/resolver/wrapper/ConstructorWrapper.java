@@ -6,27 +6,27 @@ import java.util.Objects;
 public class ConstructorWrapper<R> extends WrapperAbstract {
     private final Constructor<R> constructor;
 
-    public ConstructorWrapper(final Constructor<R> constructor) {
+    public ConstructorWrapper(Constructor<R> constructor) {
         this.constructor = constructor;
     }
 
     @Override
     public boolean exists() {
-        return this.constructor != null;
+        return null != this.constructor;
     }
 
-    public R newInstance(final Object... args) {
+    public R newInstance(Object... args) {
         try {
             return this.constructor.newInstance(args);
-        } catch (final Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public R newInstanceSilent(final Object... args) {
+    public R newInstanceSilent(Object... args) {
         try {
             return this.constructor.newInstance(args);
-        } catch (final Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -40,19 +40,19 @@ public class ConstructorWrapper<R> extends WrapperAbstract {
     }
 
     @Override
-    public boolean equals(final Object object) {
+    public boolean equals(Object object) {
         if (this == object) {
             return true;
         }
-        if (object == null || this.getClass() != object.getClass()) {
+        if (null == object || this.getClass() != object.getClass()) {
             return false;
         }
-        final ConstructorWrapper<?> that = (ConstructorWrapper<?>) object;
+        ConstructorWrapper<?> that = (ConstructorWrapper<?>) object;
         return Objects.equals(this.constructor, that.constructor);
     }
 
     @Override
     public int hashCode() {
-        return (this.constructor != null) ? this.constructor.hashCode() : 0;
+        return (null != this.constructor) ? this.constructor.hashCode() : 0;
     }
 }

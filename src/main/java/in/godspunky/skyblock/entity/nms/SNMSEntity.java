@@ -4,5 +4,5 @@ import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 
 public interface SNMSEntity {
-    LivingEntity spawn(final Location p0);
+    LivingEntity spawn(Location p0);
 }

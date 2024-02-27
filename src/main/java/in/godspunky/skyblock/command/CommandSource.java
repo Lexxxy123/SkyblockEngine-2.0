@@ -9,13 +9,13 @@ public class CommandSource {
     private final Player player;
     private final User user;
 
-    public CommandSource(final CommandSender sender) {
+    public CommandSource(CommandSender sender) {
         this.sender = sender;
         this.player = ((sender instanceof Player) ? (Player) sender : null);
-        this.user = ((this.player != null) ? User.getUser(this.player.getUniqueId()) : null);
+        this.user = ((null != this.player) ? User.getUser(this.player.getUniqueId()) : null);
     }
 
-    public void send(final String message) {
+    public void send(String message) {
         this.sender.sendMessage(message);
     }
 

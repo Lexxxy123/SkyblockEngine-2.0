@@ -4,10 +4,12 @@ class EIDGen {
     private static int lastIssuedEID;
 
     static int generateEID() {
-        return EIDGen.lastIssuedEID++;
+        int i = lastIssuedEID;
+        lastIssuedEID++;
+        return i;
     }
 
     static {
-        EIDGen.lastIssuedEID = 2000000000;
+        lastIssuedEID = 2000000000;
     }
 }

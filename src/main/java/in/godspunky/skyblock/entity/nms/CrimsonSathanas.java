@@ -43,7 +43,7 @@ public class CrimsonSathanas extends EntitySkeleton implements SNMSEntity, Entit
     private SEntity hologram_name;
     private final UUID spawnerUUID;
 
-    public CrimsonSathanas(final Integer tier, final UUID spawnerUUID) {
+    public CrimsonSathanas(Integer tier, UUID spawnerUUID) {
         super(((CraftWorld) Bukkit.getPlayer(spawnerUUID).getWorld()).getHandle());
         this.tier = tier;
         this.enraged = false;
@@ -52,7 +52,7 @@ public class CrimsonSathanas extends EntitySkeleton implements SNMSEntity, Entit
         this.Cooldown = true;
     }
 
-    public CrimsonSathanas(final World world) {
+    public CrimsonSathanas(World world) {
         super(world);
         this.tier = 1;
         this.enraged = false;
@@ -63,22 +63,22 @@ public class CrimsonSathanas extends EntitySkeleton implements SNMSEntity, Entit
 
     public void t_() {
         super.t_();
-        final Player player = Bukkit.getPlayer(this.spawnerUUID);
-        if (player == null) {
+        Player player = Bukkit.getPlayer(this.spawnerUUID);
+        if (null == player) {
             return;
         }
-        if (((Skeleton) this.bukkitEntity).getWorld() == player.getWorld() && this.getBukkitEntity().getLocation().distance(player.getLocation()) >= 20.0 && SUtil.random(0, 10) == 0) {
+        if (((Skeleton) this.bukkitEntity).getWorld() == player.getWorld() && 20.0 <= this.getBukkitEntity().getLocation().distance(player.getLocation()) && 0 == SUtil.random(0, 10)) {
             this.getBukkitEntity().teleport(player.getLocation());
         }
-        final LivingEntity e = (LivingEntity) this.getBukkitEntity();
+        LivingEntity e = (LivingEntity) this.getBukkitEntity();
         if (System.currentTimeMillis() > this.end) {
             User.getUser(player.getUniqueId()).failSlayerQuest();
             ((Skeleton) this.bukkitEntity).remove();
             this.hologram.remove();
             return;
         }
-        final Entity entity = this.getBukkitEntity().getHandle();
-        final double height = entity.getBoundingBox().e - entity.getBoundingBox().b;
+        Entity entity = this.getBukkitEntity().getHandle();
+        double height = entity.getBoundingBox().e - entity.getBoundingBox().b;
         this.hologram_name.getEntity().teleport(this.getBukkitEntity().getLocation().clone().add(0.0, height, 0.0));
         this.hologram_name.getEntity().setCustomName(Sputnik.trans(Sputnik.entityNameTag((LivingEntity) this.getBukkitEntity(), Sputnik.buildcustomString(this.getEntityName(), 0, true))));
         this.hologram.getEntity().teleport(this.getBukkitEntity().getLocation().clone().add(0.0, 2.3, 0.0));
@@ -88,7 +88,7 @@ public class CrimsonSathanas extends EntitySkeleton implements SNMSEntity, Entit
             this.hologram.getEntity().setCustomName(ChatColor.DARK_RED + "ENRAGED " + ChatColor.RED + SUtil.getFormattedTime(this.end - System.currentTimeMillis(), 1000));
         }
         ((Skeleton) this.bukkitEntity).setTarget(player);
-        if (this.tier >= 3 && !this.enraged && SUtil.random(0, 20) == 0 && !this.Cooldown) {
+        if (3 <= this.tier && !this.enraged && 0 == SUtil.random(0, 20) && !this.Cooldown) {
             this.enraged = true;
             this.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).setValue(this.getMovementSpeed());
             this.hologram.getEntity().setCustomName(ChatColor.DARK_RED + "" + ChatColor.RED + SUtil.getFormattedTime(this.end - System.currentTimeMillis(), 1000));
@@ -102,7 +102,7 @@ public class CrimsonSathanas extends EntitySkeleton implements SNMSEntity, Entit
                 }
             }.runTaskLater(SkyBlock.getPlugin(), 200L);
         }
-        if (this.tier >= 3 && !this.raged && SUtil.random(0, 200) == 0 && !this.Cooldown) {
+        if (3 <= this.tier && !this.raged && 0 == SUtil.random(0, 200) && !this.Cooldown) {
             this.raged = true;
             this.Cooldown = true;
             e.getEquipment().setChestplate(SUtil.enchant(SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_CHESTPLATE), Color.fromRGB(12451840))));
@@ -122,7 +122,7 @@ public class CrimsonSathanas extends EntitySkeleton implements SNMSEntity, Entit
         }
     }
 
-    public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
+    public void onSpawn(LivingEntity entity, SEntity sEntity) {
         ((Skeleton) entity).setSkeletonType(Skeleton.SkeletonType.WITHER);
         SUtil.delay(() -> this.Cooldown = false, 400L);
         entity.setMetadata("BOSS_OWNER_" + Bukkit.getPlayer(this.getSpawnerUUID()).getUniqueId().toString(), new FixedMetadataValue(SkyBlock.getPlugin(), true));
@@ -134,8 +134,8 @@ public class CrimsonSathanas extends EntitySkeleton implements SNMSEntity, Entit
         entity.setMetadata("notDisplay", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         this.hologram_name = new SEntity(entity.getLocation().add(0.0, 2.0, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND);
         ((ArmorStand) this.hologram_name.getEntity()).setVisible(false);
-        final Entity e = this.getBukkitEntity().getHandle();
-        final double height = e.getBoundingBox().e - e.getBoundingBox().b;
+        Entity e = this.getBukkitEntity().getHandle();
+        double height = e.getBoundingBox().e - e.getBoundingBox().b;
         ((ArmorStand) this.hologram_name.getEntity()).setGravity(false);
         this.hologram_name.getEntity().setCustomNameVisible(true);
         new BukkitRunnable() {
@@ -144,22 +144,22 @@ public class CrimsonSathanas extends EntitySkeleton implements SNMSEntity, Entit
                     this.cancel();
                     return;
                 }
-                final Player player = Bukkit.getPlayer(CrimsonSathanas.this.spawnerUUID);
-                if (player == null) {
+                Player player = Bukkit.getPlayer(CrimsonSathanas.this.spawnerUUID);
+                if (null == player) {
                     return;
                 }
                 player.damage(CrimsonSathanas.this.getDamageDealt() * 0.5, entity);
             }
         }.runTaskTimer(SkyBlock.getPlugin(), 60L, 60L);
-        if (this.tier >= 2) {
+        if (2 <= this.tier) {
             new BukkitRunnable() {
                 public void run() {
                     if (entity.isDead()) {
                         this.cancel();
                         return;
                     }
-                    final Player player = Bukkit.getPlayer(CrimsonSathanas.this.spawnerUUID);
-                    if (player == null) {
+                    Player player = Bukkit.getPlayer(CrimsonSathanas.this.spawnerUUID);
+                    if (null == player) {
                         return;
                     }
                     player.damage(CrimsonSathanas.this.getDamageDealt(), entity);
@@ -177,7 +177,7 @@ public class CrimsonSathanas extends EntitySkeleton implements SNMSEntity, Entit
         }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
     }
 
-    public void onDeath(final SEntity sEntity, final org.bukkit.entity.Entity killed, final org.bukkit.entity.Entity damager) {
+    public void onDeath(SEntity sEntity, org.bukkit.entity.Entity killed, org.bukkit.entity.Entity damager) {
         this.hologram.remove();
         SUtil.delay(() -> this.hologram_name.remove(), 20L);
     }
@@ -187,30 +187,30 @@ public class CrimsonSathanas extends EntitySkeleton implements SNMSEntity, Entit
     }
 
     public double getEntityMaxHealth() {
-        return CrimsonSathanas.MAX_HEALTH_VALUES.getByNumber(this.tier);
+        return MAX_HEALTH_VALUES.getByNumber(this.tier);
     }
 
     public double getDamageDealt() {
-        return CrimsonSathanas.DAMAGE_VALUES.getByNumber(this.tier);
+        return DAMAGE_VALUES.getByNumber(this.tier);
     }
 
     public double getMovementSpeed() {
-        return CrimsonSathanas.SPEED_VALUES.getByNumber(this.tier);
+        return SPEED_VALUES.getByNumber(this.tier);
     }
 
     public SEntityEquipment getEntityEquipment() {
         return new SEntityEquipment(new ItemStack(Material.DIAMOND_HOE), SUtil.getSkullURLStack("stack", "e7a39afc3a93652b6ea36925f81b45a4b8235f170cf2c541688f1c3fbbb594e6", 1), buildColorStack(0), new ItemStack(Material.CHAINMAIL_LEGGINGS), new ItemStack(Material.IRON_BOOTS));
     }
 
-    public static ItemStack buildColorStack(final int hexcolor) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
+    public static ItemStack buildColorStack(int hexcolor) {
+        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB(hexcolor));
+        ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
         return stack;
     }
 
-    public LivingEntity spawn(final Location location) {
+    public LivingEntity spawn(Location location) {
         this.world = ((CraftWorld) location.getWorld()).getHandle();
         this.setPosition(location.getX(), location.getY(), location.getZ());
         this.world.addEntity(this, CreatureSpawnEvent.SpawnReason.CUSTOM);
@@ -218,24 +218,24 @@ public class CrimsonSathanas extends EntitySkeleton implements SNMSEntity, Entit
     }
 
     public List<EntityDrop> drops() {
-        final List<EntityDrop> drops = new ArrayList<EntityDrop>();
+        List<EntityDrop> drops = new ArrayList<EntityDrop>();
         int revFlesh = SUtil.random(1, 3);
-        if (this.tier == 2) {
+        if (2 == this.tier) {
             revFlesh = SUtil.random(9, 18);
         }
-        if (this.tier == 3) {
+        if (3 == this.tier) {
             revFlesh = SUtil.random(30, 50);
         }
-        if (this.tier == 4) {
+        if (4 == this.tier) {
             revFlesh = SUtil.random(50, 64);
         }
         drops.add(new EntityDrop(SUtil.setStackAmount(SItem.of(SMaterial.REVENANT_FLESH).getStack(), revFlesh), EntityDropType.GUARANTEED, 1.0));
-        if (this.tier >= 2) {
+        if (2 <= this.tier) {
             int foulFlesh = 1;
-            if (this.tier == 3) {
+            if (3 == this.tier) {
                 foulFlesh = SUtil.random(1, 2);
             }
-            if (this.tier == 4) {
+            if (4 == this.tier) {
                 foulFlesh = SUtil.random(2, 3);
             }
             drops.add(new EntityDrop(SUtil.setStackAmount(SItem.of(SMaterial.FOUL_FLESH).getStack(), foulFlesh), EntityDropType.OCCASIONAL, 0.2));
@@ -243,20 +243,20 @@ public class CrimsonSathanas extends EntitySkeleton implements SNMSEntity, Entit
             drops.add(new EntityDrop(SMaterial.UNDEAD_CATALYST, EntityDropType.EXTRAORDINARILY_RARE, 0.01));
             drops.add(new EntityDrop(SMaterial.REVENANT_CATALYST, EntityDropType.EXTRAORDINARILY_RARE, 0.01));
         }
-        if (this.tier >= 3) {
-            final SItem smiteBook = SItem.of(SMaterial.ENCHANTED_BOOK);
+        if (3 <= this.tier) {
+            SItem smiteBook = SItem.of(SMaterial.ENCHANTED_BOOK);
             smiteBook.addEnchantment(EnchantmentType.SMITE, 6);
             drops.add(new EntityDrop(smiteBook.getStack(), EntityDropType.EXTRAORDINARILY_RARE, 0.01));
             drops.add(new EntityDrop(SMaterial.BEHEADED_HORROR, EntityDropType.CRAZY_RARE, 0.005));
         }
-        if (this.tier >= 4) {
+        if (4 <= this.tier) {
             drops.add(new EntityDrop(SMaterial.SNAKE_RUNE, EntityDropType.CRAZY_RARE, 0.005));
             drops.add(new EntityDrop(SMaterial.SCYTHE_BLADE, EntityDropType.CRAZY_RARE, 5.384615384615384E-4));
         }
         return drops;
     }
 
-    public void startLoop(final org.bukkit.entity.Entity e) {
+    public void startLoop(org.bukkit.entity.Entity e) {
         new BukkitRunnable() {
             float cout = e.getLocation().getYaw();
             final int i = 0;
@@ -266,7 +266,7 @@ public class CrimsonSathanas extends EntitySkeleton implements SNMSEntity, Entit
                     this.cancel();
                     return;
                 }
-                final Location loc = e.getLocation();
+                Location loc = e.getLocation();
                 loc.setYaw(this.cout);
                 loc.setPitch(0.0f);
                 loc.add(loc.getDirection().normalize().multiply(0.6));
@@ -282,10 +282,10 @@ public class CrimsonSathanas extends EntitySkeleton implements SNMSEntity, Entit
                 }
                 e.getWorld().spigot().playEffect(loc, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                 e.getWorld().spigot().playEffect(loc.clone().add(0.0, 0.6, 0.0), Effect.MAGIC_CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
-                if (stage >= 2) {
+                if (2 <= stage) {
                     e.getWorld().spigot().playEffect(loc.clone().add(0.0, 1.2, 0.0), Effect.MAGIC_CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                 }
-                if (stage == 3) {
+                if (3 == stage) {
                     e.getWorld().spigot().playEffect(loc.clone().add(0.0, 1.8, 0.0), Effect.MAGIC_CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                 }
                 this.cout += 18.0f;

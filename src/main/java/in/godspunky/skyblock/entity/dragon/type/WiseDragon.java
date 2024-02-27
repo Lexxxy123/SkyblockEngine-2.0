@@ -6,7 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 
 public class WiseDragon extends Dragon {
-    public WiseDragon(final World world) {
+    public WiseDragon(World world) {
         super(world, 1.4, Dragon.DEFAULT_DAMAGE_DEGREE_RANGE, 200L);
     }
 

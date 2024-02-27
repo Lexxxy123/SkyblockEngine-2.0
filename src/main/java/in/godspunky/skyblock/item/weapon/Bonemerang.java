@@ -76,25 +76,25 @@ public class Bonemerang implements ToolStatistics, MaterialFunction, Ability {
     }
 
     @Override
-    public void onAbilityUse(final Player player, final SItem sItem) {
+    public void onAbilityUse(Player player, SItem sItem) {
         if (player.getInventory().getItemInHand().toString().contains("GHAST_TEAR")) {
             return;
         }
-        final int slot = player.getInventory().getHeldItemSlot();
+        int slot = player.getInventory().getHeldItemSlot();
         this.slotThrew = player.getInventory().getHeldItemSlot();
-        final ItemStack item = player.getInventory().getItemInHand();
-        final net.minecraft.server.v1_8_R3.ItemStack tagStack = CraftItemStack.asNMSCopy(item);
-        final NBTTagCompound tagCompound = tagStack.hasTag() ? tagStack.getTag() : new NBTTagCompound();
+        ItemStack item = player.getInventory().getItemInHand();
+        net.minecraft.server.v1_8_R3.ItemStack tagStack = CraftItemStack.asNMSCopy(item);
+        NBTTagCompound tagCompound = tagStack.hasTag() ? tagStack.getTag() : new NBTTagCompound();
         tagCompound.set("ejectedBonemerang", new NBTTagInt(0));
         tagStack.setTag(tagCompound);
         this.releaseBone(player, item, slot);
-        final ItemStack bone = player.getInventory().getItemInHand();
+        ItemStack bone = player.getInventory().getItemInHand();
         final boolean activate = true;
         player.playSound(player.getLocation(), Sound.SKELETON_HURT, 3.0f, 2.0f);
-        if (this.Activable == "true") {
-            final Player bukkitPlayer = player.getPlayer();
-            final ArmorStand stand = (ArmorStand) bukkitPlayer.getWorld().spawnEntity(bukkitPlayer.getLocation().add(0.0, 0.7, 0.0), EntityType.ARMOR_STAND);
-            final Vector teleportTo = bukkitPlayer.getLocation().getDirection().normalize().multiply(1);
+        if ("true" == this.Activable) {
+            Player bukkitPlayer = player.getPlayer();
+            ArmorStand stand = (ArmorStand) bukkitPlayer.getWorld().spawnEntity(bukkitPlayer.getLocation().add(0.0, 0.7, 0.0), EntityType.ARMOR_STAND);
+            Vector teleportTo = bukkitPlayer.getLocation().getDirection().normalize().multiply(1);
             stand.setVisible(false);
             stand.setGravity(false);
             stand.setArms(false);
@@ -102,8 +102,8 @@ public class Bonemerang implements ToolStatistics, MaterialFunction, Ability {
             stand.getEquipment().setItemInHand(SItem.of(SMaterial.BONE).getStack());
             stand.setRightArmPose(new EulerAngle(Math.toRadians(350.0), Math.toRadians(120.0), Math.toRadians(0.0)));
             stand.setBasePlate(false);
-            final List<Entity> goBone = new ArrayList<Entity>();
-            final List<Entity> backBone = new ArrayList<Entity>();
+            List<Entity> goBone = new ArrayList<Entity>();
+            List<Entity> backBone = new ArrayList<Entity>();
             new BukkitRunnable() {
                 public int ran = 0;
                 final int slot1 = player.getInventory().getHeldItemSlot();
@@ -111,20 +111,20 @@ public class Bonemerang implements ToolStatistics, MaterialFunction, Ability {
 
                 public void run() {
                     ++this.ran;
-                    final int slot1 = player.getInventory().getHeldItemSlot();
-                    if (this.ran == 26) {
+                    int slot1 = player.getInventory().getHeldItemSlot();
+                    if (26 == this.ran) {
                         Bonemerang.this.returnBone(player, item, slot);
                         User.getUser(player.getUniqueId()).setBoneToZeroDamage(false);
                         stand.remove();
                         this.cancel();
                         return;
                     }
-                    final int i = this.ran;
+                    int i = this.ran;
                     final int num = 120;
                     Location loc = null;
-                    int angle;
-                    boolean back;
-                    if (i < 13) {
+                    final int angle;
+                    final boolean back;
+                    if (13 > i) {
                         angle = i * 20 + num;
                         back = false;
                     } else {
@@ -133,9 +133,9 @@ public class Bonemerang implements ToolStatistics, MaterialFunction, Ability {
                         loc = player.getLocation();
                         loc.setDirection(teleportTo);
                     }
-                    final Location locof = stand.getLocation();
+                    Location locof = stand.getLocation();
                     locof.setY(locof.getY() + 1.0);
-                    if (locof.getBlock().getType() != Material.AIR && locof.getBlock().getType() != Material.WATER) {
+                    if (Material.AIR != locof.getBlock().getType() && Material.WATER != locof.getBlock().getType()) {
                         stand.getWorld().playEffect(stand.getLocation(), Effect.EXPLOSION, 1);
                         stand.getWorld().playEffect(stand.getLocation(), Effect.EXPLOSION, 1);
                         stand.getWorld().playEffect(stand.getLocation(), Effect.EXPLOSION, 1);
@@ -155,17 +155,17 @@ public class Bonemerang implements ToolStatistics, MaterialFunction, Ability {
                         return;
                     }
                     stand.setRightArmPose(new EulerAngle(Math.toRadians(0.0), Math.toRadians(angle), Math.toRadians(350.0)));
-                    if (i % 2 == 0 && i < 13) {
+                    if (0 == i % 2 && 13 > i) {
                         stand.teleport(stand.getLocation().add(teleportTo).multiply(1.0));
                         stand.teleport(stand.getLocation().add(teleportTo).multiply(1.0));
-                    } else if (i % 2 == 0) {
+                    } else if (0 == i % 2) {
                         stand.getWorld().spigot().playEffect(stand.getEyeLocation().add(0.0, 1.0, 0.0).clone().add(SUtil.random(-0.5, 0.5), 0.0, SUtil.random(-0.5, 0.5)), Effect.FLYING_GLYPH, 24, 1, 0.0f, 0.0f, 0.0f, 1.0f, 0, 64);
                         stand.teleport(stand.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                         stand.teleport(stand.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                     }
-                    for (final Entity e : stand.getNearbyEntities(1.0, 1.0, 1.0)) {
+                    for (Entity e : stand.getNearbyEntities(1.0, 1.0, 1.0)) {
                         if (e instanceof LivingEntity && e != player.getPlayer()) {
-                            final Damageable entity = (Damageable) e;
+                            Damageable entity = (Damageable) e;
                             if (!back && goBone.contains(e)) {
                                 continue;
                             }
@@ -197,11 +197,11 @@ public class Bonemerang implements ToolStatistics, MaterialFunction, Ability {
                                 continue;
                             }
                             final double decr = 1.0;
-                            final User user = User.getUser(player.getUniqueId());
+                            User user = User.getUser(player.getUniqueId());
                             if (user.toBukkitPlayer().getInventory().getHeldItemSlot() != Bonemerang.this.slotThrew) {
                                 user.setBoneToZeroDamage(true);
                             }
-                            final Object[] atp = Sputnik.calculateDamage(player, player, sItem.getStack(), (LivingEntity) entity, true);
+                            Object[] atp = Sputnik.calculateDamage(player, player, sItem.getStack(), (LivingEntity) entity, true);
                             double finalDamage1 = (float) atp[0] * (back ? 2 : 1) * decr;
                             double rm = 100.0;
                             if (User.getUser(player.getUniqueId()).isBoneToZeroDamage()) {
@@ -231,27 +231,27 @@ public class Bonemerang implements ToolStatistics, MaterialFunction, Ability {
         }
     }
 
-    public void releaseBone(final Player player, final ItemStack stack, final Integer slot) {
-        final net.minecraft.server.v1_8_R3.ItemStack tagStack = CraftItemStack.asNMSCopy(stack);
-        final NBTTagCompound tagCompound = tagStack.hasTag() ? tagStack.getTag() : new NBTTagCompound();
+    public void releaseBone(Player player, ItemStack stack, Integer slot) {
+        net.minecraft.server.v1_8_R3.ItemStack tagStack = CraftItemStack.asNMSCopy(stack);
+        NBTTagCompound tagCompound = tagStack.hasTag() ? tagStack.getTag() : new NBTTagCompound();
         tagCompound.set("ejectedBonemerang", new NBTTagInt(1));
         tagStack.setTag(tagCompound);
-        final ItemStack itemStack = CraftItemStack.asBukkitCopy(tagStack);
-        if (tagStack.getTag().getInt("ejectedBonemerang") == 1) {
+        ItemStack itemStack = CraftItemStack.asBukkitCopy(tagStack);
+        if (1 == tagStack.getTag().getInt("ejectedBonemerang")) {
             itemStack.setType(Material.GHAST_TEAR);
             player.getInventory().setItem(slot, itemStack);
         }
     }
 
-    public void returnBone(final Player player, final ItemStack stack, final Integer slot) {
-        final net.minecraft.server.v1_8_R3.ItemStack tagStack = CraftItemStack.asNMSCopy(stack);
-        final NBTTagCompound tagCompound = tagStack.hasTag() ? tagStack.getTag() : new NBTTagCompound();
+    public void returnBone(Player player, ItemStack stack, Integer slot) {
+        net.minecraft.server.v1_8_R3.ItemStack tagStack = CraftItemStack.asNMSCopy(stack);
+        NBTTagCompound tagCompound = tagStack.hasTag() ? tagStack.getTag() : new NBTTagCompound();
         tagCompound.set("ejectedBonemerang", new NBTTagInt(0));
         tagStack.setTag(tagCompound);
-        final SItem sitem = SItem.find(player.getInventory().getItem(slot));
-        if (sitem != null && sitem.getType() == SMaterial.BONEMERANG && sitem.getDataString("uuid").equals(SItem.find(stack).getDataString("uuid"))) {
-            final ItemStack itemStack = CraftItemStack.asBukkitCopy(tagStack);
-            if (tagStack.getTag().getInt("ejectedBonemerang") == 0) {
+        SItem sitem = SItem.find(player.getInventory().getItem(slot));
+        if (null != sitem && SMaterial.BONEMERANG == sitem.getType() && sitem.getDataString("uuid").equals(SItem.find(stack).getDataString("uuid"))) {
+            ItemStack itemStack = CraftItemStack.asBukkitCopy(tagStack);
+            if (0 == tagStack.getTag().getInt("ejectedBonemerang")) {
                 itemStack.setType(Material.BONE);
                 player.getInventory().setItem(slot, itemStack);
             }

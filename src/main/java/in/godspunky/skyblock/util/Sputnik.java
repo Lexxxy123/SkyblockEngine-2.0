@@ -1450,7 +1450,7 @@ public class Sputnik {
                 vec3d2 = vec3d2.a(-pitch * 3.141593f / 180.0f);
                 vec3d2 = vec3d2.b(-yaw * 3.141593f / 180.0f);
                 vec3d2 = vec3d2.add(l.getX(), l.getY() + 1.690000057220459, l.getZ());
-                sendPacket(e.getWorld(), new PacketPlayOutWorldParticles(EnumParticle.ITEM_CRACK, true, (float) vec3d2.a, (float) vec3d2.b, (float) vec3d2.c, (float) vec3d.a, (float) ((float) vec3d.b + 0.05), (float) vec3d.c, 0.75f, 0, new int[]{Item.getId(itemstack.getItem()), itemstack.getData()}));
+                sendPacket(e.getWorld(), new PacketPlayOutWorldParticles(EnumParticle.ITEM_CRACK, true, (float) vec3d2.a, (float) vec3d2.b, (float) vec3d2.c, (float) vec3d.a, (float) ((float) vec3d.b + 0.05), (float) vec3d.c, 0.75f, 0, Item.getId(itemstack.getItem()), itemstack.getData()));
             }
             e.getWorld().playSound(l, Sound.EAT, 0.5f + 0.5f * random.nextInt(2), (random.nextFloat() - random.nextFloat()) * 0.2f + 1.0f);
         }

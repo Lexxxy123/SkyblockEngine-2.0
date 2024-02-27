@@ -12,32 +12,32 @@ import in.godspunky.skyblock.util.SUtil;
 
 public abstract class BaseEnderman implements EndermanStatistics, EntityFunction {
     @Override
-    public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
+    public void onDeath(SEntity sEntity, Entity killed, Entity damager) {
         if (!(damager instanceof Player)) {
             return;
         }
-        final Player player = (Player) damager;
-        final User user = User.getUser(player.getUniqueId());
-        final SlayerQuest quest = user.getSlayerQuest();
-        if (quest == null) {
+        Player player = (Player) damager;
+        User user = User.getUser(player.getUniqueId());
+        SlayerQuest quest = user.getSlayerQuest();
+        if (null == quest) {
             return;
         }
-        if (quest.getSpawned() != 0L) {
+        if (0L != quest.getSpawned()) {
             return;
         }
-        if (quest.getType().getName() == "Voidgloom Seraph") {
-            final Location k = killed.getLocation().clone();
-            if (SUtil.random(0, 8) == 0 && quest.getType().getTier() == 3) {
+        if ("Voidgloom Seraph" == quest.getType().getName()) {
+            Location k = killed.getLocation().clone();
+            if (0 == SUtil.random(0, 8) && 3 == quest.getType().getTier()) {
                 SlayerQuest.playMinibossSpawn(k, player);
                 SUtil.delay(() -> new SEntity(k, SEntityType.VOIDLING_DEVOTEE).setTarget(player), 12L);
                 return;
             }
-            if (SUtil.random(0, 16) == 0 && quest.getType().getTier() == 4) {
+            if (0 == SUtil.random(0, 16) && 4 == quest.getType().getTier()) {
                 SlayerQuest.playMinibossSpawn(k, player);
                 SUtil.delay(() -> new SEntity(k, SEntityType.VOIDLING_RADICAL).setTarget(player), 12L);
                 return;
             }
-            if (SUtil.random(0, 45) == 0 && quest.getType().getTier() == 4) {
+            if (0 == SUtil.random(0, 45) && 4 == quest.getType().getTier()) {
                 SlayerQuest.playMinibossSpawn(k, player);
                 SUtil.delay(() -> new SEntity(k, SEntityType.VOIDCRAZED_MANIAC).setTarget(player), 12L);
             }

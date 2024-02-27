@@ -23,13 +23,13 @@ public interface EnchantedMaterialStatistics extends MaterialStatistics {
     }
 
     default void load() {
-        if (this.getBlockCraftingMaterial() != null && this.getBlockResult() != null) {
+        if (null != this.getBlockCraftingMaterial() && null != this.getBlockResult()) {
             createRecipe(new MaterialQuantifiable(this.getBlockCraftingMaterial(), this.getCraftingRequiredAmount()), this.getBlockResult());
         }
         createRecipe(new MaterialQuantifiable(this.getCraftingMaterial(), this.getCraftingRequiredAmount()), this.getResult());
     }
 
-    default void createRecipe(final MaterialQuantifiable material, final MaterialQuantifiable result) {
+    default void createRecipe(MaterialQuantifiable material, MaterialQuantifiable result) {
         new ShapelessRecipe(result.getMaterial(), result.getAmount()).add(material).add(material).add(material).add(material).add(material);
     }
 }

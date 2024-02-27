@@ -36,41 +36,41 @@ public abstract class SCommand implements CommandExecutor, TabCompleter {
         this.command = new SECommand(this);
     }
 
-    public abstract void run(final CommandSource p0, final String[] p1);
+    public abstract void run(CommandSource p0, String[] p1);
 
-    public boolean onCommand(final CommandSender sender, final Command command, final String label, final String[] args) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         return false;
     }
 
-    public List<String> onTabComplete(final CommandSender sender, final Command command, final String alias, final String[] args) {
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         return null;
     }
 
     public void register() {
-        SCommand.plugin.commandMap.register("", this.command);
+        plugin.commandMap.register("", this.command);
     }
 
-    public void send(final String message, final CommandSource sender) {
+    public void send(String message, CommandSource sender) {
         sender.send(ChatColor.GRAY + message);
     }
 
-    public void send(final String message) {
+    public void send(String message) {
         this.send(Sputnik.trans(message), this.sender);
     }
 
-    public void send(final String message, final Player player) {
+    public void send(String message, Player player) {
         player.sendMessage(ChatColor.GRAY + message);
     }
 
-    public void checkPermission(final String permission) {
+    public void checkPermission(String permission) {
         if (!this.sender.getSender().hasPermission(permission)) {
             throw new CommandPermissionException(permission);
         }
     }
 
-    public Player getNonNullPlayer(final String name) {
-        final Player player = Bukkit.getPlayer(name);
-        if (player == null) {
+    public Player getNonNullPlayer(String name) {
+        Player player = Bukkit.getPlayer(name);
+        if (null == player) {
             throw new PlayerNotFoundException();
         }
         return player;
@@ -83,33 +83,33 @@ public abstract class SCommand implements CommandExecutor, TabCompleter {
     private static class SECommand extends Command {
         private final SCommand sc;
 
-        public SECommand(final SCommand xc) {
+        public SECommand(SCommand xc) {
             super(xc.name, xc.description, xc.usage, xc.aliases);
             this.setPermission(xc.permission);
             this.setPermissionMessage(ChatColor.RED + "No permission. You need \"" + xc.permission + "\"");
             this.sc = xc;
         }
 
-        public boolean execute(final CommandSender sender, final String commandLabel, final String[] args) {
+        public boolean execute(CommandSender sender, String commandLabel, String[] args) {
             this.sc.sender = new CommandSource(sender);
             try {
                 this.sc.run(this.sc.sender, args);
                 return true;
-            } catch (final CommandFailException | CommandPermissionException | PlayerNotFoundException ex) {
+            } catch (CommandFailException | CommandPermissionException | PlayerNotFoundException ex) {
                 sender.sendMessage(ex.getMessage());
                 return true;
-            } catch (final CommandArgumentException ex2) {
+            } catch (CommandArgumentException ex2) {
                 return false;
-            } catch (final Exception ex3) {
+            } catch (Exception ex3) {
                 sender.sendMessage(ChatColor.RED + "Error! " + ex3.getMessage());
                 ex3.printStackTrace();
                 return true;
             }
         }
 
-        public List<String> tabComplete(final CommandSender sender, final String alias, final String[] args) {
-            final List<String> tc = this.sc.onTabComplete(sender, this, alias, args);
-            if (tc != null) {
+        public List<String> tabComplete(CommandSender sender, String alias, String[] args) {
+            List<String> tc = this.sc.onTabComplete(sender, this, alias, args);
+            if (null != tc) {
                 return tc;
             }
             return SUtil.getPlayerNameList();

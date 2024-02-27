@@ -10,14 +10,14 @@ public class PListener implements Listener {
     protected PListener() {
         this.plugin = SkyBlock.getPlugin();
         this.plugin.getServer().getPluginManager().registerEvents(this, this.plugin);
-        ++PListener.amount;
+        ++amount;
     }
 
     public static int getAmount() {
-        return PListener.amount;
+        return amount;
     }
 
     static {
-        PListener.amount = 0;
+        amount = 0;
     }
 }

@@ -985,7 +985,7 @@ public enum SMaterial {
     private final boolean craft;
     private final String baseName;
 
-    SMaterial(final Material craftMaterial, final short data, final Class<?> clazz, final boolean craft, final String baseName) {
+    SMaterial(Material craftMaterial, short data, Class<?> clazz, boolean craft, String baseName) {
         this.craftMaterial = craftMaterial;
         this.data = data;
         this.clazz = clazz;
@@ -993,44 +993,44 @@ public enum SMaterial {
         this.baseName = baseName;
     }
 
-    SMaterial(final Material craftMaterial, final short data, final Class<?> clazz, final boolean craft) {
+    SMaterial(Material craftMaterial, short data, Class<?> clazz, boolean craft) {
         this(craftMaterial, data, clazz, craft, null);
     }
 
-    SMaterial(final Material craftMaterial, final Class<?> clazz, final boolean craft) {
+    SMaterial(Material craftMaterial, Class<?> clazz, boolean craft) {
         this(craftMaterial, (short) 0, clazz, craft);
     }
 
-    SMaterial(final Material craftMaterial, final Class<?> clazz) {
+    SMaterial(Material craftMaterial, Class<?> clazz) {
         this(craftMaterial, clazz, false);
     }
 
-    SMaterial(final Material craftMaterial, final Class<?> clazz, final short data) {
+    SMaterial(Material craftMaterial, Class<?> clazz, short data) {
         this(craftMaterial, data, clazz, false);
     }
 
-    SMaterial(final Material craftMaterial, final short data, final String baseName) {
+    SMaterial(Material craftMaterial, short data, String baseName) {
         this(craftMaterial, data, null, true, baseName);
     }
 
-    SMaterial(final Material craftMaterial) {
+    SMaterial(Material craftMaterial) {
         this(craftMaterial, null, true);
     }
 
-    public static SMaterial getMaterial(final String name) {
+    public static SMaterial getMaterial(String name) {
         try {
             return valueOf(name.toUpperCase());
-        } catch (final IllegalArgumentException ex) {
+        } catch (IllegalArgumentException ex) {
             return null;
         }
     }
 
-    public static SMaterial getSpecEquivalent(final Material material, short data) {
-        if (material == Material.LOG || material == Material.LOG_2 || material == Material.LEAVES || material == Material.LEAVES_2) {
+    public static SMaterial getSpecEquivalent(Material material, short data) {
+        if (Material.LOG == material || Material.LOG_2 == material || Material.LEAVES == material || Material.LEAVES_2 == material) {
             data %= 4;
         }
-        final List<SMaterial> results = Arrays.stream(values()).filter(m -> m.craft && m.getCraftMaterial() == material).collect(Collectors.toList());
-        for (final SMaterial result : results) {
+        List<SMaterial> results = Arrays.stream(values()).filter(m -> m.craft && m.getCraftMaterial() == material).collect(Collectors.toList());
+        for (SMaterial result : results) {
             if (result.data == data) {
                 return result;
             }
@@ -1041,35 +1041,35 @@ public enum SMaterial {
         return results.get(0);
     }
 
-    public static <T extends ArmorSet> T registerArmorSet(final Class<? extends ArmorSet> set) {
+    public static <T extends ArmorSet> T registerArmorSet(Class<? extends ArmorSet> set) {
         try {
-            final ArmorSet s = set.newInstance();
-            SMaterial.CACHED_SETS.add(s);
+            ArmorSet s = set.newInstance();
+            CACHED_SETS.add(s);
             return (T) s;
-        } catch (final InstantiationException | IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public static ArmorSet findArmorSet(final SMaterial helmet, final SMaterial chestplate, final SMaterial leggings, final SMaterial boots) {
-        final List<ArmorSet> subList = SMaterial.CACHED_SETS.stream().filter(s -> s.getHelmet().equals(helmet.getStatistics().getClass()) && s.getChestplate().equals(chestplate.getStatistics().getClass()) && s.getLeggings().equals(leggings.getStatistics().getClass()) && s.getBoots().equals(boots.getStatistics().getClass())).collect(Collectors.toList());
-        if (subList.size() == 0) {
+    public static ArmorSet findArmorSet(SMaterial helmet, SMaterial chestplate, SMaterial leggings, SMaterial boots) {
+        List<ArmorSet> subList = CACHED_SETS.stream().filter(s -> s.getHelmet().equals(helmet.getStatistics().getClass()) && s.getChestplate().equals(chestplate.getStatistics().getClass()) && s.getLeggings().equals(leggings.getStatistics().getClass()) && s.getBoots().equals(boots.getStatistics().getClass())).collect(Collectors.toList());
+        if (0 == subList.size()) {
             return null;
         }
         return subList.get(0);
     }
 
-    public static ArmorSet findArmorSet(final SMaterial piece) {
-        final List<ArmorSet> subList = SMaterial.CACHED_SETS.stream().filter(s -> s.getHelmet().equals(piece.getStatistics().getClass()) || s.getChestplate().equals(piece.getStatistics().getClass()) || s.getLeggings().equals(piece.getStatistics().getClass()) || s.getBoots().equals(piece.getStatistics().getClass())).collect(Collectors.toList());
-        if (subList.size() == 0) {
+    public static ArmorSet findArmorSet(SMaterial piece) {
+        List<ArmorSet> subList = CACHED_SETS.stream().filter(s -> s.getHelmet().equals(piece.getStatistics().getClass()) || s.getChestplate().equals(piece.getStatistics().getClass()) || s.getLeggings().equals(piece.getStatistics().getClass()) || s.getBoots().equals(piece.getStatistics().getClass())).collect(Collectors.toList());
+        if (0 == subList.size()) {
             return null;
         }
         return subList.get(0);
     }
 
     public MaterialFunction getFunction() {
-        final Object generic = this.getGenericInstance();
+        Object generic = this.getGenericInstance();
         if (generic instanceof MaterialFunction) {
             return (MaterialFunction) generic;
         }
@@ -1100,14 +1100,14 @@ public enum SMaterial {
                 }
             };
         }
-        final Object generic = this.getGenericInstance();
+        Object generic = this.getGenericInstance();
         if (generic instanceof MaterialStatistics) {
             return (MaterialStatistics) generic;
         }
         return null;
     }
 
-    public String getDisplayName(final short variant) {
+    public String getDisplayName(short variant) {
         if (this.hasClass()) {
             return this.getStatistics().getDisplayName();
         }
@@ -1115,7 +1115,7 @@ public enum SMaterial {
     }
 
     public TickingMaterial getTickingInstance() {
-        final Object generic = this.getGenericInstance();
+        Object generic = this.getGenericInstance();
         if (generic instanceof TickingMaterial) {
             return (TickingMaterial) generic;
         }
@@ -1123,7 +1123,7 @@ public enum SMaterial {
     }
 
     public PlayerBoostStatistics getBoostStatistics() {
-        final MaterialStatistics statistics = this.getStatistics();
+        MaterialStatistics statistics = this.getStatistics();
         if (!(statistics instanceof PlayerBoostStatistics)) {
             return null;
         }
@@ -1131,7 +1131,7 @@ public enum SMaterial {
     }
 
     public SkullStatistics getSkullStatistics() {
-        final MaterialStatistics statistics = this.getStatistics();
+        MaterialStatistics statistics = this.getStatistics();
         if (!(statistics instanceof SkullStatistics)) {
             return null;
         }
@@ -1142,7 +1142,7 @@ public enum SMaterial {
         if (!this.hasClass()) {
             return null;
         }
-        final Object generic = this.getGenericInstance();
+        Object generic = this.getGenericInstance();
         if (generic instanceof Ability) {
             return (Ability) generic;
         }
@@ -1153,7 +1153,7 @@ public enum SMaterial {
         if (!this.hasClass()) {
             return null;
         }
-        final Object generic = this.getGenericInstance();
+        Object generic = this.getGenericInstance();
         if (generic instanceof OrbBuff) {
             return (OrbBuff) generic;
         }
@@ -1164,7 +1164,7 @@ public enum SMaterial {
         if (!this.hasClass()) {
             return null;
         }
-        final Object generic = this.getGenericInstance();
+        Object generic = this.getGenericInstance();
         if (generic instanceof ItemData) {
             return (ItemData) generic;
         }
@@ -1172,36 +1172,36 @@ public enum SMaterial {
     }
 
     public Object getGenericInstance() {
-        if (this.clazz == null) {
+        if (null == this.clazz) {
             return null;
         }
         try {
             return this.clazz.newInstance();
-        } catch (final InstantiationException | IllegalAccessException ex) {
+        } catch (InstantiationException | IllegalAccessException ex) {
             return null;
         }
     }
 
     public boolean hasClass() {
-        return this.clazz != null;
+        return null != this.clazz;
     }
 
-    public static ArmorSet getIncompleteArmorSet(final PlayerInventory inventory) {
-        final SItem helmet = SItem.find(inventory.getHelmet());
-        final SItem chestplate = SItem.find(inventory.getChestplate());
-        final SItem leggings = SItem.find(inventory.getLeggings());
-        final SItem boots = SItem.find(inventory.getBoots());
-        for (final ArmorSet set : SMaterial.CACHED_SETS) {
-            if (set.getHelmet() != null && helmet != null && helmet.getType().getStatistics().getClass() == set.getHelmet()) {
+    public static ArmorSet getIncompleteArmorSet(PlayerInventory inventory) {
+        SItem helmet = SItem.find(inventory.getHelmet());
+        SItem chestplate = SItem.find(inventory.getChestplate());
+        SItem leggings = SItem.find(inventory.getLeggings());
+        SItem boots = SItem.find(inventory.getBoots());
+        for (ArmorSet set : CACHED_SETS) {
+            if (null != set.getHelmet() && null != helmet && helmet.getType().getStatistics().getClass() == set.getHelmet()) {
                 return set;
             }
-            if (set.getChestplate() != null && chestplate != null && chestplate.getType().getStatistics().getClass() == set.getChestplate()) {
+            if (null != set.getChestplate() && null != chestplate && chestplate.getType().getStatistics().getClass() == set.getChestplate()) {
                 return set;
             }
-            if (set.getLeggings() != null && leggings != null && leggings.getType().getStatistics().getClass() == set.getLeggings()) {
+            if (null != set.getLeggings() && null != leggings && leggings.getType().getStatistics().getClass() == set.getLeggings()) {
                 return set;
             }
-            if (set.getBoots() != null && boots != null && boots.getType().getStatistics().getClass() == set.getBoots()) {
+            if (null != set.getBoots() && null != boots && boots.getType().getStatistics().getClass() == set.getBoots()) {
                 return set;
             }
         }
@@ -1226,20 +1226,20 @@ public enum SMaterial {
 
     static {
         CACHED_SETS = new ArrayList<ArmorSet>();
-        SMaterial.YOUNG_DRAGON_SET = SMaterial.registerArmorSet(YoungDragonSet.class);
-        SMaterial.SUPERIOR_DRAGON_SET = SMaterial.registerArmorSet(SuperiorDragonSet.class);
-        SMaterial.WISE_DRAGON_SET = SMaterial.registerArmorSet(WiseDragonSet.class);
-        SMaterial.UNSTABLE_DRAGON_SET = SMaterial.registerArmorSet(UnstableDragonSet.class);
-        SMaterial.STRONG_DRAGON_SET = SMaterial.registerArmorSet(StrongDragonSet.class);
-        SMaterial.OLD_DRAGON_SET = SMaterial.registerArmorSet(OldDragonSet.class);
-        SMaterial.PROTECTOR_DRAGON_SET = SMaterial.registerArmorSet(ProtectorDragonSet.class);
-        SMaterial.LAPIS_ARMOR_SET = SMaterial.registerArmorSet(LapisArmorSet.class);
-        SMaterial.MINER_SET = SMaterial.registerArmorSet(MinerSet.class);
-        SMaterial.NECRONS_SET = SMaterial.registerArmorSet(NecronFullSet.class);
-        SMaterial.STORMS_SET = SMaterial.registerArmorSet(StormFullSet.class);
-        SMaterial.SORROW_SET = SMaterial.registerArmorSet(SorrowArmorSet.class);
-        SMaterial.GIGACHAD_SET = SMaterial.registerArmorSet(GigachadSet.class);
-        SMaterial.MINICHAD_SET = SMaterial.registerArmorSet(MinichadSet.class);
+        YOUNG_DRAGON_SET = registerArmorSet(YoungDragonSet.class);
+        SUPERIOR_DRAGON_SET = registerArmorSet(SuperiorDragonSet.class);
+        WISE_DRAGON_SET = registerArmorSet(WiseDragonSet.class);
+        UNSTABLE_DRAGON_SET = registerArmorSet(UnstableDragonSet.class);
+        STRONG_DRAGON_SET = registerArmorSet(StrongDragonSet.class);
+        OLD_DRAGON_SET = registerArmorSet(OldDragonSet.class);
+        PROTECTOR_DRAGON_SET = registerArmorSet(ProtectorDragonSet.class);
+        LAPIS_ARMOR_SET = registerArmorSet(LapisArmorSet.class);
+        MINER_SET = registerArmorSet(MinerSet.class);
+        NECRONS_SET = registerArmorSet(NecronFullSet.class);
+        STORMS_SET = registerArmorSet(StormFullSet.class);
+        SORROW_SET = registerArmorSet(SorrowArmorSet.class);
+        GIGACHAD_SET = registerArmorSet(GigachadSet.class);
+        MINICHAD_SET = registerArmorSet(MinichadSet.class);
     }
 
     public enum VagueEntityMaterial {
@@ -1249,8 +1249,8 @@ public enum SMaterial {
         BOOTS,
         FRAGMENT;
 
-        public SMaterial getEntityArmorPiece(final SEntityType type) {
-            return SMaterial.getMaterial(type.name() + "_" + this.name());
+        public SMaterial getEntityArmorPiece(SEntityType type) {
+            return getMaterial(type.name() + "_" + this.name());
         }
     }
 }

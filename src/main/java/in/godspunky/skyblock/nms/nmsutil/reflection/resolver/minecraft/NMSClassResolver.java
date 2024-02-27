@@ -5,7 +5,7 @@ import in.godspunky.skyblock.nms.nmsutil.reflection.resolver.ClassResolver;
 
 public class NMSClassResolver extends ClassResolver {
     @Override
-    public Class resolve(final String... names) throws ClassNotFoundException {
+    public Class resolve(String... names) throws ClassNotFoundException {
         for (int i = 0; i < names.length; ++i) {
             if (!names[i].startsWith("net.minecraft.server")) {
                 names[i] = "net.minecraft.server." + Minecraft.getVersion() + names[i];

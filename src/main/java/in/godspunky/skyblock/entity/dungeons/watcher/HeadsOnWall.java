@@ -7,7 +7,7 @@ public class HeadsOnWall {
     public String signature;
     public boolean arg0;
 
-    public HeadsOnWall(final EnumWatcherType ew) {
+    public HeadsOnWall(EnumWatcherType ew) {
         this.arg0 = false;
         switch (ew) {
             default:

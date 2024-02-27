@@ -7,7 +7,7 @@ import java.util.List;
 public interface ItemData {
     NBTTagCompound getData();
 
-    default List<String> getDataLore(final String key, final Object value) {
+    default List<String> getDataLore(String key, Object value) {
         return null;
     }
 }

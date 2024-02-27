@@ -10,14 +10,14 @@ import in.godspunky.skyblock.util.Sputnik;
 @CommandParameters(description = "Gets the NBT of your current item.", aliases = "kamh", permission = "spt.item")
 public class KillAllHostileMobs extends SCommand {
     @Override
-    public void run(final CommandSource sender, final String[] args) {
-        final Player player = sender.getPlayer();
-        if (player == null) {
+    public void run(CommandSource sender, String[] args) {
+        Player player = sender.getPlayer();
+        if (null == player) {
             this.send(ChatColor.RED + "You can't use this command here!");
         }
         if (player.isOp()) {
-            final World world = player.getWorld();
-            for (final Entity entity : world.getEntities()) {
+            World world = player.getWorld();
+            for (Entity entity : world.getEntities()) {
                 if (entity instanceof Monster && !entity.hasMetadata("pets") && !entity.hasMetadata("Ire")) {
                     entity.remove();
                 }

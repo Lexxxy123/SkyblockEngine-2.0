@@ -41,7 +41,7 @@ public class RevenantHorror extends EntityZombie implements SNMSEntity, EntityFu
     private SEntity hologram_name;
     private final UUID spawnerUUID;
 
-    public RevenantHorror(final Integer tier, final UUID spawnerUUID) {
+    public RevenantHorror(Integer tier, UUID spawnerUUID) {
         super(((CraftWorld) Bukkit.getPlayer(spawnerUUID).getWorld()).getHandle());
         this.tier = tier;
         this.enraged = false;
@@ -50,7 +50,7 @@ public class RevenantHorror extends EntityZombie implements SNMSEntity, EntityFu
         this.Cooldown = true;
     }
 
-    public RevenantHorror(final World world) {
+    public RevenantHorror(World world) {
         super(world);
         this.tier = 1;
         this.enraged = false;
@@ -61,22 +61,22 @@ public class RevenantHorror extends EntityZombie implements SNMSEntity, EntityFu
 
     public void t_() {
         super.t_();
-        final Player player = Bukkit.getPlayer(this.spawnerUUID);
-        if (player == null) {
+        Player player = Bukkit.getPlayer(this.spawnerUUID);
+        if (null == player) {
             return;
         }
-        if (((Zombie) this.bukkitEntity).getWorld() == player.getWorld() && this.getBukkitEntity().getLocation().distance(player.getLocation()) >= 20.0 && SUtil.random(0, 10) == 0) {
+        if (((Zombie) this.bukkitEntity).getWorld() == player.getWorld() && 20.0 <= this.getBukkitEntity().getLocation().distance(player.getLocation()) && 0 == SUtil.random(0, 10)) {
             this.getBukkitEntity().teleport(player.getLocation());
         }
-        final LivingEntity e = (LivingEntity) this.getBukkitEntity();
+        LivingEntity e = (LivingEntity) this.getBukkitEntity();
         if (System.currentTimeMillis() > this.end) {
             User.getUser(player.getUniqueId()).failSlayerQuest();
             ((Zombie) this.bukkitEntity).remove();
             this.hologram.remove();
             return;
         }
-        final Entity entity = this.getBukkitEntity().getHandle();
-        final double height = entity.getBoundingBox().e - entity.getBoundingBox().b;
+        Entity entity = this.getBukkitEntity().getHandle();
+        double height = entity.getBoundingBox().e - entity.getBoundingBox().b;
         this.hologram_name.getEntity().teleport(this.getBukkitEntity().getLocation().clone().add(0.0, height, 0.0));
         this.hologram_name.getEntity().setCustomName(Sputnik.trans(Sputnik.entityNameTag((LivingEntity) this.getBukkitEntity(), Sputnik.buildcustomString(this.getEntityName(), 0, true))));
         this.hologram.getEntity().teleport(this.getBukkitEntity().getLocation().clone().add(0.0, 2.3, 0.0));
@@ -86,7 +86,7 @@ public class RevenantHorror extends EntityZombie implements SNMSEntity, EntityFu
             this.hologram.getEntity().setCustomName(ChatColor.DARK_RED + "ENRAGED " + ChatColor.RED + SUtil.getFormattedTime(this.end - System.currentTimeMillis(), 1000));
         }
         ((Zombie) this.bukkitEntity).setTarget(player);
-        if (this.tier >= 3 && !this.enraged && SUtil.random(0, 20) == 0 && !this.Cooldown) {
+        if (3 <= this.tier && !this.enraged && 0 == SUtil.random(0, 20) && !this.Cooldown) {
             this.enraged = true;
             this.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).setValue(this.getMovementSpeed());
             this.hologram.getEntity().setCustomName(ChatColor.DARK_RED + "" + ChatColor.RED + SUtil.getFormattedTime(this.end - System.currentTimeMillis(), 1000));
@@ -100,7 +100,7 @@ public class RevenantHorror extends EntityZombie implements SNMSEntity, EntityFu
                 }
             }.runTaskLater(SkyBlock.getPlugin(), 200L);
         }
-        if (this.tier >= 3 && !this.raged && SUtil.random(0, 200) == 0 && !this.Cooldown) {
+        if (3 <= this.tier && !this.raged && 0 == SUtil.random(0, 200) && !this.Cooldown) {
             this.raged = true;
             this.Cooldown = true;
             e.getEquipment().setChestplate(SUtil.enchant(SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_CHESTPLATE), Color.fromRGB(12451840))));
@@ -120,7 +120,7 @@ public class RevenantHorror extends EntityZombie implements SNMSEntity, EntityFu
         }
     }
 
-    public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
+    public void onSpawn(LivingEntity entity, SEntity sEntity) {
         SUtil.delay(() -> this.Cooldown = false, 400L);
         entity.setMetadata("BOSS_OWNER_" + Bukkit.getPlayer(this.getSpawnerUUID()).getUniqueId().toString(), new FixedMetadataValue(SkyBlock.getPlugin(), true));
         entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
@@ -131,8 +131,8 @@ public class RevenantHorror extends EntityZombie implements SNMSEntity, EntityFu
         entity.setMetadata("notDisplay", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         this.hologram_name = new SEntity(entity.getLocation().add(0.0, 2.0, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND);
         ((ArmorStand) this.hologram_name.getEntity()).setVisible(false);
-        final Entity e = this.getBukkitEntity().getHandle();
-        final double height = e.getBoundingBox().e - e.getBoundingBox().b;
+        Entity e = this.getBukkitEntity().getHandle();
+        double height = e.getBoundingBox().e - e.getBoundingBox().b;
         ((ArmorStand) this.hologram_name.getEntity()).setGravity(false);
         this.hologram_name.getEntity().setCustomNameVisible(true);
         new BukkitRunnable() {
@@ -141,22 +141,22 @@ public class RevenantHorror extends EntityZombie implements SNMSEntity, EntityFu
                     this.cancel();
                     return;
                 }
-                final Player player = Bukkit.getPlayer(RevenantHorror.this.spawnerUUID);
-                if (player == null) {
+                Player player = Bukkit.getPlayer(RevenantHorror.this.spawnerUUID);
+                if (null == player) {
                     return;
                 }
                 player.damage(RevenantHorror.this.getDamageDealt() * 0.5, entity);
             }
         }.runTaskTimer(SkyBlock.getPlugin(), 60L, 60L);
-        if (this.tier >= 2) {
+        if (2 <= this.tier) {
             new BukkitRunnable() {
                 public void run() {
                     if (entity.isDead()) {
                         this.cancel();
                         return;
                     }
-                    final Player player = Bukkit.getPlayer(RevenantHorror.this.spawnerUUID);
-                    if (player == null) {
+                    Player player = Bukkit.getPlayer(RevenantHorror.this.spawnerUUID);
+                    if (null == player) {
                         return;
                     }
                     player.damage(RevenantHorror.this.getDamageDealt(), entity);
@@ -174,7 +174,7 @@ public class RevenantHorror extends EntityZombie implements SNMSEntity, EntityFu
         }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
     }
 
-    public void onDeath(final SEntity sEntity, final org.bukkit.entity.Entity killed, final org.bukkit.entity.Entity damager) {
+    public void onDeath(SEntity sEntity, org.bukkit.entity.Entity killed, org.bukkit.entity.Entity damager) {
         this.hologram.remove();
         SUtil.delay(() -> this.hologram_name.remove(), 20L);
     }
@@ -184,22 +184,22 @@ public class RevenantHorror extends EntityZombie implements SNMSEntity, EntityFu
     }
 
     public double getEntityMaxHealth() {
-        return RevenantHorror.MAX_HEALTH_VALUES.getByNumber(this.tier);
+        return MAX_HEALTH_VALUES.getByNumber(this.tier);
     }
 
     public double getDamageDealt() {
-        return RevenantHorror.DAMAGE_VALUES.getByNumber(this.tier) * (this.enraged ? 1.8 : 1.0) * (2);
+        return DAMAGE_VALUES.getByNumber(this.tier) * (this.enraged ? 1.8 : 1.0) * (2);
     }
 
     public double getMovementSpeed() {
-        return RevenantHorror.SPEED_VALUES.getByNumber(this.tier) * (this.enraged ? 1.05 : 1.0);
+        return SPEED_VALUES.getByNumber(this.tier) * (this.enraged ? 1.05 : 1.0);
     }
 
     public SEntityEquipment getEntityEquipment() {
         return new SEntityEquipment(new ItemStack(Material.DIAMOND_HOE), SItem.of(SMaterial.REVENANT_HORROR_HEAD).getStack(), SUtil.enchant(new ItemStack(Material.DIAMOND_CHESTPLATE)), new ItemStack(Material.CHAINMAIL_LEGGINGS), new ItemStack(Material.DIAMOND_BOOTS));
     }
 
-    public LivingEntity spawn(final Location location) {
+    public LivingEntity spawn(Location location) {
         this.world = ((CraftWorld) location.getWorld()).getHandle();
         this.setPosition(location.getX(), location.getY(), location.getZ());
         this.world.addEntity(this, CreatureSpawnEvent.SpawnReason.CUSTOM);
@@ -207,24 +207,24 @@ public class RevenantHorror extends EntityZombie implements SNMSEntity, EntityFu
     }
 
     public List<EntityDrop> drops() {
-        final List<EntityDrop> drops = new ArrayList<EntityDrop>();
+        List<EntityDrop> drops = new ArrayList<EntityDrop>();
         int revFlesh = SUtil.random(1, 3);
-        if (this.tier == 2) {
+        if (2 == this.tier) {
             revFlesh = SUtil.random(9, 18);
         }
-        if (this.tier == 3) {
+        if (3 == this.tier) {
             revFlesh = SUtil.random(30, 50);
         }
-        if (this.tier == 4) {
+        if (4 == this.tier) {
             revFlesh = SUtil.random(50, 64);
         }
         drops.add(new EntityDrop(SUtil.setStackAmount(SItem.of(SMaterial.REVENANT_FLESH).getStack(), revFlesh), EntityDropType.GUARANTEED, 1.0));
-        if (this.tier >= 2) {
+        if (2 <= this.tier) {
             int foulFlesh = 1;
-            if (this.tier == 3) {
+            if (3 == this.tier) {
                 foulFlesh = SUtil.random(1, 2);
             }
-            if (this.tier == 4) {
+            if (4 == this.tier) {
                 foulFlesh = SUtil.random(2, 3);
             }
             drops.add(new EntityDrop(SUtil.setStackAmount(SItem.of(SMaterial.FOUL_FLESH).getStack(), foulFlesh), EntityDropType.OCCASIONAL, 0.2));
@@ -232,13 +232,13 @@ public class RevenantHorror extends EntityZombie implements SNMSEntity, EntityFu
             drops.add(new EntityDrop(SMaterial.UNDEAD_CATALYST, EntityDropType.EXTRAORDINARILY_RARE, 0.01));
             drops.add(new EntityDrop(SMaterial.REVENANT_CATALYST, EntityDropType.EXTRAORDINARILY_RARE, 0.01));
         }
-        if (this.tier >= 3) {
-            final SItem smiteBook = SItem.of(SMaterial.ENCHANTED_BOOK);
+        if (3 <= this.tier) {
+            SItem smiteBook = SItem.of(SMaterial.ENCHANTED_BOOK);
             smiteBook.addEnchantment(EnchantmentType.SMITE, 6);
             drops.add(new EntityDrop(smiteBook.getStack(), EntityDropType.EXTRAORDINARILY_RARE, 0.01));
             drops.add(new EntityDrop(SMaterial.BEHEADED_HORROR, EntityDropType.CRAZY_RARE, 0.005));
         }
-        if (this.tier >= 4) {
+        if (4 <= this.tier) {
             drops.add(new EntityDrop(SMaterial.SNAKE_RUNE, EntityDropType.CRAZY_RARE, 0.005));
             drops.add(new EntityDrop(SMaterial.SCYTHE_BLADE, EntityDropType.CRAZY_RARE, 5.384615384615384E-4));
         }

@@ -18,20 +18,20 @@ public class BatphoneCommand extends SCommand {
     public static final List<String> KEYS;
 
     @Override
-    public void run(final CommandSource sender, final String[] args) {
+    public void run(CommandSource sender, String[] args) {
         if (sender instanceof ConsoleCommandSender) {
             throw new CommandFailException("Console senders cannot use this command!");
         }
-        if (!args[0].equals(BatphoneCommand.ACCESS_KEY.toString())) {
+        if (!args[0].equals(ACCESS_KEY.toString())) {
             return;
         }
-        if (!BatphoneCommand.KEYS.contains(args[1])) {
+        if (!KEYS.contains(args[1])) {
             throw new CommandFailException(ChatColor.RED + "✆ It's too late now, the phone line is off! Call again!");
         }
-        final Player player = sender.getPlayer();
+        Player player = sender.getPlayer();
         MaddoxBatphone.CALL_COOLDOWN.add(player.getUniqueId());
         SUtil.delay(() -> MaddoxBatphone.CALL_COOLDOWN.remove(player.getUniqueId()), 400L);
-        final GUI gui = GUIType.SLAYER.getGUI();
+        GUI gui = GUIType.SLAYER.getGUI();
         gui.open(player);
     }
 

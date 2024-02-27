@@ -16,13 +16,13 @@ import in.godspunky.skyblock.util.Sputnik;
 import java.util.ArrayList;
 
 public class SadanBossManager {
-    public static void startFloor(final ArrayList<Player> plist) {
-        final String worldname = "f6_" + SadanFunction.generateRandom();
-        World source = Bukkit.getWorld("f6");
-        SkyBlockWorldManager skyBlockWorldManager = new SkyBlockWorldManager(source);
+    public static void startFloor(ArrayList<Player> plist) {
+        String worldname = "f6_" + SadanFunction.generateRandom();
+        final World source = Bukkit.getWorld("f6");
+        final SkyBlockWorldManager skyBlockWorldManager = new SkyBlockWorldManager(source);
         skyBlockWorldManager.cloneWorld(worldname);
-        final World world = Bukkit.getWorld(worldname);
-        for (final Player tm : plist) {
+        World world = Bukkit.getWorld(worldname);
+        for (Player tm : plist) {
             tm.teleport(new Location(world, 213.0, 71.0, 221.0, 0.0f, 0.0f));
         }
         Sputnik.RunThisSession.put(Bukkit.getServer(), Sputnik.rf_() + 1);
@@ -32,15 +32,15 @@ public class SadanBossManager {
         SUtil.delay(() -> new SEntity(new Location(world, 183.0, 100.0, 251.0), SEntityType.SADAN), 1L);
     }
 
-    public static void r(final ArrayList<Player> plist, final World world) {
-        for (final Player tm : plist) {
+    public static void r(ArrayList<Player> plist, World world) {
+        for (Player tm : plist) {
             tm.teleport(new Location(world, 191.5, 69.0, 199.5, 0.0f, 0.0f));
         }
     }
 
-    public static void endFloor(final World w) {
+    public static void endFloor(World w) {
         if (w.getName().toLowerCase().startsWith("f6") && !w.getName().equalsIgnoreCase("f6")) {
-            for (final Entity e : w.getEntities()) {
+            for (Entity e : w.getEntities()) {
                 if (e instanceof Player) {
                     continue;
                 }

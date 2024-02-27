@@ -143,7 +143,7 @@ public class Metrics {
                 continue;
             }
             try {
-                pluginData.add(service.getMethod("getPluginData", new Class[0]).invoke(Bukkit.getServicesManager().load((Class) service)));
+                pluginData.add(service.getMethod("getPluginData").invoke(Bukkit.getServicesManager().load((Class) service)));
             } catch (final NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
             }
         }

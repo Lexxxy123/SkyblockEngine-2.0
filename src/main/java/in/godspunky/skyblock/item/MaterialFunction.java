@@ -7,21 +7,21 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 public interface MaterialFunction {
-    default void onInteraction(final PlayerInteractEvent e) {
+    default void onInteraction(PlayerInteractEvent e) {
     }
 
-    default void onInventoryClick(final SItem instance, final InventoryClickEvent e) {
+    default void onInventoryClick(SItem instance, InventoryClickEvent e) {
     }
 
-    default void onDamage(final Entity damaged, final Player damager, final AtomicDouble damage, final SItem item) {
+    default void onDamage(Entity damaged, Player damager, AtomicDouble damage, SItem item) {
     }
 
-    default void onKill(final Entity damaged, final Player damager, final SItem item) {
+    default void onKill(Entity damaged, Player damager, SItem item) {
     }
 
-    default void whileHolding(final Player holding) {
+    default void whileHolding(Player holding) {
     }
 
-    default void onInstanceUpdate(final SItem instance) {
+    default void onInstanceUpdate(SItem instance) {
     }
 }

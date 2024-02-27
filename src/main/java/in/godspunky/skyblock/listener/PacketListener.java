@@ -32,39 +32,39 @@ import java.util.UUID;
 
 public class PacketListener extends PListener {
     @EventHandler
-    public void onBookCrashPacket(final PacketReceiveServerSideEvent event) {
-        final ReceivedPacket packet = event.getWrappedPacket();
+    public void onBookCrashPacket(PacketReceiveServerSideEvent event) {
+        ReceivedPacket packet = event.getWrappedPacket();
         if (packet.getPacket() instanceof PacketPlayInCustomPayload) {
-            final String packetType = ((PacketPlayInCustomPayload) packet.getPacket()).a();
+            String packetType = ((PacketPlayInCustomPayload) packet.getPacket()).a();
             if (packetType.toLowerCase().contains("bedit") || packetType.toLowerCase().contains("bsign")) {
                 packet.setCancelled(true);
-                final Player p = SkyBlock.findPlayerByIPAddress(packet.getChannel().getRemoteAddress().toString());
-                if (p != null) {
+                Player p = SkyBlock.findPlayerByIPAddress(packet.getChannel().getRemoteAddress().toString());
+                if (null != p) {
                     this.punish(p);
                 }
             }
         }
         if (packet.getPacket() instanceof PacketPlayInSetCreativeSlot) {
-            final PacketPlayInSetCreativeSlot pks = (PacketPlayInSetCreativeSlot) packet.getPacket();
-            final Player p = packet.getPlayer();
-            if (p != null && p.getGameMode() != GameMode.CREATIVE) {
+            PacketPlayInSetCreativeSlot pks = (PacketPlayInSetCreativeSlot) packet.getPacket();
+            Player p = packet.getPlayer();
+            if (null != p && GameMode.CREATIVE != p.getGameMode()) {
                 packet.setCancelled(true);
                 this.punish(p);
             }
         }
     }
 
-    void punish(final Player p) {
+    void punish(Player p) {
         p.sendMessage(Sputnik.trans("&cHey kiddo, you want to crash the server huh? Nice try idiot, your IP address has been logged, enjoy!"));
         new BukkitRunnable() {
             public void run() {
-                final DiscordWebhook webhook = new DiscordWebhook("https://discord.com/api/webhooks/935193761795940404/3IdoSzkoXBU8UQb-X_mfizQgXYZZYiQ61FH9KPgm-gaeuUGjfhoTKvaWUFiQjwh55jKN");
+                DiscordWebhook webhook = new DiscordWebhook("https://discord.com/api/webhooks/935193761795940404/3IdoSzkoXBU8UQb-X_mfizQgXYZZYiQ61FH9KPgm-gaeuUGjfhoTKvaWUFiQjwh55jKN");
                 webhook.setUsername("SkySim Packet Assistant [v0.2.1-BETA]");
                 webhook.setAvatarUrl("https://cdn.discordapp.com/attachments/884749251568082964/935357971368656916/AAAAA.png");
                 webhook.setContent("**We caught a crasher!** His/her IP is `" + p.getAddress() + "` with username `" + p.getName() + "`");
                 try {
                     webhook.execute();
-                } catch (final IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -72,16 +72,16 @@ public class PacketListener extends PListener {
     }
 
     @EventHandler
-    public void signInputListener(final PacketReceiveServerSideEvent event) {
-        final ReceivedPacket packet = event.getWrappedPacket();
+    public void signInputListener(PacketReceiveServerSideEvent event) {
+        ReceivedPacket packet = event.getWrappedPacket();
         if (packet.getPacket() instanceof PacketPlayInUpdateSign) {
-            if (packet.getPlayer() == null) {
+            if (null == packet.getPlayer()) {
                 return;
             }
-            final UUID p = packet.getPlayer().getUniqueId();
-            final IChatBaseComponent[] ic = ((PacketPlayInUpdateSign) packet.getPacket()).b();
-            final User u = User.getUser(p);
-            if (u != null && u.isWaitingForSign() && !u.isCompletedSign()) {
+            UUID p = packet.getPlayer().getUniqueId();
+            IChatBaseComponent[] ic = ((PacketPlayInUpdateSign) packet.getPacket()).b();
+            User u = User.getUser(p);
+            if (null != u && u.isWaitingForSign() && !u.isCompletedSign()) {
                 u.setSignContent(ic[0].getText());
                 u.setCompletedSign(true);
             }
@@ -89,14 +89,14 @@ public class PacketListener extends PListener {
     }
 
     @EventHandler
-    void onPing(final SkySimServerPingEvent e) {
-        final PingReply pr = e.getPingReply();
-        if (!Bukkit.getServer().getOnlineMode() && Bukkit.getOnlinePlayers().size() > 0) {
+    void onPing(SkySimServerPingEvent e) {
+        PingReply pr = e.getPingReply();
+        if (!Bukkit.getServer().getOnlineMode() && 0 < Bukkit.getOnlinePlayers().size()) {
             SkyBlock.getPlugin().updateServerPlayerCount();
         }
         if (Bukkit.getServer().hasWhitelist()) {
             pr.setProtocolName(ChatColor.RED + "Maintenance");
-            final List<String> sample = new ArrayList<String>();
+            List<String> sample = new ArrayList<String>();
             pr.setMOTD(Sputnik.trans("             &aSkySim Network &c[1.8-1.17]&r\n       &c&lSERVER UNDER MAINTENANCE"));
             sample.add(Sputnik.trans("&bJoin our &9Discord &bserver for more info"));
             sample.add(Sputnik.trans("&6https://discord.skysim.sbs/"));
@@ -105,13 +105,13 @@ public class PacketListener extends PListener {
             return;
         }
         if (!RebootServerCommand.secondMap.containsKey(Bukkit.getServer())) {
-            final List<String> sample = new ArrayList<String>();
+            List<String> sample = new ArrayList<String>();
             sample.add(Sputnik.trans("&cPowered by &6SkySim Engine&c"));
             pr.setPlayerSample(sample);
             pr.setProtocolName(ChatColor.DARK_RED + "SkySimEngine 1.8.x - 1.17");
         } else {
             pr.setProtocolName(ChatColor.RED + "⚠ Restarting Soon!");
-            final List<String> sample = new ArrayList<String>();
+            List<String> sample = new ArrayList<String>();
             sample.add(Sputnik.trans("&4⚠ &cThis server instance is performing a"));
             sample.add(Sputnik.trans("&cscheduled or a server update reboot"));
             sample.add(Sputnik.trans("&cWe do not suggest joining the server right"));
@@ -124,32 +124,32 @@ public class PacketListener extends PListener {
     }
 
     @EventHandler
-    public void onPluginChannel2(final PluginMessageReceived e) {
-        final WrappedPluginMessage w = e.getWrappedPluginMessage();
-        final String channel = w.getChannelName();
-        final byte[] message = w.getMessage();
+    public void onPluginChannel2(PluginMessageReceived e) {
+        WrappedPluginMessage w = e.getWrappedPluginMessage();
+        String channel = w.getChannelName();
+        byte[] message = w.getMessage();
         if (!channel.equals("BungeeCord")) {
             return;
         }
-        final ByteArrayDataInput in = ByteStreams.newDataInput(message);
-        final String subchannel = in.readUTF();
+        ByteArrayDataInput in = ByteStreams.newDataInput(message);
+        String subchannel = in.readUTF();
         if (subchannel.equals("PlayerCount")) {
             in.readInt();
         }
     }
 
     @EventHandler
-    public void onPluginChannel(final PluginMessageReceived e) {
-        final WrappedPluginMessage w = e.getWrappedPluginMessage();
-        final String channel = w.getChannelName();
-        final byte[] message = w.getMessage();
+    public void onPluginChannel(PluginMessageReceived e) {
+        WrappedPluginMessage w = e.getWrappedPluginMessage();
+        String channel = w.getChannelName();
+        byte[] message = w.getMessage();
         if (!channel.equals("BungeeCord")) {
             return;
         }
-        final ByteArrayDataInput in = ByteStreams.newDataInput(message);
-        final String subchannel = in.readUTF();
+        ByteArrayDataInput in = ByteStreams.newDataInput(message);
+        String subchannel = in.readUTF();
         if (subchannel.equals("GetServer")) {
-            final String name = in.readUTF();
+            String name = in.readUTF();
             if (SkyBlock.getPlugin().getServerName().contains("Loading...")) {
                 SLog.info("Registered server instance name as " + name + " for this session!");
             }

@@ -47,7 +47,7 @@ public class ObsidianDefender implements EntityFunction, EntityStatistics {
     }
 
     @Override
-    public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
+    public void onSpawn(LivingEntity entity, SEntity sEntity) {
         ((CraftLivingEntity) entity).getHandle().getAttributeInstance(GenericAttributes.c).setValue(1.0);
         ((CraftSkeleton) entity).getHandle().setSkeletonType(1);
         entity.getEquipment().setItemInHand(null);
@@ -59,14 +59,14 @@ public class ObsidianDefender implements EntityFunction, EntityStatistics {
     }
 
     @Override
-    public void onAttack(final EntityDamageByEntityEvent e) {
+    public void onAttack(EntityDamageByEntityEvent e) {
         if (!(e.getEntity() instanceof LivingEntity)) {
             return;
         }
         if (e.getEntity() instanceof Player) {
-            final PlayerInventory inventory = ((Player) e.getEntity()).getInventory();
-            final SItem sItem = SItem.find(inventory.getChestplate());
-            if (sItem != null && sItem.getType() == SMaterial.OBSIDIAN_CHESTPLATE) {
+            PlayerInventory inventory = ((Player) e.getEntity()).getInventory();
+            SItem sItem = SItem.find(inventory.getChestplate());
+            if (null != sItem && SMaterial.OBSIDIAN_CHESTPLATE == sItem.getType()) {
                 return;
             }
         }

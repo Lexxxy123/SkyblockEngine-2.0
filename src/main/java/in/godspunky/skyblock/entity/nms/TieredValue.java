@@ -6,14 +6,14 @@ public class TieredValue<T> {
     private final T iii;
     private final T iv;
 
-    public TieredValue(final T i, final T ii, final T iii, final T iv) {
+    public TieredValue(T i, T ii, T iii, T iv) {
         this.i = i;
         this.ii = ii;
         this.iii = iii;
         this.iv = iv;
     }
 
-    public T getByNumber(final int n) {
+    public T getByNumber(int n) {
         switch (n) {
             case 2:
                 return this.ii;

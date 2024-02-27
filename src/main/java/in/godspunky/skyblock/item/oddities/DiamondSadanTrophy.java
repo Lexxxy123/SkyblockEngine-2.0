@@ -72,8 +72,8 @@ public class DiamondSadanTrophy implements SkullStatistics, MaterialFunction, Ab
     }
 
     @Override
-    public boolean requirementsUse(final Player player, final SItem sItem) {
-        return User.getUser(player.getUniqueId()).getBCollection() < 1000L;
+    public boolean requirementsUse(Player player, SItem sItem) {
+        return 1000L > User.getUser(player.getUniqueId()).getBCollection();
     }
 
     @Override
@@ -82,9 +82,9 @@ public class DiamondSadanTrophy implements SkullStatistics, MaterialFunction, Ab
     }
 
     @Override
-    public void onAbilityUse(final Player player, final SItem sItem) {
+    public void onAbilityUse(Player player, SItem sItem) {
         SUtil.delay(() -> this.bool = false, 35L);
-        final ArrayList<PotionEffect> effects = new ArrayList<PotionEffect>();
+        ArrayList<PotionEffect> effects = new ArrayList<PotionEffect>();
         effects.add(new PotionEffect(PotionEffectType.FEROCITY, 10, 72000L));
         effects.add(new PotionEffect(PotionEffectType.ARCHERY, 6, 72000L));
         effects.add(new PotionEffect(PotionEffectType.CRITICAL, 14, 72000L));
@@ -103,7 +103,7 @@ public class DiamondSadanTrophy implements SkullStatistics, MaterialFunction, Ab
         effects.add(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 1, 72000L));
         effects.add(new PotionEffect(PotionEffectType.STAMINA, 8, 72000L));
         effects.add(new PotionEffect(PotionEffectType.MAGIC_FIND, 15, 72000L));
-        final User user = User.getUser(player.getUniqueId());
+        User user = User.getUser(player.getUniqueId());
         new BukkitRunnable() {
             public void run() {
                 if (!DiamondSadanTrophy.this.bool) {
@@ -138,10 +138,10 @@ public class DiamondSadanTrophy implements SkullStatistics, MaterialFunction, Ab
                 player.getWorld().playEffect(player.getLocation().add(0.0, 1.0, 0.0), Effect.WITCH_MAGIC, 0);
             }
         }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
-        for (final PotionEffect effect : effects) {
+        for (PotionEffect effect : effects) {
             user.removePotionEffect(effect.getType());
             PlayerUtils.updatePotionEffects(user, PlayerUtils.STATISTICS_CACHE.get(user.getUuid()));
-            if (effect.getType().getOnDrink() != null) {
+            if (null != effect.getType().getOnDrink()) {
                 effect.getType().getOnDrink().accept(effect, player);
             }
             user.addPotionEffect(effect);

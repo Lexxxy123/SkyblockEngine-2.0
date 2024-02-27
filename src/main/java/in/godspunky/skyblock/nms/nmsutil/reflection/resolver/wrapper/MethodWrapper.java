@@ -9,31 +9,31 @@ import java.util.regex.Pattern;
 public class MethodWrapper<R> extends WrapperAbstract {
     private final Method method;
 
-    public MethodWrapper(final Method method) {
+    public MethodWrapper(Method method) {
         this.method = method;
     }
 
     @Override
     public boolean exists() {
-        return this.method != null;
+        return null != this.method;
     }
 
     public String getName() {
         return this.method.getName();
     }
 
-    public R invoke(final Object object, final Object... args) {
+    public R invoke(Object object, Object... args) {
         try {
             return (R) this.method.invoke(object, args);
-        } catch (final Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public R invokeSilent(final Object object, final Object... args) {
+    public R invokeSilent(Object object, Object... args) {
         try {
             return (R) this.method.invoke(object, args);
-        } catch (final Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -43,27 +43,27 @@ public class MethodWrapper<R> extends WrapperAbstract {
     }
 
     @Override
-    public boolean equals(final Object object) {
+    public boolean equals(Object object) {
         if (this == object) {
             return true;
         }
-        if (object == null || this.getClass() != object.getClass()) {
+        if (null == object || this.getClass() != object.getClass()) {
             return false;
         }
-        final MethodWrapper<?> that = (MethodWrapper<?>) object;
+        MethodWrapper<?> that = (MethodWrapper<?>) object;
         return Objects.equals(this.method, that.method);
     }
 
     @Override
     public int hashCode() {
-        return (this.method != null) ? this.method.hashCode() : 0;
+        return (null != this.method) ? this.method.hashCode() : 0;
     }
 
-    public static String getMethodSignature(final Method method, final boolean fullClassNames) {
+    public static String getMethodSignature(Method method, boolean fullClassNames) {
         return MethodSignature.of(method, fullClassNames).getSignature();
     }
 
-    public static String getMethodSignature(final Method method) {
+    public static String getMethodSignature(Method method) {
         return getMethodSignature(method, false);
     }
 
@@ -76,16 +76,16 @@ public class MethodWrapper<R> extends WrapperAbstract {
         private final String[] parameterTypes;
         private final String signature;
 
-        public MethodSignature(final String returnType, final String name, final String[] parameterTypes) {
+        public MethodSignature(String returnType, String name, String[] parameterTypes) {
             this.returnType = returnType;
             this.returnTypePattern = Pattern.compile(returnType.replace("?", "\\w").replace("*", "\\w*"));
             this.name = name;
             this.namePattern = Pattern.compile(name.replace("?", "\\w").replace("*", "\\w*"));
             this.parameterTypes = parameterTypes;
-            final StringBuilder builder = new StringBuilder();
+            StringBuilder builder = new StringBuilder();
             builder.append(returnType).append(" ").append(name).append("(");
             boolean first = true;
-            for (final String parameterType : parameterTypes) {
+            for (String parameterType : parameterTypes) {
                 if (!first) {
                     builder.append(",");
                 }
@@ -95,17 +95,17 @@ public class MethodWrapper<R> extends WrapperAbstract {
             this.signature = builder.append(")").toString();
         }
 
-        public static MethodSignature of(final Method method, final boolean fullClassNames) {
-            final Class<?> returnType = method.getReturnType();
-            final Class<?>[] parameterTypes = method.getParameterTypes();
-            String returnTypeString;
+        public static MethodSignature of(Method method, boolean fullClassNames) {
+            Class<?> returnType = method.getReturnType();
+            Class<?>[] parameterTypes = method.getParameterTypes();
+            final String returnTypeString;
             if (returnType.isPrimitive()) {
                 returnTypeString = returnType.toString();
             } else {
                 returnTypeString = (fullClassNames ? returnType.getName() : returnType.getSimpleName());
             }
-            final String methodName = method.getName();
-            final String[] parameterTypeStrings = new String[parameterTypes.length];
+            String methodName = method.getName();
+            String[] parameterTypeStrings = new String[parameterTypes.length];
             for (int i = 0; i < parameterTypeStrings.length; ++i) {
                 if (parameterTypes[i].isPrimitive()) {
                     parameterTypeStrings[i] = parameterTypes[i].toString();
@@ -116,15 +116,15 @@ public class MethodWrapper<R> extends WrapperAbstract {
             return new MethodSignature(returnTypeString, methodName, parameterTypeStrings);
         }
 
-        public static MethodSignature fromString(final String signatureString) {
-            if (signatureString == null) {
+        public static MethodSignature fromString(String signatureString) {
+            if (null == signatureString) {
                 return null;
             }
-            final Matcher matcher = MethodSignature.SIGNATURE_STRING_PATTERN.matcher(signatureString);
+            Matcher matcher = SIGNATURE_STRING_PATTERN.matcher(signatureString);
             if (!matcher.find()) {
                 throw new IllegalArgumentException("invalid signature");
             }
-            if (matcher.groupCount() != 3) {
+            if (3 != matcher.groupCount()) {
                 throw new IllegalArgumentException("invalid signature");
             }
             return new MethodSignature(matcher.group(1), matcher.group(2), matcher.group(3).split(","));
@@ -150,11 +150,11 @@ public class MethodWrapper<R> extends WrapperAbstract {
             return this.parameterTypes;
         }
 
-        public String getParameterType(final int index) throws IndexOutOfBoundsException {
+        public String getParameterType(int index) throws IndexOutOfBoundsException {
             return this.parameterTypes[index];
         }
 
-        public boolean isParameterWildcard(final int index) throws IndexOutOfBoundsException {
+        public boolean isParameterWildcard(int index) throws IndexOutOfBoundsException {
             return "?".equals(this.getParameterType(index)) || "*".equals(this.getParameterType(index));
         }
 
@@ -162,8 +162,8 @@ public class MethodWrapper<R> extends WrapperAbstract {
             return this.signature;
         }
 
-        public boolean matches(final MethodSignature other) {
-            if (other == null) {
+        public boolean matches(MethodSignature other) {
+            if (null == other) {
                 return false;
             }
             if (!this.returnTypePattern.matcher(other.returnType).matches()) {
@@ -184,14 +184,14 @@ public class MethodWrapper<R> extends WrapperAbstract {
         }
 
         @Override
-        public boolean equals(final Object o) {
+        public boolean equals(Object o) {
             if (this == o) {
                 return true;
             }
-            if (o == null || this.getClass() != o.getClass()) {
+            if (null == o || this.getClass() != o.getClass()) {
                 return false;
             }
-            final MethodSignature signature1 = (MethodSignature) o;
+            MethodSignature signature1 = (MethodSignature) o;
             return this.returnType.equals(signature1.returnType) && this.name.equals(signature1.name) && Arrays.equals(this.parameterTypes, signature1.parameterTypes) && this.signature.equals(signature1.signature);
         }
 

@@ -20,22 +20,22 @@ import java.util.List;
 
 public class BabyYeti2 extends Pet {
     @Override
-    public List<PetAbility> getPetAbilities(final SItem instance) {
-        final RarityValue<Double> enderianMul = new RarityValue<Double>(0.1, 0.2, 0.2, 0.3, 0.3, 0.3);
-        final RarityValue<Double> savvyMul = new RarityValue<Double>(0.0, 0.0, 0.4, 0.5, 0.5, 0.5);
-        final int level = getLevel(instance);
-        final BigDecimal coldbreeze = new BigDecimal(level * 0.5).setScale(1, RoundingMode.HALF_EVEN);
-        final BigDecimal yeti1 = new BigDecimal(level).setScale(1, RoundingMode.HALF_EVEN);
-        final BigDecimal yeti2 = new BigDecimal(level).setScale(1, RoundingMode.HALF_EVEN);
-        final BigDecimal iceshield = new BigDecimal(level).setScale(2, RoundingMode.HALF_EVEN);
-        final List<PetAbility> abilities = new ArrayList<PetAbility>(Collections.singletonList(new PetAbility() {
+    public List<PetAbility> getPetAbilities(SItem instance) {
+        RarityValue<Double> enderianMul = new RarityValue<Double>(0.1, 0.2, 0.2, 0.3, 0.3, 0.3);
+        RarityValue<Double> savvyMul = new RarityValue<Double>(0.0, 0.0, 0.4, 0.5, 0.5, 0.5);
+        int level = getLevel(instance);
+        BigDecimal coldbreeze = new BigDecimal(level * 0.5).setScale(1, RoundingMode.HALF_EVEN);
+        BigDecimal yeti1 = new BigDecimal(level).setScale(1, RoundingMode.HALF_EVEN);
+        BigDecimal yeti2 = new BigDecimal(level).setScale(1, RoundingMode.HALF_EVEN);
+        BigDecimal iceshield = new BigDecimal(level).setScale(2, RoundingMode.HALF_EVEN);
+        List<PetAbility> abilities = new ArrayList<PetAbility>(Collections.singletonList(new PetAbility() {
             @Override
             public String getName() {
                 return "Cold Breeze";
             }
 
             @Override
-            public List<String> getDescription(final SItem instance) {
+            public List<String> getDescription(SItem instance) {
                 return Arrays.asList("Gives +" + ChatColor.GREEN + coldbreeze.toPlainString() + ChatColor.RED + " ❁ Strength" + ChatColor.GRAY + " and", ChatColor.BLUE + "☠ Crit Damage" + ChatColor.GRAY + " when near snow");
             }
         }));
@@ -47,7 +47,7 @@ public class BabyYeti2 extends Pet {
                 }
 
                 @Override
-                public List<String> getDescription(final SItem instance) {
+                public List<String> getDescription(SItem instance) {
                     return Arrays.asList("Gain " + ChatColor.GREEN + iceshield.toPlainString() + "%" + ChatColor.GRAY + " of your strength", ChatColor.GRAY + "as " + ChatColor.GREEN + "❈ Defense");
                 }
             });
@@ -60,7 +60,7 @@ public class BabyYeti2 extends Pet {
                 }
 
                 @Override
-                public List<String> getDescription(final SItem instance) {
+                public List<String> getDescription(SItem instance) {
                     return Arrays.asList("Buffs the Yeti sword  by " + ChatColor.GREEN + yeti1.toPlainString() + ChatColor.RED + " ❁", ChatColor.RED + "Damage" + ChatColor.GRAY + " and" + ChatColor.AQUA + " ✎", ChatColor.AQUA + "Intelligence");
                 }
             });
@@ -104,7 +104,7 @@ public class BabyYeti2 extends Pet {
     }
 
     @Override
-    public void particleBelowA(final Player p, final Location l) {
+    public void particleBelowA(Player p, Location l) {
         p.spigot().playEffect(l, Effect.COLOURED_DUST, 0, 1, 1.0f, 1.0f, 1.0f, 1.0f, 0, 64);
         p.spigot().playEffect(l, Effect.COLOURED_DUST, 0, 1, 0.1882353f, 0.5411765f, 0.67058825f, 1.0f, 0, 64);
     }

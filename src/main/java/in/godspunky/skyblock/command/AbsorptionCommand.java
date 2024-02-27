@@ -10,16 +10,16 @@ import in.godspunky.skyblock.util.SputnikPlayer;
 @CommandParameters(description = "Modify your absorption amount.", permission = "spt.player")
 public class AbsorptionCommand extends SCommand {
     @Override
-    public void run(final CommandSource sender, final String[] args) {
-        if (args.length != 1) {
+    public void run(CommandSource sender, String[] args) {
+        if (1 != args.length) {
             throw new CommandArgumentException();
         }
         if (sender instanceof ConsoleCommandSender) {
             throw new CommandFailException("Console senders cannot use this command!");
         }
-        final Player player = sender.getPlayer();
-        final EntityHuman human = ((CraftHumanEntity) player).getHandle();
-        final float f = Float.parseFloat(args[0]);
+        Player player = sender.getPlayer();
+        EntityHuman human = ((CraftHumanEntity) player).getHandle();
+        float f = Float.parseFloat(args[0]);
         SputnikPlayer.setCustomAbsorptionHP(player, f);
         this.send(ChatColor.GREEN + "You now have " + ChatColor.GOLD + f + ChatColor.GREEN + " absorption hearts.");
     }

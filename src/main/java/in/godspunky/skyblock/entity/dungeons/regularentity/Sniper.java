@@ -37,7 +37,7 @@ public class Sniper implements EntityFunction, EntityStatistics {
     }
 
     @Override
-    public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
+    public void onSpawn(LivingEntity entity, SEntity sEntity) {
         entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1000000, 100));
         entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         entity.setMetadata("DungeonMobs", new FixedMetadataValue(SkyBlock.getPlugin(), true));

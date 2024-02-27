@@ -37,7 +37,7 @@ public class OldDragonSet implements ArmorSet {
     }
 
     @Override
-    public PlayerBoostStatistics whileHasFullSet(final Player player) {
+    public PlayerBoostStatistics whileHasFullSet(Player player) {
         return null;
     }
 }

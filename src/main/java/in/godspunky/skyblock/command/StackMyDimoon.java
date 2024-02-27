@@ -9,19 +9,19 @@ import in.godspunky.skyblock.util.Sputnik;
 @CommandParameters(description = "", aliases = "smd", permission = "sse.cc")
 public class StackMyDimoon extends SCommand {
     @Override
-    public void run(final CommandSource sender, final String[] args) {
+    public void run(CommandSource sender, String[] args) {
         int stg = 0;
-        final Player player = sender.getPlayer();
-        final ItemStack[] iss = player.getInventory().getContents();
+        Player player = sender.getPlayer();
+        ItemStack[] iss = player.getInventory().getContents();
         for (int i = 0; i < player.getInventory().getContents().length; ++i) {
-            final ItemStack is = iss[i];
-            if (SItem.find(is) != null && SItem.find(is).getType() == SMaterial.HIDDEN_DIMOON_FRAG) {
+            ItemStack is = iss[i];
+            if (null != SItem.find(is) && SMaterial.HIDDEN_DIMOON_FRAG == SItem.find(is).getType()) {
                 stg += is.getAmount();
                 player.getInventory().setItem(i, null);
             }
         }
-        if (stg > 0) {
-            final ItemStack is2 = SItem.of(SMaterial.HIDDEN_DIMOON_FRAG).getStack();
+        if (0 < stg) {
+            ItemStack is2 = SItem.of(SMaterial.HIDDEN_DIMOON_FRAG).getStack();
             is2.setAmount(stg);
             Sputnik.smartGiveItem(is2, player);
             player.sendMessage(Sputnik.trans("&aStacked all your fragments which have been broken before! Have fun!"));

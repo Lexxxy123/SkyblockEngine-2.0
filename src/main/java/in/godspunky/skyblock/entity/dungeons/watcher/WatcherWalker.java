@@ -42,9 +42,9 @@ public class WatcherWalker extends BaseZombie {
     }
 
     @Override
-    public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
-        final HeadsOnWall h = new HeadsOnWall(EnumWatcherType.WALKER);
-        final PlayerDisguise p = Sputnik.applyPacketNPC(entity, h.value, h.signature, true);
+    public void onSpawn(LivingEntity entity, SEntity sEntity) {
+        HeadsOnWall h = new HeadsOnWall(EnumWatcherType.WALKER);
+        PlayerDisguise p = Sputnik.applyPacketNPC(entity, h.value, h.signature, true);
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 99);
         entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         entity.setMetadata("LD", new FixedMetadataValue(SkyBlock.getPlugin(), true));
@@ -52,33 +52,33 @@ public class WatcherWalker extends BaseZombie {
         p.setReplaceSounds(false);
         new BukkitRunnable() {
             public void run() {
-                final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
+                EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
-                for (final Entity entities : entity.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 1.5, 1.5, 1.5)) {
+                for (Entity entities : entity.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 1.5, 1.5, 1.5)) {
                     if (!(entities instanceof Player)) {
                         continue;
                     }
-                    final Player target = (Player) entities;
-                    if (target.getGameMode() == GameMode.CREATIVE) {
+                    Player target = (Player) entities;
+                    if (GameMode.CREATIVE == target.getGameMode()) {
                         continue;
                     }
-                    if (target.getGameMode() == GameMode.SPECTATOR) {
+                    if (GameMode.SPECTATOR == target.getGameMode()) {
                         continue;
                     }
                     if (target.hasMetadata("NPC")) {
                         continue;
                     }
-                    if (target.getNoDamageTicks() == 7) {
+                    if (7 == target.getNoDamageTicks()) {
                         continue;
                     }
-                    if (SUtil.random(0, 10) > 8) {
+                    if (8 < SUtil.random(0, 10)) {
                         continue;
                     }
                     entity.teleport(entity.getLocation().setDirection(target.getLocation().subtract(entities.getLocation()).toVector()));
-                    for (final Player players : Bukkit.getOnlinePlayers()) {
+                    for (Player players : Bukkit.getOnlinePlayers()) {
                         ((CraftPlayer) players).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) entity).getHandle(), 0));
                     }
                     nms.r(((CraftPlayer) target).getHandle());
@@ -94,18 +94,18 @@ public class WatcherWalker extends BaseZombie {
     }
 
     @Override
-    public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
-        final Entity en = sEntity.getEntity();
-        final Vector v = new Vector(0, 0, 0);
+    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e, AtomicDouble damage) {
+        Entity en = sEntity.getEntity();
+        Vector v = new Vector(0, 0, 0);
         SUtil.delay(() -> en.setVelocity(v), 1L);
     }
 
     @Override
-    public void onAttack(final EntityDamageByEntityEvent e) {
+    public void onAttack(EntityDamageByEntityEvent e) {
     }
 
     @Override
-    public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
+    public void onDeath(SEntity sEntity, Entity killed, Entity damager) {
     }
 
     @Override

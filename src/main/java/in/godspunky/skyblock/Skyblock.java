@@ -41,7 +41,6 @@ import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.*;
 import lombok.Getter;
 import lombok.Setter;
-import net.milkbowl.vault.economy.Economy;
 import net.swofty.swm.api.SlimePlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -88,7 +87,6 @@ import java.util.*;
 
 public class SkyBlock extends JavaPlugin implements PluginMessageListener, BungeeChannel.ForwardConsumer {
     private static ProtocolManager protocolManager;
-    private static Economy econ;
     private static SkyBlock plugin;
     private final PacketHelper packetInj;
 
@@ -147,7 +145,6 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
     }
 
     public void onEnable() {
-        this.setupEconomy();
         SkyBlock.plugin = this;
         SLog.info("Loading SkyBlock worlds...");
         SkyBlockWorldManager.loadWorlds();
@@ -307,10 +304,10 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
             chimera6.addEnchantment(EnchantmentType.CHIMERA, 6);
             final SItem tbits = SItem.of(SMaterial.ENCHANTED_BOOK);
             tbits.addEnchantment(EnchantmentType.TURBO_GEM, 1);
-            DimoonLootTable.highQualitylootTable = new ArrayList<DimoonLootItem>(Arrays.asList(new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOONIZARY_DAGGER), 400, 1100), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_EXCRARION), 310, 1000), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_HELMET), 290, 700), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_CHESTPLATE), 340, 900), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_LEGGINGS), 330, 800), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_BOOTS), 220, 500), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_QUANTUMFLUX_POWER_ORB), 310, 900), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_ARCHIVY), 370, 1000), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_MAGICIVY), 370, 1000), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GOLDEN_TIGER_2022), 320, 900), new DimoonLootItem(gtigerm, 300, 1000), new DimoonLootItem(lucki8, 170, 700), new DimoonLootItem(vicious15, 100, 600), new DimoonLootItem(chimera6, 260, 700), new DimoonLootItem(tbits, 210, 700)));
+            DimoonLootTable.highQualitylootTable = new ArrayList<>(Arrays.asList(new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOONIZARY_DAGGER), 400, 1100), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_EXCRARION), 310, 1000), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_HELMET), 290, 700), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_CHESTPLATE), 340, 900), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_LEGGINGS), 330, 800), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_BOOTS), 220, 500), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_QUANTUMFLUX_POWER_ORB), 310, 900), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_ARCHIVY), 370, 1000), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_MAGICIVY), 370, 1000), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GOLDEN_TIGER_2022), 320, 900), new DimoonLootItem(gtigerm, 300, 1000), new DimoonLootItem(lucki8, 170, 700), new DimoonLootItem(vicious15, 100, 600), new DimoonLootItem(chimera6, 260, 700), new DimoonLootItem(tbits, 210, 700)));
             final SItem lucki9 = SItem.of(SMaterial.ENCHANTED_BOOK);
             lucki9.addEnchantment(EnchantmentType.LUCKINESS, 6);
-            DimoonLootTable.lowQualitylootTable = new ArrayList<DimoonLootItem>(Arrays.asList(new DimoonLootItem(lucki9, 20, 150), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOON_GEM), 20, 100), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOON_FRAG), 1, 1, 0, true)));
+            DimoonLootTable.lowQualitylootTable = new ArrayList<>(Arrays.asList(new DimoonLootItem(lucki9, 20, 150), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOON_GEM), 20, 100), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOON_FRAG), 1, 1, 0, true)));
             Arena.cleanArena();
         }
     }
@@ -475,16 +472,6 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
         }.runTaskTimer(SkyBlock.plugin, 0L, 1L);
     }
 
-    private void setupEconomy() {
-        if (this.getServer().getPluginManager().getPlugin("Vault") == null) {
-            return;
-        }
-        final RegisteredServiceProvider<Economy> rsp = (RegisteredServiceProvider<Economy>) this.getServer().getServicesManager().getRegistration((Class) Economy.class);
-        if (rsp == null) {
-            return;
-        }
-        SkyBlock.econ = rsp.getProvider();
-    }
 
     private void registerPacketListener() {
         PacketHelper.addPacketHandler(new PacketHandler() {
@@ -519,10 +506,6 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
             }
         }
         return null;
-    }
-
-    public static Economy getEconomy() {
-        return SkyBlock.econ;
     }
 
     public void async(final Runnable runnable) {

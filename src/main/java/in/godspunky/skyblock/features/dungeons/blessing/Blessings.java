@@ -30,7 +30,7 @@ public class Blessings {
     public static final Map<World, List<Blessings>> BLESSINGS_MAP;
     public static final Map<UUID, float[]> STAT_MAP;
 
-    public Blessings(final BlessingType type, final int level, final World operatedWorld) {
+    public Blessings(BlessingType type, int level, World operatedWorld) {
         this.level = 1;
         this.type = type;
         this.world = operatedWorld;
@@ -38,37 +38,37 @@ public class Blessings {
     }
 
     public void active() {
-        final World operatedWorld = this.world;
-        if (Blessings.BLESSINGS_MAP.containsKey(operatedWorld)) {
-            for (final Blessings bs : Blessings.BLESSINGS_MAP.get(operatedWorld)) {
+        World operatedWorld = this.world;
+        if (BLESSINGS_MAP.containsKey(operatedWorld)) {
+            for (Blessings bs : BLESSINGS_MAP.get(operatedWorld)) {
                 if (bs.getType() == this.type) {
                     bs.setLevel(bs.getLevel() + this.level);
                     return;
                 }
             }
-            Blessings.BLESSINGS_MAP.get(operatedWorld).add(this);
+            BLESSINGS_MAP.get(operatedWorld).add(this);
         } else {
-            Blessings.BLESSINGS_MAP.put(operatedWorld, new ArrayList<Blessings>());
-            Blessings.BLESSINGS_MAP.get(operatedWorld).add(this);
+            BLESSINGS_MAP.put(operatedWorld, new ArrayList<Blessings>());
+            BLESSINGS_MAP.get(operatedWorld).add(this);
         }
     }
 
-    public static List<Blessings> getFrom(final World w) {
-        if (Blessings.BLESSINGS_MAP.containsKey(w)) {
-            return Blessings.BLESSINGS_MAP.get(w);
+    public static List<Blessings> getFrom(World w) {
+        if (BLESSINGS_MAP.containsKey(w)) {
+            return BLESSINGS_MAP.get(w);
         }
         return null;
     }
 
     public void remove() {
-        Blessings.BLESSINGS_MAP.get(this.world).remove(this);
-        for (final Player p : this.world.getPlayers()) {
+        BLESSINGS_MAP.get(this.world).remove(this);
+        for (Player p : this.world.getPlayers()) {
             TemporaryStats ts = null;
-            final User u = User.getUser(p.getUniqueId());
-            if (u == null) {
+            User u = User.getUser(p.getUniqueId());
+            if (null == u) {
                 continue;
             }
-            if (TemporaryStats.getFromPlayer(u.toBukkitPlayer()) != null) {
+            if (null != TemporaryStats.getFromPlayer(u.toBukkitPlayer())) {
                 ts = TemporaryStats.getFromPlayer(u.toBukkitPlayer());
             } else {
                 ts = new TemporaryStats(User.getUser(u.toBukkitPlayer().getUniqueId()));
@@ -77,15 +77,15 @@ public class Blessings {
         }
     }
 
-    public static void resetForWorld(final World w) {
-        Blessings.BLESSINGS_MAP.remove(w);
-        for (final Player p : w.getPlayers()) {
+    public static void resetForWorld(World w) {
+        BLESSINGS_MAP.remove(w);
+        for (Player p : w.getPlayers()) {
             TemporaryStats ts = null;
-            final User u = User.getUser(p.getUniqueId());
-            if (u == null) {
+            User u = User.getUser(p.getUniqueId());
+            if (null == u) {
                 continue;
             }
-            if (TemporaryStats.getFromPlayer(u.toBukkitPlayer()) != null) {
+            if (null != TemporaryStats.getFromPlayer(u.toBukkitPlayer())) {
                 ts = TemporaryStats.getFromPlayer(u.toBukkitPlayer());
             } else {
                 ts = new TemporaryStats(User.getUser(u.toBukkitPlayer().getUniqueId()));
@@ -94,60 +94,60 @@ public class Blessings {
         }
     }
 
-    public WrappedStats getBlessingStats(final User u) {
+    public WrappedStats getBlessingStats(User u) {
         TemporaryStats ts = null;
-        if (TemporaryStats.getFromPlayer(u.toBukkitPlayer()) != null) {
+        if (null != TemporaryStats.getFromPlayer(u.toBukkitPlayer())) {
             ts = TemporaryStats.getFromPlayer(u.toBukkitPlayer());
         } else {
             ts = new TemporaryStats(User.getUser(u.toBukkitPlayer().getUniqueId()));
         }
         ts.cleanStats();
-        final float[] statsarray = this.calculate(User.getUser(u.getUuid()));
+        float[] statsarray = this.calculate(User.getUser(u.getUuid()));
         return new WrappedStats(statsarray);
     }
 
-    private float[] calculate(final User u) {
-        final float[] stats = new float[7];
-        if (u == null) {
+    private float[] calculate(User u) {
+        float[] stats = new float[7];
+        if (null == u) {
             return stats;
         }
-        final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(u.getUuid());
-        final double pci = 1.0 + this.level * 2.0 * 1.2 / 100.0;
-        final double fic = this.level * 2.0 * 1.2;
-        if (this.type == BlessingType.LIFE_BLESSINGS) {
-            final double stat = statistics.getMaxHealth().addAll();
+        PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(u.getUuid());
+        double pci = 1.0 + this.level * 2.0 * 1.2 / 100.0;
+        double fic = this.level * 2.0 * 1.2;
+        if (BlessingType.LIFE_BLESSINGS == this.type) {
+            double stat = statistics.getMaxHealth().addAll();
             stats[0] = (float) (1.2 * (stat * pci + fic - stat));
-            stats[1] = (float) (this.level / 100);
-        } else if (this.type == BlessingType.POWER_BLESSINGS) {
-            final double stat_1 = statistics.getStrength().addAll();
+            stats[1] = (this.level / 100);
+        } else if (BlessingType.POWER_BLESSINGS == this.type) {
+            double stat_1 = statistics.getStrength().addAll();
             stats[2] = (float) (1.2 * (stat_1 * pci + fic - stat_1));
-            final double stat_2 = statistics.getCritDamage().addAll() * 100.0;
+            double stat_2 = statistics.getCritDamage().addAll() * 100.0;
             stats[3] = (float) (1.2 * (stat_2 * pci + fic - stat_2)) / 100.0f;
-        } else if (this.type == BlessingType.WISDOM_BLESSINGS) {
-            final double stat_1 = statistics.getIntelligence().addAll();
+        } else if (BlessingType.WISDOM_BLESSINGS == this.type) {
+            double stat_1 = statistics.getIntelligence().addAll();
             stats[4] = (float) (1.2 * (stat_1 * pci + fic - stat_1));
-            final double stat_2 = statistics.getSpeed().addAll() * 100.0;
+            double stat_2 = statistics.getSpeed().addAll() * 100.0;
             stats[5] = (float) (1.2 * (stat_2 * pci + fic - stat_2)) / 100.0f;
-        } else if (this.type == BlessingType.STONE_BLESSINGS) {
-            final double stat_1 = statistics.getDefense().addAll();
+        } else if (BlessingType.STONE_BLESSINGS == this.type) {
+            double stat_1 = statistics.getDefense().addAll();
             stats[6] = (float) (1.2 * (stat_1 * pci + fic - stat_1));
-            final double stat_2 = statistics.getStrength().addAll();
+            double stat_2 = statistics.getStrength().addAll();
             stats[2] = (float) (1.2 * (stat_2 * pci + fic - stat_2));
         } else {
-            final double stat_1 = statistics.getDefense().addAll();
+            double stat_1 = statistics.getDefense().addAll();
             stats[6] = (float) (stat_1 + 1.2 * (stat_1 * pci + fic - stat_1));
-            final double stat_2 = statistics.getStrength().addAll();
+            double stat_2 = statistics.getStrength().addAll();
             stats[2] = (float) (stat_2 + 1.2 * (stat_2 * pci + fic - stat_2));
-            final double stat2 = statistics.getMaxHealth().addAll();
+            double stat2 = statistics.getMaxHealth().addAll();
             stats[0] = (float) (stat2 + 1.2 * (stat2 * pci + fic - stat2));
-            final double stat_3 = statistics.getIntelligence().addAll();
+            double stat_3 = statistics.getIntelligence().addAll();
             stats[4] = (float) (stat_3 + 1.2 * (stat_3 * pci + fic - stat_3));
         }
         return stats;
     }
 
     public String toText() {
-        final String n = SUtil.toRomanNumeral(this.level);
+        String n = SUtil.toRomanNumeral(this.level);
         switch (this.type) {
             case LIFE_BLESSINGS:
                 return "Blessing of Life " + n;
@@ -166,12 +166,12 @@ public class Blessings {
 
     public static void update() {
         sse.async(() -> {
-            for (Player p : Bukkit.getOnlinePlayers()) {
-                World w = p.getWorld();
-                if (User.getUser(p.getUniqueId()) == null || !BLESSINGS_MAP.containsKey(w)) continue;
-                List<Blessings> bls = BLESSINGS_MAP.get(w);
+            for (final Player p : Bukkit.getOnlinePlayers()) {
+                final World w = p.getWorld();
+                if (null == User.getUser(p.getUniqueId()) || !BLESSINGS_MAP.containsKey(w)) continue;
+                final List<Blessings> bls = BLESSINGS_MAP.get(w);
                 TemporaryStats ts = null;
-                ts = TemporaryStats.getFromPlayer(p) != null ? TemporaryStats.getFromPlayer(p) : new TemporaryStats(User.getUser(p.getUniqueId()));
+                ts = null != TemporaryStats.getFromPlayer(p) ? TemporaryStats.getFromPlayer(p) : new TemporaryStats(User.getUser(p.getUniqueId()));
                 float def = 0.0f;
                 float spd = 0.0f;
                 float intel = 0.0f;
@@ -179,9 +179,9 @@ public class Blessings {
                 float str = 0.0f;
                 float hpg = 0.0f;
                 float hp = 0.0f;
-                for (Blessings bl : bls) {
+                for (final Blessings bl : bls) {
                     ts.cleanStats();
-                    float[] statsarray = bl.calculate(User.getUser(p.getUniqueId()));
+                    final float[] statsarray = bl.calculate(User.getUser(p.getUniqueId()));
                     hp += statsarray[0];
                     hpg += statsarray[1];
                     str += statsarray[2];
@@ -203,10 +203,10 @@ public class Blessings {
         });
     }
 
-    public String buildPickupMessage(final User targetUser, final User picker) {
-        final Blessings type = this;
-        final StringBuilder sb = new StringBuilder();
-        if (picker == null) {
+    public String buildPickupMessage(User targetUser, User picker) {
+        Blessings type = this;
+        StringBuilder sb = new StringBuilder();
+        if (null == picker) {
             sb.append(Sputnik.trans("&6&lDUNGEON BUFF! &fA &d" + type.toText() + "&f have been picked up!\n"));
         } else if (targetUser.getUuid() == picker.getUuid()) {
             sb.append(Sputnik.trans("&6&lDUNGEON BUFF! &fYou found a &d" + type.toText() + "&f!\n"));
@@ -234,15 +234,15 @@ public class Blessings {
         return sb.toString();
     }
 
-    public static void openBlessingChest(final Block chest, final Blessings bless, final Player e) {
-        final Location loc = chest.getLocation().add(0.5, 0.0, 0.5);
-        final SEntity sEntity = new SEntity(loc.clone().add(0.0, -1.0, 0.0), SEntityType.VELOCITY_ARMOR_STAND);
-        final ArmorStand drop = (ArmorStand) sEntity.getEntity();
+    public static void openBlessingChest(Block chest, Blessings bless, Player e) {
+        Location loc = chest.getLocation().add(0.5, 0.0, 0.5);
+        SEntity sEntity = new SEntity(loc.clone().add(0.0, -1.0, 0.0), SEntityType.VELOCITY_ARMOR_STAND);
+        ArmorStand drop = (ArmorStand) sEntity.getEntity();
         drop.setVisible(false);
         drop.setCustomNameVisible(false);
         drop.setMetadata("ss_drop", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         drop.getEquipment().setHelmet(SUtil.getSkullURLStack("asadas", "e93e2068617872c542ecda1d27df4ece91c699907bf327c4ddb85309412d3939", 1));
-        final ArmorStand as = Sputnik.spawnStaticDialougeBox(drop, loc.clone().add(0.0, 1.65, 0.0));
+        ArmorStand as = Sputnik.spawnStaticDialougeBox(drop, loc.clone().add(0.0, 1.65, 0.0));
         as.setCustomName(Sputnik.trans("&d" + bless.toText()));
         as.setCustomNameVisible(false);
         as.setMetadata("ss_drop", new FixedMetadataValue(SkyBlock.getPlugin(), true));
@@ -250,12 +250,12 @@ public class Blessings {
         SUtil.delay(() -> drop.remove(), 150L);
         SUtil.delay(() -> {
             bless.active();
-            final User u = User.getUser(e.getUniqueId());
-            if (u == null) {
+            User u = User.getUser(e.getUniqueId());
+            if (null == u) {
                 return;
             }
-            for (Player p : loc.getWorld().getPlayers()) {
-                if (User.getUser(p.getUniqueId()) == null) continue;
+            for (final Player p : loc.getWorld().getPlayers()) {
+                if (null == User.getUser(p.getUniqueId())) continue;
                 p.sendMessage(bless.buildPickupMessage(User.getUser(p.getUniqueId()), u));
             }
         }, 20L);
@@ -267,8 +267,8 @@ public class Blessings {
                     return;
                 }
                 as.setCustomNameVisible(true);
-                final Vector velClone = drop.getVelocity().clone();
-                drop.setVelocity(new Vector(0.0, (velClone.getY() < 0.0) ? 0.045 : -0.045, 0.0));
+                Vector velClone = drop.getVelocity().clone();
+                drop.setVelocity(new Vector(0.0, (0.0 > velClone.getY()) ? 0.045 : -0.045, 0.0));
             }
         }.runTaskTimer(SkyBlock.getPlugin(), 20L, 20L);
         new BukkitRunnable() {
@@ -278,7 +278,7 @@ public class Blessings {
                     this.cancel();
                     return;
                 }
-                final Location l = drop.getLocation();
+                Location l = drop.getLocation();
                 l.setYaw(l.getYaw() + 5.0f);
                 drop.teleport(l);
             }
@@ -295,22 +295,22 @@ public class Blessings {
         }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
     }
 
-    public static void dropBlessingPickable(final Location loc, final Blessings bless) {
-        final SEntity sEntity = new SEntity(loc.clone().add(0.0, -0.8, 0.0), SEntityType.VELOCITY_ARMOR_STAND);
-        final ArmorStand drop = (ArmorStand) sEntity.getEntity();
+    public static void dropBlessingPickable(Location loc, Blessings bless) {
+        SEntity sEntity = new SEntity(loc.clone().add(0.0, -0.8, 0.0), SEntityType.VELOCITY_ARMOR_STAND);
+        ArmorStand drop = (ArmorStand) sEntity.getEntity();
         drop.setVisible(false);
         drop.setCustomNameVisible(false);
         drop.setMetadata("ss_drop", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         drop.getEquipment().setHelmet(SUtil.getSkullURLStack("asadas", "e93e2068617872c542ecda1d27df4ece91c699907bf327c4ddb85309412d3939", 1));
-        final ArmorStand as = Sputnik.spawnStaticDialougeBox(drop, 2.35);
+        ArmorStand as = Sputnik.spawnStaticDialougeBox(drop, 2.35);
         as.setCustomName(Sputnik.trans("&d" + bless.toText()));
         as.setCustomNameVisible(true);
         as.setMetadata("ss_drop", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         drop.setVelocity(new Vector(0.0, 0.03, 0.0));
         SUtil.delay(() -> {
             if (!drop.isDead()) {
-                for (Player p : loc.getWorld().getPlayers()) {
-                    if (User.getUser(p.getUniqueId()) == null) continue;
+                for (final Player p : loc.getWorld().getPlayers()) {
+                    if (null == User.getUser(p.getUniqueId())) continue;
                     p.sendMessage(bless.buildPickupMessage(User.getUser(p.getUniqueId()), null));
                     bless.active();
                 }
@@ -324,8 +324,8 @@ public class Blessings {
                     this.cancel();
                     return;
                 }
-                final Vector velClone = drop.getVelocity().clone();
-                drop.setVelocity(new Vector(0.0, (velClone.getY() < 0.0) ? 0.035 : -0.035, 0.0));
+                Vector velClone = drop.getVelocity().clone();
+                drop.setVelocity(new Vector(0.0, (0.0 > velClone.getY()) ? 0.035 : -0.035, 0.0));
             }
         }.runTaskTimer(SkyBlock.getPlugin(), 25L, 25L);
         new BukkitRunnable() {
@@ -339,18 +339,18 @@ public class Blessings {
                     this.cancel();
                     return;
                 }
-                final Location l = drop.getLocation();
+                Location l = drop.getLocation();
                 l.setYaw(l.getYaw() + 2.5f);
                 drop.teleport(l);
                 l.getWorld().spigot().playEffect(drop.getLocation().add(0.0, 1.0, 0.0), Effect.FIREWORKS_SPARK, 0, 1, (float) SUtil.random(-1.0, 1.0), 1.0f, (float) SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
-                for (final Entity e : drop.getNearbyEntities(0.07, 0.07, 0.07)) {
+                for (Entity e : drop.getNearbyEntities(0.07, 0.07, 0.07)) {
                     if (e instanceof Player) {
-                        final User u = User.getUser(e.getUniqueId());
-                        if (u == null) {
+                        User u = User.getUser(e.getUniqueId());
+                        if (null == u) {
                             continue;
                         }
-                        for (final Player p : loc.getWorld().getPlayers()) {
-                            if (User.getUser(p.getUniqueId()) == null) {
+                        for (Player p : loc.getWorld().getPlayers()) {
+                            if (null == User.getUser(p.getUniqueId())) {
                                 continue;
                             }
                             p.sendMessage(bless.buildPickupMessage(User.getUser(p.getUniqueId()), u));
@@ -374,7 +374,7 @@ public class Blessings {
         return this.level;
     }
 
-    public void setLevel(final int level) {
+    public void setLevel(int level) {
         this.level = level;
     }
 

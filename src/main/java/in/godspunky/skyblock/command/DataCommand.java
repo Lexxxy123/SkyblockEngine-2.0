@@ -10,25 +10,25 @@ import in.godspunky.skyblock.item.SItem;
 @CommandParameters(description = "Sets data for a Spec item.", permission = "spt.item")
 public class DataCommand extends SCommand {
     @Override
-    public void run(final CommandSource sender, final String[] args) {
-        if (args.length < 3) {
+    public void run(CommandSource sender, String[] args) {
+        if (3 > args.length) {
             throw new CommandArgumentException();
         }
         if (sender instanceof ConsoleCommandSender) {
             throw new CommandFailException("Console senders cannot use this command!");
         }
-        final Player player = sender.getPlayer();
-        final PlayerInventory inv = player.getInventory();
-        if (inv.getItemInHand() == null) {
+        Player player = sender.getPlayer();
+        PlayerInventory inv = player.getInventory();
+        if (null == inv.getItemInHand()) {
             throw new CommandFailException(ChatColor.RED + "Error! Hold an item in your hand!");
         }
-        final SItem sItem = SItem.find(inv.getItemInHand());
-        final String key = args[0];
+        SItem sItem = SItem.find(inv.getItemInHand());
+        String key = args[0];
         if (!sItem.hasDataFor(key)) {
             throw new CommandFailException(ChatColor.RED + "Error! This item does not have data for '" + key + "'");
         }
-        final String joined = StringUtils.join(args, " ", 1, args.length - 1);
-        final String lowerCase = args[args.length - 1].toLowerCase();
+        String joined = StringUtils.join(args, " ", 1, args.length - 1);
+        String lowerCase = args[args.length - 1].toLowerCase();
         switch (lowerCase) {
             case "string":
                 sItem.setDataString(key, joined);

@@ -11,26 +11,26 @@ import in.godspunky.skyblock.user.User;
 @CommandParameters(description = "bruhbu", aliases = "gsh")
 public class GiveSpaceHelmetCommand extends SCommand {
     @Override
-    public void run(final CommandSource sender, final String[] args) {
-        final Player player = sender.getPlayer();
+    public void run(CommandSource sender, String[] args) {
+        Player player = sender.getPlayer();
         if (!player.isOp()) {
             return;
         }
         if (sender instanceof ConsoleCommandSender) {
             throw new CommandFailException("Console senders cannot use this command!");
         }
-        final User user = sender.getUser();
-        if (args.length == 0) {
+        User user = sender.getUser();
+        if (0 == args.length) {
             this.send(ChatColor.RED + "Invaild Syntax!");
             return;
         }
-        final String pgv = args[0];
-        final String lore = args[1];
-        final SItem sitem = SItem.of(SMaterial.HIDDEN_DONATOR_HELMET);
+        String pgv = args[0];
+        String lore = args[1];
+        SItem sitem = SItem.of(SMaterial.HIDDEN_DONATOR_HELMET);
         sitem.setDataString("p_given", player.getName());
-        if (Bukkit.getPlayer(pgv) != null) {
+        if (null != Bukkit.getPlayer(pgv)) {
             sitem.setDataString("p_rcv", pgv);
-            if (args[1] != null) {
+            if (null != args[1]) {
                 sitem.setDataString("lore_d", lore);
             } else {
                 sitem.setDataString("lore_d", "null");

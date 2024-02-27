@@ -22,7 +22,7 @@ public class Bouncer implements MaterialStatistics, MaterialFunction, ItemData {
 
     @Override
     public NBTTagCompound getData() {
-        final NBTTagCompound compound = new NBTTagCompound();
+        NBTTagCompound compound = new NBTTagCompound();
         compound.setFloat("bounce", 1.0f);
         compound.setLong("delay", 20L);
         compound.setFloat("velX", 1.0f);

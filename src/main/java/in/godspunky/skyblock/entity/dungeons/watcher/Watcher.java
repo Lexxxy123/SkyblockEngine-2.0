@@ -56,7 +56,7 @@ public class Watcher implements Listener {
     public String[] sneakyPeaky;
     public String[] watcherAttack;
 
-    public Watcher(final Location pos1, final Location pos2, final int floorY) {
+    public Watcher(Location pos1, Location pos2, int floorY) {
         this.currentMobsCount = 15;
         this.how = new ArrayList<HeadsOnWall>();
         this.spawnedMob = new ArrayList<String>();
@@ -68,54 +68,54 @@ public class Watcher implements Listener {
         this.arg0 = pos1.getWorld();
         this.arg1 = pos1;
         this.arg2 = pos2;
-        this.floorY = (float) floorY;
+        this.floorY = floorY;
         this.a = false;
     }
 
-    public static Watcher getWatcher(final World world) {
-        if (Watcher.WATCHER_CACHE.containsKey(world)) {
-            return Watcher.WATCHER_CACHE.get(world);
+    public static Watcher getWatcher(World world) {
+        if (WATCHER_CACHE.containsKey(world)) {
+            return WATCHER_CACHE.get(world);
         }
         return null;
     }
 
     public void intitize() {
-        final Cuboid cb = new Cuboid(this.arg0, this.arg1.getBlockX(), this.arg1.getBlockY(), this.arg1.getBlockZ(), this.arg2.getBlockX(), this.arg2.getBlockY(), this.arg2.getBlockZ());
-        for (final Block b : cb.getBlocks()) {
-            if (b.getType() == Material.BEACON) {
+        Cuboid cb = new Cuboid(this.arg0, this.arg1.getBlockX(), this.arg1.getBlockY(), this.arg1.getBlockZ(), this.arg2.getBlockX(), this.arg2.getBlockY(), this.arg2.getBlockZ());
+        for (Block b : cb.getBlocks()) {
+            if (Material.BEACON == b.getType()) {
                 this.watcher = b.getLocation().add(0.5, 0.0, 0.5);
             } else {
-                if (b.getType() != Material.WOOL || b.getData() != 4) {
+                if (Material.WOOL != b.getType() || 4 != b.getData()) {
                     continue;
                 }
                 this.P1Heads.add(b.getLocation().add(0.5, 0.0, 0.5));
             }
         }
         this.apt();
-        Watcher.WATCHER_CACHE.put(this.arg0, this);
+        WATCHER_CACHE.put(this.arg0, this);
         this.a = true;
         if (this.isIntitized()) {
             int i = 0;
-            for (final Location loc : this.P1Heads) {
+            for (Location loc : this.P1Heads) {
                 this.placeHead(loc, i);
                 ++i;
             }
         }
         this.spawnWatcher(this.watcher);
-        final GlobalBossBar bb = new GlobalBossBar(trans("&c&lThe Watcher"), this.watcher.getWorld());
-        for (final Player p : this.watcher.getWorld().getPlayers()) {
+        GlobalBossBar bb = new GlobalBossBar(trans("&c&lThe Watcher"), this.watcher.getWorld());
+        for (Player p : this.watcher.getWorld().getPlayers()) {
             bb.addPlayer(p);
         }
         bb.setProgress(this.currentMobsCount / 15);
         new BukkitRunnable() {
             public void run() {
                 if (Watcher.this.ewatcher.isDead()) {
-                    final List<Player> plist = new ArrayList<Player>();
-                    for (final Player p : bb.players) {
+                    List<Player> plist = new ArrayList<Player>();
+                    for (Player p : bb.players) {
                         plist.add(p);
                     }
                     plist.forEach(pl -> {
-                        final Object val$bb = bb;
+                        Object val$bb = bb;
                         bb.removePlayer(pl);
                     });
                     bb.setProgress(0.0);
@@ -123,7 +123,7 @@ public class Watcher implements Listener {
                     this.cancel();
                     return;
                 }
-                if (Watcher.this.currentMobsCount > 0) {
+                if (0 < Watcher.this.currentMobsCount) {
                     bb.setProgress(Watcher.this.currentMobsCount / 15.0);
                 } else {
                     bb.setProgress(1.0E-5);
@@ -132,29 +132,29 @@ public class Watcher implements Listener {
         }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
     }
 
-    public static double random(final double min, final double max) {
+    public static double random(double min, double max) {
         return Math.random() * (max - min) + min;
     }
 
     private void apt() {
-        for (final EnumWatcherType ew : EnumWatcherType.values()) {
-            if (!ew.equals(EnumWatcherType.PLAYER)) {
+        for (EnumWatcherType ew : EnumWatcherType.values()) {
+            if (ew != EnumWatcherType.PLAYER) {
                 this.how.add(new HeadsOnWall(ew));
             }
         }
-        for (final Player p : this.arg0.getPlayers()) {
-            final HeadsOnWall a = new HeadsOnWall(EnumWatcherType.PLAYER);
+        for (Player p : this.arg0.getPlayers()) {
+            HeadsOnWall a = new HeadsOnWall(EnumWatcherType.PLAYER);
             a.skullTexture = p.getName();
             a.arg0 = true;
             this.how.add(a);
         }
-        final EnumWatcherType[] rp = EnumWatcherType.values();
-        final List<EnumWatcherType> ewt = new ArrayList<EnumWatcherType>(Arrays.asList(rp));
-        ewt.removeIf(r -> r == EnumWatcherType.BONZO || r == EnumWatcherType.LIVID || r == EnumWatcherType.PLAYER);
+        EnumWatcherType[] rp = EnumWatcherType.values();
+        List<EnumWatcherType> ewt = new ArrayList<EnumWatcherType>(Arrays.asList(rp));
+        ewt.removeIf(r -> EnumWatcherType.BONZO == r || EnumWatcherType.LIVID == r || EnumWatcherType.PLAYER == r);
         Collections.shuffle(ewt);
-        for (final EnumWatcherType ew : ewt) {
+        for (EnumWatcherType ew : ewt) {
             this.how.add(new HeadsOnWall(ew));
-            if (this.how.size() == 30) {
+            if (30 == this.how.size()) {
                 break;
             }
         }
@@ -162,34 +162,34 @@ public class Watcher implements Listener {
     }
 
     public void cleanUp() {
-        Watcher.WATCHER_CACHE.remove(this.arg0);
+        WATCHER_CACHE.remove(this.arg0);
     }
 
     public boolean isIntitized() {
         return this.a;
     }
 
-    public static float getYaw(final Location loc) {
-        final Location newA = loc.getBlock().getLocation().add(0.5, 0.0, 0.5);
+    public static float getYaw(Location loc) {
+        Location newA = loc.getBlock().getLocation().add(0.5, 0.0, 0.5);
         newA.add(0.0, 1.7, 0.0);
         int rot = 0;
-        for (int i = 0; i < 4; ++i) {
+        for (int i = 0; 4 > i; ++i) {
             rot += 90;
-            newA.setYaw((float) rot);
-            final Location newLoc = newA.clone().add(newA.getDirection().normalize().multiply(2));
-            if (newLoc.getBlock().getType() == Material.AIR) {
-                return (float) rot;
+            newA.setYaw(rot);
+            Location newLoc = newA.clone().add(newA.getDirection().normalize().multiply(2));
+            if (Material.AIR == newLoc.getBlock().getType()) {
+                return rot;
             }
         }
         return 0.0f;
     }
 
-    public void placeHead(final Location l, int index) {
+    public void placeHead(Location l, int index) {
         index = Math.min(29, index);
         l.getBlock().setType(Material.AIR);
-        final Location sloc = l.add(0.0, -1.25, 0.0);
+        Location sloc = l.add(0.0, -1.25, 0.0);
         sloc.setYaw(getYaw(sloc));
-        final ArmorStand stand = (ArmorStand) l.getWorld().spawn(sloc, (Class) ArmorStand.class);
+        ArmorStand stand = (ArmorStand) l.getWorld().spawn(sloc, (Class) ArmorStand.class);
         stand.setMetadata("WATCHER_ENTITY", new FixedMetadataValue(SkyBlock.getPlugin(), 0));
         stand.setMetadata("TYPE", new FixedMetadataValue(SkyBlock.getPlugin(), this.how.get(index).stype));
         stand.setCustomNameVisible(false);
@@ -202,8 +202,8 @@ public class Watcher implements Listener {
         stand.setVisible(false);
     }
 
-    public void returnWatcher(final Entity e) {
-        final Watcher w = getWatcher(e.getWorld());
+    public void returnWatcher(Entity e) {
+        Watcher w = getWatcher(e.getWorld());
         new BukkitRunnable() {
             public void run() {
                 if (e.isDead()) {
@@ -212,25 +212,25 @@ public class Watcher implements Listener {
                 }
                 if (e.getWorld().getNearbyEntities(w.watcher.clone().add(0.0, -1.5, 0.0), 0.1, 0.1, 0.1).contains(e)) {
                     Watcher.this.isResting = true;
-                    if (Watcher.this.mobSpawned < 15) {
+                    if (15 > Watcher.this.mobSpawned) {
                         SUtil.delay(() -> {
-                            final Object val$e = e;
-                            if (e.isDead() || Watcher.this.mobSpawned >= 15) {
+                            Object val$e = e;
+                            if (e.isDead() || 15 <= Watcher.this.mobSpawned) {
                             } else {
                                 Watcher.this.moveWatcher(e, false);
                             }
                         }, 100L);
                     }
-                    if (Watcher.random(1, 7) == 2) {
-                        Watcher.this.sd(Watcher.this.mobSummonConvs[Watcher.random(0, Watcher.this.mobSummonConvs.length - 1)], 10, 50, true);
+                    if (2 == Watcher.random(1, 7)) {
+                        Watcher.this.sd(Watcher.this.mobSummonConvs[random(0, Watcher.this.mobSummonConvs.length - 1)], 10, 50, true);
                     }
                     Watcher.this.perRunMS = 0;
                     this.cancel();
                     return;
                 }
-                final Location r = e.getLocation().setDirection(w.watcher.clone().add(0.0, -1.5, 0.0).toVector().subtract(e.getLocation().toVector()));
+                Location r = e.getLocation().setDirection(w.watcher.clone().add(0.0, -1.5, 0.0).toVector().subtract(e.getLocation().toVector()));
                 e.teleport(r);
-                Watcher.sendHeadRotation(e, r.getYaw(), r.getPitch());
+                sendHeadRotation(e, r.getYaw(), r.getPitch());
                 double x = 0.0;
                 final double y = 0.0;
                 final double z = 0.0;
@@ -241,8 +241,8 @@ public class Watcher implements Listener {
         }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
     }
 
-    public ArmorStand findArmorStand(final Location l) {
-        for (final Entity e : l.getWorld().getNearbyEntities(l, 0.10000000149011612, 0.10000000149011612, 0.10000000149011612)) {
+    public ArmorStand findArmorStand(Location l) {
+        for (Entity e : l.getWorld().getNearbyEntities(l, 0.10000000149011612, 0.10000000149011612, 0.10000000149011612)) {
             if (e instanceof ArmorStand && e.hasMetadata("WATCHER_ENTITY")) {
                 return (ArmorStand) e;
             }
@@ -250,23 +250,23 @@ public class Watcher implements Listener {
         return null;
     }
 
-    public void moveWatcher(final Entity e, final boolean firstMove) {
+    public void moveWatcher(Entity e, boolean firstMove) {
         this.firstRun = firstMove;
         this.isResting = false;
-        final Watcher w = getWatcher(e.getWorld());
-        final int inx = random(0, w.P1Heads.size() - 1);
+        Watcher w = getWatcher(e.getWorld());
+        int inx = random(0, w.P1Heads.size() - 1);
         Location tpTo = null;
         if (this.firstRun) {
             this.firstRun = false;
-            final List<Location> removedLoc = new ArrayList<Location>();
-            for (final Location l : w.P1Heads) {
+            List<Location> removedLoc = new ArrayList<Location>();
+            for (Location l : w.P1Heads) {
                 if (this.findArmorStand(l).getMetadata("TYPE").get(0).asString().contains("TEAMMATE")) {
                     removedLoc.add(l);
                 }
             }
             w.P1Heads.removeAll(removedLoc);
-            for (final Location l : w.P1Heads) {
-                final String lb = this.findArmorStand(l).getMetadata("TYPE").get(0).asString();
+            for (Location l : w.P1Heads) {
+                String lb = this.findArmorStand(l).getMetadata("TYPE").get(0).asString();
                 if (lb.contains("BONZO") || lb.contains("LIVID")) {
                     tpTo = l;
                     w.P1Heads.remove(l);
@@ -277,14 +277,14 @@ public class Watcher implements Listener {
             tpTo = w.P1Heads.get(inx);
             w.P1Heads.remove(inx);
             while (this.spawnedMob.contains(this.findArmorStand(tpTo).getMetadata("TYPE").get(0).asString())) {
-                final int inxe = random(0, w.P1Heads.size() - 1);
+                int inxe = random(0, w.P1Heads.size() - 1);
                 tpTo = w.P1Heads.get(inxe);
                 w.P1Heads.remove(inxe);
             }
         }
         this.spawnedMob.add(this.findArmorStand(tpTo).getMetadata("TYPE").get(0).asString());
-        final Location tpToC = tpTo;
-        if (this.perRunMS < 1) {
+        Location tpToC = tpTo;
+        if (1 > this.perRunMS) {
             this.sd(this.mobSummonConvs[random(0, this.mobSummonConvs.length - 1)], 10, 50, true);
         }
         new BukkitRunnable() {
@@ -294,34 +294,34 @@ public class Watcher implements Listener {
                     return;
                 }
                 if (e.getWorld().getNearbyEntities(tpToC, 0.6, 0.6, 0.6).contains(e)) {
-                    final ArmorStand st = Watcher.this.findArmorStand(tpToC);
+                    ArmorStand st = Watcher.this.findArmorStand(tpToC);
                     st.getEquipment().setHelmet(null);
                     st.setCustomNameVisible(false);
                     Watcher.this.playHeadSpawning(st);
                     SUtil.delay(() -> {
-                        final Object val$e = e;
-                        if (Watcher.this.mobSpawned >= 15) {
+                        Object val$e = e;
+                        if (15 <= Watcher.this.mobSpawned) {
                             Watcher.this.sd("That will be enough for now.", 20, 50, true);
                         }
-                        if (Watcher.this.perRunMS >= 3 || Watcher.this.mobSpawned >= 15) {
+                        if (3 <= Watcher.this.perRunMS || 15 <= Watcher.this.mobSpawned) {
                             Watcher.this.returnWatcher(e);
                         } else {
                             Watcher.this.moveWatcher(e, false);
                         }
                     }, 15L);
-                    final Watcher this$0 = Watcher.this;
+                    Watcher this$0 = Watcher.this;
                     ++this$0.perRunMS;
-                    final Watcher this$2 = Watcher.this;
+                    Watcher this$2 = Watcher.this;
                     ++this$2.mobSpawned;
-                    if (Watcher.random(1, 3) == 1) {
-                        Watcher.this.sd(Watcher.this.mobSummonConvs[Watcher.random(0, Watcher.this.mobSummonConvs.length - 1)], 10, 50, true);
+                    if (1 == Watcher.random(1, 3)) {
+                        Watcher.this.sd(Watcher.this.mobSummonConvs[random(0, Watcher.this.mobSummonConvs.length - 1)], 10, 50, true);
                     }
                     this.cancel();
                     return;
                 }
-                final Location r = e.getLocation().setDirection(tpToC.toVector().subtract(e.getLocation().toVector()));
+                Location r = e.getLocation().setDirection(tpToC.toVector().subtract(e.getLocation().toVector()));
                 e.teleport(r);
-                Watcher.sendHeadRotation(e, r.getYaw(), r.getPitch());
+                sendHeadRotation(e, r.getYaw(), r.getPitch());
                 double x = 0.0;
                 final double y = 0.0;
                 final double z = 0.0;
@@ -332,31 +332,31 @@ public class Watcher implements Listener {
         }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
     }
 
-    public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
-        final net.minecraft.server.v1_8_R3.Entity pl = ((CraftArmorStand) e).getHandle();
+    public static void sendHeadRotation(Entity e, float yaw, float pitch) {
+        net.minecraft.server.v1_8_R3.Entity pl = ((CraftArmorStand) e).getHandle();
         pl.setLocation(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), yaw, pitch);
-        final PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(pl);
-        for (final Player p : e.getWorld().getPlayers()) {
+        PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(pl);
+        for (Player p : e.getWorld().getPlayers()) {
             ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
         }
     }
 
     public static int random(int min, int max) {
-        if (min < 0) {
+        if (0 > min) {
             min = 0;
         }
-        if (max < 0) {
+        if (0 > max) {
             max = 0;
         }
         return new Random().nextInt(max - min + 1) + min;
     }
 
-    public ArmorStand spawnWatchfulEyes(final Entity e) {
-        final Location l1 = e.getLocation().clone().add(e.getLocation().getDirection().normalize().multiply(-1.5));
-        final float angle1 = l1.getYaw() / 60.0f;
-        final Location loc_1 = l1.add(Math.cos(angle1), 0.0, Math.sin(angle1));
-        final Location loc = e.getLocation();
-        final ArmorStand stand = (ArmorStand) loc.getWorld().spawn(loc_1.add(0.0, 1.5, 0.0), (Class) ArmorStand.class);
+    public ArmorStand spawnWatchfulEyes(Entity e) {
+        Location l1 = e.getLocation().clone().add(e.getLocation().getDirection().normalize().multiply(-1.5));
+        float angle1 = l1.getYaw() / 60.0f;
+        Location loc_1 = l1.add(Math.cos(angle1), 0.0, Math.sin(angle1));
+        Location loc = e.getLocation();
+        ArmorStand stand = (ArmorStand) loc.getWorld().spawn(loc_1.add(0.0, 1.5, 0.0), (Class) ArmorStand.class);
         stand.setCustomName(trans("&3&lWatchful Eye"));
         stand.setCustomNameVisible(true);
         stand.setVisible(false);
@@ -381,19 +381,19 @@ public class Watcher implements Listener {
                     return;
                 }
                 if (e instanceof ArmorStand && !Watcher.this.wfe1_shoot) {
-                    final Location r = stand.getLocation().setDirection(e.getLocation().toVector().subtract(stand.getLocation().toVector()));
+                    Location r = stand.getLocation().setDirection(e.getLocation().toVector().subtract(stand.getLocation().toVector()));
                     stand.teleport(r);
-                    Watcher.sendHeadRotation(stand, r.getYaw(), r.getPitch());
+                    sendHeadRotation(stand, r.getYaw(), r.getPitch());
                     double x = 0.0;
                     final double y = 0.0;
                     final double z = 0.0;
                     x = Math.toRadians(r.getPitch());
                     stand.setHeadPose(new EulerAngle(x, y, z));
                 }
-                final Location l = e.getLocation().clone().add(0.0, 1.0, 0.0).add(e.getLocation().getDirection().normalize().multiply(-1.5));
-                final float angle = l.getYaw() / 60.0f;
-                final Location loc_ = l.add(Math.cos(angle), 0.0, Math.sin(angle));
-                if (stand.getLocation().distance(e.getLocation()) > 2.5 && !Watcher.this.wfe1_shoot) {
+                Location l = e.getLocation().clone().add(0.0, 1.0, 0.0).add(e.getLocation().getDirection().normalize().multiply(-1.5));
+                float angle = l.getYaw() / 60.0f;
+                Location loc_ = l.add(Math.cos(angle), 0.0, Math.sin(angle));
+                if (2.5 < stand.getLocation().distance(e.getLocation()) && !Watcher.this.wfe1_shoot) {
                     stand.teleport(stand.getLocation().add(loc_.toVector().subtract(stand.getLocation().toVector()).normalize().multiply(Math.min(9.0, Math.min(15.0, e.getLocation().distance(stand.getLocation())) / 4.0 + 0.2))));
                 }
             }
@@ -401,12 +401,12 @@ public class Watcher implements Listener {
         return stand;
     }
 
-    public ArmorStand spawnWatchfulEyes2(final Entity e) {
-        final Location l1 = e.getLocation().clone().add(e.getLocation().getDirection().normalize().multiply(-1.5));
-        final float angle1 = l1.getYaw() / 60.0f;
-        final Location loc_1 = l1.subtract(Math.cos(angle1), 0.0, Math.sin(angle1));
-        final Location loc = e.getLocation();
-        final ArmorStand stand = (ArmorStand) loc.getWorld().spawn(loc_1.add(0.0, 1.5, 0.0), (Class) ArmorStand.class);
+    public ArmorStand spawnWatchfulEyes2(Entity e) {
+        Location l1 = e.getLocation().clone().add(e.getLocation().getDirection().normalize().multiply(-1.5));
+        float angle1 = l1.getYaw() / 60.0f;
+        Location loc_1 = l1.subtract(Math.cos(angle1), 0.0, Math.sin(angle1));
+        Location loc = e.getLocation();
+        ArmorStand stand = (ArmorStand) loc.getWorld().spawn(loc_1.add(0.0, 1.5, 0.0), (Class) ArmorStand.class);
         stand.setCustomName(trans("&3&lWatchful Eye"));
         stand.setCustomNameVisible(true);
         stand.setVisible(false);
@@ -431,19 +431,19 @@ public class Watcher implements Listener {
                     return;
                 }
                 if (e instanceof ArmorStand && !Watcher.this.wfe2_shoot) {
-                    final Location r = stand.getLocation().setDirection(e.getLocation().toVector().subtract(stand.getLocation().toVector()));
+                    Location r = stand.getLocation().setDirection(e.getLocation().toVector().subtract(stand.getLocation().toVector()));
                     stand.teleport(r);
-                    Watcher.sendHeadRotation(stand, r.getYaw(), r.getPitch());
+                    sendHeadRotation(stand, r.getYaw(), r.getPitch());
                     double x = 0.0;
                     final double y = 0.0;
                     final double z = 0.0;
                     x = Math.toRadians(r.getPitch());
                     stand.setHeadPose(new EulerAngle(x, y, z));
                 }
-                final Location l = e.getLocation().clone().add(0.0, 1.0, 0.0).add(e.getLocation().getDirection().normalize().multiply(-1.5));
-                final float angle = l.getYaw() / 60.0f;
-                final Location loc_ = l.subtract(Math.cos(angle), 0.0, Math.sin(angle));
-                if (stand.getLocation().distance(e.getLocation()) > 2.5 && !Watcher.this.wfe2_shoot) {
+                Location l = e.getLocation().clone().add(0.0, 1.0, 0.0).add(e.getLocation().getDirection().normalize().multiply(-1.5));
+                float angle = l.getYaw() / 60.0f;
+                Location loc_ = l.subtract(Math.cos(angle), 0.0, Math.sin(angle));
+                if (2.5 < stand.getLocation().distance(e.getLocation()) && !Watcher.this.wfe2_shoot) {
                     stand.teleport(stand.getLocation().add(loc_.toVector().subtract(stand.getLocation().toVector()).normalize().multiply(Math.min(9.0, Math.min(15.0, e.getLocation().distance(stand.getLocation())) / 4.0 + 0.2))));
                 }
             }
@@ -451,8 +451,8 @@ public class Watcher implements Listener {
         return stand;
     }
 
-    public void spawnWatcher(final Location loc) {
-        final ArmorStand stand = (ArmorStand) loc.getWorld().spawn(loc, (Class) ArmorStand.class);
+    public void spawnWatcher(Location loc) {
+        ArmorStand stand = (ArmorStand) loc.getWorld().spawn(loc, (Class) ArmorStand.class);
         this.welcomeParticles = true;
         (this.ewatcher = stand).setCustomName(trans("&e﴾ &c&lThe Watcher &e﴿"));
         stand.setMetadata("WATCHER_M", new FixedMetadataValue(SkyBlock.getPlugin(), 0));
@@ -460,15 +460,15 @@ public class Watcher implements Listener {
         stand.setVisible(false);
         stand.getEquipment().setHelmet(getSkull("a137229538d619da70b5fd2ea06a560d9ce50b0e2f92413e6aa73d99f9d7a878"));
         stand.setGravity(false);
-        final ArmorStand stand2 = (ArmorStand) loc.getWorld().spawn(loc.add(0.0, 2.4, 0.0), (Class) ArmorStand.class);
+        ArmorStand stand2 = (ArmorStand) loc.getWorld().spawn(loc.add(0.0, 2.4, 0.0), (Class) ArmorStand.class);
         (this.econv = stand2).setCustomNameVisible(false);
         stand2.setVisible(false);
         stand2.setMarker(true);
         stand2.setGravity(false);
         this.isResting = true;
-        for (final Entity e : stand.getNearbyEntities(20.0, 20.0, 20.0)) {
+        for (Entity e : stand.getNearbyEntities(20.0, 20.0, 20.0)) {
             if (e instanceof Player) {
-                final Location r = stand.getLocation().setDirection(e.getLocation().toVector().subtract(stand.getLocation().toVector()));
+                Location r = stand.getLocation().setDirection(e.getLocation().toVector().subtract(stand.getLocation().toVector()));
                 stand.teleport(r);
                 sendHeadRotation(stand, r.getYaw(), r.getPitch());
                 double x = 0.0;
@@ -487,33 +487,33 @@ public class Watcher implements Listener {
                     this.cancel();
                     return;
                 }
-                for (final Entity e : stand.getNearbyEntities(20.0, 20.0, 20.0)) {
+                for (Entity e : stand.getNearbyEntities(20.0, 20.0, 20.0)) {
                     if (e instanceof Player && !Watcher.this.welcomeParticles && e.getLocation().getY() >= Watcher.this.floorY + 6.0f) {
                         ArmorStand st = null;
-                        final int rnd = Watcher.random(0, 1);
-                        if (rnd == 1) {
+                        int rnd = random(0, 1);
+                        if (1 == rnd) {
                             st = Watcher.this.wfe1;
                         } else {
                             st = Watcher.this.wfe2;
                         }
-                        if (rnd == 1) {
+                        if (1 == rnd) {
                             Watcher.this.wfe1_shoot = true;
                         } else {
                             Watcher.this.wfe2_shoot = true;
                         }
-                        for (int i = 0; i < 2; ++i) {
-                            Watcher.drawLineforMovingPoints(st.getLocation().clone().add(0.0, 1.8, 0.0), e.getLocation().clone().add(0.0, 1.4, 0.0), 25.0, (Player) e, stand);
+                        for (int i = 0; 2 > i; ++i) {
+                            drawLineforMovingPoints(st.getLocation().clone().add(0.0, 1.8, 0.0), e.getLocation().clone().add(0.0, 1.4, 0.0), 25.0, (Player) e, stand);
                         }
-                        Watcher.this.sd(Watcher.this.sneakyPeaky[Watcher.random(0, Watcher.this.sneakyPeaky.length - 1)], 0, 50, true);
+                        Watcher.this.sd(Watcher.this.sneakyPeaky[random(0, Watcher.this.sneakyPeaky.length - 1)], 0, 50, true);
                         User.getUser(e.getUniqueId()).damage(((Player) e).getMaxHealth() / 4.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, Watcher.this.ewatcher);
                         ((Player) e).damage(1.0E-5);
-                        final ArmorStand s = st;
+                        ArmorStand s = st;
                         new BukkitRunnable() {
                             int i = 0;
 
                             public void run() {
-                                if (this.i >= 15) {
-                                    if (rnd == 1) {
+                                if (15 <= this.i) {
+                                    if (1 == rnd) {
                                         Watcher.this.wfe1_shoot = false;
                                     } else {
                                         Watcher.this.wfe2_shoot = false;
@@ -522,9 +522,9 @@ public class Watcher implements Listener {
                                     return;
                                 }
                                 ++this.i;
-                                final Location r = stand.getLocation().setDirection(e.getLocation().toVector().subtract(s.getLocation().toVector()));
+                                Location r = stand.getLocation().setDirection(e.getLocation().toVector().subtract(s.getLocation().toVector()));
                                 stand.teleport(r);
-                                Watcher.sendHeadRotation(s, r.getYaw(), r.getPitch());
+                                sendHeadRotation(s, r.getYaw(), r.getPitch());
                                 double x = 0.0;
                                 final double y = 0.0;
                                 final double z = 0.0;
@@ -553,11 +553,11 @@ public class Watcher implements Listener {
                     return;
                 }
                 if (Watcher.this.isResting) {
-                    for (final Entity e : stand.getNearbyEntities(20.0, 20.0, 20.0)) {
+                    for (Entity e : stand.getNearbyEntities(20.0, 20.0, 20.0)) {
                         if (e instanceof Player) {
-                            final Location r = stand.getLocation().setDirection(e.getLocation().toVector().subtract(stand.getLocation().toVector()));
+                            Location r = stand.getLocation().setDirection(e.getLocation().toVector().subtract(stand.getLocation().toVector()));
                             stand.teleport(r);
-                            Watcher.sendHeadRotation(stand, r.getYaw(), r.getPitch());
+                            sendHeadRotation(stand, r.getYaw(), r.getPitch());
                             double x = 0.0;
                             final double y = 0.0;
                             final double z = 0.0;
@@ -576,7 +576,7 @@ public class Watcher implements Listener {
                     this.cancel();
                     return;
                 }
-                if (Watcher.this.currentMobsCount <= 0) {
+                if (0 >= Watcher.this.currentMobsCount) {
                     this.cancel();
                     Watcher.this.sd("You have proven yourself. You may pass.", 5, 50, true);
                     SUtil.delay(() -> {
@@ -595,11 +595,11 @@ public class Watcher implements Listener {
                     this.cancel();
                     return;
                 }
-                stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 0.75, 0.0), Effect.LARGE_SMOKE, 0, 1, (float) Watcher.random(-2, 2), (float) Watcher.random(-1.5, 1.5), (float) Watcher.random(-2, 2), 0.0f, 1, 20);
-                stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 0.75, 0.0), Effect.WITCH_MAGIC, 0, 1, (float) Watcher.random(-2, 2), (float) Watcher.random(-1.5, 1.5), (float) Watcher.random(-2, 2), 0.0f, 1, 20);
-                stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 0.75, 0.0), Effect.LARGE_SMOKE, 0, 1, (float) Watcher.random(-2, 2), (float) Watcher.random(-1.5, 1.5), (float) Watcher.random(-2, 2), 0.0f, 1, 20);
-                stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 0.75, 0.0), Effect.WITCH_MAGIC, 0, 1, (float) Watcher.random(-2, 2), (float) Watcher.random(-1.5, 1.5), (float) Watcher.random(-2, 2), 0.0f, 1, 20);
-                stand.getWorld().spigot().playEffect(new Location(stand.getWorld(), stand.getLocation().getX() + Watcher.random(-2, 2), stand.getLocation().getY() + 1.75 + Watcher.random(-1.5, 1.5), stand.getLocation().getZ() + Watcher.random(-2, 2)), Effect.COLOURED_DUST, 0, 1, 0.99607843f, 0.12941177f, 0.003921569f, 1.0f, 0, 64);
+                stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 0.75, 0.0), Effect.LARGE_SMOKE, 0, 1, random(-2, 2), (float) random(-1.5, 1.5), random(-2, 2), 0.0f, 1, 20);
+                stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 0.75, 0.0), Effect.WITCH_MAGIC, 0, 1, random(-2, 2), (float) random(-1.5, 1.5), random(-2, 2), 0.0f, 1, 20);
+                stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 0.75, 0.0), Effect.LARGE_SMOKE, 0, 1, random(-2, 2), (float) random(-1.5, 1.5), random(-2, 2), 0.0f, 1, 20);
+                stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 0.75, 0.0), Effect.WITCH_MAGIC, 0, 1, random(-2, 2), (float) random(-1.5, 1.5), random(-2, 2), 0.0f, 1, 20);
+                stand.getWorld().spigot().playEffect(new Location(stand.getWorld(), stand.getLocation().getX() + random(-2, 2), stand.getLocation().getY() + 1.75 + random(-1.5, 1.5), stand.getLocation().getZ() + random(-2, 2)), Effect.COLOURED_DUST, 0, 1, 0.99607843f, 0.12941177f, 0.003921569f, 1.0f, 0, 64);
             }
         }.runTaskTimer(SkyBlock.getPlugin(), 2L, 2L);
         this.sd("Oh... hello?", 20, 0, false);
@@ -614,54 +614,54 @@ public class Watcher implements Listener {
         }, 200L);
     }
 
-    public static void drawLineforMovingPoints(final Location point1, final Location point2, final double space, final Player p, final Entity e) {
-        final Location blockLocation = point1;
-        final Location crystalLocation = point2;
-        final Vector vector = blockLocation.clone().toVector().subtract(crystalLocation.clone().toVector());
+    public static void drawLineforMovingPoints(Location point1, Location point2, double space, Player p, Entity e) {
+        Location blockLocation = point1;
+        Location crystalLocation = point2;
+        Vector vector = blockLocation.clone().toVector().subtract(crystalLocation.clone().toVector());
         final double count = 45.0;
-        for (int i = 1; i <= (int) count; ++i) {
-            final Vector v = vector.clone().multiply(i / count);
+        for (int i = 1; (int) count >= i; ++i) {
+            Vector v = vector.clone().multiply(i / count);
             point1.getWorld().spigot().playEffect(crystalLocation.clone().add(v), Effect.MAGIC_CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
         }
     }
 
-    public static String trans(final String content) {
+    public static String trans(String content) {
         return ChatColor.translateAlternateColorCodes('&', content);
     }
 
-    public static ItemStack getSkull(final String texture) {
-        final ItemStack stack = new ItemStack(Material.SKULL_ITEM, 1);
+    public static ItemStack getSkull(String texture) {
+        ItemStack stack = new ItemStack(Material.SKULL_ITEM, 1);
         stack.setDurability((short) 3);
-        SkullMeta meta = (SkullMeta) stack.getItemMeta();
-        String stringUUID = UUID.randomUUID().toString();
-        GameProfile profile = new GameProfile(UUID.fromString(stringUUID), null);
-        byte[] ed = Base64.getEncoder().encode(String.format("{textures:{SKIN:{url:\"http://textures.minecraft.net/texture/%s\"}}}", texture).getBytes());
+        final SkullMeta meta = (SkullMeta) stack.getItemMeta();
+        final String stringUUID = UUID.randomUUID().toString();
+        final GameProfile profile = new GameProfile(UUID.fromString(stringUUID), null);
+        final byte[] ed = Base64.getEncoder().encode(String.format("{textures:{SKIN:{url:\"http://textures.minecraft.net/texture/%s\"}}}", texture).getBytes());
         profile.getProperties().put("textures", new Property("textures", new String(ed)));
         try {
-            final Field f = meta.getClass().getDeclaredField("profile");
+            Field f = meta.getClass().getDeclaredField("profile");
             f.setAccessible(true);
             f.set(meta, profile);
-        } catch (final NoSuchFieldException | IllegalArgumentException | IllegalAccessException ex) {
+        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException ex) {
         }
         stack.setItemMeta(meta);
         return stack;
     }
 
-    public static ItemStack getSkullStack(final String name) {
-        final ItemStack stack = new ItemStack(Material.SKULL_ITEM, 1);
+    public static ItemStack getSkullStack(String name) {
+        ItemStack stack = new ItemStack(Material.SKULL_ITEM, 1);
         stack.setDurability((short) 3);
-        final SkullMeta meta = (SkullMeta) stack.getItemMeta();
+        SkullMeta meta = (SkullMeta) stack.getItemMeta();
         meta.setOwner(name);
         stack.setItemMeta(meta);
         return stack;
     }
 
-    public void playHeadSpawning(final Entity e) {
+    public void playHeadSpawning(Entity e) {
         String amd = e.getMetadata("TYPE").get(0).asString();
         amd = amd.replace("WATCHER_", "");
-        final HeadsOnWall h = new HeadsOnWall(EnumWatcherType.valueOf(amd));
-        final Location target = this.watcher.clone().add(0.0, -3.5, 0.0);
-        final ArmorStand stand = (ArmorStand) e.getWorld().spawn(e.getLocation(), (Class) ArmorStand.class);
+        HeadsOnWall h = new HeadsOnWall(EnumWatcherType.valueOf(amd));
+        Location target = this.watcher.clone().add(0.0, -3.5, 0.0);
+        ArmorStand stand = (ArmorStand) e.getWorld().spawn(e.getLocation(), (Class) ArmorStand.class);
         stand.setCustomNameVisible(false);
         stand.setVisible(false);
         stand.getEquipment().setHelmet(getSkull(h.skullTexture));
@@ -689,10 +689,10 @@ public class Watcher implements Listener {
                     this.cancel();
                     return;
                 }
-                if (this.i >= Watcher.random(40, 45) && stand.getLocation().getBlock().getType() == Material.AIR && stand.getLocation().clone().add(0.0, 1.0, 0.0).getBlock().getType() == Material.AIR) {
+                if (this.i >= random(40, 45) && Material.AIR == stand.getLocation().getBlock().getType() && Material.AIR == stand.getLocation().clone().add(0.0, 1.0, 0.0).getBlock().getType()) {
                     stand.remove();
-                    for (int i = 0; i < 20; ++i) {
-                        stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 0.25, 0.0), Effect.EXPLOSION, 0, 1, (float) Watcher.random(-0.5, 0.5), (float) Watcher.random(-1, 1), (float) Watcher.random(-0.5, 0.5), 0.0f, 1, 20);
+                    for (int i = 0; 20 > i; ++i) {
+                        stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 0.25, 0.0), Effect.EXPLOSION, 0, 1, (float) random(-0.5, 0.5), random(-1, 1), (float) random(-0.5, 0.5), 0.0f, 1, 20);
                     }
                     stand.getWorld().playSound(stand.getLocation(), Sound.ZOMBIE_REMEDY, 0.2f, 1.8f);
                     new SEntity(stand.getLocation(), SEntityType.valueOf(h.stype));
@@ -701,27 +701,27 @@ public class Watcher implements Listener {
                 }
                 ++this.i;
                 this.t += 15;
-                final Location r = stand.getLocation().setDirection(target.toVector().subtract(stand.getLocation().toVector()));
+                Location r = stand.getLocation().setDirection(target.toVector().subtract(stand.getLocation().toVector()));
                 stand.teleport(r);
                 stand.teleport(stand.getLocation().add(stand.getLocation().getDirection().multiply(0.25)));
-                Watcher.sendHeadRotation(stand, (float) this.t, r.getPitch());
+                sendHeadRotation(stand, this.t, r.getPitch());
             }
         }.runTaskTimer(SkyBlock.getPlugin(), 1L, 1L);
     }
 
-    public void say(final String str) {
-        if (str == null) {
+    public void say(String str) {
+        if (null == str) {
             this.econv.setCustomNameVisible(false);
             return;
         }
-        for (final Player p : this.econv.getWorld().getPlayers()) {
+        for (Player p : this.econv.getWorld().getPlayers()) {
             p.sendMessage(trans("&c[BOSS] The Watcher&f: " + str));
         }
         this.econv.setCustomNameVisible(true);
         this.econv.setCustomName(trans("&f&l" + str));
     }
 
-    public void sd(final String str, final int delay, final int timeout, final boolean needTo) {
+    public void sd(String str, int delay, int timeout, boolean needTo) {
         SUtil.delay(() -> this.say(str), delay);
         if (needTo) {
             SUtil.delay(() -> {

@@ -156,7 +156,7 @@ public class PEntity {
     }
 
     protected void sendDestroyPacket(final Player player) {
-        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(new int[]{this.entity.getId()}));
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityDestroy(this.entity.getId()));
     }
 
     public static void removePlayer(final Player player) {

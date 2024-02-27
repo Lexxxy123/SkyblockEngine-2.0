@@ -6,7 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 
 public class YoungDragon extends Dragon {
-    public YoungDragon(final World world) {
+    public YoungDragon(World world) {
         super(world, 1.8, DEFAULT_DAMAGE_DEGREE_RANGE, 300L);
     }
 

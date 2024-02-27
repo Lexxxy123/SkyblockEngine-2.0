@@ -14,23 +14,23 @@ public class AccessTimedCommand extends SCommand {
     public static final List<UUID> KEYS;
 
     @Override
-    public void run(final CommandSource sender, final String[] args) {
+    public void run(CommandSource sender, String[] args) {
         if (sender instanceof ConsoleCommandSender) {
             throw new CommandFailException("Console senders cannot use this command!");
         }
-        final Player p = sender.getPlayer();
-        if (args.length != 2) {
+        Player p = sender.getPlayer();
+        if (2 != args.length) {
             this.send(ChatColor.RED + "System Command! You don't have access to it.");
             p.playSound(p.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
             return;
         }
-        if (!AccessTimedCommand.KEYS.contains(UUID.fromString(args[0]))) {
+        if (!KEYS.contains(UUID.fromString(args[0]))) {
             this.send(ChatColor.RED + "The requested action is no longer available!");
             p.playSound(p.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
             return;
         }
         p.chat("/trade " + args[1]);
-        AccessTimedCommand.KEYS.remove(UUID.fromString(args[0]));
+        KEYS.remove(UUID.fromString(args[0]));
     }
 
     static {

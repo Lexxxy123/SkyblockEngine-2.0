@@ -65,13 +65,13 @@ public class SuperiorLostAdv extends BaseZombie {
     }
 
     @Override
-    public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
+    public void onSpawn(LivingEntity entity, SEntity sEntity) {
         ((CraftZombie) entity).setBaby(false);
-        final AttributeInstance followRange = ((CraftLivingEntity) entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
+        AttributeInstance followRange = ((CraftLivingEntity) entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
         followRange.setValue(40.0);
-        final PlayerDisguise pl = Sputnik.applyPacketNPC(entity, "adventuure", null, false);
-        final PlayerWatcher skywatch = pl.getWatcher();
-        final LivingEntity target = ((CraftZombie) entity).getTarget();
+        PlayerDisguise pl = Sputnik.applyPacketNPC(entity, "adventuure", null, false);
+        PlayerWatcher skywatch = pl.getWatcher();
+        LivingEntity target = ((CraftZombie) entity).getTarget();
         EntityManager.DEFENSE_PERCENTAGE.put(entity, 85);
         entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         entity.setMetadata("LD", new FixedMetadataValue(SkyBlock.getPlugin(), true));
@@ -107,13 +107,13 @@ public class SuperiorLostAdv extends BaseZombie {
                             }
                             entity.getEquipment().setItemInHand(new ItemStack(Material.AIR));
                             entity.getWorld().playSound(entity.getLocation(), Sound.BURP, 1.0f, 1.0f);
-                            final double healamount = SuperiorLostAdv.this.getEntityMaxHealth() * SUtil.random(40, 60) / 100.0;
+                            double healamount = SuperiorLostAdv.this.getEntityMaxHealth() * SUtil.random(40, 60) / 100.0;
                             if (!entity.isDead()) {
                                 entity.setHealth(Math.min(entity.getMaxHealth(), entity.getHealth() + healamount));
                             }
                             SuperiorLostAdv.this.isEating = false;
                             SUtil.delay(() -> {
-                                final Object val$entity = entity;
+                                Object val$entity = entity;
                                 if (!SuperiorLostAdv.this.isBowing) {
                                     entity.getEquipment().setItemInHand(SUtil.enchant(SItem.of(SMaterial.ASPECT_OF_THE_DRAGONS).getStack()));
                                 } else {
@@ -133,20 +133,20 @@ public class SuperiorLostAdv extends BaseZombie {
                     this.cancel();
                     return;
                 }
-                final LivingEntity target1 = ((CraftZombie) entity).getTarget();
-                if (target1 != null) {
-                    if (target1.getLocation().distance(entity.getLocation()) >= 6.0 && target1.getLocation().distance(entity.getLocation()) < 16.0) {
+                LivingEntity target1 = ((CraftZombie) entity).getTarget();
+                if (null != target1) {
+                    if (6.0 <= target1.getLocation().distance(entity.getLocation()) && 16.0 > target1.getLocation().distance(entity.getLocation())) {
                         entity.teleport(entity.getLocation().setDirection(target1.getLocation().toVector().subtract(entity.getLocation().toVector())));
-                        SuperiorLostAdv.sendHeadRotation(entity, entity.getLocation().getYaw(), entity.getLocation().getPitch());
+                        sendHeadRotation(entity, entity.getLocation().getYaw(), entity.getLocation().getPitch());
                     }
-                    if ((target1.getLocation().distance(entity.getLocation()) < 6.0 || target1.getLocation().distance(entity.getLocation()) > 16.0) && !SuperiorLostAdv.this.isEating) {
+                    if ((6.0 > target1.getLocation().distance(entity.getLocation()) || 16.0 < target1.getLocation().distance(entity.getLocation())) && !SuperiorLostAdv.this.isEating) {
                         SUtil.delay(() -> {
-                            final Object val$entity = entity;
+                            Object val$entity = entity;
                             entity.getEquipment().setItemInHand(SUtil.enchant(SItem.of(SMaterial.ASPECT_OF_THE_DRAGONS).getStack()));
                         }, 0L);
                         SuperiorLostAdv.this.isBowing = false;
                     }
-                    if (target1.getLocation().distance(entity.getLocation()) >= 6.0 && target1.getLocation().distance(entity.getLocation()) < 16.0 && !SuperiorLostAdv.this.isBowing && !SuperiorLostAdv.this.isEating) {
+                    if (6.0 <= target1.getLocation().distance(entity.getLocation()) && 16.0 > target1.getLocation().distance(entity.getLocation()) && !SuperiorLostAdv.this.isBowing && !SuperiorLostAdv.this.isEating) {
                         SuperiorLostAdv.this.isBowing = true;
                         skywatch.setRightClicking(false);
                         entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 10000, 4));
@@ -158,7 +158,7 @@ public class SuperiorLostAdv extends BaseZombie {
                             boolean crit = true;
 
                             public void run() {
-                                if (target1.getLocation().distance(entity.getLocation()) <= 10.0) {
+                                if (10.0 >= target1.getLocation().distance(entity.getLocation())) {
                                     this.atkCharge = 10;
                                     this.bowPower = 1.1;
                                     this.crit = false;
@@ -170,7 +170,7 @@ public class SuperiorLostAdv extends BaseZombie {
                                     this.cancel();
                                     return;
                                 }
-                                if (this.t == 5) {
+                                if (5 == this.t) {
                                     if (!SuperiorLostAdv.this.isBowing) {
                                         return;
                                     }
@@ -186,13 +186,13 @@ public class SuperiorLostAdv extends BaseZombie {
                                     if (!SuperiorLostAdv.this.isBowing) {
                                         return;
                                     }
-                                    final Location location = entity.getEyeLocation().add(entity.getEyeLocation().getDirection().toLocation(entity.getWorld()));
-                                    final Location l = location.clone();
+                                    Location location = entity.getEyeLocation().add(entity.getEyeLocation().getDirection().toLocation(entity.getWorld()));
+                                    Location l = location.clone();
                                     l.setYaw(location.getYaw());
-                                    final Arrow arr = entity.getWorld().spawnArrow(l, l.getDirection(), (float) this.bowPower, 1.6f);
+                                    Arrow arr = entity.getWorld().spawnArrow(l, l.getDirection(), (float) this.bowPower, 1.6f);
                                     arr.setShooter(entity);
                                     if (!this.crit) {
-                                        arr.setCritical(SUtil.random(0, 1) == 1);
+                                        arr.setCritical(1 == SUtil.random(0, 1));
                                     } else {
                                         arr.setCritical(true);
                                     }
@@ -203,8 +203,8 @@ public class SuperiorLostAdv extends BaseZombie {
                             }
                         }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
                     }
-                    if (target1.getLocation().distance(entity.getLocation()) <= 5.0 && !SuperiorLostAdv.this.isBowing && !SuperiorLostAdv.this.isEating) {
-                        if (SUtil.random(0, 100) > 30) {
+                    if (5.0 >= target1.getLocation().distance(entity.getLocation()) && !SuperiorLostAdv.this.isBowing && !SuperiorLostAdv.this.isEating) {
+                        if (30 < SUtil.random(0, 100)) {
                             return;
                         }
                         if (SuperiorLostAdv.this.CDDR) {
@@ -214,23 +214,23 @@ public class SuperiorLostAdv extends BaseZombie {
                         skywatch.setRightClicking(true);
                         SuperiorLostAdv.this.playPar(entity.getEyeLocation().setDirection(target1.getLocation().toVector().subtract(entity.getLocation().toVector())));
                         entity.getLocation().getWorld().playSound(entity.getLocation(), Sound.ENDERDRAGON_GROWL, 1.0f, 1.0f);
-                        for (final Entity e : target1.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 3.0, 3.0, 3.0)) {
+                        for (Entity e : target1.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 3.0, 3.0, 3.0)) {
                             if (e instanceof Player) {
-                                final Player player = (Player) e;
+                                Player player = (Player) e;
                                 player.sendMessage(Sputnik.trans("&cLost Adventurer &aused &6Dragon's Breath &aon you!"));
                                 player.setVelocity(entity.getLocation().toVector().subtract(player.getLocation().toVector()).normalize().multiply(-1.0).multiply(4.0));
-                                final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
-                                if (statistics == null) {
+                                PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
+                                if (null == statistics) {
                                     return;
                                 }
-                                final double defense = statistics.getDefense().addAll();
-                                final int dmglater = (int) Math.round(SuperiorLostAdv.this.getDamageDealt() * 3.0 - SuperiorLostAdv.this.getDamageDealt() * 3.0 * (defense / (defense + 100.0)));
+                                double defense = statistics.getDefense().addAll();
+                                int dmglater = (int) Math.round(SuperiorLostAdv.this.getDamageDealt() * 3.0 - SuperiorLostAdv.this.getDamageDealt() * 3.0 * (defense / (defense + 100.0)));
                                 User.getUser(player.getUniqueId()).damage(dmglater, EntityDamageEvent.DamageCause.ENTITY_ATTACK, entity);
                                 ((LivingEntity) e).damage(1.0E-6, null);
                             }
                         }
                         SUtil.delay(() -> {
-                            final Object val$skywatch = skywatch;
+                            Object val$skywatch = skywatch;
                             if (!SuperiorLostAdv.this.isBowing) {
                                 skywatch.setRightClicking(false);
                             }
@@ -254,23 +254,23 @@ public class SuperiorLostAdv extends BaseZombie {
                 }
                 this.loc.setY(0.0);
                 this.nms.setSprinting(false);
-                final Location loc2 = entity.getLocation();
+                Location loc2 = entity.getLocation();
                 loc2.setY(0.0);
                 if (entity.hasMetadata("frozen")) {
                     return;
                 }
-                if (((CraftZombie) entity).getTarget() == null) {
+                if (null == ((CraftZombie) entity).getTarget()) {
                     return;
                 }
                 if (((CraftZombie) entity).getTarget().getWorld() != entity.getWorld()) {
                     return;
                 }
-                if (((CraftZombie) entity).getTarget().getLocation().distance(entity.getLocation()) <= 4.0 || SuperiorLostAdv.this.isEating || SuperiorLostAdv.this.isBowing) {
+                if (4.0 >= ((CraftZombie) entity).getTarget().getLocation().distance(entity.getLocation()) || SuperiorLostAdv.this.isEating || SuperiorLostAdv.this.isBowing) {
                     return;
                 }
-                if (this.loc.distance(loc2) >= 0.2) {
+                if (0.2 <= this.loc.distance(loc2)) {
                     this.nms.setSprinting(true);
-                    if (entity.isOnGround() && this.loc.distance(loc2) >= 0.5) {
+                    if (entity.isOnGround() && 0.5 <= this.loc.distance(loc2)) {
                         double motY = 0.4199999868869782;
                         double motX = 0.0;
                         double motZ = 0.0;
@@ -278,7 +278,7 @@ public class SuperiorLostAdv extends BaseZombie {
                             motY += (this.nms.getEffect(MobEffectList.JUMP).getAmplifier() + 1) * 0.2f;
                         }
                         if (this.nms.isSprinting()) {
-                            final float f = this.nms.yaw * 0.01745329f;
+                            float f = this.nms.yaw * 0.01745329f;
                             motX -= MathHelper.sin(f) * 0.9f;
                             motZ += MathHelper.cos(f) * 0.9f;
                         }
@@ -292,12 +292,12 @@ public class SuperiorLostAdv extends BaseZombie {
         }.runTaskTimer(SkyBlock.getPlugin(), 0L, 7L);
         new BukkitRunnable() {
             public void run() {
-                final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
+                EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
-                for (final Entity entities : entity.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 1.5, 1.5, 1.5)) {
+                for (Entity entities : entity.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 1.5, 1.5, 1.5)) {
                     if (SuperiorLostAdv.this.isEating) {
                         continue;
                     }
@@ -307,24 +307,24 @@ public class SuperiorLostAdv extends BaseZombie {
                     if (!(entities instanceof Player)) {
                         continue;
                     }
-                    final Player target = (Player) entities;
-                    if (target.getGameMode() == GameMode.CREATIVE) {
+                    Player target = (Player) entities;
+                    if (GameMode.CREATIVE == target.getGameMode()) {
                         continue;
                     }
-                    if (target.getGameMode() == GameMode.SPECTATOR) {
+                    if (GameMode.SPECTATOR == target.getGameMode()) {
                         continue;
                     }
                     if (target.hasMetadata("NPC")) {
                         continue;
                     }
-                    if (target.getNoDamageTicks() == 7) {
+                    if (7 == target.getNoDamageTicks()) {
                         continue;
                     }
-                    if (SUtil.random(0, 10) > 8) {
+                    if (8 < SUtil.random(0, 10)) {
                         continue;
                     }
                     entity.teleport(entity.getLocation().setDirection(target.getLocation().subtract(entities.getLocation()).toVector()));
-                    for (final Player players : Bukkit.getOnlinePlayers()) {
+                    for (Player players : Bukkit.getOnlinePlayers()) {
                         ((CraftPlayer) players).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) entity).getHandle(), 0));
                     }
                     nms.r(((CraftPlayer) target).getHandle());
@@ -335,9 +335,9 @@ public class SuperiorLostAdv extends BaseZombie {
     }
 
     @Override
-    public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
-        final Entity en = sEntity.getEntity();
-        final Vector v = new Vector(0, 0, 0);
+    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e, AtomicDouble damage) {
+        Entity en = sEntity.getEntity();
+        Vector v = new Vector(0, 0, 0);
         SUtil.delay(() -> en.setVelocity(v), 1L);
     }
 
@@ -371,8 +371,8 @@ public class SuperiorLostAdv extends BaseZombie {
         return 0.35;
     }
 
-    public void playPar(final Location l) {
-        final ConeEffect Effect = new ConeEffect(SkyBlock.effectManager);
+    public void playPar(Location l) {
+        ConeEffect Effect = new ConeEffect(SkyBlock.effectManager);
         Effect.setLocation(l.clone().add(l.getDirection().normalize().multiply(-0.25)).add(0.0, -0.1, 0.0));
         Effect.particle = ParticleEffect.FLAME;
         Effect.angularVelocity = 0.39269908169872414;
@@ -383,10 +383,10 @@ public class SuperiorLostAdv extends BaseZombie {
         Effect.start();
     }
 
-    public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
-        final net.minecraft.server.v1_8_R3.Entity pl = ((CraftZombie) e).getHandle();
+    public static void sendHeadRotation(Entity e, float yaw, float pitch) {
+        net.minecraft.server.v1_8_R3.Entity pl = ((CraftZombie) e).getHandle();
         pl.setLocation(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), yaw, pitch);
-        final PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(pl);
+        PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(pl);
         Sputnik.sendPacket(e.getWorld(), packet);
     }
 }
