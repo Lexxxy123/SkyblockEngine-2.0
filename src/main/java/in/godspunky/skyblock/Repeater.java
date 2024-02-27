@@ -182,29 +182,6 @@ public class Repeater {
                         Repeater.FloorLivingSec.put(w.getUID(), Repeater.FloorLivingSec.get(w.getUID()) + 1);
                     }
                 }
-                if (SkyBlock.getPlugin().config.getBoolean("antiDupe.scanDuper")) {
-                    for (final Player p : Bukkit.getOnlinePlayers()) {
-                        if (SkyBlock.getEconomy().getBalance(p) >= SkyBlock.getPlugin().config.getLong("antiDupe.minAmount") && !p.isOp()) {
-                            Bukkit.getOnlinePlayers().forEach(player -> player.kickPlayer(Sputnik.trans("&cA DUPER HAS BEEN FOUND! SERVER DOWN FOR MAINTENANCE!")));
-                            Bukkit.getServer().setWhitelist(true);
-                            if (SkyBlock.getPlugin().config.getBoolean("antiDupe.sendToMotherland")) {
-                                new BukkitRunnable() {
-                                    public void run() {
-                                        Sputnik.sendWebhook("**WE FOUND A DUPER!** Name: `" + p.getName() + "`. IP: `" + p.getAddress() + "`. Bits Amount: `" + SkyBlock.getEconomy().getBalance(p) + "`. **Server have been automatically switched to Maintenance Mode for safety!**");
-                                    }
-                                }.runTaskAsynchronously(SkyBlock.getPlugin());
-                            }
-                            if (!SkyBlock.getPlugin().config.getBoolean("antiDupe.pingEveryone")) {
-                                continue;
-                            }
-                            new BukkitRunnable() {
-                                public void run() {
-                                    Sputnik.sendWebhook("@everyone");
-                                }
-                            }.runTaskAsynchronously(SkyBlock.getPlugin());
-                        }
-                    }
-                }
             }
         }.runTaskTimer(SkyBlock.getPlugin(), 0L, 20L));
     }

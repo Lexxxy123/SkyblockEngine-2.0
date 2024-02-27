@@ -39,7 +39,6 @@ import lombok.Setter;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.milkbowl.vault.economy.Economy;
 import net.minecraft.server.v1_8_R3.EntityHuman;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import org.bukkit.*;
@@ -82,6 +81,8 @@ public class User {
     private final Map<ItemCollection, Integer> collections;
     @Getter
     private long coins;
+    @Getter @Setter
+    private long bits;
     @Getter
     private long bankCoins;
     @Setter
@@ -185,6 +186,7 @@ public class User {
         this.collections = ItemCollection.getDefaultCollections();
         this.totalfloor6run = 0L;
         this.coins = 0L;
+        this.bits = 0L;
         this.bankCoins = 0L;
         this.sadancollections = 0L;
         this.lastRegion = null;
@@ -244,6 +246,7 @@ public class User {
             }
         }
         this.coins = this.config.getLong("coins");
+        this.bits = config.getLong("bits");
         this.bankCoins = this.config.getLong("bankCoins");
         this.lastRegion = ((this.config.getString("lastRegion") != null) ? Region.get(this.config.getString("lastRegion")) : null);
         if (this.config.contains("quiver")) {
@@ -364,6 +367,7 @@ public class User {
             this.config.set("collections." + entry.getKey().getIdentifier(), entry.getValue());
         }
         this.config.set("coins", this.coins);
+        config.set("bits" , bits);
         this.config.set("bankCoins", this.bankCoins);
         if (this.lastRegion != null) {
             this.config.set("lastRegion", this.lastRegion.getName());
@@ -518,28 +522,11 @@ public class User {
         } else {
             this.stashedItems = new ArrayList<ItemStack>();
         }
-        this.loadEconomy();
         if (this.config.contains("configures.slot_selected")) {
             player.getInventory().setHeldItemSlot(this.config.getInt("configures.slot_selected"));
         }
     }
 
-    public void loadEconomy() {
-        final Economy eco = SkyBlock.getEconomy();
-        final Player player = Bukkit.getPlayer(this.uuid);
-        if (this.config.contains("database.skysim_bits")) {
-            eco.withdrawPlayer(player, eco.getBalance(player));
-            eco.depositPlayer(player, this.config.getDouble("database.skysim_bits"));
-        }
-    }
-
-    public void saveBitsAmount() {
-        if (Bukkit.getPlayer(this.uuid) == null) {
-            return;
-        }
-        this.config.set("database.skysim_bits", SkyBlock.getEconomy().getBalance(Bukkit.getPlayer(this.uuid)));
-        this.config.save();
-    }
 
     public void saveLastSlot() {
         if (Bukkit.getPlayer(this.uuid) == null) {
@@ -558,7 +545,6 @@ public class User {
         this.saveEnderChest();
         this.saveInventory();
         this.saveExp();
-        this.saveBitsAmount();
         this.saveLastSlot();
         this.saveAttributesForAPI();
         this.saveStash();
@@ -610,6 +596,23 @@ public class User {
     public void setLastRegion(final Region lastRegion) {
         this.lastRegion = lastRegion;
     }
+
+    public boolean addBits(long value){
+        if (value > 0){
+            this.bits += value;
+            return true;
+        }
+        return false;
+    }
+    public boolean subBits(long value){
+        if (bits > value && value > 0){
+            bits -= value;
+            return true;
+        }
+        return false;
+    }
+
+
 
     public void addCoins(final long coins) {
         this.coins += coins;

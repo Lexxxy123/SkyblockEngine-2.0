@@ -6,7 +6,6 @@ import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;
 import in.godspunky.skyblock.util.TradeUtil;
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -18,20 +17,21 @@ import java.util.Map;
 import java.util.UUID;
 
 public class TradeMenu {
-    public static final Map<UUID, Boolean> tradeClose;
-    public static final Map<UUID, Player> tradeClosePlayerName;
-    public static final Map<UUID, Integer> tradeP1Countdown;
-    public static final Map<UUID, Integer> tradeP2Countdown;
-    public static final Map<UUID, Boolean> tradeP1Ready;
-    public static final Map<UUID, Boolean> tradeP2Ready;
-    public static final Map<UUID, Boolean> successTrade;
-    public static final Map<UUID, Boolean> player1TradeUUID;
-    public static final Map<UUID, Boolean> player2TradeUUID;
+    public static final Map<UUID, Boolean> tradeClose = new HashMap<>();
+    public static final Map<UUID, Player> tradeClosePlayerName = new HashMap<>();
+    public static final Map<UUID, Integer> tradeP1Countdown = new HashMap<>();
+    public static final Map<UUID, Integer> tradeP2Countdown = new HashMap<>();
+    public static final Map<UUID, Boolean> tradeP1Ready = new HashMap<>();
+    public static final Map<UUID, Boolean> tradeP2Ready = new HashMap<>();
+    public static final Map<UUID, Boolean> successTrade = new HashMap<>();
+    public static final Map<UUID, Boolean> player1TradeUUID = new HashMap<>();
+    public static final Map<UUID, Boolean> player2TradeUUID = new HashMap<>();
     private final Player p1;
     private final Player p2;
     private final UUID tradeUUID;
 
     public TradeMenu(final Player player1, final Player player2, final UUID uuid) {
+
         this.p1 = player1;
         this.p2 = player2;
         this.tradeUUID = uuid;
@@ -168,8 +168,7 @@ public class TradeMenu {
             if (!nmsStack.getTag().hasKey("data_bits")) {
                 Sputnik.smartGiveItem(i, player1);
             } else {
-                final Economy econ = SkyBlock.getEconomy();
-                econ.depositPlayer(player1, (double) nmsStack.getTag().getLong("data_bits"));
+                User.getUser(player1.getUniqueId()).addBits(nmsStack.getTag().getLong("data_bits"));
             }
         }
         for (final ItemStack i : TradeGUI.itemOfferP2.get(this.tradeUUID)) {
@@ -177,8 +176,7 @@ public class TradeMenu {
             if (!nmsStack.getTag().hasKey("data_bits")) {
                 Sputnik.smartGiveItem(i, player2);
             } else {
-                final Economy econ = SkyBlock.getEconomy();
-                econ.depositPlayer(player2, (double) nmsStack.getTag().getLong("data_bits"));
+                User.getUser(player2.getUniqueId()).addBits(nmsStack.getTag().getLong("data_bits"));
             }
         }
     }
@@ -191,15 +189,4 @@ public class TradeMenu {
         return this.p2;
     }
 
-    static {
-        tradeClose = new HashMap<UUID, Boolean>();
-        tradeClosePlayerName = new HashMap<UUID, Player>();
-        tradeP1Countdown = new HashMap<UUID, Integer>();
-        tradeP2Countdown = new HashMap<UUID, Integer>();
-        tradeP1Ready = new HashMap<UUID, Boolean>();
-        tradeP2Ready = new HashMap<UUID, Boolean>();
-        successTrade = new HashMap<UUID, Boolean>();
-        player1TradeUUID = new HashMap<UUID, Boolean>();
-        player2TradeUUID = new HashMap<UUID, Boolean>();
-    }
 }

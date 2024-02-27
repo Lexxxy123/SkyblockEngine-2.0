@@ -6,7 +6,6 @@ import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -75,9 +74,8 @@ public class DungeonsItemConverting extends GUI {
                     return;
                 }
                 if (e.getClickedInventory().getItem(31) != null && e.getClickedInventory().getItem(31).getType() != Material.BARRIER) {
-                    final Economy econ = SkyBlock.getEconomy();
                     final long add = (long) DungeonsItemConverting.COST_MAP.get(sItem.getRarity()) * (sItem.getStar() + 1);
-                    final double cur = econ.getBalance(player);
+                    final double cur = User.getUser(player.getUniqueId()).getBits();
                     if (!sItem.isStarrable() || sItem.getStar() >= 5) {
                         player.sendMessage(ChatColor.RED + "You cannot upgrade this item.");
                         return;
@@ -88,7 +86,7 @@ public class DungeonsItemConverting extends GUI {
                         return;
                     }
                     player.playSound(player.getLocation(), Sound.ANVIL_USE, 1.0f, 1.0f);
-                    econ.withdrawPlayer(player, (double) add);
+                    User.getUser(player.getUniqueId()).subBits(add);
                     e.getClickedInventory().setItem(13, null);
                     final SItem build = sItem;
                     if (build.isDungeonsItem()) {

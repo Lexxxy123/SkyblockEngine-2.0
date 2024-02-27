@@ -6,7 +6,6 @@ import in.godspunky.skyblock.item.Untradeable;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;
-import net.milkbowl.vault.economy.Economy;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import net.minecraft.server.v1_8_R3.NBTTagLong;
 import org.bukkit.ChatColor;
@@ -186,9 +185,9 @@ public class TradeGUIInvert extends GUI {
                     return new TradeGUI(TradeGUIInvert.this.tradeUUID);
                 }
                 try {
-                    final Economy econ = SkyBlock.getEconomy();
+
                     final long add = Long.parseLong(query);
-                    final double cur = econ.getBalance(TradeGUI.player2.get(TradeGUIInvert.this.tradeUUID));
+                    final double cur = User.getUser(TradeGUI.player2.get(TradeGUIInvert.this.tradeUUID).getUniqueId()).getBits();
                     if (add <= 0L) {
                         TradeGUI.player2.get(TradeGUIInvert.this.tradeUUID).playSound(TradeGUI.player2.get(TradeGUIInvert.this.tradeUUID).getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
                         player.sendMessage(ChatColor.RED + "Couldn't validate this Bits amount!");
@@ -205,7 +204,7 @@ public class TradeGUIInvert extends GUI {
                         return new TradeGUIInvert(TradeGUIInvert.this.tradeUUID);
                     }
                     if (TradeGUI.itemOfferP2.get(TradeGUIInvert.this.tradeUUID).size() < 16) {
-                        if (econ.withdrawPlayer(TradeGUI.player2.get(TradeGUIInvert.this.tradeUUID), (double) add).transactionSuccess()) {
+                        if (User.getUser(TradeGUI.player2.get(TradeGUIInvert.this.tradeUUID).getUniqueId()).subBits(add)) {
                             TradeGUI.player2.get(TradeGUIInvert.this.tradeUUID).playSound(TradeGUI.player2.get(TradeGUIInvert.this.tradeUUID).getLocation(), Sound.VILLAGER_HAGGLE, 1.0f, 1.0f);
                             TradeGUI.player2.get(TradeGUIInvert.this.tradeUUID).playSound(TradeGUI.player2.get(TradeGUIInvert.this.tradeUUID).getLocation(), Sound.VILLAGER_HAGGLE, 1.0f, 1.0f);
                             final long stackamount = Math.min(64L, Math.max(10000L, add) / 10000L);
@@ -308,8 +307,7 @@ public class TradeGUIInvert extends GUI {
             if (!nmsStack.getTag().hasKey("data_bits")) {
                 Sputnik.smartGiveItem(stack, TradeGUI.player2.get(this.tradeUUID));
             } else {
-                final Economy econ = SkyBlock.getEconomy();
-                econ.depositPlayer(TradeGUI.player2.get(this.tradeUUID), (double) nmsStack.getTag().getLong("data_bits"));
+                User.getUser(TradeGUI.player2.get(tradeUUID).getUniqueId()).addBits(nmsStack.getTag().getLong("data_bits"));
             }
             TradeMenu.tradeP2Countdown.put(this.tradeUUID, 3);
             TradeMenu.tradeP1Countdown.put(this.tradeUUID, 3);

@@ -131,7 +131,6 @@
 			<artifactId>sqlite-jdbc</artifactId>
 			<version>3.32.3.2</version>
 		</dependency>
-
 		<dependency>
 			<groupId>net.citizensnpcs</groupId>
 			<artifactId>citizens-main</artifactId>
@@ -171,7 +170,6 @@
 			<version>1.6.2-SNAPSHOT</version>
 			<scope>system</scope>
 			<systemPath>${basedir}/lib/EffectLib-5.9.jar</systemPath>
-
 		</dependency>
 		<dependency>
 			<groupId>com.spigot</groupId>
@@ -197,12 +195,6 @@
 			<artifactId>particle</artifactId>
 			<version>1.8.4</version>
 			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.github.MilkBowl</groupId>
-			<artifactId>VaultAPI</artifactId>
-			<version>1.7</version>
-			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.swofty</groupId>

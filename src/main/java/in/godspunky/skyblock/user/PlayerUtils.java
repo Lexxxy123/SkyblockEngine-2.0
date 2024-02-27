@@ -27,7 +27,6 @@ import in.godspunky.skyblock.features.skill.Skill;
 import in.godspunky.skyblock.features.slayer.SlayerBossType;
 import in.godspunky.skyblock.features.slayer.SlayerQuest;
 import in.godspunky.skyblock.util.*;
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.*;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -96,7 +95,7 @@ public final class PlayerUtils {
         final DoublePlayerStatistic trueDefense = statistics.getTrueDefense();
         final DoublePlayerStatistic atkSpeed = statistics.getAttackSpeed();
         statistics.zeroAll(4);
-        statistics.getFerocity().set(153, Double.valueOf(user.getBonusFerocity()));
+        statistics.getFerocity().set(153, (double) user.getBonusFerocity());
         if (hand != null && hand.getType().getStatistics().getType() != GenericItemType.ARMOR && hand.getType().getStatistics().getType() != GenericItemType.ACCESSORY) {
             final Reforge reforge = (hand.getReforge() == null) ? Reforge.blank() : hand.getReforge();
             strength.set(4, reforge.getStrength().getForRarity(hand.getRarity()));
@@ -107,12 +106,12 @@ public final class PlayerUtils {
             atkSpeed.set(4, reforge.getAttackSpeed().getForRarity(hand.getRarity()));
             final PlayerBoostStatistics handStatistics = hand.getType().getBoostStatistics();
             if (handStatistics != null) {
-                strength.add(4, Double.valueOf(handStatistics.getBaseStrength()));
-                critDamage.add(4, Double.valueOf(handStatistics.getBaseCritDamage()));
-                critChance.add(4, Double.valueOf(handStatistics.getBaseCritChance()));
-                intelligence.add(4, Double.valueOf(handStatistics.getBaseIntelligence()));
-                ferocity.add(4, Double.valueOf(handStatistics.getBaseFerocity()));
-                atkSpeed.add(4, Double.valueOf(handStatistics.getBaseAttackSpeed()));
+                strength.add(4, handStatistics.getBaseStrength());
+                critDamage.add(4, handStatistics.getBaseCritDamage());
+                critChance.add(4, handStatistics.getBaseCritChance());
+                intelligence.add(4, handStatistics.getBaseIntelligence());
+                ferocity.add(4, handStatistics.getBaseFerocity());
+                atkSpeed.add(4, handStatistics.getBaseAttackSpeed());
             }
         } else {
             strength.zero(4);
@@ -125,7 +124,7 @@ public final class PlayerUtils {
             atkSpeed.zero(4);
         }
         if (hand != null && hand.getType() == SMaterial.TERMINATOR) {
-            critChance.sub(4, Double.valueOf(statistics.getCritChance().addAll() - statistics.getCritChance().addAll() / 4.0));
+            critChance.sub(4, statistics.getCritChance().addAll() - statistics.getCritChance().addAll() / 4.0);
         }
         if (hand != null) {
             if (hand.getEnchantment(EnchantmentType.VICIOUS) != null) {
@@ -146,31 +145,31 @@ public final class PlayerUtils {
         if (hand != null && hand.getDataInt("hpb") > 0) {
             hpbwea = hand.getDataInt("hpb") * 2;
         }
-        ferocity.add(4, Double.valueOf(ferogrant));
-        magicFind.add(4, Double.valueOf(mfgrant));
-        strength.add(4, Double.valueOf(hpbwea));
+        ferocity.add(4, ferogrant);
+        magicFind.add(4, mfgrant);
+        strength.add(4, hpbwea);
         if (hand != null && hand.getType().getStatistics().getType() != GenericItemType.ARMOR && (user.toBukkitPlayer().getWorld().getName().contains("f6") || user.toBukkitPlayer().getWorld().getName().contains("dungeon"))) {
             final ItemSerial is = ItemSerial.getItemBoostStatistics(hand);
-            defense.add(4, Double.valueOf(is.getDefense()));
-            strength.add(4, Double.valueOf(is.getStrength()));
-            intelligence.add(4, Double.valueOf(is.getIntelligence()));
-            critChance.add(4, Double.valueOf(is.getCritchance()));
-            critDamage.add(4, Double.valueOf(is.getCritdamage()));
-            speed.add(4, Double.valueOf(is.getSpeed()));
-            magicFind.add(4, Double.valueOf(is.getMagicFind()));
-            atkSpeed.add(4, Double.valueOf(is.getAtkSpeed()));
-            ferocity.add(4, Double.valueOf(is.getFerocity()));
+            defense.add(4, is.getDefense());
+            strength.add(4, is.getStrength());
+            intelligence.add(4, is.getIntelligence());
+            critChance.add(4, is.getCritchance());
+            critDamage.add(4, is.getCritdamage());
+            speed.add(4, is.getSpeed());
+            magicFind.add(4, is.getMagicFind());
+            atkSpeed.add(4, is.getAtkSpeed());
+            ferocity.add(4, is.getFerocity());
         }
-        defense.add(4, Double.valueOf(a * (pet.getPerDefense() * level)));
-        strength.add(4, Double.valueOf(a * (pet.getPerStrength() * level)));
-        intelligence.add(4, Double.valueOf(a * (pet.getPerIntelligence() * level)));
-        speed.add(4, Double.valueOf(a * (pet.getPerSpeed() * level)));
-        critChance.add(4, Double.valueOf(a * (pet.getPerCritChance() * level)));
-        critDamage.add(4, Double.valueOf(a * (pet.getPerCritDamage() * level)));
-        magicFind.add(4, Double.valueOf(a * (pet.getPerMagicFind() * level)));
-        trueDefense.add(4, Double.valueOf(a * (pet.getPerTrueDefense() * level)));
-        ferocity.add(4, Double.valueOf(a * (pet.getPerFerocity() * level)));
-        atkSpeed.add(4, Double.valueOf(a * (pet.getPerAttackSpeed() * level)));
+        defense.add(4, a * (pet.getPerDefense() * level));
+        strength.add(4, a * (pet.getPerStrength() * level));
+        intelligence.add(4, a * (pet.getPerIntelligence() * level));
+        speed.add(4, a * (pet.getPerSpeed() * level));
+        critChance.add(4, a * (pet.getPerCritChance() * level));
+        critDamage.add(4, a * (pet.getPerCritDamage() * level));
+        magicFind.add(4, a * (pet.getPerMagicFind() * level));
+        trueDefense.add(4, a * (pet.getPerTrueDefense() * level));
+        ferocity.add(4, a * (pet.getPerFerocity() * level));
+        atkSpeed.add(4, a * (pet.getPerAttackSpeed() * level));
         updateHealth(Bukkit.getPlayer(statistics.getUuid()), statistics);
         return statistics;
     }
@@ -212,19 +211,19 @@ public final class PlayerUtils {
             if (piece.getDataInt("hpb") > 0) {
                 final double hphpb = piece.getDataInt("hpb") * 4;
                 final double defhpb = piece.getDataInt("hpb") * 2;
-                health.add(slot, Double.valueOf(hphpb));
-                defense.add(slot, Double.valueOf(defhpb));
+                health.add(slot, hphpb);
+                defense.add(slot, defhpb);
             }
             if (piece.isEnchantable()) {
                 for (final Enchantment enchantment : piece.getEnchantments()) {
                     if (enchantment.getType() == EnchantmentType.GROWTH) {
-                        health.add(slot, Double.valueOf(15.0 * enchantment.getLevel()));
+                        health.add(slot, 15.0 * enchantment.getLevel());
                     }
                     if (enchantment.getType() == EnchantmentType.PROTECTION) {
-                        defense.add(slot, Double.valueOf(3.0 * enchantment.getLevel()));
+                        defense.add(slot, 3.0 * enchantment.getLevel());
                     }
                     if (enchantment.getType() == EnchantmentType.LUCKINESS) {
-                        magicFind.add(slot, Double.valueOf(0.02 * enchantment.getLevel()));
+                        magicFind.add(slot, 0.02 * enchantment.getLevel());
                     }
                     if (enchantment.getType() == EnchantmentType.LEGION) {
                         final int level = enchantment.getLevel();
@@ -234,34 +233,34 @@ public final class PlayerUtils {
                         double multiper = level * 0.07 * nbps;
                         multiper = Math.max(0.0, multiper);
                         multiper /= 100.0;
-                        defense.add(slot, Double.valueOf(multiper * statistics.getDefense().addAll()));
-                        strength.add(slot, Double.valueOf(multiper * statistics.getStrength().addAll()));
-                        intelligence.add(slot, Double.valueOf(multiper * statistics.getIntelligence().addAll()));
-                        speed.add(slot, Double.valueOf(multiper * statistics.getSpeed().addAll()));
-                        critChance.add(slot, Double.valueOf(multiper * statistics.getCritChance().addAll()));
-                        critDamage.add(slot, Double.valueOf(multiper * statistics.getCritDamage().addAll()));
-                        magicFind.add(slot, Double.valueOf(multiper * statistics.getMagicFind().addAll()));
-                        trueDefense.add(slot, Double.valueOf(multiper * statistics.getTrueDefense().addAll()));
-                        ferocity.add(slot, Double.valueOf(multiper * statistics.getFerocity().addAll()));
-                        atkSpeed.add(slot, Double.valueOf(multiper * statistics.getAttackSpeed().addAll()));
+                        defense.add(slot, multiper * statistics.getDefense().addAll());
+                        strength.add(slot, multiper * statistics.getStrength().addAll());
+                        intelligence.add(slot, multiper * statistics.getIntelligence().addAll());
+                        speed.add(slot, multiper * statistics.getSpeed().addAll());
+                        critChance.add(slot, multiper * statistics.getCritChance().addAll());
+                        critDamage.add(slot, multiper * statistics.getCritDamage().addAll());
+                        magicFind.add(slot, multiper * statistics.getMagicFind().addAll());
+                        trueDefense.add(slot, multiper * statistics.getTrueDefense().addAll());
+                        ferocity.add(slot, multiper * statistics.getFerocity().addAll());
+                        atkSpeed.add(slot, multiper * statistics.getAttackSpeed().addAll());
                     }
                 }
             }
             if (piece != null && (player.getWorld().getName().contains("f6") || player.getWorld().getName().contains("dungeon"))) {
                 final ItemSerial is = ItemSerial.getItemBoostStatistics(piece);
-                health.add(slot, Double.valueOf(is.getHealth()));
-                defense.add(slot, Double.valueOf(is.getDefense()));
-                strength.add(slot, Double.valueOf(is.getStrength()));
-                intelligence.add(slot, Double.valueOf(is.getIntelligence()));
-                critChance.add(slot, Double.valueOf(is.getCritchance()));
-                critDamage.add(slot, Double.valueOf(is.getCritdamage()));
-                speed.add(slot, Double.valueOf(is.getSpeed()));
-                magicFind.add(slot, Double.valueOf(is.getMagicFind()));
-                atkSpeed.add(slot, Double.valueOf(is.getAtkSpeed()));
-                ferocity.add(slot, Double.valueOf(is.getFerocity()));
+                health.add(slot, is.getHealth());
+                defense.add(slot, is.getDefense());
+                strength.add(slot, is.getStrength());
+                intelligence.add(slot, is.getIntelligence());
+                critChance.add(slot, is.getCritchance());
+                critDamage.add(slot, is.getCritdamage());
+                speed.add(slot, is.getSpeed());
+                magicFind.add(slot, is.getMagicFind());
+                atkSpeed.add(slot, is.getAtkSpeed());
+                ferocity.add(slot, is.getFerocity());
             }
             if (piece.getType() == SMaterial.WARDEN_HELMET || piece.getType() == SMaterial.HIDDEN_VOIDLINGS_WARDEN_HELMET) {
-                speed.sub(slot, Double.valueOf(statistics.getSpeed().addAll() / 2.0));
+                speed.sub(slot, statistics.getSpeed().addAll() / 2.0);
             }
             final TickingMaterial tickingMaterial = piece.getType().getTickingInstance();
             if (tickingMaterial != null) {
@@ -291,18 +290,18 @@ public final class PlayerUtils {
         if (active != null) {
             final int level = Pet.getLevel(active.getXp(), active.getRarity());
             final Pet pet = (Pet) active.getType().getGenericInstance();
-            health.set(7, Double.valueOf(pet.getPerHealth() * level));
-            defense.set(7, Double.valueOf(pet.getPerDefense() * level));
-            strength.set(7, Double.valueOf(pet.getPerStrength() * level));
-            intelligence.set(7, Double.valueOf(pet.getPerIntelligence() * level));
-            speed.set(7, Double.valueOf(pet.getPerSpeed() * level));
-            critChance.set(7, Double.valueOf(pet.getPerCritChance() * level));
-            critDamage.set(7, Double.valueOf(pet.getPerCritDamage() * level));
-            magicFind.set(7, Double.valueOf(pet.getPerMagicFind() * level));
-            trueDefense.set(7, Double.valueOf(pet.getPerTrueDefense() * level));
-            ferocity.set(7, Double.valueOf(pet.getPerFerocity() * level));
-            atkSpeed.set(7, Double.valueOf(pet.getPerAttackSpeed() * level));
-            abilityDamage.set(7, Double.valueOf(0.0));
+            health.set(7, pet.getPerHealth() * level);
+            defense.set(7, pet.getPerDefense() * level);
+            strength.set(7, pet.getPerStrength() * level);
+            intelligence.set(7, pet.getPerIntelligence() * level);
+            speed.set(7, pet.getPerSpeed() * level);
+            critChance.set(7, pet.getPerCritChance() * level);
+            critDamage.set(7, pet.getPerCritDamage() * level);
+            magicFind.set(7, pet.getPerMagicFind() * level);
+            trueDefense.set(7, pet.getPerTrueDefense() * level);
+            ferocity.set(7, pet.getPerFerocity() * level);
+            atkSpeed.set(7, pet.getPerAttackSpeed() * level);
+            abilityDamage.set(7, 0.0);
         }
         final double defense2 = statistics.getDefense().addAll();
         final double strength2 = statistics.getStrength().addAll();
@@ -319,46 +318,45 @@ public final class PlayerUtils {
             final Pet pet2 = (Pet) active.getType().getGenericInstance();
             if ((pet2.getDisplayName().equals("Ender Dragon") || pet2.getDisplayName().equals("Golden Tiger")) && active.getRarity().isAtLeast(Rarity.LEGENDARY)) {
                 final double LevelMul = level2 * 0.1;
-                defense.add(7, Double.valueOf(defense2 * LevelMul / 100.0));
-                strength.add(7, Double.valueOf(strength2 * LevelMul / 100.0));
-                intelligence.add(7, Double.valueOf(intelligence2 * LevelMul / 100.0));
-                speed.add(7, Double.valueOf(speed2 * LevelMul / 100.0));
-                critChance.add(7, Double.valueOf(critChance2 * LevelMul / 100.0));
-                critDamage.add(7, Double.valueOf(critDamage2 * LevelMul / 100.0));
-                magicFind.add(7, Double.valueOf(magicFind2 * LevelMul / 100.0));
-                trueDefense.add(7, Double.valueOf(trueDefense2 * LevelMul / 100.0));
-                ferocity.add(7, Double.valueOf(ferocity2 * LevelMul / 100.0));
-                atkSpeed.add(7, Double.valueOf(atkSpeed2 * LevelMul / 100.0));
+                defense.add(7, defense2 * LevelMul / 100.0);
+                strength.add(7, strength2 * LevelMul / 100.0);
+                intelligence.add(7, intelligence2 * LevelMul / 100.0);
+                speed.add(7, speed2 * LevelMul / 100.0);
+                critChance.add(7, critChance2 * LevelMul / 100.0);
+                critDamage.add(7, critDamage2 * LevelMul / 100.0);
+                magicFind.add(7, magicFind2 * LevelMul / 100.0);
+                trueDefense.add(7, trueDefense2 * LevelMul / 100.0);
+                ferocity.add(7, ferocity2 * LevelMul / 100.0);
+                atkSpeed.add(7, atkSpeed2 * LevelMul / 100.0);
             }
             if (pet2.getDisplayName().equals("Mini T-34")) {
                 final double LevelMul = level2 * 0.2;
-                defense.add(7, Double.valueOf(defense2 * LevelMul / 100.0));
-                strength.add(7, Double.valueOf(strength2 * LevelMul / 100.0));
-                intelligence.add(7, Double.valueOf(intelligence2 * LevelMul / 100.0));
-                speed.add(7, Double.valueOf(speed2 * LevelMul / 100.0));
-                critChance.add(7, Double.valueOf(critChance2 * LevelMul / 100.0));
-                critDamage.add(7, Double.valueOf(critDamage2 * LevelMul / 100.0));
-                magicFind.add(7, Double.valueOf(magicFind2 * LevelMul / 100.0));
-                trueDefense.add(7, Double.valueOf(trueDefense2 * LevelMul / 100.0));
-                ferocity.add(7, Double.valueOf(ferocity2 * LevelMul / 100.0));
-                atkSpeed.add(7, Double.valueOf(atkSpeed2 * LevelMul / 100.0));
+                defense.add(7, defense2 * LevelMul / 100.0);
+                strength.add(7, strength2 * LevelMul / 100.0);
+                intelligence.add(7, intelligence2 * LevelMul / 100.0);
+                speed.add(7, speed2 * LevelMul / 100.0);
+                critChance.add(7, critChance2 * LevelMul / 100.0);
+                critDamage.add(7, critDamage2 * LevelMul / 100.0);
+                magicFind.add(7, magicFind2 * LevelMul / 100.0);
+                trueDefense.add(7, trueDefense2 * LevelMul / 100.0);
+                ferocity.add(7, ferocity2 * LevelMul / 100.0);
+                atkSpeed.add(7, atkSpeed2 * LevelMul / 100.0);
             } else if (pet2.getDisplayName().equals("Black Cat")) {
-                magicFind.add(7, Double.valueOf(0.0015 * level2));
-                speed.add(7, Double.valueOf(0.01 * level2));
+                magicFind.add(7, 0.0015 * level2);
+                speed.add(7, 0.01 * level2);
             } else if (pet2.getDisplayName().equals("Baby Yeti")) {
-                defense.add(7, Double.valueOf(strength2 * level2 / 100.0));
+                defense.add(7, strength2 * level2 / 100.0);
             } else if (pet2.getDisplayName().equals("Golden Tiger")) {
-                magicFind.add(7, Double.valueOf(strength2 / 100.0 / 100.0));
+                magicFind.add(7, strength2 / 100.0 / 100.0);
                 if (active.getRarity().isAtLeast(Rarity.MYTHIC)) {
-                    final Economy e = SkyBlock.getEconomy();
+
                     int count = 0;
-                    for (long num = (long) e.getBalance(player); num != 0L; num /= 10L, ++count) {
-                    }
-                    ferocity.add(7, Double.valueOf(count * (level2 * 0.1)));
-                    magicFind.add(7, Double.valueOf(count * (level2 * 0.05) / 100.0));
+
+                    ferocity.add(7, count * (level2 * 0.1));
+                    magicFind.add(7, count * (level2 * 0.05) / 100.0);
                 }
             } else if (pet2.getDisplayName().equals("Magicivy")) {
-                abilityDamage.add(7, Double.valueOf(level2));
+                abilityDamage.add(7, (double) level2);
             }
         } else {
             statistics.zeroAll(7);
@@ -386,16 +384,16 @@ public final class PlayerUtils {
             if (set != null) {
                 final PlayerBoostStatistics boost = set.whileHasFullSet(player);
                 if (boost != null) {
-                    health.set(5, Double.valueOf(boost.getBaseHealth()));
-                    defense.set(5, Double.valueOf(boost.getBaseDefense()));
-                    strength.set(5, Double.valueOf(boost.getBaseStrength()));
-                    intelligence.set(5, Double.valueOf(boost.getBaseIntelligence()));
-                    speed.set(5, Double.valueOf(boost.getBaseSpeed()));
-                    critChance.set(5, Double.valueOf(boost.getBaseCritChance()));
-                    critDamage.set(5, Double.valueOf(boost.getBaseCritDamage()));
-                    magicFind.set(5, Double.valueOf(boost.getBaseMagicFind()));
-                    ferocity.set(5, Double.valueOf(boost.getBaseFerocity()));
-                    atkSpeed.set(5, Double.valueOf(boost.getBaseAttackSpeed()));
+                    health.set(5, boost.getBaseHealth());
+                    defense.set(5, boost.getBaseDefense());
+                    strength.set(5, boost.getBaseStrength());
+                    intelligence.set(5, boost.getBaseIntelligence());
+                    speed.set(5, boost.getBaseSpeed());
+                    critChance.set(5, boost.getBaseCritChance());
+                    critDamage.set(5, boost.getBaseCritDamage());
+                    magicFind.set(5, boost.getBaseMagicFind());
+                    ferocity.set(5, boost.getBaseFerocity());
+                    atkSpeed.set(5, boost.getBaseAttackSpeed());
                 }
                 if (set instanceof GigachadSet) {
                     final double defense2 = statistics.getDefense().addAll();
@@ -409,16 +407,16 @@ public final class PlayerUtils {
                     final double ferocity2 = statistics.getFerocity().addAll() - statistics.getFerocity().getFor(153);
                     final double atkSpeed2 = statistics.getAttackSpeed().addAll();
                     final double LevelMul = 20.0;
-                    defense.add(5, Double.valueOf(defense2 * LevelMul / 100.0));
-                    strength.add(5, Double.valueOf(strength2 * LevelMul / 100.0));
-                    intelligence.add(5, Double.valueOf(intelligence2 * LevelMul / 100.0));
-                    speed.add(5, Double.valueOf(speed2 * LevelMul / 100.0));
-                    critChance.add(5, Double.valueOf(critChance2 * LevelMul / 100.0));
-                    critDamage.add(5, Double.valueOf(critDamage2 * LevelMul / 100.0));
-                    magicFind.add(5, Double.valueOf(magicFind2 * LevelMul / 100.0));
-                    trueDefense.add(5, Double.valueOf(trueDefense2 * LevelMul / 100.0));
-                    ferocity.add(5, Double.valueOf(ferocity2 * LevelMul / 100.0));
-                    atkSpeed.add(5, Double.valueOf(atkSpeed2 * LevelMul / 100.0));
+                    defense.add(5, defense2 * LevelMul / 100.0);
+                    strength.add(5, strength2 * LevelMul / 100.0);
+                    intelligence.add(5, intelligence2 * LevelMul / 100.0);
+                    speed.add(5, speed2 * LevelMul / 100.0);
+                    critChance.add(5, critChance2 * LevelMul / 100.0);
+                    critDamage.add(5, critDamage2 * LevelMul / 100.0);
+                    magicFind.add(5, magicFind2 * LevelMul / 100.0);
+                    trueDefense.add(5, trueDefense2 * LevelMul / 100.0);
+                    ferocity.add(5, ferocity2 * LevelMul / 100.0);
+                    atkSpeed.add(5, atkSpeed2 * LevelMul / 100.0);
                 } else if (set instanceof MinichadSet) {
                     final double defense2 = statistics.getDefense().addAll();
                     final double strength2 = statistics.getStrength().addAll();
@@ -431,16 +429,16 @@ public final class PlayerUtils {
                     final double ferocity2 = statistics.getFerocity().addAll() - statistics.getFerocity().getFor(153);
                     final double atkSpeed2 = statistics.getAttackSpeed().addAll();
                     final double LevelMul = 10.0;
-                    defense.add(5, Double.valueOf(defense2 * LevelMul / 100.0));
-                    strength.add(5, Double.valueOf(strength2 * LevelMul / 100.0));
-                    intelligence.add(5, Double.valueOf(intelligence2 * LevelMul / 100.0));
-                    speed.add(5, Double.valueOf(speed2 * LevelMul / 100.0));
-                    critChance.add(5, Double.valueOf(critChance2 * LevelMul / 100.0));
-                    critDamage.add(5, Double.valueOf(critDamage2 * LevelMul / 100.0));
-                    magicFind.add(5, Double.valueOf(magicFind2 * LevelMul / 100.0));
-                    trueDefense.add(5, Double.valueOf(trueDefense2 * LevelMul / 100.0));
-                    ferocity.add(5, Double.valueOf(ferocity2 * LevelMul / 100.0));
-                    atkSpeed.add(5, Double.valueOf(atkSpeed2 * LevelMul / 100.0));
+                    defense.add(5, defense2 * LevelMul / 100.0);
+                    strength.add(5, strength2 * LevelMul / 100.0);
+                    intelligence.add(5, intelligence2 * LevelMul / 100.0);
+                    speed.add(5, speed2 * LevelMul / 100.0);
+                    critChance.add(5, critChance2 * LevelMul / 100.0);
+                    critDamage.add(5, critDamage2 * LevelMul / 100.0);
+                    magicFind.add(5, magicFind2 * LevelMul / 100.0);
+                    trueDefense.add(5, trueDefense2 * LevelMul / 100.0);
+                    ferocity.add(5, ferocity2 * LevelMul / 100.0);
+                    atkSpeed.add(5, atkSpeed2 * LevelMul / 100.0);
                 }
             }
         } else {
@@ -570,29 +568,29 @@ public final class PlayerUtils {
         final DoublePlayerStatistic critDamage = statistics.getCritDamage();
         final DoublePlayerStatistic magicFind = statistics.getMagicFind();
         final DoublePlayerStatistic atkSpeed = statistics.getAttackSpeed();
-        health.add(6, Double.valueOf(boostStatistics.getBaseHealth()));
-        defense.add(6, Double.valueOf(boostStatistics.getBaseDefense()));
-        strength.add(6, Double.valueOf(boostStatistics.getBaseStrength()));
-        intelligence.add(6, Double.valueOf(boostStatistics.getBaseIntelligence()));
-        speed.add(6, Double.valueOf(boostStatistics.getBaseSpeed()));
-        critChance.add(6, Double.valueOf(boostStatistics.getBaseCritChance()));
-        critDamage.add(6, Double.valueOf(boostStatistics.getBaseCritDamage()));
-        magicFind.add(6, Double.valueOf(boostStatistics.getBaseMagicFind()));
-        ferocity.add(6, Double.valueOf(boostStatistics.getBaseFerocity()));
-        atkSpeed.add(6, Double.valueOf(boostStatistics.getBaseAttackSpeed()));
+        health.add(6, boostStatistics.getBaseHealth());
+        defense.add(6, boostStatistics.getBaseDefense());
+        strength.add(6, boostStatistics.getBaseStrength());
+        intelligence.add(6, boostStatistics.getBaseIntelligence());
+        speed.add(6, boostStatistics.getBaseSpeed());
+        critChance.add(6, boostStatistics.getBaseCritChance());
+        critDamage.add(6, boostStatistics.getBaseCritDamage());
+        magicFind.add(6, boostStatistics.getBaseMagicFind());
+        ferocity.add(6, boostStatistics.getBaseFerocity());
+        atkSpeed.add(6, boostStatistics.getBaseAttackSpeed());
         updateHealth(Bukkit.getPlayer(statistics.getUuid()), statistics);
         new BukkitRunnable() {
             public void run() {
-                health.sub(6, Double.valueOf(boostStatistics.getBaseHealth()));
-                defense.sub(6, Double.valueOf(boostStatistics.getBaseDefense()));
-                strength.sub(6, Double.valueOf(boostStatistics.getBaseStrength()));
-                intelligence.sub(6, Double.valueOf(boostStatistics.getBaseIntelligence()));
-                speed.sub(6, Double.valueOf(boostStatistics.getBaseSpeed()));
-                critChance.sub(6, Double.valueOf(boostStatistics.getBaseCritChance()));
-                critDamage.sub(6, Double.valueOf(boostStatistics.getBaseCritDamage()));
-                magicFind.sub(6, Double.valueOf(boostStatistics.getBaseMagicFind()));
-                ferocity.sub(6, Double.valueOf(boostStatistics.getBaseFerocity()));
-                atkSpeed.sub(6, Double.valueOf(boostStatistics.getBaseAttackSpeed()));
+                health.sub(6, boostStatistics.getBaseHealth());
+                defense.sub(6, boostStatistics.getBaseDefense());
+                strength.sub(6, boostStatistics.getBaseStrength());
+                intelligence.sub(6, boostStatistics.getBaseIntelligence());
+                speed.sub(6, boostStatistics.getBaseSpeed());
+                critChance.sub(6, boostStatistics.getBaseCritChance());
+                critDamage.sub(6, boostStatistics.getBaseCritDamage());
+                magicFind.sub(6, boostStatistics.getBaseMagicFind());
+                ferocity.sub(6, boostStatistics.getBaseFerocity());
+                atkSpeed.sub(6, boostStatistics.getBaseAttackSpeed());
                 PlayerUtils.updateHealth(Bukkit.getPlayer(statistics.getUuid()), statistics);
             }
         }.runTaskLater(SkyBlock.getPlugin(), ticks);
@@ -1127,9 +1125,7 @@ public final class PlayerUtils {
                 if (sitem1 != null && sitem1.getEnchantment(EnchantmentType.SOUL_EATER) != null && sitem1.getType() != SMaterial.ENCHANTED_BOOK) {
                     PlayerUtils.SOUL_EATER_MAP.put(damager.getUniqueId(), sEntity);
                 }
-                if (sitem1 != null && sitem1.getEnchantment(EnchantmentType.TURBO_GEM) != null && sitem1.getType() != SMaterial.ENCHANTED_BOOK) {
-                    SkyBlock.getEconomy().depositPlayer(damager, sitem1.getEnchantment(EnchantmentType.TURBO_GEM).getLevel());
-                }
+
                 final User user = User.getUser(damager.getUniqueId());
                 double xpDropped = sEntity.getStatistics().getXPDropped();
                 if (getCookieDurationTicks(damager) > 0L) {
@@ -1327,16 +1323,16 @@ public final class PlayerUtils {
         final DoublePlayerStatistic critDamage = statistics.getCritDamage();
         final DoublePlayerStatistic atkSpeed = statistics.getAttackSpeed();
         final DoublePlayerStatistic magicFind = statistics.getMagicFind();
-        health.add(slot, Double.valueOf(boostStatistics.getBaseHealth()));
-        defense.add(slot, Double.valueOf(boostStatistics.getBaseDefense()));
-        strength.add(slot, Double.valueOf(boostStatistics.getBaseStrength()));
-        speed.add(slot, Double.valueOf(boostStatistics.getBaseSpeed()));
-        intelligence.add(slot, Double.valueOf(boostStatistics.getBaseIntelligence()));
-        critDamage.add(slot, Double.valueOf(boostStatistics.getBaseCritDamage()));
-        critChance.add(slot, Double.valueOf(boostStatistics.getBaseCritChance()));
-        magicFind.add(slot, Double.valueOf(boostStatistics.getBaseMagicFind()));
-        ferocity.add(slot, Double.valueOf(boostStatistics.getBaseFerocity()));
-        atkSpeed.add(slot, Double.valueOf(boostStatistics.getBaseAttackSpeed()));
+        health.add(slot, boostStatistics.getBaseHealth());
+        defense.add(slot, boostStatistics.getBaseDefense());
+        strength.add(slot, boostStatistics.getBaseStrength());
+        speed.add(slot, boostStatistics.getBaseSpeed());
+        intelligence.add(slot, boostStatistics.getBaseIntelligence());
+        critDamage.add(slot, boostStatistics.getBaseCritDamage());
+        critChance.add(slot, boostStatistics.getBaseCritChance());
+        magicFind.add(slot, boostStatistics.getBaseMagicFind());
+        ferocity.add(slot, boostStatistics.getBaseFerocity());
+        atkSpeed.add(slot, boostStatistics.getBaseAttackSpeed());
     }
 
     public static boolean isAutoSlayer(final Player p) {
@@ -1395,12 +1391,12 @@ public final class PlayerUtils {
         final User user = User.getUser(player.getUniqueId());
         final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(user.getUuid());
         statistics.zeroAll(151);
-        statistics.getFerocity().set(151, Double.valueOf(35.0));
-        statistics.getDefense().set(151, Double.valueOf(200.0));
-        statistics.getCritDamage().set(151, Double.valueOf(0.25));
-        statistics.getIntelligence().set(151, Double.valueOf(2000.0));
-        statistics.getMagicFind().set(151, Double.valueOf(0.3));
-        statistics.getStrength().set(151, Double.valueOf(100.0));
+        statistics.getFerocity().set(151, 35.0);
+        statistics.getDefense().set(151, 200.0);
+        statistics.getCritDamage().set(151, 0.25);
+        statistics.getIntelligence().set(151, 2000.0);
+        statistics.getMagicFind().set(151, 0.3);
+        statistics.getStrength().set(151, 100.0);
     }
 
     public static void wipeCookieStatsBuff(final Player player) {

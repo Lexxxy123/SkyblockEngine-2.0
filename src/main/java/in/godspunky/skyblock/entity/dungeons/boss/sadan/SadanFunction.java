@@ -269,7 +269,7 @@ public class SadanFunction {
                 if (bitsReward <= 0) {
                     rew = "&cYou have no rewards!";
                 } else {
-                    w.getPlayers().forEach(p -> SkyBlock.getEconomy().depositPlayer(p, bitsReward));
+                    w.getPlayers().forEach(p -> User.getUser(p.getUniqueId()).addBits(bitsReward));
                 }
                 SUtil.broadcastWorld(Sputnik.trans("&a▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"), w);
                 SUtil.broadcastWorld(Sputnik.trans("        &cThe Catacombs Demo &8- &eFloor VI"), w);

@@ -103,9 +103,9 @@ public class PacketInvoker {
                                 item.setCustomNameVisible(true);
                                 item.setCustomName(Sputnik.trans("&e&ka&r &f1x &7[Lvl 1] &6Enderman &e&ka"));
                             } else {
-                                final int pk = SUtil.random(80, 400);
-                                SkyBlock.getEconomy().depositPlayer(owner, pk);
-                                owner.sendMessage(Sputnik.trans("&b&lBITS! &fYou found &b" + SUtil.commaify(pk) + " Bits&f inside the loot chest!"));
+                                final int bitsReward = SUtil.random(80, 400);
+                                User.getUser(owner.getUniqueId()).addBits(bitsReward);
+                                owner.sendMessage(Sputnik.trans("&b&lBITS! &fYou found &b" + SUtil.commaify(bitsReward) + " Bits&f inside the loot chest!"));
                             }
                         } else {
                             owner.getWorld().playEffect(owner.getLocation(), Effect.EXPLOSION_HUGE, 1);
