@@ -2,8 +2,8 @@ package in.godspunky.skyblock.gui;
 
 import in.godspunky.skyblock.Repeater;
 import in.godspunky.skyblock.SkyBlock;
-import in.godspunky.skyblock.SkyBlockCalendar;
-import in.godspunky.skyblock.collection.ItemCollection;
+import in.godspunky.skyblock.features.calendar.SkyBlockCalendar;
+import in.godspunky.skyblock.features.collection.ItemCollection;
 import in.godspunky.skyblock.item.pet.Pet;
 import in.godspunky.skyblock.user.PlayerStatistics;
 import in.godspunky.skyblock.user.PlayerUtils;

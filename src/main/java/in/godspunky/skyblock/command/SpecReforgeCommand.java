@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.reforge.Reforge;
-import in.godspunky.skyblock.reforge.ReforgeType;
+import in.godspunky.skyblock.features.reforge.Reforge;
+import in.godspunky.skyblock.features.reforge.ReforgeType;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;

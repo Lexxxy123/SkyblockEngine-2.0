@@ -1,13 +1,12 @@
 package in.godspunky.skyblock.gui;
 
-import in.godspunky.skyblock.collection.ItemCollection;
-import in.godspunky.skyblock.skill.*;
+import in.godspunky.skyblock.features.collection.ItemCollection;
+import in.godspunky.skyblock.features.skill.*;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import in.godspunky.skyblock.skill.*;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.item.foraging;
 
-import in.godspunky.skyblock.skill.ForagingSkill;
-import in.godspunky.skyblock.skill.Skill;
+import in.godspunky.skyblock.features.skill.ForagingSkill;
+import in.godspunky.skyblock.features.skill.Skill;
 import in.godspunky.skyblock.item.ExperienceRewardStatistics;
 import in.godspunky.skyblock.item.GenericItemType;
 import in.godspunky.skyblock.item.MaterialFunction;

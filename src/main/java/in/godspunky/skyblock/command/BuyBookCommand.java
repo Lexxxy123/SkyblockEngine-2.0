@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.enchantment.EnchantmentType;
+import in.godspunky.skyblock.features.enchantment.EnchantmentType;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import in.godspunky.skyblock.item.SItem;

@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.item.mining;
 
-import in.godspunky.skyblock.skill.MiningSkill;
-import in.godspunky.skyblock.skill.Skill;
+import in.godspunky.skyblock.features.skill.MiningSkill;
+import in.godspunky.skyblock.features.skill.Skill;
 import in.godspunky.skyblock.item.ExperienceRewardStatistics;
 import in.godspunky.skyblock.item.GenericItemType;
 import in.godspunky.skyblock.item.MaterialFunction;

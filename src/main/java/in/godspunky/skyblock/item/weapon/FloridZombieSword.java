@@ -9,8 +9,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import in.godspunky.skyblock.Repeater;
-import in.godspunky.skyblock.ZSHash;
-import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.util.ZSHash;
 import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.util.SUtil;
 

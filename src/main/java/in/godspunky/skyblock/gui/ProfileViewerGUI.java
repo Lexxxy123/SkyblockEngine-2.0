@@ -3,7 +3,7 @@ package in.godspunky.skyblock.gui;
 import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.pet.Pet;
-import in.godspunky.skyblock.placeholding;
+import in.godspunky.skyblock.api.placeholder.SkyblockPlaceholder;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;
@@ -43,7 +43,7 @@ public class ProfileViewerGUI extends GUI {
 
             @Override
             public ItemStack getItem() {
-                final placeholding pl = new placeholding();
+                final SkyblockPlaceholder pl = new SkyblockPlaceholder();
                 final ItemStack itemstack = SUtil.getSkullStack(ProfileViewerGUI.this.p.getDisplayName(), ProfileViewerGUI.this.p.getName(), 1, Sputnik.trans("  &c❤ Health &f" + SUtil.commaify(Math.round(ProfileViewerGUI.this.p.getHealth())) + " HP"), Sputnik.trans("  &a❈ Defense&f " + pl.onRequest(ProfileViewerGUI.this.p, "defense")), Sputnik.trans("  &c❁ Strength&f " + pl.onRequest(ProfileViewerGUI.this.p, "strength")), Sputnik.trans("  &f✦ Speed " + pl.onRequest(ProfileViewerGUI.this.p, "speed")), Sputnik.trans("  &9☣ Crit Chance&f " + pl.onRequest(ProfileViewerGUI.this.p, "critchance") + "%"), Sputnik.trans("  &9☠ Crit Damage&f " + pl.onRequest(ProfileViewerGUI.this.p, "critdamage") + "%"), Sputnik.trans("  &b✎ Intelligence&f " + pl.onRequest(ProfileViewerGUI.this.p, "int")), Sputnik.trans("  &e⚔ Bonus Attack Speed&f " + pl.onRequest(ProfileViewerGUI.this.p, "atkSpeed") + "%"), Sputnik.trans("  &c⫽ Ferocity&f " + pl.onRequest(ProfileViewerGUI.this.p, "ferocity")), Sputnik.trans("  &c๑ Ability Damage&f " + pl.onRequest(ProfileViewerGUI.this.p, "abilityDamage") + "%"), " ", Sputnik.trans("&8Skill Average: &6N/A &7(non-cosmetic)"), " ");
                 return itemstack;
             }

@@ -1,9 +1,9 @@
 package in.godspunky.skyblock.item;
 
 import in.godspunky.skyblock.SkyBlock;
-import in.godspunky.skyblock.collection.ItemCollection;
-import in.godspunky.skyblock.enchantment.Enchantment;
-import in.godspunky.skyblock.enchantment.EnchantmentType;
+import in.godspunky.skyblock.features.collection.ItemCollection;
+import in.godspunky.skyblock.features.enchantment.Enchantment;
+import in.godspunky.skyblock.features.enchantment.EnchantmentType;
 import in.godspunky.skyblock.entity.StaticDragonManager;
 import in.godspunky.skyblock.entity.dungeons.boss.sadan.JollyPinkGiant;
 import in.godspunky.skyblock.entity.dungeons.boss.sadan.SadanGiant;
@@ -11,7 +11,7 @@ import in.godspunky.skyblock.item.armor.Witherborn;
 import in.godspunky.skyblock.item.storage.Storage;
 import in.godspunky.skyblock.item.weapon.EdibleMace;
 import in.godspunky.skyblock.listener.PListener;
-import in.godspunky.skyblock.skill.Skill;
+import in.godspunky.skyblock.features.skill.Skill;
 import in.godspunky.skyblock.user.PlayerStatistics;
 import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.util.*;
@@ -849,7 +849,7 @@ public class ItemListener extends PListener {
             if (user == null) {
                 continue;
             }
-            for (final in.godspunky.skyblock.potion.PotionEffect effect : item.getPotionEffects()) {
+            for (final in.godspunky.skyblock.features.potion.PotionEffect effect : item.getPotionEffects()) {
                 PlayerUtils.updatePotionEffects(user, PlayerUtils.STATISTICS_CACHE.get(user.getUuid()));
                 if (effect.getType().getOnDrink() != null) {
                     effect.getType().getOnDrink().accept(effect, (Player) entity);
@@ -857,7 +857,7 @@ public class ItemListener extends PListener {
                 final long ticks = (long) (effect.getDuration() * e.getIntensity(entity));
                 if (!user.hasPotionEffect(effect.getType()) || (user.hasPotionEffect(effect.getType()) && ticks > user.getPotionEffect(effect.getType()).getRemaining())) {
                     user.removePotionEffect(effect.getType());
-                    user.addPotionEffect(new in.godspunky.skyblock.potion.PotionEffect(effect.getType(), effect.getLevel(), ticks));
+                    user.addPotionEffect(new in.godspunky.skyblock.features.potion.PotionEffect(effect.getType(), effect.getLevel(), ticks));
                 }
                 entity.sendMessage((effect.getType().isBuff() ? (ChatColor.GREEN + "" + ChatColor.BOLD + "BUFF!") : (ChatColor.RED + "" + ChatColor.BOLD + "DEBUFF!")) + ChatColor.RESET + ChatColor.WHITE + " You " + (e.getPotion().getShooter().equals(entity) ? "splashed yourself" : "were splashed") + " with " + effect.getDisplayName() + ChatColor.WHITE + "!");
             }

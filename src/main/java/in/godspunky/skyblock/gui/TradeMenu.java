@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.gui;
 
 import in.godspunky.skyblock.SkyBlock;
-import in.godspunky.skyblock.sequence.SoundSequenceType;
+import in.godspunky.skyblock.features.sequence.SoundSequenceType;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;

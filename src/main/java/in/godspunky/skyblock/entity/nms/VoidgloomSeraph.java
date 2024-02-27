@@ -2,7 +2,7 @@ package in.godspunky.skyblock.entity.nms;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import in.godspunky.skyblock.SkyBlock;
-import in.godspunky.skyblock.enchantment.EnchantmentType;
+import in.godspunky.skyblock.features.enchantment.EnchantmentType;
 import in.godspunky.skyblock.entity.*;
 import net.minecraft.server.v1_8_R3.World;
 import net.minecraft.server.v1_8_R3.*;
@@ -27,7 +27,7 @@ import in.godspunky.skyblock.entity.end.EndermanStatistics;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.BlockFallAPI;
+import in.godspunky.skyblock.api.block.BlockFallAPI;
 import in.godspunky.skyblock.util.EntityManager;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;

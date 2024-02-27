@@ -6,8 +6,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
 import in.godspunky.skyblock.command.RegionCommand;
-import in.godspunky.skyblock.region.Region;
-import in.godspunky.skyblock.region.RegionGenerator;
+import in.godspunky.skyblock.features.region.Region;
+import in.godspunky.skyblock.features.region.RegionGenerator;
 
 public class BlockListener extends PListener {
     @EventHandler

@@ -27,7 +27,7 @@ import in.godspunky.skyblock.entity.SEntity;
 import in.godspunky.skyblock.entity.SEntityEquipment;
 import in.godspunky.skyblock.entity.zombie.BaseZombie;
 import in.godspunky.skyblock.user.User;
-import in.godspunky.skyblock.util.BlockFallAPI;
+import in.godspunky.skyblock.api.block.BlockFallAPI;
 import in.godspunky.skyblock.util.EntityManager;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;

@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.gui;
 
-import in.godspunky.skyblock.merchant.FarmMerchantGUI;
+import in.godspunky.skyblock.features.merchant.FarmMerchantGUI;
 import in.godspunky.skyblock.util.SUtil;
 
 public enum GUIType {

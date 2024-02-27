@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.util;
 
-import in.godspunky.skyblock.region.RegionType;
+import in.godspunky.skyblock.features.region.RegionType;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.inventory.InventoryAction;

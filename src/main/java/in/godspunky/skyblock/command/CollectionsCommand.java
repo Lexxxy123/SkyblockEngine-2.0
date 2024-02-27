@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.collection.ItemCollection;
+import in.godspunky.skyblock.features.collection.ItemCollection;
 import org.bukkit.command.ConsoleCommandSender;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;

@@ -1,8 +1,9 @@
 package in.godspunky.skyblock.entity;
 
-import in.godspunky.skyblock.dimoon.Dimoonizae;
+import in.godspunky.skyblock.entity.dimoon.Dimoonizae;
 import in.godspunky.skyblock.entity.caverns.*;
 import in.godspunky.skyblock.entity.den.*;
+import in.godspunky.skyblock.entity.dragon.type.*;
 import in.godspunky.skyblock.entity.dungeons.TestingMob;
 import in.godspunky.skyblock.entity.dungeons.boss.sadan.*;
 import in.godspunky.skyblock.entity.dungeons.minibosses.*;
@@ -22,16 +23,6 @@ import in.godspunky.skyblock.entity.zombie.*;
 import net.minecraft.server.v1_8_R3.EntityInsentient;
 import net.minecraft.server.v1_8_R3.EntityTypes;
 import org.bukkit.entity.EntityType;
-import in.godspunky.skyblock.entity.caverns.*;
-import in.godspunky.skyblock.entity.den.*;
-import in.godspunky.skyblock.entity.dungeons.boss.sadan.*;
-import in.godspunky.skyblock.entity.dungeons.minibosses.*;
-import in.godspunky.skyblock.entity.dungeons.regularentity.*;
-import in.godspunky.skyblock.entity.dungeons.watcher.*;
-import in.godspunky.skyblock.entity.end.*;
-import in.godspunky.skyblock.entity.nms.*;
-import in.godspunky.skyblock.entity.wolf.*;
-import in.godspunky.skyblock.entity.zombie.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

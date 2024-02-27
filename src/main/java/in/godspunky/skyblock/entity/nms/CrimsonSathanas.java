@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.entity.nms;
 
 import in.godspunky.skyblock.SkyBlock;
-import in.godspunky.skyblock.enchantment.EnchantmentType;
+import in.godspunky.skyblock.features.enchantment.EnchantmentType;
 import in.godspunky.skyblock.entity.*;
 import net.minecraft.server.v1_8_R3.Entity;
 import net.minecraft.server.v1_8_R3.EntitySkeleton;

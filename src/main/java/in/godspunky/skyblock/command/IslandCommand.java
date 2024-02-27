@@ -1,10 +1,8 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.island.SkyblockIsland;
-import in.godspunky.skyblock.user.User;
+import in.godspunky.skyblock.features.island.SkyblockIsland;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import in.godspunky.skyblock.user.PlayerUtils;
 
 @CommandParameters(description = "go to or create your island", aliases = "is")
 public class IslandCommand extends SCommand {

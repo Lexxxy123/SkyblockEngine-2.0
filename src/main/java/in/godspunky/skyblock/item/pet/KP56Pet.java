@@ -1,13 +1,12 @@
 package in.godspunky.skyblock.item.pet;
 
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.skill.CombatSkill;
-import in.godspunky.skyblock.skill.Skill;
+import in.godspunky.skyblock.features.skill.CombatSkill;
+import in.godspunky.skyblock.features.skill.Skill;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import in.godspunky.skyblock.item.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

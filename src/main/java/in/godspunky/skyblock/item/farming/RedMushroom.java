@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.item.farming;
 
-import in.godspunky.skyblock.skill.FarmingSkill;
-import in.godspunky.skyblock.skill.Skill;
+import in.godspunky.skyblock.features.skill.FarmingSkill;
+import in.godspunky.skyblock.features.skill.Skill;
 import in.godspunky.skyblock.item.ExperienceRewardStatistics;
 import in.godspunky.skyblock.item.GenericItemType;
 import in.godspunky.skyblock.item.MaterialFunction;

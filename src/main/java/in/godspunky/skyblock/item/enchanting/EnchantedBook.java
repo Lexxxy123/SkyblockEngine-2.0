@@ -1,8 +1,7 @@
 package in.godspunky.skyblock.item.enchanting;
 
-import in.godspunky.skyblock.enchantment.Enchantment;
-import in.godspunky.skyblock.enchantment.EnchantmentType;
-import in.godspunky.skyblock.item.*;
+import in.godspunky.skyblock.features.enchantment.Enchantment;
+import in.godspunky.skyblock.features.enchantment.EnchantmentType;
 import in.godspunky.skyblock.item.*;
 
 public class EnchantedBook implements MaterialStatistics, MaterialFunction, Enchantable {

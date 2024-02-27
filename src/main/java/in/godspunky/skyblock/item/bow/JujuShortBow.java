@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.item.bow;
 
-import in.godspunky.skyblock.enchantment.Enchantment;
-import in.godspunky.skyblock.enchantment.EnchantmentType;
+import in.godspunky.skyblock.features.enchantment.Enchantment;
+import in.godspunky.skyblock.features.enchantment.EnchantmentType;
 import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.user.PlayerStatistics;
 import in.godspunky.skyblock.util.InventoryUpdate;
@@ -15,7 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.util.SUtil;
 

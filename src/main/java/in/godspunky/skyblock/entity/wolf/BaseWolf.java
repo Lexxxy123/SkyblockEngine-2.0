@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.entity.wolf;
 
-import in.godspunky.skyblock.slayer.SlayerQuest;
+import in.godspunky.skyblock.features.slayer.SlayerQuest;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;

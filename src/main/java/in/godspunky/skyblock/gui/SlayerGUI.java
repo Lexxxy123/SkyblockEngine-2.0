@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.gui;
 
-import in.godspunky.skyblock.slayer.SlayerBossType;
-import in.godspunky.skyblock.slayer.SlayerQuest;
+import in.godspunky.skyblock.features.slayer.SlayerBossType;
+import in.godspunky.skyblock.features.slayer.SlayerQuest;
 import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;

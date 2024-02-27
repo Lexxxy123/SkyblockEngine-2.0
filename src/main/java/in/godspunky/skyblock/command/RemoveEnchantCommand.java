@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.command;
 
-import in.godspunky.skyblock.enchantment.Enchantment;
-import in.godspunky.skyblock.enchantment.EnchantmentType;
+import in.godspunky.skyblock.features.enchantment.Enchantment;
+import in.godspunky.skyblock.features.enchantment.EnchantmentType;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.ConsoleCommandSender;

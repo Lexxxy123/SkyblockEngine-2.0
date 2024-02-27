@@ -4,16 +4,18 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.google.common.io.Files;
 import de.slikey.effectlib.EffectManager;
-import in.godspunky.skyblock.auction.AuctionBid;
-import in.godspunky.skyblock.auction.AuctionEscrow;
-import in.godspunky.skyblock.auction.AuctionItem;
+import in.godspunky.skyblock.api.placeholder.SkyblockPlaceholder;
+import in.godspunky.skyblock.features.auction.AuctionBid;
+import in.godspunky.skyblock.features.auction.AuctionEscrow;
+import in.godspunky.skyblock.features.auction.AuctionItem;
+import in.godspunky.skyblock.features.calendar.SkyBlockCalendar;
 import in.godspunky.skyblock.command.*;
 import in.godspunky.skyblock.config.Config;
-import in.godspunky.skyblock.dimoon.*;
-import in.godspunky.skyblock.dimoon.listeners.BlockListener;
-import in.godspunky.skyblock.dimoon.listeners.EntityListener;
-import in.godspunky.skyblock.dimoon.listeners.PlayerListener;
-import in.godspunky.skyblock.enchantment.EnchantmentType;
+import in.godspunky.skyblock.entity.dimoon.*;
+import in.godspunky.skyblock.entity.dimoon.listeners.BlockListener;
+import in.godspunky.skyblock.entity.dimoon.listeners.EntityListener;
+import in.godspunky.skyblock.entity.dimoon.listeners.PlayerListener;
+import in.godspunky.skyblock.features.enchantment.EnchantmentType;
 import in.godspunky.skyblock.entity.EntityPopulator;
 import in.godspunky.skyblock.entity.EntitySpawner;
 import in.godspunky.skyblock.entity.SEntityType;
@@ -27,12 +29,13 @@ import in.godspunky.skyblock.item.pet.Pet;
 import in.godspunky.skyblock.listener.PacketListener;
 import in.godspunky.skyblock.listener.ServerPingListener;
 import in.godspunky.skyblock.listener.WorldListener;
-import in.godspunky.skyblock.merchant.MerchantItemHandler;
+import in.godspunky.skyblock.features.merchant.MerchantItemHandler;
 import in.godspunky.skyblock.nms.packetevents.*;
 import in.godspunky.skyblock.npc.SkyblockNPC;
-import in.godspunky.skyblock.region.Region;
-import in.godspunky.skyblock.region.RegionType;
-import in.godspunky.skyblock.slayer.SlayerQuest;
+import in.godspunky.skyblock.features.region.Region;
+import in.godspunky.skyblock.features.region.RegionType;
+import in.godspunky.skyblock.server.ServerVersion;
+import in.godspunky.skyblock.features.slayer.SlayerQuest;
 import in.godspunky.skyblock.user.AuctionSettings;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.*;
@@ -60,12 +63,10 @@ import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.reflections.Reflections;
 import in.godspunky.skyblock.gui.GUIListener;
 import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.nms.nmsutil.apihelper.APIManager;
-import in.godspunky.skyblock.nms.nmsutil.apihelper.SkySimBungee;
 import in.godspunky.skyblock.nms.nmsutil.packetlistener.PacketHelper;
 import in.godspunky.skyblock.nms.nmsutil.packetlistener.handler.PacketHandler;
 import in.godspunky.skyblock.nms.nmsutil.packetlistener.handler.ReceivedPacket;
@@ -82,6 +83,7 @@ import in.godspunky.skyblock.sql.SQLWorldData;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class SkyBlock extends JavaPlugin implements PluginMessageListener, BungeeChannel.ForwardConsumer {
@@ -257,7 +259,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
         }
         SLog.info("Hooking SkySimEngine to PlaceholderAPI and registering...");
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            new placeholding().register();
+            new SkyblockPlaceholder().register();
             SLog.info("Hooked to PAPI successfully!");
         } else {
             SLog.info("ERROR! PlaceholderAPI plugin does not exist, disabing placeholder request!");
@@ -395,66 +397,17 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
     }
 
     private void loadCommands() {
-        this.cl.register(new SkySimEngineCommand());
-        this.cl.register(new RegionCommand());
-        this.cl.register(new PlayEnumSoundCommand());
-        this.cl.register(new PlayEnumEffectCommand());
-        this.cl.register(new SpawnSpecCommand());
-        this.cl.register(new ItemCommand());
-        this.cl.register(new SpecEnchantmentCommand());
-        this.cl.register(new SpecPotionCommand());
-        this.cl.register(new SpecEffectsCommand());
-        this.cl.register(new SpecReforgeCommand());
-        this.cl.register(new ManaCommand());
-        this.cl.register(new CoinsCommand());
-        this.cl.register(new GUICommand());
-        this.cl.register(new ItemBrowseCommand());
-        this.cl.register(new SpecRarityCommand());
-        this.cl.register(new RecombobulateCommand());
-        this.cl.register(new NBTCommand());
-        this.cl.register(new IslandCommand());
-        this.cl.register(new DataCommand());
-        this.cl.register(new SpecTestCommand());
-        this.cl.register(new SoundSequenceCommand());
-        this.cl.register(new BatphoneCommand());
-        this.cl.register(new AbsorptionCommand());
-        this.cl.register(new SkillsCommand());
-        this.cl.register(new CollectionsCommand());
-        this.cl.register(new MaterialDataCommand());
-        this.cl.register(new EntitySpawnersCommand());
-        this.cl.register(new AuctionHouseCommand());
-        this.cl.register(new RebootServerCommand());
-        this.cl.register(new HotPotatoBookCommand());
-        this.cl.register(new RemoveEnchantCommand());
-        this.cl.register(new EndCommand());
-        this.cl.register(new EndDragonFightCommand());
-        this.cl.register(new ToggleSBACommand());
-        this.cl.register(new MembersEnchantCommand());
-        this.cl.register(new ToggleRepeatingCommand());
-        this.cl.register(new HubCommand());
-        this.cl.register(new KillAllMobs());
-        this.cl.register(new KillAllHostileMobs());
-        this.cl.register(new CookieAHCommand());
-        this.cl.register(new CookieAnvilCommand());
-        this.cl.register(new CookieOpenBinCommand());
-        this.cl.register(new CookieMerchantCommand());
-        this.cl.register(new ResetCookieCommand());
-        this.cl.register(new SkySimMenuCommand());
-        this.cl.register(new BuyCookieCommand());
-        this.cl.register(new SaveDataCommand());
-        this.cl.register(new GiveSpaceHelmetCommand());
-        this.cl.register(new SSTest());
-        this.cl.register(new BuyBookCommand());
-        this.cl.register(new BuyEPetCommand());
-        this.cl.register(new InvRecovery());
-        this.cl.register(new BuyItemCommand());
-        this.cl.register(new BuyCommand());
-        this.cl.register(new TradeCommand());
-        this.cl.register(new AccessTimedCommand());
-        this.cl.register(new ServerInfoCommand());
-        this.cl.register(new APICommand());
-        this.cl.register(new PickupStashCommand());
-        this.cl.register(new StackMyDimoon());
+        Reflections reflections = new Reflections("in.godspunky.skyblock.command");
+
+        for (Class<? extends SCommand> command : reflections.getSubTypesOf(SCommand.class)) {
+            try {
+                cl.register(command.getDeclaredConstructor().newInstance());
+            } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
+                     InvocationTargetException exception) {
+                SLog.severe("An exception occured when loading " + command.getSimpleName());
+                SLog.severe(exception.getMessage());
+            }
+        }
     }
 
     private void loadListeners() {

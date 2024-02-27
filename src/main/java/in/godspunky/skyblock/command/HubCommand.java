@@ -3,7 +3,7 @@ package in.godspunky.skyblock.command;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
-import in.godspunky.skyblock.region.RegionGenerator;
+import in.godspunky.skyblock.features.region.RegionGenerator;
 import in.godspunky.skyblock.util.Sputnik;
 
 import java.util.HashMap;

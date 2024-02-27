@@ -3,11 +3,12 @@ package in.godspunky.skyblock;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
+import in.godspunky.skyblock.features.calendar.SkyBlockCalendar;
 import in.godspunky.skyblock.command.RebootServerCommand;
-import in.godspunky.skyblock.dimoon.SummoningSequence;
-import in.godspunky.skyblock.dungeons.Blessings;
-import in.godspunky.skyblock.enchantment.Enchantment;
-import in.godspunky.skyblock.enchantment.EnchantmentType;
+import in.godspunky.skyblock.entity.dimoon.SummoningSequence;
+import in.godspunky.skyblock.features.dungeons.blessing.Blessings;
+import in.godspunky.skyblock.features.enchantment.Enchantment;
+import in.godspunky.skyblock.features.enchantment.EnchantmentType;
 import in.godspunky.skyblock.entity.StaticDragonManager;
 import in.godspunky.skyblock.entity.dungeons.boss.sadan.SadanBossManager;
 import in.godspunky.skyblock.entity.dungeons.boss.sadan.SadanHuman;
@@ -17,10 +18,10 @@ import in.godspunky.skyblock.item.armor.ArmorSet;
 import in.godspunky.skyblock.item.armor.TickingSet;
 import in.godspunky.skyblock.item.armor.VoidlingsWardenHelmet;
 import in.godspunky.skyblock.item.bow.Terminator;
-import in.godspunky.skyblock.potion.ActivePotionEffect;
-import in.godspunky.skyblock.region.Region;
-import in.godspunky.skyblock.sidebar.Sidebar;
-import in.godspunky.skyblock.slayer.SlayerQuest;
+import in.godspunky.skyblock.features.potion.ActivePotionEffect;
+import in.godspunky.skyblock.features.region.Region;
+import in.godspunky.skyblock.features.scoreboard.Sidebar;
+import in.godspunky.skyblock.features.slayer.SlayerQuest;
 import in.godspunky.skyblock.user.PlayerStatistics;
 import in.godspunky.skyblock.user.PlayerUtils;
 import in.godspunky.skyblock.util.*;
@@ -42,18 +43,18 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Repeater {
-    public static final Map<UUID, Integer> MANA_MAP;
-    public static final Map<UUID, Boolean> MANA_REGEN_DEC;
-    public static final Map<UUID, Boolean> SBA_MAP;
-    public static final Map<UUID, DefenseReplacement> DEFENSE_REPLACEMENT_MAP;
-    public static final Map<UUID, ManaReplacement> MANA_REPLACEMENT_MAP;
-    public static final Map<UUID, Entity> BEACON_THROW2;
-    public static final Map<Entity, Player> BEACON_OWNER;
-    public static final Map<Entity, EntityFallingBlock> BEACON;
-    public static final Map<UUID, Integer> PTN_CACHE;
+    public static final Map<UUID, Integer> MANA_MAP = new HashMap<>();
+    public static final Map<UUID, Boolean> MANA_REGEN_DEC = new HashMap<>();
+    public static final Map<UUID, Boolean> SBA_MAP = new HashMap<>();
+    public static final Map<UUID, DefenseReplacement> DEFENSE_REPLACEMENT_MAP = new HashMap<>();
+    public static final Map<UUID, ManaReplacement> MANA_REPLACEMENT_MAP = new HashMap<>();
+    public static final Map<UUID, Entity> BEACON_THROW2 = new HashMap<>();
+    public static final Map<Entity, Player> BEACON_OWNER = new HashMap<>();
+    public static final Map<Entity, EntityFallingBlock> BEACON = new HashMap<>();
+    public static final Map<UUID, Integer> PTN_CACHE = new HashMap<>();
     private final List<BukkitTask> tasks;
-    public static int EFFECT_COUNTING;
-    public static final Map<UUID, Integer> FloorLivingSec;
+    public static int EFFECT_COUNTING = 0;
+    public static final Map<UUID, Integer> FloorLivingSec = new HashMap<>();
 
     public static void cRun(final User u) {
         final List<ActivePotionEffect> apt = u.getEffects();
@@ -99,7 +100,7 @@ public class Repeater {
                     Location blockLocation = player.getEyeLocation();
                     try {
                         blockLocation = player.getTargetBlock((Set) null, 30).getLocation();
-                    } catch (final IllegalStateException ex) {
+                    } catch (final IllegalStateException ignored) {
                     }
                     final Location crystalLocation = player.getEyeLocation();
                     final Vector vector = blockLocation.clone().add(0.1, 0.0, 0.1).toVector().subtract(crystalLocation.clone().toVector());
@@ -671,16 +672,16 @@ public class Repeater {
     }
 
     static {
-        MANA_MAP = new HashMap<UUID, Integer>();
-        MANA_REGEN_DEC = new HashMap<UUID, Boolean>();
-        SBA_MAP = new HashMap<UUID, Boolean>();
-        DEFENSE_REPLACEMENT_MAP = new HashMap<UUID, DefenseReplacement>();
-        MANA_REPLACEMENT_MAP = new HashMap<UUID, ManaReplacement>();
-        BEACON_THROW2 = new HashMap<UUID, Entity>();
-        BEACON_OWNER = new HashMap<Entity, Player>();
-        BEACON = new HashMap<Entity, EntityFallingBlock>();
-        PTN_CACHE = new HashMap<UUID, Integer>();
-        Repeater.EFFECT_COUNTING = 0;
-        FloorLivingSec = new HashMap<UUID, Integer>();
+//        MANA_MAP = new HashMap<UUID, Integer>();
+//        MANA_REGEN_DEC = new HashMap<UUID, Boolean>();
+//        SBA_MAP = new HashMap<UUID, Boolean>();
+//        DEFENSE_REPLACEMENT_MAP = new HashMap<UUID, DefenseReplacement>();
+//        MANA_REPLACEMENT_MAP = new HashMap<UUID, ManaReplacement>();
+//        BEACON_THROW2 = new HashMap<UUID, Entity>();
+//        BEACON_OWNER = new HashMap<Entity, Player>();
+//        BEACON = new HashMap<Entity, EntityFallingBlock>();
+//        PTN_CACHE = new HashMap<UUID, Integer>();
+//        Repeater.EFFECT_COUNTING = 0;
+//        FloorLivingSec = new HashMap<UUID, Integer>();
     }
 }

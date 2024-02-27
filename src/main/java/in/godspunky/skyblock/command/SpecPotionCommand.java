@@ -5,8 +5,8 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.potion.PotionEffect;
-import in.godspunky.skyblock.potion.PotionEffectType;
+import in.godspunky.skyblock.features.potion.PotionEffect;
+import in.godspunky.skyblock.features.potion.PotionEffectType;
 
 @CommandParameters(description = "Adds an potion from Spec to the specified item.", aliases = "spot", permission = "spt.item")
 public class SpecPotionCommand extends SCommand {

@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.entity.caverns;
 
-import in.godspunky.skyblock.enchantment.Enchantment;
-import in.godspunky.skyblock.enchantment.EnchantmentType;
+import in.godspunky.skyblock.features.enchantment.Enchantment;
+import in.godspunky.skyblock.features.enchantment.EnchantmentType;
 import in.godspunky.skyblock.entity.zombie.BaseZombie;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

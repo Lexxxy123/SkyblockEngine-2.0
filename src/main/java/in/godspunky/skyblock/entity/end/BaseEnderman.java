@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.entity.end;
 
-import in.godspunky.skyblock.slayer.SlayerQuest;
+import in.godspunky.skyblock.features.slayer.SlayerQuest;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;

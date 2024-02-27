@@ -1,12 +1,12 @@
 package in.godspunky.skyblock.item;
 
-import in.godspunky.skyblock.enchantment.EnchantmentType;
+import in.godspunky.skyblock.features.enchantment.EnchantmentType;
 import in.godspunky.skyblock.item.armor.LeatherArmorStatistics;
-import in.godspunky.skyblock.potion.PotionColor;
-import in.godspunky.skyblock.potion.PotionEffect;
-import in.godspunky.skyblock.potion.PotionEffectType;
-import in.godspunky.skyblock.reforge.Reforge;
-import in.godspunky.skyblock.reforge.ReforgeType;
+import in.godspunky.skyblock.features.potion.PotionColor;
+import in.godspunky.skyblock.features.potion.PotionEffect;
+import in.godspunky.skyblock.features.potion.PotionEffectType;
+import in.godspunky.skyblock.features.reforge.Reforge;
+import in.godspunky.skyblock.features.reforge.ReforgeType;
 import in.godspunky.skyblock.util.SerialNBTTagCompound;
 import net.minecraft.server.v1_8_R3.Item;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
@@ -83,8 +83,8 @@ public class SItem implements Cloneable, ConfigurationSerializable {
         if (!this.isEnchantable()) {
             return false;
         }
-        final List<in.godspunky.skyblock.enchantment.Enchantment> enchantments = this.getEnchantments();
-        final in.godspunky.skyblock.enchantment.Enchantment enchantment = new in.godspunky.skyblock.enchantment.Enchantment(type, level);
+        final List<in.godspunky.skyblock.features.enchantment.Enchantment> enchantments = this.getEnchantments();
+        final in.godspunky.skyblock.features.enchantment.Enchantment enchantment = new in.godspunky.skyblock.features.enchantment.Enchantment(type, level);
         this.removeEnchantment(type);
         enchantments.add(enchantment);
         if (type.getVanilla() != null) {
@@ -93,7 +93,7 @@ public class SItem implements Cloneable, ConfigurationSerializable {
             this.stack.setItemMeta(meta);
         }
         final NBTTagCompound es = this.data.getCompound("enchantments");
-        for (final in.godspunky.skyblock.enchantment.Enchantment e : enchantments) {
+        for (final in.godspunky.skyblock.features.enchantment.Enchantment e : enchantments) {
             es.setInt(e.getType().getNamespace(), e.getLevel());
         }
         this.data.set("enchantments", es);
@@ -105,7 +105,7 @@ public class SItem implements Cloneable, ConfigurationSerializable {
         if (!this.isEnchantable()) {
             return false;
         }
-        final List<in.godspunky.skyblock.enchantment.Enchantment> enchantments = this.getEnchantments();
+        final List<in.godspunky.skyblock.features.enchantment.Enchantment> enchantments = this.getEnchantments();
         final boolean removeIf = enchantments.removeIf(e -> e.getType().equals(type));
         if (type.getVanilla() != null) {
             final ItemMeta meta = this.stack.getItemMeta();
@@ -113,7 +113,7 @@ public class SItem implements Cloneable, ConfigurationSerializable {
             this.stack.setItemMeta(meta);
         }
         final NBTTagCompound es = new NBTTagCompound();
-        for (final in.godspunky.skyblock.enchantment.Enchantment enchantment : enchantments) {
+        for (final in.godspunky.skyblock.features.enchantment.Enchantment enchantment : enchantments) {
             es.setInt(enchantment.getType().getNamespace(), enchantment.getLevel());
         }
         this.data.set("enchantments", es);
@@ -151,8 +151,8 @@ public class SItem implements Cloneable, ConfigurationSerializable {
         if (!this.isEnchantable()) {
             return false;
         }
-        final List<in.godspunky.skyblock.enchantment.Enchantment> enchantments = this.getEnchantments();
-        for (final in.godspunky.skyblock.enchantment.Enchantment enchantment : enchantments) {
+        final List<in.godspunky.skyblock.features.enchantment.Enchantment> enchantments = this.getEnchantments();
+        for (final in.godspunky.skyblock.features.enchantment.Enchantment enchantment : enchantments) {
             if (enchantment.getType() == type) {
                 return true;
             }
@@ -160,12 +160,12 @@ public class SItem implements Cloneable, ConfigurationSerializable {
         return false;
     }
 
-    public in.godspunky.skyblock.enchantment.Enchantment getEnchantment(final EnchantmentType type) {
+    public in.godspunky.skyblock.features.enchantment.Enchantment getEnchantment(final EnchantmentType type) {
         if (!this.isEnchantable()) {
             return null;
         }
-        final List<in.godspunky.skyblock.enchantment.Enchantment> enchantments = this.getEnchantments();
-        for (final in.godspunky.skyblock.enchantment.Enchantment enchantment : enchantments) {
+        final List<in.godspunky.skyblock.features.enchantment.Enchantment> enchantments = this.getEnchantments();
+        for (final in.godspunky.skyblock.features.enchantment.Enchantment enchantment : enchantments) {
             if (enchantment.getType() == type) {
                 return enchantment;
             }
@@ -173,14 +173,14 @@ public class SItem implements Cloneable, ConfigurationSerializable {
         return null;
     }
 
-    public List<in.godspunky.skyblock.enchantment.Enchantment> getEnchantments() {
+    public List<in.godspunky.skyblock.features.enchantment.Enchantment> getEnchantments() {
         if (!this.isEnchantable()) {
             return null;
         }
         final NBTTagCompound es = this.data.hasKey("enchantments") ? this.data.getCompound("enchantments") : new NBTTagCompound();
-        final List<in.godspunky.skyblock.enchantment.Enchantment> enchantments = new ArrayList<in.godspunky.skyblock.enchantment.Enchantment>();
+        final List<in.godspunky.skyblock.features.enchantment.Enchantment> enchantments = new ArrayList<in.godspunky.skyblock.features.enchantment.Enchantment>();
         for (final String key : es.c()) {
-            enchantments.add(new in.godspunky.skyblock.enchantment.Enchantment(EnchantmentType.getByNamespace(key), es.getInt(key)));
+            enchantments.add(new in.godspunky.skyblock.features.enchantment.Enchantment(EnchantmentType.getByNamespace(key), es.getInt(key)));
         }
         return enchantments;
     }

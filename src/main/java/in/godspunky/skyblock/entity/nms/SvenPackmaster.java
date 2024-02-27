@@ -2,7 +2,7 @@ package in.godspunky.skyblock.entity.nms;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import in.godspunky.skyblock.SkyBlock;
-import in.godspunky.skyblock.enchantment.EnchantmentType;
+import in.godspunky.skyblock.features.enchantment.EnchantmentType;
 import in.godspunky.skyblock.entity.*;
 import in.godspunky.skyblock.entity.wolf.WolfStatistics;
 import net.minecraft.server.v1_8_R3.Entity;

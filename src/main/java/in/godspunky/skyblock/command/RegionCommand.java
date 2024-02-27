@@ -2,9 +2,9 @@ package in.godspunky.skyblock.command;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import in.godspunky.skyblock.region.Region;
-import in.godspunky.skyblock.region.RegionGenerator;
-import in.godspunky.skyblock.region.RegionType;
+import in.godspunky.skyblock.features.region.Region;
+import in.godspunky.skyblock.features.region.RegionGenerator;
+import in.godspunky.skyblock.features.region.RegionType;
 
 import java.util.HashMap;
 import java.util.Map;

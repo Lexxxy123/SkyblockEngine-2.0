@@ -1,12 +1,12 @@
 package in.godspunky.skyblock.gui;
 
 import in.godspunky.skyblock.SkyBlock;
-import in.godspunky.skyblock.enchantment.Enchantment;
-import in.godspunky.skyblock.enchantment.EnchantmentType;
+import in.godspunky.skyblock.features.enchantment.Enchantment;
+import in.godspunky.skyblock.features.enchantment.EnchantmentType;
 import in.godspunky.skyblock.item.GenericItemType;
 import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.skill.EnchantingSkill;
-import in.godspunky.skyblock.skill.Skill;
+import in.godspunky.skyblock.features.skill.EnchantingSkill;
+import in.godspunky.skyblock.features.skill.Skill;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;
 import org.bukkit.ChatColor;

@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.gui;
 
-import in.godspunky.skyblock.auction.AuctionBid;
-import in.godspunky.skyblock.auction.AuctionItem;
+import in.godspunky.skyblock.features.auction.AuctionBid;
+import in.godspunky.skyblock.features.auction.AuctionItem;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.ChatColor;

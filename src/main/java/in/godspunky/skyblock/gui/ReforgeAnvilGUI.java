@@ -3,7 +3,7 @@ package in.godspunky.skyblock.gui;
 import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.item.Rarity;
 import in.godspunky.skyblock.item.SItem;
-import in.godspunky.skyblock.reforge.ReforgeType;
+import in.godspunky.skyblock.features.reforge.ReforgeType;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import org.bukkit.ChatColor;

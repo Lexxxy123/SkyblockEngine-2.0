@@ -1,11 +1,10 @@
 package in.godspunky.skyblock.entity.caverns;
 
-import in.godspunky.skyblock.enchantment.Enchantment;
-import in.godspunky.skyblock.enchantment.EnchantmentType;
+import in.godspunky.skyblock.features.enchantment.Enchantment;
+import in.godspunky.skyblock.features.enchantment.EnchantmentType;
 import in.godspunky.skyblock.entity.*;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import in.godspunky.skyblock.entity.*;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.util.SUtil;

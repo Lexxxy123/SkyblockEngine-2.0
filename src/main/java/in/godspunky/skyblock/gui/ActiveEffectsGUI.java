@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.gui;
 
 import in.godspunky.skyblock.SkyBlock;
-import in.godspunky.skyblock.potion.ActivePotionEffect;
+import in.godspunky.skyblock.features.potion.ActivePotionEffect;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.PaginationList;
 import in.godspunky.skyblock.util.SUtil;

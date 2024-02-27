@@ -15,7 +15,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import in.godspunky.skyblock.entity.SEntity;
-import in.godspunky.skyblock.extra.beam.Beam;
+import in.godspunky.skyblock.api.beam.Beam;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.user.User;

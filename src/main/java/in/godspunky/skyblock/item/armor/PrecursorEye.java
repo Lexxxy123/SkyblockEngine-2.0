@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.item.armor;
 
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.skill.Skill;
+import in.godspunky.skyblock.features.skill.Skill;
 import in.godspunky.skyblock.util.*;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Effect;

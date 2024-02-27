@@ -6,14 +6,14 @@ import com.mojang.authlib.properties.Property;
 import in.godspunky.skyblock.Repeater;
 import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.command.RebootServerCommand;
-import in.godspunky.skyblock.dungeons.BlessingChest;
-import in.godspunky.skyblock.dungeons.Blessings;
-import in.godspunky.skyblock.dungeons.ItemChest;
-import in.godspunky.skyblock.enchantment.Enchantment;
-import in.godspunky.skyblock.enchantment.EnchantmentType;
+import in.godspunky.skyblock.features.dungeons.blessing.BlessingChest;
+import in.godspunky.skyblock.features.dungeons.blessing.Blessings;
+import in.godspunky.skyblock.features.dungeons.chest.ItemChest;
+import in.godspunky.skyblock.features.enchantment.Enchantment;
+import in.godspunky.skyblock.features.enchantment.EnchantmentType;
 import in.godspunky.skyblock.entity.dungeons.watcher.Watcher;
 import in.godspunky.skyblock.entity.nms.VoidgloomSeraph;
-import in.godspunky.skyblock.extra.beam.Beam;
+import in.godspunky.skyblock.api.beam.Beam;
 import in.godspunky.skyblock.item.Ability;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.item.accessory.AccessoryFunction;
@@ -23,8 +23,8 @@ import in.godspunky.skyblock.item.bow.BowFunction;
 import in.godspunky.skyblock.item.pet.Pet;
 import in.godspunky.skyblock.item.pet.PetAbility;
 import in.godspunky.skyblock.nms.packetevents.PacketReader;
-import in.godspunky.skyblock.skill.Skill;
-import in.godspunky.skyblock.slayer.SlayerQuest;
+import in.godspunky.skyblock.features.skill.Skill;
+import in.godspunky.skyblock.features.slayer.SlayerQuest;
 import in.godspunky.skyblock.user.*;
 import in.godspunky.skyblock.util.*;
 import net.minecraft.server.v1_8_R3.*;
@@ -207,9 +207,9 @@ public class PlayerListener extends PListener {
                         TemporaryStats.getFromPlayer(player).update();
                     }
                     if (player.getWorld().getName().contains("arena") && (u = User.getUser(player.getUniqueId())) != null) {
-                        if (u.hasPotionEffect(in.godspunky.skyblock.potion.PotionEffectType.JUMP_BOOST) || u.hasPotionEffect(in.godspunky.skyblock.potion.PotionEffectType.RABBIT)) {
-                            u.removePotionEffect(in.godspunky.skyblock.potion.PotionEffectType.JUMP_BOOST);
-                            u.removePotionEffect(in.godspunky.skyblock.potion.PotionEffectType.RABBIT);
+                        if (u.hasPotionEffect(in.godspunky.skyblock.features.potion.PotionEffectType.JUMP_BOOST) || u.hasPotionEffect(in.godspunky.skyblock.features.potion.PotionEffectType.RABBIT)) {
+                            u.removePotionEffect(in.godspunky.skyblock.features.potion.PotionEffectType.JUMP_BOOST);
+                            u.removePotionEffect(in.godspunky.skyblock.features.potion.PotionEffectType.RABBIT);
                             u.toBukkitPlayer().removePotionEffect(PotionEffectType.JUMP);
                             u.send("&cYour Jump Boost potion effect has been taken away by an unknown magicial force!");
                         }
@@ -985,9 +985,9 @@ public class PlayerListener extends PListener {
             return;
         }
         e.setCancelled(true);
-        final List<in.godspunky.skyblock.potion.PotionEffect> effects = sItem.getPotionEffects();
+        final List<in.godspunky.skyblock.features.potion.PotionEffect> effects = sItem.getPotionEffects();
         final User user = User.getUser(e.getPlayer().getUniqueId());
-        for (final in.godspunky.skyblock.potion.PotionEffect effect : effects) {
+        for (final in.godspunky.skyblock.features.potion.PotionEffect effect : effects) {
             user.removePotionEffect(effect.getType());
             PlayerUtils.updatePotionEffects(user, PlayerUtils.STATISTICS_CACHE.get(user.getUuid()));
             if (effect.getType().getOnDrink() != null) {

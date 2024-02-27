@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.gui;
 
-import in.godspunky.skyblock.auction.AuctionItem;
+import in.godspunky.skyblock.features.auction.AuctionItem;
 import in.godspunky.skyblock.item.Rarity;
 import in.godspunky.skyblock.user.AuctionSettings;
 import in.godspunky.skyblock.user.User;

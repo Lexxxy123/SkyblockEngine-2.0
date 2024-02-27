@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.gui;
 
-import in.godspunky.skyblock.auction.AuctionEscrow;
+import in.godspunky.skyblock.features.auction.AuctionEscrow;
 import in.godspunky.skyblock.item.SItem;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;

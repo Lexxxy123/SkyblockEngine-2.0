@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.entity;
 
-import in.godspunky.skyblock.region.Region;
-import in.godspunky.skyblock.region.RegionType;
+import in.godspunky.skyblock.features.region.Region;
+import in.godspunky.skyblock.features.region.RegionType;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;

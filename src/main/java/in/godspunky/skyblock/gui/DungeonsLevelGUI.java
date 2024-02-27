@@ -1,7 +1,7 @@
 package in.godspunky.skyblock.gui;
 
-import in.godspunky.skyblock.collection.ItemCollection;
-import in.godspunky.skyblock.skill.*;
+import in.godspunky.skyblock.features.collection.ItemCollection;
+import in.godspunky.skyblock.features.skill.*;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import in.godspunky.skyblock.util.Sputnik;
@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionType;
-import in.godspunky.skyblock.skill.*;
 
 import java.util.ArrayList;
 import java.util.Collection;

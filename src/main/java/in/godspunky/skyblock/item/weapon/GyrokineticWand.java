@@ -2,8 +2,8 @@ package in.godspunky.skyblock.item.weapon;
 
 import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.slayer.SlayerBossType;
-import in.godspunky.skyblock.util.BlockFallAPI;
+import in.godspunky.skyblock.features.slayer.SlayerBossType;
+import in.godspunky.skyblock.api.block.BlockFallAPI;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.Effect;
 import org.bukkit.Location;

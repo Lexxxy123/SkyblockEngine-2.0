@@ -1,6 +1,6 @@
 package in.godspunky.skyblock.item.armor.miner;
 
-import in.godspunky.skyblock.region.Region;
+import in.godspunky.skyblock.features.region.Region;
 import in.godspunky.skyblock.user.DoublePlayerStatistic;
 import in.godspunky.skyblock.user.PlayerStatistics;
 import in.godspunky.skyblock.util.Groups;

@@ -2,8 +2,8 @@ package in.godspunky.skyblock.item.oddities;
 
 import in.godspunky.skyblock.SkyBlock;
 import in.godspunky.skyblock.item.*;
-import in.godspunky.skyblock.potion.PotionEffect;
-import in.godspunky.skyblock.potion.PotionEffectType;
+import in.godspunky.skyblock.features.potion.PotionEffect;
+import in.godspunky.skyblock.features.potion.PotionEffectType;
 import org.bukkit.Effect;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
