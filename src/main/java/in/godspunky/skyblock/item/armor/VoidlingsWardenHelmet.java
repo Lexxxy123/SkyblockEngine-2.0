@@ -37,7 +37,7 @@ public class VoidlingsWardenHelmet implements MaterialFunction, SkullStatistics,
                     ++VoidlingsWardenHelmet.serverIterator;
                 }
             }
-        }.runTaskTimerAsynchronously(SkyBlock.getPlugin(), 3L, 3L);
+        }.runTaskTimer(SkyBlock.getPlugin(), 3L, 3L);
     }
 
     public static String getTexture() {

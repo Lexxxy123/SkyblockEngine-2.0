@@ -31,7 +31,9 @@ import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftArrow;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.*;
@@ -132,7 +134,6 @@ public class PlayerListener extends PListener {
             }
             SputnikPlayer.BonemerangFix(player);
             SputnikPlayer.KatanasFix(player);
-            user.updateInventory();
             final SlayerQuest quest = user.getSlayerQuest();
             if (quest != null) {
                 quest.setLastKilled(null);
@@ -194,7 +195,7 @@ public class PlayerListener extends PListener {
                         this.cancel();
                         return;
                     }
-                    SUtil.runAsync(()->{
+                    SUtil.runSync(()->{
                         Repeater.runPlayerTask(player, counters, counters2);
                     });
 
@@ -289,7 +290,6 @@ public class PlayerListener extends PListener {
         final Player player = e.getPlayer();
         SputnikPlayer.BonemerangFix(player);
         SputnikPlayer.KatanasFix(player);
-        User.getUser(player.getUniqueId()).updateInventory();
         final Pet.PetItem pet = User.getUser(player.getUniqueId()).getActivePet();
         final Pet petclass = User.getUser(player.getUniqueId()).getActivePetClass();
         SUtil.delay(() -> UserStash.getStash(player.getUniqueId()).sendNotificationMessage(), 20L);
@@ -412,9 +412,9 @@ public class PlayerListener extends PListener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onEntityDamage(EntityDamageByEntityEvent e) {
-        SItem sItem;
-        ItemStack weapon;
-        Player player;
+        SItem sItem = null;
+        ItemStack weapon = null;
+        Player player = null;
         Entity damaged = e.getEntity();
         if (!(damaged instanceof Player) && e.getDamager() instanceof Player) {
             Ability ability2;
@@ -568,10 +568,25 @@ public class PlayerListener extends PListener {
             weapon = shooting.getBow();
             bowForceReducer = shooting.getForce();
             player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1.0f, 1.0f);
-        } else {
+        } else if (e.getDamager() instanceof Player){
             player = (Player) e.getDamager();
             weapon = player.getInventory().getItemInHand();
+        } else if (e.getDamager() instanceof CraftArrow) {
+            CraftArrow craftArrow = (CraftArrow) e.getDamager();
+            ProjectileSource shooter = craftArrow.getShooter();
+
+            if (!(shooter instanceof Player)) return;
+            player = (Player) shooter;
+
+            if (!BOW_MAP.containsKey(player.getUniqueId())) return;
+
+            BowShooting shooting = BOW_MAP.get(player.getUniqueId());
+            weapon = shooting.getBow();
+            bowForceReducer = shooting.getForce();
+            player.playSound(player.getLocation(), Sound.SUCCESSFUL_HIT, 1.0f, 1.0f);
+
         }
+
         PlayerUtils.DamageResult result = PlayerUtils.getDamageDealt(weapon, player, damaged, damager instanceof Arrow);
         AtomicDouble finalDamage = new AtomicDouble(result.getFinalDamage() * (double) bowForceReducer);
         e.setDamage(finalDamage.get());
@@ -868,8 +883,8 @@ public class PlayerListener extends PListener {
     @EventHandler
     public void placeBlockEvent(final PlayerInteractEvent e) {
         final Player player = e.getPlayer();
-        final org.bukkit.block.Block b = e.getClickedBlock();
-        final Map<org.bukkit.block.Block, BlessingChest> map = BlessingChest.CHEST_CACHE;
+        final Block b = e.getClickedBlock();
+        final Map<Block, BlessingChest> map = BlessingChest.CHEST_CACHE;
         if (b == null) {
             return;
         }
@@ -906,8 +921,8 @@ public class PlayerListener extends PListener {
     @EventHandler
     public void placeBlockEventTwo(final PlayerInteractEvent e) {
         final Player player = e.getPlayer();
-        final org.bukkit.block.Block b = e.getClickedBlock();
-        final Map<org.bukkit.block.Block, ItemChest> map = ItemChest.ITEM_CHEST_CACHE;
+        final Block b = e.getClickedBlock();
+        final Map<Block, ItemChest> map = ItemChest.ITEM_CHEST_CACHE;
         if (b == null) {
             return;
         }

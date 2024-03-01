@@ -25,7 +25,7 @@ public class EntityPopulator {
     private final List<SEntity> spawned;
 
     public static List<EntityPopulator> getPopulators() {
-        return EntityPopulator.POPULATORS;
+        return POPULATORS;
     }
 
     public EntityPopulator(final int amount, final int max, final long delay, final SEntityType type, final RegionType regionType, final Predicate<World> condition) {
@@ -46,25 +46,26 @@ public class EntityPopulator {
     public void start() {
         this.task = new BukkitRunnable() {
             public void run() {
-                EntityPopulator.this.spawned.removeIf(sEntity -> sEntity.getEntity().isDead());
-                final List<Region> regions = Region.getRegionsOfType(EntityPopulator.this.regionType);
+                spawned.removeIf(sEntity -> sEntity.getEntity().isDead());
+                final List<Region> regions = Region.getRegionsOfType(regionType);
                 if (regions.isEmpty()) {
                     return;
                 }
-                if (Region.getPlayersWithinRegionType(EntityPopulator.this.regionType).isEmpty()) {
-                    for (final SEntity s : EntityPopulator.this.spawned) {
+
+                if (Region.getPlayersWithinRegionType(regionType).isEmpty()) {
+                    for (final SEntity s : spawned) {
                         s.remove();
                     }
-                    EntityPopulator.this.spawned.clear();
+                    spawned.clear();
                     return;
                 }
-                if (EntityPopulator.this.condition != null && !EntityPopulator.this.condition.test(SUtil.getRandom(regions).getFirstLocation().getWorld())) {
+                if (condition != null && !condition.test(SUtil.getRandom(regions).getFirstLocation().getWorld())) {
                     return;
                 }
-                if (EntityPopulator.this.spawned.size() >= EntityPopulator.this.max) {
+                if (spawned.size() >= max) {
                     return;
                 }
-                for (int i = 0; i < EntityPopulator.this.amount; ++i) {
+                for (int i = 0; i < amount; ++i) {
                     int attempts = 0;
                     Location available;
                     do {
@@ -72,12 +73,27 @@ public class EntityPopulator {
                         ++attempts;
                     } while (available == null && attempts <= 150);
                     if (available != null) {
-                        EntityPopulator.this.spawned.add(new SEntity(available.clone().add(0.5, 0.0, 0.5), EntityPopulator.this.type));
+                        SEntity sEntity = new SEntity(available.clone().add(0.5, 0.0, 0.5), type);
+                        spawned.add(sEntity);
                     }
                 }
             }
         }.runTaskTimer(SkyBlock.getPlugin(), 0L, this.delay);
+
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                if (spawned.isEmpty()) return;
+                if (Region.getPlayersWithinRegionType(regionType).isEmpty()) {
+                    for (final SEntity s : spawned) {
+                        s.remove();
+                    }
+                    spawned.clear();
+                }
+            }
+        }.runTaskTimerAsynchronously(SkyBlock.getPlugin() , 0L , 20);
     }
+
 
     public void stop() {
         if (this.task == null) {

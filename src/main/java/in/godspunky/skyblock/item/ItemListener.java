@@ -898,7 +898,6 @@ public class ItemListener extends PListener {
                     PlayerUtils.updateArmorStatistics(boots = SItem.find(afterBoots), statistics, 3);
                 }
                 PlayerUtils.updateInventoryStatistics(player, statistics);
-                User.getUser(player.getUniqueId()).updateArmorInventory();
                 checkCondition(player);
             }
         }.runTaskLater(SkyBlock.getPlugin(), 1L);

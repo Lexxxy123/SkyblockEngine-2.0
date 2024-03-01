@@ -83,6 +83,7 @@ import java.util.*;
 public class SkyBlock extends JavaPlugin implements PluginMessageListener {
     @Getter
     private static ProtocolManager protocolManager;
+    @Getter
     private static SkyBlock plugin;
     private final PacketHelper packetInj;
 
@@ -131,10 +132,6 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
         this.serverVersion = new ServerVersion("beta", 0, 7, 2, 0);
         this.serverName = "dev";
         this.bannedUUID = Collections.singletonList("");
-    }
-
-    public static SkyBlock getPlugin() {
-        return plugin;
     }
 
     public void onLoad() {
@@ -226,12 +223,13 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
         SLog.info(" ");
         SLog.info("This plugin provide most of SkyBlock functions!");
         SLog.info("Originally was made by super");
-        SLog.info("Made by GodSpunky (C) 2024");
+        SLog.info("Continued by GodSpunky (C) 2024");
         SLog.info("Any illegal usage will be suppressed! DO NOT LEAK IT!");
         SLog.info("===================================");
         if (dimoonEnabled) {
            initDimoon();
         }
+        startPopulators();
     }
 
 
@@ -378,6 +376,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
         new EntityPopulator(5, 20, 300L, SEntityType.SPIDER_JOCKEY, RegionType.SPIDERS_DEN_HIVE).start();
         new EntityPopulator(5, 20, 300L, SEntityType.DASHER_SPIDER, RegionType.SPIDERS_DEN_HIVE).start();
         new EntityPopulator(5, 10, 300L, SEntityType.HIGH_LEVEL_SKELETON, RegionType.HIGH_LEVEL, world -> world.getTime() >= 13188L && world.getTime() <= 22812L).start();
+
         new EntityPopulator(5, 15, 200L, SEntityType.ZOMBIE, RegionType.GRAVEYARD).start();
         new EntityPopulator(5, 15, 200L, SEntityType.ZOMBIE_VILLAGER, RegionType.GRAVEYARD).start();
         new EntityPopulator(5, 20, 200L, SEntityType.WOLF, RegionType.RUINS).start();

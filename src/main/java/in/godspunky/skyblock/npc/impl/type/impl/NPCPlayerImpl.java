@@ -33,18 +33,18 @@ public class NPCPlayerImpl extends EntityPlayer implements NPCBase {
     }
     @Override
     public void show(Player player){
-        System.out.println("npc player id : " + this.getId());
-        System.out.println("npc player entity id : " + this.getBukkitEntity().getEntityId());
-        System.out.println("Sending player npc spawn packet to " + player.getName());
-        PacketPlayOutPlayerInfo packetPlayOutPlayerInfo = new PacketPlayOutPlayerInfo(
+        PacketPlayOutPlayerInfo infoAddPacket = new PacketPlayOutPlayerInfo(
                 PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER,
                 this
         );
-        PacketPlayOutNamedEntitySpawn packetPlayOutNamedEntitySpawn = new PacketPlayOutNamedEntitySpawn(
+        PacketPlayOutNamedEntitySpawn spawnPacket = new PacketPlayOutNamedEntitySpawn(
                 this
         );
-        sendPacket(player , packetPlayOutPlayerInfo);
-        sendPacket(player , packetPlayOutNamedEntitySpawn);
+        PacketPlayOutPlayerInfo infoRemovePacket = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER
+        , this);
+        sendPacket(player , infoAddPacket);
+        sendPacket(player , spawnPacket);
+        sendPacket(player , infoRemovePacket);
     }
     @Override
     public void hide(Player player){

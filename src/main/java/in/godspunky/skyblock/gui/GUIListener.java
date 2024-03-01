@@ -32,7 +32,6 @@ public class GUIListener extends PListener {
         final User u = User.getUser(p.getUniqueId());
         if (u != null && u.isSaveable()) {
             u.setSaveable(false);
-            u.updateInventory();
             u.syncSavingData();
             u.setSaveable(true);
         }

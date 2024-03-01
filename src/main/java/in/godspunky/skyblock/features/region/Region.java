@@ -1,6 +1,8 @@
 package in.godspunky.skyblock.features.region;
 
 import in.godspunky.skyblock.SkyBlock;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -13,124 +15,149 @@ import in.godspunky.skyblock.util.SUtil;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Region {
-    private static final Map<String, Region> REGION_CACHE;
-    protected static final SkyBlock plugin;
+@Getter
+public class Region
+{
+    private static final Map<String, Region> REGION_CACHE = new HashMap<>();
+
+    protected static final SkyBlock plugin = SkyBlock.getPlugin();
+
     protected final String name;
+    @Setter
     protected Location firstLocation;
+    @Setter
     protected Location secondLocation;
+    @Setter
     protected RegionType type;
+    @Getter
     private List<BlockState> capture;
 
-    public Region(final String name, final Location firstLocation, final Location secondLocation, final RegionType type) {
+    public Region(String name, Location firstLocation, Location secondLocation, RegionType type)
+    {
         this.name = name.toLowerCase();
         this.firstLocation = firstLocation;
         this.secondLocation = secondLocation;
         this.type = type;
         this.capture = null;
-        Region.REGION_CACHE.put(this.name, this);
+        REGION_CACHE.put(this.name, this);
     }
 
-    public void save() {
-        Region.plugin.regionData.save(this);
+    public void save()
+    {
+        plugin.regionData.save(this);
     }
 
-    public void delete() {
-        Region.REGION_CACHE.remove(this.name);
-        Region.plugin.regionData.delete(this);
+    public void delete()
+    {
+        REGION_CACHE.remove(name);
+        plugin.regionData.delete(this);
     }
 
-    public static List<Entity> getPlayersWithinRegionType(final RegionType type) {
-        final List<Entity> players = new ArrayList<Entity>();
-        for (final Region region : getRegionsOfType(type)) {
+    public static List<Entity> getPlayersWithinRegionType(RegionType type)
+    {
+        List<Entity> players = new ArrayList<>();
+        for (Region region : getRegionsOfType(type))
             players.addAll(region.getPlayersWithinRegion());
-        }
         return players;
     }
 
-    public static Region getRegionOfEntity(final Entity entity) {
-        final List<Region> possible = new ArrayList<Region>();
-        for (final Region region : getRegions()) {
-            if (region.insideRegion(entity)) {
+    public static Region getRegionOfEntity(Entity entity)
+    {
+        List<Region> possible = new ArrayList<>();
+        for (Region region : getRegions())
+        {
+            if (region.insideRegion(entity))
                 possible.add(region);
-            }
         }
         possible.sort(Comparator.comparingInt(r -> r.getType().ordinal()));
         Collections.reverse(possible);
-        return (possible.size() != 0) ? possible.get(0) : null;
+        return !possible.isEmpty() ? possible.get(0) : null;
     }
 
-    public static Region getQuickRegionOfEntity(final Entity entity) {
-        for (final Region region : getRegions()) {
-            if (region.insideRegion(entity)) {
+    public static Region getQuickRegionOfEntity(Entity entity)
+    {
+        for (Region region : getRegions())
+        {
+            if (region.insideRegion(entity))
                 return region;
-            }
         }
         return null;
     }
 
-    public static Region getRegionOfBlock(final Block block) {
-        final List<Region> possible = new ArrayList<Region>();
-        for (final Region region : getRegions()) {
-            if (region.insideRegion(block)) {
+    public static Region getRegionOfBlock(Block block)
+    {
+        List<Region> possible = new ArrayList<>();
+        for (Region region : getRegions())
+        {
+            if (region.insideRegion(block))
                 possible.add(region);
-            }
         }
         possible.sort(Comparator.comparingInt(r -> r.getType().ordinal()));
         Collections.reverse(possible);
-        return (possible.size() != 0) ? possible.get(0) : null;
+        return possible.size() != 0 ? possible.get(0) : null;
     }
 
-    public boolean insideRegion(final Entity entity) {
-        final List<Integer> bounds = this.getBounds();
-        final Location location = entity.getLocation();
-        final double x = location.getX();
-        final double y = location.getY();
-        final double z = location.getZ();
-        return this.firstLocation != null && this.firstLocation.getWorld() != null && this.firstLocation.getWorld().getUID().equals(location.getWorld().getUID()) && x >= bounds.get(0) && x <= bounds.get(1) && y >= bounds.get(2) && y <= bounds.get(3) && z >= bounds.get(4) && z <= bounds.get(5);
+    public boolean insideRegion(Entity entity)
+    {
+        List<Integer> bounds = getBounds();
+        Location location = entity.getLocation();
+        double x = location.getX();
+        double y = location.getY();
+        double z = location.getZ();
+        if (firstLocation == null || firstLocation.getWorld() == null)
+            return false;
+        return firstLocation.getWorld().getUID().equals(location.getWorld().getUID()) &&
+                x >= (double) bounds.get(0) && x <= (double) bounds.get(1) &&
+                y >= (double) bounds.get(2) && y <= (double) bounds.get(3) &&
+                z >= (double) bounds.get(4) && z <= (double) bounds.get(5);
     }
 
-    public boolean insideRegion(final Block block) {
-        final List<Integer> bounds = this.getBounds();
-        final Location location = block.getLocation();
-        final double x = location.getX();
-        final double y = location.getY();
-        final double z = location.getZ();
-        return this.firstLocation != null && this.firstLocation.getWorld() != null && this.firstLocation.getWorld().getUID().equals(location.getWorld().getUID()) && x >= bounds.get(0) && x <= bounds.get(1) && y >= bounds.get(2) && y <= bounds.get(3) && z >= bounds.get(4) && z <= bounds.get(5);
+    public boolean insideRegion(Block block)
+    {
+        List<Integer> bounds = getBounds();
+        Location location = block.getLocation();
+        double x = location.getX();
+        double y = location.getY();
+        double z = location.getZ();
+        if (firstLocation == null || firstLocation.getWorld() == null)
+            return false;
+        return firstLocation.getWorld().getUID().equals(location.getWorld().getUID()) &&
+                x >= (double) bounds.get(0) && x <= (double) bounds.get(1) &&
+                y >= (double) bounds.get(2) && y <= (double) bounds.get(3) &&
+                z >= (double) bounds.get(4) && z <= (double) bounds.get(5);
     }
 
-    public List<Location> getAvailableTeleportLocations() {
-        final List<Location> locations = new ArrayList<Location>();
-        for (final Location location : this.getLocations()) {
-            final Block block = location.getBlock();
-            if (block.getType() != Material.AIR) {
-                if (block.getType() == Material.WATER) {
-                    continue;
-                }
-                final Block above = location.clone().add(0.0, 1.0, 0.0).getBlock();
-                final Block top = location.clone().add(0.0, 2.0, 0.0).getBlock();
-                if (above.getType() != Material.AIR && above.getType() != Material.WATER) {
-                    continue;
-                }
-                if (top.getType() != Material.AIR && top.getType() != Material.WATER) {
-                    continue;
-                }
-                locations.add(above.getLocation());
-            }
+    public List<Location> getAvailableTeleportLocations()
+    {
+        List<Location> locations = new ArrayList<>();
+        for (Location location : getLocations())
+        {
+            Block block = location.getBlock();
+            if (block.getType() == Material.AIR || block.getType() == Material.WATER)
+                continue;
+            Block above = location.clone().add(0, 1, 0).getBlock();
+            Block top = location.clone().add(0, 2, 0).getBlock();
+            if ((above.getType() != Material.AIR && above.getType() != Material.WATER) ||
+                    (top.getType() != Material.AIR && top.getType() != Material.WATER))
+                continue;
+            locations.add(above.getLocation());
         }
         return locations;
     }
 
-    public List<Location> getLocations() {
-        if (!this.firstLocation.getWorld().getName().equals(this.secondLocation.getWorld().getName())) {
+    public List<Location> getLocations()
+    {
+        if (!firstLocation.getWorld().getName().equals(secondLocation.getWorld().getName()))
             return null;
-        }
-        final List<Integer> bounds = this.getBounds();
-        final World world = this.firstLocation.getWorld();
-        final List<Location> locations = new ArrayList<Location>();
-        for (int y = bounds.get(2); y <= bounds.get(3); ++y) {
-            for (int x = bounds.get(0); x <= bounds.get(1); ++x) {
-                for (int z = bounds.get(4); z <= bounds.get(5); ++z) {
+        List<Integer> bounds = getBounds();
+        World world = firstLocation.getWorld();
+        List<Location> locations = new ArrayList<>();
+        for (int y = bounds.get(2); y <= bounds.get(3); y++)
+        {
+            for (int x = bounds.get(0); x <= bounds.get(1); x++)
+            {
+                for (int z = bounds.get(4); z <= bounds.get(5); z++)
+                {
                     locations.add(new Location(world, x, y, z));
                 }
             }
@@ -138,126 +165,123 @@ public class Region {
         return locations;
     }
 
-    public void captureRegion() {
-        if (!this.firstLocation.getWorld().getName().equals(this.secondLocation.getWorld().getName())) {
+    public void captureRegion()
+    {
+        if (!firstLocation.getWorld().getName().equals(secondLocation.getWorld().getName()))
             return;
-        }
-        final List<Integer> bounds = this.getBounds();
-        final World world = this.firstLocation.getWorld();
-        final List<BlockState> states = new ArrayList<BlockState>();
-        for (int y = bounds.get(2); y <= bounds.get(3); ++y) {
-            for (int x = bounds.get(0); x <= bounds.get(1); ++x) {
-                for (int z = bounds.get(4); z <= bounds.get(5); ++z) {
+        List<Integer> bounds = getBounds();
+        World world = firstLocation.getWorld();
+        List<BlockState> states = new ArrayList<>();
+        for (int y = bounds.get(2); y <= bounds.get(3); y++)
+        {
+            for (int x = bounds.get(0); x <= bounds.get(1); x++)
+            {
+                for (int z = bounds.get(4); z <= bounds.get(5); z++)
+                {
                     states.add(new Location(world, x, y, z).getBlock().getState());
                 }
             }
         }
-        this.capture = states;
+        capture = states;
     }
 
-    public void pasteRegionCapture() {
-        if (this.capture == null) {
+    public void pasteRegionCapture()
+    {
+        if (capture == null)
             return;
-        }
-        for (final BlockState state : this.capture) {
+        for (BlockState state : capture)
+        {
             state.getBlock().setType(state.getType());
             state.setRawData(state.getRawData());
             state.update();
         }
-        this.capture = null;
+        capture = null;
     }
 
     public Location getRandomLocation() {
-        final List<Integer> bounds = this.getBounds();
-        return new Location(this.firstLocation.getWorld(), SUtil.random(bounds.get(0), bounds.get(1)), SUtil.random(bounds.get(2), bounds.get(3)), SUtil.random(bounds.get(4), bounds.get(5)));
+        List<Integer> bounds = getBounds();
+        int minX = bounds.get(0);
+        int maxX = bounds.get(1);
+        int minY = bounds.get(2);
+        int maxY = bounds.get(3);
+        int minZ = bounds.get(4);
+        int maxZ = bounds.get(5);
+
+        int randomX = random(minX, maxX);
+        int randomY = random(minY, maxY);
+        int randomZ = random(minZ, maxZ);
+
+        return new Location(firstLocation.getWorld(), randomX, randomY, randomZ);
     }
 
-    public Location getRandomAvailableLocation() {
-        final Location r = this.getRandomLocation();
-        final List<Location> possible = new ArrayList<Location>();
-        for (int y = this.getBounds().get(3); y >= this.getBounds().get(2); --y) {
-            final Block test = this.firstLocation.getWorld().getBlockAt(r.getBlockX(), y, r.getBlockZ());
-            if (test.getType() != Material.AIR && test.getLocation().clone().add(0.0, 1.0, 0.0).getBlock().getType() == Material.AIR && test.getLocation().clone().add(0.0, 2.0, 0.0).getBlock().getType() == Material.AIR) {
-                possible.add(test.getLocation().clone().add(0.0, 1.0, 0.0));
+    public static int random(int min, int max) {
+        if (min < 0) {
+            return new Random().nextInt(max + Math.abs(min) + 1) + min;
+        }
+        return new Random().nextInt(max - min + 1) + min;
+    }
+
+
+
+
+    public Location getRandomAvailableLocation()
+    {
+        Location r = getRandomLocation();
+        List<Location> possible = new ArrayList<>();
+        for (int y = getBounds().get(3); y >= getBounds().get(2); y--)
+        {
+            Block test = firstLocation.getWorld().getBlockAt(r.getBlockX(), y, r.getBlockZ());
+            if (test.getType() != Material.AIR && test.getLocation().clone().add(0, 1, 0).getBlock().getType() == Material.AIR &&
+                    test.getLocation().clone().add(0, 2, 0).getBlock().getType() == Material.AIR)
+            {
+                possible.add(test.getLocation().clone().add(0, 1, 0));
             }
         }
-        return possible.isEmpty() ? null : SUtil.getRandom(possible);
+        return !possible.isEmpty() ? SUtil.getRandom(possible) : null;
     }
 
-    public List<Integer> getBounds() {
-        final int sx = Math.min(this.firstLocation.getBlockX(), this.secondLocation.getBlockX());
-        final int ex = Math.max(this.firstLocation.getBlockX(), this.secondLocation.getBlockX());
-        final int sy = Math.min(this.firstLocation.getBlockY(), this.secondLocation.getBlockY());
-        final int ey = Math.max(this.firstLocation.getBlockY(), this.secondLocation.getBlockY());
-        final int sz = Math.min(this.firstLocation.getBlockZ(), this.secondLocation.getBlockZ());
-        final int ez = Math.max(this.firstLocation.getBlockZ(), this.secondLocation.getBlockZ());
+    public List<Integer> getBounds()
+    {
+        int sx = Math.min(firstLocation.getBlockX(), secondLocation.getBlockX()),
+                ex = Math.max(firstLocation.getBlockX(), secondLocation.getBlockX()),
+                sy = Math.min(firstLocation.getBlockY(), secondLocation.getBlockY()),
+                ey = Math.max(firstLocation.getBlockY(), secondLocation.getBlockY()),
+                sz = Math.min(firstLocation.getBlockZ(), secondLocation.getBlockZ()),
+                ez = Math.max(firstLocation.getBlockZ(), secondLocation.getBlockZ());
         return Arrays.asList(sx, ex, sy, ey, sz, ez);
     }
 
-    public List<Entity> getPlayersWithinRegion() {
-        final List<Entity> entities = new ArrayList<Entity>(this.firstLocation.getWorld().getEntitiesByClasses(Player.class));
-        return entities.stream().filter((this::insideRegion)).collect(Collectors.toList());
+    public List<Entity> getPlayersWithinRegion()
+    {
+        List<Entity> entities = new ArrayList<>(firstLocation.getWorld().getEntitiesByClasses(Player.class));
+        return entities.stream().filter(this::insideRegion).collect(Collectors.toList());
     }
 
-    public static Region create(final String name, final Location firstLocation, final Location secondLocation, final RegionType type) {
-        return Region.plugin.regionData.create(name, firstLocation, secondLocation, type);
+    public static Region create(String name, Location firstLocation, Location secondLocation, RegionType type)
+    {
+        return plugin.regionData.create(name, firstLocation, secondLocation, type);
     }
 
-    public static Region get(final String name) {
-        if (Region.REGION_CACHE.containsKey(name)) {
-            return Region.REGION_CACHE.get(name);
-        }
-        return Region.plugin.regionData.get(name);
+    public static Region get(String name)
+    {
+        if (REGION_CACHE.containsKey(name))
+            return REGION_CACHE.get(name);
+        return plugin.regionData.get(name);
     }
 
-    public static List<Region> getRegions() {
-        return new ArrayList<Region>(Region.REGION_CACHE.values());
+    public static List<Region> getRegions()
+    {
+        return new ArrayList<>(REGION_CACHE.values());
     }
 
-    public static List<Region> getRegionsOfType(final RegionType type) {
+    public static List<Region> getRegionsOfType(RegionType type)
+    {
         return getRegions().stream().filter(region -> region.getType() == type).collect(Collectors.toList());
     }
 
-    public static void cacheRegions() {
-        for (final Region region : Region.plugin.regionData.getAll()) {
-            Region.REGION_CACHE.put(region.getName(), region);
-        }
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public Location getFirstLocation() {
-        return this.firstLocation;
-    }
-
-    public Location getSecondLocation() {
-        return this.secondLocation;
-    }
-
-    public RegionType getType() {
-        return this.type;
-    }
-
-    public void setFirstLocation(final Location firstLocation) {
-        this.firstLocation = firstLocation;
-    }
-
-    public void setSecondLocation(final Location secondLocation) {
-        this.secondLocation = secondLocation;
-    }
-
-    public void setType(final RegionType type) {
-        this.type = type;
-    }
-
-    public List<BlockState> getCapture() {
-        return this.capture;
-    }
-
-    static {
-        REGION_CACHE = new HashMap<String, Region>();
-        plugin = SkyBlock.getPlugin();
+    public static void cacheRegions()
+    {
+        for (Region region : plugin.regionData.getAll())
+            REGION_CACHE.put(region.getName(), region);
     }
 }

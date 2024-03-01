@@ -71,8 +71,7 @@ public class TradeMenu {
                 }
                 if (TradeMenu.tradeClose.containsKey(TradeMenu.this.tradeUUID)) {
                     this.cancel();
-                    User.getUser(TradeMenu.this.p1.getUniqueId()).updateInventory();
-                    User.getUser(TradeMenu.this.p2.getUniqueId()).updateInventory();
+
                     if (!TradeMenu.tradeClose.get(TradeMenu.this.tradeUUID)) {
                         if (TradeMenu.tradeClosePlayerName.get(TradeMenu.this.tradeUUID) == TradeMenu.this.p1) {
                             TradeMenu.this.p1.sendMessage(Sputnik.trans("&cYou cancelled the trade!"));
@@ -131,8 +130,7 @@ public class TradeMenu {
                         SoundSequenceType.TRADE_COMPLETE.play(TradeMenu.this.p2);
                         TradeMenu.this.p1.closeInventory();
                         TradeMenu.this.p2.closeInventory();
-                        User.getUser(TradeMenu.this.p1.getUniqueId()).updateInventory();
-                        User.getUser(TradeMenu.this.p2.getUniqueId()).updateInventory();
+
                         TradeMenu.this.clean();
                         TradeGUI.itemOfferP1.remove(TradeMenu.this.p1.getUniqueId());
                         TradeGUI.itemOfferP2.remove(TradeMenu.this.p2.getUniqueId());

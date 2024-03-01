@@ -88,7 +88,7 @@ public class Repeater {
                     }
                 }
             }
-        }.runTaskTimerAsynchronously(SkyBlock.getPlugin(), 1L, 1L));
+        }.runTaskTimer(SkyBlock.getPlugin(), 1L, 1L));
         this.tasks.add(new BukkitRunnable() {
             public void run() {
                 Blessings.update();
@@ -230,34 +230,6 @@ public class Repeater {
             player.getInventory().setHelmet(SSRstack);
         }
 
-        PlayerUtils.updateP(player);
-        if (Sputnik.itemCount(player, "SkySim Menu") > 1) {
-            InventoryUpdate.removeInventoryItemStack(player.getInventory(), "SkySim Menu", Sputnik.itemCount(player, "SkySim Menu") - 1);
-        }
-        if (Sputnik.itemCount(player, "Perfect Talisman") > 1) {
-            player.sendMessage(ChatColor.RED + "You can only have 1 talisman per type in your inventory!");
-            InventoryUpdate.removeInventoryItemStack(player.getInventory(), "Perfect Talisman", Sputnik.itemCount(player, "Perfect Talisman") - 1);
-        }
-        if (Sputnik.itemCount(player, "Superspeed Talisman") > 1) {
-            player.sendMessage(ChatColor.RED + "You can only have 1 talisman per type in your inventory!");
-            InventoryUpdate.removeInventoryItemStack(player.getInventory(), "Superspeed Talisman", Sputnik.itemCount(player, "Superspeed Talisman") - 1);
-        }
-        if (Sputnik.itemCount(player, "Piggy Bank") > 1) {
-            player.sendMessage(ChatColor.RED + "You can only have 1 talisman per type in your inventory!");
-            InventoryUpdate.removeInventoryItemStack(player.getInventory(), "Piggy Bank", Sputnik.itemCount(player, "Piggy Bank") - 1);
-        }
-        if (Sputnik.itemCount(player, "Tarantula Talisman") > 1) {
-            player.sendMessage(ChatColor.RED + "You can only have 1 talisman per type in your inventory!");
-            InventoryUpdate.removeInventoryItemStack(player.getInventory(), "Tarantula Talisman", Sputnik.itemCount(player, "Tarantula Talisman") - 1);
-        }
-        if (Sputnik.itemCount(player, "Farming Talisman") > 1) {
-            player.sendMessage(ChatColor.RED + "You can only have 1 talisman per type in your inventory!");
-            InventoryUpdate.removeInventoryItemStack(player.getInventory(), "Farming Talisman", Sputnik.itemCount(player, "Farming Talisman") - 1);
-        }
-        if (Sputnik.itemCount(player, "Auto Recombobulator") > 1) {
-            player.sendMessage(ChatColor.RED + "You can only have 1 talisman per type in your inventory!");
-            InventoryUpdate.removeInventoryItemStack(player.getInventory(), "Auto Recombobulator", Sputnik.itemCount(player, "Auto Recombobulator") - 1);
-        }
         final PlayerInventory inventory = player.getInventory();
         final SItem sitem = SItem.find(player.getItemInHand());
         if (sitem != null) {
@@ -309,7 +281,6 @@ public class Repeater {
         PlayerUtils.updateHandStatistics(hand, statistics2);
         PlayerUtils.updatePetStatistics(statistics2);
         PlayerUtils.updateInventoryStatistics(player, statistics2);
-        User.getUser(uuid).updateArmorInventory();
         ItemListener.updateStatistics1(player);
         final User user = User.getUser(player.getUniqueId());
         for (final ActivePotionEffect effect : user.getEffects()) {
