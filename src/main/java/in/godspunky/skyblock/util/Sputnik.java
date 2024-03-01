@@ -657,16 +657,11 @@ public class Sputnik {
             final Method m = FlagWatcher.class.getDeclaredMethod("setValue", Integer.TYPE, Object.class);
             m.setAccessible(true);
             // todo : fix it
-            try {
-                m.invoke(playerDisguise.getWatcher(), 10, 127);
-            } catch (final IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                m.invoke(playerDisguise.getWatcher(), 10,(byte) 127);
+            } catch (final IllegalAccessException | IllegalArgumentException | InvocationTargetException |
+                           NoSuchMethodException e) {
                 e.printStackTrace();
             }
-        } catch (final NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (final SecurityException e) {
-            e.printStackTrace();
-        }
         playerDisguise.setShowName(false);
         if (isURLSkin && URL_2 != null) {
             playerDisguise.getGameProfile().getProperties().put("textures", new WrappedSignedProperty("textures", skinURLorUsername, URL_2));

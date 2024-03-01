@@ -21,9 +21,7 @@ import in.godspunky.skyblock.entity.EntitySpawner;
 import in.godspunky.skyblock.entity.SEntityType;
 import in.godspunky.skyblock.entity.StaticDragonManager;
 import in.godspunky.skyblock.entity.nms.VoidgloomSeraph;
-import in.godspunky.skyblock.item.ItemListener;
-import in.godspunky.skyblock.item.Rarity;
-import in.godspunky.skyblock.item.SItem;
+import in.godspunky.skyblock.item.*;
 import in.godspunky.skyblock.item.armor.VoidlingsWardenHelmet;
 import in.godspunky.skyblock.item.pet.Pet;
 import in.godspunky.skyblock.listener.PacketListener;
@@ -53,7 +51,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -63,7 +60,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.reflections.Reflections;
 import in.godspunky.skyblock.gui.GUIListener;
-import in.godspunky.skyblock.item.SMaterial;
 import in.godspunky.skyblock.nms.nmsutil.apihelper.APIManager;
 import in.godspunky.skyblock.nms.nmsutil.packetlistener.PacketHelper;
 import in.godspunky.skyblock.nms.nmsutil.packetlistener.handler.PacketHandler;
@@ -84,7 +80,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
-public class SkyBlock extends JavaPlugin implements PluginMessageListener, BungeeChannel.ForwardConsumer {
+public class SkyBlock extends JavaPlugin implements PluginMessageListener {
+    @Getter
     private static ProtocolManager protocolManager;
     private static SkyBlock plugin;
     private final PacketHelper packetInj;
@@ -146,7 +143,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
     }
 
     public void onEnable() {
-        SkyBlock.plugin = this;
+        plugin = this;
         SLog.info("Loading SkyBlock worlds...");
         SkyBlockWorldManager.loadWorlds();
         SLog.info("Loading YAML data from disk...");
@@ -154,6 +151,8 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
         this.heads = new Config("heads.yml");
         this.blocks = new Config("blocks.yml");
         this.spawners = new Config("spawners.yml");
+
+
         SLog.info("Loading Command map...");
         try {
             final Field f = Bukkit.getServer().getClass().getDeclaredField("commandMap");
@@ -168,6 +167,9 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
         this.regionData = new SQLRegionData();
         this.worldData = new SQLWorldData();
         this.cl = new CommandLoader();
+
+
+
         SLog.info("Begin Protocol injection... (SkyBlockProtocol v0.6.2)");
         APIManager.registerAPI(this.packetInj, this);
         if (!this.packetInj.injected) {
@@ -201,60 +203,12 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
         AuctionItem.loadAuctionsFromDisk();
         SLog.info("Loading merchants prices...");
         MerchantItemHandler.init();
-        SkyBlockCalendar.ELAPSED = SkyBlock.plugin.config.getLong("timeElapsed");
         SLog.info("Synchronizing world time with calendar time and removing world entities...");
-        for (final World world : Bukkit.getWorlds()) {
-            for (final Entity entity : world.getEntities()) {
-                if (entity instanceof HumanEntity) {
-                    continue;
-                }
-                entity.remove();
-            }
-            int time = (int) (SkyBlockCalendar.ELAPSED % 24000L - 6000L);
-            if (time < 0) {
-                time += 24000;
-            }
-            world.setTime(time);
-        }
+        SkyBlockCalendar.synchronize();
         SLog.info("Loading items...");
-        try {
-            Class.forName("in.godspunky.skyblock.item.SMaterial");
-        } catch (final ClassNotFoundException e2) {
-            e2.printStackTrace();
-        }
-        for (final SMaterial material : SMaterial.values()) {
-            if (material.hasClass()) {
-                material.getStatistics().load();
-            }
-        }
+        SMaterial.loadItems();
         SLog.info("Converting CraftRecipes into custom recipes...");
-        final Iterator<Recipe> iter = Bukkit.recipeIterator();
-        while (iter.hasNext()) {
-            final Recipe recipe = iter.next();
-            if (recipe.getResult() == null) {
-                continue;
-            }
-            final Material result = recipe.getResult().getType();
-            if (recipe instanceof ShapedRecipe) {
-                final ShapedRecipe shaped = (ShapedRecipe) recipe;
-                final in.godspunky.skyblock.item.ShapedRecipe specShaped = new in.godspunky.skyblock.item.ShapedRecipe(SItem.convert(shaped.getResult()), Groups.EXCHANGEABLE_RECIPE_RESULTS.contains(result)).shape(shaped.getShape());
-                for (final Map.Entry<Character, ItemStack> entry : shaped.getIngredientMap().entrySet()) {
-                    if (entry.getValue() == null) {
-                        continue;
-                    }
-                    final ItemStack stack = entry.getValue();
-                    specShaped.set(entry.getKey(), SMaterial.getSpecEquivalent(stack.getType(), stack.getDurability()), stack.getAmount(), true);
-                }
-            }
-            if (!(recipe instanceof ShapelessRecipe)) {
-                continue;
-            }
-            final ShapelessRecipe shapeless = (ShapelessRecipe) recipe;
-            final in.godspunky.skyblock.item.ShapelessRecipe specShapeless = new in.godspunky.skyblock.item.ShapelessRecipe(SItem.convert(shapeless.getResult()), Groups.EXCHANGEABLE_RECIPE_RESULTS.contains(result));
-            for (final ItemStack stack2 : shapeless.getIngredientList()) {
-                specShapeless.add(SMaterial.getSpecEquivalent(stack2.getType(), stack2.getDurability()), stack2.getAmount(), true);
-            }
-        }
+        Recipe.loadRecipes();
         SLog.info("Hooking SkyBlockEngine to PlaceholderAPI and registering...");
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new SkyblockPlaceholder().register();
@@ -262,14 +216,9 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
         } else {
             SLog.info("ERROR! PlaceholderAPI plugin does not exist, disabing placeholder request!");
         }
-        SkyBlock.protocolManager = ProtocolLibrary.getProtocolManager();
-        this.beginLoopA();
-        WorldListener.blb.add(Material.BEDROCK);
-        WorldListener.blb.add(Material.COMMAND);
-        WorldListener.blb.add(Material.BARRIER);
-        WorldListener.blb.add(Material.ENDER_PORTAL_FRAME);
-        WorldListener.blb.add(Material.ENDER_PORTAL);
-        WorldListener.c();
+        protocolManager = ProtocolLibrary.getProtocolManager();
+        WorldListener.init();
+
         SLog.info("Successfully enabled " + this.getDescription().getFullName());
         SLog.info("===================================");
         SLog.info("SkyBlock ENGINE - MADE BY " + getDevelopersName());
@@ -277,42 +226,46 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
         SLog.info(" ");
         SLog.info("This plugin provide most of SkyBlock functions!");
         SLog.info("Originally was made by super");
-        SLog.info("Made by GiaKhanhVN (C) 2021");
+        SLog.info("Made by GodSpunky (C) 2024");
         SLog.info("Any illegal usage will be suppressed! DO NOT LEAK IT!");
         SLog.info("===================================");
         if (dimoonEnabled) {
-            this.sq = new SummoningSequence(Bukkit.getWorld("arena"));
-            Bukkit.getWorld("arena").setAutoSave(false);
-            this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
-            this.getServer().getPluginManager().registerEvents(new EntityListener(), this);
-            this.getServer().getPluginManager().registerEvents(new BlockListener(), this);
-            final File file = new File(this.getDataFolder(), "parkours");
-            if (!file.exists()) {
-                try {
-                    Files.createParentDirs(file);
-                    file.mkdir();
-                } catch (final IOException e3) {
-                    throw new RuntimeException(e3);
-                }
-            }
-            final SItem gtigerm = SItem.of(SMaterial.HIDDEN_GOLDEN_TIGER_2022);
-            gtigerm.setRarity(Rarity.MYTHIC);
-            final SItem lucki8 = SItem.of(SMaterial.ENCHANTED_BOOK);
-            lucki8.addEnchantment(EnchantmentType.LUCKINESS, 8);
-            final SItem vicious15 = SItem.of(SMaterial.ENCHANTED_BOOK);
-            vicious15.addEnchantment(EnchantmentType.VICIOUS, 15);
-            final SItem chimera6 = SItem.of(SMaterial.ENCHANTED_BOOK);
-            chimera6.addEnchantment(EnchantmentType.CHIMERA, 6);
-            final SItem tbits = SItem.of(SMaterial.ENCHANTED_BOOK);
-            tbits.addEnchantment(EnchantmentType.TURBO_GEM, 1);
-            DimoonLootTable.highQualitylootTable = new ArrayList<>(Arrays.asList(new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOONIZARY_DAGGER), 400, 1100), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_EXCRARION), 310, 1000), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_HELMET), 290, 700), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_CHESTPLATE), 340, 900), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_LEGGINGS), 330, 800), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_BOOTS), 220, 500), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_QUANTUMFLUX_POWER_ORB), 310, 900), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_ARCHIVY), 370, 1000), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_MAGICIVY), 370, 1000), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GOLDEN_TIGER_2022), 320, 900), new DimoonLootItem(gtigerm, 300, 1000), new DimoonLootItem(lucki8, 170, 700), new DimoonLootItem(vicious15, 100, 600), new DimoonLootItem(chimera6, 260, 700), new DimoonLootItem(tbits, 210, 700)));
-            final SItem lucki9 = SItem.of(SMaterial.ENCHANTED_BOOK);
-            lucki9.addEnchantment(EnchantmentType.LUCKINESS, 6);
-            DimoonLootTable.lowQualitylootTable = new ArrayList<>(Arrays.asList(new DimoonLootItem(lucki9, 20, 150), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOON_GEM), 20, 100), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOON_FRAG), 1, 1, 0, true)));
-            Arena.cleanArena();
+           initDimoon();
         }
     }
 
+
+    private void initDimoon(){
+        this.sq = new SummoningSequence(Bukkit.getWorld("arena"));
+        Bukkit.getWorld("arena").setAutoSave(false);
+        this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+        this.getServer().getPluginManager().registerEvents(new EntityListener(), this);
+        this.getServer().getPluginManager().registerEvents(new BlockListener(), this);
+        final File file = new File(this.getDataFolder(), "parkours");
+        if (!file.exists()) {
+            try {
+                Files.createParentDirs(file);
+                file.mkdir();
+            } catch (final IOException e3) {
+                throw new RuntimeException(e3);
+            }
+        }
+        final SItem gtigerm = SItem.of(SMaterial.HIDDEN_GOLDEN_TIGER_2022);
+        gtigerm.setRarity(Rarity.MYTHIC);
+        final SItem lucki8 = SItem.of(SMaterial.ENCHANTED_BOOK);
+        lucki8.addEnchantment(EnchantmentType.LUCKINESS, 8);
+        final SItem vicious15 = SItem.of(SMaterial.ENCHANTED_BOOK);
+        vicious15.addEnchantment(EnchantmentType.VICIOUS, 15);
+        final SItem chimera6 = SItem.of(SMaterial.ENCHANTED_BOOK);
+        chimera6.addEnchantment(EnchantmentType.CHIMERA, 6);
+        final SItem tbits = SItem.of(SMaterial.ENCHANTED_BOOK);
+        tbits.addEnchantment(EnchantmentType.TURBO_GEM, 1);
+        DimoonLootTable.highQualitylootTable = new ArrayList<>(Arrays.asList(new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOONIZARY_DAGGER), 400, 1100), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_EXCRARION), 310, 1000), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_HELMET), 290, 700), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_CHESTPLATE), 340, 900), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_LEGGINGS), 330, 800), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_BOOTS), 220, 500), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_QUANTUMFLUX_POWER_ORB), 310, 900), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_ARCHIVY), 370, 1000), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_MAGICIVY), 370, 1000), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GOLDEN_TIGER_2022), 320, 900), new DimoonLootItem(gtigerm, 300, 1000), new DimoonLootItem(lucki8, 170, 700), new DimoonLootItem(vicious15, 100, 600), new DimoonLootItem(chimera6, 260, 700), new DimoonLootItem(tbits, 210, 700)));
+        final SItem lucki9 = SItem.of(SMaterial.ENCHANTED_BOOK);
+        lucki9.addEnchantment(EnchantmentType.LUCKINESS, 6);
+        DimoonLootTable.lowQualitylootTable = new ArrayList<>(Arrays.asList(new DimoonLootItem(lucki9, 20, 150), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOON_GEM), 20, 100), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOON_FRAG), 1, 1, 0, true)));
+        Arena.cleanArena();
+    }
 
 
     public void onDisable() {
@@ -329,7 +282,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
             SLog.info("Stopping server loop...");
             this.repeater.stop();
             SLog.info("Unloading ores from Dwarven Mines...");
-            this.unloadBlocks();
+            WorldListener.unloadBlocks();
             SLog.info("Ejecting protocol channel...");
             APIManager.disableAPI(PacketHelper.class);
             SLog.info("Cleaning HashSets...");
@@ -375,26 +328,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
     }
 
 
-    public static ProtocolManager getPTC() {
-        return SkyBlock.protocolManager;
-    }
 
-    public void unloadBlocks() {
-        if (WorldListener.changed_blocks.isEmpty()) {
-            return;
-        }
-        for (final Block block : WorldListener.changed_blocks) {
-            if (WorldListener.CACHED_BLOCK_ID.containsKey(block) && WorldListener.CACHED_BLOCK_BYTE.containsKey(block)) {
-                final int id = WorldListener.CACHED_BLOCK_ID.get(block);
-                final byte data = WorldListener.CACHED_BLOCK_BYTE.get(block);
-                block.setTypeIdAndData(id, data, true);
-                if (!WorldListener.changed_blocks.contains(block)) {
-                    continue;
-                }
-                WorldListener.changed_blocks.remove(block);
-            }
-        }
-    }
 
     private void loadCommands() {
         Reflections reflections = new Reflections("in.godspunky.skyblock.command");
@@ -465,17 +399,6 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
         ConfigurationSerialization.registerClass(AuctionBid.class, "AuctionBid");
     }
 
-    public void beginLoopA() {
-        new BukkitRunnable() {
-            public void run() {
-                for (final Player p : Bukkit.getOnlinePlayers()) {
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 1000000, 255));
-                }
-            }
-        }.runTaskTimer(SkyBlock.plugin, 0L, 1L);
-    }
-
-
     private void registerPacketListener() {
         PacketHelper.addPacketHandler(new PacketHandler() {
             @Override
@@ -511,13 +434,6 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
         return null;
     }
 
-    public void async(final Runnable runnable) {
-        new BukkitRunnable() {
-            public void run() {
-                runnable.run();
-            }
-        }.runTaskAsynchronously(SkyBlock.plugin);
-    }
 
     public String getDevelopersName(){
         StringBuilder builder = new StringBuilder();
@@ -528,30 +444,9 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
     }
 
 
-
-
     public void onPluginMessageReceived(final String channel, final Player player, final byte[] message) {
         final PluginMessageReceived e = new PluginMessageReceived(new WrappedPluginMessage(channel, player, message));
         Bukkit.getPluginManager().callEvent(e);
     }
 
-    public void updateServerName(final Player player) {
-        // SkySimBungee.getNewBungee().sendData(player, "GetServer", null);
-    }
-
-    public void updateServerPlayerCount() {
-        if (!Bukkit.getOnlinePlayers().isEmpty()) {
-           // SkySimBungee.getNewBungee().sendData(null, "PlayerCount", "ALL");
-        }
-    }
-
-    public void accept(final String channel, final Player player, final byte[] data) {
-        if (channel == "savePlayerData") {
-            SLog.info("YES IT WORK");
-            for (final Player p : Bukkit.getOnlinePlayers()) {
-                final User u = User.getUser(p.getUniqueId());
-                u.syncSavingData();
-            }
-        }
-    }
 }
