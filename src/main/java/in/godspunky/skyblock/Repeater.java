@@ -58,12 +58,12 @@ public class Repeater {
 
     public static void cRun(final User u) {
         final List<ActivePotionEffect> apt = u.getEffects();
-        if (Repeater.PTN_CACHE.containsKey(u.getUuid())) {
-            if (Repeater.PTN_CACHE.get(u.getUuid()) >= apt.size()) {
-                Repeater.PTN_CACHE.put(u.getUuid(), 0);
+        if (PTN_CACHE.containsKey(u.getUuid())) {
+            if (PTN_CACHE.get(u.getUuid()) >= apt.size()) {
+                PTN_CACHE.put(u.getUuid(), 0);
             }
         } else {
-            Repeater.PTN_CACHE.put(u.getUuid(), 0);
+            PTN_CACHE.put(u.getUuid(), 0);
         }
     }
 
@@ -156,14 +156,14 @@ public class Repeater {
                     }
                 }
             }
-        }.runTaskTimerAsynchronously(SkyBlock.getPlugin(), 0L, 1L));
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L));
         this.tasks.add(new BukkitRunnable() {
             public void run() {
                 for (final Player player : Bukkit.getOnlinePlayers()) {
-                    if (Repeater.PTN_CACHE.containsKey(User.getUser(player.getUniqueId()).getUuid())) {
-                        Repeater.PTN_CACHE.put(User.getUser(player.getUniqueId()).getUuid(), Repeater.PTN_CACHE.get(User.getUser(player.getUniqueId()).getUuid()) + 1);
+                    if (PTN_CACHE.containsKey(User.getUser(player.getUniqueId()).getUuid())) {
+                        PTN_CACHE.put(User.getUser(player.getUniqueId()).getUuid(), PTN_CACHE.get(User.getUser(player.getUniqueId()).getUuid()) + 1);
                     } else {
-                        Repeater.PTN_CACHE.put(User.getUser(player.getUniqueId()).getUuid(), 0);
+                        PTN_CACHE.put(User.getUser(player.getUniqueId()).getUuid(), 0);
                     }
                 }
                 for (final World w : Bukkit.getWorlds()) {
@@ -179,18 +179,11 @@ public class Repeater {
                 SkyBlockCalendar.ELAPSED += 20L;
                 for (final World w : Bukkit.getWorlds()) {
                     if (SadanHuman.BossRun.containsKey(w.getUID()) && w.getName().contains("f6") && SadanHuman.BossRun.containsKey(w.getUID()) && SadanHuman.BossRun.get(w.getUID())) {
-                        Repeater.FloorLivingSec.put(w.getUID(), Repeater.FloorLivingSec.get(w.getUID()) + 1);
+                        FloorLivingSec.put(w.getUID(), FloorLivingSec.get(w.getUID()) + 1);
                     }
                 }
             }
         }.runTaskTimer(SkyBlock.getPlugin(), 0L, 20L));
-        this.tasks.add(  new BukkitRunnable() {
-            public void run() {
-                for (final Player p : Bukkit.getOnlinePlayers()) {
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 1000000, 255));
-                }
-            }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L));
     }
 
     public void stop() {
@@ -344,15 +337,15 @@ public class Repeater {
                 inventory.setItem(8, SItem.of(SMaterial.SKYBLOCK_MENU).getStack());
             }
         }
-        if (!Repeater.MANA_MAP.containsKey(uuid)) {
-            Repeater.MANA_MAP.put(uuid, manaPool);
+        if (!MANA_MAP.containsKey(uuid)) {
+            MANA_MAP.put(uuid, manaPool);
         }
         if (counters[0] == 2) {
-            final int mana = Repeater.MANA_MAP.get(uuid);
+            final int mana = MANA_MAP.get(uuid);
             if (mana <= manaPool) {
                 int reg = Math.min(manaPool, Math.min(manaPool, manaPool / 50 + (int) (manaPool / 50 * statistics2.getManaRegenerationPercentBonus())));
-                if (Repeater.MANA_REGEN_DEC.containsKey(uuid)) {
-                    if (Repeater.MANA_REGEN_DEC.get(uuid)) {
+                if (MANA_REGEN_DEC.containsKey(uuid)) {
+                    if (MANA_REGEN_DEC.get(uuid)) {
                         reg = mana + Math.round((float) (reg / 10));
                     } else {
                         reg += mana;
@@ -360,8 +353,8 @@ public class Repeater {
                 } else {
                     reg += mana;
                 }
-                Repeater.MANA_MAP.remove(uuid);
-                Repeater.MANA_MAP.put(uuid, Math.min(manaPool, reg));
+                MANA_MAP.remove(uuid);
+                MANA_MAP.put(uuid, Math.min(manaPool, reg));
             }
         }
         if (counters[1] == 4 && player.getHealth() <= player.getMaxHealth()) {
@@ -376,14 +369,14 @@ public class Repeater {
         final int defense = SUtil.blackMagic(statistics2.getDefense().addAll());
         final float absorption = SputnikPlayer.getCustomAbsorptionHP(player);
         final ChatColor color = (absorption > 0.0f) ? ChatColor.GOLD : ChatColor.RED;
-        DefenseReplacement replacement = Repeater.DEFENSE_REPLACEMENT_MAP.get(player.getUniqueId());
-        ManaReplacement replacement2 = Repeater.MANA_REPLACEMENT_MAP.get(player.getUniqueId());
+        DefenseReplacement replacement = DEFENSE_REPLACEMENT_MAP.get(player.getUniqueId());
+        ManaReplacement replacement2 = MANA_REPLACEMENT_MAP.get(player.getUniqueId());
         if (replacement != null && System.currentTimeMillis() >= replacement.getEnd()) {
-            Repeater.DEFENSE_REPLACEMENT_MAP.remove(player.getUniqueId());
+            DEFENSE_REPLACEMENT_MAP.remove(player.getUniqueId());
             replacement = null;
         }
         if (replacement2 != null && System.currentTimeMillis() >= replacement2.getEnd()) {
-            Repeater.MANA_REPLACEMENT_MAP.remove(player.getUniqueId());
+            MANA_REPLACEMENT_MAP.remove(player.getUniqueId());
             replacement2 = null;
         }
         String ZSActionBar = "";
@@ -428,7 +421,7 @@ public class Repeater {
             ABTerminator = "";
         }
         if (!player.getWorld().getName().equalsIgnoreCase("limbo")) {
-            SUtil.sendActionBar(player, color + "" + Math.round(player.getHealth() + absorption) + "/" + SUtil.blackMagic(statistics2.getMaxHealth().addAll()) + "❤" + get(player) + "     " + ((replacement == null) ? ((defense != 0) ? ("" + ChatColor.GREEN + defense + "❈ Defense" + ABTerminator + "     ") : "") : (replacement.getReplacement() + "     ")) + ((replacement2 == null) ? ((manaPool >= 0) ? ("" + ChatColor.AQUA + Repeater.MANA_MAP.get(player.getUniqueId()) + "/" + manaPool + "✎ Mana") : "") : (replacement2.getReplacement())) + ZSActionBar);
+            SUtil.sendActionBar(player, color + "" + Math.round(player.getHealth() + absorption) + "/" + SUtil.blackMagic(statistics2.getMaxHealth().addAll()) + "❤" + get(player) + "     " + ((replacement == null) ? ((defense != 0) ? ("" + ChatColor.GREEN + defense + "❈ Defense" + ABTerminator + "     ") : "") : (replacement.getReplacement() + "     ")) + ((replacement2 == null) ? ((manaPool >= 0) ? ("" + ChatColor.AQUA + MANA_MAP.get(player.getUniqueId()) + "/" + manaPool + "✎ Mana") : "") : (replacement2.getReplacement())) + ZSActionBar);
         } else {
             SUtil.sendActionBar(player, color + "" + ChatColor.RED + ChatColor.BOLD + "YOU ARE CURRENTLY IN THE LIMBO SERVER, USE " + ChatColor.GOLD + ChatColor.BOLD + "/HUB " + ChatColor.RED + ChatColor.BOLD + "TO WARP OUT");
         }
@@ -438,9 +431,9 @@ public class Repeater {
             ((TickingSet) set).tick(player, SItem.find(inventory.getHelmet()), SItem.find(inventory.getChestplate()), SItem.find(inventory.getLeggings()), SItem.find(inventory.getBoots()), counters2);
         }
         String skysim = Sputnik.trans("&e&lSKYSIM");
-        final Boolean isNotCracked = Bukkit.getServer().getOnlineMode();
-        if (Repeater.SBA_MAP.containsKey(uuid)) {
-            if (Repeater.SBA_MAP.get(uuid)) {
+        final boolean isNotCracked = Bukkit.getServer().getOnlineMode();
+        if (SBA_MAP.containsKey(uuid)) {
+            if (SBA_MAP.get(uuid)) {
                 skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYBLOCK");
             } else if (isNotCracked) {
                 skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYSIM &b&lBETA");
@@ -559,8 +552,8 @@ public class Repeater {
                     }
                 } else if (player.getWorld().getName().contains("f6") && !player.getWorld().getName().equals("f6")) {
                     sidebar.add(ChatColor.RED + " ");
-                    if (Repeater.FloorLivingSec.containsKey(player.getWorld().getUID())) {
-                        sidebar.add(ChatColor.translateAlternateColorCodes('&', "&fTime Elapsed: &a" + Sputnik.formatTime(Repeater.FloorLivingSec.get(player.getWorld().getUID()))));
+                    if (FloorLivingSec.containsKey(player.getWorld().getUID())) {
+                        sidebar.add(ChatColor.translateAlternateColorCodes('&', "&fTime Elapsed: &a" + Sputnik.formatTime(FloorLivingSec.get(player.getWorld().getUID()))));
                     } else {
                         sidebar.add(ChatColor.translateAlternateColorCodes('&', "&fTime Elapsed: &a00m 00s"));
                     }
@@ -613,8 +606,8 @@ public class Repeater {
                     sidebar.add(Sputnik.trans("Your Damage: &c" + SUtil.commaify(damageDealt)));
                     sidebar.add(Sputnik.trans("&a"));
                 }
-                if (Repeater.SBA_MAP.containsKey(uuid)) {
-                    if (Repeater.SBA_MAP.get(uuid)) {
+                if (SBA_MAP.containsKey(uuid)) {
+                    if (SBA_MAP.get(uuid)) {
                         sidebar.add(ChatColor.YELLOW + "www.hypixel.net");
                     } else {
                         sidebar.add(ChatColor.YELLOW + "mc.skysim.sbs");
@@ -649,23 +642,10 @@ public class Repeater {
     }
 
     public static String get(final Player p) {
-        if (VoidlingsWardenHelmet.getDisplay(p) != "") {
+        if (!Objects.equals(VoidlingsWardenHelmet.getDisplay(p), "")) {
             return " " + VoidlingsWardenHelmet.getDisplay(p);
         }
         return "";
     }
 
-    static {
-//        MANA_MAP = new HashMap<UUID, Integer>();
-//        MANA_REGEN_DEC = new HashMap<UUID, Boolean>();
-//        SBA_MAP = new HashMap<UUID, Boolean>();
-//        DEFENSE_REPLACEMENT_MAP = new HashMap<UUID, DefenseReplacement>();
-//        MANA_REPLACEMENT_MAP = new HashMap<UUID, ManaReplacement>();
-//        BEACON_THROW2 = new HashMap<UUID, Entity>();
-//        BEACON_OWNER = new HashMap<Entity, Player>();
-//        BEACON = new HashMap<Entity, EntityFallingBlock>();
-//        PTN_CACHE = new HashMap<UUID, Integer>();
-//        Repeater.EFFECT_COUNTING = 0;
-//        FloorLivingSec = new HashMap<UUID, Integer>();
-    }
 }

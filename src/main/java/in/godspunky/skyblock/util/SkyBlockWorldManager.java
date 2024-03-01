@@ -38,6 +38,7 @@ public class SkyBlockWorldManager {
     }
 
     private void deleteWorldFolder(final File folder) {
+        unload(false);
         if (folder.isDirectory()) {
             final File[] files = folder.listFiles();
             if (null != files) {

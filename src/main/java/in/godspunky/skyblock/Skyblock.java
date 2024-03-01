@@ -134,7 +134,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
     }
 
     public static SkyBlock getPlugin() {
-        return SkyBlock.plugin;
+        return plugin;
     }
 
     public void onLoad() {
@@ -199,7 +199,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
         SLog.info("Loading NPCS...");
         registerNPCS();
         SLog.info("Loading auction items from disk...");
-        SkyBlock.effectManager = new EffectManager(this);
+        effectManager = new EffectManager(this);
         AuctionItem.loadAuctionsFromDisk();
         SLog.info("Loading merchants prices...");
         MerchantItemHandler.init();
@@ -304,7 +304,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
             for (final AuctionItem item : AuctionItem.getAuctions()) {
                 item.save();
             }
-            SkyBlock.plugin = null;
+            plugin = null;
         }
         SLog.info("Disabled " + this.getDescription().getFullName());
         SLog.info("===================================");

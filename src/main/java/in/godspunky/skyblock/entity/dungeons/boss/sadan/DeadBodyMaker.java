@@ -52,7 +52,7 @@ public final class DeadBodyMaker {
         final PacketPlayOutEntityTeleport astp = new PacketPlayOutEntityTeleport(botPlayer);
         final PacketPlayOutPlayerInfo pack = new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.REMOVE_PLAYER, botPlayer);
         final DataWatcher data = new DataWatcher(botPlayer);
-        data.a(10, (Object) 127);
+        data.a(10, (byte) 127);
         final PacketPlayOutEntityMetadata packet = new PacketPlayOutEntityMetadata(botPlayer.getId(), data, true);
         final CraftScoreboardManager scoreboardManager = ((CraftServer) Bukkit.getServer()).getScoreboardManager();
         assert scoreboardManager != null;

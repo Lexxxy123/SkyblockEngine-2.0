@@ -53,7 +53,7 @@ public class PacketFactory1_8_R3 {
         container.getBytes().write(0, (byte) (location.getYaw() * 256.0f / 360.0f));
         container.getBytes().write(1, (byte) (location.getPitch() * 256.0f / 360.0f));
         WrappedDataWatcher watcher = WrappedDataWatcher.getEntityWatcher(fakeGuardian);
-        watcher.setObject(0, 32);
+        watcher.setObject(0, (byte) 32);
         watcher.setObject(16, 0);
         watcher.setObject(17, squidPacket.getHandle().getIntegers().read(0));
         container.getDataWatcherModifier().write(0, watcher);

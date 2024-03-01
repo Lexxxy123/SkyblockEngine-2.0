@@ -85,28 +85,27 @@ public class BossMenu extends GUI {
                 final int level = (skill != null) ? Skill.getLevel(xp, skill.hasSixtyLevels()) : 0;
                 player.playSound(player.getLocation(), Sound.NOTE_STICKS, 1.0f, 1.0f);
                 e.getWhoClicked().closeInventory();
-                if (level < 5) {
+                if (level < 5 && !player.isOp()) {
                     player.sendMessage(ChatColor.RED + "You need at least Combat Level V to join a boss room!");
                     return;
                 }
-                if (!BossMenu.ableToJoin.containsKey(player)) {
-                    BossMenu.ableToJoin.put(player, true);
+                if (!ableToJoin.containsKey(player)) {
+                    ableToJoin.put(player, true);
                 }
-                if (!BossMenu.cooldownCata.containsKey(player)) {
-                    BossMenu.cooldownCata.put(player, false);
+                if (!cooldownCata.containsKey(player)) {
+                    cooldownCata.put(player, false);
                 }
-                if (!BossMenu.cooldownCata.get(player) && BossMenu.ableToJoin.get(player) && !player.getWorld().getName().contains("f6")) {
+                if (!cooldownCata.get(player) && ableToJoin.get(player) && !player.getWorld().getName().contains("f6")) {
                     player.sendMessage(ChatColor.GREEN + "Requesting the server...");
                     Sputnik.startRoom(player);
-                    BossMenu.ableToJoin.put(player, false);
-                    BossMenu.cooldownCata.put(player, true);
+                    ableToJoin.put(player, false);
+                    cooldownCata.put(player, true);
                     SUtil.delay(() -> {
-                        final Object val$player = player;
-                        BossMenu.cooldownCata.put(player, false);
+                        cooldownCata.put(player, false);
                     }, 1200L);
-                } else if (!BossMenu.ableToJoin.get(player)) {
+                } else if (!ableToJoin.get(player)) {
                     player.sendMessage(ChatColor.RED + "Cannot send request! Already requesting?");
-                } else if (BossMenu.cooldownCata.get(player)) {
+                } else if (cooldownCata.get(player)) {
                     player.sendMessage(ChatColor.RED + "You are on cooldown! Please try again!");
                 } else {
                     player.sendMessage(ChatColor.RED + "You're already playing!");
@@ -126,13 +125,13 @@ public class BossMenu extends GUI {
                 final Skill skill = CombatSkill.INSTANCE;
                 final double xp = (skill != null) ? user.getSkillXP(skill) : 0.0;
                 final int level = (skill != null) ? Skill.getLevel(xp, skill.hasSixtyLevels()) : 0;
-                if (level >= 5) {
+                if (level >= 5 || player.isOp()) {
                     isEnough = true;
                 }
                 if (isEnough) {
                     lore = "&eClick to send join request!";
                 }
-                if (BossMenu.cooldownCata.containsKey(player) && BossMenu.cooldownCata.get(player)) {
+                if (cooldownCata.containsKey(player) && cooldownCata.get(player)) {
                     lore = "&cYou're currently on cooldown!";
                 }
                 itemstack = SUtil.getSkullURLStack(ChatColor.RED + "Demo Catacombs - Floor VI", "6a40675d333adcca75b35b6ba29b4fd7e5eaeb998395295385b494128715dab3", 1, Sputnik.trans("&7This floor is a &ademo floor&7,"), ChatColor.GRAY + "which mean there're no teammates, dungeon", ChatColor.GRAY + "just the F6 boss (You will solo it)", " ", Sputnik.trans("&7Boss: &cSadan"), Sputnik.trans("&8Necromancer Lord"), ChatColor.GRAY + "Necromancy was always strong in his", ChatColor.GRAY + "family. Says he once beat a", ChatColor.GRAY + "Wither in a duel. Likes to brag.", " ", Sputnik.trans("&7Requires: &bCombat Level V"), " ", Sputnik.trans(lore));
@@ -142,7 +141,7 @@ public class BossMenu extends GUI {
     }
 
     static {
-        ableToJoin = new HashMap<Player, Boolean>();
-        cooldownCata = new HashMap<Player, Boolean>();
+        ableToJoin = new HashMap<>();
+        cooldownCata = new HashMap<>();
     }
 }
