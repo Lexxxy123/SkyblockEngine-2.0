@@ -247,7 +247,7 @@ public class WorldListener extends PListener {
     public void onPortalEnter(final EntityPortalEnterEvent e) {
         final Material portalType = e.getLocation().getBlock().getType();
         final Entity entity = e.getEntity();
-        if (WorldListener.ALREADY_TELEPORTING.contains(entity.getUniqueId())) {
+        if (ALREADY_TELEPORTING.contains(entity.getUniqueId())) {
             return;
         }
         if (portalType == Material.PORTAL) {
@@ -256,16 +256,16 @@ public class WorldListener extends PListener {
                 entity.sendMessage(ChatColor.RED + "Could not find a hub world to teleport you to!");
                 return;
             }
-            WorldListener.ALREADY_TELEPORTING.add(entity.getUniqueId());
-            SUtil.delay(() -> WorldListener.ALREADY_TELEPORTING.remove(entity.getUniqueId()), 15L);
+            ALREADY_TELEPORTING.add(entity.getUniqueId());
+            SUtil.delay(() -> ALREADY_TELEPORTING.remove(entity.getUniqueId()), 15L);
             entity.sendMessage(ChatColor.GRAY + "Sending you to the hub...");
             entity.teleport(hub.getSpawnLocation());
         } else {
             if (!(entity instanceof Player)) {
                 return;
             }
-            WorldListener.ALREADY_TELEPORTING.add(entity.getUniqueId());
-            SUtil.delay(() -> WorldListener.ALREADY_TELEPORTING.remove(entity.getUniqueId()), 15L);
+            ALREADY_TELEPORTING.add(entity.getUniqueId());
+            SUtil.delay(() -> ALREADY_TELEPORTING.remove(entity.getUniqueId()), 15L);
             entity.sendMessage(ChatColor.GRAY + "Sending you to your island...");
             SkyblockIsland.getIsland(entity.getUniqueId()).send();
         }
@@ -296,19 +296,19 @@ public class WorldListener extends PListener {
     }
 
     private static void addToRestorer(final Block block, final Player player) {
-        if (WorldListener.RESTORER.containsKey(player.getUniqueId())) {
-            WorldListener.RESTORER.get(player.getUniqueId()).add(block.getState());
+        if (RESTORER.containsKey(player.getUniqueId())) {
+            RESTORER.get(player.getUniqueId()).add(block.getState());
         } else {
-            WorldListener.RESTORER.put(player.getUniqueId(), new ArrayList<BlockState>());
-            WorldListener.RESTORER.get(player.getUniqueId()).add(block.getState());
+            RESTORER.put(player.getUniqueId(), new ArrayList<BlockState>());
+            RESTORER.get(player.getUniqueId()).add(block.getState());
             new BukkitRunnable() {
                 public void run() {
-                    for (final BlockState state : WorldListener.RESTORER.get(player.getUniqueId())) {
+                    for (final BlockState state : RESTORER.get(player.getUniqueId())) {
                         state.getBlock().setType(state.getType());
                         state.setRawData(state.getRawData());
                         state.update();
                     }
-                    WorldListener.RESTORER.remove(player.getUniqueId());
+                    RESTORER.remove(player.getUniqueId());
                 }
             }.runTaskLater(SkyBlock.getPlugin(), 1200L);
         }
@@ -423,16 +423,39 @@ public class WorldListener extends PListener {
         e.getBlock().setMetadata("block_power", new FixedMetadataValue(SkyBlock.getPlugin(), 4));
     }
 
-    public static void c() {
-        SkyBlock.getPTC().addPacketListener(new PacketAdapter(SkyBlock.getPlugin(), ListenerPriority.HIGHEST, PacketType.Play.Client.BLOCK_DIG) {
+    public static void init() {
+        blb.add(Material.BEDROCK);
+        blb.add(Material.COMMAND);
+        blb.add(Material.BARRIER);
+        blb.add(Material.ENDER_PORTAL_FRAME);
+        blb.add(Material.ENDER_PORTAL);
+
+        SkyBlock.getProtocolManager().addPacketListener(new PacketAdapter(SkyBlock.getPlugin(), ListenerPriority.HIGHEST, PacketType.Play.Client.BLOCK_DIG) {
             public void onPacketReceiving(final PacketEvent event) {
                 final PacketContainer packet = event.getPacket();
                 final EnumWrappers.PlayerDigType digType = packet.getPlayerDigTypes().getValues().get(0);
                 if (event.getPlayer() != null) {
-                    WorldListener.isCM.put(event.getPlayer().getUniqueId(), digType);
+                    isCM.put(event.getPlayer().getUniqueId(), digType);
                 }
             }
         });
+    }
+
+    public static void unloadBlocks() {
+        if (changed_blocks.isEmpty()) {
+            return;
+        }
+        for (final Block block : changed_blocks) {
+            if (CACHED_BLOCK_ID.containsKey(block) && CACHED_BLOCK_BYTE.containsKey(block)) {
+                final int id = CACHED_BLOCK_ID.get(block);
+                final byte data = CACHED_BLOCK_BYTE.get(block);
+                block.setTypeIdAndData(id, data, true);
+                if (!changed_blocks.contains(block)) {
+                    continue;
+                }
+                changed_blocks.remove(block);
+            }
+        }
     }
 
     public double findDivFor(final double a) {
@@ -442,18 +465,18 @@ public class WorldListener extends PListener {
     }
 
     public int getPlayerMiningSpeed(final Player p) {
-        if (WorldListener.miningSpeed.containsKey(p.getUniqueId())) {
-            return WorldListener.miningSpeed.get(p.getUniqueId());
+        if (miningSpeed.containsKey(p.getUniqueId())) {
+            return miningSpeed.get(p.getUniqueId());
         }
-        WorldListener.miningSpeed.put(p.getUniqueId(), 100);
+        miningSpeed.put(p.getUniqueId(), 100);
         return 600;
     }
 
     public int getPlayerBreakingPower(final Player p) {
-        if (WorldListener.breakingPower.containsKey(p.getUniqueId())) {
-            return WorldListener.breakingPower.get(p.getUniqueId());
+        if (breakingPower.containsKey(p.getUniqueId())) {
+            return breakingPower.get(p.getUniqueId());
         }
-        WorldListener.breakingPower.put(p.getUniqueId(), 8);
+        breakingPower.put(p.getUniqueId(), 8);
         return 8;
     }
 
@@ -478,7 +501,7 @@ public class WorldListener extends PListener {
         if (blockHardness == 0.0) {
             blockHardness = 15.0;
         }
-        if (WorldListener.blb.contains(b.getType())) {
+        if (blb.contains(b.getType())) {
             blockHardness = 2.0E10;
         }
         finalResult = blockHardness * 30.0 / this.getPlayerMiningSpeed(p);
@@ -523,7 +546,7 @@ public class WorldListener extends PListener {
         } else {
             blockHardness = this.miningValueForMaterial(b.getType());
         }
-        if (WorldListener.blb.contains(b.getType())) {
+        if (blb.contains(b.getType())) {
             blockHardness = 2.0E10;
         }
         finalResult = blockHardness * 30.0 / this.getPlayerMiningSpeed(p);
@@ -604,7 +627,7 @@ public class WorldListener extends PListener {
         breakingPower = new HashMap<UUID, Integer>();
         CACHED_BLOCK_ID = new HashMap<Block, Integer>();
         CACHED_BLOCK_BYTE = new HashMap<Block, Byte>();
-        WorldListener.blb = new ArrayList<Material>();
-        WorldListener.changed_blocks = new ArrayList<Block>();
+        blb = new ArrayList<Material>();
+        changed_blocks = new ArrayList<Block>();
     }
 }

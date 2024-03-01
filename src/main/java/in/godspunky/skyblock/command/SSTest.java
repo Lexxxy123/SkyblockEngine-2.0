@@ -63,7 +63,7 @@ public class SSTest extends SCommand {
                 if (args[0].contains("vlw")) {
                     PacketInvoker.dropVoidSpawner(player, player.getLocation());
                 } else if (args[0].contains("bung")) {
-                    SkyBlock.getPlugin().updateServerName(player);
+
                 } else if (args[0].contains("putitemstash")) {
                     if (player.getItemInHand() != null) {
                         if (player.getItemInHand().getType() == Material.AIR) {

@@ -1,16 +1,17 @@
 package in.godspunky.skyblock.item;
 
+import in.godspunky.skyblock.util.Groups;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import in.godspunky.skyblock.user.User;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public abstract class Recipe<T> {
     protected static final List<List<SMaterial>> EXCHANGEABLES;
     protected SItem result;
+    @lombok.Setter
     protected boolean useExchangeables;
 
     protected Recipe(final SItem result, final boolean useExchangeables) {
@@ -89,16 +90,44 @@ public abstract class Recipe<T> {
         return null;
     }
 
+
+    public static void loadRecipes(){
+        final Iterator<org.bukkit.inventory.Recipe> iter = Bukkit.recipeIterator();
+        while (iter.hasNext()) {
+            final org.bukkit.inventory.Recipe recipe = iter.next();
+            if (recipe.getResult() == null) {
+                continue;
+            }
+            final Material result = recipe.getResult().getType();
+            if (recipe instanceof org.bukkit.inventory.ShapedRecipe) {
+                final org.bukkit.inventory.ShapedRecipe shaped = (org.bukkit.inventory.ShapedRecipe) recipe;
+                final in.godspunky.skyblock.item.ShapedRecipe specShaped = new in.godspunky.skyblock.item.ShapedRecipe(SItem.convert(shaped.getResult()), Groups.EXCHANGEABLE_RECIPE_RESULTS.contains(result)).shape(shaped.getShape());
+                for (final Map.Entry<Character, ItemStack> entry : shaped.getIngredientMap().entrySet()) {
+                    if (entry.getValue() == null) {
+                        continue;
+                    }
+                    final ItemStack stack = entry.getValue();
+                    specShaped.set(entry.getKey(), SMaterial.getSpecEquivalent(stack.getType(), stack.getDurability()), stack.getAmount(), true);
+                }
+            }
+            if (!(recipe instanceof org.bukkit.inventory.ShapelessRecipe)) {
+                continue;
+            }
+            final org.bukkit.inventory.ShapelessRecipe shapeless = (org.bukkit.inventory.ShapelessRecipe) recipe;
+            final in.godspunky.skyblock.item.ShapelessRecipe specShapeless = new in.godspunky.skyblock.item.ShapelessRecipe(SItem.convert(shapeless.getResult()), Groups.EXCHANGEABLE_RECIPE_RESULTS.contains(result));
+            for (final ItemStack stack2 : shapeless.getIngredientList()) {
+                specShapeless.add(SMaterial.getSpecEquivalent(stack2.getType(), stack2.getDurability()), stack2.getAmount(), true);
+            }
+        }
+
+    }
+
     public SItem getResult() {
         return this.result;
     }
 
     public boolean isUseExchangeables() {
         return this.useExchangeables;
-    }
-
-    public void setUseExchangeables(final boolean useExchangeables) {
-        this.useExchangeables = useExchangeables;
     }
 
     static {

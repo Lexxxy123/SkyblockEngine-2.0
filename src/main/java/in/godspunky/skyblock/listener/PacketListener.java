@@ -91,9 +91,7 @@ public class PacketListener extends PListener {
     @EventHandler
     void onPing(SkySimServerPingEvent e) {
         PingReply pr = e.getPingReply();
-        if (!Bukkit.getServer().getOnlineMode() && 0 < Bukkit.getOnlinePlayers().size()) {
-            SkyBlock.getPlugin().updateServerPlayerCount();
-        }
+
         if (Bukkit.getServer().hasWhitelist()) {
             pr.setProtocolName(ChatColor.RED + "Maintenance");
             List<String> sample = new ArrayList<String>();

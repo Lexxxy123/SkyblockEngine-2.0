@@ -1,6 +1,11 @@
 package in.godspunky.skyblock.features.calendar;
 
 import in.godspunky.skyblock.SkyBlock;
+import in.godspunky.skyblock.util.SLog;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.HumanEntity;
 
 import java.util.Arrays;
 import java.util.List;
@@ -42,6 +47,24 @@ public final class SkyBlockCalendar {
         final SkyBlock plugin = SkyBlock.getPlugin();
         plugin.config.set("timeElapsed", SkyBlockCalendar.ELAPSED);
         plugin.config.save();
+    }
+
+    public static void synchronize(){
+        SkyBlockCalendar.ELAPSED = SkyBlock.getPlugin().config.getLong("timeElapsed");
+
+        for (final World world : Bukkit.getWorlds()) {
+            for (final Entity entity : world.getEntities()) {
+                if (entity instanceof HumanEntity) {
+                    continue;
+                }
+                entity.remove();
+            }
+            int time = (int) (SkyBlockCalendar.ELAPSED % 24000L - 6000L);
+            if (time < 0) {
+                time += 24000;
+            }
+            world.setTime(time);
+        }
     }
 
     static {

@@ -98,11 +98,6 @@ public class PlayerListener extends PListener {
     public void onPlayerJoin(final PlayerJoinEvent e) {
         final Player player = e.getPlayer();
         this.getIsNotLoaded().put(player.getUniqueId(), true);
-        SUtil.delay(() -> {
-            if (player.isOnline()) {
-                SkyBlock.getPlugin().updateServerName(player);
-            }
-        }, 10L);
 
         SUtil.delay(() -> {
             PlayerUtils.USER_SESSION_ID.put(player.getUniqueId(), UUID.randomUUID());

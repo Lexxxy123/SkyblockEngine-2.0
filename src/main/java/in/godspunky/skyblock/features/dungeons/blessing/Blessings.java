@@ -165,7 +165,7 @@ public class Blessings {
     }
 
     public static void update() {
-        sse.async(() -> {
+        SUtil.runAsync(() -> {
             for (final Player p : Bukkit.getOnlinePlayers()) {
                 final World w = p.getWorld();
                 if (null == User.getUser(p.getUniqueId()) || !BLESSINGS_MAP.containsKey(w)) continue;

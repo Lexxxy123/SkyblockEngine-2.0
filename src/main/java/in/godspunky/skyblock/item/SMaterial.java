@@ -1242,6 +1242,15 @@ public enum SMaterial {
         MINICHAD_SET = registerArmorSet(MinichadSet.class);
     }
 
+    public static void loadItems(){
+        for (SMaterial material : SMaterial.values()) {
+            if (material.hasClass()) {
+                if (material.getStatistics() == null) continue;
+                material.getStatistics().load();
+            }
+        }
+    }
+
     public enum VagueEntityMaterial {
         HELMET,
         CHESTPLATE,
