@@ -1,18 +1,24 @@
 package in.godspunky.skyblock.command;
 
 import in.godspunky.skyblock.SkyBlock;
+import in.godspunky.skyblock.api.protocol.PacketFactory1_8_R3;
 import in.godspunky.skyblock.features.collection.ItemCollection;
 import in.godspunky.skyblock.features.dungeons.blessing.BlessingType;
 import in.godspunky.skyblock.features.dungeons.blessing.Blessings;
 import in.godspunky.skyblock.features.dungeons.stats.ItemSerial;
+import net.minecraft.server.v1_8_R3.EntityVillager;
+import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntityLiving;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftVillager;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import in.godspunky.skyblock.entity.dimoon.Arena;
-import in.godspunky.skyblock.entity.dimoon.DimoonLootTable;
 import in.godspunky.skyblock.entity.dungeons.watcher.Watcher;
 import in.godspunky.skyblock.api.protocol.PacketInvoker;
 import in.godspunky.skyblock.gui.ConfirmWitherRuins;
@@ -84,10 +90,14 @@ public class SSTest extends SCommand {
                     Sputnik.makeChestBlessings(player.getLocation(), new Blessings(BlessingType.valueOf(args[1]), Integer.parseInt(args[2]), player.getWorld()), Boolean.parseBoolean(args[3]), Byte.parseByte(args[4]));
                 } else if (args[0].contains("citem")) {
                     Sputnik.makeChestItemLoot(player.getLocation(), player.getItemInHand(), Boolean.parseBoolean(args[3]), Byte.parseByte(args[4]));
-                } else if (args[0].contains("post")) {
-                    Arena.cleanArena();
-                } else if (args[0].contains("cal")) {
-                    new DimoonLootTable(player, Integer.parseInt(args[1]), Integer.parseInt(args[2])).roll().forEach(list -> list.forEach(item -> player.sendMessage(item.getItem().getType().toString())));
+                } else if (args[0].equals("npc")) {
+                    player.sendMessage("Spawning npc1!");
+                    CraftVillager villager = new CraftVillager(((CraftServer) Bukkit.getServer()) , new EntityVillager(((CraftWorld) player.getLocation().getWorld()).getHandle()));
+                    PacketPlayOutSpawnEntityLiving packetPlayOutSpawnEntityLiving = new PacketPlayOutSpawnEntityLiving(villager.getHandle());
+                    ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packetPlayOutSpawnEntityLiving);
+                } else if (args[0].equals("npc2")) {
+                    System.out.println("spawning npc2");
+                    PacketFactory1_8_R3.createPacketVillagerSpawn(player.getLocation()).send(player);
                 } else if (args[0].contains("ruins")) {
                     new ConfirmWitherRuins().open(player);
                 } else if (args[0].contains("musicbgm")) {

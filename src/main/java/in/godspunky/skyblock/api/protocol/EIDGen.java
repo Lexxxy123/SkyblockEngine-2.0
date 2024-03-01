@@ -1,9 +1,9 @@
 package in.godspunky.skyblock.api.protocol;
 
-class EIDGen {
+public class EIDGen {
     private static int lastIssuedEID;
 
-    static int generateEID() {
+   public static int generateEID() {
         int i = lastIssuedEID;
         lastIssuedEID++;
         return i;

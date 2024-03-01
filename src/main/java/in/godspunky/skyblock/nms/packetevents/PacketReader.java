@@ -8,8 +8,8 @@ import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayInUseEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import in.godspunky.skyblock.npc.SkyblockNPC;
-import in.godspunky.skyblock.npc.SkyblockNPCManager;
+import in.godspunky.skyblock.npc.impl.SkyblockNPC;
+import in.godspunky.skyblock.npc.impl.SkyblockNPCManager;
 import in.godspunky.skyblock.user.User;
 
 import java.lang.reflect.Field;

@@ -5,7 +5,11 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.reflect.accessors.Accessors;
 import com.comphenix.protocol.utility.MinecraftReflection;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
+import net.minecraft.server.v1_8_R3.EntitySquid;
+import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntityLiving;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftSquid;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftVillager;
 import org.bukkit.entity.Entity;
 
 public class PacketFactory1_8_R3 {
@@ -24,6 +28,19 @@ public class PacketFactory1_8_R3 {
         container.getDataWatcherModifier().write(0, wrapper);
         return new WrappedBeamPacket(container);
     }
+
+    public static WrappedVillagerPacket createPacketVillagerSpawn(Location location){
+        PacketContainer container = new PacketContainer(PacketType.Play.Server.SPAWN_ENTITY_LIVING);
+        container.getIntegers().write(0, EIDGen.generateEID());
+        container.getIntegers().write(1, 120);
+        container.getIntegers().write(2, (int) Math.floor(location.getX() * 32.0));
+        container.getIntegers().write(3, (int) Math.floor(location.getY() * 32.0));
+        container.getIntegers().write(4, (int) Math.floor(location.getZ() * 32.0));
+        container.getBytes().write(0, (byte) (location.getYaw() * 256.0f / 360.0f));
+        container.getBytes().write(1, (byte) (location.getPitch() * 256.0f / 360.0f));
+        return new WrappedVillagerPacket(container);
+    }
+
 
     public static WrappedBeamPacket createPacketGuardianSpawn(Location location, WrappedBeamPacket squidPacket) {
         Entity fakeGuardian = (Entity) Accessors.getConstructorAccessor(MinecraftReflection.getCraftBukkitClass("entity.CraftGuardian"), new Class[]{MinecraftReflection.getCraftBukkitClass("CraftServer"), MinecraftReflection.getMinecraftClass("EntityGuardian")}).invoke(new Object[]{null, Accessors.getConstructorAccessor(MinecraftReflection.getMinecraftClass("EntityGuardian"), new Class[]{MinecraftReflection.getNmsWorldClass()}).invoke(new Object[]{null})});

@@ -513,8 +513,8 @@ public class Repeater {
                         coinsDisplay.append("Purse: ");
                     }
                     sidebar.add(coinsDisplay.append(ChatColor.GOLD).append(SUtil.commaify(user.getCoins())) + ".0" + ChatColor.YELLOW);
-                    final String bits = PlaceholderAPI.setPlaceholders(player, "%royaleeconomy_balance_purse%") + " " + PlaceholderAPI.setPlaceholders(player, "%royaleeconomy_dynamic_coins%");
-                    sidebar.add("Bits: " + ChatColor.AQUA + bits);
+
+                    sidebar.add("Bits: " + ChatColor.AQUA + user.getBits());
                     sidebar.add("   ");
                     final SlayerQuest quest = user.getSlayerQuest();
                     if ((!StaticDragonManager.ACTIVE || StaticDragonManager.DRAGON == null || !player.getWorld().getName().equalsIgnoreCase("dragon")) && quest != null && (quest.getDied() == 0L || quest.getKilled() != 0L)) {

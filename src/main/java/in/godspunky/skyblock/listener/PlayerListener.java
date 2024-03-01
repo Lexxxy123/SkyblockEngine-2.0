@@ -54,8 +54,8 @@ import in.godspunky.skyblock.gui.PetsGUI;
 import in.godspunky.skyblock.gui.ProfileViewerGUI;
 import in.godspunky.skyblock.item.SBlock;
 import in.godspunky.skyblock.item.SMaterial;
-import in.godspunky.skyblock.npc.SkyblockNPC;
-import in.godspunky.skyblock.npc.SkyblockNPCManager;
+import in.godspunky.skyblock.npc.impl.SkyblockNPC;
+import in.godspunky.skyblock.npc.impl.SkyblockNPCManager;
 
 import java.io.IOException;
 import java.lang.reflect.Field;

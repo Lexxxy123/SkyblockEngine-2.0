@@ -31,7 +31,7 @@ import in.godspunky.skyblock.listener.ServerPingListener;
 import in.godspunky.skyblock.listener.WorldListener;
 import in.godspunky.skyblock.features.merchant.MerchantItemHandler;
 import in.godspunky.skyblock.nms.packetevents.*;
-import in.godspunky.skyblock.npc.SkyblockNPC;
+import in.godspunky.skyblock.npc.impl.SkyblockNPC;
 import in.godspunky.skyblock.features.region.Region;
 import in.godspunky.skyblock.features.region.RegionType;
 import in.godspunky.skyblock.server.ServerVersion;
@@ -56,7 +56,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.bukkit.potion.PotionEffect;
@@ -74,7 +73,7 @@ import in.godspunky.skyblock.nms.nmsutil.packetlistener.metrics.Metrics;
 import in.godspunky.skyblock.nms.pingrep.PingAPI;
 import in.godspunky.skyblock.nms.pingrep.PingEvent;
 import in.godspunky.skyblock.nms.pingrep.PingListener;
-import in.godspunky.skyblock.npc.SkyblockNPCManager;
+import in.godspunky.skyblock.npc.impl.SkyblockNPCManager;
 import in.godspunky.skyblock.sql.SQLDatabase;
 import in.godspunky.skyblock.sql.SQLRegionData;
 import in.godspunky.skyblock.sql.SQLWorldData;
@@ -91,6 +90,8 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
     private final PacketHelper packetInj;
 
     public static final boolean dimoonEnabled = false;
+
+    public static final String[] DEVELOPERS = {"Hamza" , "EpicPortal" , "Dumbo"};
 
     public Arena arena;
     public Dimoon dimoon;
@@ -167,7 +168,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
         this.regionData = new SQLRegionData();
         this.worldData = new SQLWorldData();
         this.cl = new CommandLoader();
-        SLog.info("Begin Protocol injection... (SkySimProtocol v0.6.2)");
+        SLog.info("Begin Protocol injection... (SkyBlockProtocol v0.6.2)");
         APIManager.registerAPI(this.packetInj, this);
         if (!this.packetInj.injected) {
             this.getLogger().warning("[FATAL ERROR] Protocol Injection failed. Disabling the plugin for safety...");
@@ -254,7 +255,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
                 specShapeless.add(SMaterial.getSpecEquivalent(stack2.getType(), stack2.getDurability()), stack2.getAmount(), true);
             }
         }
-        SLog.info("Hooking SkySimEngine to PlaceholderAPI and registering...");
+        SLog.info("Hooking SkyBlockEngine to PlaceholderAPI and registering...");
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new SkyblockPlaceholder().register();
             SLog.info("Hooked to PAPI successfully!");
@@ -271,11 +272,11 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
         WorldListener.c();
         SLog.info("Successfully enabled " + this.getDescription().getFullName());
         SLog.info("===================================");
-        SLog.info("SKYSIM ENGINE - MADE BY EpicPortal & Hamza");
-        SLog.info("PLUGIN ENABLED! HOOKED INTO SSS!");
+        SLog.info("SkyBlock ENGINE - MADE BY " + getDevelopersName());
+        SLog.info("PLUGIN ENABLED! HOOKED INTO SkyBlock!");
         SLog.info(" ");
-        SLog.info("This plugin provide SkySim most functions!");
-        SLog.info("Originally made by super (Slayers code used)");
+        SLog.info("This plugin provide most of SkyBlock functions!");
+        SLog.info("Originally was made by super");
         SLog.info("Made by GiaKhanhVN (C) 2021");
         SLog.info("Any illegal usage will be suppressed! DO NOT LEAK IT!");
         SLog.info("===================================");
@@ -311,6 +312,8 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
             Arena.cleanArena();
         }
     }
+
+
 
     public void onDisable() {
         SLog.info("Killing all non-human entities...");
@@ -352,7 +355,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
         }
         SLog.info("Disabled " + this.getDescription().getFullName());
         SLog.info("===================================");
-        SLog.info("SKYSIM ENGINE - MADE BY GIAKHANHVN");
+        SLog.info("SkyBlock ENGINE - MADE BY GIAKHANHVN");
         SLog.info("PLUGIN DISABLED!");
         SLog.info("===================================");
     }
@@ -515,6 +518,16 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener, Bunge
             }
         }.runTaskAsynchronously(SkyBlock.plugin);
     }
+
+    public String getDevelopersName(){
+        StringBuilder builder = new StringBuilder();
+        for (String name : DEVELOPERS){
+            builder.append(name).append(" , ");
+        }
+        return builder.toString();
+    }
+
+
 
 
     public void onPluginMessageReceived(final String channel, final Player player, final byte[] message) {

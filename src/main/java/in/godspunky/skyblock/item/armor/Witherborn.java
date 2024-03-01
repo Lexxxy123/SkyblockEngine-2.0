@@ -81,7 +81,6 @@ public class Witherborn {
                     er.removeIf(en -> !(en instanceof LivingEntity));
                     er.removeIf(en -> en instanceof Player);
                     er.removeIf(en -> en instanceof ArmorStand);
-                    er.removeIf(en -> en instanceof Villager);
                     er.removeIf(en -> en.isDead());
                     if (er.size() > 0) {
                         final LivingEntity le = (LivingEntity) er.get(SUtil.random(0, er.size() - 1));

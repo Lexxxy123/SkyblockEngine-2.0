@@ -1,4 +1,6 @@
-package in.godspunky.skyblock.npc;
+package in.godspunky.skyblock.npc.impl;
+
+import in.godspunky.skyblock.npc.impl.SkyblockNPC;
 
 import java.util.HashSet;
 import java.util.Set;

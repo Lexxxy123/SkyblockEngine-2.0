@@ -1,7 +1,11 @@
-package in.godspunky.skyblock.npc;
+package in.godspunky.skyblock.npc.impl;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import in.godspunky.skyblock.npc.impl.enums.NPCType;
+import in.godspunky.skyblock.npc.impl.type.NPCBase;
+import in.godspunky.skyblock.npc.impl.type.impl.NPCPlayerImpl;
+import in.godspunky.skyblock.npc.impl.type.impl.NPCVillagerImpl;
 import in.godspunky.skyblock.user.User;
 import in.godspunky.skyblock.util.SUtil;
 import lombok.Getter;
@@ -10,11 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_8_R3.scoreboard.CraftScoreboard;
-import org.bukkit.craftbukkit.v1_8_R3.scoreboard.CraftScoreboardManager;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import in.godspunky.skyblock.SkyBlock;
@@ -24,94 +24,76 @@ import java.util.concurrent.CompletableFuture;
 
 @Getter
 public class SkyblockNPC {
-
-
     private final Set<UUID> viewers = new HashSet<>();
     private final static Set<UUID> ALREADY_TALKING = new HashSet<>();
+
     private final List<EntityArmorStand> holograms = new ArrayList<>();
     protected double cosFOV = Math.cos(Math.toRadians(60));
+
     private final String[] messages;
     private final UUID uuid;
+
     private final String name;
+    private final NPCType type;
+
     private final World world;
     private final Location location;
-    private final String texture;
-    private final String signature;
-    private final EntityPlayer entityPlayer;
+
+    private final NPCSkin skin;
+    private final NPCBase npcBase;
+
     private final GameProfile gameProfile;
     private final NPCParameters parameters;
 
 
-    public SkyblockNPC(NPCParameters npc){
+    public SkyblockNPC(NPCParameters npcParameters){
         this.uuid = UUID.randomUUID();
-        this.name = npc.name();
-        this.world = Bukkit.getWorld(npc.world());
-        this.messages = npc.messages();
+        this.name = npcParameters.name();
+        this.type = npcParameters.type();
+        this.world = Bukkit.getWorld(npcParameters.world());
+        this.messages = npcParameters.messages();
         if (world == null) {
             throw new NullPointerException("World cannot be null for npc : " + name);
         }
-        this.location = new Location(world, npc.x() , npc.y() , npc.z() , npc.yaw() , npc.pitch());
-        this.texture = npc.texture();
-        this.signature = npc.signature();
-        MinecraftServer minecraftServer = ((CraftServer) Bukkit.getServer()).getServer();
-        WorldServer worldServer = ((CraftWorld) location.getWorld()).getHandle();
+        this.location = new Location(world, npcParameters.x() , npcParameters.y() , npcParameters.z() , npcParameters.yaw() , npcParameters.pitch());
+        this.skin = npcParameters.skin();
         this.gameProfile = new GameProfile(uuid , name);
-        // skin
-        if (texture != null && signature != null) {
-            gameProfile.getProperties().put(
-                    "textures",
-                    new Property("textures",
-                            texture,
-                            signature
-                    )
+
+        if (type == NPCType.VILLAGER){
+            this.npcBase = new NPCVillagerImpl(
+                    location
+            );
+        } else {
+            if (skin != null) {
+                if (skin.getTexture() != null && skin.getSignature() != null) {
+                    gameProfile.getProperties().put(
+                            "textures",
+                            new Property("textures",
+                                    skin.getTexture(),
+                                    skin.getSignature()
+                            )
+                    );
+                }
+            }
+            this.npcBase = new NPCPlayerImpl(
+                    location,
+                    gameProfile
             );
         }
-        PlayerInteractManager interactManager = new PlayerInteractManager(worldServer);
-        this.entityPlayer = new EntityPlayer(
-                minecraftServer,
-                worldServer,
-                gameProfile,
-                interactManager
-        );
-        entityPlayer.setLocation(
-                location.getX(),
-                location.getY(),
-                location.getZ(),
-                location.getYaw(),
-                location.getPitch()
-        );
-        this.parameters = npc;
+
+        npcBase.setLocation(location);
+        this.parameters = npcParameters;
         SkyblockNPCManager.registerNPC(this);
 
     }
     public void showTo(Player player){
         if (viewers.contains(player.getUniqueId())) return;
-        PacketPlayOutPlayerInfo packetPlayOutPlayerInfo = new PacketPlayOutPlayerInfo(
-                PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER,
-                entityPlayer
-        );
-        PacketPlayOutNamedEntitySpawn packetPlayOutNamedEntitySpawn = new PacketPlayOutNamedEntitySpawn(
-                entityPlayer
-        );
-        sendPacket(player , packetPlayOutPlayerInfo);
-        sendPacket(player , packetPlayOutNamedEntitySpawn);
+        npcBase.show(player);
+        npcBase.hideNameTag(player);
 
-        CraftScoreboardManager scoreboardManager = ((CraftServer) Bukkit.getServer()).getScoreboardManager();
-        CraftScoreboard craftScoreboard = scoreboardManager.getMainScoreboard();
-        Scoreboard scoreboard = craftScoreboard.getHandle();
-
-        ScoreboardTeam scoreboardTeam = scoreboard.getTeam(name);
-        if (scoreboardTeam == null){
-            scoreboardTeam = new ScoreboardTeam(scoreboard , name);
-        }
-        scoreboardTeam.setNameTagVisibility(ScoreboardTeamBase.EnumNameTagVisibility.NEVER);
-        scoreboardTeam.setPrefix("[NPC] ");
-
-        sendPacket(player, new PacketPlayOutScoreboardTeam(scoreboardTeam, 1));
-        sendPacket(player, new PacketPlayOutScoreboardTeam(scoreboardTeam, 0));
-        sendPacket(player, new PacketPlayOutScoreboardTeam(scoreboardTeam, Collections.singletonList(name), 3));
         sendHologram(player , getParameters().holograms());
         this.viewers.add(player.getUniqueId());
+
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -130,38 +112,17 @@ public class SkyblockNPC {
     public void hideFrom(Player player) {
         if (!viewers.contains(player.getUniqueId())) return;
         viewers.remove(player.getUniqueId());
-        PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy(entityPlayer.getId());
-        sendPacket(player, packet);
+        npcBase.hide(player);
         removeHolograms(player);
     }
 
     public void sendHeadRotationPacket(Player player) {
-        Location original = getLocation();
-        Location location = original.clone().setDirection(player.getLocation().subtract(original.clone()).toVector());
+        npcBase.sendRotation(player);
 
-        byte yaw = (byte) (location.getYaw() * 256 / 360);
-        byte pitch = (byte) (location.getPitch() * 256 / 360);
-
-        PacketPlayOutEntityHeadRotation headRotationPacket = new PacketPlayOutEntityHeadRotation(
-                this.entityPlayer,
-                yaw
-        );
-        sendPacket(player, headRotationPacket);
-
-        PacketPlayOutEntity.PacketPlayOutEntityLook lookPacket = new PacketPlayOutEntity.PacketPlayOutEntityLook(
-                getId(),
-                yaw,
-                pitch,
-                false
-        );
-        sendPacket(player, lookPacket);
     }
 
-    private int getId(){
-        return entityPlayer.getId();
-    }
     public int getEntityID(){
-        return entityPlayer.getBukkitEntity().getEntityId();
+        return npcBase.entityId();
     }
 
     public boolean isPlayerNearby(Player player) {
@@ -190,9 +151,6 @@ public class SkyblockNPC {
         return distanceSquared <= SUtil.square(hideDistance) && distanceSquared <= SUtil.square(bukkitRange);
     }
 
-
-
-
     public static void sendPacket(Player player, Packet<?> packet) {
         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
     }
@@ -210,7 +168,7 @@ public class SkyblockNPC {
             armorStand.setInvisible(true);
 
             PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving(armorStand);
-            ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+            sendPacket(player , packet);
 
             holograms.add(armorStand);
             yOffset -= DELTA;
