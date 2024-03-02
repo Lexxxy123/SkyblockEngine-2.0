@@ -24,8 +24,6 @@ public class SadanBossManager {
         }
         Sputnik.RunThisSession.put(Bukkit.getServer(), Sputnik.rf_() + 1);
         SUtil.delay(() -> r(plist, world), 1L);
-        SUtil.delay(() -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "rg flag __global__ -w " + world.getName() + " build deny"), 1L);
-        SUtil.delay(() -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "rg flag __global__ -w " + world.getName() + " pvp deny"), 2L);
         SUtil.delay(() -> new SEntity(new Location(world, 183.0, 100.0, 251.0), SEntityType.SADAN), 1L);
     }
 

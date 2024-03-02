@@ -184,6 +184,13 @@ public class Repeater {
                 }
             }
         }.runTaskTimer(SkyBlock.getPlugin(), 0L, 20L));
+        this.tasks.add(new BukkitRunnable() {
+            public void run() {
+                for (final Player p : Bukkit.getOnlinePlayers()) {
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 1000000, 255));
+                }
+            }
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L));
     }
 
     public void stop() {

@@ -36,14 +36,11 @@ public interface EntityFunction {
 
      default void nameTag(final LivingEntity entity, final SEntity sEntity, final SEntityType specType, final Object... params){
          Hologram hologram1 = new Hologram(entity.getLocation());
-         hologram1.setInvisible(true);
-         hologram1.setGravity(false);
          hologram1.setSmall(true);
-         hologram1.n(true);
          hologram1.setBasePlate(true);
          hologram1.setCustomNameVisible(false);
 
-         entity.setPassenger(hologram1.getBukkitEntity());
+         hologram1.mount(((CraftEntity)entity).getHandle());
          if (!entity.hasMetadata("LD")) {
              hologram1.remove();
          }
@@ -86,12 +83,6 @@ public interface EntityFunction {
          final double height = height_;
 
          Hologram hologram2 = new Hologram(entity.getLocation().add(0.0, height, 0.0));
-         hologram2.setInvisible(true);
-         hologram2.setGravity(false);
-         hologram2.setSmall(false);
-         hologram2.n(true);
-         hologram2.setBasePlate(false);
-         hologram2.setCustomNameVisible(true);
 
          boolean hideLVL = entity.hasMetadata("WATCHER_E");
 
@@ -107,8 +98,8 @@ public interface EntityFunction {
                      if (entity.hasMetadata("h_sadan")) {
                          hologram2.remove();
                      }
-                     EntityFunction.FIRST_STRIKE_MAP.remove(entity);
-                     hologram2.setCustomName(Sputnik.trans(Sputnik.entityNameTag(entity, Sputnik.buildcustomString(statistics.getEntityName(), statistics.mobLevel(), hideLVL))));
+                     FIRST_STRIKE_MAP.remove(entity);
+                     hologram2.setText(Sputnik.trans(Sputnik.entityNameTag(entity, Sputnik.buildcustomString(statistics.getEntityName(), statistics.mobLevel(), hideLVL))));
                      new BukkitRunnable() {
                          public void run() {
                              hologram2.remove();
@@ -129,15 +120,15 @@ public interface EntityFunction {
                  hologram2.teleport(entity.getLocation().clone().add(0.0, height, 0.0));
                  if (!entity.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
                      if (entity.hasMetadata("Boss")) {
-                         hologram2.setCustomName(Sputnik.trans("&e﴾ " + Sputnik.entityNameTag(entity, Sputnik.buildcustomString(statistics.getEntityName(), statistics.mobLevel(), true)) + " &e﴿"));
+                         hologram2.setText(Sputnik.trans("&e﴾ " + Sputnik.entityNameTag(entity, Sputnik.buildcustomString(statistics.getEntityName(), statistics.mobLevel(), true)) + " &e﴿"));
                      } else if (entity.hasMetadata("NNP")) {
-                         hologram2.setCustomName(statistics.getEntityName());
+                         hologram2.setText(statistics.getEntityName());
                      } else {
-                         hologram2.setCustomName(Sputnik.trans(Sputnik.entityNameTag(entity, Sputnik.buildcustomString(statistics.getEntityName(), statistics.mobLevel(), hideLVL))));
+                         hologram2.setText(Sputnik.trans(Sputnik.entityNameTag(entity, Sputnik.buildcustomString(statistics.getEntityName(), statistics.mobLevel(), hideLVL))));
                      }
                  }
              }
-         }.runTaskTimerAsynchronously(SkyBlock.getPlugin(), 0L, 0L);
+         }.runTaskTimer(SkyBlock.getPlugin(), 0L, 0L);
     }
 
     default void onSpawn(final LivingEntity entity, final SEntity sEntity) {
