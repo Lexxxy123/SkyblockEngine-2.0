@@ -1,6 +1,6 @@
 name: SkyBlockEngine
 version: 1.2-SNAPSHOT
-main: in.godspunky.skyblock.SkyBlock
+main: net.hypixel.skyblock.SkyBlock
 authors: [ Hamza , EpicPortal , Dumbo]
 description: GodSpunky SkyBlock Sandbox plugin Developed by Team GodSpunky
 
