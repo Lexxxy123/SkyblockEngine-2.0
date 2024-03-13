@@ -65,43 +65,7 @@ import net.hypixel.skyblock.item.weapon.vanilla.*;
 import net.hypixel.skyblock.util.SUtil;
 import org.bukkit.Material;
 import org.bukkit.inventory.PlayerInventory;
-import net.hypixel.skyblock.item.accessory.*;
-import net.hypixel.skyblock.item.armor.*;
-import net.hypixel.skyblock.item.armor.gigachad.*;
-import net.hypixel.skyblock.item.armor.lapis.*;
-import net.hypixel.skyblock.item.armor.miner.*;
-import net.hypixel.skyblock.item.armor.minichad.*;
-import net.hypixel.skyblock.item.armor.necron.*;
-import net.hypixel.skyblock.item.armor.sorrow.*;
-import net.hypixel.skyblock.item.armor.storm.*;
-import net.hypixel.skyblock.item.axe.vanilla.*;
 import net.hypixel.skyblock.item.bow.Terminator;
-import net.hypixel.skyblock.item.bow.*;
-import net.hypixel.skyblock.item.dragon.old.*;
-import net.hypixel.skyblock.item.dragon.protector.*;
-import net.hypixel.skyblock.item.dragon.strong.*;
-import net.hypixel.skyblock.item.dragon.superior.*;
-import net.hypixel.skyblock.item.dragon.unstable.*;
-import net.hypixel.skyblock.item.dragon.wise.*;
-import net.hypixel.skyblock.item.dragon.young.*;
-import net.hypixel.skyblock.item.enchanted.*;
-import net.hypixel.skyblock.item.entity.*;
-import net.hypixel.skyblock.item.farming.*;
-import net.hypixel.skyblock.item.foraging.*;
-import net.hypixel.skyblock.item.hoe.vanilla.*;
-import net.hypixel.skyblock.item.mining.*;
-import net.hypixel.skyblock.item.oddities.*;
-import net.hypixel.skyblock.item.orb.*;
-import net.hypixel.skyblock.item.pet.*;
-import net.hypixel.skyblock.item.pickaxe.vanilla.*;
-import net.hypixel.skyblock.item.revenant.*;
-import net.hypixel.skyblock.item.rune.*;
-import net.hypixel.skyblock.item.shovel.vanilla.*;
-import net.hypixel.skyblock.item.storage.*;
-import net.hypixel.skyblock.item.sven.*;
-import net.hypixel.skyblock.item.tarantula.*;
-import net.hypixel.skyblock.item.weapon.*;
-import net.hypixel.skyblock.item.weapon.vanilla.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -116,8 +80,7 @@ public enum SMaterial {
     HIDDEN_ETHERWARP_MERGER(Material.SKULL_ITEM, EtherwarpMerger.class),
     HIDDEN_ETHERWARP_TRANSCODER(Material.SKULL_ITEM, EtherwarpTranscoder.class),
     HIDDEN_USSR_HELMET(Material.STAINED_GLASS, BlyatHelmet.class, (short) 14),
-    HIDDEN_DONATOR_HELMET(Material.STAINED_GLASS, USSRHelmet.class, (short) 14),
-    HIDDEN_DT2_HELMET(Material.STAINED_GLASS, renegade450Helmet.class, (short) 14),
+    HIDDEN_DONATOR_HELMET(Material.STAINED_GLASS, DonatorHelmet.class, (short) 14),
     HIDDEN_GYROKINETIC_WAND(Material.BLAZE_ROD, GyrokineticWand.class),
     HIDDEN_GOLDEN_TIGER_2022(Material.SKULL_ITEM, GoldenTigerPet.class),
     HIDDEN_CHIMMY_PET(Material.SKULL_ITEM, ChimmyPet.class),
@@ -147,6 +110,8 @@ public enum SMaterial {
     EMERALD_BLADE(Material.EMERALD, EmeraldBlade.class),
     HYPERION(Material.IRON_SWORD, Hyperion.class),
     VALKYIRE(Material.IRON_SWORD, Valkyrie.class),
+
+    SPITIT_SCEPTRE(Material.RED_ROSE, (short) 2,  SpiritSceptre.class), // todo
 
     SCYLLA(Material.IRON_SWORD, Scylla.class),
     GIANTS_SWORD(Material.IRON_SWORD, GiantSword.class),
@@ -1013,6 +978,10 @@ public enum SMaterial {
 
     SMaterial(Material craftMaterial, short data, String baseName) {
         this(craftMaterial, data, null, true, baseName);
+    }
+
+    SMaterial(Material craftMaterial , short data , Class<?> clazz){
+        this(craftMaterial, data, clazz, false, null);
     }
 
     SMaterial(Material craftMaterial) {

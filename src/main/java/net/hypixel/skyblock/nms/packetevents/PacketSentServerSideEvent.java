@@ -1,7 +1,9 @@
 package net.hypixel.skyblock.nms.packetevents;
 
+import lombok.Getter;
 import net.hypixel.skyblock.nms.nmsutil.packetlistener.handler.SentPacket;
 import net.minecraft.server.v1_8_R3.Packet;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

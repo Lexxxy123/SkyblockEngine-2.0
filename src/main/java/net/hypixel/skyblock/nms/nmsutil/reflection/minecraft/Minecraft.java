@@ -73,7 +73,7 @@ public class Minecraft {
         nmsClassResolver = new NMSClassResolver();
         obcClassResolver = new OBCClassResolver();
         VERSION = Version.getVersion();
-        System.out.println("[SkySim Reflection Injector] Version is " + VERSION);
+        System.out.println("[SkyBlock Reflection Injector] Version is " + VERSION);
         try {
             NmsEntity = nmsClassResolver.resolve("Entity");
             CraftEntity = obcClassResolver.resolve("entity.CraftEntity");
@@ -137,8 +137,8 @@ public class Minecraft {
                     return version;
                 }
             }
-            System.err.println("[SkySim Reflection Injector] Failed to find version enum for '" + name + "'/'" + versionPackage + "'");
-            System.out.println("[SkySim Reflection Injector] Generating dynamic constant...");
+            System.err.println("[SkyBlock Reflection Injector] Failed to find version enum for '" + name + "'/'" + versionPackage + "'");
+            System.out.println("[SkyBlock Reflection Injector] Generating dynamic constant...");
             Matcher matcher = NUMERIC_VERSION_PATTERN.matcher(versionPackage);
             while (matcher.find()) {
                 if (3 > matcher.groupCount()) {
@@ -164,8 +164,8 @@ public class Minecraft {
                     Version dynamicVersion = (Version) newEnumInstance(Version.class, new Class[]{String.class, Integer.TYPE, Integer.TYPE}, new Object[]{packge, newValues.length - 1, numVersion});
                     newValues[newValues.length - 1] = dynamicVersion;
                     valuesField.set(null, newValues);
-                    System.out.println("[SkySim Reflection Injector] Injected dynamic version " + packge + " (#" + numVersion + ").");
-                    System.out.println("[SkySim Reflection Injector] Please inform inventivetalent about the outdated version, as this is not guaranteed to work.");
+                    System.out.println("[SkyBlock Reflection Injector] Injected dynamic version " + packge + " (#" + numVersion + ").");
+                    System.out.println("[SkyBlock Reflection Injector] Please inform inventivetalent about the outdated version, as this is not guaranteed to work.");
                     return dynamicVersion;
                 } catch (ReflectiveOperationException e) {
                     e.printStackTrace();

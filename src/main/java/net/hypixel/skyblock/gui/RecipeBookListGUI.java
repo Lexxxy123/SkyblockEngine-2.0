@@ -104,7 +104,7 @@ public class RecipeBookListGUI extends GUI {
     public void onOpen(final GUIOpenEvent e) {
         final Player player = e.getPlayer();
 
-        this.set(GUIClickableItem.createGUIOpenerItem(GUIType.SKYBLOCK_MENU, player, ChatColor.GREEN + "Go Back", 48, Material.ARROW, ChatColor.GRAY + "To SkySim Menu"));
+        this.set(GUIClickableItem.createGUIOpenerItem(GUIType.SKYBLOCK_MENU, player, ChatColor.GREEN + "Go Back", 48, Material.ARROW, ChatColor.GRAY + "To SkyBlock Menu"));
     }
 
     public RecipeBookListGUI(final String query, Player player) {

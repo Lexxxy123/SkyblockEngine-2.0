@@ -83,7 +83,7 @@ public abstract class PacketHandler {
                 }
                 handler.onSend(packet);
             } catch (final Exception e) {
-                System.err.println("[SkySim Protocol Injector] An exception occured while trying to execute 'onSend'" + ((handler.plugin != null) ? (" in plugin " + handler.plugin.getName()) : "") + ": " + e.getMessage());
+                System.err.println("[GodSpunky Protocol Injector] An exception occured while trying to execute 'onSend'" + ((handler.plugin != null) ? (" in plugin " + handler.plugin.getName()) : "") + ": " + e.getMessage());
                 e.printStackTrace(System.err);
             }
         }
@@ -103,7 +103,7 @@ public abstract class PacketHandler {
                 }
                 handler.onReceive(packet);
             } catch (final Exception e) {
-                System.err.println("[SkySim Protocol Injector] An exception occured while trying to execute 'onReceive'" + ((handler.plugin != null) ? (" in plugin " + handler.plugin.getName()) : "") + ": " + e.getMessage());
+                System.err.println("[GodSpunky Protocol Injector] An exception occured while trying to execute 'onReceive'" + ((handler.plugin != null) ? (" in plugin " + handler.plugin.getName()) : "") + ": " + e.getMessage());
                 e.printStackTrace(System.err);
             }
         }
@@ -184,7 +184,7 @@ public abstract class PacketHandler {
             final Object connection = PacketHandler.EntityPlayerFieldResolver.resolve("playerConnection").get(handle);
             PacketHandler.PlayerConnectionMethodResolver.resolve("sendPacket").invoke(connection, packet);
         } catch (final Exception e) {
-            System.err.println("[SkySim Protocol Injector] Exception while sending " + packet + " to " + p);
+            System.err.println("[SkyBlock Protocol Injector] Exception while sending " + packet + " to " + p);
             e.printStackTrace();
         }
     }

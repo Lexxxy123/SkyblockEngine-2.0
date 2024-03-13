@@ -27,7 +27,7 @@ public class ItemBrowserGUI extends GUI {
         pagedMaterials.removeIf(mat -> mat.name().toLowerCase().contains("menu"));
         pagedMaterials.removeIf(mat -> mat.name().toLowerCase().contains("quiver"));
         pagedMaterials.removeIf(mat -> Item.getById(mat.getCraftMaterial().getId()) == null);
-        if (!query.equals("")) {
+        if (!query.isEmpty()) {
             pagedMaterials.removeIf(material -> !material.name().toLowerCase().contains(query.replaceAll(" ", "_").toLowerCase()));
         }
         if (pagedMaterials.size() == 0) {

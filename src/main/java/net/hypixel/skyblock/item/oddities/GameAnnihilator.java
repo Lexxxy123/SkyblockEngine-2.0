@@ -26,7 +26,7 @@ public class GameAnnihilator implements MaterialStatistics, MaterialFunction, Sk
 
     @Override
     public String getLore() {
-        return "This item was given to a player who reported enough bugs to make the SkySim developers cry.";
+        return "This item was given to a player who reported enough bugs to make the SkyBlock developers cry.";
     }
 
     @Override

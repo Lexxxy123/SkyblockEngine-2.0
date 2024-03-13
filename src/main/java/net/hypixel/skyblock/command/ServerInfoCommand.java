@@ -6,7 +6,8 @@ import net.hypixel.skyblock.SkyBlock;
 public class ServerInfoCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
-        this.send("&aYou're playing on &cSkySim Network &bBeta 2");
+        // todo - change it
+        this.send("&aYou're playing on &cSkyBlock Network &bBeta 2");
         try {
             this.send("&7Server Version: &a" + SkyBlock.getPlugin().getServerVersion().readableString());
         } catch (final Exception e) {

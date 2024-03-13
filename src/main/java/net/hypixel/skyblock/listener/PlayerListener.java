@@ -107,7 +107,6 @@ public class PlayerListener extends PListener {
             PlayerUtils.USER_SESSION_ID.put(player.getUniqueId(), UUID.randomUUID());
             PlayerUtils.COOKIE_DURATION_CACHE.remove(player.getUniqueId());
             PlayerUtils.AUTO_SLAYER.remove(player.getUniqueId());
-            Repeater.SBA_MAP.remove(player.getUniqueId());
             PetsGUI.PET_SHOWN.remove(player.getUniqueId());
             User.getHash().remove(player.getUniqueId());
             player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 1000000, 255));
@@ -124,7 +123,7 @@ public class PlayerListener extends PListener {
             try {
                 user.loadPlayerData();
             } catch (final IllegalArgumentException | IOException e2) {
-                SLog.severe("============ SKYSIM DATA LOAD ERROR ============");
+                SLog.severe("============ SKYBLOCK DATA LOAD ERROR ============");
                 SLog.severe("Ah shit, here we go again.");
                 SLog.severe(" ");
                 SLog.severe("Some bullshit errors happended on this user!");
@@ -980,7 +979,7 @@ public class PlayerListener extends PListener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onJoin(final PlayerLoginEvent event) {
         if (!event.getPlayer().isWhitelisted() && Bukkit.hasWhitelist()) {
-            String message = "&cWe are sorry but SkySim Network BETA is currently down for maintenance.\n\n&cFor more information: &bhttps://discord.skysim.sbs\n&c";
+            String message = "&cWe are sorry but SkyBlock Network BETA is currently down for maintenance.\n\n&cFor more information: &bhttps://discord.skysim.sbs\n&c"; // todo - change discord link
             message = ChatColor.translateAlternateColorCodes('&', message);
             message = message.replaceAll("&p", event.getPlayer().getName());
             event.disallow(PlayerLoginEvent.Result.KICK_WHITELIST, message);

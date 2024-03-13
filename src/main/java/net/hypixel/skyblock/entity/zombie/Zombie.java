@@ -1,8 +1,10 @@
 package net.hypixel.skyblock.entity.zombie;
 
+import net.hypixel.skyblock.api.disguise.PlayerDisguise;
 import net.hypixel.skyblock.entity.EntityDrop;
 import net.hypixel.skyblock.entity.EntityDropType;
 import net.hypixel.skyblock.item.SMaterial;
+import org.bukkit.entity.LivingEntity;
 
 import java.util.Arrays;
 import java.util.List;

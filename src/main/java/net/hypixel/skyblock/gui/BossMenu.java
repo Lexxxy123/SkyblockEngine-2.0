@@ -35,7 +35,6 @@ public class BossMenu extends GUI {
         final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
         this.set(GUIClickableItem.getCloseItem(31));
         final SkyBlock plugin = SkyBlock.getPlugin();
-        final long runMade = plugin.config.getLong("runMade");
         this.set(new GUIClickableItem() {
             @Override
             public void run(final InventoryClickEvent e) {
@@ -56,7 +55,7 @@ public class BossMenu extends GUI {
                 } else if (Sputnik.runningFloors() > 4) {
                     color = "&c";
                 }
-                return SUtil.getStack(ChatColor.GREEN + "Current Server Status", Material.WATCH, (short) 0, 1, Sputnik.trans("&7Active Runs: " + color + SUtil.commaify(Sputnik.runningFloors()) + "&7/&a5"), Sputnik.trans("&7This Session total runs: &e" + SUtil.commaify(Sputnik.rf_())), Sputnik.trans("&7Server lifetime total runs: &e" + SUtil.commaify(runMade)), Sputnik.trans("&7Is rate limited: &cNo"), " ", ChatColor.YELLOW + "Click to refresh");
+                return SUtil.getStack(ChatColor.GREEN + "Current Server Status", Material.WATCH, (short) 0, 1, Sputnik.trans("&7Active Runs: " + color + SUtil.commaify(Sputnik.runningFloors()) + "&7/&a5"), Sputnik.trans("&7This Session total runs: &e" + SUtil.commaify(Sputnik.rf_())),  Sputnik.trans("&7Is rate limited: &cNo"), " ", ChatColor.YELLOW + "Click to refresh");
             }
         });
         this.set(new GUIClickableItem() {
@@ -73,7 +72,6 @@ public class BossMenu extends GUI {
 
             @Override
             public ItemStack getItem() {
-                Bukkit.getServer();
                 return SUtil.getStack(ChatColor.GREEN + "Boss Collections", Material.BOOK_AND_QUILL, (short) 0, 1, Sputnik.trans("&7Kill demo bosses and"), Sputnik.trans("&7earn special rewards."), " ", ChatColor.YELLOW + "Click to view");
             }
         });

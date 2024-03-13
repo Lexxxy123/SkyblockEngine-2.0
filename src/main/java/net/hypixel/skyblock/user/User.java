@@ -41,6 +41,7 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.minecraft.server.v1_8_R3.EntityHuman;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
+import net.minecraft.server.v1_8_R3.Packet;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftHumanEntity;
@@ -336,7 +337,6 @@ public class User {
         final Player player = Bukkit.getPlayer(this.uuid);
         final User user = getUser(this.uuid);
         PlayerUtils.AUTO_SLAYER.put(player.getUniqueId(), this.config.getBoolean("configures.autoSlayer"));
-        Repeater.SBA_MAP.put(player.getUniqueId(), this.config.getBoolean("configures.sbaToggle"));
         PetsGUI.setShowPets(player, this.config.getBoolean("configures.showPets"));
     }
 
@@ -430,7 +430,6 @@ public class User {
         if (Bukkit.getPlayer(this.uuid) != null && Bukkit.getPlayer(this.uuid).isOnline()) {
             this.config.set("configures.showPets", PetsGUI.getShowPet(Bukkit.getPlayer(this.uuid)));
             this.config.set("configures.autoSlayer", PlayerUtils.isAutoSlayer(Bukkit.getPlayer(this.uuid)));
-            this.config.set("configures.sbaToggle", PlayerUtils.isSBAToggle(Bukkit.getPlayer(this.uuid)));
         }
         this.config.save();
     }
@@ -1614,6 +1613,14 @@ public class User {
             return User.USER_CACHE.get(uuid);
         }
         return new User(uuid);
+    }
+
+    public static User getUser(Player player){
+        return getUser(player.getUniqueId());
+    }
+
+    public void sendPacket(Packet<?> packet){
+        toNMSPlayer().playerConnection.sendPacket(packet);
     }
 
     public static Collection<User> getCachedUsers() {

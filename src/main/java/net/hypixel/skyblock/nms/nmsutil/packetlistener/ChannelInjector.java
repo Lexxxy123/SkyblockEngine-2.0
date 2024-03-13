@@ -18,7 +18,7 @@ public class ChannelInjector {
         try {
             Class.forName("io.netty.channel.Channel");
             this.channel = this.newChannelInstance(iPacketListener, "net.hypixel.skyblock.nms.nmsutil.packetlistener.channel.INCChannel");
-            System.out.println("[SkySim Protocol Injector] Using INChannel");
+            System.out.println("[SkyBlock Protocol Injector] Using INChannel");
             return true;
         } catch (final Exception e1) {
             exceptions.add(e1);

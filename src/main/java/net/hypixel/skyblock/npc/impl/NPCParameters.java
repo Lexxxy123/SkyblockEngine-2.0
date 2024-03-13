@@ -4,6 +4,7 @@ import net.hypixel.skyblock.npc.impl.enums.NPCType;
 import org.bukkit.entity.Player;
 
 public interface NPCParameters {
+
     String name();
     default NPCType type(){
         return NPCType.PLAYER;
@@ -25,6 +26,8 @@ public interface NPCParameters {
    default float pitch(){
        return 0;
    }
+   String CLICK = "&e&lCLICK";
+
 
    default boolean looking(){
        return true;

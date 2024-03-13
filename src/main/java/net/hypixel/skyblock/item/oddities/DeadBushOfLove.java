@@ -29,7 +29,7 @@ public class DeadBushOfLove implements MaterialStatistics, MaterialFunction {
 
     @Override
     public String getLore() {
-        return "This item was given to the kind souls who helped so much testing SkySim on Beta! Much love " + ChatColor.RED + "❤";
+        return "This item was given to the kind souls who helped so much testing SkyBlock on Beta! Much love " + ChatColor.RED + "❤";
     }
 
     @Override

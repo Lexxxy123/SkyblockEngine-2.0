@@ -27,11 +27,11 @@ public class SkySimServerPingEvent extends Event implements Cancellable {
     }
 
     public HandlerList getHandlers() {
-        return SkySimServerPingEvent.handlers;
+        return handlers;
     }
 
     public static HandlerList getHandlerList() {
-        return SkySimServerPingEvent.handlers;
+        return handlers;
     }
 
     static {

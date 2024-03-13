@@ -38,6 +38,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 import net.hypixel.skyblock.user.User;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -45,7 +46,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Repeater {
     public static final Map<UUID, Integer> MANA_MAP = new HashMap<>();
     public static final Map<UUID, Boolean> MANA_REGEN_DEC = new HashMap<>();
-    public static final Map<UUID, Boolean> SBA_MAP = new HashMap<>();
+    //public static final Map<UUID, Boolean> SBA_MAP = new HashMap<>();
     public static final Map<UUID, DefenseReplacement> DEFENSE_REPLACEMENT_MAP = new HashMap<>();
     public static final Map<UUID, ManaReplacement> MANA_REPLACEMENT_MAP = new HashMap<>();
     public static final Map<UUID, Entity> BEACON_THROW2 = new HashMap<>();
@@ -231,7 +232,7 @@ public class Repeater {
         } else {
             player.removePotionEffect(PotionEffectType.INVISIBILITY);
         }
-        if (helm != null && (helm.getType() == SMaterial.HIDDEN_USSR_HELMET || helm.getType() == SMaterial.HIDDEN_DONATOR_HELMET || helm.getType() == SMaterial.HIDDEN_DT2_HELMET)) {
+        if (helm != null && (helm.getType() == SMaterial.HIDDEN_USSR_HELMET || helm.getType() == SMaterial.HIDDEN_DONATOR_HELMET)) {
             final ItemStack SSRstack = helm.getStack();
             SSRstack.setDurability((short) SUtil.random(0, 15));
             player.getInventory().setHelmet(SSRstack);
@@ -408,24 +409,9 @@ public class Repeater {
         if (set instanceof TickingSet) {
             ((TickingSet) set).tick(player, SItem.find(inventory.getHelmet()), SItem.find(inventory.getChestplate()), SItem.find(inventory.getLeggings()), SItem.find(inventory.getBoots()), counters2);
         }
-        String skysim = Sputnik.trans("&e&lSKYSIM");
-        final boolean isNotCracked = Bukkit.getServer().getOnlineMode();
-        if (SBA_MAP.containsKey(uuid)) {
-            if (SBA_MAP.get(uuid)) {
-                skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYBLOCK");
-            } else if (isNotCracked) {
-                skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYSIM &b&lBETA");
-            } else {
-                skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYSIM &b&lBETA");
-            }
-        } else if (isNotCracked) {
-            skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYSIM &b&lBETA");
-        } else {
-            skysim = ChatColor.translateAlternateColorCodes('&', "&e&lSKYSIM &b&lBETA");
-        }
-        String finalSkysim = skysim;
+
         SUtil.runSync(()->{
-            Sidebar sidebar = new Sidebar(finalSkysim, "SKYSIM");
+            Sidebar sidebar = new Sidebar(Sputnik.trans("&e&lSKYBLOCK &c&lSANDBOX"), "SKYBLOCK");
             SUtil.runAsync(()->{
                 String strd = SUtil.getDate();
                 if (RebootServerCommand.secondMap.containsKey(Bukkit.getServer())) {
@@ -438,22 +424,10 @@ public class Repeater {
                 sidebar.add(ChatColor.GRAY + strd + " " + ChatColor.DARK_GRAY + SkyBlock.getPlugin().getServerName());
                 sidebar.add("  ");
                 sidebar.add(" " + SkyBlockCalendar.getMonthName() + " " + SUtil.ntify(SkyBlockCalendar.getDay()));
-                boolean day = true;
-                int time = (int) (SkyBlockCalendar.ELAPSED % 24000L - 6000L);
-                if (time < 0) {
-                    time += 24000;
-                }
-                int hours = 6 + time / 1000;
-                int minutes = (int) (time % ((hours - 6) * 1000.0) / 16.66666);
-                final String sMin = String.valueOf(minutes);
-                minutes -= Integer.parseInt(sMin.substring(sMin.length() - 1));
-                if (hours >= 24) {
-                    hours -= 24;
-                }
-                if (hours <= 6 || hours >= 20) {
-                    day = false;
-                }
-                sidebar.add(ChatColor.GRAY + " " + ((hours > 12) ? (hours - 12) : ((hours == 0) ? 12 : hours)) + ":" + SUtil.zeroed(minutes) + ((hours >= 12) ? "pm" : "am") + " " + (day ? (ChatColor.YELLOW + "☀") : (ChatColor.AQUA + "☽")));
+                int hours = 12;
+                int minutes = 31;
+
+                sidebar.add(ChatColor.GRAY + " " + hours + ":" + SUtil.zeroed(minutes) + "pm" + " " + ChatColor.YELLOW + "☀");
 
                 String location = ChatColor.GRAY + "None";
                 final Region region = Region.getRegionOfEntity(player);
@@ -472,7 +446,7 @@ public class Repeater {
                 if (player.getWorld().getName().equalsIgnoreCase("dragon")) {
                     sidebar.add(ChatColor.GRAY + " ⏣ " + ChatColor.DARK_PURPLE + "Dragon's Nest");
                 } else if (player.getWorld().getName().contains("f6")) {
-                    sidebar.add(ChatColor.GRAY + " ⏣ " + ChatColor.RED + "Catacombs Demo" + ChatColor.GRAY + " (F6)");
+                    sidebar.add(ChatColor.GRAY + " ⏣ " + ChatColor.RED + "Catacombs" + ChatColor.GRAY + " (F6)");
                 } else if (player.getWorld().getName().contains("arena")) {
                     sidebar.add(ChatColor.GRAY + " ⏣ " + ChatColor.RED + "Withering Ruins");
                 } else if (player.getWorld().getName().contains("gisland")) {
@@ -480,7 +454,7 @@ public class Repeater {
                 } else {
                     sidebar.add(ChatColor.GRAY + " ⏣ " + location);
                 }
-                if (!player.getWorld().getName().contains("f6") && !player.getWorld().getName().equalsIgnoreCase("arena")) {
+                if (!player.getWorld().getName().startsWith("f6") && !player.getWorld().getName().equalsIgnoreCase("arena")) {
                     sidebar.add(" ");
                     final StringBuilder coinsDisplay = new StringBuilder();
                     if (user.isPermanentCoins()) {
@@ -528,7 +502,7 @@ public class Repeater {
                         sidebar.add("Your Damage: " + ChatColor.RED + SUtil.commaify(dmgdealt));
                         sidebar.add("     ");
                     }
-                } else if (player.getWorld().getName().contains("f6") && !player.getWorld().getName().equals("f6")) {
+                } else if (player.getWorld().getName().startsWith("f6") && !player.getWorld().getName().equals("f6")) {
                     sidebar.add(ChatColor.RED + " ");
                     if (FloorLivingSec.containsKey(player.getWorld().getUID())) {
                         sidebar.add(ChatColor.translateAlternateColorCodes('&', "&fTime Elapsed: &a" + Sputnik.formatTime(FloorLivingSec.get(player.getWorld().getUID()))));
@@ -537,27 +511,19 @@ public class Repeater {
                     }
                     sidebar.add(ChatColor.translateAlternateColorCodes('&', "&fDungeon Cleared: &cN/A%"));
                     sidebar.add(ChatColor.RED + "  ");
-                    final String nameofplayer = player.getName();
+                    final String playerName = player.getName();
                     if (player.getWorld().getPlayers().size() > 1) {
-                        for (final Player dungeonmate : player.getWorld().getPlayers()) {
-                            String colorcode;
-                            if (dungeonmate.getHealth() <= dungeonmate.getMaxHealth() / 2.0 && dungeonmate.getHealth() > dungeonmate.getMaxHealth() * 25.0 / 100.0) {
-                                colorcode = "e";
-                            } else if (dungeonmate.getHealth() <= dungeonmate.getMaxHealth() * 25.0 / 100.0) {
-                                colorcode = "c";
-                            } else {
-                                colorcode = "a";
-                            }
-                            final String backend = " &" + colorcode + (int) dungeonmate.getHealth() + "&c❤";
-                            if (dungeonmate.getName() == nameofplayer) {
+                        for (final Player dungeonMate : player.getWorld().getPlayers()) {
+                            final String backend = getFormatted(dungeonMate);
+                            if (Objects.equals(dungeonMate.getName(), playerName)) {
                                 continue;
                             }
-                            sidebar.add(ChatColor.translateAlternateColorCodes('&', "&e[N/A&e] &b" + dungeonmate.getName() + backend));
+                            sidebar.add(ChatColor.translateAlternateColorCodes('&', "&e[N/A&e] &b" + dungeonMate.getName() + backend));
                         }
                     } else if (player.getWorld().getPlayers().size() == 1) {
-                        sidebar.add(ChatColor.DARK_GRAY + "No Teammates");
-                    } else if (player.getWorld().getPlayers().size() > 5) {
-                        sidebar.add(ChatColor.RED + "Something went wrong!");
+                        sidebar.add(ChatColor.DARK_GRAY + "SOLO");
+                    } else if (player.getWorld().getName().startsWith("f6") && player.getWorld().getPlayers().size() > 5) {
+                        sidebar.add(ChatColor.RED + "Cannot display more than 5 players at once!");
                     }
                     sidebar.add(ChatColor.AQUA + "     ");
                 }
@@ -584,39 +550,32 @@ public class Repeater {
                     sidebar.add(Sputnik.trans("Your Damage: &c" + SUtil.commaify(damageDealt)));
                     sidebar.add(Sputnik.trans("&a"));
                 }
-                if (SBA_MAP.containsKey(uuid)) {
-                    if (SBA_MAP.get(uuid)) {
-                        sidebar.add(ChatColor.YELLOW + "www.hypixel.net");
-                    } else {
-                        sidebar.add(ChatColor.YELLOW + "mc.skysim.sbs");
-                    }
-                } else {
-                    sidebar.add(ChatColor.YELLOW + "mc.skysim.sbs");
+             else {
+                    sidebar.add(ChatColor.YELLOW + "play.godspunky.in");
                 }
 
 
 
-            if (!player.getWorld().getName().equalsIgnoreCase("limbo") && !player.getWorld().getName().equalsIgnoreCase("dungeon")) {
+            if (!player.getWorld().getName().equalsIgnoreCase("dungeon")) {
                 sidebar.apply(player);
-
-
-            } else if (player.getWorld().getName().equalsIgnoreCase("limbo")) {
-                final Sidebar sidebar2 = new Sidebar("" + ChatColor.YELLOW + ChatColor.BOLD + "SKYSIM " + ChatColor.RED + ChatColor.BOLD + "LIMBO", "SKYSIM1");
-                sidebar2.add(ChatColor.GRAY + SUtil.getDate() + " " + ChatColor.DARK_GRAY + "mini12D7");
-                sidebar2.add("     ");
-                sidebar2.add("You are currently in" + ChatColor.RED);
-                sidebar2.add("the " + ChatColor.RED + "Limbo " + ChatColor.WHITE + "server.");
-                sidebar2.add("Use " + ChatColor.GOLD + "/hub " + ChatColor.WHITE + "to");
-                sidebar2.add("continue playing.");
-                sidebar2.add("If your connection is");
-                sidebar2.add("unstable, stay here!");
-                sidebar2.add(ChatColor.AQUA + "     ");
-                sidebar2.add(ChatColor.YELLOW + "skysim.sbs");
-
-                sidebar2.apply(player);
             }
+
+
            });
         });
+    }
+
+    @NotNull
+    private static String getFormatted(Player dungeonMate) {
+        String colorCode;
+        if (dungeonMate.getHealth() <= dungeonMate.getMaxHealth() / 2.0 && dungeonMate.getHealth() > dungeonMate.getMaxHealth() * 25.0 / 100.0) {
+            colorCode = "e";
+        } else if (dungeonMate.getHealth() <= dungeonMate.getMaxHealth() * 25.0 / 100.0) {
+            colorCode = "c";
+        } else {
+            colorCode = "a";
+        }
+        return " &" + colorCode + (int) dungeonMate.getHealth() + "&c❤";
     }
 
     public static String get(final Player p) {

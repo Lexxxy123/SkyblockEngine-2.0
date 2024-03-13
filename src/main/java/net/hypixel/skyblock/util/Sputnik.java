@@ -943,14 +943,7 @@ public class Sputnik {
     }
 
     public static void startRoom(final Player player) {
-        if (runningFloors() >= 5) {
-            player.sendMessage(trans("&cSorry! The number of running rooms has reached 5, please try again in a moment. You can support the server so we can handle more rooms at &bhttps://store.skysim.sbs"));
-            BossMenu.ableToJoin.put(player, true);
-            return;
-        }
-        final SkyBlock plugin = SkyBlock.getPlugin();
-        plugin.config.set("runMade", plugin.config.getLong("runMade") + 1L);
-        plugin.config.save();
+
         final ArrayList<Player> plist = new ArrayList<Player>();
         plist.add(player);
         SUtil.delay(() -> player.sendMessage(ChatColor.GREEN + "Entering The Catacombs Demo - Floor 6!"), 10L);
@@ -1401,33 +1394,7 @@ public class Sputnik {
         return baseMagicDmg1 * (manaPool / 100 * mult + 1.0);
     }
 
-    public static void sendWebhook(final String content) {
-        final DiscordWebhook webhook = new DiscordWebhook("https://discord.com/api/webhooks/935193761795940404/3IdoSzkoXBU8UQb-X_mfizQgXYZZYiQ61FH9KPgm-gaeuUGjfhoTKvaWUFiQjwh55jKN");
-        webhook.setUsername("SkySim Logger Assistant [v0.1-BETA]");
-        webhook.setAvatarUrl("https://cdn.discordapp.com/attachments/884749251568082964/935357971368656916/AAAAA.png");
-        webhook.setContent(content);
-        try {
-            webhook.execute();
-        } catch (final IOException e) {
-            e.printStackTrace();
-        }
-    }
 
-    public static void sendAsyncWebhook(final String content) {
-        new BukkitRunnable() {
-            public void run() {
-                final DiscordWebhook webhook = new DiscordWebhook("https://discord.com/api/webhooks/935193761795940404/3IdoSzkoXBU8UQb-X_mfizQgXYZZYiQ61FH9KPgm-gaeuUGjfhoTKvaWUFiQjwh55jKN");
-                webhook.setUsername("SkySim Logger Assistant [v0.1-BETA]");
-                webhook.setAvatarUrl("https://cdn.discordapp.com/attachments/884749251568082964/935357971368656916/AAAAA.png");
-                webhook.setContent(content);
-                try {
-                    webhook.execute();
-                } catch (final IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }.runTaskAsynchronously(SkyBlock.getPlugin());
-    }
 
     public static void sendEatingAnimation(final LivingEntity e) {
         final net.minecraft.server.v1_8_R3.ItemStack itemstack = CraftItemStack.asNMSCopy(e.getEquipment().getItemInHand());

@@ -86,7 +86,7 @@ public class MagicivyPet extends Pet {
             abilities.add(new PetAbility() {
                 @Override
                 public String getName() {
-                    return "Power of SkySim";
+                    return "Power of SkyBlock";
                 }
 
                 @Override

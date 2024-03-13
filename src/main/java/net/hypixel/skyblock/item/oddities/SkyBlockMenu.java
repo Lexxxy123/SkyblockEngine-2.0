@@ -11,7 +11,7 @@ import net.hypixel.skyblock.item.*;
 public class SkyBlockMenu implements MaterialStatistics, MaterialFunction, Untradeable {
     @Override
     public String getDisplayName() {
-        return ChatColor.GREEN + "SkySim Menu " + ChatColor.GRAY + "(Right Click)";
+        return ChatColor.GREEN + "SkyBlock Menu " + ChatColor.GRAY + "(Right Click)";
     }
 
     @Override

@@ -45,7 +45,7 @@ public class CookieGUI extends GUI {
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(Sputnik.trans("&aGo Back"), Material.ARROW, (short) 0, 1, ChatColor.GRAY + "To SkySim Menu");
+                return SUtil.getStack(Sputnik.trans("&aGo Back"), Material.ARROW, (short) 0, 1, ChatColor.GRAY + "To SkyBlock Menu");
             }
         });
         this.set(new GUIClickableItem() {

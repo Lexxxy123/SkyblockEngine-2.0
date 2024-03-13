@@ -78,7 +78,7 @@ public class ActiveEffectsGUI extends GUI {
             });
         }
         this.set(4, SUtil.getStack(ChatColor.GREEN + "Active Effects", Material.POTION, (short) 0, 1, ChatColor.GRAY + "View and manage all of your", ChatColor.GRAY + "active potion effects.", " ", ChatColor.GRAY + "Drink Potions or splash them", ChatColor.GRAY + "on the ground to buff yourself!", " ", ChatColor.GRAY + "Currently Active: " + ChatColor.YELLOW + user.getEffects().size()));
-        this.set(GUIClickableItem.createGUIOpenerItem(GUIType.SKYBLOCK_MENU, player, ChatColor.GREEN + "Go Back", 48, Material.ARROW, ChatColor.GRAY + "To SkySim Menu"));
+        this.set(GUIClickableItem.createGUIOpenerItem(GUIType.SKYBLOCK_MENU, player, ChatColor.GREEN + "Go Back", 48, Material.ARROW, ChatColor.GRAY + "To SkyBlock Menu"));
         this.set(GUIClickableItem.getCloseItem(49));
         final List<ActivePotionEffect> p = paged.getPage(this.page);
         if (p == null) {

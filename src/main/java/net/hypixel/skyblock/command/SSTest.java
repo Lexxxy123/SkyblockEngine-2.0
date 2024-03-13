@@ -113,14 +113,14 @@ public class SSTest extends SCommand {
                         }
                         this.send("&d[♫] &aPlaying BGM File &e" + args[2] + ".nbs &afrom disk&a for this world!");
                         SUtil.broadcastWorld(Sputnik.trans("&c"), player.getWorld());
-                        SUtil.broadcastWorld(Sputnik.trans("&d[♫] &eYou're listening to &6" + args[2].replaceAll("_", " ") + " &efrom the &dSkySim Radio&e, requested by &d" + player.getName() + "&e, enjoy!"), player.getWorld());
+                        SUtil.broadcastWorld(Sputnik.trans("&d[♫] &eYou're listening to &6" + args[2].replaceAll("_", " ") + " &efrom the &dGodspunky Radio&e, requested by &d" + player.getName() + "&e, enjoy!"), player.getWorld());
                         SUtil.broadcastWorld(Sputnik.trans("&c"), player.getWorld());
                         Sputnik.playSound(s2, 1000, 10, true, player, player.getLocation());
                     } else if (args[1].contains("stop")) {
                         this.send("&d[♫] &eStopped all music played by you!");
                         sender.getUser().setPlayingSong(false);
                     } else {
-                        this.send("&d♫ SkySim Radiowave Usage ♫");
+                        this.send("&d♫ GodSpunky Radiowave Usage ♫");
                         this.send("&eCommand (Play): &6/sstest musicbgm play <song name>");
                         this.send("&eCommand (Stop): &6/sstest musicbgm stop");
                         this.send("&eAbout: &cSSMusicEngine-v0.1.0-ALPHA");

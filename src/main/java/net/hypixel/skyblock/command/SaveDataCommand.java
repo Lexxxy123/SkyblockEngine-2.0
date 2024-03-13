@@ -24,7 +24,7 @@ public class SaveDataCommand extends SCommand {
                         user.saveAllVanillaInstances();
                     }
                 }
-                Bukkit.broadcastMessage(Sputnik.trans("&b[SKYSIM D.C] &aAll players data have been saved! Action performed by " + player.getDisplayName() + "&a!"));
+                Bukkit.broadcastMessage(Sputnik.trans("&b[SkyBlock D.C] &aAll players data have been saved! Action performed by " + player.getDisplayName() + "&a!"));
             }
         } else {
             SLog.info("[SYSTEM] Saving players data, this action was performed by CONSOLE...");
@@ -36,7 +36,7 @@ public class SaveDataCommand extends SCommand {
                     user.saveAllVanillaInstances();
                 }
             }
-            Bukkit.broadcastMessage(Sputnik.trans("&b[SKYSIM D.C] &aAll players data have been saved! Action performed by &cCONSOLE&a!"));
+            Bukkit.broadcastMessage(Sputnik.trans("&b[SkyBlock D.C] &aAll players data have been saved! Action performed by &cCONSOLE&a!"));
         }
     }
 }

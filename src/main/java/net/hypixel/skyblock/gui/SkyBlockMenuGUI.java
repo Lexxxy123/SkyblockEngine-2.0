@@ -27,7 +27,7 @@ import java.util.Arrays;
 
 public class SkyBlockMenuGUI extends GUI {
     public SkyBlockMenuGUI() {
-        super("SkySim Menu", 54);
+        super("SkyBlock Menu", 54);
     }
 
     @Override
@@ -75,48 +75,7 @@ public class SkyBlockMenuGUI extends GUI {
                 return SUtil.getStack(ChatColor.GREEN + "Your Skills", Material.DIAMOND_SWORD, (short) 0, 1, ChatColor.GRAY + "View your Skill progression and", ChatColor.GRAY + "rewards.", " ", ChatColor.YELLOW + "Click to view!");
             }
         });
-        this.set(new GUIClickableItem() {
-            @Override
-            public void run(final InventoryClickEvent e) {
-                if (Repeater.SBA_MAP.containsKey(player.getUniqueId())) {
-                    if (Repeater.SBA_MAP.get(player.getUniqueId())) {
-                        Repeater.SBA_MAP.put(player.getUniqueId(), false);
-                    } else {
-                        Repeater.SBA_MAP.put(player.getUniqueId(), true);
-                    }
-                } else {
-                    Repeater.SBA_MAP.put(player.getUniqueId(), true);
-                }
-                final InventoryView stackInventory = player.getOpenInventory();
-                String a = "&cOFF";
-                if (Repeater.SBA_MAP.containsKey(player.getUniqueId()) && Repeater.SBA_MAP.get(player.getUniqueId())) {
-                    a = "&aON";
-                }
-                ItemStack stack = SUtil.getStack(ChatColor.GREEN + "Toggle SB Mods Support", Material.BEACON, (short) 0, 1, ChatColor.GRAY + "Change the scoreboard title", ChatColor.GRAY + "to " + Sputnik.trans("&e&lSKYBLOCK &7to support"), ChatColor.GRAY + "some SkyBlock Mods", " ", Sputnik.trans("&7Currently: " + a), " ", ChatColor.YELLOW + "Click to toggle!");
-                if (a == "&aON") {
-                    stack = SUtil.enchant(stack);
-                }
-                stackInventory.setItem(45, stack);
-            }
 
-            @Override
-            public int getSlot() {
-                return 45;
-            }
-
-            @Override
-            public ItemStack getItem() {
-                String a = "&cOFF";
-                if (Repeater.SBA_MAP.containsKey(player.getUniqueId()) && Repeater.SBA_MAP.get(player.getUniqueId())) {
-                    a = "&aON";
-                }
-                ItemStack stack = SUtil.getStack(ChatColor.GREEN + "Toggle SB Mods Support", Material.BEACON, (short) 0, 1, ChatColor.GRAY + "Change the scoreboard title", ChatColor.GRAY + "to " + Sputnik.trans("&e&lSKYBLOCK &7to support"), ChatColor.GRAY + "some SkyBlock Mods", " ", Sputnik.trans("&7Currently: " + a), " ", ChatColor.YELLOW + "Click to toggle!");
-                if (a == "&aON") {
-                    stack = SUtil.enchant(stack);
-                }
-                return stack;
-            }
-        });
         final String[] progress = ItemCollection.getProgress(player, null);
         this.set(new GUIClickableItem() {
             @Override

@@ -3,7 +3,7 @@ package net.hypixel.skyblock.command;
 import org.bukkit.ChatColor;
 import net.hypixel.skyblock.util.Sputnik;
 
-@CommandParameters(description = "The main command for SkySimEngine.", aliases = "ssei")
+@CommandParameters(description = "The main command for SkyBlockEngine.", aliases = "ssei")
 public class SkySimEngineCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

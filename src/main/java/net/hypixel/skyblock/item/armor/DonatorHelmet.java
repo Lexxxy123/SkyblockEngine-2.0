@@ -1,13 +1,12 @@
 package net.hypixel.skyblock.item.armor;
 
 import net.hypixel.skyblock.item.*;
-import net.hypixel.skyblock.item.*;
 import net.hypixel.skyblock.util.Sputnik;
 
-public class renegade450Helmet implements ToolStatistics, MaterialFunction {
+public class DonatorHelmet implements ToolStatistics, MaterialFunction {
     @Override
     public String getDisplayName() {
-        return "renegade450's Space Helmet";
+        return "Donator's Space Helmet";
     }
 
     @Override
@@ -27,31 +26,26 @@ public class renegade450Helmet implements ToolStatistics, MaterialFunction {
 
     @Override
     public double getBaseMagicFind() {
-        return 1.0;
-    }
-
-    @Override
-    public double getBaseHealth() {
-        return 1000.0;
+        return 0.01;
     }
 
     @Override
     public double getBaseDefense() {
-        return 1000.0;
+        return 690.0;
     }
 
     @Override
     public double getBaseStrength() {
-        return 450.0;
+        return 3000.0;
     }
 
     @Override
     public double getBaseFerocity() {
-        return 25.0;
+        return 100.0;
     }
 
     @Override
     public String getLore() {
-        return Sputnik.trans("&7Given to &6renegade450 &7who donated like &c125M &7for the development of SkySim Network, thank you very much! &c❤");
+        return Sputnik.trans("&7Given to people who donated or help us out in the development of SkyBlock, thank you very much! &c❤");
     }
 }

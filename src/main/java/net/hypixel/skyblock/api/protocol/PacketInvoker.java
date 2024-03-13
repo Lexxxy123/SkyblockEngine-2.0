@@ -337,7 +337,7 @@ public class PacketInvoker {
         SUtil.sendSubtitle(owner, Sputnik.trans("&6&oYou dropped something, check around!"));
         new BukkitRunnable() {
             public void run() {
-                Sputnik.sendWebhook("**A TIGER PET DROPPED!** Player `" + owner.getName() + "` dropped a Golden Tiger Pet at `" + owner.getWorld().getName() + "`, Mythic: " + isMythic);
+                System.out.println("**A TIGER PET DROPPED!** Player `" + owner.getName() + "` dropped a Golden Tiger Pet at `" + owner.getWorld().getName() + "`, Mythic: " + isMythic);
             }
         }.runTaskAsynchronously(SkyBlock.getPlugin());
         owner.playSound(owner.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 2.0f);
@@ -358,7 +358,7 @@ public class PacketInvoker {
                 new BukkitRunnable() {
 
                     public void run() {
-                        Sputnik.sendWebhook("**PET DESPAWNED! ** Player `" + owner.getName() + "` let a Golden Tiger Pet at `" + owner.getWorld().getName() + "` despawned, Mythic: " + isMythic);
+                        System.out.println("**PET DESPAWNED! ** Player `" + owner.getName() + "` let a Golden Tiger Pet at `" + owner.getWorld().getName() + "` despawned, Mythic: " + isMythic);
                     }
                 }.runTaskAsynchronously(SkyBlock.getPlugin());
                 owner.sendMessage(ChatColor.RED + "Oh no, you didn't picked up your Golden Tiger pet, it despawned, good luck next time, F.");
@@ -372,7 +372,7 @@ public class PacketInvoker {
                 if (owner.getWorld() != drop.getWorld()) {
                     new BukkitRunnable() {
                         public void run() {
-                            Sputnik.sendWebhook("**PET DESPAWNED! ** Player `" + owner.getName() + "` let a Golden Tiger Pet at `" + owner.getWorld().getName() + "` despawned, Mythic: " + isMythic);
+                            System.out.println("**PET DESPAWNED! ** Player `" + owner.getName() + "` let a Golden Tiger Pet at `" + owner.getWorld().getName() + "` despawned, Mythic: " + isMythic);
                         }
                     }.runTaskAsynchronously(SkyBlock.getPlugin());
                     owner.sendMessage(ChatColor.RED + "Oh no, you didn't picked up your Golden Tiger pet, it despawned, good luck next time, F.");
@@ -426,7 +426,7 @@ public class PacketInvoker {
                             owner.getWorld().playEffect(drop.getLocation(), Effect.LAVA_POP, 1);
                             new BukkitRunnable() {
                                 public void run() {
-                                    Sputnik.sendWebhook("**PET PICKUP!** Player `" + owner.getName() + "` picked up a Golden Tiger Pet at `" + owner.getWorld().getName() + "`, Mythic: " + isMythic);
+                                    System.out.println("**PET PICKUP!** Player `" + owner.getName() + "` picked up a Golden Tiger Pet at `" + owner.getWorld().getName() + "`, Mythic: " + isMythic);
                                 }
                             }.runTaskAsynchronously(SkyBlock.getPlugin());
                             if (!isMythic) {
