@@ -8,7 +8,7 @@ import net.hypixel.skyblock.util.Sputnik;
 import java.util.*;
 
 public class EnchantmentType {
-    private static final Map<String, EnchantmentType> ENCHANTMENT_TYPE_CACHE;
+    public static final Map<String, EnchantmentType> ENCHANTMENT_TYPE_CACHE;
     public static final EnchantmentType SHARPNESS;
     public static final EnchantmentType LIFE_STEAL;
     public static final EnchantmentType EXECUTE;

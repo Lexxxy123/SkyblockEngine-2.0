@@ -167,6 +167,19 @@ public class SUtil {
         return result;
     }
 
+    public static final String[] numToStr = {
+            "",
+            "one",
+            "two",
+            "three",
+            "four",
+            "five",
+            "six",
+            "seven",
+            "eight",
+            "nine"
+    };
+
     public static ItemStack applyColorToLeatherArmor(final ItemStack stack, final Color color) {
         if (!(stack.getItemMeta() instanceof LeatherArmorMeta)) {
             return stack;

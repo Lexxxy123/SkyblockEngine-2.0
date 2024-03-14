@@ -33,7 +33,7 @@ import net.hypixel.skyblock.nms.packetevents.*;
 import net.hypixel.skyblock.npc.impl.SkyblockNPC;
 import net.hypixel.skyblock.features.region.Region;
 import net.hypixel.skyblock.features.region.RegionType;
-import net.hypixel.skyblock.server.ServerVersion;
+
 import net.hypixel.skyblock.features.slayer.SlayerQuest;
 import net.hypixel.skyblock.user.AuctionSettings;
 import net.hypixel.skyblock.util.*;
@@ -88,8 +88,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
     public Dimoon dimoon;
     public SummoningSequence sq;
     public boolean altarCooldown;
-    @Getter
-    private final ServerVersion serverVersion;
+
     public static EffectManager effectManager;
     @Getter
     private static SkyBlock instance;
@@ -122,7 +121,6 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
         this.dimoon = null;
         this.sq = null;
         this.altarCooldown = false;
-        this.serverVersion = new ServerVersion("beta", 0, 7, 2, 0);
         this.serverName = "dev";
         this.bannedUUID = Collections.singletonList("");
     }
@@ -333,6 +331,8 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
                 SLog.severe(exception.getMessage());
             }
         }
+        cl.register(new ItemBrowseCommand());
+        cl.register(new HexMenuCommand());
     }
 
     private void loadListeners() {

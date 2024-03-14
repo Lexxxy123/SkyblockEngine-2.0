@@ -296,6 +296,8 @@ public enum SMaterial {
     WARDEN_HEART(Material.SKULL_ITEM, WardenHeart.class),
     JUDGEMENT_CORE(Material.SKULL_ITEM, JudgementCore.class),
     SHARD_OF_THE_SHREDDED(Material.SKULL_ITEM, ShardoftheShredded.class),
+
+    REFORGE_STONE(Material.SKULL_ITEM, ReforgeStone.class),
     REVENANT_VISCERA(Material.GRILLED_PORK, RevenantViscera.class),
     TARANTULA_WEB(Material.STRING, TarantulaWeb.class),
     TOXIC_ARROW_POISON(Material.INK_SACK, ToxicArrowPoison.class, (short) 10),

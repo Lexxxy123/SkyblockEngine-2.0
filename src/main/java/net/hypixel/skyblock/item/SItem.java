@@ -292,6 +292,10 @@ public class SItem implements Cloneable, ConfigurationSerializable {
         this.update();
     }
 
+    public int getHPBs(){
+        return this.getDataInt("hpb");
+    }
+
     public void setCoinsBid(Integer coins) {
         if (!this.type.getStatistics().displayCoins()) {
             throw new UnsupportedOperationException("You cannot display coins bidded on this item");

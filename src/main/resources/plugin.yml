@@ -5,5 +5,5 @@ authors: [ Hamza , EpicPortal , Dumbo]
 description: GodSpunky SkyBlock Sandbox plugin Developed by Team GodSpunky
 
 softdepend: [PlaceholderAPI]
-depend: [LibsDisguises, ProtocolLib]
+depend: [ ProtocolLib]
 

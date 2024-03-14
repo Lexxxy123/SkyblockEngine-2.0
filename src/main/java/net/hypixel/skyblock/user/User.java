@@ -383,11 +383,6 @@ public class User {
             this.config.set("effects." + type.getNamespace() + ".duration", effect.getEffect().getDuration());
             this.config.set("effects." + type.getNamespace() + ".remaining", effect.getRemaining());
         }
-        try {
-            this.config.set("user.lastPlayedVersion", SkyBlock.getPlugin().getServerVersion().readableString());
-        } catch (final Exception e) {
-            e.printStackTrace();
-        }
         this.config.set("dungeons.floor6.run", this.totalfloor6run);
         this.config.set("dungeons.boss.sadan", this.sadancollections);
         this.config.set("xp.farming", this.farmingXP);
@@ -435,6 +430,10 @@ public class User {
     }
 
     public void saveStorageData(final int page) {
+    }
+
+    public static File getDataDirectory() {
+        return USER_FOLDER;
     }
 
 
