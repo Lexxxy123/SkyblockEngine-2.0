@@ -97,6 +97,11 @@
 			<id>enginehub-maven</id>
 			<url>https://maven.enginehub.org/repo/</url>
 		</repository>
+		<repository>
+			<id>demeng-repo</id>
+			<name>Demeng's Repository</name>
+			<url>https://repo.demeng.dev/releases</url>
+		</repository>
 	</repositories>
 	<dependencies>
 		<dependency>
@@ -201,6 +206,18 @@
 			<artifactId>annotations</artifactId>
 			<version>23.0.0</version>
 			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>dev.demeng</groupId>
+			<artifactId>sentinel-java-wrapper</artifactId>
+			<version>1.2.0</version>
+			<!-- Exclude GSON if it's already available -->
+			<exclusions>
+				<exclusion>
+					<groupId>com.google.code.gson</groupId>
+					<artifactId>gson</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	</dependencies>
 </project>

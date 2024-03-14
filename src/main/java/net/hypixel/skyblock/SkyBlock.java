@@ -4,6 +4,8 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.google.common.io.Files;
 import de.slikey.effectlib.EffectManager;
+import dev.demeng.sentinel.wrapper.SentinelClient;
+import dev.demeng.sentinel.wrapper.exception.*;
 import net.hypixel.skyblock.api.placeholder.SkyblockPlaceholder;
 import net.hypixel.skyblock.api.worldmanager.SkyBlockWorldManager;
 import net.hypixel.skyblock.features.auction.AuctionBid;
@@ -79,7 +81,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
     @Getter
     private static SkyBlock plugin;
     private final PacketHelper packetInj;
-
+    private boolean authenticated;
     public static final boolean dimoonEnabled = false;
 
     public static final String[] DEVELOPERS = {"Hamza" , "EpicPortal" , "Dumbo"};
@@ -139,88 +141,92 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
         this.heads = new Config("heads.yml");
         this.blocks = new Config("blocks.yml");
         this.spawners = new Config("spawners.yml");
+        authenticate();
+        if (authenticated) {
+            SLog.info("Loading Command map...");
+            try {
+                final Field f = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+                f.setAccessible(true);
+                this.commandMap = (CommandMap) f.get(Bukkit.getServer());
+            } catch (final IllegalAccessException | NoSuchFieldException e) {
+                SLog.severe("Couldn't load command map: ");
+                e.printStackTrace();
+            }
+            SLog.info("Loading SQL database...");
+            this.sql = new SQLDatabase();
+            this.regionData = new SQLRegionData();
+            this.worldData = new SQLWorldData();
+            this.cl = new CommandLoader();
 
 
-        SLog.info("Loading Command map...");
-        try {
-            final Field f = Bukkit.getServer().getClass().getDeclaredField("commandMap");
-            f.setAccessible(true);
-            this.commandMap = (CommandMap) f.get(Bukkit.getServer());
-        } catch (final IllegalAccessException | NoSuchFieldException e) {
-            SLog.severe("Couldn't load command map: ");
-            e.printStackTrace();
-        }
-        SLog.info("Loading SQL database...");
-        this.sql = new SQLDatabase();
-        this.regionData = new SQLRegionData();
-        this.worldData = new SQLWorldData();
-        this.cl = new CommandLoader();
 
+            SLog.info("Begin Protocol injection... (SkyBlockProtocol v0.6.2)");
+            APIManager.registerAPI(this.packetInj, this);
+            if (!this.packetInj.injected) {
+                this.getLogger().warning("[FATAL ERROR] Protocol Injection failed. Disabling the plugin for safety...");
+                Bukkit.getPluginManager().disablePlugin(this);
+                return;
+            }
+            this.slimePlugin = (SlimePlugin) Bukkit.getPluginManager().getPlugin("SwoftyWorldManager");
+            SLog.info("Injecting...");
+            PingAPI.register();
+            new Metrics(this);
+            APIManager.initAPI(PacketHelper.class);
+            SLog.info("Starting server loop...");
+            this.repeater = new Repeater();
+            VoidlingsWardenHelmet.startCounting();
+            SLog.info("Loading commands...");
+            this.loadCommands();
+            SLog.info("Loading listeners...");
+            this.loadListeners();
+            SLog.info("Injecting Packet/Ping Listener into the core...");
+            this.registerPacketListener();
+            this.registerPingListener();
+            SLog.info("Starting entity spawners...");
+            EntitySpawner.startSpawnerTask();
+            SLog.info("Establishing player regions...");
+            Region.cacheRegions();
+            SLog.info("Loading NPCS...");
+            registerNPCS();
+            SLog.info("Loading auction items from disk...");
+            effectManager = new EffectManager(this);
+            AuctionItem.loadAuctionsFromDisk();
+            SLog.info("Loading merchants prices...");
+            MerchantItemHandler.init();
+            SLog.info("Synchronizing world time with calendar time and removing world entities...");
+            SkyBlockCalendar.synchronize();
+            SLog.info("Loading items...");
+            SMaterial.loadItems();
+            SLog.info("Converting CraftRecipes into custom recipes...");
+            Recipe.loadRecipes();
+            SLog.info("Hooking SkyBlockEngine to PlaceholderAPI and registering...");
+            if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+                new SkyblockPlaceholder().register();
+                SLog.info("Hooked to PAPI successfully!");
+            } else {
+                SLog.info("ERROR! PlaceholderAPI plugin does not exist, disabing placeholder request!");
+            }
+            protocolManager = ProtocolLibrary.getProtocolManager();
+            WorldListener.init();
 
-
-        SLog.info("Begin Protocol injection... (SkyBlockProtocol v0.6.2)");
-        APIManager.registerAPI(this.packetInj, this);
-        if (!this.packetInj.injected) {
-            this.getLogger().warning("[FATAL ERROR] Protocol Injection failed. Disabling the plugin for safety...");
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
-        }
-        this.slimePlugin = (SlimePlugin) Bukkit.getPluginManager().getPlugin("SwoftyWorldManager");
-        SLog.info("Injecting...");
-        PingAPI.register();
-        new Metrics(this);
-        APIManager.initAPI(PacketHelper.class);
-        SLog.info("Starting server loop...");
-        this.repeater = new Repeater();
-        VoidlingsWardenHelmet.startCounting();
-        SLog.info("Loading commands...");
-        this.loadCommands();
-        SLog.info("Loading listeners...");
-        this.loadListeners();
-        SLog.info("Injecting Packet/Ping Listener into the core...");
-        this.registerPacketListener();
-        this.registerPingListener();
-        SLog.info("Starting entity spawners...");
-        EntitySpawner.startSpawnerTask();
-        SLog.info("Establishing player regions...");
-        Region.cacheRegions();
-        SLog.info("Loading NPCS...");
-        registerNPCS();
-        SLog.info("Loading auction items from disk...");
-        effectManager = new EffectManager(this);
-        AuctionItem.loadAuctionsFromDisk();
-        SLog.info("Loading merchants prices...");
-        MerchantItemHandler.init();
-        SLog.info("Synchronizing world time with calendar time and removing world entities...");
-        SkyBlockCalendar.synchronize();
-        SLog.info("Loading items...");
-        SMaterial.loadItems();
-        SLog.info("Converting CraftRecipes into custom recipes...");
-        Recipe.loadRecipes();
-        SLog.info("Hooking SkyBlockEngine to PlaceholderAPI and registering...");
-        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            new SkyblockPlaceholder().register();
-            SLog.info("Hooked to PAPI successfully!");
+            SLog.info("Successfully enabled " + this.getDescription().getFullName());
+            SLog.info("===================================");
+            SLog.info("SkyBlock ENGINE - MADE BY " + getDevelopersName());
+            SLog.info("PLUGIN ENABLED! HOOKED INTO SkyBlock!");
+            SLog.info(" ");
+            SLog.info("This plugin provide most of SkyBlock functions!");
+            SLog.info("Originally was made by super");
+            SLog.info("Continued by GodSpunky (C) 2024");
+            SLog.info("Any illegal usage will be suppressed! DO NOT LEAK IT!");
+            SLog.info("===================================");
+            if (dimoonEnabled) {
+                initDimoon();
+            }
+            startPopulators();
         } else {
-            SLog.info("ERROR! PlaceholderAPI plugin does not exist, disabing placeholder request!");
+            SLog.warn("Successfully enabled Skyblock Core but license is not valid or empty. Please insert license in config.yml");
         }
-        protocolManager = ProtocolLibrary.getProtocolManager();
-        WorldListener.init();
 
-        SLog.info("Successfully enabled " + this.getDescription().getFullName());
-        SLog.info("===================================");
-        SLog.info("SkyBlock ENGINE - MADE BY " + getDevelopersName());
-        SLog.info("PLUGIN ENABLED! HOOKED INTO SkyBlock!");
-        SLog.info(" ");
-        SLog.info("This plugin provide most of SkyBlock functions!");
-        SLog.info("Originally was made by super");
-        SLog.info("Continued by GodSpunky (C) 2024");
-        SLog.info("Any illegal usage will be suppressed! DO NOT LEAK IT!");
-        SLog.info("===================================");
-        if (dimoonEnabled) {
-           initDimoon();
-        }
-        startPopulators();
     }
 
 
@@ -332,7 +338,6 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
             }
         }
         cl.register(new ItemBrowseCommand());
-        cl.register(new HexMenuCommand());
     }
 
     private void loadListeners() {
@@ -439,6 +444,45 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
     public void onPluginMessageReceived(final String channel, final Player player, final byte[] message) {
         final PluginMessageReceived e = new PluginMessageReceived(new WrappedPluginMessage(channel, player, message));
         Bukkit.getPluginManager().callEvent(e);
+    }
+
+    private void authenticate() {
+        final String licenseKey = config.getString("licenseKey");
+
+        SentinelClient client = new SentinelClient(
+                "http://authentication.gsdevelopments.in:2222/api/v1",
+                "rhvs43epk4onhk9atpqrvivli5",
+                "GYCZMI3M4rNYap1Q0JuSmM3b2MR0vaE+U2Kf7KWH1rg=");
+
+        this.authenticated = false;
+
+        try {
+            client.getLicenseController().auth(
+                    licenseKey, "SkyblockCore", null, null, SentinelClient.getCurrentHwid(), SentinelClient.getCurrentIp());
+            this.authenticated = true;
+        } catch (InvalidLicenseException e) {
+            System.out.println("Invalid license key.");
+        } catch (ExpiredLicenseException e) {
+            System.out.println("Expired.");
+        } catch (BlacklistedLicenseException e) {
+            System.out.println("Blacklisted.");
+        } catch (ConnectionMismatchException e) {
+            System.out.println("Provided connection does not match.");
+        } catch (ExcessiveServersException e) {
+            System.out.println("Too many servers. (Max: " + e.getMaxServers() + ")");
+        } catch (ExcessiveIpsException e) {
+            System.out.println("Too many IPs. (Max: " + e.getMaxIps() + ")");
+        } catch (InvalidProductException e) {
+            System.out.println("License is for different product.");
+        } catch (InvalidPlatformException e) {
+            System.out.println("Provided connection platform is invalid.");
+        } catch (IOException e) {
+            System.out.println("An unexpected error occurred.");
+        }
+
+        if (authenticated) {
+            System.out.println("Successfully authenticated.");
+        }
     }
 
 }
