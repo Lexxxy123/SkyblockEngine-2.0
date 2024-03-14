@@ -2,6 +2,7 @@ package net.hypixel.skyblock.features.slayer;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import net.hypixel.skyblock.features.sequence.SoundSequenceType;
+import org.bson.Document;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -55,8 +56,31 @@ public class SlayerQuest implements ConfigurationSerializable {
         return map;
     }
 
+    public static Document serializeYourObject(SlayerQuest yourObject) {
+        Document objectDocument = new Document("type", yourObject.getType().getNamespace())
+                .append("started", yourObject.started)
+                .append("xp", yourObject.getXp())
+                .append("spawned", yourObject.getSpawned())
+                .append("killed", yourObject.getKilled())
+                .append("died", yourObject.getDied())
+                .append("lastKilled", null);
+        return objectDocument;
+    }
+
     public static SlayerQuest deserialize(Map<String, Object> map) {
         return new SlayerQuest(SlayerBossType.getByNamespace(String.valueOf(map.get("type"))), ((Number) map.get("started")).longValue(), ((Number) map.get("xp")).doubleValue(), ((Number) map.get("spawned")).longValue(), ((Number) map.get("killed")).longValue(), ((Number) map.get("died")).longValue(), null);
+    }
+
+
+
+    public static SlayerQuest deserializeSlayerQuest(Document document) {
+        SlayerBossType type = SlayerBossType.getByNamespace(document.getString("type"));
+        long started = document.getLong("started");
+        double xp = document.getDouble("xp");
+        long spawned = document.getLong("spawned");
+        long killed = document.getLong("killed");
+        long died = document.getLong("died");
+        return new SlayerQuest(type, started, xp, spawned, killed, died, null);
     }
 
     public static void playMinibossSpawn(final Location location, final Entity sound) {

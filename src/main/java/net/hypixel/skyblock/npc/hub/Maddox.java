@@ -28,17 +28,17 @@ public class Maddox extends SkyblockNPC {
 
             @Override
             public double x() {
-                return -73.49;
+                return -75;
             }
 
             @Override
             public double y() {
-                return 65.0;
+                return 66.0;
             }
 
             @Override
             public double z() {
-                return -49.094;
+                return -56;
             }
 
             @Override

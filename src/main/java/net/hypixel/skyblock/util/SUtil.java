@@ -180,6 +180,7 @@ public class SUtil {
             "nine"
     };
 
+
     public static ItemStack applyColorToLeatherArmor(final ItemStack stack, final Color color) {
         if (!(stack.getItemMeta() instanceof LeatherArmorMeta)) {
             return stack;

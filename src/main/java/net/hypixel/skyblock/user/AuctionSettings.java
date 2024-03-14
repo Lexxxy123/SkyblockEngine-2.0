@@ -1,8 +1,14 @@
+
+//
+// Decompiled by Procyon v0.5.36
+//
+
 package net.hypixel.skyblock.user;
 
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import net.hypixel.skyblock.item.ItemCategory;
 import net.hypixel.skyblock.item.Rarity;
+import org.bson.Document;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +20,7 @@ public class AuctionSettings implements Cloneable, ConfigurationSerializable {
     private Rarity tier;
     private Type type;
 
-    public AuctionSettings(final ItemCategory category, final String query, final Sort sort, final Rarity tier, final Type type) {
+    public AuctionSettings(ItemCategory category, String query, Sort sort, Rarity tier, Type type) {
         this.category = category;
         this.query = query;
         this.sort = sort;
@@ -27,7 +33,7 @@ public class AuctionSettings implements Cloneable, ConfigurationSerializable {
     }
 
     public Map<String, Object> serialize() {
-        final Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("category", this.category.name());
         map.put("query", this.query);
         map.put("sort", this.sort.name());
@@ -38,17 +44,36 @@ public class AuctionSettings implements Cloneable, ConfigurationSerializable {
         return map;
     }
 
+
+    public static Document serializeAuctionSettings(AuctionSettings settings) {
+        Document objectDocument = new Document("category", settings.getCategory().name());
+        if (settings.getQuery() == null) {
+            objectDocument.append("query", settings.getQuery());
+        }
+        if (settings.getSort() !=null) {
+            objectDocument.append("sort", settings.getSort().name());
+        }
+        if (settings.getTier() != null) {
+            objectDocument.append("tier", settings.getTier().name());
+        }
+        if (settings.getType() != null) {
+            objectDocument.append("type", settings.getType().name());
+        }
+        return objectDocument;
+    }
+
+
     @Override
     public String toString() {
         return "AuctionSettings{category=" + this.category.name() + ", query=" + this.query + ", sort=" + this.sort.name() + ", tier=" + this.tier.name() + ", type=" + this.type.name() + "}";
     }
 
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(Object o) {
         if (!(o instanceof AuctionSettings)) {
             return false;
         }
-        final AuctionSettings settings = (AuctionSettings) o;
+        AuctionSettings settings = (AuctionSettings) o;
         return this.category == settings.category && this.query.equals(settings.query) && this.sort == settings.sort && this.tier == settings.tier && this.type == settings.type;
     }
 
@@ -60,7 +85,7 @@ public class AuctionSettings implements Cloneable, ConfigurationSerializable {
         return this.category;
     }
 
-    public void setCategory(final ItemCategory category) {
+    public void setCategory(ItemCategory category) {
         this.category = category;
     }
 
@@ -68,7 +93,7 @@ public class AuctionSettings implements Cloneable, ConfigurationSerializable {
         return this.query;
     }
 
-    public void setQuery(final String query) {
+    public void setQuery(String query) {
         this.query = query;
     }
 
@@ -76,7 +101,7 @@ public class AuctionSettings implements Cloneable, ConfigurationSerializable {
         return this.sort;
     }
 
-    public void setSort(final Sort sort) {
+    public void setSort(Sort sort) {
         this.sort = sort;
     }
 
@@ -84,7 +109,7 @@ public class AuctionSettings implements Cloneable, ConfigurationSerializable {
         return this.tier;
     }
 
-    public void setTier(final Rarity tier) {
+    public void setTier(Rarity tier) {
         this.tier = tier;
     }
 
@@ -92,13 +117,25 @@ public class AuctionSettings implements Cloneable, ConfigurationSerializable {
         return this.type;
     }
 
-    public void setType(final Type type) {
+    public void setType(Type type) {
         this.type = type;
     }
 
     public static AuctionSettings deserialize(Map<String, Object> map) {
         return new AuctionSettings(ItemCategory.valueOf((String) map.get("category")), (String) map.getOrDefault("query", null), Sort.valueOf((String) map.get("sort")), map.containsKey("tier") ? Rarity.getRarity((String) map.get("tier")) : null, Type.valueOf((String) map.get("type")));
     }
+
+
+    public static AuctionSettings deserializeAuctionSettings(Document document) {
+        ItemCategory category = ItemCategory.valueOf(document.getString("category"));
+        String query = document.getString("query");
+        Sort sort = Sort.valueOf(document.getString("sort"));
+        Rarity tier = document.containsKey("tier") ? Rarity.getRarity(document.getString("tier")) : null;
+        Type type = Type.valueOf(document.getString("type"));
+
+        return new AuctionSettings(category, query, sort, tier, type);
+    }
+
 
     public enum Sort {
         HIGHEST_BID("Highest Bid"),
@@ -108,7 +145,7 @@ public class AuctionSettings implements Cloneable, ConfigurationSerializable {
 
         private final String display;
 
-        Sort(final String display) {
+        Sort(String display) {
             this.display = display;
         }
 
@@ -117,7 +154,7 @@ public class AuctionSettings implements Cloneable, ConfigurationSerializable {
         }
 
         public Sort previous() {
-            final int prev = this.ordinal() - 1;
+            int prev = this.ordinal() - 1;
             if (prev < 0) {
                 return values()[values().length - 1];
             }
@@ -125,12 +162,16 @@ public class AuctionSettings implements Cloneable, ConfigurationSerializable {
         }
 
         public Sort next() {
-            final int nex = this.ordinal() + 1;
+            int nex = this.ordinal() + 1;
             if (nex > values().length - 1) {
                 return values()[0];
             }
             return values()[nex];
         }
+
+
+
+
     }
 
     public enum Type {
@@ -140,7 +181,7 @@ public class AuctionSettings implements Cloneable, ConfigurationSerializable {
 
         private final String display;
 
-        Type(final String display) {
+        Type(String display) {
             this.display = display;
         }
 
@@ -149,7 +190,7 @@ public class AuctionSettings implements Cloneable, ConfigurationSerializable {
         }
 
         public Type previous() {
-            final int prev = this.ordinal() - 1;
+            int prev = this.ordinal() - 1;
             if (prev < 0) {
                 return values()[values().length - 1];
             }
@@ -157,11 +198,15 @@ public class AuctionSettings implements Cloneable, ConfigurationSerializable {
         }
 
         public Type next() {
-            final int nex = this.ordinal() + 1;
+            int nex = this.ordinal() + 1;
             if (nex > values().length - 1) {
                 return values()[0];
             }
             return values()[nex];
         }
+
+
+
+
     }
 }

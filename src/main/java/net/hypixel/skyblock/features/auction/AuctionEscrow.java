@@ -1,7 +1,12 @@
+// 
+// Decompiled by Procyon v0.5.36
+// 
+
 package net.hypixel.skyblock.features.auction;
 
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import net.hypixel.skyblock.item.SItem;
+import org.bson.Document;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +16,7 @@ public class AuctionEscrow implements ConfigurationSerializable {
     private long starter;
     private long duration;
 
-    public AuctionEscrow(final SItem item, final long starter, final long duration) {
+    public AuctionEscrow(SItem item, long starter, long duration) {
         this.item = item;
         this.starter = starter;
         this.duration = duration;
@@ -22,12 +27,43 @@ public class AuctionEscrow implements ConfigurationSerializable {
     }
 
     public Map<String, Object> serialize() {
-        final Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("item", this.item);
         map.put("starter", this.starter);
         map.put("duration", this.duration);
         return map;
     }
+
+
+    public static Document serializeAuctionEscrow(AuctionEscrow escrow) {
+        if (escrow == null) {
+            return null;
+        }
+
+        Document escrowDocument = new Document();
+
+        if (escrow.getItem() != null) {
+            escrowDocument.append("item", SItem.serializeSItem(escrow.getItem()));
+        } else {
+            escrowDocument.append("item", null);
+        }
+
+        escrowDocument.append("starter", escrow.getStarter())
+                .append("duration", escrow.getDuration());
+
+        return escrowDocument;
+    }
+
+
+
+    public static AuctionEscrow deserializeAuctionEscrow(Document document) {
+        SItem item = SItem.deserializeSItem((Document) document.get("item"));
+        long starter = (document.get("starter") instanceof Long) ? document.getLong("starter") : document.getInteger("starter").longValue();
+        long duration = (document.get("duration") instanceof Long) ? document.getLong("duration") : document.getInteger("duration").longValue();
+        return new AuctionEscrow(item, starter, duration);
+    }
+
+
 
 
     // todo : fix it
@@ -39,7 +75,7 @@ public class AuctionEscrow implements ConfigurationSerializable {
         return this.item;
     }
 
-    public void setItem(final SItem item) {
+    public void setItem(SItem item) {
         this.item = item;
     }
 
@@ -47,7 +83,7 @@ public class AuctionEscrow implements ConfigurationSerializable {
         return this.starter;
     }
 
-    public void setStarter(final long starter) {
+    public void setStarter(long starter) {
         this.starter = starter;
     }
 
@@ -55,11 +91,11 @@ public class AuctionEscrow implements ConfigurationSerializable {
         return this.duration;
     }
 
-    public void setDuration(final long duration) {
+    public void setDuration(long duration) {
         this.duration = duration;
     }
 
-    public long getCreationFee(final boolean bin) {
+    public long getCreationFee(boolean bin) {
         return Math.round(this.starter * (bin ? 0.01 : 0.05));
     }
 }
