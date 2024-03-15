@@ -24,6 +24,7 @@ import net.hypixel.skyblock.entity.EntitySpawner;
 import net.hypixel.skyblock.entity.SEntityType;
 import net.hypixel.skyblock.entity.StaticDragonManager;
 import net.hypixel.skyblock.entity.nms.VoidgloomSeraph;
+import net.hypixel.skyblock.features.ranks.SetRankCommand;
 import net.hypixel.skyblock.item.*;
 import net.hypixel.skyblock.item.armor.VoidlingsWardenHelmet;
 import net.hypixel.skyblock.item.pet.Pet;
@@ -223,6 +224,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
                 initDimoon();
             }
             startPopulators();
+            getCommand("setrank").setExecutor(new SetRankCommand());
         } else {
             SLog.warn("Successfully enabled Skyblock Core but license is not valid or empty. Please insert license in config.yml");
         }
