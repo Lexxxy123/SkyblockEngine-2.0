@@ -1,5 +1,6 @@
 package net.hypixel.skyblock.command;
 
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -7,7 +8,7 @@ import org.bukkit.inventory.PlayerInventory;
 import net.hypixel.skyblock.item.SItem;
 import net.hypixel.skyblock.item.SMaterial;
 
-@CommandParameters(description = "Gives an item from Spec.", aliases = "sitem,specitem", permission = "spt.item")
+@CommandParameters(description = "Gives an item from Spec.", aliases = "sitem,specitem", permission = PlayerRank.ADMIN)
 public class ItemCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

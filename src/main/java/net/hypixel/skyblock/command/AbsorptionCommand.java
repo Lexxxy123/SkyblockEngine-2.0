@@ -1,5 +1,6 @@
 package net.hypixel.skyblock.command;
 
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import net.minecraft.server.v1_8_R3.EntityHuman;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
@@ -7,7 +8,7 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftHumanEntity;
 import org.bukkit.entity.Player;
 import net.hypixel.skyblock.util.SputnikPlayer;
 
-@CommandParameters(description = "Modify your absorption amount.", permission = "spt.player")
+@CommandParameters(description = "Modify your absorption amount.", permission = PlayerRank.ADMIN)
 public class AbsorptionCommand extends SCommand {
     @Override
     public void run(CommandSource sender, String[] args) {

@@ -1,9 +1,12 @@
 package net.hypixel.skyblock.command;
 
+
+import lombok.Getter;
+import net.hypixel.skyblock.user.User;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import net.hypixel.skyblock.user.User;
 
+@Getter
 public class CommandSource {
     private final CommandSender sender;
     private final Player player;
@@ -11,23 +14,11 @@ public class CommandSource {
 
     public CommandSource(CommandSender sender) {
         this.sender = sender;
-        this.player = ((sender instanceof Player) ? (Player) sender : null);
-        this.user = ((null != this.player) ? User.getUser(this.player.getUniqueId()) : null);
+        this.player = sender instanceof Player ? (Player) sender : null;
+        this.user = player != null ? User.getUser(player.getUniqueId()) : null;
     }
 
     public void send(String message) {
-        this.sender.sendMessage(message);
-    }
-
-    public CommandSender getSender() {
-        return this.sender;
-    }
-
-    public Player getPlayer() {
-        return this.player;
-    }
-
-    public User getUser() {
-        return this.user;
+        sender.sendMessage(message);
     }
 }

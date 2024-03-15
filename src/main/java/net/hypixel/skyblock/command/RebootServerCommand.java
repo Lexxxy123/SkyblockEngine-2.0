@@ -1,6 +1,7 @@
 package net.hypixel.skyblock.command;
 
 import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
@@ -13,7 +14,7 @@ import net.hypixel.skyblock.util.Sputnik;
 import java.util.HashMap;
 import java.util.Map;
 
-@CommandParameters(description = "Spec test command.", aliases = "rebootserver")
+@CommandParameters(description = "Spec test command.", aliases = "rebootserver", permission = PlayerRank.ADMIN)
 public class RebootServerCommand extends SCommand {
     public static Map<Server, Integer> secondMap;
 

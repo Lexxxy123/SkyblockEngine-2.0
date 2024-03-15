@@ -1,5 +1,6 @@
 package net.hypixel.skyblock.command;
 
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
@@ -8,7 +9,7 @@ import net.hypixel.skyblock.item.SItem;
 import net.hypixel.skyblock.item.SMaterial;
 import net.hypixel.skyblock.user.User;
 
-@CommandParameters(description = "bruhbu", aliases = "gsh")
+@CommandParameters(description = "bruhbu", aliases = "gsh", permission = PlayerRank.ADMIN)
 public class GiveSpaceHelmetCommand extends SCommand {
     @Override
     public void run(CommandSource sender, String[] args) {

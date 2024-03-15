@@ -1,11 +1,12 @@
 package net.hypixel.skyblock.command;
 
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import net.hypixel.skyblock.util.Sputnik;
 
-@CommandParameters(description = "Modify your absorption amount.", permission = "spt.player")
+@CommandParameters(description = "Modify your absorption amount.", permission = PlayerRank.DEFAULT)
 public class TradeCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

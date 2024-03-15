@@ -1,11 +1,12 @@
 package net.hypixel.skyblock.command;
 
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import net.hypixel.skyblock.features.potion.ActivePotionEffect;
 import net.hypixel.skyblock.util.SUtil;
 
-@CommandParameters(description = "Get your current active potion effects.", aliases = "effect", permission = "spt.item")
+@CommandParameters(description = "Get your current active potion effects.", aliases = "effect", permission = PlayerRank.ADMIN)
 public class SpecEffectsCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

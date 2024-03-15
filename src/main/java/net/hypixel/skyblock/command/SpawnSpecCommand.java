@@ -1,5 +1,6 @@
 package net.hypixel.skyblock.command;
 
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -7,7 +8,7 @@ import net.hypixel.skyblock.entity.SEntity;
 import net.hypixel.skyblock.entity.SEntityType;
 import net.hypixel.skyblock.util.Sputnik;
 
-@CommandParameters(description = "Spawn a mob from Spec.", aliases = "scm", permission = "spt.spawn")
+@CommandParameters(description = "Spawn a mob from Spec.", aliases = "scm", permission = PlayerRank.ADMIN)
 public class SpawnSpecCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

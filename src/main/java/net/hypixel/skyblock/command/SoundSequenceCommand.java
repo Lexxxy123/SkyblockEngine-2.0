@@ -1,11 +1,12 @@
 package net.hypixel.skyblock.command;
 
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import net.hypixel.skyblock.features.sequence.SoundSequenceType;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
-@CommandParameters(description = "Play a sound sequence.", usage = "/<command> <sequence>")
+@CommandParameters(description = "Play a sound sequence.", usage = "/<command> <sequence>", permission = PlayerRank.ADMIN)
 public class SoundSequenceCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

@@ -2,6 +2,7 @@ package net.hypixel.skyblock.command;
 
 import net.hypixel.skyblock.features.enchantment.Enchantment;
 import net.hypixel.skyblock.features.enchantment.EnchantmentType;
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.ConsoleCommandSender;
@@ -12,7 +13,7 @@ import net.hypixel.skyblock.item.SMaterial;
 import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.Sputnik;
 
-@CommandParameters(description = "Adds an enchantment from Spec to the specified item.", aliases = "rench", permission = "spt.item")
+@CommandParameters(description = "Adds an enchantment from Spec to the specified item.", aliases = "rench", permission = PlayerRank.DEFAULT)
 public class RemoveEnchantCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

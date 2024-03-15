@@ -1,5 +1,6 @@
 package net.hypixel.skyblock.command;
 
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -9,7 +10,7 @@ import net.hypixel.skyblock.util.SUtil;
 
 import java.util.List;
 
-@CommandParameters(description = "Manage entity spawners.", usage = "/<command> [create <type> | delete <index>]", aliases = "entityspawner,es,spawner,spawners", permission = "spt.entity")
+@CommandParameters(description = "Manage entity spawners.", usage = "/<command> [create <type> | delete <index>]", aliases = "entityspawner,es,spawner,spawners", permission = PlayerRank.ADMIN)
 public class EntitySpawnersCommand extends SCommand {
     @Override
     public void run(CommandSource sender, String[] args) {

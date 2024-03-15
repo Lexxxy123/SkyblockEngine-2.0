@@ -1,5 +1,6 @@
 package net.hypixel.skyblock.command;
 
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import net.hypixel.skyblock.features.region.Region;
@@ -9,7 +10,7 @@ import net.hypixel.skyblock.features.region.RegionType;
 import java.util.HashMap;
 import java.util.Map;
 
-@CommandParameters(description = "Manage world regions.", usage = "/<command> [create <name> <type> | update <name> [type] | delete <name>]", aliases = "reg", permission = "spt.region")
+@CommandParameters(description = "Manage world regions.", usage = "/<command> [create <name> <type> | update <name> [type] | delete <name>]", aliases = "reg", permission = PlayerRank.ADMIN)
 public class RegionCommand extends SCommand {
     public static Map<CommandSender, RegionGenerator> REGION_GENERATION_MAP;
 

@@ -1,5 +1,6 @@
 package net.hypixel.skyblock.command;
 
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -9,7 +10,7 @@ import net.hypixel.skyblock.util.Sputnik;
 import java.util.HashMap;
 import java.util.Map;
 
-@CommandParameters(description = "Manage world regions.", usage = "", aliases = "hub")
+@CommandParameters(description = "Manage world regions.", usage = "", aliases = "hub", permission = PlayerRank.DEFAULT)
 public class HubCommand extends SCommand {
     public static Map<CommandSender, RegionGenerator> REGION_GENERATION_MAP;
 

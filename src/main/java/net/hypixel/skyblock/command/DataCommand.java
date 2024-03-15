@@ -1,5 +1,6 @@
 package net.hypixel.skyblock.command;
 
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
@@ -7,7 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 import net.hypixel.skyblock.item.SItem;
 
-@CommandParameters(description = "Sets data for a Spec item.", permission = "spt.item")
+@CommandParameters(description = "Sets data for a Spec item.", permission = PlayerRank.ADMIN)
 public class DataCommand extends SCommand {
     @Override
     public void run(CommandSource sender, String[] args) {

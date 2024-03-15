@@ -1,5 +1,6 @@
 package net.hypixel.skyblock.command;
 
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -7,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.SItem;
 
-@CommandParameters(description = "Modifies the rarity of an item.", aliases = "rar", permission = "spt.item")
+@CommandParameters(description = "Modifies the rarity of an item.", aliases = "rar", permission = PlayerRank.ADMIN)
 public class SpecRarityCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

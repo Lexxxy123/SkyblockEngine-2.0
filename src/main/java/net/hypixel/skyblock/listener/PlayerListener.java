@@ -104,6 +104,7 @@ public class PlayerListener extends PListener {
         this.getIsNotLoaded().put(player.getUniqueId(), true);
 
         SUtil.delay(() -> {
+
             PlayerUtils.USER_SESSION_ID.put(player.getUniqueId(), UUID.randomUUID());
             PlayerUtils.COOKIE_DURATION_CACHE.remove(player.getUniqueId());
             PlayerUtils.AUTO_SLAYER.remove(player.getUniqueId());
@@ -112,6 +113,7 @@ public class PlayerListener extends PListener {
             player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 1000000, 255));
             PrecursorEye.PrecursorLaser.put(player.getUniqueId(), false);
             final User user = User.getUser(player.getUniqueId());
+            plugin.dataLoader.load(player.getUniqueId());
             if (!PlayerUtils.STATISTICS_CACHE.containsKey(player.getUniqueId())) {
                 PlayerUtils.STATISTICS_CACHE.put(player.getUniqueId(), PlayerUtils.getStatistics(player));
             }
@@ -262,9 +264,7 @@ public class PlayerListener extends PListener {
             player.sendMessage("  " + ChatColor.RED + ChatColor.BOLD + "SLAYER QUEST FAILED!");
             player.sendMessage("   " + ChatColor.DARK_PURPLE + ChatColor.BOLD + "» " + ChatColor.GRAY + "You need to learn how to play this game first!");
         }
-        user.save();
-        user.saveCookie();
-        user.saveAllVanillaInstances();
+        plugin.dataLoader.save(player.getUniqueId());
         Blessings.STAT_MAP.remove(player.getUniqueId());
         PrecursorEye.PrecursorLaser.remove(player.getUniqueId());
         PlayerUtils.COOKIE_DURATION_CACHE.remove(player.getUniqueId());

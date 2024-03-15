@@ -1,5 +1,10 @@
 package net.hypixel.skyblock.command;
 
+
+
+
+import net.hypixel.skyblock.features.ranks.PlayerRank;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -11,5 +16,5 @@ public @interface CommandParameters {
 
     String aliases() default "";
 
-    String permission() default "";
+    PlayerRank permission();
 }

@@ -251,6 +251,7 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
     public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
         this.hologram.remove();
         SUtil.delay(() -> this.hologram_name.remove(), 20L);
+        User user = User.getUser(damager.getUniqueId());
     }
 
     public String getEntityName() {

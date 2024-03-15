@@ -1,5 +1,6 @@
 package net.hypixel.skyblock.command;
 
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.ConsoleCommandSender;
@@ -10,7 +11,7 @@ import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.SUtil;
 import net.hypixel.skyblock.util.Sputnik;
 
-@CommandParameters(description = "bruhbu", aliases = "hpb")
+@CommandParameters(description = "bruhbu", aliases = "hpb", permission = PlayerRank.ADMIN)
 public class HotPotatoBookCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

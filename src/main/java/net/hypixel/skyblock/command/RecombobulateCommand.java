@@ -1,5 +1,6 @@
 package net.hypixel.skyblock.command;
 
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -7,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import net.hypixel.skyblock.item.GenericItemType;
 import net.hypixel.skyblock.item.SItem;
 
-@CommandParameters(description = "Recombobulate an item from Spec.", aliases = "recom", permission = "spt.item")
+@CommandParameters(description = "Recombobulate an item from Spec.", aliases = "recom", permission = PlayerRank.DEFAULT)
 public class RecombobulateCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

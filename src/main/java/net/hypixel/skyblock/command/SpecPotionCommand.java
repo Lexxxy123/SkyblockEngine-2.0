@@ -1,5 +1,6 @@
 package net.hypixel.skyblock.command;
 
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -8,7 +9,7 @@ import net.hypixel.skyblock.item.SItem;
 import net.hypixel.skyblock.features.potion.PotionEffect;
 import net.hypixel.skyblock.features.potion.PotionEffectType;
 
-@CommandParameters(description = "Adds an potion from Spec to the specified item.", aliases = "spot", permission = "spt.item")
+@CommandParameters(description = "Adds an potion from Spec to the specified item.", aliases = "spot", permission = PlayerRank.ADMIN)
 public class SpecPotionCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

@@ -1,6 +1,7 @@
 package net.hypixel.skyblock.command;
 
 import net.hypixel.skyblock.features.enchantment.EnchantmentType;
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -9,7 +10,7 @@ import net.hypixel.skyblock.item.SMaterial;
 import net.hypixel.skyblock.util.SUtil;
 import net.hypixel.skyblock.util.Sputnik;
 
-@CommandParameters(description = "Adds an enchantment from Spec to the specified item.", aliases = "meb", permission = "spt.item")
+@CommandParameters(description = "Adds an enchantment from Spec to the specified item.", aliases = "meb", permission = PlayerRank.DEFAULT)
 public class MembersEnchantCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

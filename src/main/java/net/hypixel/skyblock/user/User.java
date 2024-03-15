@@ -77,7 +77,7 @@ import java.util.stream.Collectors;
 
 public class User {
     public static final int ISLAND_SIZE = 125;
-    private static final Map<UUID, User> USER_CACHE;
+    public static final Map<UUID, User> USER_CACHE;
     private static final SkyBlock plugin;
     private static final File USER_FOLDER;
     @Getter
@@ -87,7 +87,10 @@ public class User {
     @Getter
     private UUID uuid;
     private  Config config;
-    private final Map<ItemCollection, Integer> collections;
+
+    @Getter
+    @Setter
+    public final Map<ItemCollection, Integer> collections;
     @Getter
     private long coins;
     @Getter @Setter
@@ -120,11 +123,11 @@ public class User {
     @Getter
     private List<String> talked_npcs;
     @Getter
-    private double farmingXP;
+    double farmingXP;
     private boolean boneToZeroDamage;
     private boolean cooldownAPI;
-    private double miningXP;
-    private double combatXP;
+    double miningXP;
+    double combatXP;
     private double enchantXP;
     private double archerXP;
     private double cataXP;
@@ -136,9 +139,9 @@ public class User {
     @Getter
     private double mageXP;
     @Getter
-    private double foragingXP;
-    private final int[] highestSlayers;
-    private final int[] slayerXP;
+    double foragingXP;
+    final int[] highestSlayers;
+    final int[] slayerXP;
     private final int[] crystalLVL;
     @Getter
     @Setter
@@ -157,11 +160,11 @@ public class User {
     @Getter
     private SlayerQuest slayerQuest;
     @Getter
-    private List<Pet.PetItem> pets;
+    List<Pet.PetItem> pets;
     @Getter
     private List<String> unlockedRecipes;
     @Getter
-    private AuctionSettings auctionSettings;
+    AuctionSettings auctionSettings;
     @Getter
     @Setter
     private boolean auctionCreationBIN;
@@ -178,25 +181,28 @@ public class User {
     @Getter
     private String signContent;
     private boolean isCompletedSign;
-    private MongoDatabase database;
-    private MongoCollection<Document> collection;
-    private Document document;
 
-    boolean documentExists;
 
     @Getter
     public PlayerRank rank;
 
     public Player player;
 
+    @Getter
+    public boolean iscreated;
+
+    @Getter
+    @Setter
+    public List<?> inventory;
+    @Setter
+    public List<?> armor;
+
     private User(final UUID uuid) {
         this.stashedItems = new ArrayList<ItemStack>();
         this.cooldownAltar = 0;
         this.headShot = false;
         this.playingSong = false;
-        this.database = DatabaseManager.getDatabase();
-        this.collection = database.getCollection("users");
-        this.documentExists = collection.countDocuments(Filters.eq("uuid", uuid.toString()) , new CountOptions().limit(1)) == 1;
+        this.iscreated = false;
         this.inDanger = false;
         this.player = Bukkit.getPlayer(uuid);
         this.boneToZeroDamage = false;
@@ -231,6 +237,8 @@ public class User {
         this.auctionSettings = new AuctionSettings();
         this.auctionCreationBIN = false;
         this.auctionEscrow = new AuctionEscrow();
+        this.inventory = new ArrayList<>();
+        this.armor = new ArrayList<>();
         if (!User.USER_FOLDER.exists()) {
             User.USER_FOLDER.mkdirs();
         }
@@ -238,11 +246,6 @@ public class User {
         boolean save = false;
 
         User.USER_CACHE.put(uuid, this);
-        if (!documentExists) {
-            this.save();
-        }
-        this.document = collection.find(Filters.eq("uuid", this.uuid.toString())).first();
-        this.load();
     }
 
     public void unload() {
@@ -254,141 +257,10 @@ public class User {
         }
     }
 
-    public void load() {
-        if (document != null) {
-
-
-            this.uuid = UUID.fromString(document.getString("uuid"));
-
-
-                if (document.containsKey("collections")) {
-                Document collectionsDocument = document.get("collections", Document.class);
-                for (String identifier : collectionsDocument.keySet()) {
-                    this.collections.put(ItemCollection.getByIdentifier(identifier), collectionsDocument.getInteger(identifier));
-                }
-            }
-
-            this.coins = document.getLong("coins");
-            this.coins = document.getLong("bits");
-            this.rank = PlayerRank.valueOf(document.getString("rank"));
-            this.bankCoins = document.getLong("bankCoins");
-            this.talked_npcs = document.getList("talked_npcs", String.class);
-            this.unlockedRecipes = document.getList("unlockedrecipes", String.class);
-            this.lastRegion = document.containsKey("lastRegion") ? Region.get(document.getString("lastRegion")) : null;
-
-            if (document.containsKey("quiver")) {
-                Document quiverDocument = document.get("quiver", Document.class);
-                if (quiverDocument != null) {
-                    for (String m : quiverDocument.keySet()) {
-                        this.quiver.put(SMaterial.getMaterial(m), quiverDocument.getInteger(m));
-                    }
-                }
-            }
-
-            if (document.containsKey("effects")) {
-                List<Document> effectsDocuments = document.getList("effects", Document.class);
-
-                for (Document effectData : effectsDocuments) {
-                    String key = effectData.getString("key");
-                    Integer level = effectData.getInteger("level");
-                    Long duration = effectData.getLong("duration");
-                    Long remaining = effectData.getLong("remaining");
-
-                    if (key != null && level != null && duration != null && remaining != null) {
-                        System.out.println("not null print report  key : " + key + " level : " + level + " duration : " + duration + " remainig : " + remaining);
-                        this.effects.add(new ActivePotionEffect(
-                                new PotionEffect(PotionEffectType.getByNamespace(key), level, duration),
-                                remaining
-                        ));
-
-                    }
-                }
-            }
-
-            Document dungeonsDocument = document.get("dungeons", Document.class);
-            if (dungeonsDocument != null) {
-                Document floorDocument = (Document) dungeonsDocument.get("floor6");
-                this.totalfloor6run = floorDocument.getLong("run");
-
-                Document bossDocument = dungeonsDocument.get("boss", Document.class);
-                if (bossDocument != null) {
-
-                    this.sadancollections = bossDocument.getLong("sadan");
-                }
-            }
-
-            Document xpDocument = document.get("xp", Document.class);
-            if (xpDocument != null) {
-                this.farmingXP = xpDocument.getDouble("farming");
-                this.miningXP = xpDocument.getDouble("mining");
-                this.combatXP = xpDocument.getDouble("combat");
-                this.foragingXP = xpDocument.getDouble("foraging");
-                this.enchantXP = xpDocument.getDouble("enchant");
-
-                Document dungeonsXPDocument = xpDocument.get("dungeons", Document.class);
-                if (dungeonsXPDocument != null) {
-                    this.cataXP = dungeonsXPDocument.getDouble("cata");
-                    this.archerXP = dungeonsXPDocument.getDouble("arch");
-                    this.mageXP = dungeonsXPDocument.getDouble("mage");
-                    this.tankXP = dungeonsXPDocument.getDouble("tank");
-                    this.berserkXP = dungeonsXPDocument.getDouble("bers");
-                    this.healerXP = dungeonsXPDocument.getDouble("heal");
-                }
-            }
-
-            Document slayerDocument = (Document) document.get("slayer");
-            if (slayerDocument != null) {
-                Document revdocument = (Document) slayerDocument.get("revenantHorror");
-                this.highestSlayers[0] = revdocument.getInteger("highest");
-                Document taradocument = (Document) slayerDocument.get("tarantulaBroodfather");
-                this.highestSlayers[1] = taradocument.getInteger("highest");
-                Document svendocument = (Document) slayerDocument.get("svenPackmaster");
-                this.highestSlayers[2] = svendocument.getInteger("highest");
-                Document enderdocument = (Document) slayerDocument.get("voidgloomSeraph");
-                this.highestSlayers[3] = enderdocument.getInteger("highest");
-            }
-
-            Document xpSlayerDocument = xpDocument.get("slayer", Document.class);
-            if (xpSlayerDocument != null) {
-                this.slayerXP[0] = xpSlayerDocument.getInteger("revenantHorror");
-                this.slayerXP[1] = xpSlayerDocument.getInteger("tarantulaBroodfather");
-                this.slayerXP[2] = xpSlayerDocument.getInteger("svenPackmaster");
-                this.slayerXP[3] = xpSlayerDocument.getInteger("voidgloomSeraph");
-            }
-
-            FindIterable<Document> petDocuments = collection.find();
-
-            for (Document petDocument : petDocuments) {
-                List<Document> petItemList = (List<Document>) petDocument.get("pets");
-                if (petItemList != null) {
-                    for (Document petItemDocument : petItemList) {
-                        pets.add(Pet.PetItem.fromDocument(petItemDocument));
-                    }
-                }
-            }
-
-            this.permanentCoins = document.getBoolean("permanentCoins");
-
-            Document questdocument = (Document) slayerDocument.get("quest");
-            if (questdocument != null ) {
-                this.slayerQuest = SlayerQuest.deserializeSlayerQuest(questdocument);
-            }
-            Document auctionDocument = (Document) document.get("auction");
-
-            Document settingdocument = (Document) auctionDocument.get("settings");
-            this.auctionSettings = settingdocument != null ?
-                    AuctionSettings.deserializeAuctionSettings(settingdocument) : new AuctionSettings();
-
-
-            this.auctionCreationBIN = auctionDocument.getBoolean("creationBIN");
-
-            Document auctionEscrowDocument = auctionDocument.get("escrow", Document.class);
-            this.auctionEscrow = auctionEscrowDocument != null ?
-                    AuctionEscrow.deserializeAuctionEscrow(auctionEscrowDocument) : new AuctionEscrow();
-
-        }
-
+    public void setiscreated(boolean b){
+        iscreated = b;
     }
+
 
 
 
@@ -405,9 +277,7 @@ public class User {
     public void syncSavingData() {
         new BukkitRunnable() {
             public void run() {
-                User.this.saveCookie();
-                User.this.save();
-                User.this.saveAllVanillaInstances();
+                //  plugin.dataLoader.save(uuid);;
             }
         }.runTask(User.plugin);
     }
@@ -416,225 +286,42 @@ public class User {
         Player player = Bukkit.getPlayer(this.uuid);
         User user = getUser(this.uuid);
         // todo : fix it
-        PlayerUtils.AUTO_SLAYER.put(player.getUniqueId(), true);        PetsGUI.setShowPets(player, true);
+        PlayerUtils.AUTO_SLAYER.put(player.getUniqueId(), true);
+        PetsGUI.setShowPets(player, true);
     }
 
     public void loadCookieStatus() {
         try {
-            if (!document.containsKey("user")) return;
+            Document document = plugin.dataLoader.grabProfile(uuid.toString());
+            if (!document.containsKey("cookieDuration")) return;
             Player player = Bukkit.getPlayer(this.uuid);
-            Document userdocument = (Document) document.get("user");
-            PlayerUtils.setCookieDurationTicks(player, userdocument.getLong("cookieDuration"));
+
+            PlayerUtils.setCookieDurationTicks(player, plugin.dataLoader.getLong(document, "cookieDuration", null));
             PlayerUtils.loadCookieStatsBuff(player);
-        }catch (NullPointerException ex){
+        } catch (NullPointerException ignored) {
 
         }
     }
 
     public void saveCookie() {
-        if (Bukkit.getPlayer(this.uuid) == null) {
+        if (Bukkit.getPlayer(uuid) == null) {
             return;
         }
-        if (!Bukkit.getPlayer(this.uuid).isOnline()) {
+        if (!Bukkit.getPlayer(uuid).isOnline()) {
             return;
         }
         if (!PlayerUtils.COOKIE_DURATION_CACHE.containsKey(this.uuid)) {
             return;
         }
 
-        set("user.cookieDuration", PlayerUtils.getCookieDurationTicks(Bukkit.getPlayer(this.uuid)));
+        plugin.dataLoader.setUserProperty("cookieDuration", PlayerUtils.getCookieDurationTicks(Bukkit.getPlayer(this.uuid)));
     }
 
     public void save() {
-        Document document;
-        if (documentExists) {
-            document = collection.find(Filters.eq("uuid", this.uuid.toString())).first();
-        }else{
-            document = new Document("uuid", this.uuid.toString());
-        }
-        document.append("collections" , null);
-        for(Map.Entry<ItemCollection, Integer> entry : this.collections.entrySet()){
-            document.append("collections" , new Document(entry.getKey().getIdentifier() , entry.getValue()));
-        }
-        document.append("coins", this.coins)
-                .append("bits", this.bits)
-                .append("rank", this.rank)
-                .append("bankCoins", this.bankCoins)
-                .append("permanentCoins", this.permanentCoins)
-                .append("quiver" , null);
-        Document quiverDocument = new Document();
-        for (Map.Entry<SMaterial, Integer> entry : this.quiver.entrySet()) {
-            quiverDocument.append(entry.getKey().name().toLowerCase(), entry.getValue());
-        }
-        document.append("quiver", quiverDocument);
-
-        document.append("talked_npcs", this.talked_npcs);
-        document.append("unlockedrecipes", this.unlockedRecipes);
-
-
-        List<Document> effectDocuments = new ArrayList<>();
-
-        for (ActivePotionEffect effect : this.effects) {
-            Document effectDocument = new Document()
-                    .append("key", effect.getEffect().getType().getNamespace())
-                    .append("level", effect.getEffect().getLevel())
-                    .append("duration", effect.getEffect().getDuration())
-                    .append("remaining", effect.getRemaining());
-            effectDocuments.add(effectDocument);
-        }
-
-        document.append("effects", effectDocuments);
-        document.append("dungeons", new Document("floor6", new Document("run", this.totalfloor6run))
-                .append("boss", new Document("sadan", this.sadancollections)));
-
-
-        Document dungeonDocument = new Document()
-                .append("cata", this.cataXP)
-                .append("arch", this.archerXP)
-                .append("mage", this.mageXP)
-                .append("tank", this.tankXP)
-                .append("bers", this.berserkXP)
-                .append("heal", this.healerXP);
-
-        Document slayerXpDocument = new Document()
-                .append("revenantHorror", this.slayerXP[0])
-                .append("tarantulaBroodfather", this.slayerXP[1])
-                .append("svenPackmaster", this.slayerXP[2])
-                .append("voidgloomSeraph", this.slayerXP[3]);
-
-        Document xpDocument = new Document()
-                .append("farming", this.farmingXP)
-                .append("mining", this.miningXP)
-                .append("combat", this.combatXP)
-                .append("foraging", this.foragingXP)
-                .append("enchant", this.enchantXP)
-                .append("dungeons", dungeonDocument)
-                .append("slayer", slayerXpDocument);
-
-
-        document.append("xp", xpDocument);
-
-        Document slayerDocument = new Document()
-                .append("revenantHorror", new Document("highest", this.highestSlayers[0]))
-                .append("tarantulaBroodfather", new Document("highest", this.highestSlayers[1]))
-                .append("svenPackmaster", new Document("highest", this.highestSlayers[2]))
-                .append("voidgloomSeraph", new Document("highest", this.highestSlayers[3]));
-        if (slayerQuest != null){
-            slayerDocument.append("quest" , SlayerQuest.serializeYourObject(slayerQuest));
-        }
-
-        document.append("slayer", slayerDocument);
-
-        Document crystalLevelDocument = new Document().append("level", new Document("health", this.crystalLVL[0])
-                .append("defense", this.crystalLVL[1])
-                .append("critdmg", this.crystalLVL[2])
-                .append("critchance", this.crystalLVL[3])
-                .append("intelligence", this.crystalLVL[4])
-                .append("ferocity", this.crystalLVL[5])
-                .append("magicfind", this.crystalLVL[6])
-                .append("strength", this.crystalLVL[7]));
-
-        document.append("crystals", crystalLevelDocument);
-
-        List<Document> petDocuments = new ArrayList<>();
-
-        for (Pet.PetItem petItem : pets) {
-            if (petItem != null) {
-                petDocuments.add(petItem.toDocument());
-            }
-        }
-
-        document.append("pets", petDocuments);
-
-
-
-        if (this.lastRegion != null) {
-            document.append("lastRegion", this.lastRegion.getName());
-        }
-
-        Document auction = new Document();
-
-        if (auctionSettings != null) {
-            Document settingsDocument = AuctionSettings.serializeAuctionSettings(this.auctionSettings);
-            auction.append("settings", settingsDocument);
-        } else {
-            auction.append("settings", null);
-        }
-
-        if (auctionEscrow != null) {
-            Document escrowDocument = AuctionEscrow.serializeAuctionEscrow(this.auctionEscrow);
-            auction.append("escrow", escrowDocument);
-        } else {
-            auction.append("escrow", null);
-        }
-        auction.append("creationBIN" , auctionCreationBIN);
-
-        document.append("auction", auction);
-
-
-        if (Bukkit.getPlayer(this.uuid) != null && Bukkit.getPlayer(this.uuid).isOnline()) {
-            document.append("configures", new Document("showPets" , PetsGUI.getShowPet(Bukkit.getPlayer(this.uuid))))
-                    .append("configures", new Document("autoSlayer", PlayerUtils.isAutoSlayer(Bukkit.getPlayer(this.uuid))));
-        }
-        if (this.document != null) {
-            saveAllVanillaInstances();
-        }
-        if (documentExists) {
-            collection.replaceOne(Filters.eq("uuid", this.uuid.toString()), document);
-        } else {
-
-            collection.insertOne(document);
-        }
+       plugin.dataLoader.save(uuid);
     }
 
     public void saveStorageData(int page) {
-    }
-
-    public void saveInventory() {
-        if (Bukkit.getPlayer(this.uuid) == null) {
-            return;
-        }
-        Object a = null;
-        PlayerInventory piv = Bukkit.getPlayer(this.uuid).getInventory();
-        a = this.getPureListFrom(piv);
-        set("database.inventory", a.toString());
-    }
-
-    public String getPureListFrom(Inventory piv) {
-        ItemStack[] ist = piv.getContents();
-        List<ItemStack> arraylist = Arrays.asList(ist);
-        for (int i = 0; i < ist.length; ++i) {
-            ItemStack stack = ist[i];
-            if (stack != null) {
-                NBTItem nbti = new NBTItem(stack);
-                if (nbti.hasKey("dontSaveToProfile")) {
-                    arraylist.remove(i);
-                }
-            }
-        }
-        ItemStack[] arrl = arraylist.toArray(new ItemStack[0]);
-        return BukkitSerializeClass.itemStackArrayToBase64(arrl);
-    }
-
-
-
-    public void saveArmor() {
-        if (Bukkit.getPlayer(this.uuid) == null) {
-            return;
-        }
-        Object a = null;
-        a = BukkitSerializeClass.itemStackArrayToBase64(Bukkit.getPlayer(this.uuid).getInventory().getArmorContents());
-        set("database.armor", a);
-    }
-
-    public void saveEnderChest() {
-        if (Bukkit.getPlayer(this.uuid) == null) {
-            return;
-        }
-        Object a = null;
-        Inventory inv = Bukkit.getPlayer(this.uuid).getEnderChest();
-        a = this.getPureListFrom(inv);
-        set("database.enderchest", a);
     }
 
     public void setRank(PlayerRank rank) {
@@ -656,23 +343,61 @@ public class User {
         }
     }
 
-    public void saveExp() {
+    public String getPureListFrom(Inventory piv) {
+        ItemStack[] ist = piv.getContents();
+        List<ItemStack> arraylist = Arrays.asList(ist);
+        for (int i = 0; i < ist.length; ++i) {
+            ItemStack stack = ist[i];
+            if (stack != null) {
+                NBTItem nbti = new NBTItem(stack);
+                if (nbti.hasKey("dontSaveToProfile")) {
+                    arraylist.remove(i);
+                }
+            }
+        }
+        ItemStack[] arrl = (ItemStack[]) arraylist.toArray();
+        return BukkitSerializeClass.itemStackArrayToBase64(arrl);
+    }
+
+    public void saveEnderChest() {
         if (Bukkit.getPlayer(this.uuid) == null) {
             return;
         }
-        set("database.minecraft_xp", Sputnik.getTotalExperience(Bukkit.getPlayer(this.uuid)));
+        Document existingProfile = plugin.dataLoader.grabProfile(uuid.toString());
+        Object a = null;
+        Inventory inv = Bukkit.getPlayer(this.uuid).getEnderChest();
+        a = this.getPureListFrom(inv);
+        set(existingProfile, "database.enderchest", a);
     }
+
+    public void saveExp() {
+        Document existingProfile = plugin.dataLoader.grabProfile(uuid.toString());
+        if (Bukkit.getPlayer(this.uuid) == null) {
+            return;
+        }
+        set(existingProfile, "database.minecraft_xp", Sputnik.getTotalExperience(Bukkit.getPlayer(this.uuid)));
+    }
+
+    public void saveArmor() {
+        Document existingProfile = plugin.dataLoader.grabProfile(uuid.toString());
+        if (Bukkit.getPlayer(this.uuid) == null) {
+            return;
+        }
+        Object a = null;
+        a = BukkitSerializeClass.itemStackArrayToBase64(Bukkit.getPlayer(this.uuid).getInventory().getArmorContents());
+        set(existingProfile, "database.armor", a);
+    }
+
 
     public void loadPlayerData() throws IllegalArgumentException, IOException {
         Player player = Bukkit.getPlayer(this.uuid);
+        Document document = plugin.dataLoader.grabProfile(uuid.toString());
         Document databaseDocument;
-        if (document.containsKey("database")){
+        if (document.containsKey("database")) {
             databaseDocument = (Document) document.get("database");
-        }else{
+        } else {
             databaseDocument = document;
         }
-
-
         if (databaseDocument.containsKey("inventory")) {
             player.getInventory().setContents(BukkitSerializeClass.itemStackArrayFromBase64(databaseDocument.getString("inventory")));
         } else {
@@ -697,11 +422,12 @@ public class User {
         } else {
             this.stashedItems = new ArrayList<ItemStack>();
         }
+        //this.loadEconomy();
         Document configDocument;
-        if (document.containsKey("configures")){
+        if (document.containsKey("configures")) {
             configDocument = (Document) document.get("configures");
 
-        }else{
+        } else {
             configDocument = document;
         }
 
@@ -712,10 +438,22 @@ public class User {
     }
 
     public void saveLastSlot() {
+        Document existingProfile = plugin.dataLoader.grabProfile(String.valueOf(uuid));
         if (Bukkit.getPlayer(this.uuid) == null) {
             return;
         }
-        set("configures.slot_selected", Bukkit.getPlayer(this.uuid).getInventory().getHeldItemSlot());
+        set(existingProfile, "configures.slot_selected", Bukkit.getPlayer(this.uuid).getInventory().getHeldItemSlot());
+    }
+
+    public void saveInventory() {
+        if (Bukkit.getPlayer(this.uuid) == null) {
+            return;
+        }
+        Document existingProfile = plugin.dataLoader.grabProfile(uuid.toString());
+        Object a = null;
+        PlayerInventory piv = Bukkit.getPlayer(this.uuid).getInventory();
+        a = this.getPureListFrom(piv);
+        set(existingProfile, "database.inventory", a.toString());
     }
 
     public void saveAllVanillaInstances() {
@@ -727,11 +465,11 @@ public class User {
         this.saveInventory();
         this.saveExp();
         this.saveLastSlot();
-        //this.saveAttributesForAPI();
         this.saveStash();
     }
 
     public void saveStash() {
+        Document existingProfile = plugin.dataLoader.grabProfile(String.valueOf(uuid));
         if (Bukkit.getPlayer(this.uuid) == null) {
             return;
         }
@@ -740,46 +478,16 @@ public class User {
         }
         ItemStack[] is = new ItemStack[this.stashedItems.size()];
         is = this.stashedItems.toArray(is);
-        set("database.stashed", BukkitSerializeClass.itemStackArrayToBase64(is));
+        set(existingProfile, "database.stashed", BukkitSerializeClass.itemStackArrayToBase64(is));
     }
 
-    /*public void saveAttributesForAPI() {
-        if (Bukkit.getPlayer(this.uuid) == null) {
-            return;
-        }
-        PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(this.getUuid());
-        if (statistics == null) {
-            return;
-        }
-        Double visualcap = statistics.getCritChance().addAll() * 100.0;
-        if (visualcap > 100.0) {
-            visualcap = 100.0;
-        }
-        this.config.set("apistats.health", statistics.getMaxHealth().addAll().intValue());
-        this.config.set("apistats.defense", statistics.getDefense().addAll().intValue());
-        this.config.set("apistats.strength", statistics.getStrength().addAll().intValue());
-        this.config.set("apistats.crit_chance", visualcap.intValue());
-        this.config.set("apistats.speed", statistics.getSpeed().addAll() * 100.0);
-        this.config.set("apistats.crit_damage", statistics.getCritDamage().addAll() * 100.0);
-        this.config.set("apistats.intelligence", statistics.getIntelligence().addAll().intValue());
-        this.config.set("apistats.attack_speed", Math.min(100.0, statistics.getAttackSpeed().addAll()));
-        this.config.set("apistats.magic_find", statistics.getMagicFind().addAll() * 100.0);
-        this.config.set("apistats.ferocity", statistics.getFerocity().addAll().intValue());
-        this.config.set("apistats.ability_damage", statistics.getAbilityDamage().addAll().intValue());
-        this.config.save();
-    }*/
-    public void set(String field, Object value) {
-        collection.updateOne(Filters.eq("uuid", this.uuid.toString()), new Document("$set", new Document(field, value)));
-        document.append(field ,value);
-    }
-    public void set(Document document ,  String field, Object value) {
-        collection.updateOne(document, new Document("$set", new Document(field, value)));
-        document.append(field ,value);
+    public void set(Document document, String field, Object value) {
+
+        DatabaseManager.getCollection("users").updateOne(document, new Document("$set", new Document(field, value)));
+        document.append(field, value);
     }
 
-    public Document getDocument(){
-        return  document;
-    }
+
     public Config getConfig() {
         return this.config;
     }

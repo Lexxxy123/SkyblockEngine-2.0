@@ -6,6 +6,7 @@ import net.hypixel.skyblock.features.collection.ItemCollection;
 import net.hypixel.skyblock.features.dungeons.blessing.BlessingType;
 import net.hypixel.skyblock.features.dungeons.blessing.Blessings;
 import net.hypixel.skyblock.features.dungeons.stats.ItemSerial;
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import net.minecraft.server.v1_8_R3.EntityVillager;
 import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntityLiving;
 import org.bukkit.Bukkit;
@@ -30,7 +31,7 @@ import net.hypixel.skyblock.util.Sputnik;
 
 import java.io.File;
 
-@CommandParameters(description = "Modify your absorption amount.", permission = "spt.player")
+@CommandParameters(description = "Modify your absorption amount.", permission = PlayerRank.ADMIN)
 public class SSTest extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

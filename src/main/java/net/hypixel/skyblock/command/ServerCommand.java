@@ -1,6 +1,7 @@
 package net.hypixel.skyblock.command;
 
 import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import org.bukkit.entity.Player;
 import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.SUtil;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-@CommandParameters(description = "Modify your coin amount.", usage = "", aliases = "ss")
+@CommandParameters(description = "Modify your coin amount.", usage = "", aliases = "ss", permission = PlayerRank.ADMIN)
 public class ServerCommand extends SCommand {
     public Map<UUID, List<String>> servers;
 

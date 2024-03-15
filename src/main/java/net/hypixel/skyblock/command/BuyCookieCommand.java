@@ -1,5 +1,6 @@
 package net.hypixel.skyblock.command;
 
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -8,7 +9,7 @@ import net.hypixel.skyblock.item.SItem;
 import net.hypixel.skyblock.item.SMaterial;
 import net.hypixel.skyblock.util.Sputnik;
 
-@CommandParameters(description = "", aliases = "bbc", permission = "sse.cc")
+@CommandParameters(description = "", aliases = "bbc", permission = PlayerRank.ADMIN)
 public class BuyCookieCommand extends SCommand {
     @Override
     public void run(CommandSource sender, String[] args) {

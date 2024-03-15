@@ -1,5 +1,6 @@
 package net.hypixel.skyblock.command;
 
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import net.hypixel.skyblock.features.skill.*;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
@@ -7,7 +8,7 @@ import org.bukkit.entity.Player;
 import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.SUtil;
 
-@CommandParameters(description = "Modify your coin amount.", permission = "spt.goods", aliases = "ssx")
+@CommandParameters(description = "Modify your coin amount.", permission = PlayerRank.ADMIN, aliases = "ssx")
 public class SetSkillCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

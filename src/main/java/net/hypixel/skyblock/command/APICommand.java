@@ -1,5 +1,6 @@
 package net.hypixel.skyblock.command;
 
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -16,7 +17,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.UUID;
 
-@CommandParameters(description = "", aliases = "api", permission = "")
+@CommandParameters(description = "", aliases = "api", permission = PlayerRank.DEFAULT)
 public class APICommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

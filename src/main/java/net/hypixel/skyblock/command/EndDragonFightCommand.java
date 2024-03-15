@@ -1,5 +1,6 @@
 package net.hypixel.skyblock.command;
 
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -8,7 +9,7 @@ import org.bukkit.entity.Player;
 import net.hypixel.skyblock.entity.StaticDragonManager;
 import net.hypixel.skyblock.util.SUtil;
 
-@CommandParameters(description = "bruhbu", aliases = "edf")
+@CommandParameters(description = "bruhbu", aliases = "edf", permission = PlayerRank.ADMIN)
 public class EndDragonFightCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

@@ -1,12 +1,13 @@
 package net.hypixel.skyblock.command;
 
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import net.hypixel.skyblock.gui.GUIType;
 import net.hypixel.skyblock.user.PlayerUtils;
 import net.hypixel.skyblock.util.Sputnik;
 
-@CommandParameters(description = "Gets the NBT of your current item.", aliases = "auh", permission = "sse.cc")
+@CommandParameters(description = "Gets the NBT of your current item.", aliases = "auh", permission = PlayerRank.DEFAULT)
 public class CookieAHCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

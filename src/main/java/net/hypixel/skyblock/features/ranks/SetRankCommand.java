@@ -13,10 +13,11 @@ import java.util.Objects;
 
 public class SetRankCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender sender,Command command, String s, String[] args) {
+    public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         Player player = (Player) sender;
         User user = User.getUser(player);
-        if (sender.isOp() || Objects.requireNonNull(user).rank.isAboveOrEqual(PlayerRank.ADMIN)) {
+
+        if (sender.isOp() || Objects.requireNonNull(user).rank == PlayerRank.ADMIN || Objects.requireNonNull(user).rank == PlayerRank.ADMIN) {
             if (args.length >= 2) {
                 try {
                     Player target = Bukkit.getPlayer(args[0]);

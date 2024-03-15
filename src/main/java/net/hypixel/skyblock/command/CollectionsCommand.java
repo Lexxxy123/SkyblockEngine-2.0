@@ -1,11 +1,12 @@
 package net.hypixel.skyblock.command;
 
 import net.hypixel.skyblock.features.collection.ItemCollection;
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import org.bukkit.command.ConsoleCommandSender;
 import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.SUtil;
 
-@CommandParameters(description = "Modify your collections.", permission = "spt.collection")
+@CommandParameters(description = "Modify your collections.", permission = PlayerRank.ADMIN)
 public class CollectionsCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

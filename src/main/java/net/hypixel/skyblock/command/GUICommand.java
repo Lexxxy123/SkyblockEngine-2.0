@@ -1,11 +1,12 @@
 package net.hypixel.skyblock.command;
 
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import net.hypixel.skyblock.gui.GUI;
 import net.hypixel.skyblock.gui.GUIType;
 
-@CommandParameters(description = "Opens a GUI.", permission = "spt.gui.edit")
+@CommandParameters(description = "Opens a GUI.", permission = PlayerRank.ADMIN)
 public class GUICommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

@@ -1,5 +1,6 @@
 package net.hypixel.skyblock.command;
 
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -7,7 +8,7 @@ import net.hypixel.skyblock.Repeater;
 
 import java.util.UUID;
 
-@CommandParameters(description = "Modify your mana amount.", permission = "spt.item")
+@CommandParameters(description = "Modify your mana amount.", permission = PlayerRank.ADMIN)
 public class ManaCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

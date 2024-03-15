@@ -1,5 +1,6 @@
 package net.hypixel.skyblock.command;
 
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
@@ -8,7 +9,7 @@ import net.hypixel.skyblock.user.PlayerUtils;
 import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.Sputnik;
 
-@CommandParameters(description = "bruhbu", aliases = "resetcb")
+@CommandParameters(description = "bruhbu", aliases = "resetcb", permission = PlayerRank.ADMIN)
 public class ResetCookieCommand extends SCommand {
     @Override
     public void run(CommandSource sender, String[] args) {

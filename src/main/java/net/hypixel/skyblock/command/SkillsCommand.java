@@ -1,10 +1,11 @@
 package net.hypixel.skyblock.command;
 
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 import net.hypixel.skyblock.features.skill.Skill;
 
-@CommandParameters(description = "Shows your skills.", aliases = "skill", permission = "spt.skills")
+@CommandParameters(description = "Shows your skills.", aliases = "skill", permission = PlayerRank.DEFAULT)
 public class SkillsCommand extends SCommand {
     @Override
     public void run(CommandSource sender, String[] args) {

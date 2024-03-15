@@ -29,6 +29,7 @@ import net.hypixel.skyblock.item.*;
 import net.hypixel.skyblock.item.armor.VoidlingsWardenHelmet;
 import net.hypixel.skyblock.item.pet.Pet;
 import net.hypixel.skyblock.listener.PacketListener;
+import net.hypixel.skyblock.listener.PlayerChatListener;
 import net.hypixel.skyblock.listener.ServerPingListener;
 import net.hypixel.skyblock.listener.WorldListener;
 import net.hypixel.skyblock.features.merchant.MerchantItemHandler;
@@ -38,7 +39,9 @@ import net.hypixel.skyblock.features.region.Region;
 import net.hypixel.skyblock.features.region.RegionType;
 
 import net.hypixel.skyblock.features.slayer.SlayerQuest;
+import net.hypixel.skyblock.sql.DatabaseManager;
 import net.hypixel.skyblock.user.AuctionSettings;
+import net.hypixel.skyblock.user.SMongoLoader;
 import net.hypixel.skyblock.util.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -118,6 +121,9 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
 
     public List<String> bannedUUID;
 
+    @Getter
+    public SMongoLoader dataLoader;
+
     public SkyBlock() {
         this.packetInj = new PacketHelper();
         this.arena = null;
@@ -155,6 +161,8 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
             }
             SLog.info("Loading SQL database...");
             this.sql = new SQLDatabase();
+            DatabaseManager.connectToDatabase("mongodb://localhost:27017/", "Godspunky");
+            this.dataLoader = new SMongoLoader();
             this.regionData = new SQLRegionData();
             this.worldData = new SQLWorldData();
             this.cl = new CommandLoader();
@@ -224,7 +232,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
                 initDimoon();
             }
             startPopulators();
-            getCommand("setrank").setExecutor(new SetRankCommand());
+            this.getCommand("setrank").setExecutor(new SetRankCommand());
         } else {
             SLog.warn("Successfully enabled Skyblock Core but license is not valid or empty. Please insert license in config.yml");
         }
@@ -350,6 +358,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
         new GUIListener();
         new PacketListener();
         new WorldListener();
+        new PlayerChatListener();
     }
 
     private void startPopulators() {

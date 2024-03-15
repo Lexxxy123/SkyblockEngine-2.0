@@ -1,10 +1,11 @@
 package net.hypixel.skyblock.command;
 
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import net.hypixel.skyblock.Repeater;
 
-@CommandParameters(description = "Spec test command.", aliases = "db:tsr")
+@CommandParameters(description = "Spec test command.", aliases = "db:tsr", permission = PlayerRank.ADMIN)
 public class ToggleRepeatingCommand extends SCommand {
     public Repeater repeater;
 

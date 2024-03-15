@@ -1,5 +1,6 @@
 package net.hypixel.skyblock.command;
 
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
@@ -8,7 +9,7 @@ import net.hypixel.skyblock.user.User;
 
 import java.io.IOException;
 
-@CommandParameters(description = "bruhbu", aliases = "datarec")
+@CommandParameters(description = "bruhbu", aliases = "datarec", permission = PlayerRank.ADMIN)
 public class InvRecovery extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

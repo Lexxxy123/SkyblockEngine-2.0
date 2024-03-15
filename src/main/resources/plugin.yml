@@ -6,6 +6,6 @@ description: GodSpunky SkyBlock Sandbox plugin Developed by Team GodSpunky
 
 softdepend: [PlaceholderAPI]
 depend: [ ProtocolLib]
-command:
+commands:
   setrank:
 
