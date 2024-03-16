@@ -91,6 +91,22 @@ public class SUtil {
         return names;
     }
 
+    public static String getTimeDifferenceAndColor(long start, long end) {
+        return getColorBasedOnSize((end - start), 20, 5000, 10000) + "" + (end - start) + "ms";
+    }
+
+    public static ChatColor getColorBasedOnSize(long num, int low, int med, int high) {
+        if (num <= low) {
+            return ChatColor.GREEN;
+        } else if (num <= med) {
+            return ChatColor.YELLOW;
+        } else if (num <= high) {
+            return ChatColor.RED;
+        } else {
+            return ChatColor.DARK_RED;
+        }
+    }
+
     public static int random(int min, int max) {
         if (min < 0) {
             min = 0;

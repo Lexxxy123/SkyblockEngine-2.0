@@ -25,7 +25,9 @@ import net.hypixel.skyblock.entity.dungeons.boss.sadan.SadanFunction;
 import net.hypixel.skyblock.entity.dungeons.boss.sadan.SadanHuman;
 import net.hypixel.skyblock.entity.nms.VoidgloomSeraph;
 import net.hypixel.skyblock.features.island.SkyblockIsland;
+import net.hypixel.skyblock.features.quest.QuestLine;
 import net.hypixel.skyblock.features.ranks.PlayerRank;
+import net.hypixel.skyblock.features.region.RegionType;
 import net.hypixel.skyblock.item.GenericItemType;
 import net.hypixel.skyblock.item.PlayerBoostStatistics;
 import net.hypixel.skyblock.item.SItem;
@@ -49,6 +51,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.minecraft.server.v1_8_R3.EntityHuman;
 import net.minecraft.server.v1_8_R3.EntityPlayer;
 import net.minecraft.server.v1_8_R3.Packet;
+import net.minecraft.server.v1_8_R3.PacketPlayOutTitle;
 import org.bson.Document;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -81,9 +84,9 @@ public class User {
     private static final SkyBlock plugin;
     private static final File USER_FOLDER;
     @Getter
-    private long sadancollections;
+    public long sadancollections;
     @Getter
-    private long totalfloor6run;
+    public long totalfloor6run;
     @Getter
     private UUID uuid;
     private  Config config;
@@ -182,6 +185,15 @@ public class User {
     private String signContent;
     private boolean isCompletedSign;
 
+    @Getter
+    @Setter
+    public List<String> completedQuests;
+
+    @Getter
+    @Setter
+    public List<String> completedObjectives;
+
+
 
     @Getter
     public PlayerRank rank;
@@ -193,6 +205,8 @@ public class User {
     public List<?> inventory;
     @Setter
     public List<?> armor;
+
+    public List<String> foundzone;
 
     private User(final UUID uuid) {
         this.stashedItems = new ArrayList<ItemStack>();
@@ -209,6 +223,7 @@ public class User {
         this.signContent = null;
         this.isCompletedSign = false;
         this.uuid = uuid;
+        this.foundzone = new ArrayList<>();
         this.collections = ItemCollection.getDefaultCollections();
         this.totalfloor6run = 0L;
         this.coins = 0L;
@@ -220,6 +235,8 @@ public class User {
         this.quiver = new HashMap<SMaterial, Integer>();
         this.effects = new ArrayList<ActivePotionEffect>();
         this.unlockedRecipes = new ArrayList<>();
+        this.completedQuests = new ArrayList<>();
+        this.completedObjectives = new ArrayList<>();
         this.farmingXP = 0.0;
         this.miningXP = 0.0;
         this.combatXP = 0.0;
@@ -250,6 +267,71 @@ public class User {
             talked_npcs.add(name);
         }
     }
+
+    public List<String> getCompletedQuests() {
+        return this.completedQuests;
+    }
+
+    public List<String> getdiscoveredzones(){return this.foundzone;}
+
+    public void  addnewzone(String q){this.foundzone.add(q);}
+
+
+
+    public List<String> getCompletedObjectives() {
+        return this.completedObjectives;
+    }
+
+    public void addCompletedQuest(String questName) {
+        this.completedQuests.add(questName);
+    }
+
+    public void addCompletedObjectives(String questName) {
+        this.completedObjectives.add(questName);
+    }
+
+    public QuestLine getQuestLine() {
+        return SkyBlock.getPlugin().getQuestLineHandler().getFromPlayer(this);
+    }
+
+    public void send(String message, Object... args) {
+        Player player = Bukkit.getPlayer(uuid);
+        if (player == null) return;
+        player.sendMessage(Sputnik.trans(String.format(message, args)));
+    }
+
+    public void onNewZone(RegionType zone, String... features) {
+        send("");
+        send("§6§l NEW AREA DISCOVERED!");
+        send("§7  ⏣ " + zone.getColor() + zone.getName());
+        send("");
+        if (features.length > 0) {
+            for (String feature : features) {
+                send("§7   ⬛ §f%s", feature);
+            }
+        } else {
+            send("§7   ⬛ §cNot much yet!");
+        }
+        send("");
+
+        Bukkit.getPlayer(uuid).playSound(Bukkit.getPlayer(uuid).getLocation(), Sound.LEVEL_UP, 1f, 0f);
+        Player player = Bukkit.getPlayer(uuid);
+        SUtil.sendTypedTitle(player, zone.getColor() + zone.getName(), PacketPlayOutTitle.EnumTitleAction.TITLE);
+        SUtil.sendTypedTitle(player,  "§6§lNEW AREA DISCOVERED!", PacketPlayOutTitle.EnumTitleAction.SUBTITLE);
+    }
+
+    public Region getRegion(Player player) {
+        if (isOnIsland() || isOnUserIsland()) {
+            return Region.getIslandRegion();
+        }
+        String worldName = player.getWorld().getName();
+        if (worldName.contains("f6")) {
+            return Region.get("Catacombs (F6)");
+        }
+
+        return Region.getRegionOfEntity(Bukkit.getPlayer(this.uuid));
+    }
+
 
     public void asyncSavingData() {
         new BukkitRunnable() {

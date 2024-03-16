@@ -13,7 +13,7 @@ public class Banker extends SkyblockNPC {
 
             @Override
             public NPCType type() {
-                return NPCType.VILLAGER;
+                return NPCType.PLAYER;
             }
 
             @Override

@@ -132,10 +132,14 @@ public class SMongoLoader {
 
         SUtil.runAsync(() -> {
             Document data = (Document) get(base, "data" , new Document());
-            //List<String> foundzone = data.getList("foundzone", String.class , new ArrayList<>());
+            List<String> foundzone = data.getList("foundzone", String.class , new ArrayList<>());
+            long runs = data.getLong("floor6");
+            long sadan = data.getLong("sadan");
             List<String> talkednpc = data.getList("talkednpc" , String.class , new ArrayList<>());
             profile.addTalkedNPC(talkednpc.toString());
-           // profile.addnewzone(foundzone.toString());
+            profile.totalfloor6run = runs;
+            profile.sadancollections = sadan;
+            profile.addnewzone(foundzone.toString());
         });
 
         SUtil.runAsync(() -> {
@@ -269,17 +273,15 @@ public class SMongoLoader {
             }
         }
 
-       /* SUtil.runAsync(() -> {
+        SUtil.runAsync(() -> {
             Document questData = (Document) get(base, "quests", new Document());
             List<String> completedQuests = questData.getList("completedQuests", String.class, new ArrayList<>());
             List<String> completedObjectives = questData.getList("completedObjectives", String.class, new ArrayList<>());
-            List<String> talkedto = questData.getList("talkedto" , String.class , new ArrayList<>());
 
             profile.setCompletedQuests(completedQuests);
             profile.setCompletedObjectives(completedObjectives);
-            profile.setValue(talkedto.toString());
 
-        });*/
+        });
 
         profile.loadCookieStatus();
 
@@ -302,14 +304,15 @@ public class SMongoLoader {
         if (profile.getLastRegion() != null)
             setUserProperty("lastRegion", profile.getLastRegion().getName());
         Map<String, Object> data = new HashMap<>();
-        //data.put("foundzone", profile.getdiscoveredzones());
+        data.put("foundzone", profile.getdiscoveredzones());
         data.put("talkednpc", profile.getTalked_npcs());
+        data.put("floor6", profile.getTotalfloor6run());
+        data.put("sadan", profile.getSadancollections());
         setUserProperty("data", data);
-        /*Map<String, Object> questData = new HashMap<>();
+        Map<String, Object> questData = new HashMap<>();
         questData.put("completedQuests", profile.getCompletedQuests());
         questData.put("completedObjectives", profile.getCompletedObjectives());
-        questData.put("talkedto", profile.getValue());
-        setUserProperty("quests", questData);*/
+        setUserProperty("quests", questData);
         Map<String, Integer> tempQuiv = new HashMap<>();
         profile.getQuiver().forEach((key, value) -> tempQuiv.put(key.name(), value));
         setUserProperty("quiver", tempQuiv);
@@ -369,14 +372,15 @@ public class SMongoLoader {
         if (profile.getLastRegion() != null)
             setUserProperty("lastRegion", profile.getLastRegion().getName());
         Map<String, Object> data = new HashMap<>();
-        //data.put("foundzone", profile.getdiscoveredzones());
+        data.put("foundzone", profile.getdiscoveredzones());
         data.put("talkednpc", profile.getTalked_npcs());
+        data.put("floor6", profile.getTotalfloor6run());
+        data.put("sadan", profile.getSadancollections());
         setUserProperty("data", data);
-        /*Map<String, Object> questData = new HashMap<>();
+        Map<String, Object> questData = new HashMap<>();
         questData.put("completedQuests", profile.getCompletedQuests());
         questData.put("completedObjectives", profile.getCompletedObjectives());
-        questData.put("talkedto", profile.getValue());
-        setUserProperty("quests", questData);*/
+        setUserProperty("quests", questData);
         Map<String, Integer> tempQuiv = new HashMap<>();
         profile.getQuiver().forEach((key, value) -> tempQuiv.put(key.name(), value));
         setUserProperty("quiver", tempQuiv);
@@ -389,6 +393,7 @@ public class SMongoLoader {
                     .append("remaining", effect.getRemaining());
             effectsDocuments.add(effectDocument);
         }
+
         profile.saveCookie();
         setUserProperty("effects", effectsDocuments);
         setUserProperty("skillFarmingXp", profile.farmingXP);

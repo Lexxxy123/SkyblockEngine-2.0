@@ -24,6 +24,7 @@ import net.hypixel.skyblock.entity.EntitySpawner;
 import net.hypixel.skyblock.entity.SEntityType;
 import net.hypixel.skyblock.entity.StaticDragonManager;
 import net.hypixel.skyblock.entity.nms.VoidgloomSeraph;
+import net.hypixel.skyblock.features.quest.QuestLineHandler;
 import net.hypixel.skyblock.features.ranks.SetRankCommand;
 import net.hypixel.skyblock.item.*;
 import net.hypixel.skyblock.item.armor.VoidlingsWardenHelmet;
@@ -104,6 +105,9 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
     public Config heads;
     public Config blocks;
     public Config spawners;
+
+    @Getter
+    private QuestLineHandler questLineHandler;
     @Setter
     @Getter
     private int onlinePlayerAcrossServers;
@@ -200,6 +204,8 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
             SLog.info("Loading auction items from disk...");
             effectManager = new EffectManager(this);
             AuctionItem.loadAuctionsFromDisk();
+            SLog.info("Loading Quest!");
+            initializeQuests();
             SLog.info("Loading merchants prices...");
             MerchantItemHandler.init();
             SLog.info("Synchronizing world time with calendar time and removing world entities...");
@@ -237,6 +243,15 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
             SLog.warn("Successfully enabled Skyblock Core but license is not valid or empty. Please insert license in config.yml");
         }
 
+    }
+
+    private void initializeQuests() {
+        SLog.info("Initializing quests...");
+        long start = System.currentTimeMillis();
+
+        this.questLineHandler = new QuestLineHandler();
+
+        SLog.info("Successfully registered " + ChatColor.GREEN + this.questLineHandler.getQuests().size() + ChatColor.WHITE + " quests [" + SUtil.getTimeDifferenceAndColor(start, System.currentTimeMillis()) + ChatColor.WHITE + "]");
     }
 
 

@@ -13,6 +13,7 @@ import net.hypixel.skyblock.entity.StaticDragonManager;
 import net.hypixel.skyblock.entity.dungeons.boss.sadan.SadanBossManager;
 import net.hypixel.skyblock.entity.dungeons.boss.sadan.SadanHuman;
 import net.hypixel.skyblock.entity.nms.VoidgloomSeraph;
+import net.hypixel.skyblock.features.quest.QuestLine;
 import net.hypixel.skyblock.item.*;
 import net.hypixel.skyblock.item.armor.ArmorSet;
 import net.hypixel.skyblock.item.armor.TickingSet;
@@ -469,6 +470,17 @@ public class Repeater {
                     sidebar.add("Bits: " + ChatColor.AQUA + user.getBits());
                     sidebar.add("   ");
                     final SlayerQuest quest = user.getSlayerQuest();
+                    QuestLine line = user.getQuestLine();
+                    if ((!StaticDragonManager.ACTIVE || StaticDragonManager.DRAGON == null || !player.getWorld().getName().equalsIgnoreCase("dragon")) && quest == null && line != null) {
+                        BossBar bar = new BossBar(ChatColor.WHITE + "Objective: " + ChatColor.YELLOW + line.getDisplay() + " " + line.getObjective(user).getSuffix(user));
+                        bar.addPlayer(player);
+                        sidebar.add(ChatColor.WHITE + "Objective");
+                        sidebar.add(ChatColor.YELLOW + line.getObjective(user).getDisplay());
+                        if(line.getObjective(user).hasSuffix(user)){
+                            sidebar.add(line.getObjective(user).getSuffix(user));
+                        }
+                        sidebar.add("      ");
+                    }
                     if ((!StaticDragonManager.ACTIVE || StaticDragonManager.DRAGON == null || !player.getWorld().getName().equalsIgnoreCase("dragon")) && quest != null && (quest.getDied() == 0L || quest.getKilled() != 0L)) {
                         sidebar.add("Slayer Quest");
                         sidebar.add(quest.getType().getDisplayName());

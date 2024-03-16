@@ -3,9 +3,12 @@ package net.hypixel.skyblock.features.region;
 import org.bukkit.ChatColor;
 
 public enum RegionType {
+
+    PRIVATE_ISLAND("Private Island", ChatColor.GREEN),
     VILLAGE("Village"),
     MOUNTAIN("Mountain"),
     FOREST("Forest"),
+    F6("Catacombs (F6)", ChatColor.RED),
     FARM("Farm"),
     RUINS("Ruins"),
     DWARVEN_THE_LIFT("Dwarven Mines"),

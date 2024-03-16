@@ -3,6 +3,7 @@ package net.hypixel.skyblock.features.region;
 import net.hypixel.skyblock.SkyBlock;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -279,9 +280,32 @@ public class Region
         return getRegions().stream().filter(region -> region.getType() == type).collect(Collectors.toList());
     }
 
-    public static void cacheRegions()
-    {
-        for (Region region : plugin.regionData.getAll())
-            REGION_CACHE.put(region.getName(), region);
+    public static void cacheRegions() {
+        for (final Region region : Region.plugin.regionData.getAll()) {
+            Region.REGION_CACHE.put(region.getName(), region);
+        }
+
+
+        World islandWorld = Bukkit.getWorld("island");
+        double islandX = 0;
+        double islandY = 0;
+        double islandZ = 0;
+
+        Location islandFirstLocation = new Location(islandWorld, islandX, islandY, islandZ);
+        Location islandSecondLocation = new Location(islandWorld, islandX, islandY, islandZ);
+
+        REGION_CACHE.put("island", new Region("island", islandFirstLocation, islandSecondLocation, RegionType.PRIVATE_ISLAND));
+
+        World dungWorld = Bukkit.getWorld("f6");
+        double dungX = 0;
+        double dungY = 0;
+        double dungZ = 0;
+
+        Location dungLocation = new Location(dungWorld, dungX, dungY, dungZ);
+        Location dungSecondLocation = new Location(islandWorld, dungX, dungY, dungZ);
+    }
+
+    public static Region getIslandRegion() {
+        return REGION_CACHE.get("island");
     }
 }

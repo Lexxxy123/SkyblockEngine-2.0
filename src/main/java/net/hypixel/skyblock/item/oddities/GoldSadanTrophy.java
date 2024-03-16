@@ -73,12 +73,12 @@ public class GoldSadanTrophy implements SkullStatistics, MaterialFunction, Abili
 
     @Override
     public boolean requirementsUse(final Player player, final SItem sItem) {
-        return User.getUser(player.getUniqueId()).getBCollection() < 100L;
+        return User.getUser(player.getUniqueId()).getBCollection() < 25L;
     }
 
     @Override
     public String getAbilityReq() {
-        return "&cYou need at least 100 Sadan Kills to use this item!";
+        return "&cYou need at least 25 Sadan Kills to use this item!";
     }
 
     @Override

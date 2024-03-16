@@ -73,12 +73,12 @@ public class DiamondSadanTrophy implements SkullStatistics, MaterialFunction, Ab
 
     @Override
     public boolean requirementsUse(Player player, SItem sItem) {
-        return 1000L > User.getUser(player.getUniqueId()).getBCollection();
+        return 25L > User.getUser(player.getUniqueId()).getBCollection();
     }
 
     @Override
     public String getAbilityReq() {
-        return "&cYou need at least 1,000 Sadan Kills to use this item!";
+        return "&cYou need at least 25 Sadan Kills to use this item!";
     }
 
     @Override
