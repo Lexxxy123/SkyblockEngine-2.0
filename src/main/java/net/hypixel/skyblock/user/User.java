@@ -189,9 +189,6 @@ public class User {
     public Player player;
 
     @Getter
-    public boolean iscreated;
-
-    @Getter
     @Setter
     public List<?> inventory;
     @Setter
@@ -202,7 +199,6 @@ public class User {
         this.cooldownAltar = 0;
         this.headShot = false;
         this.playingSong = false;
-        this.iscreated = false;
         this.inDanger = false;
         this.player = Bukkit.getPlayer(uuid);
         this.boneToZeroDamage = false;
@@ -243,8 +239,6 @@ public class User {
             User.USER_FOLDER.mkdirs();
         }
 
-        boolean save = false;
-
         User.USER_CACHE.put(uuid, this);
     }
 
@@ -256,13 +250,6 @@ public class User {
             talked_npcs.add(name);
         }
     }
-
-    public void setiscreated(boolean b){
-        iscreated = b;
-    }
-
-
-
 
     public void asyncSavingData() {
         new BukkitRunnable() {

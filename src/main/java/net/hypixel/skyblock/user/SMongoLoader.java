@@ -70,73 +70,45 @@ public class SMongoLoader {
         User user = User.getUser(uuid);
         cachedUserId = uuid.toString();
 
-        Document base = grabProfile(uuid.toString());
+        Document query = new Document("_id", uuid.toString());
+        MongoCollection<Document> collection = DatabaseManager.getCollection("users");
 
-        if (user.iscreated) {
-            try {
-                SUtil.runSync(() -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "cswm unload " + user.getUuid()));
-            } catch (Exception ignored) {}
+        Document foundOrNot = collection.find(query).first();
 
+        if (foundOrNot == null) {
 
+        }
+
+        if (foundOrNot != null) {
             User.USER_CACHE.put(uuid, user);
-            
             loadProfile(user);
             user.toBukkitPlayer().sendMessage(ChatColor.YELLOW + "Welcome to " + ChatColor.GREEN + "Godspunky SkyBlock!");
         } else {
+            collection.insertOne(new Document("_id", uuid.toString()));
             createAndSaveNewProfile(uuid);
-            Bukkit.getScheduler().runTaskLater(SkyBlock.getPlugin(), () -> {
+           /* Bukkit.getScheduler().runTaskLater(SkyBlock.getPlugin(), () -> {
                 SkyblockIsland.getIsland(uuid).send();
-            }, 5 * 20L);
+            }, 5 * 20L);*/
         }
     }
 
     public void createAndSaveNewProfile(UUID uuid) {
         User user = User.getUser(uuid);
         User.USER_CACHE.put(uuid, user);
-        queue(uuid.toString(), true);
+        savenewProfile(user);
         user.toBukkitPlayer().sendMessage(ChatColor.YELLOW + "Welcome to " + ChatColor.GREEN + "Godspunky SkyBlock!");
     }
 
 
     @SneakyThrows
     public void save(UUID uuid) {
-        try {
-            if ((Bukkit.getPlayer(uuid).getWorld().getName().equalsIgnoreCase("world"))) {
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            World world = Bukkit.getWorld(uuid.toString());
-                            if (world != null) {
-                                if (world.getPlayers().size() < 1) {
-                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "cswm unload " + uuid);
-                                }
-                            }
-                        } catch (Exception ignored) { }
-                    }
-                }.runTaskLater(SkyBlock.getPlugin(), 20);
-
-                return;
-            }
-        } catch (Exception ignored) { }
         User user = User.getUser(uuid);
-        if (user == null) return;
-        UserDatabase db = new UserDatabase(uuid.toString(), false);
-
-        if (db.exists()) db.getDocument().forEach(this::setUserProperty);
-
-        SUtil.runAsync(() -> saveProfileData(db));
-        Document base = grabProfile(uuid.toString());
-        user.setiscreated(true);
         saveProfile(user);
     }
 
     public void loadProfile(User profile) {
         System.out.println("using message at " + System.currentTimeMillis());
         Document base = grabProfile(profile.getUuid().toString());
-
-
-        SUtil.runAsync(() -> profile.setiscreated(getBoolean(base, "created", false)));
         
         Map<String, Integer> coll = (Map<String, Integer>) get(base, "collections", new HashMap<>());
         coll.forEach((key, value) -> {
@@ -311,18 +283,13 @@ public class SMongoLoader {
 
         profile.loadCookieStatus();
 
-
-        try {
-            SUtil.runAsync(() -> profile.iscreated = true);
-        } catch (Exception e) {
-        }
         User.USER_CACHE.put(profile.getUuid(), profile);
     }
 
     public void saveProfile(User profile) {
         UserDatabase db = new UserDatabase(profile.getUuid().toString(), true);
 
-        profile.saveAllVanillaInstances();
+        //profile.saveAllVanillaInstances();
         Map<String, Integer> tempColl = new HashMap<>();
         for (ItemCollection collection : ItemCollection.getCollections()) {
             tempColl.put(collection.getIdentifier(), profile.getCollection(collection));
@@ -382,9 +349,75 @@ public class SMongoLoader {
 
         //setUserProperty("created", profile.created);
         setUserProperty("auctionCreationBIN", profile.isAuctionCreationBIN());
-        setUserProperty("created", profile.isIscreated());
         SUtil.runAsync(() -> saveProfileData(db));
         User.USER_CACHE.remove(profile.getUuid());
+    }
+
+    public void savenewProfile(User profile) {
+        UserDatabase db = new UserDatabase(profile.getUuid().toString(), true);
+
+        //profile.saveAllVanillaInstances();
+        Map<String, Integer> tempColl = new HashMap<>();
+        for (ItemCollection collection : ItemCollection.getCollections()) {
+            tempColl.put(collection.getIdentifier(), profile.getCollection(collection));
+        }
+        setUserProperty("collections", tempColl);
+        setUserProperty("coins", profile.getCoins());
+        setUserProperty("bits", profile.getBits());
+        setUserProperty("rank", String.valueOf(profile.getRank()));
+        setUserProperty("bankCoins", profile.getBankCoins());
+        if (profile.getLastRegion() != null)
+            setUserProperty("lastRegion", profile.getLastRegion().getName());
+        Map<String, Object> data = new HashMap<>();
+        //data.put("foundzone", profile.getdiscoveredzones());
+        data.put("talkednpc", profile.getTalked_npcs());
+        setUserProperty("data", data);
+        /*Map<String, Object> questData = new HashMap<>();
+        questData.put("completedQuests", profile.getCompletedQuests());
+        questData.put("completedObjectives", profile.getCompletedObjectives());
+        questData.put("talkedto", profile.getValue());
+        setUserProperty("quests", questData);*/
+        Map<String, Integer> tempQuiv = new HashMap<>();
+        profile.getQuiver().forEach((key, value) -> tempQuiv.put(key.name(), value));
+        setUserProperty("quiver", tempQuiv);
+        List<Document> effectsDocuments = new ArrayList<>();
+        for (ActivePotionEffect effect : profile.getEffects()) {
+            Document effectDocument = new Document()
+                    .append("key", effect.getEffect().getType().getNamespace())
+                    .append("level", effect.getEffect().getLevel())
+                    .append("duration", effect.getEffect().getDuration())
+                    .append("remaining", effect.getRemaining());
+            effectsDocuments.add(effectDocument);
+        }
+        profile.saveCookie();
+        setUserProperty("effects", effectsDocuments);
+        setUserProperty("skillFarmingXp", profile.farmingXP);
+        setUserProperty("skillMiningXp", profile.miningXP);
+        setUserProperty("skillCombatXp", profile.combatXP);
+        setUserProperty("skillForagingXp", profile.foragingXP);
+        setUserProperty("slayerRevenantHorrorHighest", profile.highestSlayers[0]);
+        setUserProperty("slayerTarantulaBroodfatherHighest", profile.highestSlayers[1]);
+        setUserProperty("slayerSvenPackmasterHighest", profile.highestSlayers[2]);
+        setUserProperty("slayerVoidgloomSeraphHighest", profile.highestSlayers[3]);
+        setUserProperty("permanentCoins", profile.isPermanentCoins());
+        setUserProperty("xpSlayerRevenantHorror", profile.slayerXP[0]);
+        setUserProperty("xpSlayerTarantulaBroodfather", profile.slayerXP[1]);
+        setUserProperty("xpSlayerSvenPackmaster", profile.slayerXP[2]);
+        setUserProperty("xpSlayerVoidgloomSeraph", profile.slayerXP[3]);
+        if (profile.getSlayerQuest() != null)
+            setUserProperty("slayerQuest", profile.getSlayerQuest().serialize());
+        if (!profile.pets.isEmpty()) {
+            List<Map<String, Object>> petsSerialized = profile.pets.stream().map(pet -> pet.serialize()).collect(Collectors.toList());
+            setUserProperty("pets", petsSerialized);
+        } else {
+            setUserProperty("pets", new ArrayList<Map<String, Object>>());
+        }
+        setUserProperty("auctionSettings", profile.auctionSettings.serialize());
+
+        //setUserProperty("created", profile.created);
+        setUserProperty("auctionCreationBIN", profile.isAuctionCreationBIN());
+        SUtil.runAsync(() -> saveProfileData(db));
+       // User.USER_CACHE.remove(profile.getUuid());
     }
 
     public void setUserProperty(String key, Object value) {
