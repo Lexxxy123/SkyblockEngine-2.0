@@ -56,16 +56,7 @@ public class SlayerQuest implements ConfigurationSerializable {
         return map;
     }
 
-    public static Document serializeYourObject(SlayerQuest yourObject) {
-        Document objectDocument = new Document("type", yourObject.getType().getNamespace())
-                .append("started", yourObject.started)
-                .append("xp", yourObject.getXp())
-                .append("spawned", yourObject.getSpawned())
-                .append("killed", yourObject.getKilled())
-                .append("died", yourObject.getDied())
-                .append("lastKilled", null);
-        return objectDocument;
-    }
+
 
     public static SlayerQuest deserialize(Map<String, Object> map) {
         return new SlayerQuest(SlayerBossType.getByNamespace(String.valueOf(map.get("type"))), ((Number) map.get("started")).longValue(), ((Number) map.get("xp")).doubleValue(), ((Number) map.get("spawned")).longValue(), ((Number) map.get("killed")).longValue(), ((Number) map.get("died")).longValue(), null);

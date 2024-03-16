@@ -118,7 +118,7 @@ public class SEntity {
             rand *= 1000000;
             ((CraftZombie) this.entity).setBaby(false);
         }
-        function.nameTag(this.entity, this, specType, params);
+        function.onSpawnNameTag(this.entity, this, specType, params);
         this.entity.setMaxHealth(statistics.getEntityMaxHealth() + rand);
         this.entity.setHealth(this.entity.getMaxHealth());
         this.entity.setMetadata("specEntityObject", new FixedMetadataValue(SEntity.plugin, this));

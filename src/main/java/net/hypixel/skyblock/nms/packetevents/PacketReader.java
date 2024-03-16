@@ -4,6 +4,8 @@ package net.hypixel.skyblock.nms.packetevents;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
+import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.event.SkyblockPlayerNPCClickEvent;
 import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayInUseEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -23,6 +25,7 @@ public class PacketReader {
         this.player = player;
 
         ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler() {
+
             @Override
             public void channelRead(ChannelHandlerContext channelHandlerContext, Object packet) {
                 if(packet instanceof PacketPlayInUseEntity) {
@@ -51,15 +54,18 @@ public class PacketReader {
     {
         if(packet.getClass().getSimpleName().equalsIgnoreCase("PacketPlayInUseEntity"))
         {
-            PacketPlayInUseEntity pack = (PacketPlayInUseEntity) packet;
             int id = (int) getValue(packet, "a");
             if(getValue(packet, "action").toString().equalsIgnoreCase("interact"))
             {
                 for (SkyblockNPC npc : SkyblockNPCManager.getNPCS()){
                     if (npc.getEntityID() == id) {
-                        if (npc.getMessages() == null || User.getUser(player.getUniqueId()).getTalked_npcs().contains(npc.getName())) {
+
+                        SkyblockPlayerNPCClickEvent npcClickEvent = new SkyblockPlayerNPCClickEvent(player , npc);
+                        SkyBlock.getPlugin().getServer().getPluginManager().callEvent(npcClickEvent);
+
+                        if (npc.getMessages() == null || User.getUser(player.getUniqueId()).getTalkedNPCs().contains(npc.getName())) {
                             npc.getParameters().onInteract(player, npc);
-                        } else if (!User.getUser(player.getUniqueId()).getTalked_npcs().contains(npc.getName()))
+                        } else if (!User.getUser(player.getUniqueId()).getTalkedNPCs().contains(npc.getName()))
                             npc.speak(player);
                     }
                 }

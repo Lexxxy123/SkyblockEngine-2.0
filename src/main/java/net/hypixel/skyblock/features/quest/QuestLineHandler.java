@@ -49,7 +49,8 @@ public class QuestLineHandler {
     }
 
     public QuestLine getFromPlayer(User player) {
-        RegionType loc = player.getRegion(player.toBukkitPlayer()).getType();
+        if (player.getRegion() == null) return null;
+        RegionType loc = player.getRegion().getType();
 
         List<QuestLine> lines = quests.get(loc);
 

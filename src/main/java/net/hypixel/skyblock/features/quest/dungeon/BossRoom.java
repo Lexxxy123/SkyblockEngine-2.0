@@ -13,6 +13,6 @@ public class BossRoom extends Objective {
     public void onWorldChange(PlayerChangedWorldEvent e){
         if (!isThisObjective(e.getPlayer())) return;
 
-        if(e.getPlayer().getWorld().getName().contains("f6")) complete(e.getPlayer());
+        if(e.getPlayer().getWorld().getName().startsWith("f6")) complete(e.getPlayer());
     }
 }

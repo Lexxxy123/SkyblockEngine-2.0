@@ -114,28 +114,13 @@ public class PlayerListener extends PListener {
             player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 1000000, 255));
             PrecursorEye.PrecursorLaser.put(player.getUniqueId(), false);
             final User user = User.getUser(player.getUniqueId());
-            plugin.dataLoader.load(player.getUniqueId());
             if (!PlayerUtils.STATISTICS_CACHE.containsKey(player.getUniqueId())) {
                 PlayerUtils.STATISTICS_CACHE.put(player.getUniqueId(), PlayerUtils.getStatistics(player));
             }
             for (Skill skill : Skill.getSkills()) {
                 skill.onSkillUpdate(user, user.getSkillXP(skill));
             }
-            user.loadCookieStatus();
             user.loadStatic();
-            try {
-                user.loadPlayerData();
-            } catch (final IllegalArgumentException | IOException e2) {
-                SLog.severe("============ SKYBLOCK DATA LOAD ERROR ============");
-                SLog.severe("Ah shit, here we go again.");
-                SLog.severe(" ");
-                SLog.severe("Some bullshit errors happended on this user!");
-                SLog.severe("User UUID: " + user.toBukkitPlayer().getUniqueId());
-                SLog.severe("User Name: " + user.toBukkitPlayer().getName());
-                SLog.severe("SkySim Session ID: " + PlayerUtils.USER_SESSION_ID.get(user.toBukkitPlayer().getUniqueId()));
-                SLog.severe("Stack Trace:" + e2.getMessage());
-                SLog.severe("============  END OF ERROR REPORT  ============");
-            }
             SputnikPlayer.BonemerangFix(player);
             SputnikPlayer.KatanasFix(player);
             final SlayerQuest quest = user.getSlayerQuest();
@@ -265,7 +250,7 @@ public class PlayerListener extends PListener {
             player.sendMessage("  " + ChatColor.RED + ChatColor.BOLD + "SLAYER QUEST FAILED!");
             player.sendMessage("   " + ChatColor.DARK_PURPLE + ChatColor.BOLD + "» " + ChatColor.GRAY + "You need to learn how to play this game first!");
         }
-        plugin.dataLoader.save(player.getUniqueId());
+        user.save();
         Blessings.STAT_MAP.remove(player.getUniqueId());
         PrecursorEye.PrecursorLaser.remove(player.getUniqueId());
         PlayerUtils.COOKIE_DURATION_CACHE.remove(player.getUniqueId());
@@ -284,13 +269,16 @@ public class PlayerListener extends PListener {
     public void RegionChange(PlayerMoveEvent e){
         User player = User.getUser(e.getPlayer().getUniqueId());
 
+        if (player.getRegion() == null) return;
+
         List<String> discoveredZonesList = player.getdiscoveredzones();
 
-        if (discoveredZonesList.contains(player.getRegion(e.getPlayer()).getType().getName())) {
+
+        if (discoveredZonesList.contains(player.getRegion().getType().getName())) {
             return;
         }
-        RegionType type = player.getRegion(e.getPlayer()).getType();
-        player.addnewzone(player.getRegion(e.getPlayer()).getType().getName());
+        RegionType type = player.getRegion().getType();
+        player.addnewzone(player.getRegion().getType().getName());
         if (type == RegionType.VILLAGE) {
             onNewZone(player, RegionType.VILLAGE,
                     "Purchase items at the Market.",
@@ -938,7 +926,6 @@ public class PlayerListener extends PListener {
             ts.cleanStats();
         }
         final SlayerQuest quest = user.getSlayerQuest();
-        user.saveAllVanillaInstances();
         if (quest != null && quest.getXp() >= quest.getType().getSpawnXP() && quest.getKilled() == 0L) {
             User.getUser(e.getPlayer().getUniqueId()).failSlayerQuest();
         }

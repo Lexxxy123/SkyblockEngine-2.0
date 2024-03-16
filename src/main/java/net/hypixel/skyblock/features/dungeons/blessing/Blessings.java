@@ -166,11 +166,12 @@ public class Blessings {
 
     public static void update() {
         SUtil.runAsync(() -> {
+            if (BLESSINGS_MAP.isEmpty()) return;
             for (final Player p : Bukkit.getOnlinePlayers()) {
                 final World w = p.getWorld();
                 if (null == User.getUser(p.getUniqueId()) || !BLESSINGS_MAP.containsKey(w)) continue;
                 final List<Blessings> bls = BLESSINGS_MAP.get(w);
-                TemporaryStats ts = null;
+                TemporaryStats ts;
                 ts = null != TemporaryStats.getFromPlayer(p) ? TemporaryStats.getFromPlayer(p) : new TemporaryStats(User.getUser(p.getUniqueId()));
                 float def = 0.0f;
                 float spd = 0.0f;

@@ -10,7 +10,7 @@ public interface NPCParameters {
         return NPCType.PLAYER;
     }
    default String[] messages(){
-        return new String[]{};
+        return null;
    }
     String[] holograms();
     default NPCSkin skin(){

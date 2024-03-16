@@ -205,7 +205,6 @@ public class SkyblockNPC {
             future.complete(null);
         }, messages.length * 20L);
 
-
         return future;
     }
 

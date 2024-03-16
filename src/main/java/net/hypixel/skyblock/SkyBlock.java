@@ -42,7 +42,6 @@ import net.hypixel.skyblock.features.region.RegionType;
 import net.hypixel.skyblock.features.slayer.SlayerQuest;
 import net.hypixel.skyblock.sql.DatabaseManager;
 import net.hypixel.skyblock.user.AuctionSettings;
-import net.hypixel.skyblock.user.SMongoLoader;
 import net.hypixel.skyblock.util.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -125,8 +124,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
 
     public List<String> bannedUUID;
 
-    @Getter
-    public SMongoLoader dataLoader;
+
 
     public SkyBlock() {
         this.packetInj = new PacketHelper();
@@ -166,7 +164,6 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
             SLog.info("Loading SQL database...");
             this.sql = new SQLDatabase();
             DatabaseManager.connectToDatabase("mongodb://localhost:27017/", "Godspunky");
-            this.dataLoader = new SMongoLoader();
             this.regionData = new SQLRegionData();
             this.worldData = new SQLWorldData();
             this.cl = new CommandLoader();
@@ -240,7 +237,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
             startPopulators();
             this.getCommand("setrank").setExecutor(new SetRankCommand());
         } else {
-            SLog.warn("Successfully enabled Skyblock Core but license is not valid or empty. Please insert license in config.yml");
+            throw new NullPointerException("license is not valid or empty. Please insert license in config.yml");
         }
 
     }
@@ -439,12 +436,9 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
     }
 
     private void registerPingListener() {
-        PingAPI.registerListener(new PingListener() {
-            @Override
-            public void onPing(final PingEvent event) {
-                final SkySimServerPingEvent e = new SkySimServerPingEvent(event);
-                Bukkit.getPluginManager().callEvent(e);
-            }
+        PingAPI.registerListener(event -> {
+            final SkySimServerPingEvent e = new SkySimServerPingEvent(event);
+            Bukkit.getPluginManager().callEvent(e);
         });
     }
 
@@ -463,7 +457,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
         for (String name : DEVELOPERS){
             builder.append(name).append(" , ");
         }
-        return builder.toString();
+        return builder.toString().substring(0 , builder.length() - 2);
     }
 
 

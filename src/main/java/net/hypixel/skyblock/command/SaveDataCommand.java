@@ -20,9 +20,7 @@ public class SaveDataCommand extends SCommand {
                 for (final Player p : Bukkit.getOnlinePlayers()) {
                     final User user = User.getUser(p.getUniqueId());
                     if (user != null) {
-                        user.saveCookie();
                         user.save();
-                        user.saveAllVanillaInstances();
                     }
                 }
                 Bukkit.broadcastMessage(Sputnik.trans("&b[SkyBlock D.C] &aAll players data have been saved! Action performed by " + player.getDisplayName() + "&a!"));
@@ -32,9 +30,7 @@ public class SaveDataCommand extends SCommand {
             for (final Player p : Bukkit.getOnlinePlayers()) {
                 final User user = User.getUser(p.getUniqueId());
                 if (user != null) {
-                    user.saveCookie();
                     user.save();
-                    user.saveAllVanillaInstances();
                 }
             }
             Bukkit.broadcastMessage(Sputnik.trans("&b[SkyBlock D.C] &aAll players data have been saved! Action performed by &cCONSOLE&a!"));

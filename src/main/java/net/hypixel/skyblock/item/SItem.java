@@ -758,7 +758,7 @@ public class SItem implements Cloneable, ConfigurationSerializable {
             }
         }
         SMaterial material = SMaterial.getMaterial((String) map.get("type"));
-        short variant = (short) map.get("variant");
+        short variant = Short.valueOf((String) map.get("variant"));
         return new SItem(material, variant, new ItemStack(material.getCraftMaterial(), (int) map.get("amount"), variant), Rarity.getRarity((String) map.get("rarity")), ItemOrigin.valueOf((String) map.get("origin")), (Boolean) map.get("recombobulated"), data, true);
     }
 

@@ -83,21 +83,27 @@ public class User {
     public static final Map<UUID, User> USER_CACHE;
     private static final SkyBlock plugin;
     private static final File USER_FOLDER;
+
+    public final Map<String, Object> dataCache;
+
     @Getter
     public long sadancollections;
     @Getter
     public long totalfloor6run;
     @Getter
     private UUID uuid;
-    private  Config config;
+
+    private Document dataDocument;
 
     @Getter
     @Setter
     public final Map<ItemCollection, Integer> collections;
+    @Setter
     @Getter
     private long coins;
     @Getter @Setter
     private long bits;
+    @Setter
     @Getter
     private long bankCoins;
     @Setter
@@ -116,6 +122,7 @@ public class User {
     @Setter
     @Getter
     private boolean inDanger;
+    @Setter
     @Getter
     private Region lastRegion;
     @Getter
@@ -124,16 +131,26 @@ public class User {
     private final List<ActivePotionEffect> effects;
 
     @Getter
-    private List<String> talked_npcs;
+    private List<String> talkedNPCs;
     @Getter
     double farmingXP;
+    @Getter
+    @Setter
     private boolean boneToZeroDamage;
+    @Getter
+    @Setter
     private boolean cooldownAPI;
+    @Getter
     double miningXP;
+    @Getter
     double combatXP;
+    @Getter
     private double enchantXP;
+    @Getter
     private double archerXP;
+    @Getter
     private double cataXP;
+    @Getter
     private double berserkXP;
     @Getter
     private double healerXP;
@@ -195,22 +212,19 @@ public class User {
 
 
 
+    @Setter
     @Getter
     public PlayerRank rank;
 
     public Player player;
 
-    @Getter
-    @Setter
-    public List<?> inventory;
-    @Setter
-    public List<?> armor;
 
     public List<String> foundzone;
 
     private User(final UUID uuid) {
         this.stashedItems = new ArrayList<ItemStack>();
         this.cooldownAltar = 0;
+        this.dataCache = new HashMap<>();
         this.headShot = false;
         this.playingSong = false;
         this.inDanger = false;
@@ -231,7 +245,7 @@ public class User {
         this.bankCoins = 0L;
         this.sadancollections = 0L;
         this.lastRegion = null;
-        this.talked_npcs = new ArrayList<>();
+        this.talkedNPCs = new ArrayList<>();
         this.quiver = new HashMap<SMaterial, Integer>();
         this.effects = new ArrayList<ActivePotionEffect>();
         this.unlockedRecipes = new ArrayList<>();
@@ -250,12 +264,7 @@ public class User {
         this.auctionSettings = new AuctionSettings();
         this.auctionCreationBIN = false;
         this.auctionEscrow = new AuctionEscrow();
-        this.inventory = new ArrayList<>();
-        this.armor = new ArrayList<>();
-        if (!User.USER_FOLDER.exists()) {
-            User.USER_FOLDER.mkdirs();
-        }
-
+        load();
         User.USER_CACHE.put(uuid, this);
     }
 
@@ -263,24 +272,16 @@ public class User {
         User.USER_CACHE.remove(this.uuid);
     }
     public void addTalkedNPC(String name){
-        if (!talked_npcs.contains(name)){
-            talked_npcs.add(name);
+        if (!talkedNPCs.contains(name)) {
+            talkedNPCs.add(name);
         }
-    }
-
-    public List<String> getCompletedQuests() {
-        return this.completedQuests;
     }
 
     public List<String> getdiscoveredzones(){return this.foundzone;}
 
+
     public void  addnewzone(String q){this.foundzone.add(q);}
 
-
-
-    public List<String> getCompletedObjectives() {
-        return this.completedObjectives;
-    }
 
     public void addCompletedQuest(String questName) {
         this.completedQuests.add(questName);
@@ -320,12 +321,12 @@ public class User {
         SUtil.sendTypedTitle(player,  "§6§lNEW AREA DISCOVERED!", PacketPlayOutTitle.EnumTitleAction.SUBTITLE);
     }
 
-    public Region getRegion(Player player) {
+    public Region getRegion() {
         if (isOnIsland() || isOnUserIsland()) {
             return Region.getIslandRegion();
         }
         String worldName = player.getWorld().getName();
-        if (worldName.contains("f6")) {
+        if (worldName.startsWith("f6")) {
             return Region.get("Catacombs (F6)");
         }
 
@@ -336,9 +337,7 @@ public class User {
     public void asyncSavingData() {
         new BukkitRunnable() {
             public void run() {
-                User.this.saveCookie();
                 User.this.save();
-                User.this.saveAllVanillaInstances();
             }
         }.runTaskAsynchronously(User.plugin);
     }
@@ -359,43 +358,268 @@ public class User {
         PetsGUI.setShowPets(player, true);
     }
 
-    public void loadCookieStatus() {
-        try {
-            Document document = plugin.dataLoader.grabProfile(uuid.toString());
-            if (!document.containsKey("cookieDuration")) return;
-            Player player = Bukkit.getPlayer(this.uuid);
 
-            PlayerUtils.setCookieDurationTicks(player, plugin.dataLoader.getLong(document, "cookieDuration", null));
-            PlayerUtils.loadCookieStatsBuff(player);
-        } catch (NullPointerException ignored) {
-
-        }
-    }
-
-    public void saveCookie() {
-        if (Bukkit.getPlayer(uuid) == null) {
-            return;
-        }
-        if (!Bukkit.getPlayer(uuid).isOnline()) {
-            return;
-        }
-        if (!PlayerUtils.COOKIE_DURATION_CACHE.containsKey(this.uuid)) {
-            return;
-        }
-
-        plugin.dataLoader.setUserProperty("cookieDuration", PlayerUtils.getCookieDurationTicks(Bukkit.getPlayer(this.uuid)));
-    }
 
     public void save() {
-       plugin.dataLoader.save(uuid);
+       setDataProperty("uuid" , uuid.toString());
+       setDataProperty("ign" , player.getName());
+       setDataProperty("coins" , coins);
+       setDataProperty("bits" , bits);
+       setDataProperty("bankCoins" , bankCoins);
+       setDataProperty("rank" , rank.toString());
+        Map<String, Integer> collectionsData = new HashMap<>();
+        for (ItemCollection collection : ItemCollection.getCollections()) {
+            collectionsData.put(collection.getIdentifier(), getCollection(collection));
+        }
+        setDataProperty("collections", collectionsData);
+        if (lastRegion != null){
+            setDataProperty("lastRegion", getLastRegion().getName());
+        }
+        Map<String, Integer> quiverData = new HashMap<>();
+        getQuiver().forEach((key, value) -> quiverData.put(key.name(), value));
+        setDataProperty("quiver", quiverData);
+        List<Document> effects = new ArrayList<>();
+        for (ActivePotionEffect effect : getEffects()) {
+            Document effectDocument = new Document()
+                    .append("key", effect.getEffect().getType().getNamespace())
+                    .append("level", effect.getEffect().getLevel())
+                    .append("duration", effect.getEffect().getDuration())
+                    .append("remaining", effect.getRemaining());
+            effects.add(effectDocument);
+        }
+        setDataProperty("totalfloor6run" , totalfloor6run);
+        setDataProperty("sadanCollections" , sadancollections);
+        setDataProperty("effects", effects);
+        setDataProperty("skillFarmingXp", farmingXP);
+        setDataProperty("skillMiningXp", miningXP);
+        setDataProperty("skillCombatXp", combatXP);
+        setDataProperty("skillForagingXp", foragingXP);
+        setDataProperty("skillEnchantXp" , enchantXP);
+        setDataProperty("slayerRevenantHorrorHighest", highestSlayers[0]);
+        setDataProperty("slayerTarantulaBroodfatherHighest", highestSlayers[1]);
+        setDataProperty("slayerSvenPackmasterHighest", highestSlayers[2]);
+        setDataProperty("slayerVoidgloomSeraphHighest", highestSlayers[3]);
+        setDataProperty("permanentCoins", isPermanentCoins());
+        setDataProperty("xpSlayerRevenantHorror", slayerXP[0]);
+        setDataProperty("xpSlayerTarantulaBroodfather", slayerXP[1]);
+        setDataProperty("xpSlayerSvenPackmaster", slayerXP[2]);
+        setDataProperty("xpSlayerVoidgloomSeraph", slayerXP[3]);
+
+        setDataProperty("completedQuests" , completedQuests);
+        setDataProperty("completedObjectives" , completedObjectives);
+
+        if (slayerQuest != null){
+            setDataProperty("slayerQuest", getSlayerQuest().serialize());
+        }
+        if (!pets.isEmpty()) {
+            List<Map<String, Object>> petsSerialized = pets.stream().map(Pet.PetItem::serialize).collect(Collectors.toList());
+            setDataProperty("pets", petsSerialized);
+        } else {
+            setDataProperty("pets", new ArrayList<Map<String, Object>>());
+        }
+        if (auctionSettings != null){
+            setDataProperty("auctionSettings", auctionSettings.serialize());
+        }
+        setDataProperty("auctionCreationBIN", isAuctionCreationBIN());
+
+        if (auctionEscrow != null){
+            setDataProperty("auctionEscrow" , auctionEscrow.serialize());
+        }
+
+        setDataProperty("unlockedRecipes" , unlockedRecipes);
+        setDataProperty("talkedNPCs" , talkedNPCs);
+
+
+        if (Bukkit.getPlayer(this.uuid) != null && Bukkit.getPlayer(this.uuid).isOnline()) {
+            setDataProperty("showPets", PetsGUI.getShowPet(Bukkit.getPlayer(this.uuid)));
+            setDataProperty("autoSlayer", PlayerUtils.isAutoSlayer(Bukkit.getPlayer(this.uuid)));
+            if (PlayerUtils.COOKIE_DURATION_CACHE.containsKey(this.uuid)) {
+                setDataProperty("cookieDuration", PlayerUtils.getCookieDurationTicks(Bukkit.getPlayer(this.uuid)));
+            }
+
+        }
+
+        Document query = new Document("_id", uuid.toString());
+        Document found = UserDatabase.collection.find(query).first();
+
+        if (found != null){
+            Document updated = new Document(found);
+            dataCache.forEach(updated::append);
+            UserDatabase.collection.replaceOne(found, updated);
+            return;
+        }
+        Document newDocument = new Document("_id", uuid.toString());
+        dataCache.forEach(newDocument::append);
+        UserDatabase.collection.insertOne(newDocument);
     }
 
-    public void saveStorageData(int page) {
+
+
+
+    public void load() {
+        this.loadDocument();
+        this.uuid = UUID.fromString(getString("uuid", null));
+        this.coins = getLong("coins", 0);
+        this.bits = getLong("bits", 0);
+        this.bankCoins = getLong("bankCoins", 0);
+        Map<String, Integer> coll = (Map<String, Integer>) get("collections", new HashMap<>());
+        coll.forEach((key, value) -> {
+            collections.put(ItemCollection.getByIdentifier(key), value);
+        });
+        setRank(PlayerRank.valueOf(getString("rank", "DEFAULT")));
+
+        if (getString("lastRegion", "none").equals("none")) {
+            setLastRegion(null);
+        } else {
+            setLastRegion(Region.get(getString("lastRegion", "none")));
+        }
+
+        totalfloor6run = getLong("totalfloor6run", 0);
+        sadancollections = getLong("sadanCollections", 0);
+
+        farmingXP = getDouble("skillFarmingXp", 0.0);
+        miningXP = getDouble("skillMiningXp", 0.0);
+
+        combatXP = getDouble("skillCombatXp", 0.0);
+        foragingXP = getDouble("skillForagingXp", 0.0);
+
+        enchantXP = getDouble("skillEnchantXp", 0.0);
+
+        highestSlayers[0] = getInt("slayerRevenantHorrorHighest", 0);
+        highestSlayers[1] = getInt("slayerTarantulaBroodfatherHighest", 0);
+
+        highestSlayers[2] = getInt("slayerSvenPackmasterHighest", 0);
+        highestSlayers[3] = getInt("slayerVoidgloomSeraphHighest", 0);
+
+        slayerXP[0] = getInt("xpSlayerRevenantHorror", 0);
+        slayerXP[1] = getInt("xpSlayerTarantulaBroodfather", 0);
+        slayerXP[2] = getInt("xpSlayerSvenPackmaster", 0);
+        slayerXP[3] = getInt("xpSlayerVoidgloomSeraph", 0);
+
+        talkedNPCs = getStringList("talkedNPCs" , new ArrayList<>());
+        unlockedRecipes = getStringList("unlockedRecipes" , new ArrayList<>());
+
+        setPermanentCoins(getBoolean("permanentCoins", false));
+
+        Map<String, Integer> quiv = (Map<String, Integer>) get("quiver", new HashMap<>());
+        quiv.forEach((key, value) -> {
+            quiver.put(SMaterial.getMaterial(key), value);
+        });
+
+        try {
+            SlayerQuest quest = SlayerQuest.deserialize((Map<String, Object>) get("slayerQuest", new HashMap<>()));
+            setSlayerQuest(quest);
+        } catch (Exception ignored) {
+            setSlayerQuest(null);
+        }
+
+        List<Object> listOfPetObjects = new ArrayList<>((List<Object>) get("pets", new ArrayList<>()));
+        listOfPetObjects.forEach((item) -> {
+            Pet.PetItem petitem = Pet.PetItem.deserialize((Map<String, Object>) item);
+            pets.add(petitem);
+        });
+
+        try {
+            this.auctionSettings = AuctionSettings.deserialize((Map<String, Object>) get("auctionSettings", new HashMap<>()));
+        } catch (Exception ignored) {
+            this.auctionSettings = new AuctionSettings();
+        }
+
+        try {
+            setAuctionEscrow(AuctionEscrow.deserialize((Map<String, Object>) get("auctionEscrow", new HashMap<>())));
+        } catch (Exception ignored) {
+            setAuctionEscrow(new AuctionEscrow());
+        }
+
+        completedQuests = getStringList("completedQuests" , new ArrayList<>());
+        completedObjectives = getStringList("completedObjectives" , new ArrayList<>());
+
+
+        setCompletedQuests(completedQuests);
+        setCompletedObjectives(completedObjectives);
+
+
+        setAuctionCreationBIN(getBoolean("auctionCreationBIN", false));
+
+        List<Document> effectsDocuments = dataDocument.getList("effects", Document.class);
+        for (Document effectData : effectsDocuments) {
+            String key = effectData.getString("key");
+            Integer level = effectData.getInteger("level");
+            Long duration = effectData.getLong("duration");
+            Long remaining = effectData.getLong("remaining");
+
+            if (key != null && level != null && duration != null && remaining != null) {
+                PotionEffectType potionEffectType = PotionEffectType.getByNamespace(key);
+                if (potionEffectType != null) {
+                    getEffects().add(new ActivePotionEffect(
+                            new PotionEffect(potionEffectType, level, duration),
+                            remaining
+                    ));
+                }
+            }
+        }
+        try {
+            PlayerUtils.setCookieDurationTicks(player, getLong("cookieDuration" , 0));
+        } catch (NullPointerException ignored) {
+        }
     }
 
-    public void setRank(PlayerRank rank) {
-        this.rank = rank;
+
+    public void setDataProperty(String key, Object value)
+    {
+        dataCache.put(key, value);
     }
+
+    public List<String> getStringList(String key, List<String> def) {
+        return Collections.singletonList(get(key, def).toString());
+    }
+
+    public Object get(String key, Object def) {
+        if (dataDocument.get(key) != null) {
+            return dataDocument.get(key);
+        }
+        return def;
+    }
+
+    public String getString( String key, Object def) {
+        return get(key, def).toString();
+    }
+
+    public int getInt(String key, Object def) {
+        return (int) get(key, def);
+    }
+
+    public boolean getBoolean(String key, Object def) {
+        return Boolean.parseBoolean(get(key, def).toString());
+    }
+
+    public double getDouble(String key, Object def) {
+        return Double.parseDouble(getString( key, def));
+    }
+
+    public long getLong(String key, Object def) {
+        if (def.equals(0.0)) {
+            def = 0L;
+        }
+        return Long.parseLong(getString(key, def));
+    }
+
+    public void loadDocument() {
+        Document query = new Document("_id", uuid.toString());
+        MongoCollection<Document> collection = DatabaseManager.getCollection("users");
+
+        Document found = collection.find(query).first();
+
+
+        if (found == null) {
+            save();
+            found = collection.find(query).first();
+        }
+
+        dataDocument = found;
+    }
+
+
 
     public void sendMessage(Object message) {
         if (message instanceof String) {
@@ -404,7 +628,6 @@ public class User {
             player.spigot().sendMessage(new BaseComponent[]{(BaseComponent) message});
         }
     }
-
 
     public void sendMessages(Object... messages) {
         for (Object message : messages) {
@@ -428,127 +651,7 @@ public class User {
         return BukkitSerializeClass.itemStackArrayToBase64(arrl);
     }
 
-    public void saveEnderChest() {
-        if (Bukkit.getPlayer(this.uuid) == null) {
-            return;
-        }
-        Document existingProfile = plugin.dataLoader.grabProfile(uuid.toString());
-        Object a = null;
-        Inventory inv = Bukkit.getPlayer(this.uuid).getEnderChest();
-        a = this.getPureListFrom(inv);
-        set(existingProfile, "database.enderchest", a);
-    }
 
-    public void saveExp() {
-        Document existingProfile = plugin.dataLoader.grabProfile(uuid.toString());
-        if (Bukkit.getPlayer(this.uuid) == null) {
-            return;
-        }
-        set(existingProfile, "database.minecraft_xp", Sputnik.getTotalExperience(Bukkit.getPlayer(this.uuid)));
-    }
-
-    public void saveArmor() {
-        Document existingProfile = plugin.dataLoader.grabProfile(uuid.toString());
-        if (Bukkit.getPlayer(this.uuid) == null) {
-            return;
-        }
-        Object a = null;
-        a = BukkitSerializeClass.itemStackArrayToBase64(Bukkit.getPlayer(this.uuid).getInventory().getArmorContents());
-        set(existingProfile, "database.armor", a);
-    }
-
-
-    public void loadPlayerData() throws IllegalArgumentException, IOException {
-        Player player = Bukkit.getPlayer(this.uuid);
-        Document document = plugin.dataLoader.grabProfile(uuid.toString());
-        Document databaseDocument;
-        if (document.containsKey("database")) {
-            databaseDocument = (Document) document.get("database");
-        } else {
-            databaseDocument = document;
-        }
-        if (databaseDocument.containsKey("inventory")) {
-            player.getInventory().setContents(BukkitSerializeClass.itemStackArrayFromBase64(databaseDocument.getString("inventory")));
-        } else {
-            player.getInventory().setContents(new ItemStack[player.getInventory().getSize()]);
-        }
-        if (databaseDocument.containsKey("enderchest")) {
-            player.getEnderChest().setContents(BukkitSerializeClass.itemStackArrayFromBase64(databaseDocument.getString("enderchest")));
-        } else {
-            player.getInventory().setContents(new ItemStack[player.getEnderChest().getSize()]);
-        }
-        if (databaseDocument.containsKey("armor")) {
-            player.getInventory().setArmorContents(BukkitSerializeClass.itemStackArrayFromBase64(databaseDocument.getString("armor")));
-        } else {
-            player.getInventory().setContents(new ItemStack[player.getInventory().getArmorContents().length]);
-        }
-        if (databaseDocument.containsKey("minecraft_xp")) {
-            Sputnik.setTotalExperience(player, databaseDocument.getInteger("minecraft_xp"));
-        }
-        if (document.containsKey("stashed")) {
-            ItemStack[] arr = BukkitSerializeClass.itemStackArrayFromBase64(databaseDocument.getString("stashed"));
-            this.stashedItems = Arrays.asList(arr);
-        } else {
-            this.stashedItems = new ArrayList<ItemStack>();
-        }
-        //this.loadEconomy();
-        Document configDocument;
-        if (document.containsKey("configures")) {
-            configDocument = (Document) document.get("configures");
-
-        } else {
-            configDocument = document;
-        }
-
-
-        if (configDocument.containsKey("slot_selected")) {
-            player.getInventory().setHeldItemSlot(configDocument.getInteger("slot_selected"));
-        }
-    }
-
-    public void saveLastSlot() {
-        Document existingProfile = plugin.dataLoader.grabProfile(String.valueOf(uuid));
-        if (Bukkit.getPlayer(this.uuid) == null) {
-            return;
-        }
-        set(existingProfile, "configures.slot_selected", Bukkit.getPlayer(this.uuid).getInventory().getHeldItemSlot());
-    }
-
-    public void saveInventory() {
-        if (Bukkit.getPlayer(this.uuid) == null) {
-            return;
-        }
-        Document existingProfile = plugin.dataLoader.grabProfile(uuid.toString());
-        Object a = null;
-        PlayerInventory piv = Bukkit.getPlayer(this.uuid).getInventory();
-        a = this.getPureListFrom(piv);
-        set(existingProfile, "database.inventory", a.toString());
-    }
-
-    public void saveAllVanillaInstances() {
-        if (Bukkit.getPlayer(this.uuid) == null) {
-            return;
-        }
-        this.saveArmor();
-        this.saveEnderChest();
-        this.saveInventory();
-        this.saveExp();
-        this.saveLastSlot();
-        this.saveStash();
-    }
-
-    public void saveStash() {
-        Document existingProfile = plugin.dataLoader.grabProfile(String.valueOf(uuid));
-        if (Bukkit.getPlayer(this.uuid) == null) {
-            return;
-        }
-        if (this.stashedItems == null) {
-            return;
-        }
-        ItemStack[] is = new ItemStack[this.stashedItems.size()];
-        is = this.stashedItems.toArray(is);
-        set(existingProfile, "database.stashed", BukkitSerializeClass.itemStackArrayToBase64(is));
-    }
 
     public void set(Document document, String field, Object value) {
 
@@ -556,14 +659,6 @@ public class User {
         document.append(field, value);
     }
 
-
-    public Config getConfig() {
-        return this.config;
-    }
-
-    public void setLastRegion(final Region lastRegion) {
-        this.lastRegion = lastRegion;
-    }
 
     public boolean addBits(long value){
         if (value > 0){
@@ -590,20 +685,12 @@ public class User {
         this.coins -= coins;
     }
 
-    public void setCoins(final long coins) {
-        this.coins = coins;
-    }
-
     public void addBankCoins(final long bankCoins) {
         this.bankCoins += bankCoins;
     }
 
     public void subBankCoins(final long bankCoins) {
         this.bankCoins -= bankCoins;
-    }
-
-    public void setBankCoins(final long bankCoins) {
-        this.bankCoins = bankCoins;
     }
 
     public void addBCollection(final int a) {
@@ -1218,16 +1305,16 @@ public class User {
                 actual = 20.0;
             }
         }
-        if (cause == EntityDamageEvent.DamageCause.DROWNING && cause == EntityDamageEvent.DamageCause.DROWNING) {
+        if (cause == EntityDamageEvent.DamageCause.DROWNING) {
             actual = health * 5.0 / 100.0;
         }
-        if (cause == EntityDamageEvent.DamageCause.SUFFOCATION && cause == EntityDamageEvent.DamageCause.SUFFOCATION) {
+        if (cause == EntityDamageEvent.DamageCause.SUFFOCATION) {
             actual = health * 5.0 / 100.0;
         }
-        if (cause == EntityDamageEvent.DamageCause.CONTACT && cause == EntityDamageEvent.DamageCause.CONTACT) {
+        if (cause == EntityDamageEvent.DamageCause.CONTACT) {
             actual = 5.0;
         }
-        if ((cause == EntityDamageEvent.DamageCause.WITHER || cause == EntityDamageEvent.DamageCause.POISON) && (cause == EntityDamageEvent.DamageCause.WITHER || cause == EntityDamageEvent.DamageCause.POISON)) {
+        if ((cause == EntityDamageEvent.DamageCause.WITHER || cause == EntityDamageEvent.DamageCause.POISON)) {
             actual = 20.0;
         }
         player.setHealth(Math.max(0.0, player.getHealth() - actual));
@@ -1559,20 +1646,6 @@ public class User {
         return generatedString;
     }
 
-    public static void wipeUser(final UUID uuid) {
-        final String wipeID = generateRandom();
-        SLog.info("Wiping with " + wipeID);
-        if (Bukkit.getPlayer(uuid).isOnline()) {
-            final Player p = Bukkit.getPlayer(uuid);
-            p.kickPlayer(ChatColor.RED + "You have been disconnected");
-        }
-        final Path source = Paths.get(User.USER_FOLDER + "/" + uuid.toString() + ".yml");
-        try {
-            Files.move(source, source.resolveSibling("WIPED_" + wipeID + "_" + uuid + ".yml"));
-        } catch (final IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public static User getUser(final UUID uuid) {
         if (uuid == null) {
@@ -1675,46 +1748,6 @@ public class User {
         this.toBukkitPlayer().spigot().sendMessage(tcp);
     }
 
-
-    public boolean isBoneToZeroDamage() {
-        return this.boneToZeroDamage;
-    }
-
-    public void setBoneToZeroDamage(final boolean boneToZeroDamage) {
-        this.boneToZeroDamage = boneToZeroDamage;
-    }
-
-    public boolean isCooldownAPI() {
-        return this.cooldownAPI;
-    }
-
-    public void setCooldownAPI(final boolean cooldownAPI) {
-        this.cooldownAPI = cooldownAPI;
-    }
-
-    public double getMiningXP() {
-        return this.miningXP;
-    }
-
-    public double getCombatXP() {
-        return this.combatXP;
-    }
-
-    public double getEnchantXP() {
-        return this.enchantXP;
-    }
-
-    public double getArcherXP() {
-        return this.archerXP;
-    }
-
-    public double getCataXP() {
-        return this.cataXP;
-    }
-
-    public double getBerserkXP() {
-        return this.berserkXP;
-    }
 
     public boolean isCompletedSign() {
         return this.isCompletedSign;
