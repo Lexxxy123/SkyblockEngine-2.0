@@ -1,4 +1,4 @@
-package net.hypixel.skyblock.sql;
+package net.hypixel.skyblock.database;
 
 import net.hypixel.skyblock.SkyBlock;
 

@@ -1,7 +1,7 @@
 package net.hypixel.skyblock.user;
 
 import com.mongodb.client.MongoCollection;
-import net.hypixel.skyblock.sql.DatabaseManager;
+import net.hypixel.skyblock.database.DatabaseManager;
 import org.bson.Document;
 
 import java.util.concurrent.CompletableFuture;
