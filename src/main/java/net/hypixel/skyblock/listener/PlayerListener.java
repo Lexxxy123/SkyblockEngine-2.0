@@ -8,6 +8,7 @@ import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.api.hologram.Hologram;
 import net.hypixel.skyblock.api.hologram.HologramManager;
 import net.hypixel.skyblock.command.RebootServerCommand;
+import net.hypixel.skyblock.event.SkyblockPlayerNPCClickEvent;
 import net.hypixel.skyblock.features.dungeons.blessing.BlessingChest;
 import net.hypixel.skyblock.features.dungeons.blessing.Blessings;
 import net.hypixel.skyblock.features.dungeons.chest.ItemChest;
@@ -121,6 +122,7 @@ public class PlayerListener extends PListener {
                 skill.onSkillUpdate(user, user.getSkillXP(skill));
             }
             user.loadStatic();
+            SLog.info("player uuid on join : " + player.getUniqueId() );
             SputnikPlayer.BonemerangFix(player);
             SputnikPlayer.KatanasFix(player);
             final SlayerQuest quest = user.getSlayerQuest();
@@ -225,8 +227,14 @@ public class PlayerListener extends PListener {
             final Location l = new Location(Bukkit.getWorld("world"), -2.5, 70.0, -68.5, 180.0f, 0.0f);
             player.teleport(l);
         }, 1L);
-        new PacketReader().injectPlayer(player);
 
+
+       new PacketReader().injectPlayer(player);
+    }
+
+    @EventHandler
+    public void onNPCInteractEvent(SkyblockPlayerNPCClickEvent event){
+        System.out.println("npc click event getting called!");
     }
 
 

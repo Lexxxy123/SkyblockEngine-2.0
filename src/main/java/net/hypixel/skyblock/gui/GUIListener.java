@@ -96,6 +96,7 @@ public class GUIListener extends PListener {
         e.getOpened().onOpen(e);
     }
 
+
     @EventHandler
     public void onBlockInteract(final PlayerInteractEvent e) {
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK) {

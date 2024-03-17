@@ -155,6 +155,13 @@ public class SkyblockNPC {
         ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
     }
 
+    public boolean canSpeak(User user){
+        if (messages == null) return false;
+        if (messages.length == 0) return false;
+        if (ALREADY_TALKING.contains(user.getUuid())) return false;
+        return !user.getTalkedNPCs().contains(getName());
+    }
+
     public void sendHologram(Player player, String[] lines) {
         double yOffset = 0.0;
         double DELTA = 0.3;

@@ -8,26 +8,26 @@ import org.bukkit.event.HandlerList;
 
 public class PacketReceiveServerSideEvent extends Event implements Cancellable {
     private static final HandlerList handlers;
-    private final ReceivedPacket a;
+    private final ReceivedPacket receivedPacket;
 
-    public PacketReceiveServerSideEvent(final ReceivedPacket b) {
-        this.a = b;
+    public PacketReceiveServerSideEvent(final ReceivedPacket packet) {
+        this.receivedPacket = packet;
     }
 
-    public Packet getPacket() {
-        return (Packet) this.a.getPacket();
+    public Packet<?> getPacket() {
+        return (Packet<?>) this.receivedPacket.getPacket();
     }
 
     public ReceivedPacket getWrappedPacket() {
-        return this.a;
+        return this.receivedPacket;
     }
 
     public boolean isCancelled() {
-        return this.a.isCancelled();
+        return this.receivedPacket.isCancelled();
     }
 
     public void setCancelled(final boolean cancel) {
-        this.a.setCancelled(cancel);
+        this.receivedPacket.setCancelled(cancel);
     }
 
     public HandlerList getHandlers() {

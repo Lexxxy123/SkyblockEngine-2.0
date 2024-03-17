@@ -11,10 +11,11 @@ public class TalkToMort extends Objective {
     }
 
     @EventHandler
-    public void onClick(SkyblockPlayerNPCClickEvent e) {
-        if (!isThisObjective(e.getPlayer())) return;
+    public void onClick(SkyblockPlayerNPCClickEvent event) {
+        if (!isThisObjective(event.getPlayer())) return;
 
-        if (User.getUser(e.getPlayer()).getTalkedNPCs().contains("Mort")) complete(e.getPlayer());
+        if (event.getNpc().getName().equalsIgnoreCase("Mort")) complete(event.getPlayer());
+
     }
 
 }

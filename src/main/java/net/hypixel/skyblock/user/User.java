@@ -76,13 +76,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 public class User {
     public static final int ISLAND_SIZE = 125;
     public static final Map<UUID, User> USER_CACHE;
     private static final SkyBlock plugin;
-    private static final File USER_FOLDER;
 
     public final Map<String, Object> dataCache;
 
@@ -245,9 +245,9 @@ public class User {
         this.bankCoins = 0L;
         this.sadancollections = 0L;
         this.lastRegion = null;
-        this.talkedNPCs = new ArrayList<>();
-        this.quiver = new HashMap<SMaterial, Integer>();
-        this.effects = new ArrayList<ActivePotionEffect>();
+        this.talkedNPCs = new CopyOnWriteArrayList<>();
+        this.quiver = new HashMap<>();
+        this.effects = new ArrayList<>();
         this.unlockedRecipes = new ArrayList<>();
         this.completedQuests = new ArrayList<>();
         this.completedObjectives = new ArrayList<>();
@@ -264,14 +264,16 @@ public class User {
         this.auctionSettings = new AuctionSettings();
         this.auctionCreationBIN = false;
         this.auctionEscrow = new AuctionEscrow();
-        load();
         User.USER_CACHE.put(uuid, this);
+        load();
     }
 
     public void unload() {
         User.USER_CACHE.remove(this.uuid);
     }
-    public void addTalkedNPC(String name){
+
+
+    public synchronized void addTalkedNPC(String name) {
         if (!talkedNPCs.contains(name)) {
             talkedNPCs.add(name);
         }
@@ -362,7 +364,6 @@ public class User {
 
     public void save() {
        setDataProperty("uuid" , uuid.toString());
-       setDataProperty("ign" , player.getName());
        setDataProperty("coins" , coins);
        setDataProperty("bits" , bits);
        setDataProperty("bankCoins" , bankCoins);
@@ -428,6 +429,8 @@ public class User {
 
         setDataProperty("unlockedRecipes" , unlockedRecipes);
         setDataProperty("talkedNPCs" , talkedNPCs);
+
+        setDataProperty("foundZone" , foundzone);
 
 
         if (Bukkit.getPlayer(this.uuid) != null && Bukkit.getPlayer(this.uuid).isOnline()) {
@@ -498,6 +501,7 @@ public class User {
 
         talkedNPCs = getStringList("talkedNPCs" , new ArrayList<>());
         unlockedRecipes = getStringList("unlockedRecipes" , new ArrayList<>());
+        foundzone = getStringList("foundZone" , new ArrayList<>());
 
         setPermanentCoins(getBoolean("permanentCoins", false));
 
@@ -571,7 +575,14 @@ public class User {
     }
 
     public List<String> getStringList(String key, List<String> def) {
-        return Collections.singletonList(get(key, def).toString());
+        Object value = get(key, def);
+        if (value instanceof List<?>) {
+            return new ArrayList<>((List<String>) value);
+        } else {
+            List<String> list = new ArrayList<>();
+            list.add(value.toString());
+            return list;
+        }
     }
 
     public Object get(String key, Object def) {
@@ -633,30 +644,6 @@ public class User {
         for (Object message : messages) {
             sendMessage(message);
         }
-    }
-
-    public String getPureListFrom(Inventory piv) {
-        ItemStack[] ist = piv.getContents();
-        List<ItemStack> arraylist = Arrays.asList(ist);
-        for (int i = 0; i < ist.length; ++i) {
-            ItemStack stack = ist[i];
-            if (stack != null) {
-                NBTItem nbti = new NBTItem(stack);
-                if (nbti.hasKey("dontSaveToProfile")) {
-                    arraylist.remove(i);
-                }
-            }
-        }
-        ItemStack[] arrl = (ItemStack[]) arraylist.toArray();
-        return BukkitSerializeClass.itemStackArrayToBase64(arrl);
-    }
-
-
-
-    public void set(Document document, String field, Object value) {
-
-        DatabaseManager.getCollection("users").updateOne(document, new Document("$set", new Document(field, value)));
-        document.append(field, value);
     }
 
 
@@ -1658,6 +1645,7 @@ public class User {
     }
 
     public static User getUser(Player player){
+        if (player == null) return null;
         return getUser(player.getUniqueId());
     }
 
@@ -1760,6 +1748,5 @@ public class User {
     static {
         USER_CACHE = new HashMap<UUID, User>();
         plugin = SkyBlock.getPlugin();
-        USER_FOLDER = new File(new File("/rootshare/skysim"), "./users");
     }
 }

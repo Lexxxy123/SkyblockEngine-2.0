@@ -3,12 +3,12 @@ package net.hypixel.skyblock.listener;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 import net.hypixel.skyblock.api.disguise.PlayerDisguise;
+import net.hypixel.skyblock.api.reflection.ReflectionsUtils;
+import net.hypixel.skyblock.event.SkyblockPlayerNPCClickEvent;
 import net.hypixel.skyblock.nms.packetevents.*;
+import net.hypixel.skyblock.npc.impl.SkyblockNPCManager;
 import net.md_5.bungee.api.ChatColor;
-import net.minecraft.server.v1_8_R3.IChatBaseComponent;
-import net.minecraft.server.v1_8_R3.PacketPlayInCustomPayload;
-import net.minecraft.server.v1_8_R3.PacketPlayInSetCreativeSlot;
-import net.minecraft.server.v1_8_R3.PacketPlayInUpdateSign;
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -119,8 +119,33 @@ public class PacketListener extends PListener {
         pr.setMaxPlayers(50);
     }
 
+
     @EventHandler
     public void onPacketIn(PacketReceiveServerSideEvent event){
+//        if (event.getPacket().getClass().getSimpleName().equals("PacketPlayInUseEntity")) {
+//            PacketPlayInUseEntity packetPlayInUseEntity = (PacketPlayInUseEntity) event.getPacket();
+//            int id = Integer.parseInt(String.valueOf(ReflectionsUtils.getValue(packetPlayInUseEntity, "a")));
+//            if (ReflectionsUtils.getValue(packetPlayInUseEntity, "action").toString().equalsIgnoreCase("interact")) {
+//                Player player;
+//                if (event.getWrappedPacket().getPlayer() != null && event.getWrappedPacket().getPlayer().getUniqueId() != null){
+//                  player = Bukkit.getPlayer(event.getWrappedPacket().getPlayer().getUniqueId());
+//                } else {
+//                    player = null;
+//                }
+//
+//                SkyblockNPCManager.getNPCS().forEach(skyblockNPC -> {
+//                    if (skyblockNPC.getEntityID() == id) {
+//                        SkyblockPlayerNPCClickEvent npcClickEvent = new SkyblockPlayerNPCClickEvent(player, skyblockNPC);
+//                        Bukkit.getPluginManager().callEvent(npcClickEvent);
+//
+//                        skyblockNPC.getParameters().onInteract(player, skyblockNPC);
+//                    }
+//                });
+//            }
+//        }
+
+
+
         PlayerDisguise.packetInManager(event.getPacket());
     }
 
@@ -128,6 +153,9 @@ public class PacketListener extends PListener {
     public void onPacketOut(PacketSentServerSideEvent event){
         PlayerDisguise.packetOutManager(event.getPacket());
     }
+
+
+
 
 
 }

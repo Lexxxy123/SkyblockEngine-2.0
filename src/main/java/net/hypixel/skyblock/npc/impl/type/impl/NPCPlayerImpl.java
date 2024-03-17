@@ -15,10 +15,10 @@ import java.util.Collections;
 
 public class NPCPlayerImpl extends EntityPlayer implements NPCBase {
 
-    private  Location location;
+    private final Location location;
     private Player player;
 
-    private String name;
+    private final String name;
 
 
     public NPCPlayerImpl(Location location , GameProfile gameProfile) {

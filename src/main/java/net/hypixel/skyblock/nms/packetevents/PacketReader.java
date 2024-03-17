@@ -8,6 +8,7 @@ import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.event.SkyblockPlayerNPCClickEvent;
 import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayInUseEntity;
+import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import net.hypixel.skyblock.npc.impl.SkyblockNPC;
@@ -61,12 +62,13 @@ public class PacketReader {
                     if (npc.getEntityID() == id) {
 
                         SkyblockPlayerNPCClickEvent npcClickEvent = new SkyblockPlayerNPCClickEvent(player , npc);
-                        SkyBlock.getPlugin().getServer().getPluginManager().callEvent(npcClickEvent);
+                        Bukkit.getPluginManager().callEvent(npcClickEvent);
 
-                        if (npc.getMessages() == null || User.getUser(player.getUniqueId()).getTalkedNPCs().contains(npc.getName())) {
-                            npc.getParameters().onInteract(player, npc);
-                        } else if (!User.getUser(player.getUniqueId()).getTalkedNPCs().contains(npc.getName()))
+                        if (npc.canSpeak(User.getUser(player))){
                             npc.speak(player);
+                        }else{
+                            npc.getParameters().onInteract(player , npc);
+                        }
                     }
                 }
             }

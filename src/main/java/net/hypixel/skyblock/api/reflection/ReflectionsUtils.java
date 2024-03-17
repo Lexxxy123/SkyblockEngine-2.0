@@ -1,16 +1,8 @@
 package net.hypixel.skyblock.api.reflection;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-
-import net.minecraft.server.v1_8_R3.Packet;
-
-import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.entity.Player;
 
 import javax.annotation.Nullable;
 
@@ -27,14 +19,22 @@ public class ReflectionsUtils {
 		field.set(obj, value);
 		}catch(Exception e){}
 	}
-	
-	public static Object getValue(Object obj,String name){
-		try{
-		Field field = obj.getClass().getDeclaredField(name);
-		field.setAccessible(true);
-		return field.get(obj);
-		}catch(Exception e){}
-		return null;
+
+	public static Object getValue(Object instance, String name)
+	{
+		Object result = null;
+		try
+		{
+			Field field = instance.getClass().getDeclaredField(name);
+			field.setAccessible(true);
+			result = field.get(instance);
+			field.setAccessible(false);
+		} catch(Exception exception)
+		{
+			exception.printStackTrace();
+		}
+
+		return result;
 	}
 
 
