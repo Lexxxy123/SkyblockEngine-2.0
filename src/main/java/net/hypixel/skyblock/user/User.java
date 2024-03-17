@@ -62,6 +62,7 @@ import net.hypixel.skyblock.listener.PlayerListener;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class User {
@@ -614,7 +615,8 @@ public class User {
 
     public void loadDocument() {
         Document query = new Document("_id", uuid.toString());
-        MongoCollection<Document> collection = (MongoCollection<Document>) DatabaseManager.getCollection("users");
+
+        MongoCollection<Document> collection = DatabaseManager.getCollection("users").join();
 
         Document found = collection.find(query).first();
 
