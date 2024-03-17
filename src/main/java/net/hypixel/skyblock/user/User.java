@@ -457,7 +457,6 @@ public class User {
                 userCollection.insertOne(newDocument);
             }
 
-            // You can optionally return a value here if needed
             return null;
         });
 
