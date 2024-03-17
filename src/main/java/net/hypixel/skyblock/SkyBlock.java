@@ -141,16 +141,19 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
 
     public void onEnable() {
         plugin = this;
-        SLog.info("Loading SkyBlock worlds...");
+        sendMessage("&aEnabling Hub Core. Made by dumbo :)");
+        long start = System.currentTimeMillis();
+
+        sendMessage("&aLoading SkyBlock worlds...");
         SkyBlockWorldManager.loadWorlds();
-        SLog.info("Loading YAML data from disk...");
+        sendMessage("&aLoading YAML data from disk...");
         this.config = new Config("config.yml");
         this.heads = new Config("heads.yml");
         this.blocks = new Config("blocks.yml");
         this.spawners = new Config("spawners.yml");
         authenticate();
         if (authenticated) {
-            SLog.info("Loading Command map...");
+            sendMessage("&aLoading Command map...");
             try {
                 final Field f = Bukkit.getServer().getClass().getDeclaredField("commandMap");
                 f.setAccessible(true);
@@ -159,7 +162,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
                 SLog.severe("Couldn't load command map: ");
                 e.printStackTrace();
             }
-            SLog.info("Loading SQL database...");
+            sendMessage("&aLoading SQL database...");
             this.sql = new SQLDatabase();
             DatabaseManager.connectToDatabase("mongodb://admin:gsmangu@154.26.138.227:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2", "Godspunky");
             this.regionData = new SQLRegionData();
@@ -168,7 +171,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
 
 
 
-            SLog.info("Begin Protocol injection... (SkyBlockProtocol v0.6.2)");
+            sendMessage("&aBegin Protocol injection... (SkyBlockProtocol v0.6.2)");
             APIManager.registerAPI(this.packetInj, this);
             if (!this.packetInj.injected) {
                 this.getLogger().warning("[FATAL ERROR] Protocol Injection failed. Disabling the plugin for safety...");
@@ -176,64 +179,67 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
                 return;
             }
             this.slimePlugin = (SlimePlugin) Bukkit.getPluginManager().getPlugin("SwoftyWorldManager");
-            SLog.info("Injecting...");
+            sendMessage("&aInjecting...");
             PingAPI.register();
             new Metrics(this);
             APIManager.initAPI(PacketHelper.class);
-            SLog.info("Starting server loop...");
+            sendMessage("&aStarting server loop...");
             this.repeater = new Repeater();
             VoidlingsWardenHelmet.startCounting();
-            SLog.info("Loading commands...");
+            sendMessage("&aLoading commands...");
             this.loadCommands();
-            SLog.info("Loading listeners...");
+            sendMessage("&aLoading listeners...");
             this.loadListeners();
-            SLog.info("Injecting Packet/Ping Listener into the core...");
+            sendMessage("&aInjecting Packet/Ping Listener into the core...");
             this.registerPacketListener();
             this.registerPingListener();
-            SLog.info("Starting entity spawners...");
+            sendMessage("&aStarting entity spawners...");
             EntitySpawner.startSpawnerTask();
-            SLog.info("Establishing player regions...");
+            sendMessage("&aEstablishing player regions...");
             Region.cacheRegions();
-            SLog.info("Loading NPCS...");
+            sendMessage("&aLoading NPCS...");
             registerNPCS();
-            SLog.info("Loading auction items from disk...");
+            sendMessage("&aLoading auction items from disk...");
             effectManager = new EffectManager(this);
             AuctionItem.loadAuctionsFromDisk();
-            SLog.info("Loading Quest!");
+            sendMessage("&aLoading Quest!");
             initializeQuests();
-            SLog.info("Loading merchants prices...");
+            sendMessage("&aLoading merchants prices...");
             MerchantItemHandler.init();
-            SLog.info("Synchronizing world time with calendar time and removing world entities...");
+            sendMessage("&aSynchronizing world time with calendar time and removing world entities...");
             SkyBlockCalendar.synchronize();
-            SLog.info("Loading items...");
+            sendMessage("&aLoading items...");
             SMaterial.loadItems();
-            SLog.info("Converting CraftRecipes into custom recipes...");
+            sendMessage("&aConverting CraftRecipes into custom recipes...");
             Recipe.loadRecipes();
-            SLog.info("Hooking SkyBlockEngine to PlaceholderAPI and registering...");
+            sendMessage("&aHooking SkyBlockEngine to PlaceholderAPI and registering...");
             if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
                 new SkyblockPlaceholder().register();
-                SLog.info("Hooked to PAPI successfully!");
+                sendMessage("&aHooked to PAPI successfully!");
             } else {
-                SLog.info("ERROR! PlaceholderAPI plugin does not exist, disabing placeholder request!");
+                sendMessage("&aERROR! PlaceholderAPI plugin does not exist, disabing placeholder request!");
             }
             protocolManager = ProtocolLibrary.getProtocolManager();
             WorldListener.init();
 
-            SLog.info("Successfully enabled " + this.getDescription().getFullName());
-            SLog.info("===================================");
-            SLog.info("SkyBlock ENGINE - MADE BY " + getDevelopersName());
-            SLog.info("PLUGIN ENABLED! HOOKED INTO SkyBlock!");
-            SLog.info(" ");
-            SLog.info("This plugin provide most of SkyBlock functions!");
-            SLog.info("Originally was made by super");
-            SLog.info("Continued by GodSpunky (C) 2024");
-            SLog.info("Any illegal usage will be suppressed! DO NOT LEAK IT!");
-            SLog.info("===================================");
+            sendMessage("&aSuccessfully enabled " + this.getDescription().getFullName());
+            sendMessage("&a===================================");
+            sendMessage("&aSkyBlock ENGINE - MADE BY " + getDevelopersName());
+            sendMessage("&aPLUGIN ENABLED! HOOKED INTO SkyBlock!");
+            sendMessage("&a ");
+            sendMessage("&aThis plugin provide most of SkyBlock functions!");
+            sendMessage("&aOriginally was made by super");
+            sendMessage("&aContinued by GodSpunky (C) 2024");
+            sendMessage("&aAny illegal usage will be suppressed! DO NOT LEAK IT!");
+            sendMessage("&a===================================");
             if (dimoonEnabled) {
                 initDimoon();
             }
             startPopulators();
             this.getCommand("setrank").setExecutor(new SetRankCommand());
+
+            long end = System.currentTimeMillis();
+            sendMessage("&aSuccessfully enabled Hub Core in " + CC.getTimeDifferenceAndColor(start, end) + "&a.");
         } else {
             throw new NullPointerException("license is not valid or empty. Please insert license in config.yml");
         }
@@ -241,12 +247,12 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
     }
 
     private void initializeQuests() {
-        SLog.info("Initializing quests...");
+        sendMessage("&aInitializing quests...");
         long start = System.currentTimeMillis();
 
         this.questLineHandler = new QuestLineHandler();
 
-        SLog.info("Successfully registered " + ChatColor.GREEN + this.questLineHandler.getQuests().size() + ChatColor.WHITE + " quests [" + SUtil.getTimeDifferenceAndColor(start, System.currentTimeMillis()) + ChatColor.WHITE + "]");
+        sendMessage("&aSuccessfully registered " + ChatColor.GREEN + this.questLineHandler.getQuests().size() + ChatColor.WHITE + " quests [" + SUtil.getTimeDifferenceAndColor(start, System.currentTimeMillis()) + ChatColor.WHITE + "]");
     }
 
 
@@ -284,7 +290,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
 
 
     public void onDisable() {
-        SLog.info("Killing all non-human entities...");
+        sendMessage("&aKilling all non-human entities...");
         for (final World world : Bukkit.getWorlds()) {
             for (final Entity entity : world.getEntities()) {
                 if (entity instanceof HumanEntity) {
@@ -294,13 +300,13 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
             }
         }
         if (this.repeater != null && EntitySpawner.class != null && EntitySpawner.class != null && StaticDragonManager.class != null && SkyBlockCalendar.class != null) {
-            SLog.info("Stopping server loop...");
+            sendMessage("&aStopping server loop...");
             this.repeater.stop();
-            SLog.info("Unloading ores from Dwarven Mines...");
+            sendMessage("&aUnloading ores from Dwarven Mines...");
             WorldListener.unloadBlocks();
-            SLog.info("Ejecting protocol channel...");
+            sendMessage("&aEjecting protocol channel...");
             APIManager.disableAPI(PacketHelper.class);
-            SLog.info("Cleaning HashSets...");
+            sendMessage("&aCleaning HashSets...");
             for (final Map.Entry<Entity, Block> entry : VoidgloomSeraph.CACHED_BLOCK.entrySet()) {
                 final Entity stand = entry.getKey();
                 if (stand != null && VoidgloomSeraph.CACHED_BLOCK.containsKey(stand) && VoidgloomSeraph.CACHED_BLOCK_ID.containsKey(stand) && VoidgloomSeraph.CACHED_BLOCK_DATA.containsKey(stand)) {
@@ -309,23 +315,23 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
             }
             //this.getServer().getMessenger().unregisterOutgoingPluginChannel(this);
             //this.getServer().getMessenger().unregisterIncomingPluginChannel(this);
-            SLog.info("Stopping entity spawners...");
+            sendMessage("&aStopping entity spawners...");
             EntitySpawner.stopSpawnerTask();
-            SLog.info("Ending Dragons fight... (If one is currently active)");
+            sendMessage("&aEnding Dragons fight... (If one is currently active)");
             StaticDragonManager.endFight();
-            SLog.info("Saving calendar time...");
+            sendMessage("&aSaving calendar time...");
             SkyBlockCalendar.saveElapsed();
-            SLog.info("Saving auction data...");
+            sendMessage("&aSaving auction data...");
             for (final AuctionItem item : AuctionItem.getAuctions()) {
                 item.save();
             }
             plugin = null;
         }
-        SLog.info("Disabled " + this.getDescription().getFullName());
-        SLog.info("===================================");
-        SLog.info("SkyBlock ENGINE - MADE BY " + getDevelopersName());
-        SLog.info("PLUGIN DISABLED!");
-        SLog.info("===================================");
+        sendMessage("&aDisabled " + this.getDescription().getFullName());
+        sendMessage("&a===================================");
+        sendMessage("&aSkyBlock ENGINE - MADE BY " + getDevelopersName());
+        sendMessage("&aPLUGIN DISABLED!");
+        sendMessage("&a===================================");
     }
 
     private void registerNPCS()
@@ -503,4 +509,10 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
         }
     }
 
+    public String getPrefix(){
+        return ChatColor.translateAlternateColorCodes('&', "&7[&aGodspunky&bHub&dCore&7] &f");
+    }
+    public void sendMessage(String message) {
+        Bukkit.getConsoleSender().sendMessage(getPrefix() + CC.translate(message));
+    }
 }
