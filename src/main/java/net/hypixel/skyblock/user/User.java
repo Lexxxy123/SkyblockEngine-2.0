@@ -460,112 +460,118 @@ public class User {
 
 
     public void load() {
-        this.loadDocument();
-        this.uuid = UUID.fromString(getString("uuid", null));
-        this.coins = getLong("coins", 0);
-        this.bits = getLong("bits", 0);
-        this.bankCoins = getLong("bankCoins", 0);
-        Map<String, Integer> coll = (Map<String, Integer>) get("collections", new HashMap<>());
-        coll.forEach((key, value) -> {
-            collections.put(ItemCollection.getByIdentifier(key), value);
-        });
-        setRank(PlayerRank.valueOf(getString("rank", "DEFAULT")));
 
-        if (getString("lastRegion", "none").equals("none")) {
-            setLastRegion(null);
-        } else {
-            setLastRegion(Region.get(getString("lastRegion", "none")));
-        }
+        SUtil.runAsync(new Runnable() {
+            @Override
+            public void run() {
+                loadDocument();
+                uuid = UUID.fromString(getString("uuid", null));
+                coins = getLong("coins", 0);
+                bits = getLong("bits", 0);
+                bankCoins = getLong("bankCoins", 0);
+                Map<String, Integer> coll = (Map<String, Integer>) get("collections", new HashMap<>());
+                coll.forEach((key, value) -> {
+                    collections.put(ItemCollection.getByIdentifier(key), value);
+                });
+                setRank(PlayerRank.valueOf(getString("rank", "DEFAULT")));
 
-        totalfloor6run = getLong("totalfloor6run", 0);
-        sadancollections = getLong("sadanCollections", 0);
-
-        farmingXP = getDouble("skillFarmingXp", 0.0);
-        miningXP = getDouble("skillMiningXp", 0.0);
-
-        combatXP = getDouble("skillCombatXp", 0.0);
-        foragingXP = getDouble("skillForagingXp", 0.0);
-
-        enchantXP = getDouble("skillEnchantXp", 0.0);
-
-        highestSlayers[0] = getInt("slayerRevenantHorrorHighest", 0);
-        highestSlayers[1] = getInt("slayerTarantulaBroodfatherHighest", 0);
-
-        highestSlayers[2] = getInt("slayerSvenPackmasterHighest", 0);
-        highestSlayers[3] = getInt("slayerVoidgloomSeraphHighest", 0);
-
-        slayerXP[0] = getInt("xpSlayerRevenantHorror", 0);
-        slayerXP[1] = getInt("xpSlayerTarantulaBroodfather", 0);
-        slayerXP[2] = getInt("xpSlayerSvenPackmaster", 0);
-        slayerXP[3] = getInt("xpSlayerVoidgloomSeraph", 0);
-
-        talkedNPCs = getStringList("talkedNPCs" , new ArrayList<>());
-        unlockedRecipes = getStringList("unlockedRecipes" , new ArrayList<>());
-        foundzone = getStringList("foundZone" , new ArrayList<>());
-
-        setPermanentCoins(getBoolean("permanentCoins", false));
-
-        Map<String, Integer> quiv = (Map<String, Integer>) get("quiver", new HashMap<>());
-        quiv.forEach((key, value) -> {
-            quiver.put(SMaterial.getMaterial(key), value);
-        });
-
-        try {
-            SlayerQuest quest = SlayerQuest.deserialize((Map<String, Object>) get("slayerQuest", new HashMap<>()));
-            setSlayerQuest(quest);
-        } catch (Exception ignored) {
-            setSlayerQuest(null);
-        }
-
-        List<Object> listOfPetObjects = new ArrayList<>((List<Object>) get("pets", new ArrayList<>()));
-        listOfPetObjects.forEach((item) -> {
-            Pet.PetItem petitem = Pet.PetItem.deserialize((Map<String, Object>) item);
-            pets.add(petitem);
-        });
-
-        try {
-            this.auctionSettings = AuctionSettings.deserialize((Map<String, Object>) get("auctionSettings", new HashMap<>()));
-        } catch (Exception ignored) {
-            this.auctionSettings = new AuctionSettings();
-        }
-
-        try {
-            setAuctionEscrow(AuctionEscrow.deserialize((Map<String, Object>) get("auctionEscrow", new HashMap<>())));
-        } catch (Exception ignored) {
-            setAuctionEscrow(new AuctionEscrow());
-        }
-
-        completedQuests = getStringList("completedQuests" , new ArrayList<>());
-        completedObjectives = getStringList("completedObjectives" , new ArrayList<>());
-
-
-        setCompletedQuests(completedQuests);
-        setCompletedObjectives(completedObjectives);
-
-
-        setAuctionCreationBIN(getBoolean("auctionCreationBIN", false));
-
-        List<Document> effectsDocuments = dataDocument.getList("effects", Document.class);
-        for (Document effectData : effectsDocuments) {
-            String key = effectData.getString("key");
-            Integer level = effectData.getInteger("level");
-            Long duration = effectData.getLong("duration");
-            Long remaining = effectData.getLong("remaining");
-
-            if (key != null && level != null && duration != null && remaining != null) {
-                PotionEffectType potionEffectType = PotionEffectType.getByNamespace(key);
-                if (potionEffectType != null) {
-                    getEffects().add(new ActivePotionEffect(
-                            new PotionEffect(potionEffectType, level, duration),
-                            remaining
-                    ));
+                if (getString("lastRegion", "none").equals("none")) {
+                    setLastRegion(null);
+                } else {
+                    setLastRegion(Region.get(getString("lastRegion", "none")));
                 }
+
+                totalfloor6run = getLong("totalfloor6run", 0);
+                sadancollections = getLong("sadanCollections", 0);
+
+                farmingXP = getDouble("skillFarmingXp", 0.0);
+                miningXP = getDouble("skillMiningXp", 0.0);
+
+                combatXP = getDouble("skillCombatXp", 0.0);
+                foragingXP = getDouble("skillForagingXp", 0.0);
+
+                enchantXP = getDouble("skillEnchantXp", 0.0);
+
+                highestSlayers[0] = getInt("slayerRevenantHorrorHighest", 0);
+                highestSlayers[1] = getInt("slayerTarantulaBroodfatherHighest", 0);
+
+                highestSlayers[2] = getInt("slayerSvenPackmasterHighest", 0);
+                highestSlayers[3] = getInt("slayerVoidgloomSeraphHighest", 0);
+
+                slayerXP[0] = getInt("xpSlayerRevenantHorror", 0);
+                slayerXP[1] = getInt("xpSlayerTarantulaBroodfather", 0);
+                slayerXP[2] = getInt("xpSlayerSvenPackmaster", 0);
+                slayerXP[3] = getInt("xpSlayerVoidgloomSeraph", 0);
+
+                talkedNPCs = getStringList("talkedNPCs" , new ArrayList<>());
+                unlockedRecipes = getStringList("unlockedRecipes" , new ArrayList<>());
+                foundzone = getStringList("foundZone" , new ArrayList<>());
+
+                setPermanentCoins(getBoolean("permanentCoins", false));
+
+                Map<String, Integer> quiv = (Map<String, Integer>) get("quiver", new HashMap<>());
+                quiv.forEach((key, value) -> {
+                    quiver.put(SMaterial.getMaterial(key), value);
+                });
+
+                try {
+                    SlayerQuest quest = SlayerQuest.deserialize((Map<String, Object>) get("slayerQuest", new HashMap<>()));
+                    setSlayerQuest(quest);
+                } catch (Exception ignored) {
+                    setSlayerQuest(null);
+                }
+
+                List<Object> listOfPetObjects = new ArrayList<>((List<Object>) get("pets", new ArrayList<>()));
+                listOfPetObjects.forEach((item) -> {
+                    Pet.PetItem petitem = Pet.PetItem.deserialize((Map<String, Object>) item);
+                    pets.add(petitem);
+                });
+
+                try {
+                    auctionSettings = AuctionSettings.deserialize((Map<String, Object>) get("auctionSettings", new HashMap<>()));
+                } catch (Exception ignored) {
+                   auctionSettings = new AuctionSettings();
+                }
+
+                try {
+                    setAuctionEscrow(AuctionEscrow.deserialize((Map<String, Object>) get("auctionEscrow", new HashMap<>())));
+                } catch (Exception ignored) {
+                    setAuctionEscrow(new AuctionEscrow());
+                }
+
+                completedQuests = getStringList("completedQuests" , new ArrayList<>());
+                completedObjectives = getStringList("completedObjectives" , new ArrayList<>());
+
+
+                setCompletedQuests(completedQuests);
+                setCompletedObjectives(completedObjectives);
+
+
+                setAuctionCreationBIN(getBoolean("auctionCreationBIN", false));
+
+                List<Document> effectsDocuments = dataDocument.getList("effects", Document.class);
+                for (Document effectData : effectsDocuments) {
+                    String key = effectData.getString("key");
+                    Integer level = effectData.getInteger("level");
+                    Long duration = effectData.getLong("duration");
+                    Long remaining = effectData.getLong("remaining");
+
+                    if (key != null && level != null && duration != null && remaining != null) {
+                        PotionEffectType potionEffectType = PotionEffectType.getByNamespace(key);
+                        if (potionEffectType != null) {
+                            getEffects().add(new ActivePotionEffect(
+                                    new PotionEffect(potionEffectType, level, duration),
+                                    remaining
+                            ));
+                        }
+                    }
+                }
+                try {
+                    PlayerUtils.setCookieDurationTicks(player, getLong("cookieDuration" , 0));
+                } catch (NullPointerException ignored) {}
             }
-        }
-        try {
-            PlayerUtils.setCookieDurationTicks(player, getLong("cookieDuration" , 0));
-        } catch (NullPointerException ignored) {
-        }
+        });
+
     }
 
 
