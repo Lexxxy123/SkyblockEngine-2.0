@@ -4,21 +4,21 @@ import com.mongodb.client.MongoCollection;
 import net.hypixel.skyblock.sql.DatabaseManager;
 import org.bson.Document;
 
+import java.util.concurrent.CompletableFuture;
 
 public class UserDatabase {
-    public static final MongoCollection<Document> collection = (MongoCollection<Document>) DatabaseManager.getCollection("users");
+    static final CompletableFuture<MongoCollection<Document>> collectionFuture = DatabaseManager.getCollection("users");
     public final String id;
-
 
     public UserDatabase(String uuid) {
         this.id = uuid;
     }
 
-
-    public boolean exists() {
-        MongoCollection<Document> userCollection = (MongoCollection<Document>) DatabaseManager.getCollection("users");
-        return userCollection.find(new Document("uuid", id)).first() != null;
+    public CompletableFuture<Boolean> existsAsync() {
+        return collectionFuture.thenApply(userCollection -> {
+            // Perform database operations within the asynchronous context
+            Document user = userCollection.find(new Document("uuid", id)).first();
+            return user != null;
+        });
     }
-
-
 }

@@ -167,7 +167,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
             }
             sendMessage("&aLoading SQL database...");
             this.sql = new SQLDatabase();
-            DatabaseManager.connectToDatabase("mongodb://localhost:27017/", "Godspunky");
+            DatabaseManager.connectToDatabase("mongodb://admin:gsmangu@154.26.138.227:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2", "Godspunky");
             this.regionData = new SQLRegionData();
             this.worldData = new SQLWorldData();
             this.cl = new CommandLoader();

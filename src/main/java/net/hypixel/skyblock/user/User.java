@@ -443,17 +443,24 @@ public class User {
         }
 
         Document query = new Document("_id", uuid.toString());
-        Document found = UserDatabase.collection.find(query).first();
 
-        if (found != null){
-            Document updated = new Document(found);
-            dataCache.forEach(updated::append);
-            UserDatabase.collection.replaceOne(found, updated);
-            return;
-        }
-        Document newDocument = new Document("_id", uuid.toString());
-        dataCache.forEach(newDocument::append);
-        UserDatabase.collection.insertOne(newDocument);
+        UserDatabase.collectionFuture.thenApply(userCollection -> {
+            Document found = userCollection.find(query).first();
+
+            if (found != null) {
+                Document updated = new Document(found);
+                dataCache.forEach(updated::append);
+                userCollection.replaceOne(found, updated);
+            } else {
+                Document newDocument = new Document("_id", uuid.toString());
+                dataCache.forEach(newDocument::append);
+                userCollection.insertOne(newDocument);
+            }
+
+            // You can optionally return a value here if needed
+            return null;
+        });
+
     }
 
 
