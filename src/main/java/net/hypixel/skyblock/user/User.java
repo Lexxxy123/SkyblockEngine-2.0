@@ -623,7 +623,7 @@ public class User {
 
     public void loadDocument() {
         Document query = new Document("_id", uuid.toString());
-        MongoCollection<Document> collection = DatabaseManager.getCollection("users");
+        MongoCollection<Document> collection = (MongoCollection<Document>) DatabaseManager.getCollection("users");
 
         Document found = collection.find(query).first();
 
