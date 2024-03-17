@@ -40,7 +40,7 @@ import net.hypixel.skyblock.features.region.Region;
 import net.hypixel.skyblock.features.region.RegionType;
 
 import net.hypixel.skyblock.features.slayer.SlayerQuest;
-import net.hypixel.skyblock.sql.DatabaseManager;
+import net.hypixel.skyblock.database.DatabaseManager;
 import net.hypixel.skyblock.user.AuctionSettings;
 import net.hypixel.skyblock.util.*;
 import lombok.Getter;
@@ -66,12 +66,10 @@ import net.hypixel.skyblock.nms.nmsutil.packetlistener.handler.ReceivedPacket;
 import net.hypixel.skyblock.nms.nmsutil.packetlistener.handler.SentPacket;
 import net.hypixel.skyblock.nms.nmsutil.packetlistener.metrics.Metrics;
 import net.hypixel.skyblock.nms.pingrep.PingAPI;
-import net.hypixel.skyblock.nms.pingrep.PingEvent;
-import net.hypixel.skyblock.nms.pingrep.PingListener;
 import net.hypixel.skyblock.npc.impl.SkyblockNPCManager;
-import net.hypixel.skyblock.sql.SQLDatabase;
-import net.hypixel.skyblock.sql.SQLRegionData;
-import net.hypixel.skyblock.sql.SQLWorldData;
+import net.hypixel.skyblock.database.SQLDatabase;
+import net.hypixel.skyblock.database.SQLRegionData;
+import net.hypixel.skyblock.database.SQLWorldData;
 
 import java.io.File;
 import java.io.IOException;
@@ -325,7 +323,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
         }
         SLog.info("Disabled " + this.getDescription().getFullName());
         SLog.info("===================================");
-        SLog.info("SkyBlock ENGINE - MADE BY GIAKHANHVN");
+        SLog.info("SkyBlock ENGINE - MADE BY " + getDevelopersName());
         SLog.info("PLUGIN DISABLED!");
         SLog.info("===================================");
     }
