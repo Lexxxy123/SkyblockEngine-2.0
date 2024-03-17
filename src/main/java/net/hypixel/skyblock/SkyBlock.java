@@ -163,7 +163,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
             }
             SLog.info("Loading SQL database...");
             this.sql = new SQLDatabase();
-            DatabaseManager.connectToDatabase("mongodb://admin:gsmangu@154.26.138.227:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2", "Godspunky");
+            DatabaseManager.connectToDatabase("mongodb://localhost:27017/", "Godspunky");
             this.regionData = new SQLRegionData();
             this.worldData = new SQLWorldData();
             this.cl = new CommandLoader();
@@ -325,7 +325,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
         }
         SLog.info("Disabled " + this.getDescription().getFullName());
         SLog.info("===================================");
-        SLog.info("SkyBlock ENGINE - MADE BY SKYBLOCK TEAM");
+        SLog.info("SkyBlock ENGINE - MADE BY GIAKHANHVN");
         SLog.info("PLUGIN DISABLED!");
         SLog.info("===================================");
     }

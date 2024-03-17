@@ -3,10 +3,6 @@ package net.hypixel.skyblock.item;
 import net.hypixel.skyblock.entity.SEntityType;
 import net.hypixel.skyblock.item.accessory.*;
 import net.hypixel.skyblock.item.armor.*;
-import net.hypixel.skyblock.item.armor.final_destination.FinalDestinationBoots;
-import net.hypixel.skyblock.item.armor.final_destination.FinalDestinationChestplate;
-import net.hypixel.skyblock.item.armor.final_destination.FinalDestinationHelmet;
-import net.hypixel.skyblock.item.armor.final_destination.FinalDestinationLeggings;
 import net.hypixel.skyblock.item.armor.gigachad.*;
 import net.hypixel.skyblock.item.armor.hardened.HardenedDiamondBoots;
 import net.hypixel.skyblock.item.armor.hardened.HardenedDiamondChestplate;
@@ -248,11 +244,6 @@ public enum SMaterial {
     OBSIDIAN_CHESTPLATE(Material.LEATHER_CHESTPLATE, ObsidianChestplate.class),
     SPIDERS_BOOTS(Material.IRON_BOOTS, SpidersBoots.class),
     BIG_BOUNCE_BOOTS(Material.LEATHER_BOOTS, BigBounceBoots.class),
-
-    FINAL_DESTINATION_HELMET(Material.SKULL_ITEM, FinalDestinationHelmet.class),
-    FINAL_DESTINATION_CHESTPLATE(Material.LEATHER_CHESTPLATE, FinalDestinationChestplate.class),
-    FINAL_DESTINATION_LEGGINGS(Material.LEATHER_LEGGINGS, FinalDestinationLeggings.class),
-    FINAL_DESTINATION_BOOTS(Material.LEATHER_BOOTS, FinalDestinationBoots.class),
     SUPERSPEED_TALISMAN(Material.SKULL_ITEM, SuperspeedTalisman.class),
     AUTO_RECOMBOBULATOR(Material.SKULL_ITEM, AutoRecombobulator.class),
     PERFECT_TALISMAN(Material.SKULL_ITEM, PerfectTalisman.class),
