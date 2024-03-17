@@ -9,6 +9,7 @@ import com.comphenix.protocol.wrappers.EnumWrappers;
 import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.features.island.SkyblockIsland;
 import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.user.DoublePlayerStatistic;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -44,6 +45,7 @@ import net.hypixel.skyblock.util.SUtil;
 import java.util.*;
 
 public class WorldListener extends PListener {
+    public static ArrayList<Player> PLAYERS_SNEAKING = new ArrayList<>();
     private static final Map<UUID, List<BlockState>> RESTORER;
     private static final List<UUID> ALREADY_TELEPORTING;
     public static final Map<UUID, EnumWrappers.PlayerDigType> isCM;

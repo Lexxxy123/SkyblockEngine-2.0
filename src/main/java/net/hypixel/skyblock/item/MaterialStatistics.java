@@ -37,6 +37,10 @@ public interface MaterialStatistics {
         return false;
     }
 
+    default List<String> killReplacementLore() {
+        return null;
+    }
+
     default boolean displayRarity() {
         return true;
     }

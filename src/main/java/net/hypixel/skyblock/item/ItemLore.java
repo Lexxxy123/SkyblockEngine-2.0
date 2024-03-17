@@ -319,6 +319,16 @@ public class ItemLore {
             lore.add(ChatColor.GRAY + "Price paid: " + ChatColor.GOLD + SUtil.commaify(coins));
             lore.add("");
         }
+        List<String> KillBonusLore = this.parent.getType().getStatistics().killReplacementLore();
+        if (KillBonusLore != null) {
+            for (String line : KillBonusLore) {
+                String line1 = line.replaceAll("<SKYBLOCK_BONUS_DEFENSE>", String.valueOf(this.parent.getBonusDefense()))
+                        .replaceAll("<SKYBLOCK_NEXT_DEFENSE>", String.valueOf(this.parent.getNextDefense()))
+                        .replaceAll("<SKYBLOCK_CURRENT_KILLS>", String.valueOf(this.parent.getProgressKills()))
+                        .replaceAll("<SKYBLOCK_REQUIRED_KILLS>", String.valueOf(this.parent.getRequiredKills()));
+                lore.add(SUtil.color(ChatColor.GRAY + line1));
+            }
+        }
         if (this.parent.getType() == SMaterial.MIDAS_STAFF) {
             lore.add(Sputnik.trans("&6Ability: Greed"));
         }
