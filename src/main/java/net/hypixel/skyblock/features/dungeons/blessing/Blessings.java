@@ -165,7 +165,6 @@ public class Blessings {
     }
 
     public static void update() {
-        SUtil.runAsync(() -> {
             if (BLESSINGS_MAP.isEmpty()) return;
             for (final Player p : Bukkit.getOnlinePlayers()) {
                 final World w = p.getWorld();
@@ -201,7 +200,6 @@ public class Blessings {
                 ts.setIntelligence(intel);
                 ts.update();
             }
-        });
     }
 
     public String buildPickupMessage(User targetUser, User picker) {

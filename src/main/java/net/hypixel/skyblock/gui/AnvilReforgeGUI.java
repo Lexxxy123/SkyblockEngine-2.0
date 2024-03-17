@@ -23,7 +23,7 @@ import net.hypixel.skyblock.item.SMaterial;
 import java.util.Arrays;
 import java.util.List;
 
-public class AnvilReforgeGUI extends GUI implements BlockBasedGUI {
+public class AnvilReforgeGUI extends GUI {
     private static final ItemStack ANVIL_BARRIER;
     private static final ItemStack DEFAULT_COMBINE_ITEMS;
     private static final String CANNOT_COMBINE;
@@ -313,10 +313,6 @@ public class AnvilReforgeGUI extends GUI implements BlockBasedGUI {
         }.runTaskLater(SkyBlock.getPlugin(), 0L);
     }
 
-    @Override
-    public Material getBlock() {
-        return Material.ANVIL;
-    }
 
     private static void setItemTo(final boolean upgrade, final boolean green, final Inventory inventory) {
         for (final int i : upgrade ? Arrays.asList(11, 12, 20) : Arrays.asList(14, 15, 24)) {

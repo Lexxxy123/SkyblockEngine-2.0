@@ -103,14 +103,21 @@ public class GUIListener extends PListener {
             return;
         }
         final Block block = e.getClickedBlock();
-        for (final GUIType type : GUIType.values()) {
-            final GUI gui = type.getGUI();
-            if (gui != null && gui instanceof BlockBasedGUI && ((BlockBasedGUI) gui).getBlock() == block.getType()) {
-                e.setCancelled(true);
-                gui.open(e.getPlayer());
-                return;
-            }
+        GUI toOpen = null;
+
+        switch (block.getType()){
+            case WORKBENCH:
+               toOpen = GUIType.CRAFTING_TABLE.getGUI();
+               break;
+            case ANVIL:
+                toOpen = GUIType.ANVIL.getGUI();
+                break;
         }
+        if (toOpen != null){
+            e.setCancelled(true);
+            toOpen.open(e.getPlayer());
+        }
+
     }
 
     @EventHandler

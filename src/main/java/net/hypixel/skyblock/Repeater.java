@@ -158,7 +158,7 @@ public class Repeater {
                     }
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L));
+        }.runTaskTimerAsynchronously(SkyBlock.getPlugin(), 0L, 1L));
         this.tasks.add(new BukkitRunnable() {
             public void run() {
                 for (final Player player : Bukkit.getOnlinePlayers()) {
