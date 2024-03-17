@@ -141,7 +141,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
 
     public void onEnable() {
         plugin = this;
-        sendMessage("&aEnabling Hub Core. Made by dumbo :)");
+        sendMessage("&aEnabling Skyblock Core. Made by dumbo :)");
         long start = System.currentTimeMillis();
 
         sendMessage("&aLoading SkyBlock worlds...");
@@ -510,7 +510,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
     }
 
     public String getPrefix(){
-        return ChatColor.translateAlternateColorCodes('&', "&7[&aGodspunky&bHub&dCore&7] &f");
+        return ChatColor.translateAlternateColorCodes('&', "&7[&aGodspunky&bSkyblock&dCore&7] &f");
     }
     public void sendMessage(String message) {
         Bukkit.getConsoleSender().sendMessage(getPrefix() + CC.translate(message));
