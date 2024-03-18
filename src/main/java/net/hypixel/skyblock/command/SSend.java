@@ -85,7 +85,7 @@ public class SSend
             for (Player player : Bukkit.getOnlinePlayers()) {
                 User u = User.getUser(player.getUniqueId());
                 u.send("&7Hooking up request...");
-                u.syncSavingData();
+                u.asyncSavingData();
                 SUtil.delay(() -> {
                     u.send("&7Sending you to " + finalTarget + "...");
                     SkyBlock.getPlugin().getBc().connect(player, finalTarget);

@@ -61,6 +61,7 @@ import net.hypixel.skyblock.item.SMaterial;
 import net.hypixel.skyblock.listener.PlayerListener;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -323,20 +324,9 @@ public class User {
 
 
     public void asyncSavingData() {
-        new BukkitRunnable() {
-            public void run() {
-                User.this.save();
-            }
-        }.runTaskAsynchronously(User.plugin);
+        save();
     }
 
-    public void syncSavingData() {
-        new BukkitRunnable() {
-            public void run() {
-                //  plugin.dataLoader.save(uuid);;
-            }
-        }.runTask(User.plugin);
-    }
 
     public void loadStatic() {
         Player player = Bukkit.getPlayer(this.uuid);
@@ -346,106 +336,120 @@ public class User {
         PetsGUI.setShowPets(player, true);
     }
 
-
-
-    public void save() {
-       setDataProperty("uuid" , uuid.toString());
-       setDataProperty("coins" , coins);
-       setDataProperty("bits" , bits);
-       setDataProperty("bankCoins" , bankCoins);
-       setDataProperty("rank" , rank.toString());
-        Map<String, Integer> collectionsData = new HashMap<>();
-        for (ItemCollection collection : ItemCollection.getCollections()) {
-            collectionsData.put(collection.getIdentifier(), getCollection(collection));
+    public void kick(){
+        if (toBukkitPlayer().isOnline()){
+            toBukkitPlayer().kickPlayer("server restart...");
         }
-        setDataProperty("collections", collectionsData);
-        if (lastRegion != null){
-            setDataProperty("lastRegion", getLastRegion().getName());
-        }
-        Map<String, Integer> quiverData = new HashMap<>();
-        getQuiver().forEach((key, value) -> quiverData.put(key.name(), value));
-        setDataProperty("quiver", quiverData);
-        List<Document> effects = new ArrayList<>();
-        for (ActivePotionEffect effect : getEffects()) {
-            Document effectDocument = new Document()
-                    .append("key", effect.getEffect().getType().getNamespace())
-                    .append("level", effect.getEffect().getLevel())
-                    .append("duration", effect.getEffect().getDuration())
-                    .append("remaining", effect.getRemaining());
-            effects.add(effectDocument);
-        }
-        setDataProperty("totalfloor6run" , totalfloor6run);
-        setDataProperty("sadanCollections" , sadancollections);
-        setDataProperty("effects", effects);
-        setDataProperty("skillFarmingXp", farmingXP);
-        setDataProperty("skillMiningXp", miningXP);
-        setDataProperty("skillCombatXp", combatXP);
-        setDataProperty("skillForagingXp", foragingXP);
-        setDataProperty("skillEnchantXp" , enchantXP);
-        setDataProperty("slayerRevenantHorrorHighest", highestSlayers[0]);
-        setDataProperty("slayerTarantulaBroodfatherHighest", highestSlayers[1]);
-        setDataProperty("slayerSvenPackmasterHighest", highestSlayers[2]);
-        setDataProperty("slayerVoidgloomSeraphHighest", highestSlayers[3]);
-        setDataProperty("permanentCoins", isPermanentCoins());
-        setDataProperty("xpSlayerRevenantHorror", slayerXP[0]);
-        setDataProperty("xpSlayerTarantulaBroodfather", slayerXP[1]);
-        setDataProperty("xpSlayerSvenPackmaster", slayerXP[2]);
-        setDataProperty("xpSlayerVoidgloomSeraph", slayerXP[3]);
-
-        setDataProperty("completedQuests" , completedQuests);
-        setDataProperty("completedObjectives" , completedObjectives);
-
-        if (slayerQuest != null){
-            setDataProperty("slayerQuest", getSlayerQuest().serialize());
-        }
-        if (!pets.isEmpty()) {
-            List<Map<String, Object>> petsSerialized = pets.stream().map(Pet.PetItem::serialize).collect(Collectors.toList());
-            setDataProperty("pets", petsSerialized);
-        } else {
-            setDataProperty("pets", new ArrayList<Map<String, Object>>());
-        }
-        if (auctionSettings != null){
-            setDataProperty("auctionSettings", auctionSettings.serialize());
-        }
-        setDataProperty("auctionCreationBIN", isAuctionCreationBIN());
-
-        if (auctionEscrow != null){
-            setDataProperty("auctionEscrow" , auctionEscrow.serialize());
-        }
-
-        setDataProperty("unlockedRecipes" , unlockedRecipes);
-        setDataProperty("talkedNPCs" , talkedNPCs);
-
-        setDataProperty("foundZone" , foundzone);
+    }
 
 
-        if (Bukkit.getPlayer(this.uuid) != null && Bukkit.getPlayer(this.uuid).isOnline()) {
-            setDataProperty("showPets", PetsGUI.getShowPet(Bukkit.getPlayer(this.uuid)));
-            setDataProperty("autoSlayer", PlayerUtils.isAutoSlayer(Bukkit.getPlayer(this.uuid)));
-            if (PlayerUtils.COOKIE_DURATION_CACHE.containsKey(this.uuid)) {
-                setDataProperty("cookieDuration", PlayerUtils.getCookieDurationTicks(Bukkit.getPlayer(this.uuid)));
+
+    public CompletableFuture<Void> save() {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
+        SUtil.runAsync(new Runnable() {
+            @Override
+            public void run() {
+                setDataProperty("uuid" , uuid.toString());
+                setDataProperty("coins" , coins);
+                setDataProperty("bits" , bits);
+                setDataProperty("bankCoins" , bankCoins);
+                setDataProperty("rank" , rank.toString());
+                Map<String, Integer> collectionsData = new HashMap<>();
+                for (ItemCollection collection : ItemCollection.getCollections()) {
+                    collectionsData.put(collection.getIdentifier(), getCollection(collection));
+                }
+                setDataProperty("collections", collectionsData);
+                if (lastRegion != null){
+                    setDataProperty("lastRegion", getLastRegion().getName());
+                }
+                Map<String, Integer> quiverData = new HashMap<>();
+                getQuiver().forEach((key, value) -> quiverData.put(key.name(), value));
+                setDataProperty("quiver", quiverData);
+                List<Document> effects = new ArrayList<>();
+                for (ActivePotionEffect effect : getEffects()) {
+                    Document effectDocument = new Document()
+                            .append("key", effect.getEffect().getType().getNamespace())
+                            .append("level", effect.getEffect().getLevel())
+                            .append("duration", effect.getEffect().getDuration())
+                            .append("remaining", effect.getRemaining());
+                    effects.add(effectDocument);
+                }
+                setDataProperty("totalfloor6run" , totalfloor6run);
+                setDataProperty("sadanCollections" , sadancollections);
+                setDataProperty("effects", effects);
+                setDataProperty("skillFarmingXp", farmingXP);
+                setDataProperty("skillMiningXp", miningXP);
+                setDataProperty("skillCombatXp", combatXP);
+                setDataProperty("skillForagingXp", foragingXP);
+                setDataProperty("skillEnchantXp" , enchantXP);
+                setDataProperty("slayerRevenantHorrorHighest", highestSlayers[0]);
+                setDataProperty("slayerTarantulaBroodfatherHighest", highestSlayers[1]);
+                setDataProperty("slayerSvenPackmasterHighest", highestSlayers[2]);
+                setDataProperty("slayerVoidgloomSeraphHighest", highestSlayers[3]);
+                setDataProperty("permanentCoins", isPermanentCoins());
+                setDataProperty("xpSlayerRevenantHorror", slayerXP[0]);
+                setDataProperty("xpSlayerTarantulaBroodfather", slayerXP[1]);
+                setDataProperty("xpSlayerSvenPackmaster", slayerXP[2]);
+                setDataProperty("xpSlayerVoidgloomSeraph", slayerXP[3]);
+
+                setDataProperty("completedQuests" , completedQuests);
+                setDataProperty("completedObjectives" , completedObjectives);
+
+                if (slayerQuest != null){
+                    setDataProperty("slayerQuest", getSlayerQuest().serialize());
+                }
+                if (!pets.isEmpty()) {
+                    List<Map<String, Object>> petsSerialized = pets.stream().map(Pet.PetItem::serialize).collect(Collectors.toList());
+                    setDataProperty("pets", petsSerialized);
+                } else {
+                    setDataProperty("pets", new ArrayList<Map<String, Object>>());
+                }
+                if (auctionSettings != null){
+                    setDataProperty("auctionSettings", auctionSettings.serialize());
+                }
+                setDataProperty("auctionCreationBIN", isAuctionCreationBIN());
+
+                if (auctionEscrow != null){
+                    setDataProperty("auctionEscrow" , auctionEscrow.serialize());
+                }
+
+                setDataProperty("unlockedRecipes" , unlockedRecipes);
+                setDataProperty("talkedNPCs" , talkedNPCs);
+
+                setDataProperty("foundZone" , foundzone);
+
+
+                if (Bukkit.getPlayer(uuid) != null && Bukkit.getPlayer(uuid).isOnline()) {
+                    setDataProperty("showPets", PetsGUI.getShowPet(Bukkit.getPlayer(uuid)));
+                    setDataProperty("autoSlayer", PlayerUtils.isAutoSlayer(Bukkit.getPlayer(uuid)));
+                    if (PlayerUtils.COOKIE_DURATION_CACHE.containsKey(uuid)) {
+                        setDataProperty("cookieDuration", PlayerUtils.getCookieDurationTicks(Bukkit.getPlayer(uuid)));
+                    }
+
+                }
+
+                Document query = new Document("_id", uuid.toString());
+
+                UserDatabase.collectionFuture.thenApply(userCollection -> {
+                    Document found = userCollection.find(query).first();
+
+                    if (found != null) {
+                        Document updated = new Document(found);
+                        dataCache.forEach(updated::append);
+                        userCollection.replaceOne(found, updated);
+                    } else {
+                        Document newDocument = new Document("_id", uuid.toString());
+                        dataCache.forEach(newDocument::append);
+                        userCollection.insertOne(newDocument);
+                    }
+                    future.complete(null);
+                   return future;
+                });
             }
-
-        }
-
-        Document query = new Document("_id", uuid.toString());
-
-        UserDatabase.collectionFuture.thenApply(userCollection -> {
-            Document found = userCollection.find(query).first();
-
-            if (found != null) {
-                Document updated = new Document(found);
-                dataCache.forEach(updated::append);
-                userCollection.replaceOne(found, updated);
-            } else {
-                Document newDocument = new Document("_id", uuid.toString());
-                dataCache.forEach(newDocument::append);
-                userCollection.insertOne(newDocument);
-            }
-
-            return null;
         });
 
+        return future;
     }
 
 

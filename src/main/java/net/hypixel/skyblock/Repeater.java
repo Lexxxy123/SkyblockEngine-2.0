@@ -78,7 +78,7 @@ public class Repeater {
                         return;
                     }
                     final User user = User.getUser(player.getUniqueId());
-                    user.syncSavingData();
+                    user.asyncSavingData();
                 }
             }
         }.runTaskTimer(SkyBlock.getPlugin(), 3000L, 3000L));

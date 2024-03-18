@@ -42,6 +42,7 @@ import net.hypixel.skyblock.features.region.RegionType;
 import net.hypixel.skyblock.features.slayer.SlayerQuest;
 import net.hypixel.skyblock.database.DatabaseManager;
 import net.hypixel.skyblock.user.AuctionSettings;
+import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -141,7 +142,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
 
     public void onEnable() {
         plugin = this;
-        sendMessage("&aEnabling Skyblock Core. Made by dumbo :)");
+        sendMessage("&aEnabling Skyblock Core. Made by " + getDevelopersName());
         long start = System.currentTimeMillis();
 
         sendMessage("&aLoading SkyBlock worlds...");
@@ -290,6 +291,16 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
 
 
     public void onDisable() {
+        sendMessage("&aSaving Player data...");
+
+        for (User user : User.getCachedUsers()){
+            if (user == null) continue;
+            if (user.getUuid() == null) continue;
+            if (!user.toBukkitPlayer().isOnline()) continue;
+            user.save().thenRun(user::kick);
+        }
+
+
         sendMessage("&aKilling all non-human entities...");
         for (final World world : Bukkit.getWorlds()) {
             for (final Entity entity : world.getEntities()) {
@@ -345,7 +356,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
 
             }
         }
-        SLog.info(ChatColor.GREEN + "Successfully loaded " + ChatColor.YELLOW + SkyblockNPCManager.getNPCS().size() + ChatColor.GREEN + " NPCs");
+        sendMessage("&aSuccessfully loaded &e" + SkyblockNPCManager.getNPCS().size() + "&a NPCs");
     }
 
 
@@ -353,17 +364,20 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
 
     private void loadCommands() {
         Reflections reflections = new Reflections("net.hypixel.skyblock.command");
+        sendMessage("&eRegistering commands...");
+        int count = 0;
 
         for (Class<? extends SCommand> command : reflections.getSubTypesOf(SCommand.class)) {
             try {
                 cl.register(command.getDeclaredConstructor().newInstance());
+                count++;
             } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
                      InvocationTargetException exception) {
                 SLog.severe("An exception occured when loading " + command.getSimpleName());
                 SLog.severe(exception.getMessage());
             }
         }
-        cl.register(new ItemBrowseCommand());
+        sendMessage("&eRegistered " + count + " commands");
     }
 
     private void loadListeners() {

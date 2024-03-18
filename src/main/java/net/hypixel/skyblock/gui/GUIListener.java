@@ -26,16 +26,6 @@ public class GUIListener extends PListener {
     public static final Map<UUID, GUIQueryItem> QUERY_MAP;
     public static final Map<UUID, Boolean> QUERY_MAPPING;
 
-    @EventHandler
-    public void onCloseInv(final InventoryCloseEvent e) {
-        final Player p = (Player) e.getPlayer();
-        final User u = User.getUser(p.getUniqueId());
-        if (u != null && u.isSaveable()) {
-            u.setSaveable(false);
-            u.syncSavingData();
-            u.setSaveable(true);
-        }
-    }
 
     @EventHandler
     public void onInventoryClick(final InventoryClickEvent e) {

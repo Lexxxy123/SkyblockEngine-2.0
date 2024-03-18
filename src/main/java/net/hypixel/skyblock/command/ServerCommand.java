@@ -70,7 +70,7 @@ public class ServerCommand extends SCommand {
         }
         this.send("&7Hooking up request...");
         final User u = User.getUser(p.getUniqueId());
-        u.syncSavingData();
+        u.asyncSavingData();
         SUtil.delay(() -> {
             this.send("&7Sending you to " + finalTarget + "...");
             SkyBlock.getPlugin().getBc().connect(p, finalTarget);
