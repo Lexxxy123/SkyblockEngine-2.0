@@ -5,8 +5,8 @@ import net.hypixel.skyblock.npc.impl.NPCParameters;
 import net.hypixel.skyblock.npc.impl.SkyblockNPC;
 import org.bukkit.entity.Player;
 
-public class Maddox extends SkyblockNPC {
-    public Maddox() {
+public class NPCMaddox extends SkyblockNPC {
+    public NPCMaddox() {
         super(new NPCParameters() {
             @Override
             public String name() {

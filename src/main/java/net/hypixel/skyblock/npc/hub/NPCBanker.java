@@ -7,8 +7,8 @@ import net.hypixel.skyblock.gui.GUIType;
 import net.hypixel.skyblock.npc.impl.NPCParameters;
 import net.hypixel.skyblock.npc.impl.SkyblockNPC;
 
-public class Banker extends SkyblockNPC {
-    public Banker() {
+public class NPCBanker extends SkyblockNPC {
+    public NPCBanker() {
         super(new NPCParameters() {
 
             @Override

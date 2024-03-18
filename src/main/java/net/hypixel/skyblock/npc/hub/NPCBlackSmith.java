@@ -6,9 +6,9 @@ import net.hypixel.skyblock.npc.impl.SkyblockNPC;
 import net.hypixel.skyblock.npc.impl.enums.NPCType;
 import org.bukkit.entity.Player;
 
-public class BlackSmith extends SkyblockNPC {
+public class NPCBlackSmith extends SkyblockNPC {
 
-    public BlackSmith() {
+    public NPCBlackSmith() {
         super(new NPCParameters() {
             @Override
             public String name() {

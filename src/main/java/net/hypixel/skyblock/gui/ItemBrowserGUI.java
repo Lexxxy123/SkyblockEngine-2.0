@@ -22,6 +22,8 @@ public class ItemBrowserGUI extends GUI {
         this.border(BLACK_STAINED_GLASS_PANE);
         final PaginationList<SMaterial> pagedMaterials = new PaginationList<SMaterial>(28);
         pagedMaterials.addAll(SMaterial.values());
+        pagedMaterials.removeIf((mat) -> mat.name().toLowerCase().contains("dwarven_"));
+        pagedMaterials.removeIf((mat) -> mat.name().toLowerCase().contains("hidden_"));
         pagedMaterials.removeIf(mat -> mat.name().toLowerCase().contains("spawn_egg"));
         pagedMaterials.removeIf(mat -> mat.name().toLowerCase().contains("gunga"));
         pagedMaterials.removeIf(mat -> mat.name().toLowerCase().contains("menu"));

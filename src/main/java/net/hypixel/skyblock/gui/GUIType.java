@@ -39,6 +39,7 @@ public enum GUIType {
     MANAGE_AUCTIONS(ManageAuctionsGUI.class),
     YOUR_BIDS(YourBidsGUI.class),
     WARP(WarpGUI.class),
+    ADMIN_ITEM_BROWSER(AdminItemBrowser.class),
     VOIDGLOOM_SERAPH(VoidgloomSeraph.class);
 
     private final Class<? extends GUI> gui;

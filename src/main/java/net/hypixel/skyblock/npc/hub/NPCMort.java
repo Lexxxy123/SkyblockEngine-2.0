@@ -6,8 +6,8 @@ import net.hypixel.skyblock.npc.impl.NPCSkin;
 import net.hypixel.skyblock.npc.impl.SkyblockNPC;
 import org.bukkit.entity.Player;
 
-public class Mort extends SkyblockNPC {
-    public Mort() {
+public class NPCMort extends SkyblockNPC {
+    public NPCMort() {
         super(new NPCParameters() {
             @Override
             public String name() {
