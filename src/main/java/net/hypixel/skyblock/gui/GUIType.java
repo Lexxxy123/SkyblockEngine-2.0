@@ -38,6 +38,7 @@ public enum GUIType {
     AUCTION_CONFIRM(AuctionConfirmGUI.class),
     MANAGE_AUCTIONS(ManageAuctionsGUI.class),
     YOUR_BIDS(YourBidsGUI.class),
+    WARP(WarpGUI.class),
     VOIDGLOOM_SERAPH(VoidgloomSeraph.class);
 
     private final Class<? extends GUI> gui;

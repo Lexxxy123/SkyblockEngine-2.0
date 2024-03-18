@@ -95,10 +95,6 @@ public class Repeater {
             public void run() {
                 Blessings.update();
                 for (final Player player : Bukkit.getOnlinePlayers()) {
-                    if (player.getItemInHand().getType() == Material.BOOK_AND_QUILL) {
-                        player.setItemInHand(null);
-                        player.sendMessage(ChatColor.RED + "This item is banned due to an exploit.");
-                    }
                     Location blockLocation = player.getEyeLocation();
                     try {
                         blockLocation = player.getTargetBlock((Set) null, 30).getLocation();
@@ -158,7 +154,7 @@ public class Repeater {
                     }
                 }
             }
-        }.runTaskTimerAsynchronously(SkyBlock.getPlugin(), 0L, 1L));
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L));
         this.tasks.add(new BukkitRunnable() {
             public void run() {
                 for (final Player player : Bukkit.getOnlinePlayers()) {
