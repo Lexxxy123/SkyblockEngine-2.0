@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import net.hypixel.skyblock.command.RegionCommand;
 import net.hypixel.skyblock.features.region.Region;
@@ -44,5 +45,10 @@ public class BlockListener extends PListener {
                 RegionCommand.REGION_GENERATION_MAP.remove(player);
                 break;
         }
+    }
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent event) {
+        Player player = event.getPlayer();
+        event.setCancelled(!player.getWorld().getName().equals("island-" + player.getUniqueId()));
     }
 }
