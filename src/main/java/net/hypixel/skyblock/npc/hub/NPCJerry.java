@@ -30,7 +30,6 @@ public class NPCJerry extends SkyblockNPC {
                         "The Skyblock universe is full of islands to explore and resources to discover!",
                         "I will help you start your journey in sandbox.",
                         "Use /ib or free items npc to get starter goods.",
-                        "Use the /hex to upgrade your item at its peak.",
                         "Complete Flor 6 Boss Room.",
                         "Complete All Slayer Bosses.",
                         "New Updates Coming Soon in future!"
