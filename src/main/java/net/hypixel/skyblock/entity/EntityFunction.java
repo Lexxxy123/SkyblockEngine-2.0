@@ -35,7 +35,7 @@ public interface EntityFunction {
 
 
     default void onSpawnNameTag(final LivingEntity entity, final SEntity sEntity, final SEntityType specType, final Object... params) {
-        final ArmorStand hologram1 = (ArmorStand) entity.getWorld().spawn(entity.getLocation().add(0.0, 0.0, 0.0), (Class) ArmorStand.class);
+        ArmorStand hologram1 = entity.getWorld().spawn(entity.getLocation().add(0.0, 0.0, 0.0),  ArmorStand.class);
         hologram1.setVisible(false);
         hologram1.setGravity(false);
         hologram1.setSmall(true);

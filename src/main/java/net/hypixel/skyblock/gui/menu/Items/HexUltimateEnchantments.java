@@ -20,6 +20,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class HexUltimateEnchantments extends GUI {
     public HexUltimateEnchantments(SItem item, int page) {
         super("The Hex -> Ultimate Enchantments", 54);
         fill(BLACK_STAINED_GLASS_PANE);
+        upgradeableItem = item;
         int finalPage = page;
 
         PaginationList<SItem> pagedEnchantBooks = new PaginationList<>(15);
@@ -69,6 +71,7 @@ public class HexUltimateEnchantments extends GUI {
                 @Override
                 public void run(InventoryClickEvent e) {
                     new HexUltimateEnchantments(item, finalPage - 1).open((Player) e.getWhoClicked());
+                    upgradeableItem = null;
                 }
 
                 @Override
@@ -87,6 +90,7 @@ public class HexUltimateEnchantments extends GUI {
                 @Override
                 public void run(InventoryClickEvent e) {
                     new HexUltimateEnchantments(item, finalPage + 1).open((Player) e.getWhoClicked());
+                    upgradeableItem = null;
                 }
 
                 @Override
@@ -184,6 +188,7 @@ public class HexUltimateEnchantments extends GUI {
                 p.playSound(p.getLocation(), Sound.ANVIL_USE, 10, 1);
 
                 new HexGUI(p.getPlayer(), item).open(p);
+                upgradeableItem = null;
             }
 
             @Override
@@ -200,6 +205,12 @@ public class HexUltimateEnchantments extends GUI {
             }
         });
 
+    }
+    @Override
+    public void onClose(InventoryCloseEvent e){
+        if (upgradeableItem != null){
+            e.getPlayer().getInventory().addItem(upgradeableItem.getStack());
+        }
     }
 
 }

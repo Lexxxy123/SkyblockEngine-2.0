@@ -31,7 +31,6 @@ public class Hologram extends EntityArmorStand {
         this.n(true);
         this.setSmall(false);
         this.setBasePlate(false);
-        this.noclip = true;
         this.location = location;
         this.viewers = new HashSet<>();
         HologramManager.register(this);

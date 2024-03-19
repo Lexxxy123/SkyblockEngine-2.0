@@ -303,21 +303,7 @@ public class WatcherBonzo extends BaseZombie {
     }
 
     @Override
-    public void onAttack(final EntityDamageByEntityEvent e) {
-    }
-
-    @Override
-    public boolean isBaby() {
-        return false;
-    }
-
-    @Override
     public boolean hasNameTag() {
-        return false;
-    }
-
-    @Override
-    public boolean isVillager() {
         return false;
     }
 

@@ -17,16 +17,24 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.HashMap;
+import java.util.UUID;
+
 public class HexGUI extends GUI {
+
+
+
     SItem upgradeableItem;
 
     public HexGUI(Player player, SItem item) {
         super("The Hex", 54);
         fill(BLACK_STAINED_GLASS_PANE);
+        this.upgradeableItem = item;
 
         //Slot Handle
         //**Reforges
@@ -38,6 +46,7 @@ public class HexGUI extends GUI {
                     player.playSound(player.getLocation(), Sound.VILLAGER_NO, 10, 1);
                 } else {
                     new HexReforgesGUI(upgradeableItem).open(player);
+                    upgradeableItem = null;
                 }
             }
 
@@ -64,6 +73,7 @@ public class HexGUI extends GUI {
                     player.playSound(player.getLocation(), Sound.VILLAGER_NO, 10, 1);
                 } else {
                     new HexModifiersGUI(upgradeableItem).open(player);
+                    upgradeableItem = null;
                 }
             }
 
@@ -92,6 +102,7 @@ public class HexGUI extends GUI {
                     player.playSound(player.getLocation(), Sound.VILLAGER_NO, 10, 1);
                 } else {
                     new HexEnchantments(upgradeableItem).open(player);
+                    upgradeableItem = null;
                 }
             }
 
@@ -121,6 +132,7 @@ public class HexGUI extends GUI {
                     player.playSound(player.getLocation(), Sound.VILLAGER_NO, 10, 1);
                 } else {
                     new HexUltimateEnchantments(upgradeableItem).open(player);
+                    upgradeableItem = null;
                 }
             }
 
@@ -159,6 +171,22 @@ public class HexGUI extends GUI {
                                 "&7special books to your item to",
                                 "&7upgrade it!")
                 );
+            }
+        });
+
+        set(new GUIClickableItem() {
+            @Override
+            public void run(InventoryClickEvent p0) {
+            }
+
+            @Override
+            public ItemStack getItem() {
+                return upgradeableItem.getStack();
+            }
+
+            @Override
+            public int getSlot() {
+                return 22;
             }
         });
 
@@ -265,27 +293,50 @@ public class HexGUI extends GUI {
 
     }
 
+    @Override
+    public void onClose(InventoryCloseEvent e){
+        if (upgradeableItem != null){
+            e.getPlayer().getInventory().addItem(upgradeableItem.getStack());
+        }
+    }
+
+
+//    @Override
+//    public void onClose(InventoryCloseEvent e){
+//
+//        if (e.getPlayer().getOpenInventory() != null) {
+//            if (e.getPlayer().getOpenInventory().getTitle().equals("The Hex")
+//                    || e.getPlayer().getOpenInventory().getTitle().equals("The Hex -> Modifiers")
+//                    || e.getPlayer().getOpenInventory().getTitle().equals("The Hex -> Enchantments")
+//                    || e.getPlayer().getOpenInventory().getTitle().equals("The Hex -> Ultimate Enchantments")) {
+//                   return;
+//            }else {
+//                if (upgradeableItem != null){
+//                    e.getPlayer().getInventory().addItem(upgradeableItem.getStack());
+//                }
+//            }
+//            return;
+//        }
+//
+//        if (upgradeableItem != null){
+//            e.getPlayer().getInventory().addItem(upgradeableItem.getStack());
+//        }
+//    }
+
     public HexGUI(Player player) {
         this(player, null);
     }
 
-    @Override
-    public void update(Inventory inventory) {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                SItem hexItem = SItem.find(inventory.getItem(22));
-                if (hexItem == null) {
-                    upgradeableItem = null;
-                    return;
-                }
-
-                if (!(hexItem.getType().getStatistics().getSpecificType() == SpecificItemType.SWORD || hexItem.getType().getStatistics().getSpecificType() == SpecificItemType.AXE || hexItem.getType().getStatistics().getSpecificType() == SpecificItemType.BOW || hexItem.getType().getStatistics().getType().equals(GenericItemType.ARMOR) || hexItem.getType().getStatistics().getType().equals(GenericItemType.ACCESSORY)))
-                    return;
-
-                upgradeableItem = hexItem;
-            }
-        }.runTaskLater(SkyBlock.getPlugin(), 1);
-    }
+//    @Override
+//    public void update(Inventory inventory) {
+//        new BukkitRunnable() {
+//            @Override
+//            public void run() {
+//
+//                if (upgradeableItem == null) return;
+//
+//            }
+//        }.runTaskLater(SkyBlock.getPlugin(), 1);
+//    }
 
 }

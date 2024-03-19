@@ -7,7 +7,7 @@ import net.hypixel.skyblock.npc.impl.enums.NPCType;
 import org.bukkit.entity.Player;
 
 public class LibrarianMerchant extends SkyblockNPC {
-    public LibrarianMerchant(NPCParameters npcParameters) {
+    public LibrarianMerchant() {
         super(new NPCParameters() {
 
             @Override

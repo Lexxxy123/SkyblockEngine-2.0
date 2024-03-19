@@ -52,6 +52,7 @@ public class HexReforgesGUI extends GUI {
                 @Override
                 public void run(InventoryClickEvent e) {
                     new HexReforgesGUI(item, finalPage - 1).open((Player) e.getWhoClicked());
+                    upgradeableItem = null;
                 }
 
                 @Override
@@ -70,6 +71,7 @@ public class HexReforgesGUI extends GUI {
                 @Override
                 public void run(InventoryClickEvent e) {
                     new HexReforgesGUI(item, finalPage + 1).open((Player) e.getWhoClicked());
+                    upgradeableItem = null;
                 }
 
                 @Override
@@ -129,6 +131,7 @@ public class HexReforgesGUI extends GUI {
                 p.sendMessage(ChatColor.translateAlternateColorCodes('&', "&aYou applied the reforge " + selected.getName() + " to your " + item.getFullName() + "!"));
 
                 new HexGUI(p.getPlayer(), item).open(p);
+                upgradeableItem = null;
             }
 
             @Override

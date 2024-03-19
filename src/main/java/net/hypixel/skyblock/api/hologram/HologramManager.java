@@ -1,21 +1,20 @@
 package net.hypixel.skyblock.api.hologram;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class HologramManager {
-    private static final List<Hologram> HOLOGRAMS = new ArrayList<>();
+    private static final Set<Hologram> HOLOGRAMS = new HashSet<>();
 
     public static void register(Hologram hologram){
-        if (!HOLOGRAMS.contains(hologram))
-            HOLOGRAMS.add(hologram);
+        HOLOGRAMS.add(hologram);
     }
 
     public static void remove(Hologram hologram){
         HOLOGRAMS.remove(hologram);
     }
 
-    public static List<Hologram> getHolograms() {
+    public static Set<Hologram> getHolograms() {
         return HOLOGRAMS;
     }
 }

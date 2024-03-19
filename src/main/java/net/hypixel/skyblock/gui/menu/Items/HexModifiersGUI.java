@@ -18,6 +18,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class HexModifiersGUI extends GUI {
@@ -26,6 +27,7 @@ public class HexModifiersGUI extends GUI {
     public HexModifiersGUI(SItem item) {
         super("The Hex -> Modifiers", 54);
         fill(BLACK_STAINED_GLASS_PANE);
+        upgradeableItem = item;
 
         //Recombobulator
         set(new GUIClickableItem() {
@@ -61,6 +63,7 @@ public class HexModifiersGUI extends GUI {
                 p.playSound(p.getLocation(), Sound.ANVIL_USE, 10, 1);
 
                 new HexGUI(p.getPlayer(), item).open(p);
+                upgradeableItem = null;
             }
 
             @Override
@@ -83,6 +86,12 @@ public class HexModifiersGUI extends GUI {
         set(GUIClickableItem.getCloseItem(49));
         set(19, item.getStack());
 
+    }
+    @Override
+    public void onClose(InventoryCloseEvent e){
+        if (upgradeableItem != null){
+            e.getPlayer().getInventory().addItem(upgradeableItem.getStack());
+        }
     }
 
 }
