@@ -14,13 +14,13 @@ import net.hypixel.skyblock.util.Sputnik;
 import java.util.HashMap;
 import java.util.Map;
 
-@CommandParameters(description = "Spec test command.", aliases = "rebootserver", permission = PlayerRank.ADMIN)
+@CommandParameters(description = "Spec test command.", aliases = "rebootserver", permission = PlayerRank.OWNER)
 public class RebootServerCommand extends SCommand {
     public static Map<Server, Integer> secondMap;
 
     @Override
     public void run(CommandSource sender, String[] args) {
-        if (null != sender.getPlayer()) {
+        if (!sender.getPlayer().isOp()) {
             sender.getPlayer().sendMessage(ChatColor.RED + "This command is highly restricted!");
             return;
         }
