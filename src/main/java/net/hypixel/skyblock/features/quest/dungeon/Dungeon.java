@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Dungeon extends QuestLine {
     public Dungeon() {
-        super("dungeon_run","Explore Dungeons", new TalkToMort(), new BossRoom(), new SadanBoss());
+        super("dungeon_run","Explore Dungeons", new TalkToMort(), new SadanBoss());
     }
 
     @Override

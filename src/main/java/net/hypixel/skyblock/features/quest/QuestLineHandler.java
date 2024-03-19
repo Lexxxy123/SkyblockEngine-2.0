@@ -6,6 +6,7 @@ package net.hypixel.skyblock.features.quest;
 
 import lombok.Getter;
 import net.hypixel.skyblock.features.quest.dungeon.Dungeon;
+import net.hypixel.skyblock.features.quest.dungeon.Mort;
 import net.hypixel.skyblock.features.region.RegionType;
 import net.hypixel.skyblock.user.User;
 
@@ -17,7 +18,8 @@ public class QuestLineHandler {
     private final HashMap<RegionType, List<QuestLine>> quests = new HashMap<>();
 
     public QuestLineHandler() {
-        register(new RegionType[] { RegionType.MOUNTAIN, RegionType.F6, RegionType.F6 }, new Dungeon());
+        register(RegionType.MOUNTAIN, new Mort());
+        register(RegionType.F6 , new Dungeon());
 
 
         for (List<QuestLine> quest : quests.values()) {
