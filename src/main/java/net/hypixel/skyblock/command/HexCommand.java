@@ -9,6 +9,6 @@ public class HexCommand extends SCommand {
     @Override
     public void run(CommandSource sender, String[] args) {
         Player player = sender.getPlayer();
-        new HexGUI(player).open(player);//push? u tell pushhhhhh
+        new HexGUI(player).open(player);
     }
 }
