@@ -533,6 +533,18 @@ public class Repeater {
                     } else if (player.getWorld().getName().startsWith("f6") && player.getWorld().getPlayers().size() > 5) {
                         sidebar.add(ChatColor.RED + "Cannot display more than 5 players at once!");
                     }
+                    QuestLine line = user.getQuestLine();
+                    if (line != null) {
+                        sidebar.add(" ");
+                        BossBar bar = new BossBar(ChatColor.WHITE + "Objective: " + ChatColor.YELLOW + line.getDisplay() + " " + line.getObjective(user).getSuffix(user));
+                        bar.addPlayer(player);
+                        sidebar.add(ChatColor.WHITE + "Objective");
+                        sidebar.add(ChatColor.YELLOW + line.getObjective(user).getDisplay());
+                        if (line.getObjective(user).hasSuffix(user)) {
+                            sidebar.add(line.getObjective(user).getSuffix(user));
+                        }
+                        sidebar.add("      ");
+                    }
                     sidebar.add(ChatColor.AQUA + "     ");
                 }
                 if (player.getWorld().getName().contains("arena") && SkyBlock.getPlugin().dimoon == null && SkyBlock.getPlugin().sq != null) {

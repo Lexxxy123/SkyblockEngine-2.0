@@ -28,6 +28,7 @@ public class ItemBrowserGUI extends GUI {
         pagedMaterials.removeIf(mat -> mat.name().toLowerCase().contains("gunga"));
         pagedMaterials.removeIf(mat -> mat.name().toLowerCase().contains("menu"));
         pagedMaterials.removeIf(mat -> mat.name().toLowerCase().contains("quiver"));
+        pagedMaterials.removeIf(mat -> mat.name().toLowerCase().contains("exterminator"));
         pagedMaterials.removeIf(mat -> Item.getById(mat.getCraftMaterial().getId()) == null);
         if (!query.isEmpty()) {
             pagedMaterials.removeIf(material -> !material.name().toLowerCase().contains(query.replaceAll(" ", "_").toLowerCase()));

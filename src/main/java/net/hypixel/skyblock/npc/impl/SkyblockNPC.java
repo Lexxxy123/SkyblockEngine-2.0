@@ -208,7 +208,11 @@ public class SkyblockNPC {
 
         SUtil.delay(() -> {
             ALREADY_TALKING.remove(player.getUniqueId());
-            User.getUser(player.getUniqueId()).addTalkedNPC(name);
+            if(Objects.equals(name, "jerry")){
+                return;
+            }else {
+                User.getUser(player.getUniqueId()).addTalkedNPC(name);
+            }
             future.complete(null);
         }, messages.length * 20L);
 

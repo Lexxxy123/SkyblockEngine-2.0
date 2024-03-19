@@ -3,6 +3,7 @@ package net.hypixel.skyblock.npc.hub;
 import net.hypixel.skyblock.gui.GUIType;
 import net.hypixel.skyblock.npc.impl.NPCParameters;
 import net.hypixel.skyblock.npc.impl.SkyblockNPC;
+import net.hypixel.skyblock.npc.impl.enums.NPCType;
 import org.bukkit.entity.Player;
 
 public class NPCMaddox extends SkyblockNPC {
@@ -19,6 +20,11 @@ public class NPCMaddox extends SkyblockNPC {
                        "&5Maddox the slayer",
                         CLICK
                 };
+            }
+
+            @Override
+            public NPCType type() {
+                return NPCType.PLAYER;
             }
 
             @Override

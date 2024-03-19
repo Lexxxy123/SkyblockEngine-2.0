@@ -1,32 +1,40 @@
-package net.hypixel.skyblock.npc.hub.merchants;
+package net.hypixel.skyblock.npc.hub;
 
-import net.hypixel.skyblock.features.merchant.LibrarianMerchantGUI;
+import net.hypixel.skyblock.gui.GUIType;
 import net.hypixel.skyblock.npc.impl.NPCParameters;
+import net.hypixel.skyblock.npc.impl.NPCSkin;
 import net.hypixel.skyblock.npc.impl.SkyblockNPC;
 import net.hypixel.skyblock.npc.impl.enums.NPCType;
 import org.bukkit.entity.Player;
 
-public class LibrarianMerchant extends SkyblockNPC {
-    public LibrarianMerchant() {
+public class NPCJerry extends SkyblockNPC {
+    public NPCJerry() {
         super(new NPCParameters() {
-
             @Override
             public String name() {
-                return "Librarian";
-            }
-
-            @Override
-            public String[] messages() {
-                return new String[]{
-                        ""
-                };
+                return "jerry";
             }
 
             @Override
             public String[] holograms() {
                 return new String[]{
-                        "&fLibrarian",
-                        "&e&lCLICK",
+                        "&fSandbox Jerry",
+                        CLICK
+                };
+            }
+
+            @Override
+            public String[] messages() {
+                return new String[]{
+                        "Welcome to Godspunky Skyblock Sandbox!",
+                        "The Skyblock universe is full of islands to explore and resources to discover!",
+                        "I will help you start your journey in sandbox.",
+                        "Use /ib or free items npc to get starter goods.",
+                        "Use the /hex to upgrade your item at its peak.",
+                        "Complete Flor 6 Boss Room.",
+                        "Complete All Slayer Bosses.",
+                        "New Updates Coming Soon in future!"
+
                 };
             }
 
@@ -42,28 +50,22 @@ public class LibrarianMerchant extends SkyblockNPC {
 
             @Override
             public double x() {
-                return -35;
+                return -2;
             }
 
             @Override
             public double y() {
-                return 69;
+                return 70;
             }
 
             @Override
             public double z() {
-                return -112;
-            }
-
-            @Override
-            public boolean looking() {
-                return true;
+                return -79;
             }
 
             @Override
             public void onInteract(Player player, SkyblockNPC npc) {
-                LibrarianMerchantGUI gui = new LibrarianMerchantGUI();
-                gui.open(player);
+
             }
         });
     }

@@ -236,7 +236,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
             if (dimoonEnabled) {
                 initDimoon();
             }
-            startPopulators();
+            //startPopulators();
             this.getCommand("setrank").setExecutor(new SetRankCommand());
 
             long end = System.currentTimeMillis();

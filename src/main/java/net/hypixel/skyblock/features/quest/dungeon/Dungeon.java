@@ -23,7 +23,7 @@ public class Dungeon extends QuestLine {
     @Override
     protected List<String> getRewards() {
         return Arrays.asList(
-                ChatColor.DARK_GRAY + "+" + ChatColor.GOLD + "100 Bits",
+                ChatColor.DARK_GRAY + "+" + ChatColor.GOLD + "1000 coins",
                 ChatColor.DARK_GRAY + "+" + ChatColor.DARK_AQUA + "15 Combat Exp",
                 ChatColor.GOLD + "" + ChatColor.BOLD + "UNLOCKED" + ChatColor.RESET + " " + ChatColor.RED + "Diamond Sadan Trophy",
                 ChatColor.GOLD + "" + ChatColor.BOLD + "UNLOCKED" + ChatColor.RESET + " " + ChatColor.LIGHT_PURPLE + "Golden Sadan Trophy",
@@ -32,7 +32,7 @@ public class Dungeon extends QuestLine {
     }
 
     protected void reward(User player) {
-        player.addBits(100);
+        player.addCoins(1000);
         Skill.reward(CombatSkill.INSTANCE, 15, player.toBukkitPlayer());
     }
 }
