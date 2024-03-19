@@ -14,7 +14,7 @@ public class AuctionAgentNPC3 extends SkyblockNPC {
 
             @Override
             public String name() {
-                return "Auction Agent";
+                return "Auction Agent3";
             }
 
             @Override

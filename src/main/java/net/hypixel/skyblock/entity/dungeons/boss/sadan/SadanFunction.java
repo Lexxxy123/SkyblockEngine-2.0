@@ -265,11 +265,11 @@ public class SadanFunction {
         if (w.getName().contains("f6") && Repeater.FloorLivingSec.containsKey(w.getUID())) {
             if (finishornot) {
                 final int bitsReward = Math.round((float) ((600 - Math.min(600, Repeater.FloorLivingSec.get(w.getUID()))) * 150 / 255));
-                String rew = "&b+" + SUtil.commaify(bitsReward) + " Bits &7(Completion Reward)";
+                String rew = "&6+" + SUtil.commaify(bitsReward) + " Coins &7(Completion Reward)";
                 if (bitsReward <= 0) {
                     rew = "&cYou have no rewards!";
                 } else {
-                    w.getPlayers().forEach(p -> User.getUser(p.getUniqueId()).addBits(bitsReward));
+                    w.getPlayers().forEach(p -> User.getUser(p.getUniqueId()).addCoins(bitsReward));
                 }
                 SUtil.broadcastWorld(Sputnik.trans("&a▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"), w);
                 SUtil.broadcastWorld(Sputnik.trans("        &cThe Catacombs Demo &8- &eFloor VI"), w);
@@ -294,9 +294,6 @@ public class SadanFunction {
 
     public static void endRoom2(final World w) {
         if (w.getName().contains("f6")) {
-            SUtil.broadcastWorld(Sputnik.trans("&e"), w);
-            SUtil.broadcastWorld(Sputnik.trans("&aThis demo floor currently in development so you can't respawn or get reward yet, sorry! We will update later on, leave rating of this boss on #server-rating, thank you."), w);
-            SUtil.broadcastWorld(Sputnik.trans("&e"), w);
             SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c5s"), w), 200L);
             SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c4s"), w), 220L);
             SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c3s"), w), 240L);

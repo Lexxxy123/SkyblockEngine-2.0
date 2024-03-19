@@ -4,6 +4,7 @@ import net.hypixel.skyblock.gui.GUIType;
 import net.hypixel.skyblock.npc.impl.NPCParameters;
 import net.hypixel.skyblock.npc.impl.NPCSkin;
 import net.hypixel.skyblock.npc.impl.SkyblockNPC;
+import net.hypixel.skyblock.npc.impl.enums.NPCType;
 import org.bukkit.entity.Player;
 
 public class NPCFreeItems extends SkyblockNPC {
@@ -20,6 +21,11 @@ public class NPCFreeItems extends SkyblockNPC {
                         "&fFree Items",
                         CLICK
                 };
+            }
+
+            @Override
+            public NPCType type() {
+                return NPCType.PLAYER;
             }
 
             @Override

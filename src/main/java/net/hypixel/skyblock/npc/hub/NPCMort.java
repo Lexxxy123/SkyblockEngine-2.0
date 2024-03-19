@@ -4,6 +4,7 @@ import net.hypixel.skyblock.gui.GUIType;
 import net.hypixel.skyblock.npc.impl.NPCParameters;
 import net.hypixel.skyblock.npc.impl.NPCSkin;
 import net.hypixel.skyblock.npc.impl.SkyblockNPC;
+import net.hypixel.skyblock.npc.impl.enums.NPCType;
 import org.bukkit.entity.Player;
 
 public class NPCMort extends SkyblockNPC {
@@ -46,6 +47,11 @@ public class NPCMort extends SkyblockNPC {
             @Override
             public double z() {
                 return 9;
+            }
+
+            @Override
+            public NPCType type() {
+                return NPCType.PLAYER;
             }
 
             @Override

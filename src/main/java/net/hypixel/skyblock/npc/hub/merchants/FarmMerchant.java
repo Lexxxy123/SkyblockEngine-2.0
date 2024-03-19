@@ -2,6 +2,7 @@ package net.hypixel.skyblock.npc.hub.merchants;
 
 import net.hypixel.skyblock.features.merchant.FarmMerchantGUI;
 import net.hypixel.skyblock.npc.impl.NPCSkin;
+import net.hypixel.skyblock.npc.impl.enums.NPCType;
 import org.bukkit.entity.Player;
 import net.hypixel.skyblock.npc.impl.NPCParameters;
 import net.hypixel.skyblock.npc.impl.SkyblockNPC;
@@ -68,6 +69,11 @@ public class FarmMerchant extends SkyblockNPC {
             @Override
             public float pitch() {
                 return 0.0f;
+            }
+
+            @Override
+            public NPCType type() {
+                return NPCType.PLAYER;
             }
 
             @Override
