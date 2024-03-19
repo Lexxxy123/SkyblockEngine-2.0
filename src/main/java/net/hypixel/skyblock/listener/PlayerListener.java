@@ -8,6 +8,7 @@ import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.api.hologram.Hologram;
 import net.hypixel.skyblock.api.hologram.HologramManager;
 import net.hypixel.skyblock.command.RebootServerCommand;
+import net.hypixel.skyblock.entity.hologram.EntityHologram;
 import net.hypixel.skyblock.event.SkyblockPlayerNPCClickEvent;
 import net.hypixel.skyblock.features.dungeons.blessing.BlessingChest;
 import net.hypixel.skyblock.features.dungeons.blessing.Blessings;
@@ -1567,11 +1568,14 @@ public class PlayerListener extends PListener {
                         skyblockNPC.hideFrom(player);
                     }
                 }
-                for (Hologram hologram : HologramManager.getHolograms()){
-                    if (!hologram.isShown(player) && hologram.inRangeOf(player)){
-                        hologram.show(player);
-                    }else if (hologram.isShown(player) && !hologram.inRangeOf(player)){
-                        hologram.hide(player);
+
+                for (EntityHologram entityHologram : EntityHologram.getENTITY_HOLOGRAMS()){
+                    for (Hologram hologram : entityHologram.getHolograms()){
+                        if (!hologram.isShown(player) && entityHologram.inRangeOf(player)){
+                            hologram.show(player);
+                        } else if (hologram.isShown(player) && !entityHologram.inRangeOf(player)) {
+                            hologram.hide(player);
+                        }
                     }
                 }
         }
