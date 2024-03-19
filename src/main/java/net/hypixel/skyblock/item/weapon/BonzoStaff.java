@@ -156,9 +156,7 @@ public class BonzoStaff implements ToolStatistics, MaterialFunction, Ability {
                 if (stand.getNearbyEntities(0.7, 1.0, 0.7).contains(player1) && locof.getBlock().getType() != Material.AIR) {
                     final Vector vec = player1.getLocation().getDirection().normalize().multiply(2.5);
                     vec.setY(0.8);
-                    if (Sputnik.tpAbilUsable(player1)) {
-                        player1.setVelocity(vec);
-                    }
+                    player1.setVelocity(vec);
                 }
                 if (BonzoStaff.this.ACT == "false") {
                     return;

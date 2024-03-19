@@ -14,10 +14,6 @@ import net.hypixel.skyblock.features.auction.AuctionItem;
 import net.hypixel.skyblock.features.calendar.SkyBlockCalendar;
 import net.hypixel.skyblock.command.*;
 import net.hypixel.skyblock.config.Config;
-import net.hypixel.skyblock.entity.dimoon.*;
-import net.hypixel.skyblock.entity.dimoon.listeners.BlockListener;
-import net.hypixel.skyblock.entity.dimoon.listeners.EntityListener;
-import net.hypixel.skyblock.entity.dimoon.listeners.PlayerListener;
 import net.hypixel.skyblock.features.enchantment.EnchantmentType;
 import net.hypixel.skyblock.entity.EntityPopulator;
 import net.hypixel.skyblock.entity.EntitySpawner;
@@ -89,9 +85,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
 
     public static final String[] DEVELOPERS = {"Hamza" , "EpicPortal" , "Dumbo"};
 
-    public Arena arena;
-    public Dimoon dimoon;
-    public SummoningSequence sq;
+
     public boolean altarCooldown;
 
     public static EffectManager effectManager;
@@ -127,9 +121,6 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
 
     public SkyBlock() {
         this.packetInj = new PacketHelper();
-        this.arena = null;
-        this.dimoon = null;
-        this.sq = null;
         this.altarCooldown = false;
         this.serverName = "dev";
         this.bannedUUID = Collections.singletonList("");
@@ -233,9 +224,6 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
             sendMessage("&aContinued by GodSpunky (C) 2024");
             sendMessage("&aAny illegal usage will be suppressed! DO NOT LEAK IT!");
             sendMessage("&a===================================");
-            if (dimoonEnabled) {
-                initDimoon();
-            }
             //startPopulators();
             this.getCommand("setrank").setExecutor(new SetRankCommand());
 
@@ -257,37 +245,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
     }
 
 
-    private void initDimoon(){
-        this.sq = new SummoningSequence(Bukkit.getWorld("arena"));
-        Bukkit.getWorld("arena").setAutoSave(false);
-        this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
-        this.getServer().getPluginManager().registerEvents(new EntityListener(), this);
-        this.getServer().getPluginManager().registerEvents(new BlockListener(), this);
-        final File file = new File(this.getDataFolder(), "parkours");
-        if (!file.exists()) {
-            try {
-                Files.createParentDirs(file);
-                file.mkdir();
-            } catch (final IOException e3) {
-                throw new RuntimeException(e3);
-            }
-        }
-        final SItem gtigerm = SItem.of(SMaterial.HIDDEN_GOLDEN_TIGER_2022);
-        gtigerm.setRarity(Rarity.MYTHIC);
-        final SItem lucki8 = SItem.of(SMaterial.ENCHANTED_BOOK);
-        lucki8.addEnchantment(EnchantmentType.LUCKINESS, 8);
-        final SItem vicious15 = SItem.of(SMaterial.ENCHANTED_BOOK);
-        vicious15.addEnchantment(EnchantmentType.VICIOUS, 15);
-        final SItem chimera6 = SItem.of(SMaterial.ENCHANTED_BOOK);
-        chimera6.addEnchantment(EnchantmentType.CHIMERA, 6);
-        final SItem tbits = SItem.of(SMaterial.ENCHANTED_BOOK);
-        tbits.addEnchantment(EnchantmentType.TURBO_GEM, 1);
-        DimoonLootTable.highQualitylootTable = new ArrayList<>(Arrays.asList(new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOONIZARY_DAGGER), 400, 1100), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_EXCRARION), 310, 1000), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_HELMET), 290, 700), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_CHESTPLATE), 340, 900), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_LEGGINGS), 330, 800), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GIGACHAD_BOOTS), 220, 500), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_QUANTUMFLUX_POWER_ORB), 310, 900), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_ARCHIVY), 370, 1000), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_MAGICIVY), 370, 1000), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_GOLDEN_TIGER_2022), 320, 900), new DimoonLootItem(gtigerm, 300, 1000), new DimoonLootItem(lucki8, 170, 700), new DimoonLootItem(vicious15, 100, 600), new DimoonLootItem(chimera6, 260, 700), new DimoonLootItem(tbits, 210, 700)));
-        final SItem lucki9 = SItem.of(SMaterial.ENCHANTED_BOOK);
-        lucki9.addEnchantment(EnchantmentType.LUCKINESS, 6);
-        DimoonLootTable.lowQualitylootTable = new ArrayList<>(Arrays.asList(new DimoonLootItem(lucki9, 20, 150), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOON_GEM), 20, 100), new DimoonLootItem(SItem.of(SMaterial.HIDDEN_DIMOON_FRAG), 1, 1, 0, true)));
-        Arena.cleanArena();
-    }
+
 
 
     public void onDisable() {

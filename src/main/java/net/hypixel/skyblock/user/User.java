@@ -9,7 +9,6 @@ import net.hypixel.skyblock.features.auction.AuctionItem;
 import net.hypixel.skyblock.features.collection.ItemCollection;
 import net.hypixel.skyblock.features.collection.ItemCollectionReward;
 import net.hypixel.skyblock.features.collection.ItemCollectionRewards;
-import net.hypixel.skyblock.entity.dimoon.Dimoon;
 import net.hypixel.skyblock.features.dungeons.stats.ItemSerial;
 import net.hypixel.skyblock.features.enchantment.Enchantment;
 import net.hypixel.skyblock.features.enchantment.EnchantmentType;
@@ -1103,14 +1102,7 @@ public class User {
         player.sendMessage(Sputnik.trans(message));
     }
 
-    public static void dmgDimon(final LivingEntity entity, final Player damager) {
-        final int bonusDamage = 0;
-        if (damager != null && entity.hasMetadata("Dimoon") && SkyBlock.getPlugin().dimoon != null) {
-            final Dimoon dimoon = SkyBlock.getPlugin().dimoon;
-            final int damage = 1 + dimoon.getParkoursCompleted() + bonusDamage;
-            dimoon.damage(damage, damager.getName());
-        }
-    }
+
 
     public void damageEntity(final Damageable entity1, final double damageBase) {
         if (entity1.isDead()) {
@@ -1118,7 +1110,6 @@ public class User {
         }
         final Player player = Bukkit.getPlayer(this.uuid);
         double damage = damageBase;
-        dmgDimon((LivingEntity) entity1, player);
         if (VoidgloomSeraph.HIT_SHIELD.containsKey(entity1)) {
             VoidgloomSeraph.HIT_SHIELD.put(entity1, VoidgloomSeraph.HIT_SHIELD.get(entity1) - 1);
             entity1.getWorld().playSound(entity1.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 2.0f);

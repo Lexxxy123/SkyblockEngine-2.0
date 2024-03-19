@@ -1,6 +1,5 @@
 package net.hypixel.skyblock.entity;
 
-import net.hypixel.skyblock.entity.dimoon.Dimoonizae;
 import net.hypixel.skyblock.entity.caverns.*;
 import net.hypixel.skyblock.entity.den.*;
 import net.hypixel.skyblock.entity.dragon.type.*;
@@ -54,7 +53,6 @@ public enum SEntityType {
     WATCHER_BONZO(EntityType.ZOMBIE, WatcherBonzo.class),
     GOBLIN_DIMOON(EntityType.ZOMBIE, Goblinzine.class),
     DGOBLIN_DIMOON(EntityType.ZOMBIE, DiamondGoblinzine.class),
-    DIMOON_MINIBOSS(EntityType.ZOMBIE, Dimoonizae.class),
     LOST_ADV_SUP(EntityType.ZOMBIE, SuperiorLostAdv.class),
     LOST_ADV_YOUNG(EntityType.ZOMBIE, YoungLostAdv.class),
     LOST_ADV_UNSTABLE(EntityType.ZOMBIE, Unstable.class),

@@ -5,7 +5,6 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import net.hypixel.skyblock.features.calendar.SkyBlockCalendar;
 import net.hypixel.skyblock.command.RebootServerCommand;
-import net.hypixel.skyblock.entity.dimoon.SummoningSequence;
 import net.hypixel.skyblock.features.dungeons.blessing.Blessings;
 import net.hypixel.skyblock.features.enchantment.Enchantment;
 import net.hypixel.skyblock.features.enchantment.EnchantmentType;
@@ -542,41 +541,14 @@ public class Repeater {
                         sidebar.add("      ");
                     }
                     sidebar.add(ChatColor.AQUA + "     ");
-                }
-                if (player.getWorld().getName().contains("arena") && SkyBlock.getPlugin().dimoon == null && SkyBlock.getPlugin().sq != null) {
-                    final SummoningSequence sq = SkyBlock.getPlugin().sq;
-                    sidebar.add(Sputnik.trans("&l"));
-                    sidebar.add(Sputnik.trans("&aCatalysts &fPlaced &7(&e" + sq.catalystInTheAltar() + "&7/&a8&7)"));
-                    sidebar.add(Sputnik.trans("&6Crystal &fStatus " + (sq.isAcD() ? "&b✬" : "&7✬") + (sq.isAcR() ? "&c✬" : "&7✬") + (sq.isAcG() ? "&e✬" : "&7✬") + (sq.isAcE() ? "&a✬" : "&7✬")));
-                    if (sq.isBossSpawning()) {
-                        sidebar.add(Sputnik.trans("&d"));
-                        sidebar.add(Sputnik.trans("&cThe Boss is Spawning..."));
-                    }
-                    sidebar.add(Sputnik.trans("&c"));
-                }
-                if (player.getWorld().getName().equalsIgnoreCase("arena") && SkyBlock.getPlugin().dimoon != null) {
-                    final Set<Integer> damageSet = ((HashMultimap) Multimaps.invertFrom((Multimap) SkyBlock.getPlugin().dimoon.getDamages(), (Multimap) HashMultimap.create())).get(player.getName());
-                    final int damageDealt = damageSet.iterator().hasNext() ? damageSet.iterator().next() : 0;
-                    sidebar.add(Sputnik.trans("&b"));
-                    sidebar.add(Sputnik.trans("Dimoon Boss HP: &a" + SUtil.commaify(SkyBlock.getPlugin().dimoon.getHealth()) + " &c❤"));
-                    sidebar.add(Sputnik.trans("Boss Stunned: " + (SkyBlock.getPlugin().dimoon.stunned ? "&a&lYES" : "&c&lNO")));
-                    sidebar.add(Sputnik.trans("Parkours Completed: &e" + SkyBlock.getPlugin().dimoon.getParkoursCompleted()));
-                    sidebar.add(Sputnik.trans("&c&l"));
-                    sidebar.add(Sputnik.trans("Your Status: " + (user.isInDanger() ? "&c&lDANGER!" : "&a&lSAFE")));
-                    sidebar.add(Sputnik.trans("Your Damage: &c" + SUtil.commaify(damageDealt)));
-                    sidebar.add(Sputnik.trans("&a"));
-                }
-             else {
-                    sidebar.add(ChatColor.YELLOW + "play.godspunky.in");
-                }
 
+                }
+                sidebar.add(ChatColor.YELLOW + "play.godspunky.in");
 
 
             if (!player.getWorld().getName().equalsIgnoreCase("dungeon")) {
                 sidebar.apply(player);
             }
-
-
            });
         });
     }

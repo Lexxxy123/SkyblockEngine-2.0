@@ -780,9 +780,6 @@ public class SItem implements Cloneable, ConfigurationSerializable {
     }
 
     public static void etherWarpTeleportation(Player player, SItem sitem) {
-        if (!Sputnik.tpAbilUsable(player)) {
-            return;
-        }
         boolean haveBlockInRange = false;
         try {
             for (int range = 1; 57 > range; ++range) {

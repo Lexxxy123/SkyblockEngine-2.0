@@ -1,5 +1,6 @@
 package net.hypixel.skyblock.entity;
 
+import lombok.Getter;
 import net.hypixel.skyblock.features.region.Region;
 import net.hypixel.skyblock.features.region.RegionType;
 import org.bukkit.Location;
@@ -20,6 +21,7 @@ public class EntityPopulator {
     private final long delay;
     private final SEntityType type;
     private final Predicate<World> condition;
+    @Getter
     private final RegionType regionType;
     private BukkitTask task;
     private final List<SEntity> spawned;
@@ -106,10 +108,6 @@ public class EntityPopulator {
         for (final EntityPopulator populator : EntityPopulator.POPULATORS) {
             populator.stop();
         }
-    }
-
-    public RegionType getRegionType() {
-        return this.regionType;
     }
 
     static {

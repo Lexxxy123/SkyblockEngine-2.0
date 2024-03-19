@@ -1468,14 +1468,10 @@ public class Sputnik {
     }
 
     public static boolean tpAbilUsable(final Player p) {
-        return !p.getWorld().getName().contains("arena") || SkyBlock.getPlugin().dimoon == null || SkyBlock.getPlugin().dimoon.stunned;
+        return !p.getWorld().getName().equals("arena");
     }
 
     public static void teleport(final Player p, final Location loc) {
-        if (!tpAbilUsable(p)) {
-            p.sendMessage(trans("&cA Magicial Force have stopped you from using this teleport ability!"));
-            return;
-        }
         p.teleport(loc);
     }
 
@@ -1486,7 +1482,7 @@ public class Sputnik {
         esp.setVolume((byte) 100);
         esp.setLoop(loop);
         esp.setTargetLocation(loc);
-        loc.getWorld().getPlayers().forEach(pl -> esp.addPlayer(pl));
+        loc.getWorld().getPlayers().forEach(esp::addPlayer);
         esp.setPlaying(true);
         new BukkitRunnable() {
             public void run() {
