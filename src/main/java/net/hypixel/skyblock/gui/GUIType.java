@@ -14,6 +14,8 @@ public enum GUIType {
     REFORGE_ANVIL(ReforgeAnvilGUI.class),
     DUNGEON_CRAFTING(DungeonsItemConverting.class),
     DUNGEON_SKILL(DungeonsLevelGUI.class),
+
+    BOOSTER_COOKIE_SHOP(BoosterCookieShop.class),
     BANKER(BankerGUI.class),
     BANKER_DEPOSIT(DepositGUI.class),
     BANKER_WITHDRAWAL(WithdrawalGUI.class),
