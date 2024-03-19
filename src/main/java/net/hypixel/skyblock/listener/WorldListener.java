@@ -244,7 +244,7 @@ public class WorldListener extends PListener {
         e.setCancelled(true);
     }
 
-    /*@EventHandler
+    @EventHandler
     public void onPortalEnter(final EntityPortalEnterEvent e) {
         final Material portalType = e.getLocation().getBlock().getType();
         final Entity entity = e.getEntity();
@@ -270,7 +270,7 @@ public class WorldListener extends PListener {
             entity.sendMessage(ChatColor.GRAY + "Sending you to your island...");
             SkyblockIsland.getIsland(entity.getUniqueId()).send();
         }
-    }*/
+    }
 
     @EventHandler
     public void onPortal(final PlayerPortalEvent e) {

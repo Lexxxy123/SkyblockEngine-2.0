@@ -49,7 +49,7 @@ public class NPCCommunityShop extends SkyblockNPC {
 
             @Override
             public void onInteract(Player player, SkyblockNPC npc) {
-                GUIType.REFORGE_ANVIL.getGUI().open(player);
+                GUIType.BOOSTER_COOKIE_SHOP.getGUI().open(player);
             }
         });
     }
