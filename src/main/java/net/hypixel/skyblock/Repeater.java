@@ -182,13 +182,7 @@ public class Repeater {
                 }
             }
         }.runTaskTimer(SkyBlock.getPlugin(), 0L, 20L));
-        this.tasks.add(new BukkitRunnable() {
-            public void run() {
-                for (final Player p : Bukkit.getOnlinePlayers()) {
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 1000000, 255));
-                }
-            }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L));
+
     }
 
     public void stop() {
@@ -468,8 +462,10 @@ public class Repeater {
                     final SlayerQuest quest = user.getSlayerQuest();
                     QuestLine line = user.getQuestLine();
                     if ((!StaticDragonManager.ACTIVE || StaticDragonManager.DRAGON == null || !player.getWorld().getName().equalsIgnoreCase("dragon")) && quest == null && line != null) {
-                        BossBar bar = new BossBar(ChatColor.WHITE + "Objective: " + ChatColor.YELLOW + line.getDisplay() + " " + line.getObjective(user).getSuffix(user));
-                        bar.addPlayer(player);
+                        SUtil.runAsync(()->{
+                            BossBar bar = new BossBar(ChatColor.WHITE + "Objective: " + ChatColor.YELLOW + line.getDisplay() + " " + line.getObjective(user).getSuffix(user));
+                            bar.addPlayer(player);
+                        });
                         sidebar.add(ChatColor.WHITE + "Objective");
                         sidebar.add(ChatColor.YELLOW + line.getObjective(user).getDisplay());
                         if(line.getObjective(user).hasSuffix(user)){

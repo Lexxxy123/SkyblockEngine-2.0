@@ -114,7 +114,6 @@ public class PlayerListener extends PListener {
             PlayerUtils.AUTO_SLAYER.remove(player.getUniqueId());
             PetsGUI.PET_SHOWN.remove(player.getUniqueId());
             User.getHash().remove(player.getUniqueId());
-            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 1000000, 255));
             PrecursorEye.PrecursorLaser.put(player.getUniqueId(), false);
             final User user = User.getUser(player.getUniqueId());
             if (!PlayerUtils.STATISTICS_CACHE.containsKey(player.getUniqueId())) {
