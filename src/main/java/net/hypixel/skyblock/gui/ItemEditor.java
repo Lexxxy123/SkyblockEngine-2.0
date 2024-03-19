@@ -55,6 +55,7 @@ public class ItemEditor extends GUI{
             @Override
             public void run(InventoryClickEvent e) {
                 //GUIType.ENCHANT.getGUI().open(player);
+                player.sendMessage(ChatColor.RED + "/enc <enchant type> <level>");
             }
 
             @Override
@@ -68,40 +69,6 @@ public class ItemEditor extends GUI{
             }
         });
 
-        this.set(new GUIClickableItem() {
-            @Override
-            public void run(InventoryClickEvent e) {
-                editableItem.addStar(1);
-
-            }
-
-            @Override
-            public int getSlot() {
-                return 21;
-            }
-
-            @Override
-            public ItemStack getItem() {
-                return SUtil.getSkullURLStack(ChatColor.RED+"Add Star", "8216ee40593c0981ed28f5bd674879781c425ce0841b687481c4f7118bb5c3b1", 1, ChatColor.GRAY+"Add or remove stars", ChatColor.GRAY+"from your items.");
-            }
-        });
-
-        this.set(new GUIClickableItem() {
-            @Override
-            public void run(InventoryClickEvent e) {
-                GUIType.DUNGEON_CRAFTING.getGUI().open(player);
-            }
-
-            @Override
-            public int getSlot() {
-                return 23;
-            }
-
-            @Override
-            public ItemStack getItem() {
-                return SUtil.getSkullURLStack(ChatColor.GOLD+"Convert to Dungeon Item", "5a6314eac34416ce10ab22c2e1c4dcb472a3feb98d4e04d3fbbb85a9a471b18", 1, ChatColor.GRAY+"Convert your items ", ChatColor.GRAY+"to dungeon items.");
-            }
-        });
 
         this.set(new GUIClickableItem() {
             @Override
@@ -157,22 +124,6 @@ public class ItemEditor extends GUI{
             }
         });
 
-        this.set(new GUIClickableItem() {
-            @Override
-            public void run(InventoryClickEvent e) {
-                player.sendMessage(ChatColor.RED + "not yet");
-            }
-
-            @Override
-            public int getSlot() {
-                return 16;
-            }
-
-            @Override
-            public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.DARK_AQUA+"Edit stats", Material.DIAMOND_SWORD, (short) 0,1, ChatColor.GRAY+"Edit stats of your items.");
-            }
-        });
 
 
     }

@@ -209,17 +209,12 @@ public class TradeGUI extends GUI {
                     final double cur = User.getUser(TradeGUI.player1.get(TradeGUI.this.tradeUUID).getUniqueId()).getBits();
                     if (add <= 0L) {
                         TradeGUI.player1.get(TradeGUI.this.tradeUUID).playSound(TradeGUI.player1.get(TradeGUI.this.tradeUUID).getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
-                        player.sendMessage(ChatColor.RED + "Couldn't validate this Bits amount!");
+                        player.sendMessage(ChatColor.RED + "Couldn't validate this Coins amount!");
                         return new TradeGUI(TradeGUI.this.tradeUUID);
                     }
                     if (add > cur) {
                         TradeGUI.player1.get(TradeGUI.this.tradeUUID).playSound(TradeGUI.player1.get(TradeGUI.this.tradeUUID).getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
-                        player.sendMessage(ChatColor.RED + "You don't have that much Bits for this.");
-                        return new TradeGUI(TradeGUI.this.tradeUUID);
-                    }
-                    if (add > 640000L) {
-                        TradeGUI.player1.get(TradeGUI.this.tradeUUID).playSound(TradeGUI.player1.get(TradeGUI.this.tradeUUID).getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
-                        player.sendMessage(ChatColor.RED + "You cannot transfer more than 640,000 Bits at once!");
+                        player.sendMessage(ChatColor.RED + "You don't have that much Coins for this.");
                         return new TradeGUI(TradeGUI.this.tradeUUID);
                     }
                     if (TradeGUI.itemOfferP1.get(TradeGUI.this.tradeUUID).size() < 16) {
@@ -227,7 +222,7 @@ public class TradeGUI extends GUI {
                             TradeGUI.player1.get(TradeGUI.this.tradeUUID).playSound(TradeGUI.player1.get(TradeGUI.this.tradeUUID).getLocation(), Sound.VILLAGER_HAGGLE, 1.0f, 1.0f);
                             TradeGUI.player2.get(TradeGUI.this.tradeUUID).playSound(TradeGUI.player2.get(TradeGUI.this.tradeUUID).getLocation(), Sound.VILLAGER_HAGGLE, 1.0f, 1.0f);
                             final long stackamount = Math.min(64L, Math.max(10000L, add) / 10000L);
-                            ItemStack coinsStack = SUtil.getSkullURLStack(ChatColor.AQUA + Sputnik.formatFull((float) add) + " Bits", "7b951fed6a7b2cbc2036916dec7a46c4a56481564d14f945b6ebc03382766d3b", (int) stackamount, ChatColor.GRAY + "Lump-sum amount");
+                            ItemStack coinsStack = SUtil.getSkullURLStack(ChatColor.AQUA + Sputnik.formatFull((float) add) + " Coins", "7b951fed6a7b2cbc2036916dec7a46c4a56481564d14f945b6ebc03382766d3b", (int) stackamount, ChatColor.GRAY + "Lump-sum amount");
                             final net.minecraft.server.v1_8_R3.ItemStack tagStack = CraftItemStack.asNMSCopy(coinsStack);
                             final NBTTagCompound tagCompound = tagStack.hasTag() ? tagStack.getTag() : new NBTTagCompound();
                             tagCompound.set("data_bits", new NBTTagLong(add));
@@ -243,7 +238,7 @@ public class TradeGUI extends GUI {
                     }
                     return new TradeGUI(TradeGUI.this.tradeUUID);
                 } catch (final NumberFormatException ex) {
-                    player.sendMessage(ChatColor.RED + "Couldn't parse this Bits amount!");
+                    player.sendMessage(ChatColor.RED + "Couldn't parse this Coins amount!");
                     TradeGUI.player1.get(TradeGUI.this.tradeUUID).playSound(TradeGUI.player1.get(TradeGUI.this.tradeUUID).getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
                     return new TradeGUI(TradeGUI.this.tradeUUID);
                 }
@@ -261,7 +256,7 @@ public class TradeGUI extends GUI {
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getSkullURLStack(ChatColor.AQUA + "Bits transaction", "7b951fed6a7b2cbc2036916dec7a46c4a56481564d14f945b6ebc03382766d3b", 1, ChatColor.GRAY + " ", ChatColor.YELLOW + "Click to add bits!");
+                return SUtil.getSkullURLStack(ChatColor.AQUA + "Coins transaction", "7b951fed6a7b2cbc2036916dec7a46c4a56481564d14f945b6ebc03382766d3b", 1, ChatColor.GRAY + " ", ChatColor.YELLOW + "Click to add bits!");
             }
 
             @Override
@@ -317,7 +312,7 @@ public class TradeGUI extends GUI {
             if (!nmsStack.getTag().hasKey("data_bits")) {
                 Sputnik.smartGiveItem(stack, TradeGUI.player1.get(this.tradeUUID));
             } else {
-                User.getUser(TradeGUI.player1.get(tradeUUID).getUniqueId()).addBits(nmsStack.getTag().getLong("data_bits"));
+                User.getUser(TradeGUI.player1.get(tradeUUID).getUniqueId()).addCoins(nmsStack.getTag().getLong("data_bits"));
             }
             TradeMenu.tradeP1Countdown.put(this.tradeUUID, 3);
             TradeMenu.tradeP2Countdown.put(this.tradeUUID, 3);

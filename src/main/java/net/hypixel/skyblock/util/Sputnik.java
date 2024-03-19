@@ -1181,10 +1181,6 @@ public class Sputnik {
     }
 
     public static void tradeIntitize(final Player target, final Player p) {
-        if (SkyBlock.getPlugin() != null && !SkyBlock.getPlugin().config.getBoolean("enableTrade")) {
-            p.sendMessage(trans("&cTrading has been temporary disabled!"));
-            return;
-        }
         if (p == target) {
             p.sendMessage(trans("&cYou cannot trade with yourself!"));
             p.playSound(p.getLocation(), Sound.VILLAGER_NO, 1.0f, 1.0f);
