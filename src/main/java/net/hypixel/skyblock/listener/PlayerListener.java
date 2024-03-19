@@ -17,6 +17,7 @@ import net.hypixel.skyblock.features.enchantment.EnchantmentType;
 import net.hypixel.skyblock.entity.dungeons.watcher.Watcher;
 import net.hypixel.skyblock.entity.nms.VoidgloomSeraph;
 import net.hypixel.skyblock.api.beam.Beam;
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 import net.hypixel.skyblock.features.region.RegionType;
 import net.hypixel.skyblock.item.Ability;
 import net.hypixel.skyblock.item.SItem;
@@ -103,6 +104,7 @@ public class PlayerListener extends PListener {
     @EventHandler
     public void onPlayerJoin(final PlayerJoinEvent e) {
         final Player player = e.getPlayer();
+        e.setJoinMessage(null);
         this.getIsNotLoaded().put(player.getUniqueId(), true);
 
         SUtil.delay(() -> {
@@ -227,6 +229,59 @@ public class PlayerListener extends PListener {
             final Location l = new Location(Bukkit.getWorld("world"), -2.5, 70.0, -68.5, 180.0f, 0.0f);
             player.teleport(l);
         }, 1L);
+        player.sendMessage(Sputnik.trans("&eWelcome to &aGodspunky SkyBlock &eon the Sandbox Network!"));
+        player.sendMessage(Sputnik.trans("&cSANDBOX! &ePlease report bugs at https://discord.gg/godspunky"));
+        new BukkitRunnable() {
+            public void run() {
+                if (!player.isOnline()) {
+                    this.cancel();
+                    return;
+                }
+                User user = User.getUser(player.getUniqueId());
+                try {
+                    if (user != null) {
+                        PlayerRank rank = user.rank;
+                        player.setDisplayName(ChatColor.translateAlternateColorCodes('&', rank.getPrefix()) +" "+ player.getName());
+                        player.setPlayerListName(ChatColor.translateAlternateColorCodes('&', rank.getPrefix()) +" "+ player.getName());
+                    }
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
+
+                boolean hasActiveEffects = user.getEffects().size() > 0;
+                boolean hasActiveBuff = PlayerUtils.cookieBuffActive(player);
+                String cookieDuration = PlayerUtils.getCookieDurationDisplayGUI(player);
+
+                IChatBaseComponent header = new ChatComponentText(
+                        ChatColor.AQUA + "You are" + ChatColor.RESET + " " + ChatColor.AQUA + "playing on " + ChatColor.YELLOW + "" + ChatColor.BOLD + "MC.GODSPUNKY.IN\n");
+
+                IChatBaseComponent footer = new ChatComponentText(
+                        "\n" + ChatColor.GREEN + "" + ChatColor.BOLD + "Active Effects\n" + "" +
+                                (hasActiveEffects ? ChatColor.GRAY + "You have " + ChatColor.YELLOW + user.getEffects().size() + ChatColor.GRAY + " active effects. Use\n" + ChatColor.GRAY + "\"" + ChatColor.GOLD + "/effects" + ChatColor.GRAY + "\" to see them!\n" + "\n" : ChatColor.GRAY + "No effects active. Drink potions or splash\n" + ChatColor.GRAY + "them on the ground to buff yourself!\n\n") +
+                                ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Cookie Buff\n" + "" +
+                                (hasActiveBuff ?
+                                        ChatColor.WHITE + cookieDuration + "\n" :
+                                        ChatColor.GRAY + "Not active! Obtain booster cookies from the\n" + "community shop in the hub") + "\n" + "\n" +
+                                ChatColor.GREEN + "Ranks, Boosters, & MORE!" + ChatColor.RESET + " " + ChatColor.RED + "" + ChatColor.BOLD + "STORE.GODSPUNKY.IN");
+
+                PacketPlayOutPlayerListHeaderFooter packet = new PacketPlayOutPlayerListHeaderFooter();
+
+                try {
+                    Field headerField = packet.getClass().getDeclaredField("a");
+                    Field footerField = packet.getClass().getDeclaredField("b");
+                    headerField.setAccessible(true);
+                    footerField.setAccessible(true);
+                    headerField.set(packet, header);
+                    footerField.set(packet, footer);
+                    headerField.setAccessible(!headerField.isAccessible());
+                    footerField.setAccessible(!footerField.isAccessible());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+                ((CraftPlayer) user.toBukkitPlayer()).getHandle().playerConnection.sendPacket(packet);
+            }
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 20L);
 
 
        new PacketReader().injectPlayer(player);

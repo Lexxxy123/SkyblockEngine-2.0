@@ -10,7 +10,7 @@ import net.hypixel.skyblock.item.SMaterial;
 import net.hypixel.skyblock.util.SUtil;
 import net.hypixel.skyblock.util.Sputnik;
 
-@CommandParameters(description = "Adds an enchantment from Spec to the specified item.", aliases = "meb", permission = PlayerRank.DEFAULT)
+@CommandParameters(description = "Adds an enchantment from Spec to the specified item.", aliases = "enc", permission = PlayerRank.DEFAULT)
 public class MembersEnchantCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {
@@ -18,7 +18,7 @@ public class MembersEnchantCommand extends SCommand {
             throw new CommandArgumentException();
         }
         if (args.length == 0) {
-            this.send(ChatColor.RED + "Wrong usage of the command! Usage /meb <enchant type> <level>!");
+            this.send(ChatColor.RED + "Wrong usage of the command! Usage /enc <enchant type> <level>!");
             return;
         }
         if (sender instanceof ConsoleCommandSender) {
@@ -37,10 +37,6 @@ public class MembersEnchantCommand extends SCommand {
         final int i = Integer.parseInt(args[1]);
         if (i <= 0) {
             this.send(ChatColor.RED + "Are you serious? If you want to remove enchantments, use /rench");
-            return;
-        }
-        if (type == EnchantmentType.TURBO_GEM) {
-            this.send(ChatColor.RED + "This enchantment is not free! You need to DIMOON_SLAY_AND_CRAFT_MESSAGE_ACTION for this!");
             return;
         }
         if (type == EnchantmentType.LUCKINESS) {
