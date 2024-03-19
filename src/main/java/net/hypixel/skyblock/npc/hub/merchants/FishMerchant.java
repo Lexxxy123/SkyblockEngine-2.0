@@ -1,36 +1,32 @@
 package net.hypixel.skyblock.npc.hub.merchants;
 
-
-
-import net.hypixel.skyblock.features.merchant.AdventurerMerchantGUI;
+import net.hypixel.skyblock.features.merchant.FishMerchantGUI;
 import net.hypixel.skyblock.npc.impl.NPCParameters;
 import net.hypixel.skyblock.npc.impl.SkyblockNPC;
 import net.hypixel.skyblock.npc.impl.enums.NPCType;
 import org.bukkit.entity.Player;
 
-public class AdventurerMerchant extends SkyblockNPC {
-    public AdventurerMerchant() {
+public class FishMerchant extends SkyblockNPC {
+    public FishMerchant() {
         super(new NPCParameters() {
 
             @Override
             public String name() {
-                return "Adventurer";
+                return "FishMerchant";
             }
 
             @Override
             public String[] messages() {
                 return new String[]{
-                        "I've seen it all - every island from here to the edge of the world!",
-                        "Over the years I've acquired a variety of Talismans and Artifacts.",
-                        "For a price, you can have it all!",
-                        "Click me again to open the Adventurer Shop!"
+                        "Fishing is my trade. I buy and sell any fish, rod, or treasure you can find!",
+                        "Click me again to open the Fisherman Shop!"
                 };
             }
 
             @Override
             public String[] holograms() {
                 return new String[]{
-                        "&fAdventurer",
+                        "&fFisherman",
                         "&e&lCLICK",
                 };
             }
@@ -47,27 +43,17 @@ public class AdventurerMerchant extends SkyblockNPC {
 
             @Override
             public double x() {
-                return -41.0;
+                return 52;
             }
 
             @Override
             public double y() {
-                return 70.0;
+                return 68;
             }
 
             @Override
             public double z() {
-                return -64.0;
-            }
-
-            @Override
-            public float yaw() {
-                return 97.8751f;
-            }
-
-            @Override
-            public float pitch() {
-                return 0.0f;
+                return -82;
             }
 
             @Override
@@ -77,7 +63,7 @@ public class AdventurerMerchant extends SkyblockNPC {
 
             @Override
             public void onInteract(Player player, SkyblockNPC npc) {
-                AdventurerMerchantGUI gui = new AdventurerMerchantGUI();
+                FishMerchantGUI gui = new FishMerchantGUI();
                 gui.open(player);
             }
         });
