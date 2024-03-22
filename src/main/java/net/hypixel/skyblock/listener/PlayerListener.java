@@ -1,5 +1,9 @@
 package net.hypixel.skyblock.listener;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolManager;
+import com.comphenix.protocol.events.PacketAdapter;
+import com.comphenix.protocol.events.PacketEvent;
 import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
@@ -110,6 +114,7 @@ public class PlayerListener extends PListener {
 
         SUtil.delay(() -> {
 
+
             PlayerUtils.USER_SESSION_ID.put(player.getUniqueId(), UUID.randomUUID());
             PlayerUtils.COOKIE_DURATION_CACHE.remove(player.getUniqueId());
             PlayerUtils.AUTO_SLAYER.remove(player.getUniqueId());
@@ -117,6 +122,10 @@ public class PlayerListener extends PListener {
             User.getHash().remove(player.getUniqueId());
             PrecursorEye.PrecursorLaser.put(player.getUniqueId(), false);
             final User user = User.getUser(player.getUniqueId());
+            if(player.hasPotionEffect(PotionEffectType.SLOW_DIGGING)){
+                player.removePotionEffect(PotionEffectType.SLOW_DIGGING);
+
+            }
             if (!PlayerUtils.STATISTICS_CACHE.containsKey(player.getUniqueId())) {
                 PlayerUtils.STATISTICS_CACHE.put(player.getUniqueId(), PlayerUtils.getStatistics(player));
             }
@@ -304,6 +313,7 @@ public class PlayerListener extends PListener {
 
     @EventHandler
     public void onPlayerQuit(final PlayerQuitEvent e) {
+        e.setQuitMessage(null);
         final Player player = e.getPlayer();
         final User user = User.getUser(player.getUniqueId());
         final SlayerQuest quest = user.getSlayerQuest();

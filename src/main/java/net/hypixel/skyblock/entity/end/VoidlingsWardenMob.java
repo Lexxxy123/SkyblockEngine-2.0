@@ -2,8 +2,11 @@ package net.hypixel.skyblock.entity.end;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.entity.EntityDrop;
+import net.hypixel.skyblock.entity.EntityDropType;
 import net.hypixel.skyblock.entity.zombie.BaseZombie;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
+import net.hypixel.skyblock.features.enchantment.EnchantmentType;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
 import net.minecraft.server.v1_8_R3.EntityLiving;
@@ -590,5 +593,27 @@ public class VoidlingsWardenMob extends BaseZombie {
         if (entity.hasMetadata("owner") && Bukkit.getPlayer(UUID.fromString(entity.getMetadata("owner").get(0).asString())) != null) {
             PacketInvoker.dropEye(Bukkit.getPlayer(UUID.fromString(entity.getMetadata("owner").get(0).asString())), sEntity.getEntity().getLocation(), SUtil.random(1, 4));
         }
+    }
+
+    public List<EntityDrop> drops() {
+        List<EntityDrop> drops = new ArrayList<EntityDrop>();
+        int revFlesh = SUtil.random(50, 64);
+        drops.add(new EntityDrop(SUtil.setStackAmount(SItem.of(SMaterial.NULL_SPHERE).getStack(), revFlesh), EntityDropType.GUARANTEED, 1.0));
+            SItem endBook = SItem.of(SMaterial.ENCHANTED_BOOK);
+            endBook.addEnchantment(EnchantmentType.ENDER_SLAYER, 15);
+            drops.add(new EntityDrop(endBook.getStack(), EntityDropType.CRAZY_RARE, 0.002));
+            SItem legiBook = SItem.of(SMaterial.ENCHANTED_BOOK);
+            legiBook.addEnchantment(EnchantmentType.LEGION, SUtil.random(1, 2));
+            drops.add(new EntityDrop(legiBook.getStack(), EntityDropType.INSANE_RARE, 0.00125));
+            SItem fatalBook = SItem.of(SMaterial.ENCHANTED_BOOK);
+            fatalBook.addEnchantment(EnchantmentType.FATAL_TEMPO, 1);
+            drops.add(new EntityDrop(fatalBook.getStack(), EntityDropType.CRAZY_RARE, 4.0E-4));
+            drops.add(new EntityDrop(SMaterial.HIDDEN_DEMONS_PEARL, EntityDropType.INSANE_RARE, 2.2222222222222223E-4));
+            drops.add(new EntityDrop(SMaterial.HIDDEN_ETHERWARP_CONDUIT, EntityDropType.CRAZY_RARE, 0.002));
+            drops.add(new EntityDrop(SMaterial.JUDGEMENT_CORE, EntityDropType.CRAZY_RARE, 0.001));
+            drops.add(new EntityDrop(SMaterial.HIDDEN_GYRO_EYE, EntityDropType.CRAZY_RARE, 0.001));
+            drops.add(new EntityDrop(SMaterial.HIDDEN_VOIDLINGS_PET, EntityDropType.EXTRAORDINARILY_RARE, 0.0001));
+            drops.add(new EntityDrop(SMaterial.HIDDEN_VOIDLINGS_WARDEN_HELMET, EntityDropType.CRAZY_RARE, 0.00001));
+        return drops;
     }
 }

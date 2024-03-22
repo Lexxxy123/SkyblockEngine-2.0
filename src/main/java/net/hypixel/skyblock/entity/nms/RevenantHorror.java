@@ -177,6 +177,9 @@ public class RevenantHorror extends EntityZombie implements SNMSEntity, EntityFu
     public void onDeath(SEntity sEntity, org.bukkit.entity.Entity killed, org.bukkit.entity.Entity damager) {
         this.hologram.remove();
         SUtil.delay(() -> this.hologram_name.remove(), 20L);
+        User user = User.getUser(damager.getUniqueId());
+        user.addCoins(50000);
+        user.send(ChatColor.GOLD + "+50000 Coins");
     }
 
     public String getEntityName() {

@@ -9,6 +9,7 @@ public enum GUIType {
     ANVIL(AnvilGUI.class),
     TRASH(TrashGUI.class),
     COOKIE_GUI(CookieGUI.class),
+    ITEM_EDITOR(ItemEditor.class),
     COOKIE_CONSUME_CONFIRM(CookieConfirmGUI.class),
     RECIPE_BOOK(RecipeBookListGUI.class),
     REFORGE_ANVIL(ReforgeAnvilGUI.class),

@@ -42,7 +42,7 @@ public class TestingMob extends BaseZombie {
 
     @Override
     public double getEntityMaxHealth() {
-        return 10.0;
+        return 100000000.0;
     }
 
     @Override

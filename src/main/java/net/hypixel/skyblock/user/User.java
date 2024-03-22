@@ -587,11 +587,12 @@ public class User {
     }
 
     public Object get(String key, Object def) {
-        if (dataDocument.get(key) != null) {
+        if (dataDocument != null && dataDocument.get(key) != null) {
             return dataDocument.get(key);
         }
         return def;
     }
+
 
     public String getString( String key, Object def) {
         return get(key, def).toString();

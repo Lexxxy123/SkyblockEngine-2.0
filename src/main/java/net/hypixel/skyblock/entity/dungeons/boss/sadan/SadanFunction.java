@@ -264,7 +264,7 @@ public class SadanFunction {
     public static void sendReMsg(final boolean finishornot, final World w) {
         if (w.getName().contains("f6") && Repeater.FloorLivingSec.containsKey(w.getUID())) {
             if (finishornot) {
-                final int bitsReward = Math.round((float) ((600 - Math.min(600, Repeater.FloorLivingSec.get(w.getUID()))) * 150 / 255));
+                final int bitsReward = Math.round((float) ((100000 - Math.min(100000, Repeater.FloorLivingSec.get(w.getUID()))) * 150 / 255));
                 String rew = "&6+" + SUtil.commaify(bitsReward) + " Coins &7(Completion Reward)";
                 if (bitsReward <= 0) {
                     rew = "&cYou have no rewards!";

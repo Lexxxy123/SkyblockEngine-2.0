@@ -7,7 +7,7 @@ import net.hypixel.skyblock.gui.GUIType;
 import net.hypixel.skyblock.user.PlayerUtils;
 import net.hypixel.skyblock.util.Sputnik;
 
-@CommandParameters(description = "Gets the NBT of your current item.", aliases = "auh", permission = PlayerRank.DEFAULT)
+@CommandParameters(description = "Gets the NBT of your current item.", aliases = "ah", permission = PlayerRank.DEFAULT)
 public class CookieAHCommand extends SCommand {
     @Override
     public void run(final CommandSource sender, final String[] args) {

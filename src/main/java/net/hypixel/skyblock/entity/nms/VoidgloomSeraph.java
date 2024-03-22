@@ -624,6 +624,9 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
         if (null != stand) {
             stand.remove();
         }
+        User user = User.getUser(damager.getUniqueId());
+        user.addCoins(100000);
+        user.send(ChatColor.GOLD + "+100000 Coins");
     }
 
     public String getEntityName() {

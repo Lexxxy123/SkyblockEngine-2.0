@@ -153,6 +153,9 @@ public class SvenPackmaster extends EntityWolf implements SNMSEntity, EntityFunc
         for (SEntity pup : this.pups) {
             pup.getEntity().setHealth(0.0);
         }
+        User user = User.getUser(damager.getUniqueId());
+        user.addCoins(50000);
+        user.send(ChatColor.GOLD + "+50000 Coins");
     }
 
     public void onAttack(EntityDamageByEntityEvent e) {

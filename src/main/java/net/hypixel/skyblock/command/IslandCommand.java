@@ -14,7 +14,7 @@ public class IslandCommand extends SCommand {
             throw new CommandFailException("Console senders cannot use this command!");
         }
         final Player player = sender.getPlayer();
-       // SkyblockIsland.getIsland(player.getUniqueId()).send();
-        player.sendMessage(ChatColor.RED + "Not Yet Comming in next Patch!");
+        SkyblockIsland.getIsland(player.getUniqueId()).send();
+       // player.sendMessage(ChatColor.RED + "Not Yet Comming in next Patch!");
     }
 }

@@ -12,7 +12,7 @@ public class NPCJerry extends SkyblockNPC {
         super(new NPCParameters() {
             @Override
             public String name() {
-                return "jerry";
+                return "Jerry";
             }
 
             @Override
@@ -31,7 +31,9 @@ public class NPCJerry extends SkyblockNPC {
                         "I will help you start your journey in sandbox.",
                         "Use /ib or free items npc to get starter goods.",
                         "Use /enc <enchant type> <level> to enchant!",
-                        "Complete Flor 6 Boss Room.",
+                        "Use /ie to maximize your items!",
+                        "Travel to your island!",
+                        "Complete Floor 6 Boss Room.",
                         "Complete All Slayer Bosses.",
                         "New Updates Coming Soon in future!"
 

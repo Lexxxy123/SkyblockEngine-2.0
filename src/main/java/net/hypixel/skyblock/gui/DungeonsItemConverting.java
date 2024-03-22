@@ -75,7 +75,7 @@ public class DungeonsItemConverting extends GUI {
                 }
                 if (e.getClickedInventory().getItem(31) != null && e.getClickedInventory().getItem(31).getType() != Material.BARRIER) {
                     final long add = (long) DungeonsItemConverting.COST_MAP.get(sItem.getRarity()) * (sItem.getStar() + 1);
-                    final double cur = User.getUser(player.getUniqueId()).getBits();
+                    final double cur = User.getUser(player.getUniqueId()).getCoins();
                     if (!sItem.isStarrable() || sItem.getStar() >= 5) {
                         player.sendMessage(ChatColor.RED + "You cannot upgrade this item.");
                         return;
@@ -86,7 +86,7 @@ public class DungeonsItemConverting extends GUI {
                         return;
                     }
                     player.playSound(player.getLocation(), Sound.ANVIL_USE, 1.0f, 1.0f);
-                    User.getUser(player.getUniqueId()).subBits(add);
+                    User.getUser(player.getUniqueId()).subCoins(add);
                     e.getClickedInventory().setItem(13, null);
                     final SItem build = sItem;
                     if (build.isDungeonsItem()) {
@@ -122,7 +122,7 @@ public class DungeonsItemConverting extends GUI {
                 }
                 ItemStack stack = SUtil.getStack(ChatColor.GREEN + "Upgrade Item", Material.ANVIL, (short) 0, 1, ChatColor.GRAY + "Upgrades the above items to a", ChatColor.GRAY + sItem.getFullName() + Sputnik.createStarStringFromAmount(sItem.getStar() + 1) + ChatColor.GRAY + "!", ChatColor.GRAY + "This grant an additional " + ChatColor.GREEN + (sItem.getStar() + 1) * 10 + "%", ChatColor.GRAY + "stat boost while in Dungeons!", " ", ChatColor.GRAY + "Cost", ChatColor.AQUA + SUtil.commaify(DungeonsItemConverting.COST_MAP.get(sItem.getRarity()) * (sItem.getStar() + 1)) + " Bits", " ", ChatColor.YELLOW + "Click to upgrade!");
                 if (!sItem.isDungeonsItem()) {
-                    stack = SUtil.getStack(ChatColor.GREEN + "Upgrade Item", Material.ANVIL, (short) 0, 1, ChatColor.GRAY + "Converts the above items into a", ChatColor.GRAY + "Dungeon item! This grants the", ChatColor.GRAY + "item a stat boost while in ", ChatColor.GRAY + "Dungeons!", " ", ChatColor.GRAY + "Cost", ChatColor.AQUA + SUtil.commaify(DungeonsItemConverting.COST_MAP.get(sItem.getRarity()) * (sItem.getStar() + 1)) + " Bits", " ", ChatColor.YELLOW + "Click to upgrade!");
+                    stack = SUtil.getStack(ChatColor.GREEN + "Upgrade Item", Material.ANVIL, (short) 0, 1, ChatColor.GRAY + "Converts the above items into a", ChatColor.GRAY + "Dungeon item! This grants the", ChatColor.GRAY + "item a stat boost while in ", ChatColor.GRAY + "Dungeons!", " ", ChatColor.GRAY + "Cost", ChatColor.AQUA + SUtil.commaify(DungeonsItemConverting.COST_MAP.get(sItem.getRarity()) * (sItem.getStar() + 1)) + " Coins", " ", ChatColor.YELLOW + "Click to upgrade!");
                 }
                 ItemStack barrierStack = DungeonsItemConverting.ANVIL_BARRIER;
                 if (!sItem.isStarrable() || sItem.getStar() >= 5) {
@@ -150,7 +150,7 @@ public class DungeonsItemConverting extends GUI {
                     final List<String> s = mt.getLore();
                     s.add(" ");
                     s.add(ChatColor.GRAY + "Cost");
-                    s.add(ChatColor.AQUA + SUtil.commaify(DungeonsItemConverting.COST_MAP.get(sItem.getRarity()) * (sItem.getStar() + 1)) + " Bits");
+                    s.add(ChatColor.AQUA + SUtil.commaify(DungeonsItemConverting.COST_MAP.get(sItem.getRarity()) * (sItem.getStar() + 1)) + " Coins");
                     s.add(" ");
                     s.add(ChatColor.YELLOW + "Click on the item above to");
                     s.add(ChatColor.YELLOW + "upgrade!");
