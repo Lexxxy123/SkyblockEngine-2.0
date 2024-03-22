@@ -224,7 +224,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
             sendMessage("&aContinued by GodSpunky (C) 2024");
             sendMessage("&aAny illegal usage will be suppressed! DO NOT LEAK IT!");
             sendMessage("&a===================================");
-            //startPopulators();
+            startPopulators();
             this.getCommand("setrank").setExecutor(new SetRankCommand());
 
             long end = System.currentTimeMillis();
