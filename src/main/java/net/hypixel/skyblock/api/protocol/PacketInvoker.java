@@ -132,7 +132,7 @@ public class PacketInvoker {
                 return;
             }
         }
-        owner.sendMessage(Sputnik.trans("&dA wild &5&lVoidling's Altar &dapproached! Do you want to challenge it? &6&lSHIFT &r&dand walk across the altar to summon the boss! The Altar will despawn in &c30s"));
+        owner.sendMessage(Sputnik.trans("&dA wild &5&lVoidling's Altar &dapproached! Do you want to challenge it? &6&lSHIFT &r&dand walk through the altar to summon the boss! The Altar will despawn in &c30s"));
         final ArmorStand drop = (ArmorStand) owner.getWorld().spawn(loc.clone().add(0.0, -1.4, 0.0), (Class) ArmorStand.class);
         drop.getWorld().playEffect(drop.getLocation(), Effect.EXPLOSION_HUGE, 1);
         drop.setVisible(false);
