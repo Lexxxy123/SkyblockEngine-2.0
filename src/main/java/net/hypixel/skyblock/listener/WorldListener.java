@@ -7,8 +7,8 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import net.hypixel.skyblock.SkyBlock;
-import net.hypixel.skyblock.features.island.SkyblockIsland;
 import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.user.PlayerUtils;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -268,7 +268,7 @@ public class WorldListener extends PListener {
             ALREADY_TELEPORTING.add(entity.getUniqueId());
             SUtil.delay(() -> ALREADY_TELEPORTING.remove(entity.getUniqueId()), 15L);
             entity.sendMessage(ChatColor.GRAY + "Sending you to your island...");
-            SkyblockIsland.getIsland(entity.getUniqueId()).send();
+            PlayerUtils.sendToIsland((Player) e);
         }
     }
 

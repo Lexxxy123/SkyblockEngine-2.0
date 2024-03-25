@@ -207,13 +207,6 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>net.swofty</groupId>
-			<artifactId>swoftyworldmanager-api</artifactId>
-			<version>3.1.1</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/swoftyworldmanager-api-3.1.1.jar</systemPath>
-		</dependency>
-		<dependency>
 			<groupId>org.jetbrains</groupId>
 			<artifactId>annotations</artifactId>
 			<version>23.0.0</version>

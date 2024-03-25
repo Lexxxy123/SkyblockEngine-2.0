@@ -433,9 +433,7 @@ public class Repeater {
                 if (user.isOnUserIsland()) {
                     location = ChatColor.AQUA + "Others Island";
                 }
-                if (player.getWorld().getName().equalsIgnoreCase("dragon")) {
-                    sidebar.add(ChatColor.GRAY + " ⏣ " + ChatColor.DARK_PURPLE + "Dragon's Nest");
-                } else if (player.getWorld().getName().contains("f6")) {
+                else if (player.getWorld().getName().contains("f6")) {
                     sidebar.add(ChatColor.GRAY + " ⏣ " + ChatColor.RED + "Catacombs" + ChatColor.GRAY + " (F6)");
                 } else if (player.getWorld().getName().contains("arena")) {
                     sidebar.add(ChatColor.GRAY + " ⏣ " + ChatColor.RED + "Withering Ruins");
@@ -460,7 +458,7 @@ public class Repeater {
                     sidebar.add("   ");
                     final SlayerQuest quest = user.getSlayerQuest();
                     QuestLine line = user.getQuestLine();
-                    if ((!StaticDragonManager.ACTIVE || StaticDragonManager.DRAGON == null || !player.getWorld().getName().equalsIgnoreCase("dragon")) && quest == null && line != null) {
+                    if ((!StaticDragonManager.ACTIVE || StaticDragonManager.DRAGON == null) && quest == null && line != null) {
                         SUtil.runAsync(()->{
                             BossBar bar = new BossBar(ChatColor.WHITE + "Objective: " + ChatColor.YELLOW + line.getDisplay() + " " + line.getObjective(user).getSuffix(user));
                             bar.addPlayer(player);
@@ -472,7 +470,7 @@ public class Repeater {
                         }
                         sidebar.add("      ");
                     }
-                    if ((!StaticDragonManager.ACTIVE || StaticDragonManager.DRAGON == null || !player.getWorld().getName().equalsIgnoreCase("dragon")) && quest != null && (quest.getDied() == 0L || quest.getKilled() != 0L)) {
+                    if ((!StaticDragonManager.ACTIVE || StaticDragonManager.DRAGON == null) && quest != null && (quest.getDied() == 0L || quest.getKilled() != 0L)) {
                         sidebar.add("Slayer Quest");
                         sidebar.add(quest.getType().getDisplayName());
                         if (quest.getKilled() != 0L) {
@@ -490,7 +488,7 @@ public class Repeater {
                         }
                         sidebar.add("    ");
                     }
-                    if (StaticDragonManager.ACTIVE && StaticDragonManager.DRAGON != null && player.getWorld().getName().equalsIgnoreCase("dragon")) {
+                    if (StaticDragonManager.ACTIVE && StaticDragonManager.DRAGON != null) {
                         sidebar.add("Dragon HP: " + ChatColor.GREEN + SUtil.commaify((int) StaticDragonManager.DRAGON.getEntity().getHealth()) + ChatColor.RED + " ❤");
                         int dmgdealt;
                         if (StaticDragonManager.DRAGON.getDamageDealt().containsKey(uuid)) {

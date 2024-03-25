@@ -48,12 +48,12 @@ public class BlockListener extends PListener {
                 break;
         }
     }
-    @EventHandler
+   /* @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
         User user = User.getUser(player);
-        if (!user.isOnIsland() || !(player.getGameMode() == GameMode.CREATIVE)) {
+        if (user.isOnUserIsland() || !(player.getGameMode() == GameMode.CREATIVE)) {
             event.setCancelled(true);
         }
-    }
+    }*/
 }

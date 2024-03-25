@@ -15,7 +15,6 @@ import net.hypixel.skyblock.features.enchantment.EnchantmentType;
 import net.hypixel.skyblock.entity.dungeons.boss.sadan.SadanFunction;
 import net.hypixel.skyblock.entity.dungeons.boss.sadan.SadanHuman;
 import net.hypixel.skyblock.entity.nms.VoidgloomSeraph;
-import net.hypixel.skyblock.features.island.SkyblockIsland;
 import net.hypixel.skyblock.features.quest.QuestLine;
 import net.hypixel.skyblock.features.ranks.PlayerRank;
 import net.hypixel.skyblock.features.region.RegionType;
@@ -195,6 +194,12 @@ public class User {
     @Getter
     @Setter
     public List<String> completedObjectives;
+    @Getter
+    @Setter
+    private Double islandX;
+    @Getter
+    @Setter
+    private Double islandZ;
 
 
 
@@ -354,6 +359,8 @@ public class User {
                 setDataProperty("bits" , bits);
                 setDataProperty("bankCoins" , bankCoins);
                 setDataProperty("rank" , rank.toString());
+                setDataProperty("islandX", islandX);
+                setDataProperty("islandZ", islandZ);
                 Map<String, Integer> collectionsData = new HashMap<>();
                 for (ItemCollection collection : ItemCollection.getCollections()) {
                     collectionsData.put(collection.getIdentifier(), getCollection(collection));
@@ -469,7 +476,8 @@ public class User {
                     collections.put(ItemCollection.getByIdentifier(key), value);
                 });
                 setRank(PlayerRank.valueOf(getString("rank", "DEFAULT")));
-
+                islandX = getDouble("islandX", 0);
+                islandZ = getDouble("islandZ", 0);
                 if (getString("lastRegion", "none").equals("none")) {
                     setLastRegion(null);
                 } else {
@@ -1486,6 +1494,11 @@ public class User {
         this.save();
     }
 
+    public void setIslandLocation(final double x, final double z) {
+        this.islandX = x;
+        this.islandZ = z;
+    }
+
     public void addPotionEffect(final PotionEffect effect) {
         this.effects.add(new ActivePotionEffect(effect, effect.getDuration()));
     }
@@ -1533,11 +1546,13 @@ public class User {
     }
 
     public boolean isOnIsland(final Location location) {
-        final World world = Bukkit.getWorld(SkyblockIsland.ISLAND_PREFIX + uuid);
+        final World world = Bukkit.getWorld("islands");
         if (world == null) {
             return false;
         }
-       return location.getWorld().getName().equalsIgnoreCase(world.getName());
+        final double x = location.getX();
+        final double z = location.getZ();
+        return world.getUID().equals(location.getWorld().getUID()) && x >= this.islandX - 125.0 && x <= this.islandX + 125.0 && z >= this.islandZ - 125.0 && z <= this.islandZ + 125.0;
     }
 
     public boolean isOnUserIsland() {
@@ -1545,8 +1560,15 @@ public class User {
         if (player == null) {
             return false;
         }
-        return player.getWorld().getName().startsWith(SkyblockIsland.ISLAND_PREFIX) && !isOnIsland(player.getLocation());
+        final World world = Bukkit.getWorld("islands");
+        if (world == null) {
+            return false;
+        }
+        final double x = player.getLocation().getX();
+        final double z = player.getLocation().getZ();
+        return world.getUID().equals(player.getWorld().getUID()) && x < this.islandX - 125.0 && x > this.islandX + 125.0 && z < this.islandZ - 125.0 && z > this.islandZ + 125.0;
     }
+
 
     public List<AuctionItem> getBids() {
         return AuctionItem.getAuctions().stream().filter(item -> {
@@ -1577,8 +1599,7 @@ public class User {
             return;
         }
         if (this.isOnIsland()) {
-            final World world = Bukkit.getWorld(SkyblockIsland.ISLAND_PREFIX + uuid.toString());
-            player.teleport(new Location(world , 0 , 100 , 0));
+            PlayerUtils.sendToIsland(player);
         } else if (this.lastRegion != null) {
             switch (this.lastRegion.getType()) {
                 case BANK:

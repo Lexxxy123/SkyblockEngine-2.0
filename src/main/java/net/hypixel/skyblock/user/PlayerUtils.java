@@ -2,6 +2,8 @@ package net.hypixel.skyblock.user;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.api.worldmanager.BlankWorldCreator;
+import net.hypixel.skyblock.config.Config;
 import net.hypixel.skyblock.features.dungeons.stats.ItemSerial;
 import net.hypixel.skyblock.features.enchantment.Enchantment;
 import net.hypixel.skyblock.features.enchantment.EnchantmentType;
@@ -43,6 +45,7 @@ import net.hypixel.skyblock.entity.SEntity;
 import net.hypixel.skyblock.gui.SlayerGUI;
 import net.hypixel.skyblock.listener.PlayerListener;
 
+import java.io.File;
 import java.util.*;
 
 public final class PlayerUtils {
@@ -172,6 +175,40 @@ public final class PlayerUtils {
         atkSpeed.add(4, a * (pet.getPerAttackSpeed() * level));
         updateHealth(Bukkit.getPlayer(statistics.getUuid()), statistics);
         return statistics;
+    }
+
+    public static void sendToIsland(final Player player) {
+        World world = Bukkit.getWorld("islands");
+        if (world == null) {
+            world = new BlankWorldCreator("islands").createWorld();
+        }
+        final User user = User.getUser(player.getUniqueId());
+        if (user.getIslandX() == null || user.getIslandX() == 0) {
+            final Config config = SkyBlock.getPlugin().config;
+            double xOffset = config.getDouble("islands.x");
+            double zOffset = config.getDouble("islands.z");
+            if (xOffset < -2.5E7 || xOffset > 2.5E7) {
+                zOffset += 250.0;
+            }
+            File file = new File("plugins/SkyBlockEngine/private_island.schematic");
+            SUtil.pasteSchematic(file, new Location(world, 7.0 + xOffset, 100.0, 7.0 + zOffset), true);
+            SUtil.setBlocks(new Location(world, 7.0 + xOffset, 104.0, 44.0 + zOffset), new Location(world, 5.0 + xOffset, 100.0, 44.0 + zOffset), Material.PORTAL, false);
+            user.setIslandLocation(7.5 + xOffset, 7.5 + zOffset);
+            user.save();
+            if (xOffset > 0.0) {
+                xOffset *= -1.0;
+            } else if (xOffset <= 0.0) {
+                if (xOffset != 0.0) {
+                    xOffset *= -1.0;
+                }
+                xOffset += 250.0;
+            }
+            config.set("islands.x", xOffset);
+            config.set("islands.z", zOffset);
+            config.save();
+        }
+        final World finalWorld = world;
+        SUtil.delay(() -> player.teleport(finalWorld.getHighestBlockAt(SUtil.blackMagic(user.getIslandX()), SUtil.blackMagic(user.getIslandZ())).getLocation().add(0.5, 1.0, 0.5)), 10L);
     }
 
     public static PlayerStatistics updateArmorStatistics(final SItem piece, final PlayerStatistics statistics, final int slot) {

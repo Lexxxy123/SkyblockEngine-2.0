@@ -697,9 +697,7 @@ public class ItemListener extends PListener {
                     StaticDragonManager.DRAGON = entity;
                     block.getWorld().playSound(block.getLocation(), Sound.ENDERDRAGON_GROWL, 50.0f, 1.0f);
                     for (Player p : Bukkit.getOnlinePlayers()) {
-                        if (p.getWorld().getName().equals("dragon")) {
                             p.sendMessage(ChatColor.DARK_PURPLE + "☬ " + ChatColor.LIGHT_PURPLE + ChatColor.BOLD + "The " + ChatColor.RED + ChatColor.BOLD + entity.getStatistics().getEntityName() + ChatColor.LIGHT_PURPLE + ChatColor.BOLD + " has spawned!");
-                        }
                     }
                 }
             }.runTaskLater(this.plugin, 180L);
@@ -757,7 +755,7 @@ public class ItemListener extends PListener {
         }
         if (item.hasMetadata("obtained")) {
             for (Player p : Bukkit.getOnlinePlayers()) {
-                if (p.getWorld().getName().equals("dragon")) {
+                if (p.getWorld().getName().equals("world")) {
                     if (!sItem.getFullName().equals("§6Ender Dragon") && !sItem.getFullName().equals("§5Ender Dragon")) {
                         p.sendMessage(ChatColor.GREEN + player.getName() + ChatColor.YELLOW + " has obtained " + sItem.getFullName() + ChatColor.YELLOW + "!");
                     } else {

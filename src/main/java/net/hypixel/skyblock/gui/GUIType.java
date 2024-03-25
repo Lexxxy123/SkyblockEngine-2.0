@@ -6,6 +6,8 @@ import net.hypixel.skyblock.util.SUtil;
 public enum GUIType {
     CRAFTING_TABLE(CraftingTableGUI.class),
     ITEM_BROWSE(ItemBrowserGUI.class),
+
+    MOB_GUI(MobSummonGUI.class),
     ANVIL(AnvilGUI.class),
     TRASH(TrashGUI.class),
     COOKIE_GUI(CookieGUI.class),
