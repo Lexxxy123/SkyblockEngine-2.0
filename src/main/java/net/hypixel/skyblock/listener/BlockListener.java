@@ -1,6 +1,8 @@
 package net.hypixel.skyblock.listener;
 
+import net.hypixel.skyblock.user.User;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -46,9 +48,12 @@ public class BlockListener extends PListener {
                 break;
         }
     }
-    @EventHandler
+   /* @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
-        event.setCancelled(!player.getWorld().getName().equals("island-" + player.getUniqueId()));
-    }
+        User user = User.getUser(player);
+        if (user.isOnUserIsland() || !(player.getGameMode() == GameMode.CREATIVE)) {
+            event.setCancelled(true);
+        }
+    }*/
 }

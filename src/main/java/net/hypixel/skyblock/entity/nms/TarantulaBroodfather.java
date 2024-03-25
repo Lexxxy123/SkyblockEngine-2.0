@@ -160,6 +160,9 @@ public class TarantulaBroodfather extends EntitySpider implements SNMSEntity, En
         SUtil.delay(() -> this.hologram_name.remove(), 20L);
         this.hologram.remove();
         this.top.remove();
+        User user = User.getUser(damager.getUniqueId());
+        user.addCoins(50000);
+        user.send(ChatColor.GOLD + "+50000 Coins");
     }
 
     public void onDamage(final SEntity sEntity, final org.bukkit.entity.Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {

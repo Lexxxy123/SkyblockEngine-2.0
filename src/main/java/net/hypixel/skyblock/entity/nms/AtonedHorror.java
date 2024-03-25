@@ -252,6 +252,8 @@ public class AtonedHorror extends EntityZombie implements SNMSEntity, EntityFunc
         this.hologram.remove();
         SUtil.delay(() -> this.hologram_name.remove(), 20L);
         User user = User.getUser(damager.getUniqueId());
+        user.addCoins(100000);
+        user.send(ChatColor.GOLD + "+100000 Coins");
     }
 
     public String getEntityName() {

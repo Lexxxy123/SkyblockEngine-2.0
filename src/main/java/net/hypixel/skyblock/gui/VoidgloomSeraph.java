@@ -25,7 +25,6 @@ public class VoidgloomSeraph extends GUI {
             @Override
             public void run(final InventoryClickEvent e) {
                 new SlayerConfirmGUI(SlayerBossType.VOIDGLOOM_SERAPH_I, () -> {
-                    final Object val$player = player;
                     User.getUser(player.getUniqueId()).startSlayerQuest(SlayerBossType.VOIDGLOOM_SERAPH_I);
                 }).open(player);
             }
@@ -44,7 +43,6 @@ public class VoidgloomSeraph extends GUI {
             @Override
             public void run(final InventoryClickEvent e) {
                 new SlayerConfirmGUI(SlayerBossType.VOIDGLOOM_SERAPH_II, () -> {
-                    final Object val$player = player;
                     User.getUser(player.getUniqueId()).startSlayerQuest(SlayerBossType.VOIDGLOOM_SERAPH_II);
                 }).open(player);
             }
@@ -63,7 +61,6 @@ public class VoidgloomSeraph extends GUI {
             @Override
             public void run(final InventoryClickEvent e) {
                 new SlayerConfirmGUI(SlayerBossType.VOIDGLOOM_SERAPH_III, () -> {
-                    final Object val$player = player;
                     User.getUser(player.getUniqueId()).startSlayerQuest(SlayerBossType.VOIDGLOOM_SERAPH_III);
                 }).open(player);
             }
@@ -82,7 +79,6 @@ public class VoidgloomSeraph extends GUI {
             @Override
             public void run(final InventoryClickEvent e) {
                 new SlayerConfirmGUI(SlayerBossType.VOIDGLOOM_SERAPH_IV, () -> {
-                    final Object val$player = player;
                     User.getUser(player.getUniqueId()).startSlayerQuest(SlayerBossType.VOIDGLOOM_SERAPH_IV);
                 }).open(player);
             }
@@ -98,6 +94,7 @@ public class VoidgloomSeraph extends GUI {
             }
         });
         this.set(new GUIClickableItem() {
+
             @Override
             public ItemStack getItem() {
                 return SUtil.getStack(ChatColor.DARK_PURPLE + "Voidgloom Seraph V", Material.COAL_BLOCK, (short) 0, 1, ChatColor.GRAY + "This excruciatingly difficult", ChatColor.GRAY + "boss tier will release at a", ChatColor.GRAY + "later date.");
@@ -109,7 +106,7 @@ public class VoidgloomSeraph extends GUI {
             }
 
             @Override
-            public void run(final InventoryClickEvent e) {
+            public void run(InventoryClickEvent e) {
             }
         });
         this.set(new GUIClickableItem() {

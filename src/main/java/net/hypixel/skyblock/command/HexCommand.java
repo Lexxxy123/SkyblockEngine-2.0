@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 public class HexCommand extends SCommand {
     @Override
     public void run(CommandSource sender, String[] args) {
-       sender.getPlayer().sendMessage("Coming soon");
-
+       //sender.getPlayer().sendMessage("Coming soon");
+        new HexGUI(sender.getPlayer()).open(sender.getPlayer());
     }
 }

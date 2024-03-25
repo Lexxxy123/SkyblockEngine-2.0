@@ -272,7 +272,7 @@ public abstract class Dragon extends EntityEnderDragon implements SNMSEntity, En
                     damage = d2.getValue().intValue();
                 }
             }
-            if (player.getWorld().getName().equals("dragon")) {
+            if (player.getWorld().getName().equals("world")) {
                 player.sendMessage(String.format(message.toString(), (-1 != place) ? (ChatColor.GREEN + SUtil.commaify(damage) + ChatColor.GRAY + " (Position #" + place + ")") : (ChatColor.RED + "N/A" + ChatColor.GRAY + " (Position #N/A)")));
             }
         }
