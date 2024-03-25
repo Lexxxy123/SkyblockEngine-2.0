@@ -2,7 +2,6 @@ package net.hypixel.skyblock.entity;
 
 import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.entity.end.EndermanStatistics;
-import net.hypixel.skyblock.entity.hologram.EntityHologram;
 import net.hypixel.skyblock.entity.nms.SNMSEntity;
 import net.hypixel.skyblock.entity.wolf.WolfStatistics;
 import net.hypixel.skyblock.util.SUtil;
@@ -119,8 +118,7 @@ public class SEntity {
             rand *= 1000000;
             ((CraftZombie) this.entity).setBaby(false);
         }
-        EntityHologram hologram = new EntityHologram(entity , specType , params);
-        hologram.start();
+        function.onSpawnNameTag(this.entity, this, specType, params);
         this.entity.setMaxHealth(statistics.getEntityMaxHealth() + rand);
         this.entity.setHealth(this.entity.getMaxHealth());
         this.entity.setMetadata("specEntityObject", new FixedMetadataValue(SEntity.plugin, this));
@@ -190,7 +188,7 @@ public class SEntity {
     }
 
     public static SEntity findSEntity(final Entity entity) {
-        if (!entity.hasMetadata("specEntityObject") || entity.getMetadata("specEntityObject").size() == 0 || !(entity.getMetadata("specEntityObject").get(0).value() instanceof SEntity)) {
+        if (!entity.hasMetadata("specEntityObject") || entity.getMetadata("specEntityObject").isEmpty() || !(entity.getMetadata("specEntityObject").get(0).value() instanceof SEntity)) {
             return null;
         }
         return (SEntity) entity.getMetadata("specEntityObject").get(0).value();

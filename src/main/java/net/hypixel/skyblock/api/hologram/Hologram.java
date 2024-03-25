@@ -6,7 +6,10 @@ import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
@@ -28,7 +31,7 @@ public class Hologram extends EntityArmorStand {
         this.setInvisible(true);
         this.setCustomNameVisible(true);
         this.setGravity(false);
-        this.n(true);
+        ((ArmorStand) getBukkitEntity()).setMarker(true);
         this.setSmall(false);
         this.setBasePlate(false);
         this.location = location;
@@ -42,6 +45,12 @@ public class Hologram extends EntityArmorStand {
       this.setCustomName(text);
       this.setCustomNameVisible(true);
       this.update();
+    }
+
+
+    public void mount(Entity attachEntity){
+        mount(((CraftEntity)attachEntity).getHandle());
+        update();
     }
 
     public void update(){

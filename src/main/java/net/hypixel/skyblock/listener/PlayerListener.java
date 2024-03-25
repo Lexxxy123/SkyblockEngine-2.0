@@ -8,7 +8,6 @@ import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.api.hologram.Hologram;
 import net.hypixel.skyblock.api.hologram.HologramManager;
 import net.hypixel.skyblock.command.RebootServerCommand;
-import net.hypixel.skyblock.entity.hologram.EntityHologram;
 import net.hypixel.skyblock.event.SkyblockPlayerNPCClickEvent;
 import net.hypixel.skyblock.features.dungeons.blessing.BlessingChest;
 import net.hypixel.skyblock.features.dungeons.blessing.Blessings;
@@ -109,7 +108,6 @@ public class PlayerListener extends PListener {
         this.getIsNotLoaded().put(player.getUniqueId(), true);
 
         SUtil.delay(() -> {
-
             PlayerUtils.USER_SESSION_ID.put(player.getUniqueId(), UUID.randomUUID());
             PlayerUtils.COOKIE_DURATION_CACHE.remove(player.getUniqueId());
             PlayerUtils.AUTO_SLAYER.remove(player.getUniqueId());
@@ -287,10 +285,6 @@ public class PlayerListener extends PListener {
        new PacketReader().injectPlayer(player);
     }
 
-    @EventHandler
-    public void onNPCInteractEvent(SkyblockPlayerNPCClickEvent event){
-        System.out.println("npc click event getting called!");
-    }
 
 
     @EventHandler
@@ -1551,34 +1545,47 @@ public class PlayerListener extends PListener {
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
+
         Location from = event.getFrom();
         Location to = event.getTo();
 
-        // Only check movement when the player moves from one block to another. The event is called often
-        // as it is also called when the pitch or yaw change. This is worth it from a performance view.
-        if (to == null || from.getBlockX() != to.getBlockX()
-                || from.getBlockY() != to.getBlockY()
-                || from.getBlockZ() != to.getBlockZ()){
-                for (SkyblockNPC skyblockNPC : SkyblockNPCManager.getNPCS()) {
-                    if (!skyblockNPC.getWorld().equals(player.getWorld())) continue;
-                    if (!skyblockNPC.isShown(player) && skyblockNPC.inRangeOf(player)) {
-                        skyblockNPC.showTo(player);
-                    } else if (skyblockNPC.isShown(player) && !skyblockNPC.inRangeOf(player)) {
-                        skyblockNPC.hideFrom(player);
-                    }
-                }
+        if (!isSignificantMove(from, to)) return;
 
-                for (EntityHologram entityHologram : EntityHologram.getENTITY_HOLOGRAMS()){
-                    for (Hologram hologram : entityHologram.getHolograms()){
-                        if (!hologram.isShown(player) && entityHologram.inRangeOf(player)){
-                            hologram.show(player);
-                        } else if (hologram.isShown(player) && !entityHologram.inRangeOf(player)) {
-                            hologram.hide(player);
-                        }
-                    }
-                }
-        }
+        updateEntitiesInRange(player);
     }
+
+    private boolean isSignificantMove(Location from, Location to) {
+        return to != null &&
+                (from.getBlockX() != to.getBlockX() ||
+                        from.getBlockY() != to.getBlockY() ||
+                        from.getBlockZ() != to.getBlockZ());
+    }
+
+    private void updateEntitiesInRange(Player player) {
+        updateNPCs(player);
+        updateHolograms(player);
+    }
+
+    private void updateNPCs(Player player) {
+        SkyblockNPCManager.getNPCS().forEach(npc -> {
+            if (!npc.isShown(player) && npc.inRangeOf(player)) {
+                npc.showTo(player);
+            } else if (npc.isShown(player) && !npc.inRangeOf(player)) {
+                npc.hideFrom(player);
+            }
+        });
+    }
+
+    private void updateHolograms(Player player) {
+        HologramManager.getHolograms().forEach(hologram -> {
+            if (!hologram.isShown(player) && hologram.inRangeOf(player)) {
+                hologram.show(player);
+            } else if (hologram.isShown(player) && !hologram.inRangeOf(player)) {
+                hologram.hide(player);
+            }
+        });
+    }
+
 
 
     @EventHandler

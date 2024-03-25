@@ -1,6 +1,7 @@
 package net.hypixel.skyblock.features.slayer;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import lombok.Setter;
 import net.hypixel.skyblock.features.sequence.SoundSequenceType;
 import org.bson.Document;
 import org.bukkit.Effect;
@@ -20,11 +21,17 @@ import java.util.Map;
 public class SlayerQuest implements ConfigurationSerializable {
     private final SlayerBossType type;
     private final long started;
+    @Setter
     private double xp;
+    @Setter
     private long spawned;
+    @Setter
     private long killed;
+    @Setter
     private long died;
+    @Setter
     private SEntityType lastKilled;
+    @Setter
     private SEntity entity;
 
     public SlayerQuest(final SlayerBossType type, final long started) {
@@ -147,27 +154,4 @@ public class SlayerQuest implements ConfigurationSerializable {
         return this.entity;
     }
 
-    public void setXp(final double xp) {
-        this.xp = xp;
-    }
-
-    public void setSpawned(final long spawned) {
-        this.spawned = spawned;
-    }
-
-    public void setKilled(final long killed) {
-        this.killed = killed;
-    }
-
-    public void setDied(final long died) {
-        this.died = died;
-    }
-
-    public void setLastKilled(final SEntityType lastKilled) {
-        this.lastKilled = lastKilled;
-    }
-
-    public void setEntity(final SEntity entity) {
-        this.entity = entity;
-    }
 }

@@ -81,7 +81,6 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
     private static SkyBlock plugin;
     private final PacketHelper packetInj;
     private boolean authenticated;
-    public static final boolean dimoonEnabled = false;
 
     public static final String[] DEVELOPERS = {"Hamza" , "EpicPortal" , "Dumbo"};
 

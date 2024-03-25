@@ -1,5 +1,7 @@
 package net.hypixel.skyblock.item;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.hypixel.skyblock.util.Groups;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -8,10 +10,11 @@ import net.hypixel.skyblock.user.User;
 
 import java.util.*;
 
+@Getter
 public abstract class Recipe<T> {
     protected static final List<List<SMaterial>> EXCHANGEABLES;
     protected SItem result;
-    @lombok.Setter
+    @Setter
     protected boolean useExchangeables;
 
     protected Recipe(final SItem result, final boolean useExchangeables) {
@@ -120,14 +123,6 @@ public abstract class Recipe<T> {
             }
         }
 
-    }
-
-    public SItem getResult() {
-        return this.result;
-    }
-
-    public boolean isUseExchangeables() {
-        return this.useExchangeables;
     }
 
     static {

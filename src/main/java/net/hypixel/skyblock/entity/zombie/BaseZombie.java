@@ -11,6 +11,8 @@ import net.hypixel.skyblock.entity.ZombieStatistics;
 import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.SUtil;
 
+import java.util.Objects;
+
 public abstract class BaseZombie implements ZombieStatistics, EntityFunction {
     @Override
     public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
@@ -26,9 +28,9 @@ public abstract class BaseZombie implements ZombieStatistics, EntityFunction {
         if (quest.getSpawned() != 0L) {
             return;
         }
-        if (quest.getType().getName() == "Revenant Horror" || quest.getType().getName() == "Atoned Horror") {
+        if (Objects.equals(quest.getType().getName(), "Revenant Horror") || Objects.equals(quest.getType().getName(), "Atoned Horror")) {
             final Location k = killed.getLocation().clone();
-            if (SUtil.random(0, 8) == 0 && quest.getType().getTier() >= 3 && quest.getType().getTier() < 4) {
+            if (SUtil.random(0, 8) == 0 && quest.getType().getTier() == 3) {
                 SlayerQuest.playMinibossSpawn(k, player);
                 SUtil.delay(() -> new SEntity(k, SEntityType.REVENANT_SYCOPHANT).setTarget(player), 12L);
                 return;
