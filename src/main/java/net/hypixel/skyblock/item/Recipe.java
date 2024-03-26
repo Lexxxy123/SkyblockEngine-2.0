@@ -39,7 +39,12 @@ public abstract class Recipe<T> {
     }
 
     public boolean isUnlockedForPlayer(User user) {
-        return user.getUnlockedRecipes().contains(result.getDisplayName());
+        try {
+            return user.getUnlockedRecipes().contains(result.getDisplayName());
+        }catch (NullPointerException ex){
+            System.out.println("Result is null");
+            return false;
+        }
     }
 
     protected static MaterialQuantifiable[][] airless(final MaterialQuantifiable[][] grid) {
@@ -126,6 +131,6 @@ public abstract class Recipe<T> {
     }
 
     static {
-        EXCHANGEABLES = new ArrayList<List<SMaterial>>(Arrays.asList(Arrays.asList(SMaterial.OAK_WOOD, SMaterial.SPRUCE_WOOD, SMaterial.BIRCH_WOOD, SMaterial.JUNGLE_WOOD, SMaterial.ACACIA_WOOD, SMaterial.DARK_OAK_WOOD), Arrays.asList(SMaterial.OAK_WOOD_PLANKS, SMaterial.SPRUCE_WOOD_PLANKS, SMaterial.BIRCH_WOOD_PLANKS, SMaterial.JUNGLE_WOOD_PLANKS, SMaterial.ACACIA_WOOD_PLANKS, SMaterial.DARK_OAK_WOOD_PLANKS)));
+        EXCHANGEABLES = new ArrayList<>(Arrays.asList(Arrays.asList(SMaterial.OAK_WOOD, SMaterial.SPRUCE_WOOD, SMaterial.BIRCH_WOOD, SMaterial.JUNGLE_WOOD, SMaterial.ACACIA_WOOD, SMaterial.DARK_OAK_WOOD), Arrays.asList(SMaterial.OAK_WOOD_PLANKS, SMaterial.SPRUCE_WOOD_PLANKS, SMaterial.BIRCH_WOOD_PLANKS, SMaterial.JUNGLE_WOOD_PLANKS, SMaterial.ACACIA_WOOD_PLANKS, SMaterial.DARK_OAK_WOOD_PLANKS)));
     }
 }

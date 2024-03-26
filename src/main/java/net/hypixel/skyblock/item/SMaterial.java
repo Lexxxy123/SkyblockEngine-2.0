@@ -1,5 +1,6 @@
 package net.hypixel.skyblock.item;
 
+import lombok.Getter;
 import net.hypixel.skyblock.entity.SEntityType;
 import net.hypixel.skyblock.item.accessory.*;
 import net.hypixel.skyblock.item.armor.*;
@@ -947,10 +948,14 @@ public enum SMaterial {
     public static SorrowArmorSet SORROW_SET;
     public static GigachadSet GIGACHAD_SET;
     public static MinichadSet MINICHAD_SET;
+    @Getter
     private final Material craftMaterial;
+    @Getter
     private final short data;
     private final Class<?> clazz;
+    @Getter
     private final boolean craft;
+    @Getter
     private final String baseName;
 
     SMaterial(Material craftMaterial, short data, Class<?> clazz, boolean craft, String baseName) {
@@ -1178,22 +1183,6 @@ public enum SMaterial {
             }
         }
         return null;
-    }
-
-    public Material getCraftMaterial() {
-        return this.craftMaterial;
-    }
-
-    public short getData() {
-        return this.data;
-    }
-
-    public boolean isCraft() {
-        return this.craft;
-    }
-
-    public String getBaseName() {
-        return this.baseName;
     }
 
     static {

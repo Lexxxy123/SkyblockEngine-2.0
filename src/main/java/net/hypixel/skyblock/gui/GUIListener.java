@@ -69,7 +69,7 @@ public class GUIListener extends PListener {
     @EventHandler
     public void onInventoryClickEven(final InventoryClickEvent event) {
         final GUI gui = GUI.GUI_MAP.get(event.getWhoClicked().getUniqueId());
-        if (gui != null && !gui.getClass().equals(CraftingTableGUI.class) && !gui.getClass().equals(ReforgeAnvilGUI.class) && !gui.getClass().equals(AnvilGUI.class) && !gui.getClass().equals(QuiverGUI.class) && !gui.getClass().equals(TrashGUI.class) && !gui.getClass().equals(DungeonsItemConverting.class) && !gui.getClass().equals(DungeonsLootGUI.class)) {
+        if (gui != null && !gui.getClass().equals(CraftingTableGUI.class) && !gui.getClass().equals(ReforgeAnvilGUI.class) && !gui.getClass().equals(AnvilGUI.class) && !gui.getClass().equals(QuiverGUI.class) && !gui.getClass().equals(TrashGUI.class) && !gui.getClass().equals(DungeonsItemConverting.class) && !gui.getClass().equals(DungeonsLootGUI.class) && !gui.getClass().equals(RecipeCreatorGUI.class)) {
             event.setCancelled(true);
         }
         if (gui != null && gui.getClass().equals(QuiverGUI.class)) {

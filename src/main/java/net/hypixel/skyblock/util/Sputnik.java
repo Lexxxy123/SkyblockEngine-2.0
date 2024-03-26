@@ -233,6 +233,7 @@ public class Sputnik {
     }
 
     public static void smartGiveItem(final ItemStack item, final Player p) {
+        if (item == null) return;
         if (p.getInventory().firstEmpty() != -1) {
             p.getInventory().addItem(item);
         } else if (User.getUser(p.getUniqueId()) != null) {

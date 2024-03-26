@@ -1,6 +1,8 @@
 package net.hypixel.skyblock.item;
 
+import lombok.Getter;
 import net.hypixel.skyblock.util.SUtil;
+import org.bson.Document;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -9,6 +11,7 @@ import java.util.List;
 
 public class ShapelessRecipe extends Recipe<ShapelessRecipe> {
     public static final List<ShapelessRecipe> CACHED_RECIPES;
+    @Getter
     private final List<MaterialQuantifiable> ingredientList;
     private boolean isVanilla;
 
@@ -109,12 +112,32 @@ public class ShapelessRecipe extends Recipe<ShapelessRecipe> {
         return false;
     }
 
-    public boolean isVanilla() {
-        return isVanilla;
+    public static void fromDocument(Document doc) {
+        String resultType = doc.getString("result");
+        int resultAmount = doc.getInteger("amount");
+        List<Document> ingredientList = (List<Document>) doc.get("ingredientList");
+
+        SItem resultItem = SItem.of(SMaterial.valueOf(resultType));
+        resultItem.setAmount(resultAmount);
+
+        List<MaterialQuantifiable> ingredients = new ArrayList<>();
+        for (Document ingredientDoc : ingredientList) {
+            String materialType = ingredientDoc.getString("material");
+            int amount = ingredientDoc.getInteger("amount");
+            SMaterial material = SMaterial.valueOf(materialType);
+            MaterialQuantifiable mq = new MaterialQuantifiable(material, amount);
+            ingredients.add(mq);
+        }
+
+        ShapelessRecipe recipe = new ShapelessRecipe(resultItem);
+        for (MaterialQuantifiable ingredient : ingredients) {
+            recipe.add(ingredient);
+        }
+
     }
 
-    public List<MaterialQuantifiable> getIngredientList() {
-        return this.ingredientList;
+    public boolean isVanilla() {
+        return isVanilla;
     }
 
     static {

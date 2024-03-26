@@ -89,10 +89,8 @@ public class PlayerListener extends PListener {
         // as it is also called when the pitch or yaw change. This is worth it from a performance view.
         if (to == null || from.getBlockX() != to.getBlockX()
                 || from.getBlockY() != to.getBlockY()
-                || from.getBlockZ() != to.getBlockZ()) {
-                final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
-                //PlayerUtils.updateInventoryStatistics(player, statistics);
-                // It already getting called in repeater so no need to run again
+                || from.getBlockZ() != to.getBlockZ()) {;
+
 
                 final SBlock block = SBlock.getBlock(player.getLocation().clone().subtract(0.0, 0.3, 0.0));
                 if (player.getGameMode() != GameMode.SPECTATOR && e.getTo().getY() <= -25.0) {

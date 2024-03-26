@@ -8,6 +8,7 @@ import dev.demeng.sentinel.wrapper.SentinelClient;
 import dev.demeng.sentinel.wrapper.exception.*;
 import net.hypixel.skyblock.api.placeholder.SkyblockPlaceholder;
 import net.hypixel.skyblock.api.worldmanager.SkyBlockWorldManager;
+import net.hypixel.skyblock.database.*;
 import net.hypixel.skyblock.features.auction.AuctionBid;
 import net.hypixel.skyblock.features.auction.AuctionEscrow;
 import net.hypixel.skyblock.features.auction.AuctionItem;
@@ -36,7 +37,6 @@ import net.hypixel.skyblock.features.region.Region;
 import net.hypixel.skyblock.features.region.RegionType;
 
 import net.hypixel.skyblock.features.slayer.SlayerQuest;
-import net.hypixel.skyblock.database.DatabaseManager;
 import net.hypixel.skyblock.user.AuctionSettings;
 import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.*;
@@ -63,9 +63,6 @@ import net.hypixel.skyblock.nms.nmsutil.packetlistener.handler.SentPacket;
 import net.hypixel.skyblock.nms.nmsutil.packetlistener.metrics.Metrics;
 import net.hypixel.skyblock.nms.pingrep.PingAPI;
 import net.hypixel.skyblock.npc.impl.SkyblockNPCManager;
-import net.hypixel.skyblock.database.SQLDatabase;
-import net.hypixel.skyblock.database.SQLRegionData;
-import net.hypixel.skyblock.database.SQLWorldData;
 
 import java.io.File;
 import java.io.IOException;
@@ -199,6 +196,8 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
             SMaterial.loadItems();
             sendMessage("&aConverting CraftRecipes into custom recipes...");
             Recipe.loadRecipes();
+            sendMessage("&aLoading recipes from database...");
+            RecipeDatabase.loadRecipes();
             sendMessage("&aHooking SkyBlockEngine to PlaceholderAPI and registering...");
             if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
                 new SkyblockPlaceholder().register();

@@ -37,10 +37,12 @@ public class CraftingTableGUI extends GUI implements BlockBasedGUI {
                     return;
                 }
                 final ItemStack result = inventory.getItem(24);
+
                 if (result == null || result.getType() == Material.AIR) {
                     return;
                 }
                 final SItem item = SItem.find(result);
+                item.setAmount(result.getAmount());
                 if (!shift) {
                     if (e.getCursor() != null && e.getCursor().getType() != Material.AIR) {
                         SItem cursor = SItem.find(e.getCursor());

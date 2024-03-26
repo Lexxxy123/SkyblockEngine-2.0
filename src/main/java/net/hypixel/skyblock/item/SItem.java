@@ -752,6 +752,10 @@ public class SItem implements Cloneable, ConfigurationSerializable {
         return SUtil.setSItemAmount(of(SMaterial.getSpecEquivalent(stack.getType(), stack.getDurability())), stack.getAmount());
     }
 
+    public static SItem find(ItemStack stack , int amount){
+        return SUtil.setSItemAmount(find(stack) , stack.getAmount());
+    }
+
     private static SItem of(NBTTagCompound compound, ItemStack stack) {
         SMaterial type = SMaterial.getMaterial(compound.getString("type"));
         NBTTagCompound data = new NBTTagCompound();
