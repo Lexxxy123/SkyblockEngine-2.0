@@ -1,6 +1,7 @@
 package net.hypixel.skyblock.api.protocol;
 
 import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.entity.StaticWardenManager;
 import net.hypixel.skyblock.features.enchantment.EnchantmentType;
 import net.hypixel.skyblock.features.slayer.SlayerQuest;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
@@ -132,62 +133,14 @@ public class PacketInvoker {
                 return;
             }
         }
-        owner.sendMessage(Sputnik.trans("&dA wild &5&lVoidling's Altar &dapproached! Do you want to challenge it? &6&lSHIFT &r&dand walk through the altar to summon the boss! The Altar will despawn in &c30s"));
-        final ArmorStand drop = (ArmorStand) owner.getWorld().spawn(loc.clone().add(0.0, -1.4, 0.0), (Class) ArmorStand.class);
-        drop.getWorld().playEffect(drop.getLocation(), Effect.EXPLOSION_HUGE, 1);
-        drop.setVisible(false);
-        drop.setGravity(false);
-        drop.setCustomNameVisible(true);
-        drop.setCustomName(Sputnik.trans("&d&lVoidling's Altar"));
-        drop.setMetadata("ss_drop", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        drop.getEquipment().setHelmet(SItem.of(SMaterial.NUKEKUBI).getStack());
+        owner.sendMessage(Sputnik.trans("&5&lYou challenged the Voidling's Warden Boss! It is spawning..."));
+        SlayerQuest.playBossSpawn(loc.add(0.0, 2.0, 0.0), null);
         SUtil.delay(() -> {
-            if (!drop.isDead()) {
-                drop.remove();
-            }
-        }, 600L);
-        new BukkitRunnable() {
-            public void run() {
-                if (drop.isDead()) {
-                    this.cancel();
-                    return;
-                }
-                if (owner.getWorld() != drop.getWorld()) {
-                    drop.remove();
-                    this.cancel();
-                    return;
-                }
-                if (drop.isDead()) {
-                    this.cancel();
-                    return;
-                }
-                if (!owner.getWorld().getEntities().contains(drop)) {
-                    this.cancel();
-                    return;
-                }
-                if (!owner.isOnline()) {
-                    drop.remove();
-                    this.cancel();
-                    return;
-                }
-                PacketInvoker.invokeChannel(drop, drop.getWorld(), owner);
-                owner.spigot().playEffect(drop.getLocation().add(0.0, 1.0, 0.0), Effect.WITCH_MAGIC, 0, 1, (float) SUtil.random(-1.0, 1.0), 1.0f, (float) SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
-                for (final Entity e : drop.getNearbyEntities(0.07, 0.07, 0.07)) {
-                    if (e instanceof Player && e == owner && ((Player) e).isSneaking()) {
-                        owner.sendMessage(Sputnik.trans("&5&lYou challenged the Voidling's Warden Boss! It is spawning..."));
-                        SlayerQuest.playBossSpawn(drop.getLocation().clone().add(0.0, 2.0, 0.0), null);
-                        SUtil.delay(() -> {
-                            final Object val$drop = drop;
-                            final Object val$owner = owner;
-                            final SEntity e2 = new SEntity(drop.getLocation().clone().add(0.0, 1.5, 0.0), SEntityType.VOIDLINGS_WARDEN);
-                            e2.getEntity().setMetadata("owner", new FixedMetadataValue(SkyBlock.getPlugin(), owner.getUniqueId()));
-                            ((CraftZombie) e2.getEntity()).setTarget(owner);
-                        }, 30L);
-                        drop.remove();
-                    }
-                }
-            }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
+            final SEntity e2 = new SEntity(loc.clone().add(0.0, 1.5, 0.0), SEntityType.VOIDLINGS_WARDEN);
+            e2.getEntity().setMetadata("owner", new FixedMetadataValue(SkyBlock.getPlugin(), owner.getUniqueId()));
+            StaticWardenManager.WARDEN = e2;
+            ((CraftZombie) e2.getEntity()).setTarget(owner);
+        }, 30L);
     }
 
     public static void dropT34Pet(final Player owner, final Location loc) {

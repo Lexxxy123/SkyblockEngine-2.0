@@ -1,6 +1,8 @@
 package net.hypixel.skyblock.item;
 
 import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.api.protocol.PacketInvoker;
+import net.hypixel.skyblock.entity.StaticWardenManager;
 import net.hypixel.skyblock.features.collection.ItemCollection;
 import net.hypixel.skyblock.features.enchantment.Enchantment;
 import net.hypixel.skyblock.features.enchantment.EnchantmentType;
@@ -568,6 +570,126 @@ public class ItemListener extends PListener {
     }
 
     @EventHandler
+    public void onFrameInteractWarden(PlayerInteractEvent e) {
+        if (Action.RIGHT_CLICK_BLOCK != e.getAction()) {
+            return;
+        }
+        Player player = e.getPlayer();
+        Block block = e.getClickedBlock();
+        ItemStack hand = e.getItem();
+        if (null == hand) {
+            return;
+        }
+        SItem item = SItem.find(hand);
+        if (null == item) {
+            return;
+        }
+        if (Material.ENDER_PORTAL_FRAME != block.getType()) {
+            return;
+        }
+        SBlock sBlock = SBlock.getBlock(block.getLocation());
+        if (null == sBlock) {
+            e.setCancelled(true);
+            return;
+        }
+        if (SMaterial.WARDEN_SUMMONING_FRAME != sBlock.getType()) {
+            e.setCancelled(true);
+            return;
+        }
+        if (!block.hasMetadata("placer")) {
+            if (SMaterial.HIDDEN_DEMONS_PEARL != item.getType()) {
+                return;
+            }
+            block.setMetadata("placer", new FixedMetadataValue(this.plugin, player.getUniqueId()));
+            BlockState state = block.getState();
+            state.setRawData((byte) 4);
+            state.update();
+            player.getInventory().setItemInHand(SItem.of(SMaterial.SLEEPING_EYE).getStack());
+            List<Location> locations = StaticWardenManager.EYES.containsKey(player.getUniqueId()) ? StaticWardenManager.EYES.get(player.getUniqueId()) : new ArrayList<Location>();
+            locations.add(block.getLocation());
+            StaticWardenManager.EYES.remove(player.getUniqueId());
+            StaticWardenManager.EYES.put(player.getUniqueId(), locations);
+            int quantity = 0;
+            for (List<Location> ls : StaticWardenManager.EYES.values()) {
+                quantity += ls.size();
+            }
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                if (p.getWorld().getName().equals("world")) {
+                    p.sendMessage(ChatColor.DARK_PURPLE + "☬ " + ChatColor.GREEN + player.getName() + ChatColor.LIGHT_PURPLE + " placed a Warden Summoning Eye! " + ((5 == quantity) ? "Brace yourselves! " : "") + ChatColor.GRAY + "(" + ((5 == quantity) ? ChatColor.GREEN : ChatColor.YELLOW) + quantity + ChatColor.GRAY + "/" + ChatColor.GREEN + "5" + ChatColor.GRAY + ")");
+                }
+            }
+            if (5 != quantity) {
+                return;
+            }
+            List<UUID> cleared = new ArrayList<UUID>();
+            for (List<Location> ls2 : StaticWardenManager.EYES.values()) {
+                for (Location location : ls2) {
+                    Block b = location.getBlock();
+                    List<MetadataValue> values = b.getMetadata("placer");
+                    Player p2 = Bukkit.getPlayer((UUID) values.get(0).value());
+                    if (null == p2) {
+                        continue;
+                    }
+                    if (cleared.contains(p2.getUniqueId())) {
+                        continue;
+                    }
+                    PlayerInventory inventory = p2.getInventory();
+                    for (int i = 0; i < inventory.getSize(); ++i) {
+                        SItem si = SItem.find(inventory.getItem(i));
+                        if (null != si) {
+                            if (SMaterial.SLEEPING_EYE == si.getType()) {
+                                inventory.setItem(i, SItem.of(SMaterial.REMNANT_OF_THE_EYE).getStack());
+                            }
+                        }
+                    }
+                    p2.sendMessage(ChatColor.DARK_PURPLE + "Your Sleeping Eyes have been awoken by the magic of the Voidlings Warden. They are now Remnants of the Eye!");
+                    cleared.add(p2.getUniqueId());
+                }
+            }
+            StaticWardenManager.ACTIVE = true;
+            block.getWorld().playSound(block.getLocation(), Sound.ENDERMAN_STARE, 50.0f, -2.0f);
+            new BukkitRunnable() {
+                public void run() {
+                    block.getWorld().playSound(block.getLocation(), Sound.ENDERDRAGON_DEATH, 50.0f, -2.0f);
+                }
+            }.runTaskLater(this.plugin, 90L);
+            new BukkitRunnable() {
+                public void run() {
+                    for (int i = 0; 3 > i; ++i) {
+                        block.getWorld().playSound(block.getLocation(), Sound.EXPLODE, 50.0f, -2.0f);
+                    }
+                    Location loc = new Location(Bukkit.getWorld("world"), -583, 27 , -325);
+                    PacketInvoker.dropVoidSpawner(player, loc);
+                }
+            }.runTaskLater(this.plugin, 180L);
+        } else {
+            List<MetadataValue> values2 = block.getMetadata("placer");
+            Player p3 = Bukkit.getPlayer((UUID) values2.get(0).value());
+            if (null == p3) {
+                return;
+            }
+            if (SMaterial.SLEEPING_EYE != item.getType()) {
+                return;
+            }
+            if (!p3.getUniqueId().equals(player.getUniqueId())) {
+                player.sendMessage(ChatColor.RED + "You can only recover Warden Summoning Eyes that you placed!");
+                return;
+            }
+            if (StaticWardenManager.ACTIVE) {
+                player.sendMessage(ChatColor.RED + "You cannot recover Warden Summoning Eyes after the Voidlings Warden has been summoned!");
+                return;
+            }
+            block.removeMetadata("placer", this.plugin);
+            BlockState state2 = block.getState();
+            state2.setRawData((byte) 0);
+            state2.update();
+            player.getInventory().setItemInHand(SItem.of(SMaterial.HIDDEN_DEMONS_PEARL).getStack());
+            StaticWardenManager.EYES.get(p3.getUniqueId()).remove(block.getLocation());
+            player.sendMessage(ChatColor.DARK_PURPLE + "You recovered a Warden Summoning Eye!");
+        }
+    }
+
+    @EventHandler
     public void onFrameInteract(PlayerInteractEvent e) {
         if (Action.RIGHT_CLICK_BLOCK != e.getAction()) {
             return;
@@ -612,7 +734,7 @@ public class ItemListener extends PListener {
                 quantity += ls.size();
             }
             for (Player p : Bukkit.getOnlinePlayers()) {
-                if (p.getWorld().getName().equals("dragon")) {
+                if (p.getWorld().getName().equals("world")) {
                     p.sendMessage(ChatColor.DARK_PURPLE + "☬ " + ChatColor.GREEN + player.getName() + ChatColor.LIGHT_PURPLE + " placed a Summoning Eye! " + ((8 == quantity) ? "Brace yourselves! " : "") + ChatColor.GRAY + "(" + ((8 == quantity) ? ChatColor.GREEN : ChatColor.YELLOW) + quantity + ChatColor.GRAY + "/" + ChatColor.GREEN + "8" + ChatColor.GRAY + ")");
                 }
             }

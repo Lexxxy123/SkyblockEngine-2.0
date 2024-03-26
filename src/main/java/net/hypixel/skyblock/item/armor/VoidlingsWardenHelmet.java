@@ -80,7 +80,7 @@ public class VoidlingsWardenHelmet implements MaterialFunction, SkullStatistics,
 
     @Override
     public String getURL() {
-        return "f5f2d5029ffa4fe1138dd63a0822fdb384b67de4697bba1cf898664f56878736";
+        return "bd86e123a0a3803bd4d629450ff066b509018ff1fe7b3db62047eca729771950";
     }
 
     @Override

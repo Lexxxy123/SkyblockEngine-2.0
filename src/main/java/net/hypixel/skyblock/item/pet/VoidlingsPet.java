@@ -35,12 +35,12 @@ public class VoidlingsPet extends Pet {
         List<PetAbility> abilities = new ArrayList<PetAbility>(Collections.singletonList(new PetAbility() {
             @Override
             public String getName() {
-                return "Voidling's Summoner";
+                return "Voidling Killer";
             }
 
             @Override
             public List<String> getDescription(SItem instance) {
-                return Arrays.asList("Gives you a chance to summon " + ChatColor.DARK_PURPLE + "Voidling's", ChatColor.DARK_PURPLE + "Altars " + ChatColor.GRAY + "while killing " + ChatColor.LIGHT_PURPLE + "Voidling Extremist", Sputnik.trans("&4☠ &cRequires &5Enderman Slayer 6."));
+                return Arrays.asList("Helps you to defeat " + ChatColor.DARK_PURPLE + "Voidlings", ChatColor.DARK_PURPLE + "Warden " + ChatColor.GRAY + "And Boost Your " + ChatColor.LIGHT_PURPLE + "Stats", Sputnik.trans("&4☠ &cRequires &5Enderman Slayer 6."));
             }
 
             @Override
@@ -56,7 +56,7 @@ public class VoidlingsPet extends Pet {
 
                 @Override
                 public List<String> getDescription(SItem instance) {
-                    BigDecimal e = new BigDecimal(0.3 * level).setScale(1, RoundingMode.HALF_EVEN);
+                    BigDecimal e = new BigDecimal(0.9 * level).setScale(1, RoundingMode.HALF_EVEN);
                     return Collections.singletonList(Sputnik.trans("&7Take &a" + e.toPlainString() + "% &7less damage from ender mobs."));
                 }
 
@@ -82,12 +82,12 @@ public class VoidlingsPet extends Pet {
 
     @Override
     public String getURL() {
-        return "99e01b3a35ae3be4483b6df69b7070bd6dc75b399d7e2ebbc7b8840332f7b3a0";
+        return "9a519f6fcb59d40c7f88809295b139fb300295ad450ef6e8a4e0f0acca0dfbdd";
     }
 
     @Override
     public String getDisplayName() {
-        return "Voidling's Micron";
+        return "Voidling Destroyer";
     }
 
     @Override
@@ -102,12 +102,12 @@ public class VoidlingsPet extends Pet {
 
     @Override
     public double getPerCritDamage() {
-        return 0.01;
+        return 1.1;
     }
 
     @Override
     public double getPerStrength() {
-        return 2.0;
+        return 500.0;
     }
 
     @Override

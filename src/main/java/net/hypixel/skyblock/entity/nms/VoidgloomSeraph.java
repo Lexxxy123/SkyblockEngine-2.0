@@ -664,6 +664,7 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
         if (4 == this.tier) {
             revFlesh = SUtil.random(50, 64);
         }
+        drops.add(new EntityDrop(SMaterial.HIDDEN_DEMONS_PEARL, EntityDropType.RARE, 0.5));
         drops.add(new EntityDrop(SUtil.setStackAmount(SItem.of(SMaterial.NULL_SPHERE).getStack(), revFlesh), EntityDropType.GUARANTEED, 1.0));
         if (2 <= this.tier) {
             drops.add(new EntityDrop(SMaterial.SUMMONING_EYE, EntityDropType.EXTRAORDINARILY_RARE, 0.0033333333333333335, Bukkit.getPlayer(this.getSpawnerUUID())));
