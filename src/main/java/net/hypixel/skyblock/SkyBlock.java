@@ -218,7 +218,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
             sendMessage("&aContinued by GodSpunky (C) 2024");
             sendMessage("&aAny illegal usage will be suppressed! DO NOT LEAK IT!");
             sendMessage("&a===================================");
-           // startPopulators();
+            startPopulators();
             this.getCommand("setrank").setExecutor(new SetRankCommand());
 
             long end = System.currentTimeMillis();
@@ -344,39 +344,38 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
     }
 
     private void startPopulators() {
-        new EntityPopulator(20, 30, 200L, SEntityType.ENCHANTED_DIAMOND_SKELETON, RegionType.OBSIDIAN_SANCTUARY).start();
-        new EntityPopulator(20, 30, 200L, SEntityType.ENCHANTED_DIAMOND_ZOMBIE, RegionType.OBSIDIAN_SANCTUARY).start();
-        new EntityPopulator(20, 30, 200L, SEntityType.DIAMOND_ZOMBIE, RegionType.DIAMOND_RESERVE).start();
-        new EntityPopulator(20, 30, 200L, SEntityType.DIAMOND_SKELETON, RegionType.DIAMOND_RESERVE).start();
-        new EntityPopulator(20, 30, 200L, SEntityType.SMALL_SLIME, RegionType.SLIMEHILL).start();
-        new EntityPopulator(20, 30, 200L, SEntityType.MEDIUM_SLIME, RegionType.SLIMEHILL).start();
-        new EntityPopulator(20, 30, 400L, SEntityType.LARGE_SLIME, RegionType.SLIMEHILL).start();
-        new EntityPopulator(20, 30, 400L, SEntityType.PIGMAN, RegionType.PIGMENS_DEN).start();
-        new EntityPopulator(20, 30, 400L, SEntityType.LAPIS_ZOMBIE, RegionType.LAPIS_QUARRY).start();
-        new EntityPopulator(20, 30, 400L, SEntityType.SNEAKY_CREEPER, RegionType.GUNPOWDER_MINES).start();
-        new EntityPopulator(20, 30, 300L, SEntityType.WEAK_ENDERMAN, RegionType.THE_END).start();
-        new EntityPopulator(20, 30, 300L, SEntityType.ENDERMAN, RegionType.THE_END).start();
-        new EntityPopulator(20, 30, 300L, SEntityType.STRONG_ENDERMAN, RegionType.THE_END).start();
-        new EntityPopulator(20, 30, 200L, SEntityType.ZEALOT, RegionType.DRAGONS_NEST).start();
+        new EntityPopulator(5, 10, 200L, SEntityType.ENCHANTED_DIAMOND_SKELETON, RegionType.OBSIDIAN_SANCTUARY).start();
+        new EntityPopulator(5, 10, 200L, SEntityType.ENCHANTED_DIAMOND_ZOMBIE, RegionType.OBSIDIAN_SANCTUARY).start();
+        new EntityPopulator(5, 10, 200L, SEntityType.DIAMOND_ZOMBIE, RegionType.DIAMOND_RESERVE).start();
+        new EntityPopulator(5, 10, 200L, SEntityType.DIAMOND_SKELETON, RegionType.DIAMOND_RESERVE).start();
+        new EntityPopulator(5, 15, 200L, SEntityType.SMALL_SLIME, RegionType.SLIMEHILL).start();
+        new EntityPopulator(5, 10, 200L, SEntityType.MEDIUM_SLIME, RegionType.SLIMEHILL).start();
+        new EntityPopulator(5, 5, 400L, SEntityType.LARGE_SLIME, RegionType.SLIMEHILL).start();
+        new EntityPopulator(5, 30, 400L, SEntityType.PIGMAN, RegionType.PIGMENS_DEN).start();
+        new EntityPopulator(5, 30, 400L, SEntityType.LAPIS_ZOMBIE, RegionType.LAPIS_QUARRY).start();
+        new EntityPopulator(5, 10, 400L, SEntityType.SNEAKY_CREEPER, RegionType.GUNPOWDER_MINES).start();
+        new EntityPopulator(6, 20, 300L, SEntityType.WEAK_ENDERMAN, RegionType.THE_END_NEST).start();
+        new EntityPopulator(6, 20, 300L, SEntityType.ENDERMAN, RegionType.THE_END_NEST).start();
+        new EntityPopulator(6, 20, 300L, SEntityType.STRONG_ENDERMAN, RegionType.THE_END_NEST).start();
+        new EntityPopulator(10, 30, 200L, SEntityType.ZEALOT, RegionType.DRAGONS_NEST).start();
         new EntityPopulator(1, 5, 1200L, SEntityType.ENDER_CHEST_ZEALOT, RegionType.DRAGONS_NEST).start();
-        new EntityPopulator(20, 30, 200L, SEntityType.WATCHER, RegionType.DRAGONS_NEST).start();
-        new EntityPopulator(20, 30, 200L, SEntityType.OBSIDIAN_DEFENDER, RegionType.DRAGONS_NEST).start();
-        new EntityPopulator(20, 30, 300L, SEntityType.SPLITTER_SPIDER, RegionType.SPIDERS_DEN_HIVE).start();
-        new EntityPopulator(20, 30, 300L, SEntityType.WEAVER_SPIDER, RegionType.SPIDERS_DEN_HIVE).start();
-        new EntityPopulator(20, 30, 300L, SEntityType.VORACIOUS_SPIDER, RegionType.SPIDERS_DEN_HIVE).start();
-        new EntityPopulator(20, 30, 300L, SEntityType.SPIDER_JOCKEY, RegionType.SPIDERS_DEN_HIVE).start();
-        new EntityPopulator(20, 30, 300L, SEntityType.DASHER_SPIDER, RegionType.SPIDERS_DEN_HIVE).start();
-        new EntityPopulator(20, 30, 300L, SEntityType.HIGH_LEVEL_SKELETON, RegionType.HIGH_LEVEL, world -> world.getTime() >= 13188L && world.getTime() <= 22812L).start();
-
-        new EntityPopulator(20, 30, 200L, SEntityType.ZOMBIE, RegionType.GRAVEYARD).start();
-        new EntityPopulator(20, 30, 200L, SEntityType.ZOMBIE_VILLAGER, RegionType.GRAVEYARD).start();
-        new EntityPopulator(20, 30, 200L, SEntityType.WOLF, RegionType.RUINS).start();
-        new EntityPopulator(20, 30, 200L, SEntityType.OLD_WOLF, RegionType.RUINS).start();
-        new EntityPopulator(20, 30, 200L, SEntityType.CRYPT_GHOUL, RegionType.COAL_MINE_CAVES).start();
-        new EntityPopulator(10, 30, 200L, SEntityType.GOLDEN_GHOUL, RegionType.COAL_MINE_CAVES).start();
-        new EntityPopulator(10, 30, 200L, SEntityType.SOUL_OF_THE_ALPHA, RegionType.HOWLING_CAVE).start();
-        new EntityPopulator(20, 30, 200L, SEntityType.HOWLING_SPIRIT, RegionType.HOWLING_CAVE).start();
-        new EntityPopulator(10, 30, 200L, SEntityType.PACK_SPIRIT, RegionType.HOWLING_CAVE).start();
+        new EntityPopulator(5, 20, 200L, SEntityType.WATCHER, RegionType.DRAGONS_NEST).start();
+        new EntityPopulator(5, 10, 200L, SEntityType.OBSIDIAN_DEFENDER, RegionType.DRAGONS_NEST).start();
+        new EntityPopulator(5, 20, 300L, SEntityType.SPLITTER_SPIDER, RegionType.SPIDERS_DEN_HIVE).start();
+        new EntityPopulator(5, 20, 300L, SEntityType.WEAVER_SPIDER, RegionType.SPIDERS_DEN_HIVE).start();
+        new EntityPopulator(5, 20, 300L, SEntityType.VORACIOUS_SPIDER, RegionType.SPIDERS_DEN_HIVE).start();
+        new EntityPopulator(5, 20, 300L, SEntityType.SPIDER_JOCKEY, RegionType.SPIDERS_DEN_HIVE).start();
+        new EntityPopulator(5, 20, 300L, SEntityType.DASHER_SPIDER, RegionType.SPIDERS_DEN_HIVE).start();
+        new EntityPopulator(5, 10, 300L, SEntityType.HIGH_LEVEL_SKELETON, RegionType.HIGH_LEVEL, world -> world.getTime() >= 13188L && world.getTime() <= 22812L).start();
+        new EntityPopulator(5, 15, 200L, SEntityType.ZOMBIE, RegionType.GRAVEYARD).start();
+        new EntityPopulator(5, 15, 200L, SEntityType.ZOMBIE_VILLAGER, RegionType.GRAVEYARD).start();
+        new EntityPopulator(5, 20, 200L, SEntityType.WOLF, RegionType.RUINS).start();
+        new EntityPopulator(2, 4, 200L, SEntityType.OLD_WOLF, RegionType.RUINS).start();
+        new EntityPopulator(5, 30, 200L, SEntityType.CRYPT_GHOUL, RegionType.COAL_MINE_CAVES).start();
+        new EntityPopulator(1, 1, 200L, SEntityType.GOLDEN_GHOUL, RegionType.COAL_MINE_CAVES).start();
+        new EntityPopulator(4, 4, 200L, SEntityType.SOUL_OF_THE_ALPHA, RegionType.HOWLING_CAVE).start();
+        new EntityPopulator(5, 15, 200L, SEntityType.HOWLING_SPIRIT, RegionType.HOWLING_CAVE).start();
+        new EntityPopulator(5, 15, 200L, SEntityType.PACK_SPIRIT, RegionType.HOWLING_CAVE).start();
     }
 
     private void loadSerializableClasses() {

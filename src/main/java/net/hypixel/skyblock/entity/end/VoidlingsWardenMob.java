@@ -2,8 +2,7 @@ package net.hypixel.skyblock.entity.end;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import net.hypixel.skyblock.SkyBlock;
-import net.hypixel.skyblock.entity.EntityDrop;
-import net.hypixel.skyblock.entity.EntityDropType;
+import net.hypixel.skyblock.entity.*;
 import net.hypixel.skyblock.entity.zombie.BaseZombie;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import net.hypixel.skyblock.features.enchantment.EnchantmentType;
@@ -28,8 +27,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
-import net.hypixel.skyblock.entity.SEntity;
-import net.hypixel.skyblock.entity.SEntityEquipment;
 import net.hypixel.skyblock.api.protocol.PacketInvoker;
 import net.hypixel.skyblock.item.SItem;
 import net.hypixel.skyblock.item.SMaterial;
@@ -78,7 +75,7 @@ public class VoidlingsWardenMob extends BaseZombie {
         this.tb = Sputnik.spawnDialougeBox(entity, 2.1);
         final AttributeInstance followRange = ((CraftLivingEntity) entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
         followRange.setValue(40.0);
-        final PlayerDisguise pl = Sputnik.applyPacketNPC(entity, "ewogICJ0aW1lc3RhbXAiIDogMTU5MzcxOTA2Njc2NSwKICAicHJvZmlsZUlkIiA6ICIyZGM3N2FlNzk0NjM0ODAyOTQyODBjODQyMjc0YjU2NyIsCiAgInByb2ZpbGVOYW1lIiA6ICJzYWR5MDYxMCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS81ZjI5NjU1YjE2ZjE1NTNjOTMzZDExMGNmOWM5Y2JmYjUxYzljY2IzMDZlZDZiYzI4NWNmZjI5ZjdmMDkyOTY3IgogICAgfQogIH0KfQ==", "shcQcCt+Scwb7+7jc3Ys2dRL6w+TTVCHhqV6d+oljDxD0FMZrUKZQ1IDIUF0dgptIjD3ptwVJ+2hzaiV7t1h28wNnv28KK1VbaLHOIi5CNTN/kKGFOEtrs2i3ycfG6L9jSSKx0HBMpmChoQo68JQ8LpKrL73x0z+1pHiIw5BFMnHWe3CrGR3QthwL1qvhtR+100sZTHHhziAJnhkiu4usPlxkWwfymw+HF9UQFDHTCMyn8aC/BfqdaCGw/fS5L+JHeiXa5yiscGwrcvnnNfg5A4o/U+W2NpoLWOxE7YVViV5NBXlFQtKzGW8XxxYvM7UkcxaLj9KheBm4RAyHX8Pzp5uc7lx06bexfrViVbnVcH3yUp+OXXuIGEoWT1lAbGreaWhQlN/gSwdAHc8nLI5R2Qt9ML3CxuMWbSv++/dw0S3CuyZ6ER0V1ckCp8ebuI6N3Lkgr1ef1jreRMz3uw/9tM5xa1CF4OCCIzDdZtgpuSLlkbBrPNvm7rwswxsQkr98GRlXZktFLaJCHIuzp4NZGmjTuuCu1r1yolqDKzso3y7edcCSa60WqyJwlqKO3viiRm5aZAWI1czPMeh4AiUyjEu5Yf2t3cyLTkbcScB0Zn6bmcAJ0PHi3Ik+wiH8SNFPrkJ//NW10YZwzmnz0j+Oi5AIHFF20Lm89Ka0OGb6wY=", true);
+        final PlayerDisguise pl = Sputnik.applyPacketNPC(entity, "eyJ0aW1lc3RhbXAiOjE1ODY3NzE2NDQzMDksInByb2ZpbGVJZCI6ImZkNjBmMzZmNTg2MTRmMTJiM2NkNDdjMmQ4NTUyOTlhIiwicHJvZmlsZU5hbWUiOiJSZWFkIiwic2lnbmF0dXJlUmVxdWlyZWQiOnRydWUsInRleHR1cmVzIjp7IlNLSU4iOnsidXJsIjoiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS85YTUxOWY2ZmNiNTlkNDBjN2Y4ODgwOTI5NWIxMzlmYjMwMDI5NWFkNDUwZWY2ZThhNGUwZjBhY2NhMGRmYmRkIn19fQ==", "rqcOQovxdPBFIBxVHLmGk46I+tOKZ/KQYKdfgYy0+di1Do1Hz65iUwHkmhTSxq8rvYJSvhpT93nmT16n8/gaVI+AGFd4rxGoj3Q0u7AuR+E+y0XRn4VYIwAmkK6oA/cR5hdG5dHKeWS59ieKGKp44GH1LkW7MwhIqakKvlJT4zMh7mqlbm56wHBLrKZ12VONGcIdUG69Nfc+OqEnREzCe4yF8iOsW365m04NiyHL0vRzPZ+VLN4SqHjLwVcRhRDSosjzg0c+QV77tyexaSqdArPpgAkjDNOjgyKoUUuuj8GQGstd/ogAmTLK/pfKiI00Pb1giGvl1t5NadIGFw3sdCYNywUEToAsWEuq73Odiim2Gdz6pfhNTYdmDyG0lZjOPxk2VhtbCuA9WIg0jna1Kx9YJuzbe8EPbucM+zcPK7jITVHdOwtQT/nAmy+xaKqORtp2TGlxDvKY+YWO6ZSe/0Vw3ZWZfyE77rPvkK70phRRfB+iTV31UVrdZBZLe0i9VSTtZp4zs7dtgFSFJdoOmDTQik1DwEhA+Cmw4gLnolMU6hKXpcSKREBF7u7njW/PpmKBxWTVH4Z2nCU5VlXCugumvjfg9cKIBijkZlj4lGR6cYMiOJRU9gEEpcTEH0xrS+DMSAdE+sU4KZzLslLz6cqwlnZtkrW6jHQH+VnOCfQ=", true);
         pl.getWatcher().setRightClicking(false);
         entity.setMetadata("NoAffect", new FixedMetadataValue(SkyBlock.getPlugin(), true));
         entity.setMetadata("LD", new FixedMetadataValue(SkyBlock.getPlugin(), true));
@@ -589,10 +586,8 @@ public class VoidlingsWardenMob extends BaseZombie {
 
     @Override
     public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
+        StaticWardenManager.endFight();
         final LivingEntity entity = sEntity.getEntity();
-        if (entity.hasMetadata("owner") && Bukkit.getPlayer(UUID.fromString(entity.getMetadata("owner").get(0).asString())) != null) {
-            PacketInvoker.dropEye(Bukkit.getPlayer(UUID.fromString(entity.getMetadata("owner").get(0).asString())), sEntity.getEntity().getLocation(), SUtil.random(1, 4));
-        }
     }
 
     public List<EntityDrop> drops() {
@@ -608,12 +603,11 @@ public class VoidlingsWardenMob extends BaseZombie {
             SItem fatalBook = SItem.of(SMaterial.ENCHANTED_BOOK);
             fatalBook.addEnchantment(EnchantmentType.FATAL_TEMPO, 1);
             drops.add(new EntityDrop(fatalBook.getStack(), EntityDropType.CRAZY_RARE, 4.0E-4));
-            drops.add(new EntityDrop(SMaterial.HIDDEN_DEMONS_PEARL, EntityDropType.INSANE_RARE, 2.2222222222222223E-4));
-            drops.add(new EntityDrop(SMaterial.HIDDEN_ETHERWARP_CONDUIT, EntityDropType.CRAZY_RARE, 0.002));
-            drops.add(new EntityDrop(SMaterial.JUDGEMENT_CORE, EntityDropType.CRAZY_RARE, 0.001));
-            drops.add(new EntityDrop(SMaterial.HIDDEN_GYRO_EYE, EntityDropType.CRAZY_RARE, 0.001));
-            drops.add(new EntityDrop(SMaterial.HIDDEN_VOIDLINGS_PET, EntityDropType.EXTRAORDINARILY_RARE, 0.0001));
-            drops.add(new EntityDrop(SMaterial.HIDDEN_VOIDLINGS_WARDEN_HELMET, EntityDropType.CRAZY_RARE, 0.00001));
+            drops.add(new EntityDrop(SMaterial.HIDDEN_DEMONS_PEARL, EntityDropType.RARE, 0.5));
+            drops.add(new EntityDrop(SMaterial.HIDDEN_ETHERWARP_CONDUIT, EntityDropType.CRAZY_RARE, 0.02));
+            drops.add(new EntityDrop(SMaterial.JUDGEMENT_CORE, EntityDropType.CRAZY_RARE, 0.01));
+            drops.add(new EntityDrop(SMaterial.HIDDEN_VOIDLINGS_PET, EntityDropType.EXTRAORDINARILY_RARE, 0.01));
+            drops.add(new EntityDrop(SMaterial.HIDDEN_VOIDLINGS_WARDEN_HELMET, EntityDropType.CRAZY_RARE, 0.001));
         return drops;
     }
 }

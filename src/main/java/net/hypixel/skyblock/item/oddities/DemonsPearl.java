@@ -27,12 +27,12 @@ public class DemonsPearl implements MaterialStatistics, MaterialFunction, SkullS
 
     @Override
     public String getLore() {
-        return "A Deep Dark Ender Pearl containing mystical powers from the Voidlings, dropped from the " + ChatColor.DARK_PURPLE + "Voidgloom Seraph";
+        return "A Deep Dark Ender Pearl containing mystical powers from the Voidlings, dropped from the " + ChatColor.DARK_PURPLE + "Voidgloom Seraph " + ChatColor.GRAY + "Use this at the " + ChatColor.DARK_PURPLE + "Ender Altar" + ChatColor.GRAY + " in the " + ChatColor.DARK_PURPLE + "Void Sepulture" + ChatColor.GRAY + " to summon Voidlings Warden!";
     }
 
     @Override
     public String getURL() {
-        return "38be8abd66d09a58ce12d377544d726d25cad7e979e8c2481866be94d3b32f";
+        return "9e62a317f2e8f349a27e296ce225b9e8b127d88be61aaebf16604bfa2ad81308";
     }
 
     @Override

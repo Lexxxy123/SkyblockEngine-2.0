@@ -670,8 +670,10 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
         }
         if (3 <= this.tier) {
             drops.add(new EntityDrop(SMaterial.HIDDEN_ETHERWARP_MERGER, EntityDropType.EXTRAORDINARILY_RARE, 5.0E-4, Bukkit.getPlayer(this.getSpawnerUUID())));
+            drops.add(new EntityDrop(SMaterial.HIDDEN_DEMONS_PEARL, EntityDropType.RARE, 0.5));
         }
         if (4 <= this.tier) {
+            drops.add(new EntityDrop(SMaterial.HIDDEN_DEMONS_PEARL, EntityDropType.RARE, 0.5));
             SItem endBook = SItem.of(SMaterial.ENCHANTED_BOOK);
             endBook.addEnchantment(EnchantmentType.ENDER_SLAYER, 15);
             drops.add(new EntityDrop(endBook.getStack(), EntityDropType.CRAZY_RARE, 0.002, Bukkit.getPlayer(this.getSpawnerUUID())));
@@ -681,7 +683,6 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
             SItem fatalBook = SItem.of(SMaterial.ENCHANTED_BOOK);
             fatalBook.addEnchantment(EnchantmentType.FATAL_TEMPO, 1);
             drops.add(new EntityDrop(fatalBook.getStack(), EntityDropType.CRAZY_RARE, 4.0E-4, Bukkit.getPlayer(this.getSpawnerUUID())));
-            drops.add(new EntityDrop(SMaterial.HIDDEN_DEMONS_PEARL, EntityDropType.INSANE_RARE, 2.2222222222222223E-4, Bukkit.getPlayer(this.getSpawnerUUID())));
             drops.add(new EntityDrop(SMaterial.HIDDEN_ETHERWARP_CONDUIT, EntityDropType.CRAZY_RARE, 0.002, Bukkit.getPlayer(this.getSpawnerUUID())));
             drops.add(new EntityDrop(SMaterial.JUDGEMENT_CORE, EntityDropType.CRAZY_RARE, 0.001, Bukkit.getPlayer(this.getSpawnerUUID())));
             drops.add(new EntityDrop(SMaterial.HIDDEN_GYRO_EYE, EntityDropType.CRAZY_RARE, 0.001, Bukkit.getPlayer(this.getSpawnerUUID())));

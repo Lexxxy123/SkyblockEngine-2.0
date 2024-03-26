@@ -320,6 +320,9 @@ public enum SMaterial {
     GUNGA_PET(Material.SKULL_ITEM, GungaPet.class),
     SLEEPING_EYE(Material.SKULL_ITEM, SleepingEye.class),
     SUMMONING_FRAME(Material.ENDER_PORTAL_FRAME, SummoningFrame.class),
+
+    WARDEN_SUMMONING_EYE(Material.SKULL_ITEM, WardenSummoningEye.class),
+    WARDEN_SUMMONING_FRAME(Material.ENDER_PORTAL_FRAME, WardenSummoningFrame.class),
     AIR(Material.AIR),
     STONE(Material.STONE, Stone.class, true),
     GRASS_BLOCK(Material.GRASS),
