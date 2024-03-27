@@ -18,7 +18,7 @@ public class QuantumfluxPowerOrb extends PowerOrb {
 
     @Override
     public String getURL() {
-        return "b0c945ead0e4dcdcf8f74afe55a12fdbad38d11b5a2aee1cc777ee880adcb7a1";
+        return "6201ae1a8a04df52656f5e4813e1fbcf97877dbbfbc4268d04316d6f9f753";
     }
 
     @Override

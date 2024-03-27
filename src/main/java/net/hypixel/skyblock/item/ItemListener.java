@@ -878,7 +878,7 @@ public class ItemListener extends PListener {
         if (item.hasMetadata("obtained")) {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 if (p.getWorld().getName().equals("world")) {
-                    if (!sItem.getFullName().equals("§6Ender Dragon") && !sItem.getFullName().equals("§5Ender Dragon")) {
+                    if (!sItem.getFullName().equals("§6Ender Dragon") && !sItem.getFullName().equals("§5Ender Dragon") || !sItem.getFullName().equals("§6Voidling Destroyer")) {
                         p.sendMessage(ChatColor.GREEN + player.getName() + ChatColor.YELLOW + " has obtained " + sItem.getFullName() + ChatColor.YELLOW + "!");
                     } else {
                         p.sendMessage(ChatColor.GREEN + player.getName() + ChatColor.YELLOW + " has obtained " + ChatColor.GRAY + "[Lvl 1] " + sItem.getFullName() + ChatColor.YELLOW + "!");

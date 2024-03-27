@@ -15,7 +15,7 @@ public class EndDragonFightCommand extends SCommand {
     public void run(final CommandSource sender, final String[] args) {
         final Player player = sender.getPlayer();
         final World world = player.getWorld();
-        if (world.getName().equalsIgnoreCase("dragon")) {
+        if (world.getName().equalsIgnoreCase("world")) {
             if (StaticDragonManager.ACTIVE) {
                 this.send(ChatColor.GREEN + "Processing...");
                 SUtil.delay(() -> StaticDragonManager.endFight(), 10L);

@@ -84,10 +84,8 @@ public enum SMaterial {
     HIDDEN_DONATOR_HELMET(Material.STAINED_GLASS, DonatorHelmet.class, (short) 14),
     HIDDEN_GYROKINETIC_WAND(Material.BLAZE_ROD, GyrokineticWand.class),
     HIDDEN_GOLDEN_TIGER_2022(Material.SKULL_ITEM, GoldenTigerPet.class),
-    HIDDEN_CHIMMY_PET(Material.SKULL_ITEM, ChimmyPet.class),
     HIDDEN_ARCHIVY(Material.SKULL_ITEM, ArchivyPet.class),
     HIDDEN_ARAGORN_PET(Material.SKULL_ITEM, AragornPet.class),
-    HIDDEN_KP56_PET(Material.SKULL_ITEM, KP56Pet.class),
     HIDDEN_MAGICIVY(Material.SKULL_ITEM, MagicivyPet.class),
     HIDDEN_USSR_T34_TANK_PET(Material.SKULL_ITEM, TankPet.class),
     HIDDEN_REFINED_POWDER(Material.SULPHUR, RefinedPowder.class),
@@ -317,7 +315,6 @@ public enum SMaterial {
     SPIRIT_RUNE(Material.SKULL_ITEM, SpiritRune.class),
     COUTURE_RUNE(Material.SKULL_ITEM, CoutureRune.class),
     ENDERMAN_PET(Material.SKULL_ITEM, EndermanPet.class),
-    GUNGA_PET(Material.SKULL_ITEM, GungaPet.class),
     SLEEPING_EYE(Material.SKULL_ITEM, SleepingEye.class),
     SUMMONING_FRAME(Material.ENDER_PORTAL_FRAME, SummoningFrame.class),
 

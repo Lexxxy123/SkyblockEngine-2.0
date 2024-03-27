@@ -86,7 +86,7 @@ public final class PlayerUtils {
         final User user = User.getUser(player.getUniqueId());
         final Pet.PetItem active = user.getActivePet();
         int level = 0;
-        Pet pet = (Pet) SMaterial.GUNGA_PET.getGenericInstance();
+        Pet pet = (Pet) SMaterial.HIDDEN_VOIDLINGS_PET.getGenericInstance();
         final DoublePlayerStatistic strength = statistics.getStrength();
         final DoublePlayerStatistic intelligence = statistics.getIntelligence();
         final DoublePlayerStatistic speed = statistics.getSpeed();

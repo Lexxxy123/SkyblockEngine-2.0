@@ -3,6 +3,7 @@ package net.hypixel.skyblock.entity.end;
 import com.google.common.util.concurrent.AtomicDouble;
 import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.entity.*;
+import net.hypixel.skyblock.entity.dragon.Dragon;
 import net.hypixel.skyblock.entity.zombie.BaseZombie;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import net.hypixel.skyblock.features.enchantment.EnchantmentType;
@@ -36,10 +37,7 @@ import net.hypixel.skyblock.util.EntityManager;
 import net.hypixel.skyblock.util.SUtil;
 import net.hypixel.skyblock.util.Sputnik;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class VoidlingsWardenMob extends BaseZombie {
     private ArmorStand tb;
@@ -586,11 +584,131 @@ public class VoidlingsWardenMob extends BaseZombie {
 
     @Override
     public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
-        StaticWardenManager.endFight();
-        final LivingEntity entity = sEntity.getEntity();
+        Map<UUID, List<Location>> eyes = new HashMap<UUID, List<Location>>(StaticWardenManager.EYES);
+        SUtil.delay(() -> StaticWardenManager.endFight(), 500L);
+        StringBuilder message = new StringBuilder();
+        message.append(org.bukkit.ChatColor.GREEN).append(org.bukkit.ChatColor.BOLD).append("▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬\n");
+        message.append(org.bukkit.ChatColor.GOLD).append(org.bukkit.ChatColor.BOLD).append("                 ").append(sEntity.getStatistics().getEntityName().toUpperCase()).append(" DOWN!\n \n");
+        List<Map.Entry<UUID, Double>> damageDealt = new ArrayList<Map.Entry<UUID, Double>>(sEntity.getDamageDealt().entrySet());
+        damageDealt.sort((Comparator<? super Map.Entry<UUID, Double>>) Map.Entry.<Object, Comparable>comparingByValue());
+        Collections.reverse(damageDealt);
+        String name = null;
+        if (damager instanceof Player) {
+            name = damager.getName();
+        }
+        if (damager instanceof Arrow && ((Arrow) damager).getShooter() instanceof Player) {
+            name = ((Player) ((Arrow) damager).getShooter()).getName();
+        }
+        if (null != name) {
+            message.append("            ").append(org.bukkit.ChatColor.GREEN).append(name).append(org.bukkit.ChatColor.GRAY).append(" dealt the final blow.\n \n");
+        }
+        for (int i = 0; i < Math.min(3, damageDealt.size()); ++i) {
+            message.append("\n");
+            Map.Entry<UUID, Double> d = damageDealt.get(i);
+            int place = i + 1;
+            switch (place) {
+                case 1:
+                    message.append("        ").append(org.bukkit.ChatColor.YELLOW);
+                    break;
+                case 2:
+                    message.append("        ").append(org.bukkit.ChatColor.GOLD);
+                    break;
+                case 3:
+                    message.append("        ").append(org.bukkit.ChatColor.RED);
+                    break;
+            }
+            message.append(org.bukkit.ChatColor.BOLD).append(place);
+            switch (place) {
+                case 1:
+                    message.append("st");
+                    break;
+                case 2:
+                    message.append("nd");
+                    break;
+                case 3:
+                    message.append("rd");
+                    break;
+            }
+            message.append(" Damager").append(org.bukkit.ChatColor.RESET).append(org.bukkit.ChatColor.GRAY).append(" - ").append(org.bukkit.ChatColor.GREEN).append(Bukkit.getOfflinePlayer(d.getKey()).getName()).append(org.bukkit.ChatColor.GRAY).append(" - ").append(org.bukkit.ChatColor.YELLOW).append(SUtil.commaify(d.getValue().intValue()));
+        }
+        message.append("\n \n").append("         ").append(org.bukkit.ChatColor.RESET).append(org.bukkit.ChatColor.YELLOW).append("Your Damage: ").append("%s").append(org.bukkit.ChatColor.RESET).append("\n").append("             ").append(org.bukkit.ChatColor.YELLOW).append("Runecrafting Experience: ").append(org.bukkit.ChatColor.LIGHT_PURPLE).append("N/A").append(org.bukkit.ChatColor.RESET).append("\n \n");
+        message.append(org.bukkit.ChatColor.GREEN).append(org.bukkit.ChatColor.BOLD).append("▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            int place = -1;
+            int damage = 0;
+            for (int j = 0; j < damageDealt.size(); ++j) {
+                Map.Entry<UUID, Double> d2 = damageDealt.get(j);
+                if (d2.getKey().equals(player.getUniqueId())) {
+                    place = j + 1;
+                    damage = d2.getValue().intValue();
+                }
+            }
+            if (player.getWorld().getName().equals("world")) {
+                player.sendMessage(String.format(message.toString(), (-1 != place) ? (org.bukkit.ChatColor.GREEN + SUtil.commaify(damage) + org.bukkit.ChatColor.GRAY + " (Position #" + place + ")") : (org.bukkit.ChatColor.RED + "N/A" + org.bukkit.ChatColor.GRAY + " (Position #N/A)")));
+            }
+        }
+        new BukkitRunnable() {
+            public void run() {
+                for (int i = 0; i < damageDealt.size(); ++i) {
+                    Map.Entry<UUID, Double> d = damageDealt.get(i);
+                    Player player = Bukkit.getPlayer(d.getKey());
+                    if (null != player) {
+                        int weight = 0;
+                        if (eyes.containsKey(player.getUniqueId())) {
+                            weight += Math.min(400, eyes.get(player.getUniqueId()).size() * 100);
+                        }
+                        if (0 == i) {
+                            weight += 300;
+                        }
+                        if (1 == i) {
+                            weight += 250;
+                        }
+                        if (2 == i) {
+                            weight += 200;
+                        }
+                        if (3 <= i && 6 >= i) {
+                            weight += 125;
+                        }
+                        if (7 <= i && 14 >= i) {
+                            weight += 100;
+                        }
+                        if (15 <= i) {
+                            weight += 75;
+                        }
+                        List<VoidlingsWardenMob.Drop> possibleMajorDrops = new ArrayList<VoidlingsWardenMob.Drop>();
+                        SEntityType type = sEntity.getSpecType();
+                        SUtil.addIf(new VoidlingsWardenMob.Drop(SMaterial.HIDDEN_VOIDLINGS_WARDEN_HELMET, 450), possibleMajorDrops, 450 <= weight);
+                        SUtil.addIf(new VoidlingsWardenMob.Drop(SMaterial.HIDDEN_VOIDLINGS_PET, 450), possibleMajorDrops, 450 <= weight);
+                        SUtil.addIf(new VoidlingsWardenMob.Drop(SMaterial.HIDDEN_ETHERWARP_CONDUIT, 450), possibleMajorDrops, 450 <= weight);
+                        int remainingWeight = weight;
+                        if (0 < possibleMajorDrops.size()) {
+                            VoidlingsWardenMob.Drop drop = possibleMajorDrops.get(SUtil.random(0, possibleMajorDrops.size() - 1));
+                            SMaterial majorDrop = drop.getMaterial();
+                            remainingWeight -= drop.getWeight();
+                            if (null != majorDrop) {
+                                SItem sItem = SItem.of(majorDrop);
+                                if (!sItem.getFullName().equals("§6Voidling Destroyer")) {
+                                    Item item = SUtil.spawnPersonalItem(sItem.getStack(), killed.getLocation(), player);
+                                    item.setMetadata("obtained", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+                                    item.setCustomNameVisible(true);
+                                    item.setCustomName(item.getItemStack().getAmount() + "x " + sItem.getFullName());
+                                } else {
+                                    Item item = SUtil.spawnPersonalItem(sItem.getStack(), killed.getLocation(), player);
+                                    item.setMetadata("obtained", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+                                    item.setCustomNameVisible(true);
+                                    item.setCustomName(item.getItemStack().getAmount() + "x " + org.bukkit.ChatColor.GRAY + "[Lvl 1] " + sItem.getFullName());
+                                }
+                            }
+                        }
+                        List<VoidlingsWardenMob.Drop> minorDrops = new ArrayList<VoidlingsWardenMob.Drop>(Arrays.asList(new VoidlingsWardenMob.Drop(SMaterial.ENDER_PEARL, 0), new VoidlingsWardenMob.Drop(SMaterial.ENCHANTED_ENDER_PEARL, 0)));
+                        SUtil.addIf(new VoidlingsWardenMob.Drop(SMaterial.HIDDEN_DEMONS_PEARL, 22), minorDrops, 22 <= weight);
+                    }
+                }
+            }
+        }.runTaskLater(SkyBlock.getPlugin(), 200L);
     }
 
-    public List<EntityDrop> drops() {
+   /* public List<EntityDrop> drops() {
         List<EntityDrop> drops = new ArrayList<EntityDrop>();
         int revFlesh = SUtil.random(50, 64);
         drops.add(new EntityDrop(SUtil.setStackAmount(SItem.of(SMaterial.NULL_SPHERE).getStack(), revFlesh), EntityDropType.GUARANTEED, 1.0));
@@ -609,5 +727,35 @@ public class VoidlingsWardenMob extends BaseZombie {
             drops.add(new EntityDrop(SMaterial.HIDDEN_VOIDLINGS_PET, EntityDropType.EXTRAORDINARILY_RARE, 0.01));
             drops.add(new EntityDrop(SMaterial.HIDDEN_VOIDLINGS_WARDEN_HELMET, EntityDropType.CRAZY_RARE, 0.001));
         return drops;
+    }*/
+
+    private static class Drop {
+        private final SMaterial material;
+        private final SMaterial.VagueEntityMaterial vagueEntityMaterial;
+        private final int weight;
+
+        public Drop(SMaterial material, int weight) {
+            this.material = material;
+            this.vagueEntityMaterial = null;
+            this.weight = weight;
+        }
+
+        public Drop(SMaterial.VagueEntityMaterial material, int weight, SEntityType type) {
+            this.material = material.getEntityArmorPiece(type);
+            this.vagueEntityMaterial = material;
+            this.weight = weight;
+        }
+
+        public SMaterial getMaterial() {
+            return this.material;
+        }
+
+        public SMaterial.VagueEntityMaterial getVagueEntityMaterial() {
+            return this.vagueEntityMaterial;
+        }
+
+        public int getWeight() {
+            return this.weight;
+        }
     }
 }

@@ -27,7 +27,7 @@ public class RevantusSword implements ToolStatistics, MaterialFunction {
 
     @Override
     public String getDisplayName() {
-        return "Revantus Longsword";
+        return "Dark Claymore";
     }
 
     @Override
