@@ -21,6 +21,8 @@ import net.hypixel.skyblock.entity.EntitySpawner;
 import net.hypixel.skyblock.entity.SEntityType;
 import net.hypixel.skyblock.entity.StaticDragonManager;
 import net.hypixel.skyblock.entity.nms.VoidgloomSeraph;
+import net.hypixel.skyblock.features.punishment.JoinLeaveEvent;
+import net.hypixel.skyblock.features.punishment.PlayerChat;
 import net.hypixel.skyblock.features.quest.QuestLineHandler;
 import net.hypixel.skyblock.features.ranks.SetRankCommand;
 import net.hypixel.skyblock.item.*;
@@ -341,6 +343,8 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
         new PacketListener();
         new WorldListener();
         new PlayerChatListener();
+        new PlayerChat();
+        new JoinLeaveEvent();
     }
 
     private void startPopulators() {
