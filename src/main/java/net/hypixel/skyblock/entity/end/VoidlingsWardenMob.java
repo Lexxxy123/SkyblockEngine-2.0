@@ -677,9 +677,9 @@ public class VoidlingsWardenMob extends BaseZombie {
                         }
                         List<VoidlingsWardenMob.Drop> possibleMajorDrops = new ArrayList<VoidlingsWardenMob.Drop>();
                         SEntityType type = sEntity.getSpecType();
-                        SUtil.addIf(new VoidlingsWardenMob.Drop(SMaterial.HIDDEN_VOIDLINGS_WARDEN_HELMET, 450), possibleMajorDrops, 450 <= weight);
-                        SUtil.addIf(new VoidlingsWardenMob.Drop(SMaterial.HIDDEN_VOIDLINGS_PET, 450), possibleMajorDrops, 450 <= weight);
-                        SUtil.addIf(new VoidlingsWardenMob.Drop(SMaterial.HIDDEN_ETHERWARP_CONDUIT, 450), possibleMajorDrops, 450 <= weight);
+                        SUtil.addIf(new VoidlingsWardenMob.Drop(SMaterial.HIDDEN_VOIDLINGS_PET, 600), possibleMajorDrops, 600 <= weight);
+                        SUtil.addIf(new VoidlingsWardenMob.Drop(SMaterial.HIDDEN_ETHERWARP_CONDUIT, 550), possibleMajorDrops, 550 <= weight);
+                        SUtil.addIf(new VoidlingsWardenMob.Drop(SMaterial.JUDGEMENT_CORE, 800), possibleMajorDrops, 800 <= weight);
                         int remainingWeight = weight;
                         if (0 < possibleMajorDrops.size()) {
                             VoidlingsWardenMob.Drop drop = possibleMajorDrops.get(SUtil.random(0, possibleMajorDrops.size() - 1));
@@ -708,7 +708,7 @@ public class VoidlingsWardenMob extends BaseZombie {
         }.runTaskLater(SkyBlock.getPlugin(), 200L);
     }
 
-   /* public List<EntityDrop> drops() {
+    public List<EntityDrop> drops() {
         List<EntityDrop> drops = new ArrayList<EntityDrop>();
         int revFlesh = SUtil.random(50, 64);
         drops.add(new EntityDrop(SUtil.setStackAmount(SItem.of(SMaterial.NULL_SPHERE).getStack(), revFlesh), EntityDropType.GUARANTEED, 1.0));
@@ -722,12 +722,9 @@ public class VoidlingsWardenMob extends BaseZombie {
             fatalBook.addEnchantment(EnchantmentType.FATAL_TEMPO, 1);
             drops.add(new EntityDrop(fatalBook.getStack(), EntityDropType.CRAZY_RARE, 4.0E-4));
             drops.add(new EntityDrop(SMaterial.HIDDEN_DEMONS_PEARL, EntityDropType.RARE, 0.5));
-            drops.add(new EntityDrop(SMaterial.HIDDEN_ETHERWARP_CONDUIT, EntityDropType.CRAZY_RARE, 0.02));
-            drops.add(new EntityDrop(SMaterial.JUDGEMENT_CORE, EntityDropType.CRAZY_RARE, 0.01));
-            drops.add(new EntityDrop(SMaterial.HIDDEN_VOIDLINGS_PET, EntityDropType.EXTRAORDINARILY_RARE, 0.01));
-            drops.add(new EntityDrop(SMaterial.HIDDEN_VOIDLINGS_WARDEN_HELMET, EntityDropType.CRAZY_RARE, 0.001));
+            drops.add(new EntityDrop(SMaterial.HIDDEN_SHARD_VOID,EntityDropType.RARE, 1));
         return drops;
-    }*/
+    }
 
     private static class Drop {
         private final SMaterial material;

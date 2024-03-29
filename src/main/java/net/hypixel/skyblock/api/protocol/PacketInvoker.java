@@ -1,11 +1,14 @@
 package net.hypixel.skyblock.api.protocol;
 
 import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.api.block.BlockFallAPI;
 import net.hypixel.skyblock.entity.StaticWardenManager;
+import net.hypixel.skyblock.entity.end.VoidlingsWardenMob;
 import net.hypixel.skyblock.features.enchantment.EnchantmentType;
 import net.hypixel.skyblock.features.slayer.SlayerQuest;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
@@ -24,6 +27,10 @@ import net.hypixel.skyblock.item.SMaterial;
 import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.SUtil;
 import net.hypixel.skyblock.util.Sputnik;
+import org.bukkit.util.Vector;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PacketInvoker {
     public static void dropChest(final Player owner, final Location loc) {
@@ -137,10 +144,124 @@ public class PacketInvoker {
         SlayerQuest.playBossSpawn(loc.add(0.0, 2.0, 0.0), null);
         SUtil.delay(() -> {
             final SEntity e2 = new SEntity(loc.clone().add(0.0, 1.5, 0.0), SEntityType.VOIDLINGS_WARDEN);
+            activeGyroAbi(e2.getEntity());
             e2.getEntity().setMetadata("owner", new FixedMetadataValue(SkyBlock.getPlugin(), owner.getUniqueId()));
             StaticWardenManager.WARDEN = e2;
             ((CraftZombie) e2.getEntity()).setTarget(owner);
         }, 30L);
+    }
+
+    public static void activeGyroAbi(final Entity e) {
+        final Location loc = e.getLocation().clone().add(0.0, -1.0, 0.0);
+        gyroWand(loc, 8, 6);
+        SUtil.delay(() -> gyroWand(loc, 8, 6), 5L);
+        SUtil.delay(() -> gyroWand(loc, 6, 4), 10L);
+        SUtil.delay(() -> gyroWand(loc, 4, 2), 15L);
+        SUtil.delay(() -> gyroWand(loc, 3, 1), 20L);
+        SUtil.delay(() -> gyroWand(loc, 2, 1), 25L);
+        SUtil.delay(() -> gyroWand(loc, 1, 0), 30L);
+        SUtil.delay(() -> cylinderReset(loc, 10), 32L);
+        for (int i = 0; i < 40; ++i) {
+            a(loc.clone().add(0.0, 0.3, 0.0), (float) (i * 12));
+        }
+    }
+
+    public static void gyroWand(final Location l, final int arg0, final int arg1) {
+        final Material[] mat = {Material.OBSIDIAN, Material.AIR, Material.STAINED_GLASS, Material.STAINED_CLAY, Material.AIR};
+        final Material[] mat_r = {Material.OBSIDIAN, Material.STAINED_GLASS, Material.STAINED_CLAY};
+        final List<Block> a = cylinder(l, arg0);
+        final List<Block> b = cylinder(l, arg1);
+        a.removeIf(b::contains);
+        final List<Location> aA = new ArrayList<Location>();
+        for (final Block bl2 : a) {
+            aA.add(bl2.getLocation().add(0.5, 0.0, 0.5));
+        }
+        if (arg1 != 0) {
+            for (final Location loc : aA) {
+                byte data = 0;
+                final int r = SUtil.random(0, 4);
+                final Material mats = mat[r];
+                if (mats == Material.STAINED_GLASS) {
+                    data = 2;
+                } else if (mats == Material.STAINED_CLAY) {
+                    data = 11;
+                }
+                BlockFallAPI.sendVelocityBlock(loc, mats, data, loc.getWorld(), 10, new Vector(0.0, 0.225, 0.0));
+            }
+        } else {
+            for (final Location loc : aA) {
+                byte data = 0;
+                final int r = SUtil.random(0, 2);
+                final Material mats = mat_r[r];
+                if (mats == Material.STAINED_GLASS) {
+                    data = 2;
+                } else if (mats == Material.STAINED_CLAY) {
+                    data = 11;
+                }
+                BlockFallAPI.sendVelocityBlock(loc, mats, data, loc.getWorld(), 10, new Vector(0.0, 0.225, 0.0));
+                BlockFallAPI.sendVelocityBlock(l.getBlock().getLocation().add(0.5, 0.0, 0.5), mats, data, loc.getWorld(), 10, new Vector(0.0, 0.225, 0.0));
+            }
+        }
+    }
+
+    public static void a(final Location location, final float startYaw) {
+        new BukkitRunnable() {
+            float cout = startYaw;
+            int b = 0;
+            double c = 8.0;
+
+            public void run() {
+                if (this.b >= 22) {
+                    this.cancel();
+                    return;
+                }
+                final Location loc = location.clone();
+                ++this.b;
+                loc.setYaw(this.cout);
+                loc.setPitch(0.0f);
+                if (this.c > 0.0) {
+                    this.c -= 0.3;
+                }
+                loc.add(loc.getDirection().normalize().multiply(this.c));
+                location.getWorld().spigot().playEffect(loc, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                location.getWorld().spigot().playEffect(loc, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                this.cout += 10.0f;
+            }
+        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
+    }
+
+    public static List<Block> cylinder(final Location loc, final int r) {
+        final List<Block> bl = new ArrayList<Block>();
+        final int cx = loc.getBlockX();
+        final int cy = loc.getBlockY();
+        final int cz = loc.getBlockZ();
+        final World w = loc.getWorld();
+        final int rSquared = r * r;
+        for (int x = cx - r; x <= cx + r; ++x) {
+            for (int z = cz - r; z <= cz + r; ++z) {
+                if ((cx - x) * (cx - x) + (cz - z) * (cz - z) <= rSquared) {
+                    final Location l = new Location(w, x, cy, z);
+                    bl.add(l.getBlock());
+                }
+            }
+        }
+        return bl;
+    }
+
+    public static void cylinderReset(final Location loc, final int r) {
+        final int cx = loc.getBlockX();
+        final int cy = loc.getBlockY();
+        final int cz = loc.getBlockZ();
+        final World w = loc.getWorld();
+        final int rSquared = r * r;
+        for (int x = cx - r; x <= cx + r; ++x) {
+            for (int z = cz - r; z <= cz + r; ++z) {
+                if ((cx - x) * (cx - x) + (cz - z) * (cz - z) <= rSquared) {
+                    final Location l = new Location(w, x, cy, z);
+                    l.getBlock().getState().update();
+                }
+            }
+        }
     }
 
     public static void dropT34Pet(final Player owner, final Location loc) {

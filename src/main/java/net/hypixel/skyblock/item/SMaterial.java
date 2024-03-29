@@ -141,6 +141,7 @@ public enum SMaterial {
     HIDDEN_MINICHAD_LEGGINGS(Material.LEATHER_LEGGINGS, MinichadLeggings.class),
     HIDDEN_MINICHAD_BOOTS(Material.LEATHER_BOOTS, MinichadBoots.class),
     HIDDEN_SHARD_DIAMOND(Material.SKULL_ITEM, ShardoftheDiamondOrb.class),
+    HIDDEN_SHARD_VOID(Material.SKULL_ITEM, ShardOftheVoidOrb.class),
     HIDDEN_REVANTUS_SWORD(Material.IRON_SWORD, RevantusSword.class),
     WARDEN_HELMET(Material.SKULL_ITEM, WardenHelmet.class),
     CROWN_OF_GREED(Material.GOLD_HELMET, CrownOfGreed.class),

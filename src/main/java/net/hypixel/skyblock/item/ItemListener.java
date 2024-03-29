@@ -658,7 +658,7 @@ public class ItemListener extends PListener {
                     for (int i = 0; 3 > i; ++i) {
                         block.getWorld().playSound(block.getLocation(), Sound.EXPLODE, 50.0f, -2.0f);
                     }
-                    Location loc = new Location(Bukkit.getWorld("world"), -583, 27 , -325);
+                    Location loc = new Location(Bukkit.getWorld("world"), -583, 26 , -330);
                     PacketInvoker.dropVoidSpawner(player, loc);
                 }
             }.runTaskLater(this.plugin, 180L);

@@ -293,18 +293,9 @@ public class VoidlingsWardenHelmet implements MaterialFunction, SkullStatistics,
         return false;
     }
 
-    @Override
-    public void load() {
-        final ShapedRecipe recipe = new ShapedRecipe(SMaterial.HIDDEN_VOIDLINGS_WARDEN_HELMET);
-        recipe.shape("a", "b", "c");
-        recipe.set('a', SMaterial.HIDDEN_DEMONS_PEARL, 1);
-        recipe.set('b', SMaterial.HIDDEN_COMPRESSED_VOID_FRAG, 1);
-        recipe.set('c', SMaterial.HIDDEN_COMPRESSED_BITS, 40);
-    }
-
     static {
         VoidlingsWardenHelmet.serverIterator = 0;
-        VoidlingsWardenHelmet.texture = new String[]{"f5f2d5029ffa4fe1138dd63a0822fdb384b67de4697bba1cf898664f56878736", "a6774e3f45d03db3e2e1ec415d9cba351ec7e0983567244644707cb8864f715b", "4f0ba7f9741c5cc8509db2b8ac08e3a43286714ecb596e2aa54ed1571dae03fd", "2c40b63d6b15a4da135a29a2ec5beab8d9a9419197b5f62ce63f99fd12203947", "1f205b9e08383db218e8667a2519bab162aa724faf5ead83db7ddb2c19582aa1"};
+        VoidlingsWardenHelmet.texture = new String[]{"bd86e123a0a3803bd4d629450ff066b509018ff1fe7b3db62047eca729771950"};
         VoidlingsWardenHelmet.COOLDOWN_VOIDLINGS = new HashMap<UUID, Boolean>();
         VOIDLING_SHIELD = new HashMap<UUID, Integer>();
         VOIDLING_WARDEN_BUFF = new HashMap<UUID, Boolean>();
