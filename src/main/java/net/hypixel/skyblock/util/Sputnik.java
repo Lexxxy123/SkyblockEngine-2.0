@@ -993,7 +993,7 @@ public class Sputnik {
 
     public static void startRoom(final Player player) {
 
-        final ArrayList<Player> plist = new ArrayList<Player>();
+        final ArrayList<Player> plist = new ArrayList<>();
         plist.add(player);
         SUtil.delay(() -> player.sendMessage(ChatColor.GREEN + "Entering The Catacombs Demo - Floor 6!"), 10L);
         SUtil.delay(() -> player.sendMessage(ChatColor.GRAY + "Preparing the boss for you, please wait..."), 20L);

@@ -13,6 +13,7 @@ import net.hypixel.skyblock.entity.EntityFunction;
 import net.hypixel.skyblock.entity.dungeons.watcher.Watcher;
 import net.hypixel.skyblock.entity.nms.SlayerBoss;
 import net.hypixel.skyblock.api.protocol.PacketInvoker;
+import net.hypixel.skyblock.features.requirement.AbstractRequirement;
 import net.hypixel.skyblock.item.*;
 import net.hypixel.skyblock.item.accessory.AccessoryFunction;
 import net.hypixel.skyblock.item.armor.ArmorSet;
@@ -968,6 +969,13 @@ public final class PlayerUtils {
                 if (ability.requirementsUse(player, sItem)) {
                     player.sendMessage(Sputnik.trans(ability.getAbilityReq()));
                     return;
+                }
+                if (ability.getRequirement() != null){
+                    AbstractRequirement requirement = ability.getRequirement();
+                    if (!requirement.hasRequirement(User.getUser(uuid))) {
+                        player.sendMessage(ability.getRequirement().getMessage());
+                        return;
+                    }
                 }
                 if (PlayerUtils.COOLDOWN_MAP.containsKey(uuid) && PlayerUtils.COOLDOWN_MAP.get(uuid).contains(sItem.getType())) {
                     if (ability.displayCooldown()) {

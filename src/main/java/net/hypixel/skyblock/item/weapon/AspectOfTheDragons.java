@@ -1,6 +1,9 @@
 package net.hypixel.skyblock.item.weapon;
 
 import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.features.requirement.AbstractRequirement;
+import net.hypixel.skyblock.features.requirement.SkillRequirement;
+import net.hypixel.skyblock.features.requirement.enums.SkillType;
 import net.hypixel.skyblock.item.*;
 import net.hypixel.skyblock.user.PlayerStatistics;
 import org.bukkit.ChatColor;
@@ -43,6 +46,11 @@ public class AspectOfTheDragons implements ToolStatistics, MaterialFunction, Abi
     @Override
     public SpecificItemType getSpecificType() {
         return SpecificItemType.SWORD;
+    }
+
+    @Override
+    public AbstractRequirement getRequirement() {
+        return new SkillRequirement(SkillType.COMBAT , 12);
     }
 
     @Override

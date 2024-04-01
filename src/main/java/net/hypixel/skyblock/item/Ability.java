@@ -1,5 +1,6 @@
 package net.hypixel.skyblock.item;
 
+import net.hypixel.skyblock.features.requirement.AbstractRequirement;
 import org.bukkit.entity.Player;
 
 public interface Ability {
@@ -13,6 +14,10 @@ public interface Ability {
     int getAbilityCooldownTicks();
 
     int getManaCost();
+
+    default AbstractRequirement getRequirement(){
+        return null;
+    }
 
     default AbilityActivation getAbilityActivation() {
         return AbilityActivation.RIGHT_CLICK;

@@ -13,6 +13,8 @@ public interface ToolStatistics extends PlayerBoostStatistics, Enchantable, Refo
         return false;
     }
 
+
+
     default NBTTagCompound getData() {
         return new NBTTagCompound();
     }

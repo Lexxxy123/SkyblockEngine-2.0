@@ -138,8 +138,8 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
         this.heads = new Config("heads.yml");
         this.blocks = new Config("blocks.yml");
         this.spawners = new Config("spawners.yml");
-        //authenticate();
-       // if (authenticated) {
+          authenticate();
+       if (authenticated) {
             sendMessage("&aLoading Command map...");
             try {
                 final Field f = Bukkit.getServer().getClass().getDeclaredField("commandMap");
@@ -225,9 +225,9 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
 
             long end = System.currentTimeMillis();
             sendMessage("&aSuccessfully enabled Hub Core in " + CC.getTimeDifferenceAndColor(start, end) + "&a.");
-       /* } else {
+      } else {
             throw new NullPointerException("license is not valid or empty. Please insert license in config.yml");
-        }*/
+        }
 
     }
 

@@ -20,6 +20,7 @@ import net.hypixel.skyblock.entity.nms.VoidgloomSeraph;
 import net.hypixel.skyblock.features.quest.QuestLine;
 import net.hypixel.skyblock.features.ranks.PlayerRank;
 import net.hypixel.skyblock.features.region.RegionType;
+import net.hypixel.skyblock.features.requirement.enums.SkillType;
 import net.hypixel.skyblock.item.GenericItemType;
 import net.hypixel.skyblock.item.PlayerBoostStatistics;
 import net.hypixel.skyblock.item.SItem;
@@ -759,6 +760,12 @@ public class User {
             return true;
         }
         return false;
+    }
+
+    public int getSkillLevel(SkillType type){
+        Skill skill = type.getSkill();
+        double xp = getSkillXP(skill);
+        return Skill.getLevel(xp , skill.hasSixtyLevels());
     }
 
 
