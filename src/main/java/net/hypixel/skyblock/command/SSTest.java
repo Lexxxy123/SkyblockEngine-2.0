@@ -62,7 +62,7 @@ public class SSTest extends SCommand {
                 User.getUser(player.getUniqueId()).addToCollection(ItemCollection.WHEAT, 50);
             } else if (!args[0].contains("wipe")) {
                 if (args[0].contains("vlw")) {
-                    PacketInvoker.dropVoidSpawner(player, player.getLocation());
+                  //  PacketInvoker.dropVoidSpawner(player, player.getLocation());
                 } else if (args[0].contains("bung")) {
 
                 } else if (args[0].contains("putitemstash")) {

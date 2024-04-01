@@ -289,16 +289,11 @@ public class VoidlingsWardenMob extends BaseZombie {
                     this.cancel();
                     return;
                 }
-                String playername = "&4&lUndefined!";
-                if (entity.hasMetadata("owner") && Bukkit.getPlayer(UUID.fromString(entity.getMetadata("owner").get(0).asString())) != null) {
-                    playername = "&b&l" + Bukkit.getPlayer(UUID.fromString(entity.getMetadata("owner").get(0).asString())).getName();
-                }
                 if (System.currentTimeMillis() > VoidlingsWardenMob.this.end) {
                     entity.remove();
                     this.cancel();
                     return;
                 }
-                VoidlingsWardenMob.this.say(playername + " " + ChatColor.RED + SUtil.getFormattedTime(VoidlingsWardenMob.this.end - System.currentTimeMillis(), 1000));
                 final Location loc = e.getLocation();
                 loc.setYaw(this.cout);
                 loc.setPitch(0.0f);

@@ -18,6 +18,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -43,7 +44,11 @@ public class GUIListener extends PListener {
                 }
                 if (item instanceof GUIClickableItem) {
                     final GUIClickableItem clickable = (GUIClickableItem) item;
-                    clickable.run(e);
+                    try {
+                        clickable.run(e);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
                 if (item instanceof GUIQueryItem) {
                     final GUIQueryItem query = (GUIQueryItem) item;
@@ -61,7 +66,11 @@ public class GUIListener extends PListener {
                 }
             }
         } else {
-            gui.onBottomClick(e);
+            try {
+                gui.onBottomClick(e);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
         }
         gui.update(e.getView().getTopInventory());
     }
@@ -83,7 +92,11 @@ public class GUIListener extends PListener {
     @EventHandler
     public void onGUIOpen(final GUIOpenEvent e) {
         final GUI gui = e.getOpened();
-        e.getOpened().onOpen(e);
+        try {
+            e.getOpened().onOpen(e);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
 

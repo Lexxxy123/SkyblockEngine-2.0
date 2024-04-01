@@ -62,6 +62,34 @@ public class SItem implements Cloneable, ConfigurationSerializable {
         }
     }
 
+    public void setBonusDefense(Integer nextInteger) {
+        data.setInt("bonusDefense", nextInteger);
+        update();
+    }
+    public void setNextDefense(Integer nextInteger) {
+        data.setInt("nextDefense", nextInteger);
+        update();
+    }
+    public void setRequiredKills(Integer kills) {
+        data.setInt("requiredKills", kills);
+        update();
+    }
+    public void setProgressKills(Integer kills) {
+        data.setInt("progressKills", kills);
+    }
+
+    public int getBonusDefense() {
+        return data.getInt("bonusDefense");
+    }
+    public int getRequiredKills() {
+        return data.getInt("requiredKills");
+    }
+    public int getNextDefense() { return data.getInt("nextDefense"); }
+
+    public int getProgressKills() {
+        return data.getInt("progressKills");
+    }
+
     public void enchant(boolean enchant) {
         if (enchant) {
             if (this.stack.getItemMeta().hasEnchants()) {
@@ -281,9 +309,6 @@ public class SItem implements Cloneable, ConfigurationSerializable {
     }
 
     public void setKills(Integer kills) {
-        if (!this.type.getStatistics().displayKills()) {
-            throw new UnsupportedOperationException("You cannot display kills on this item");
-        }
         this.data.setInt("kills", kills);
         this.update();
     }

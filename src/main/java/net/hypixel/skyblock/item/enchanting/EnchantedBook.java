@@ -71,7 +71,7 @@ public class EnchantedBook implements MaterialStatistics, MaterialFunction, Ench
     @Override
     public void load() {
         final SItem sitem = SItem.of(SMaterial.ENCHANTED_BOOK);
-        sitem.addEnchantment(EnchantmentType.TURBO_GEM, 1);
+        sitem.addEnchantment(EnchantmentType.ONE_FOR_ALL, 1);
         final ShapedRecipe recipe = new ShapedRecipe(sitem);
         recipe.shape("123", "456", "789");
         recipe.set('1', SMaterial.HIDDEN_DIMOON_FRAG, 8);

@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HexUltimateEnchantments extends GUI {
+
+    public boolean forceclose = false;
     private static final int[] INTERIOR = new int[]{
             12, 13, 14, 15, 16,
             21, 22, 23, 24, 25,
@@ -54,7 +56,7 @@ public class HexUltimateEnchantments extends GUI {
 
             SItem bookItem = SItem.of(SMaterial.ENCHANTED_BOOK);
 
-            bookItem.addEnchantment(type, 1);
+            bookItem.addEnchantment(type, type.maxLvl);
 
             pagedEnchantBooks.add(bookItem);
         }
@@ -179,11 +181,11 @@ public class HexUltimateEnchantments extends GUI {
             @Override
             public void run(InventoryClickEvent e) {
                 for (EnchantmentType type : selected) {
-                    item.addEnchantment(type, 5);
+                    item.addEnchantment(type, type.maxLvl);
                 }
 
                 e.getWhoClicked().sendMessage(SUtil.color("&aYou applied an Ultimate Enchantment to your " + item.getFullName()));
-
+                forceclose = true;
                 Player p = (Player) e.getWhoClicked();
                 p.playSound(p.getLocation(), Sound.ANVIL_USE, 10, 1);
 
@@ -208,8 +210,10 @@ public class HexUltimateEnchantments extends GUI {
     }
     @Override
     public void onClose(InventoryCloseEvent e){
-        if (upgradeableItem != null){
-            e.getPlayer().getInventory().addItem(upgradeableItem.getStack());
+        if(!forceclose) {
+            if (upgradeableItem != null) {
+                e.getPlayer().getInventory().addItem(upgradeableItem.getStack());
+            }
         }
     }
 

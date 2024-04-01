@@ -9,5 +9,6 @@ public enum GenericItemType {
     BLOCK,
     ITEM,
     WAND,
+    NONE,
     PET
 }

@@ -24,6 +24,8 @@ import org.bukkit.inventory.ItemStack;
 public class HexModifiersGUI extends GUI {
     SItem upgradeableItem;
 
+    public boolean forceclose = false;
+
     public HexModifiersGUI(SItem item) {
         super("The Hex -> Modifiers", 54);
         fill(BLACK_STAINED_GLASS_PANE);
@@ -58,7 +60,7 @@ public class HexModifiersGUI extends GUI {
             @Override
             public void run(InventoryClickEvent e) {
                 e.getWhoClicked().sendMessage(ChatColor.translateAlternateColorCodes('&', "&d&lSUCCESS! &r&dYou modified your " + item.getFullName() + "!"));
-
+                forceclose = true;
                 Player p = (Player) e.getWhoClicked();
                 p.playSound(p.getLocation(), Sound.ANVIL_USE, 10, 1);
 
@@ -89,8 +91,10 @@ public class HexModifiersGUI extends GUI {
     }
     @Override
     public void onClose(InventoryCloseEvent e){
-        if (upgradeableItem != null){
-            e.getPlayer().getInventory().addItem(upgradeableItem.getStack());
+        if(!forceclose) {
+            if (upgradeableItem != null) {
+                e.getPlayer().getInventory().addItem(upgradeableItem.getStack());
+            }
         }
     }
 

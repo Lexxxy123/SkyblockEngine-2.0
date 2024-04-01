@@ -22,6 +22,7 @@ import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -105,6 +106,36 @@ public class WorldListener extends PListener {
             return;
         }
         e.getDrops().clear();
+        PlayerInventory inventory = e.getEntity().getKiller().getInventory();
+
+        SItem helmet = null;
+        SItem chestplate = null;
+        SItem leggings = null;
+        SItem boots = null;
+
+        if (inventory.getHelmet() != null) {
+            helmet = SItem.find(inventory.getHelmet());
+        }
+
+        if (inventory.getChestplate() != null) {
+            chestplate = SItem.find(inventory.getChestplate());
+        }
+
+        if (inventory.getLeggings() != null) {
+            leggings = SItem.find(inventory.getLeggings());
+        }
+
+        if (inventory.getBoots() != null) {
+            boots = SItem.find(inventory.getBoots());
+        }
+        if(e.getEntity().getType() == EntityType.ENDERMAN){
+            if(helmet.getType() == SMaterial.VOIDBANE_HELMET && leggings.getType() == SMaterial.VOIDBANE_LEGGINGS && chestplate.getType() == SMaterial.VOIDBANE_CHESTPLATE && boots.getType() == SMaterial.VOIDBANE_BOOTS){
+                helmet.setKills(helmet.getDataInt("kills") + 1);
+                chestplate.setKills(chestplate.getDataInt("kills") + 1);
+                leggings.setKills(leggings.getDataInt("kills") + 1);
+                boots.setKills(boots.getDataInt("kills") + 1);
+            }
+        }
     }
 
     @EventHandler

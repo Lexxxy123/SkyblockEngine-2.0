@@ -81,6 +81,19 @@ public class ItemLore {
                     grantedDEF = Math.round(defense.getLevel() * 3.0);
                 }
             }
+            List<String> KillBonusLore = this.parent.getType().getStatistics().killReplacementLore();
+            if (KillBonusLore != null) {
+                for (String line : KillBonusLore) {
+                    String line1 = line.replaceAll("<SKYBLOCK_BONUS_DEFENSE>", String.valueOf(this.parent.getBonusDefense()))
+                            .replaceAll("<SKYBLOCK_NEXT_DEFENSE>", String.valueOf(this.parent.getNextDefense()))
+                            .replaceAll("<SKYBLOCK_CURRENT_KILLS>", String.valueOf(this.parent.getProgressKills()))
+                            .replaceAll("<SKYBLOCK_REQUIRED_KILLS>", String.valueOf(this.parent.getRequiredKills()));
+                    lore.add(SUtil.color(ChatColor.GRAY + line1));
+                }
+                if (KillBonusLore.size() != 0) {
+                    lore.add("");
+                }
+            }
             if (this.parent.getType() == SMaterial.DARK_GOGGLES) {
                 lore.add(ChatColor.GRAY + "Ability Damage: " + ChatColor.RED + "+25%");
                 lore.add("");

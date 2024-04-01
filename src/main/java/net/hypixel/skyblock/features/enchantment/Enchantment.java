@@ -62,9 +62,6 @@ public class Enchantment implements ConfigurationSerializable {
         if (this.type == EnchantmentType.VICIOUS) {
             return this.type.getDescription(this.level);
         }
-        if (this.type == EnchantmentType.TURBO_GEM) {
-            return this.type.getDescription(this.level);
-        }
         if (this.type == EnchantmentType.CHIMERA) {
             return this.type.getDescription(this.level * 20);
         }

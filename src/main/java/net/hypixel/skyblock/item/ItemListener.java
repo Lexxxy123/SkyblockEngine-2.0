@@ -647,7 +647,6 @@ public class ItemListener extends PListener {
                 }
             }
             StaticWardenManager.ACTIVE = true;
-            block.getWorld().playSound(block.getLocation(), Sound.ENDERMAN_STARE, 50.0f, -2.0f);
             new BukkitRunnable() {
                 public void run() {
                     block.getWorld().playSound(block.getLocation(), Sound.ENDERDRAGON_DEATH, 50.0f, -2.0f);

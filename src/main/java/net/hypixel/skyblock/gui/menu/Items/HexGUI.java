@@ -4,9 +4,7 @@ package net.hypixel.skyblock.gui.menu.Items;
 
 
 import net.hypixel.skyblock.SkyBlock;
-import net.hypixel.skyblock.gui.GUI;
-import net.hypixel.skyblock.gui.GUIClickableItem;
-import net.hypixel.skyblock.gui.GUIItem;
+import net.hypixel.skyblock.gui.*;
 import net.hypixel.skyblock.item.GenericItemType;
 import net.hypixel.skyblock.item.SItem;
 import net.hypixel.skyblock.item.SpecificItemType;
@@ -20,15 +18,18 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
 
 public class HexGUI extends GUI {
 
 
-
+    public boolean forceclose = false;
+    private Inventory inventory;
     SItem upgradeableItem;
 
     public HexGUI(Player player, SItem item) {
@@ -45,6 +46,8 @@ public class HexGUI extends GUI {
                     player.sendMessage(ChatColor.RED + "You must put an item into the hex to use this menu!");
                     player.playSound(player.getLocation(), Sound.VILLAGER_NO, 10, 1);
                 } else {
+                    forceclose = true;
+                   // GUIType.REFORGE_ANVIL.getGUI().open(player);
                     new HexReforgesGUI(upgradeableItem).open(player);
                     upgradeableItem = null;
                 }
@@ -72,6 +75,7 @@ public class HexGUI extends GUI {
                     player.sendMessage(ChatColor.RED + "You must put an item into the hex to use this menu!");
                     player.playSound(player.getLocation(), Sound.VILLAGER_NO, 10, 1);
                 } else {
+                    forceclose = true;
                     new HexModifiersGUI(upgradeableItem).open(player);
                     upgradeableItem = null;
                 }
@@ -101,6 +105,7 @@ public class HexGUI extends GUI {
                     player.sendMessage(ChatColor.RED + "You must put an item into the hex to use this menu!");
                     player.playSound(player.getLocation(), Sound.VILLAGER_NO, 10, 1);
                 } else {
+                    forceclose = true;
                     new HexEnchantments(upgradeableItem).open(player);
                     upgradeableItem = null;
                 }
@@ -131,6 +136,7 @@ public class HexGUI extends GUI {
                     player.sendMessage(ChatColor.RED + "You must put an item into the hex to use this menu!");
                     player.playSound(player.getLocation(), Sound.VILLAGER_NO, 10, 1);
                 } else {
+                    forceclose = true;
                     new HexUltimateEnchantments(upgradeableItem).open(player);
                     upgradeableItem = null;
                 }
@@ -156,7 +162,15 @@ public class HexGUI extends GUI {
         set(new GUIClickableItem() {
             @Override
             public void run(InventoryClickEvent e) {
-                player.sendMessage(ChatColor.RED + "Comming Soon!");
+                if (upgradeableItem == null) {
+                    player.sendMessage(ChatColor.RED + "You must put an item into the hex to use this menu!");
+                    player.playSound(player.getLocation(), Sound.VILLAGER_NO, 10, 1);
+                } else {
+                    forceclose = true;
+                    new HexBookGUI(upgradeableItem).open(player);
+                    upgradeableItem = null;
+                }
+
             }
 
             @Override
@@ -181,7 +195,12 @@ public class HexGUI extends GUI {
 
             @Override
             public ItemStack getItem() {
-                return upgradeableItem.getStack();
+                if (upgradeableItem != null) {
+                    return upgradeableItem.getStack();
+                } else {
+                    // Handle the situation when upgradeableItem is null
+                    return new ItemStack(Material.AIR); // Return a default item or null item
+                }
             }
 
             @Override
@@ -293,35 +312,38 @@ public class HexGUI extends GUI {
 
     }
 
+
     @Override
     public void onClose(InventoryCloseEvent e){
-        if (upgradeableItem != null){
-            e.getPlayer().getInventory().addItem(upgradeableItem.getStack());
+        if(!forceclose){
+            if(upgradeableItem != null){
+                e.getPlayer().getInventory().addItem(upgradeableItem.getStack());
+            }
         }
     }
 
+    @Override
+    public void onOpen(GUIOpenEvent e) throws IOException {
+        inventory = e.getInventory();
+    }
 
-//    @Override
-//    public void onClose(InventoryCloseEvent e){
-//
-//        if (e.getPlayer().getOpenInventory() != null) {
-//            if (e.getPlayer().getOpenInventory().getTitle().equals("The Hex")
-//                    || e.getPlayer().getOpenInventory().getTitle().equals("The Hex -> Modifiers")
-//                    || e.getPlayer().getOpenInventory().getTitle().equals("The Hex -> Enchantments")
-//                    || e.getPlayer().getOpenInventory().getTitle().equals("The Hex -> Ultimate Enchantments")) {
-//                   return;
-//            }else {
-//                if (upgradeableItem != null){
-//                    e.getPlayer().getInventory().addItem(upgradeableItem.getStack());
-//                }
-//            }
-//            return;
-//        }
-//
-//        if (upgradeableItem != null){
-//            e.getPlayer().getInventory().addItem(upgradeableItem.getStack());
-//        }
-//    }
+    @Override
+    public void onBottomClick(InventoryClickEvent e) {
+        ItemStack selected = e.getCurrentItem();
+        if (selected == null || selected.getType() == Material.AIR) {
+            return;
+        }
+
+        SItem item = SItem.find(selected);
+        if (item == null) {
+            item = SItem.convert(selected);
+        }
+        upgradeableItem = item;
+
+        PlayerInventory playerInventory = e.getWhoClicked().getInventory();
+        playerInventory.remove(selected);
+        inventory.setItem(22, upgradeableItem.getStack());
+    }
 
     public HexGUI(Player player) {
         this(player, null);

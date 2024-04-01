@@ -28,6 +28,8 @@ public class HexEnchantments extends GUI {
             21, 22, 23, 24, 25,
             30, 31, 32, 33, 34,
     };
+
+    public boolean forceclose = false;
     SItem upgradeableItem;
     List<EnchantmentType> selected = new ArrayList<>();
     List<EnchantmentType> exists = new ArrayList<>();
@@ -50,7 +52,7 @@ public class HexEnchantments extends GUI {
 
             SItem bookItem = SItem.of(SMaterial.ENCHANTED_BOOK);
 
-            bookItem.addEnchantment(type, 5);
+            bookItem.addEnchantment(type, type.maxLvl);
 
             pagedEnchantBooks.add(bookItem);
         }
@@ -66,6 +68,7 @@ public class HexEnchantments extends GUI {
             set(new GUIClickableItem() {
                 @Override
                 public void run(InventoryClickEvent e) {
+                    forceclose = true;
                     new HexEnchantments(item, page - 1).open((Player) e.getWhoClicked());
                    upgradeableItem = null;
                 }
@@ -85,6 +88,7 @@ public class HexEnchantments extends GUI {
             set(new GUIClickableItem() {
                 @Override
                 public void run(InventoryClickEvent e) {
+                    forceclose = true;
                     new HexEnchantments(item, page + 1).open((Player) e.getWhoClicked());
                     upgradeableItem = null;
                 }
@@ -107,6 +111,7 @@ public class HexEnchantments extends GUI {
             set(new GUIClickableItem() {
                 @Override
                 public void run(InventoryClickEvent e) {
+                    forceclose = true;
                     Player player = (Player) e.getWhoClicked();
                     player.playSound(player.getLocation(), Sound.ORB_PICKUP, 10, 2);
 
@@ -162,8 +167,9 @@ public class HexEnchantments extends GUI {
             @Override
             public void run(InventoryClickEvent e) {
                 for (EnchantmentType type : selected) {
-                    item.addEnchantment(type, 5);
+                    item.addEnchantment(type, type.maxLvl);
                 }
+                forceclose = true;
 
                 e.getWhoClicked().sendMessage(ChatColor.translateAlternateColorCodes('&', "&d&lSUCCESS! &r&dYou enchanted your " + item.getFullName() + "!"));
 
@@ -191,8 +197,10 @@ public class HexEnchantments extends GUI {
     }
     @Override
     public void onClose(InventoryCloseEvent e){
-        if (upgradeableItem != null){
-            e.getPlayer().getInventory().addItem(upgradeableItem.getStack());
+        if(!forceclose) {
+            if (upgradeableItem != null) {
+                e.getPlayer().getInventory().addItem(upgradeableItem.getStack());
+            }
         }
     }
 

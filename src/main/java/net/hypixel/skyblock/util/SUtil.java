@@ -17,9 +17,7 @@ import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.registry.WorldData;
 import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.features.enchantment.Enchantment;
-import net.hypixel.skyblock.item.GenericItemType;
-import net.hypixel.skyblock.item.Rarity;
-import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.*;
 import net.hypixel.skyblock.features.merchant.MerchantItemHandler;
 import net.hypixel.skyblock.features.potion.PotionColor;
 import net.hypixel.skyblock.features.potion.PotionEffect;
@@ -47,7 +45,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 import net.hypixel.skyblock.gui.GUI;
-import net.hypixel.skyblock.item.SMaterial;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.lang.reflect.*;
@@ -89,6 +87,15 @@ public class SUtil {
             names.add(player.getName());
         }
         return names;
+    }
+
+    public static @NotNull GenericItemType getItemType(@NotNull SMaterial material) {
+        MaterialStatistics statistics = material.getStatistics();
+        if (statistics != null) {
+            return statistics.getType();
+        }
+
+        return GenericItemType.NONE;
     }
 
     public static String getTimeDifferenceAndColor(long start, long end) {

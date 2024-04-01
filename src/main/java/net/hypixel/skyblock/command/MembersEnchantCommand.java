@@ -91,11 +91,11 @@ public class MembersEnchantCommand extends SCommand {
             this.send(ChatColor.RED + "Too high enchantment level! This enchantment is capped at level 10.");
             return;
         }
-        if (i > 8 && type == EnchantmentType.ULTIMATE_WISE) {
+        if (i > 10 && type == EnchantmentType.ULTIMATE_WISE) {
             this.send(ChatColor.RED + "Too high enchantment level! This enchantment is capped at level 8.");
             return;
         }
-        if (i > 5 && (type == EnchantmentType.SOUL_EATER || type == EnchantmentType.LIFE_STEAL || type == EnchantmentType.AIMING || type == EnchantmentType.VAMPIRISM)) {
+        if (i > 10 && (type == EnchantmentType.SOUL_EATER || type == EnchantmentType.LIFE_STEAL || type == EnchantmentType.AIMING || type == EnchantmentType.VAMPIRISM)) {
             this.send(ChatColor.RED + "Too high enchantment level! This enchantment is capped at level 5.");
             return;
         }

@@ -41,11 +41,7 @@ public class VoidlingsWardenHelmet implements MaterialFunction, SkullStatistics,
     }
 
     public static String getTexture() {
-        int index = VoidlingsWardenHelmet.serverIterator;
-        if (VoidlingsWardenHelmet.serverIterator > 4) {
-            index = 0;
-        }
-        return VoidlingsWardenHelmet.texture[index];
+        return "bd86e123a0a3803bd4d629450ff066b509018ff1fe7b3db62047eca729771950";
     }
 
     @Override
@@ -295,7 +291,6 @@ public class VoidlingsWardenHelmet implements MaterialFunction, SkullStatistics,
 
     static {
         VoidlingsWardenHelmet.serverIterator = 0;
-        VoidlingsWardenHelmet.texture = new String[]{"bd86e123a0a3803bd4d629450ff066b509018ff1fe7b3db62047eca729771950"};
         VoidlingsWardenHelmet.COOLDOWN_VOIDLINGS = new HashMap<UUID, Boolean>();
         VOIDLING_SHIELD = new HashMap<UUID, Integer>();
         VOIDLING_WARDEN_BUFF = new HashMap<UUID, Boolean>();

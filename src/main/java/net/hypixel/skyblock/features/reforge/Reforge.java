@@ -2,8 +2,10 @@ package net.hypixel.skyblock.features.reforge;
 
 import net.hypixel.skyblock.item.GenericItemType;
 import net.hypixel.skyblock.item.RarityValue;
+import net.hypixel.skyblock.item.SpecificItemType;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 public interface Reforge {
@@ -39,5 +41,9 @@ public interface Reforge {
 
     static Reforge blank() {
         return () -> "Blank";
+    }
+
+    default List<SpecificItemType> getSpecificTypes() {
+        return Arrays.asList(SpecificItemType.values());
     }
 }

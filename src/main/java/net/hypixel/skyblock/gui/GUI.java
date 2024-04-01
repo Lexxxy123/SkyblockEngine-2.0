@@ -13,6 +13,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import net.hypixel.skyblock.item.SMaterial;
 
+import java.io.IOException;
 import java.util.*;
 
 public abstract class GUI {
@@ -208,7 +209,7 @@ public abstract class GUI {
     public void update(final Inventory inventory) {
     }
 
-    public void onOpen(final GUIOpenEvent e) {
+    public void onOpen(final GUIOpenEvent e) throws IOException {
     }
 
     public void onClose(final InventoryCloseEvent e) {
@@ -217,7 +218,7 @@ public abstract class GUI {
     public void early(final Player player) {
     }
 
-    public void onBottomClick(final InventoryClickEvent e) {
+    public void onBottomClick(final InventoryClickEvent e) throws IOException {
     }
 
     public void onTopClick(final InventoryClickEvent e) {

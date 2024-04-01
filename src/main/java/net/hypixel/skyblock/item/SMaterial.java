@@ -4,6 +4,10 @@ import lombok.Getter;
 import net.hypixel.skyblock.entity.SEntityType;
 import net.hypixel.skyblock.item.accessory.*;
 import net.hypixel.skyblock.item.armor.*;
+import net.hypixel.skyblock.item.armor.enderman.VoidbaneBoots;
+import net.hypixel.skyblock.item.armor.enderman.VoidbaneChestplate;
+import net.hypixel.skyblock.item.armor.enderman.VoidbaneHelmet;
+import net.hypixel.skyblock.item.armor.enderman.VoidbaneLeggings;
 import net.hypixel.skyblock.item.armor.gigachad.*;
 import net.hypixel.skyblock.item.armor.hardened.HardenedDiamondBoots;
 import net.hypixel.skyblock.item.armor.hardened.HardenedDiamondChestplate;
@@ -248,9 +252,32 @@ public enum SMaterial {
     AUTO_RECOMBOBULATOR(Material.SKULL_ITEM, AutoRecombobulator.class),
     PERFECT_TALISMAN(Material.SKULL_ITEM, PerfectTalisman.class),
     PIGGY_BANK(Material.SKULL_ITEM, PiggyBank.class),
+
+    VOIDBANE_HELMET(Material.SKULL_ITEM, VoidbaneHelmet.class),
+    VOIDBANE_CHESTPLATE(Material.LEATHER_CHESTPLATE, VoidbaneChestplate.class),
+    VOIDBANE_LEGGINGS(Material.LEATHER_LEGGINGS, VoidbaneLeggings.class),
+    VOIDBANE_BOOTS(Material.LEATHER_BOOTS, VoidbaneBoots.class),
+
+    BAT_ARTIFACT(Material.SKULL_ITEM, BatArtifact.class),
+    JERRY_ARTIFACT(Material.SKULL_ITEM, GoldenJerryArtifact.class),
+    JACOBUS_REGISTER(Material.SKULL_ITEM, JacobusRegister.class),
+    RED_CLAW_ARTIFACT(Material.SKULL_ITEM, RedClawArtifact.class),
+    TARANTULA_TALISMAN(Material.SKULL_ITEM, TarantulaTalisman.class),
+    DEVOUR_RING(Material.SKULL_ITEM, DevourRing.class),
+    SPEED_ARTIFACT(Material.SKULL_ITEM, SpeedArtifact.class),
+    LYNX_TALISMAN(Material.SKULL_ITEM, LynxTalisman.class),
+    DANTE_TALISMAN(Material.SKULL_ITEM, DanteTalisman.class),
+    TREASURE_ARTIFACT(Material.SKULL_ITEM, TreasureArtifact.class),
+    SLOTH_HAT_OF_CELEBRATION(Material.SKULL_ITEM, SlothHatOfCelebration.class),
+    RING_OF_LOVE(Material.SKULL_ITEM, RingOfLove.class),
+    HEGEMONY_ARTIFACT(Material.SKULL_ITEM, HegemonyArtifact.class),
+    GOLD_GIFT_TALISMAN(Material.SKULL_ITEM, GoldGiftTalisman.class),
+    ENDER_RELIC(Material.SKULL_ITEM, EnderRelic.class),
+    CRAB_HAT_OF_CELEBRATION(Material.SKULL_ITEM, CrabHatOfCelebration.class),
+    CANDY_RELIC(Material.SKULL_ITEM, CandyRelic.class),
+    ARTIFACT_OF_CONTROL(Material.SKULL_ITEM, ArtifactOfControl.class),
     CRACKED_PIGGY_BANK(Material.SKULL_ITEM, CrackedPiggyBank.class),
     BROKEN_PIGGY_BANK(Material.SKULL_ITEM, BrokenPiggyBank.class),
-    TARANTULA_TALISMAN(Material.SKULL_ITEM, TarantulaTalisman.class),
     FARMING_TALISMAN(Material.SKULL_ITEM, FarmingTalisman.class),
     ENCHANTED_BONE(Material.BONE, EnchantedBone.class),
     ENCHANTED_OBSIDIAN(Material.OBSIDIAN, EnchantedObsidian.class),

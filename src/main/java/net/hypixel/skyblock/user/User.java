@@ -2,7 +2,9 @@ package net.hypixel.skyblock.user;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import com.mongodb.client.MongoCollection;
+import de.tr7zw.nbtapi.NBTItem;
 import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.api.serializer.BukkitSerializeClass;
 import net.hypixel.skyblock.features.auction.AuctionBid;
 import net.hypixel.skyblock.features.auction.AuctionEscrow;
 import net.hypixel.skyblock.features.auction.AuctionItem;
@@ -49,6 +51,7 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftHumanEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -58,6 +61,8 @@ import net.hypixel.skyblock.gui.PetsGUI;
 import net.hypixel.skyblock.item.SMaterial;
 import net.hypixel.skyblock.listener.PlayerListener;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -65,6 +70,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class User {
+
+    private static final File USER_FOLDER;
     public static final int ISLAND_SIZE = 125;
     public static final Map<UUID, User> USER_CACHE;
     private static final SkyBlock plugin;
@@ -335,7 +342,11 @@ public class User {
     public void loadStatic() {
         Player player = Bukkit.getPlayer(this.uuid);
         User user = getUser(this.uuid);
-        // todo : fix it
+        try {
+            loadPlayerData();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         PlayerUtils.AUTO_SLAYER.put(player.getUniqueId(), true);
         PetsGUI.setShowPets(player, true);
     }
@@ -381,6 +392,16 @@ public class User {
                             .append("remaining", effect.getRemaining());
                     effects.add(effectDocument);
                 }
+                Map<String, Object> data = new HashMap<>();
+                data.put("armor", BukkitSerializeClass.itemStackArrayToBase64(player.getInventory().getArmorContents()));
+                data.put("enderchest", getPureListFrom(player.getEnderChest()));
+                data.put("minecraft_xp", Sputnik.getTotalExperience(player));
+                data.put("lastslot", player.getInventory().getHeldItemSlot());
+                data.put("inventory", getPureListFrom(player.getInventory()));
+                ItemStack[] is = new ItemStack[stashedItems.size()];
+                is = stashedItems.toArray(is);
+                data.put("stash", BukkitSerializeClass.itemStackArrayToBase64(is));
+                setDataProperty("data", data);
                 setDataProperty("totalfloor6run" , totalfloor6run);
                 setDataProperty("sadanCollections" , sadancollections);
                 setDataProperty("effects", effects);
@@ -458,6 +479,68 @@ public class User {
         return future;
     }
 
+    public void loadPlayerData() throws IllegalArgumentException, IOException {
+        Player player = Bukkit.getPlayer(this.uuid);
+        MongoCollection<Document> collection = DatabaseManager.getCollection("users").join();
+        Document query = new Document("_id", uuid.toString());
+        Document document = collection.find(query).first();
+        Document databaseDocument;
+        if (document.containsKey("data")) {
+            databaseDocument = (Document) document.get("data");
+        } else {
+            databaseDocument = document;
+        }
+        if (databaseDocument.containsKey("inventory")) {
+            player.getInventory().setContents(BukkitSerializeClass.itemStackArrayFromBase64(databaseDocument.getString("inventory")));
+        } else {
+            player.getInventory().setContents(new ItemStack[player.getInventory().getSize()]);
+        }
+        if (databaseDocument.containsKey("enderchest")) {
+            player.getEnderChest().setContents(BukkitSerializeClass.itemStackArrayFromBase64(databaseDocument.getString("enderchest")));
+        } else {
+            player.getInventory().setContents(new ItemStack[player.getEnderChest().getSize()]);
+        }
+        if (databaseDocument.containsKey("armor")) {
+            player.getInventory().setArmorContents(BukkitSerializeClass.itemStackArrayFromBase64(databaseDocument.getString("armor")));
+        } else {
+            player.getInventory().setContents(new ItemStack[player.getInventory().getArmorContents().length]);
+        }
+        if (databaseDocument.containsKey("minecraft_xp")) {
+            Sputnik.setTotalExperience(player, databaseDocument.getInteger("minecraft_xp"));
+        }
+        if (document.containsKey("stash")) {
+            ItemStack[] arr = new ItemStack[0];
+            try {
+                arr = BukkitSerializeClass.itemStackArrayFromBase64(databaseDocument.getString("stash"));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            this.stashedItems = Arrays.asList(arr);
+        } else {
+            this.stashedItems = new ArrayList<ItemStack>();
+        }
+        //this.loadEconomy();
+        if (document.containsKey("lastslot")) {
+            player.getInventory().setHeldItemSlot(document.getInteger("lastslot"));
+        }
+    }
+
+
+    public String getPureListFrom(Inventory piv) {
+        ItemStack[] ist = piv.getContents();
+        List<ItemStack> arraylist = Arrays.asList(ist);
+        for (int i = 0; i < ist.length; ++i) {
+            ItemStack stack = ist[i];
+            if (stack != null) {
+                NBTItem nbti = new NBTItem(stack);
+                if (nbti.hasKey("dontSaveToProfile")) {
+                    arraylist.remove(i);
+                }
+            }
+        }
+        ItemStack[] arrl = (ItemStack[]) arraylist.toArray();
+        return BukkitSerializeClass.itemStackArrayToBase64(arrl);
+    }
 
 
 
@@ -635,6 +718,11 @@ public class User {
 
         if (found == null) {
             save();
+            try {
+                loadPlayerData();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             found = collection.find(query).first();
         }
 
@@ -1220,6 +1308,10 @@ public class User {
         }
     }
 
+    public static File getDataDirectory() {
+        return USER_FOLDER;
+    }
+
     public void damageEntityBowEman(final Damageable entity1, double damage, final Player player, final Arrow a) {
         if (VoidgloomSeraph.HIT_SHIELD.containsKey(entity1)) {
             VoidgloomSeraph.HIT_SHIELD.put(entity1, VoidgloomSeraph.HIT_SHIELD.get(entity1) - 1);
@@ -1327,6 +1419,52 @@ public class User {
             player.setFireTicks(0);
             this.kill(cause, entity);
         }
+
+        double damageReductionPercentage;
+        double removeableDefenseAgainstEnderman = 0;
+
+        if (SItem.find(player.getInventory().getHelmet()) != null) {
+            if (SItem.find(player.getInventory().getHelmet()).getBonusDefense() > 0 && SItem.find(player.getInventory().getHelmet()).getType().equals(SMaterial.VOIDBANE_HELMET)) {
+                removeableDefenseAgainstEnderman += SItem.find(player.getInventory().getHelmet()).getBonusDefense();
+            }
+        }
+
+        if (SItem.find(player.getInventory().getChestplate()) != null) {
+            if (SItem.find(player.getInventory().getChestplate()).getBonusDefense() > 0 && SItem.find(player.getInventory().getChestplate()).getType().equals(SMaterial.VOIDBANE_CHESTPLATE)) {
+                removeableDefenseAgainstEnderman += SItem.find(player.getInventory().getChestplate()).getBonusDefense();
+            }
+        }
+
+        if (SItem.find(player.getInventory().getLeggings()) != null) {
+            if (SItem.find(player.getInventory().getLeggings()).getBonusDefense() > 0 && SItem.find(player.getInventory().getLeggings()).getType().equals(SMaterial.VOIDBANE_LEGGINGS)) {
+                removeableDefenseAgainstEnderman += SItem.find(player.getInventory().getLeggings()).getBonusDefense();
+            }
+        }
+
+        if (SItem.find(player.getInventory().getBoots()) != null) {
+            if (SItem.find(player.getInventory().getBoots()).getBonusDefense() > 0 && SItem.find(player.getInventory().getBoots()).getType().equals(SMaterial.VOIDBANE_BOOTS)) {
+                removeableDefenseAgainstEnderman += SItem.find(player.getInventory().getBoots()).getBonusDefense();
+            }
+        }
+
+        if (removeableDefenseAgainstEnderman > 0 && !(entity instanceof Enderman)) {
+            damageReductionPercentage = (double) statistics.getMaxHealth().addAll() * ((((double) statistics.getDefense().addAll() - removeableDefenseAgainstEnderman )+ 100.0) / 100.0);
+        } else {
+            damageReductionPercentage = (double) statistics.getMaxHealth().addAll() * ((((double) statistics.getDefense().addAll() )+ 100.0) / 100.0);
+        }
+
+        double damageReduction = damageReductionPercentage / 100.0;
+
+        double damageAfterReduction = d * (1 - damageReduction);
+
+        if ((player.getHealth() + human.getAbsorptionHearts()) - damageAfterReduction <= 0.0d) {
+            kill(cause, entity);
+            return;
+        }
+
+        double actualDamage = Math.max(0.0d, damageAfterReduction - human.getAbsorptionHearts());
+
+        player.setHealth(Math.max(0.0d, player.getHealth() - actualDamage));
     }
 
     public void damage(final double d) {
@@ -1764,5 +1902,6 @@ public class User {
     static {
         USER_CACHE = new HashMap<UUID, User>();
         plugin = SkyBlock.getPlugin();
+        USER_FOLDER = new File(plugin.getDataFolder(), "./users");
     }
 }

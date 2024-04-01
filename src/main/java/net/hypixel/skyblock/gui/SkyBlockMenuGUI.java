@@ -292,6 +292,25 @@ public class SkyBlockMenuGUI extends GUI {
                 return SUtil.getSkullURLStack(ChatColor.GREEN + "Quiver", "4cb3acdc11ca747bf710e59f4c8e9b3d949fdd364c6869831ca878f0763d1787", 1, ChatColor.GRAY + "A masterfully crafted Quiver", ChatColor.GRAY + "which holds any kind of", ChatColor.GRAY + "projectile you can think of!", " ", ChatColor.YELLOW + "Click to open!");
             }
         });
+
+        set(new GUIClickableItem() {
+            @Override
+            public void run(InventoryClickEvent e) {
+                new AccessoryReforges().open((Player) e.getWhoClicked());
+            }
+
+            @Override
+            public ItemStack getItem() {
+                return SUtil.getStack(Sputnik.trans("&6Accessory Bag Reforge"), Material.ANVIL, (short) 0, 1,
+                        Sputnik.trans("&7A special Anvil which can reforge your accessories")
+                );
+            }
+
+            @Override
+            public int getSlot() {
+                return 52;
+            }
+        });
         this.set(new GUIClickableItem() {
             @Override
             public void run(final InventoryClickEvent e) {

@@ -7,8 +7,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.IOException;
+
 public interface GUIClickableItem extends GUIItem {
-    void run(final InventoryClickEvent p0);
+    void run(final InventoryClickEvent p0) throws IOException;
 
     static GUIClickableItem getCloseItem(final int slot) {
         return new GUIClickableItem() {

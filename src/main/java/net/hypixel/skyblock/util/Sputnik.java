@@ -92,6 +92,10 @@ public class Sputnik {
         return ChatColor.translateAlternateColorCodes('&', content);
     }
 
+    public static String trans(String... content) {
+        return ChatColor.translateAlternateColorCodes('&', String.valueOf(content));
+    }
+
     public static String trans4(String content, String arg1, String arg2, String arg3) {
         content = ChatColor.translateAlternateColorCodes('&', content);
         arg1 = ChatColor.translateAlternateColorCodes('&', arg1);
@@ -99,6 +103,12 @@ public class Sputnik {
         arg3 = ChatColor.translateAlternateColorCodes('&', arg3);
 
         return String.format(content, arg1, arg2, arg3);
+    }
+
+    public static String trans2(String content, String arg1) {
+        content = ChatColor.translateAlternateColorCodes('&', content);
+        arg1 = ChatColor.translateAlternateColorCodes('&', arg1);
+        return String.format(content, arg1);
     }
 
     public static String trans3(String content, String arg1, String arg2) {
@@ -118,6 +128,17 @@ public class Sputnik {
         arg4 = ChatColor.translateAlternateColorCodes('&', arg4);
 
         return String.format(content, arg1, arg2, arg3, arg4);
+    }
+
+    public static String trans5(String content, String arg1, String arg2, String arg3, String arg4, String arg5) {
+        content = ChatColor.translateAlternateColorCodes('&', content);
+        arg1 = ChatColor.translateAlternateColorCodes('&', arg1);
+        arg2 = ChatColor.translateAlternateColorCodes('&', arg2);
+        arg3 = ChatColor.translateAlternateColorCodes('&', arg3);
+        arg4 = ChatColor.translateAlternateColorCodes('&', arg4);
+        arg5 = ChatColor.translateAlternateColorCodes('&', arg5);
+
+        return String.format(content, arg1, arg2, arg3, arg4, arg5);
     }
     public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
         final net.minecraft.server.v1_8_R3.Entity pl = ((CraftZombie) e).getHandle();

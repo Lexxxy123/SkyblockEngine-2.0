@@ -143,7 +143,7 @@ public class PacketInvoker {
         owner.sendMessage(Sputnik.trans("&5&lYou challenged the Voidling's Warden Boss! It is spawning..."));
         SlayerQuest.playBossSpawn(loc.add(0.0, 2.0, 0.0), null);
         SUtil.delay(() -> {
-            final SEntity e2 = new SEntity(loc.clone().add(0.0, 1.5, 0.0), SEntityType.VOIDLINGS_WARDEN);
+            final SEntity e2 = new SEntity(loc, SEntityType.VOIDLINGS_WARDEN);
             activeGyroAbi(e2.getEntity());
             e2.getEntity().setMetadata("owner", new FixedMetadataValue(SkyBlock.getPlugin(), owner.getUniqueId()));
             StaticWardenManager.WARDEN = e2;

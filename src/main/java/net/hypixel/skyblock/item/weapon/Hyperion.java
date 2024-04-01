@@ -18,6 +18,7 @@ import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.SUtil;
 import net.hypixel.skyblock.util.Sputnik;
 
+import java.io.IOException;
 import java.util.Set;
 
 public class Hyperion implements ToolStatistics, MaterialFunction, Ability {
