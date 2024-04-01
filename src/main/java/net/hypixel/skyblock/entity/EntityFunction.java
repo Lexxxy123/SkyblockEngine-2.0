@@ -2,8 +2,6 @@ package net.hypixel.skyblock.entity;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import net.hypixel.skyblock.SkyBlock;
-import net.hypixel.skyblock.api.hologram.Hologram;
-import net.hypixel.skyblock.util.PacketEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftSkeleton;
 import org.bukkit.entity.*;

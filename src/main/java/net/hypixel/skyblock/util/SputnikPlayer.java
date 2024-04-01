@@ -13,9 +13,10 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class SputnikPlayer {
-    public static final Map<Player, Integer> AbsHP;
+    public static final Map<UUID, Integer> AbsHP;
 
     public static void sendTranslated(final Player p, final String content) {
         p.sendMessage(ChatColor.translateAlternateColorCodes('&', content));
@@ -62,50 +63,45 @@ public class SputnikPlayer {
     }
 
     public static void setCustomAbsorptionHP(final Player p, final float amount) {
-        final EntityHuman human = ((CraftHumanEntity) p).getHandle();
-        if (!SputnikPlayer.AbsHP.containsKey(p)) {
-            SputnikPlayer.AbsHP.put(p, 0);
+        if (!SputnikPlayer.AbsHP.containsKey(p.getUniqueId())) {
+            SputnikPlayer.AbsHP.put(p.getUniqueId(), 0);
         }
-        final Integer absHP = SputnikPlayer.AbsHP.get(p);
-        SputnikPlayer.AbsHP.put(p, Math.round(amount));
+        SputnikPlayer.AbsHP.put(p.getUniqueId(), Math.round(amount));
     }
 
     public static void minusCustomAbsorptionHP(final Player p, final float amount) {
-        final EntityHuman human = ((CraftHumanEntity) p).getHandle();
-        if (!SputnikPlayer.AbsHP.containsKey(p)) {
-            SputnikPlayer.AbsHP.put(p, 0);
+        if (!SputnikPlayer.AbsHP.containsKey(p.getUniqueId())) {
+            SputnikPlayer.AbsHP.put(p.getUniqueId(), 0);
         }
-        final Integer absHP = SputnikPlayer.AbsHP.get(p);
-        if (SputnikPlayer.AbsHP.get(p) == 0) {
+        if (SputnikPlayer.AbsHP.get(p.getUniqueId()) == 0) {
             return;
         }
-        SputnikPlayer.AbsHP.put(p, SputnikPlayer.AbsHP.get(p) - Math.round(amount));
+        SputnikPlayer.AbsHP.put(p.getUniqueId(), SputnikPlayer.AbsHP.get(p.getUniqueId()) - Math.round(amount));
     }
 
     public static Integer getCustomAbsorptionHP(final Player p) {
-        final EntityHuman human = ((CraftHumanEntity) p).getHandle();
-        if (!SputnikPlayer.AbsHP.containsKey(p)) {
-            SputnikPlayer.AbsHP.put(p, 0);
+        if (!SputnikPlayer.AbsHP.containsKey(p.getUniqueId())) {
+            SputnikPlayer.AbsHP.put(p.getUniqueId(), 0);
         }
-        return SputnikPlayer.AbsHP.get(p);
+        return SputnikPlayer.AbsHP.get(p.getUniqueId());
     }
 
     public static void updateScaledAHP(final Player p) {
         final EntityHuman human = ((CraftHumanEntity) p).getHandle();
-        if (!SputnikPlayer.AbsHP.containsKey(p)) {
-            SputnikPlayer.AbsHP.put(p, 0);
+        if (!SputnikPlayer.AbsHP.containsKey(p.getUniqueId())) {
+            SputnikPlayer.AbsHP.put(p.getUniqueId(), 0);
         }
-        if (SputnikPlayer.AbsHP.get(p) == 0) {
+        if (SputnikPlayer.AbsHP.get(p.getUniqueId()) == 0) {
             human.setAbsorptionHearts(0.0f);
         }
-        final Integer absHP = SputnikPlayer.AbsHP.get(p);
+        final Integer absHP = SputnikPlayer.AbsHP.get(p.getUniqueId());
         human.setAbsorptionHearts((float) Math.min(20.0, (int) Math.round(0.05 * absHP)));
-        if (SputnikPlayer.AbsHP.get(p) == 0) {
+        if (SputnikPlayer.AbsHP.get(p.getUniqueId()) == 0) {
             human.setAbsorptionHearts(0.0f);
         }
     }
 
     static {
-        AbsHP = new HashMap<Player, Integer>();
+        AbsHP = new HashMap<>();
     }
 }

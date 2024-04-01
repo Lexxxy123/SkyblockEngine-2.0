@@ -11,25 +11,26 @@ import net.hypixel.skyblock.entity.SEntity;
 import net.hypixel.skyblock.entity.SEntityType;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class SadanBossManager {
-    public static void startFloor(ArrayList<Player> plist) {
+    public static void startFloor(ArrayList<UUID> plist) {
         String worldname = "f6_" + SadanFunction.generateRandom();
         final World source = Bukkit.getWorld("f6");
         final SkyBlockWorldManager skyBlockWorldManager = new SkyBlockWorldManager(source);
         skyBlockWorldManager.cloneWorld(worldname);
         World world = Bukkit.getWorld(worldname);
-        for (Player tm : plist) {
-            tm.teleport(new Location(world, 213.0, 71.0, 221.0, 0.0f, 0.0f));
+        for (UUID tm : plist) {
+            Bukkit.getPlayer(tm).teleport(new Location(world, 213.0, 71.0, 221.0, 0.0f, 0.0f));
         }
         Sputnik.RunThisSession.put(Bukkit.getServer(), Sputnik.rf_() + 1);
         SUtil.delay(() -> r(plist, world), 1L);
         SUtil.delay(() -> new SEntity(new Location(world, 183.0, 100.0, 251.0), SEntityType.SADAN), 1L);
     }
 
-    public static void r(ArrayList<Player> plist, World world) {
-        for (Player tm : plist) {
-            tm.teleport(new Location(world, 191.5, 69.0, 199.5, 0.0f, 0.0f));
+    public static void r(ArrayList<UUID> plist, World world) {
+        for (UUID tm : plist) {
+            Bukkit.getPlayer(tm).teleport(new Location(world, 191.5, 69.0, 199.5, 0.0f, 0.0f));
         }
     }
 

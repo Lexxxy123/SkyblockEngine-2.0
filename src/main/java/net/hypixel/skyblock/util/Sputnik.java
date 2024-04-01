@@ -993,8 +993,8 @@ public class Sputnik {
 
     public static void startRoom(final Player player) {
 
-        final ArrayList<Player> plist = new ArrayList<>();
-        plist.add(player);
+        final ArrayList<UUID> plist = new ArrayList<>();
+        plist.add(player.getUniqueId());
         SUtil.delay(() -> player.sendMessage(ChatColor.GREEN + "Entering The Catacombs Demo - Floor 6!"), 10L);
         SUtil.delay(() -> player.sendMessage(ChatColor.GRAY + "Preparing the boss for you, please wait..."), 20L);
         SUtil.delay(() -> player.sendMessage(ChatColor.GRAY + "Hooking up request, and sending you to that world..."), 30L);

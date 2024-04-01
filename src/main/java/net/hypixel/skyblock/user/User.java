@@ -1493,7 +1493,7 @@ public class User {
         player.setFireTicks(0);
         player.setVelocity(new Vector(0, 0, 0));
         player.setFallDistance(0.0f);
-        SputnikPlayer.AbsHP.put(player, 0);
+        SputnikPlayer.AbsHP.put(player.getUniqueId(), 0);
         if (!player.getWorld().getName().contains("f6")) {
             this.sendToSpawn();
             if (!PlayerUtils.cookieBuffActive(player)) {
