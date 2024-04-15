@@ -187,7 +187,7 @@ public class HexEnchantments extends GUI {
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack("&aEnchant Item", Material.ENCHANTMENT_TABLE, (short) 0, 1,
+                return SUtil.getStack(Sputnik.trans("&aEnchant Item"), Material.ENCHANTMENT_TABLE, (short) 0, 1,
                         Sputnik.trans("&7Add and remove enchantments from"),
                         Sputnik.trans("&7the item in the slot above!")
                 );

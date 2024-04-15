@@ -26,6 +26,7 @@ import net.hypixel.skyblock.item.GenericItemType;
 import net.hypixel.skyblock.item.MaterialStatistics;
 import net.hypixel.skyblock.item.SItem;
 import net.hypixel.skyblock.util.SUtil;
+import net.hypixel.skyblock.util.Sputnik;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -62,13 +63,13 @@ public class HexBookGUI extends GUI {
             @Override
             public ItemStack getItem() {
                 return SUtil.getStack(
-                        "&aApply Books And Stars",
+                        Sputnik.trans("&aApply Books And Stars"),
                         Material.ANVIL,
                         (short) 0,
                         1,
-                        "&7Knowledge is &6power&7! Apply",
+                        Sputnik.trans3("&7Knowledge is &6power&7! Apply",
                         "&7special books to your item to",
-                        "&7upgrade it!"
+                        "&7upgrade it!")
                 );
             }
 
@@ -79,7 +80,7 @@ public class HexBookGUI extends GUI {
         });
 
         MaterialStatistics statistics = item.getType().getStatistics();
-        if (statistics.getType().equals(GenericItemType.WEAPON) || statistics.getType().equals(GenericItemType.ARMOR)) {
+        if (statistics.getType().equals(GenericItemType.WEAPON) || statistics.getType().equals(GenericItemType.ARMOR) || statistics.getType().equals(GenericItemType.RANGED_WEAPON)) {
             set(new GUIClickableItem() {
                 @Override
                 public void run(InventoryClickEvent e) {
@@ -97,20 +98,20 @@ public class HexBookGUI extends GUI {
                 @Override
                 public ItemStack getItem() {
                     return SUtil.getStack(
-                            "&5Hot Potato Book",
+                            Sputnik.trans("&5Hot Potato Book"),
                             Material.BOOK,
                             (short) 0,
                             1,
-                            "&7When applied to armor, grants",
+                            Sputnik.trans5("&7When applied to armor, grants",
                             "&a+2❈ Defense&7 and &c+4❤",
                             "&cHealth&7.",
                             "&7",
                             "&7When applied to weapons, grants",
-                            "&c+2❁ Strength&7 and &c+❁2",
-                            "&cDamage&7.",
+                            "&c+2❁ Strength&7 and &c+❁2"),
+                            Sputnik.trans4( "&cDamage&7.",
                             "&7",
                             "&7This can be applied to an item",
-                            "&7up to &a10&7 times!"
+                            "&7up to &a10&7 times!")
                     );
                 }
 
@@ -128,6 +129,8 @@ public class HexBookGUI extends GUI {
                     if(item.getStar() == 5) return;
                     ItemSerial is = ItemSerial.createBlank();
                     is.saveTo(item);
+                    item.setDungeonsItem(true);
+                    item.setStarAmount(0);
                     item.setStarAmount(item.getStar() + amount);
                         ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.ANVIL_USE, 10, 2);
                         e.getWhoClicked().sendMessage(SUtil.color("&aYou added 1 Star to your item!"));

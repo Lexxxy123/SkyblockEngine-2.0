@@ -653,28 +653,29 @@ public class VoidlingsWardenMob extends BaseZombie {
                             weight += Math.min(400, eyes.get(player.getUniqueId()).size() * 100);
                         }
                         if (0 == i) {
-                            weight += 300;
+                            weight += 500;
                         }
                         if (1 == i) {
-                            weight += 250;
+                            weight += 450;
                         }
                         if (2 == i) {
-                            weight += 200;
+                            weight += 500;
                         }
                         if (3 <= i && 6 >= i) {
-                            weight += 125;
+                            weight += 325;
                         }
                         if (7 <= i && 14 >= i) {
-                            weight += 100;
+                            weight += 200;
                         }
                         if (15 <= i) {
-                            weight += 75;
+                            weight += 175;
                         }
                         List<VoidlingsWardenMob.Drop> possibleMajorDrops = new ArrayList<VoidlingsWardenMob.Drop>();
                         SEntityType type = sEntity.getSpecType();
-                        SUtil.addIf(new VoidlingsWardenMob.Drop(SMaterial.HIDDEN_VOIDLINGS_PET, 600), possibleMajorDrops, 600 <= weight);
-                        SUtil.addIf(new VoidlingsWardenMob.Drop(SMaterial.HIDDEN_ETHERWARP_CONDUIT, 550), possibleMajorDrops, 550 <= weight);
-                        SUtil.addIf(new VoidlingsWardenMob.Drop(SMaterial.JUDGEMENT_CORE, 800), possibleMajorDrops, 800 <= weight);
+                        SUtil.addIf(new VoidlingsWardenMob.Drop(SMaterial.HIDDEN_VOIDLINGS_PET, 500), possibleMajorDrops, 500 <= weight);
+                        SUtil.addIf(new VoidlingsWardenMob.Drop(SMaterial.HIDDEN_ETHERWARP_CONDUIT, 250), possibleMajorDrops, 250 <= weight);
+                        SUtil.addIf(new VoidlingsWardenMob.Drop(SMaterial.JUDGEMENT_CORE, 350), possibleMajorDrops, 350 <= weight);
+                        SUtil.addIf(new VoidlingsWardenMob.Drop(SMaterial.HIDDEN_QUANTUMFLUX_POWER_ORB, 450), possibleMajorDrops, 450 <= weight);
                         int remainingWeight = weight;
                         if (0 < possibleMajorDrops.size()) {
                             VoidlingsWardenMob.Drop drop = possibleMajorDrops.get(SUtil.random(0, possibleMajorDrops.size() - 1));

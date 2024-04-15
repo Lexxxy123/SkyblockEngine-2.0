@@ -89,7 +89,7 @@ public class SadanHuman extends BaseZombie {
 
     public void removeAllBar(final World w, final BossBar b) {
         for (final Player p : w.getPlayers()) {
-            b.removePlayer(p);
+            b.removePlayer(p.getUniqueId());
         }
     }
 

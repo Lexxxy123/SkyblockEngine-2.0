@@ -16,22 +16,22 @@ import net.hypixel.skyblock.util.Sputnik;
 public class AtomsplitKatana implements ToolStatistics, MaterialFunction, Ability {
     @Override
     public int getBaseDamage() {
-        return 245;
+        return 350;
     }
 
     @Override
     public double getBaseStrength() {
-        return 100.0;
+        return 150.0;
     }
 
     @Override
     public double getBaseCritDamage() {
-        return 0.3;
+        return 0.5;
     }
 
     @Override
     public double getBaseIntelligence() {
-        return 300.0;
+        return 600.0;
     }
 
     @Override

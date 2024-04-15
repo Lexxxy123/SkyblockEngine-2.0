@@ -222,19 +222,15 @@ public class VoidgloomSeraph extends EntityEnderman implements SNMSEntity, Entit
                     armorStand1.setVelocity(vec);
                     Sputnik.endermanCarryBlock((Enderman) entity, Material.AIR);
                     SUtil.delay(() -> {
-                        Object val$player = player;
                         player.playSound(player.getLocation(), Sound.PORTAL_TRIGGER, 0.4f, 0.81f);
                     }, 10L);
                     SUtil.delay(() -> {
-                        Object val$player2 = player;
                         player.playSound(player.getLocation(), "mob.guardian.elder.idle", 0.2f, 0.85f);
                     }, 15L);
                     SUtil.delay(() -> {
-                        Object val$player3 = player;
                         player.playSound(player.getLocation(), "mob.guardian.elder.idle", 0.2f, 0.85f);
                     }, 40L);
                     SUtil.delay(() -> {
-                        Object val$player4 = player;
                         player.playSound(player.getLocation(), "mob.guardian.elder.idle", 0.2f, 0.85f);
                     }, 40L);
                     VoidgloomSeraph.this.Ar1.add(armorStand1);

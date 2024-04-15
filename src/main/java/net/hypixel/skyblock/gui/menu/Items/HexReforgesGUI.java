@@ -26,6 +26,7 @@ import net.hypixel.skyblock.item.SItem;
 import net.hypixel.skyblock.item.SMaterial;
 import net.hypixel.skyblock.util.PaginationList;
 import net.hypixel.skyblock.util.SUtil;
+import net.hypixel.skyblock.util.Sputnik;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -60,7 +61,7 @@ public class HexReforgesGUI extends GUI {
         PaginationList<SItem> pagedReforgeStones = new PaginationList<>(15);
 
         for (ReforgeType type : ReforgeType.values()) {
-            if (type.getReforge().getCompatibleTypes().contains(item.getType().getStatistics().getType())) {
+            if (type.getReforge().getCompatibleTypes().contains(item.getType().getStatistics().getType()) && type.isAccessible()) {
                 if (!(type.getReforge().getSpecificTypes()).contains(item.getType().getStatistics().getSpecificType())) continue;
                 SItem stone = SItem.of(SMaterial.REFORGE_STONE);
 
@@ -174,10 +175,10 @@ public class HexReforgesGUI extends GUI {
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack("&aApply Reforges", Material.ANVIL, (short) 0, 1,
-                        "&7Apply &aReforges&7 to your item",
+                return SUtil.getStack(Sputnik.trans("&aApply Reforges"), Material.ANVIL, (short) 0, 1,
+                        Sputnik.trans3("&7Apply &aReforges&7 to your item",
                         "&7with &aReforge Stones&7 or by",
-                        "&7rolling a &brandom&7 reforge."
+                        "&7rolling a &brandom&7 reforge.")
                 );
             }
         });

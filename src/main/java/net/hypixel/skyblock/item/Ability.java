@@ -3,6 +3,8 @@ package net.hypixel.skyblock.item;
 import net.hypixel.skyblock.features.requirement.AbstractRequirement;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+
 public interface Ability {
     String getAbilityName();
 

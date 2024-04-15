@@ -63,14 +63,14 @@ public class Giant extends BaseZombie {
     public BossBar setBar(final World w, final String s) {
         this.bb = new BossBar(Sputnik.trans(s));
         for (final Player p : w.getPlayers()) {
-            this.bb.addPlayer(p);
+            this.bb.addPlayer(p.getUniqueId());
         }
         return this.bb;
     }
 
     public void removeAllBar(final World w, final BossBar b) {
         for (final Player p : w.getPlayers()) {
-            b.removePlayer(p);
+            b.removePlayer(p.getUniqueId());
         }
     }
 

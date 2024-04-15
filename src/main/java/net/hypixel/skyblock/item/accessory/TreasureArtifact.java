@@ -50,4 +50,9 @@ public class TreasureArtifact implements AccessoryStatistics {
     public String getURL() {
         return "e10f20a55b6e188ebe7578459b64a6fbd825067bc497b925ca43c2643d059025";
     }
+
+    @Override
+    public double getBaseStrength() {
+        return 350;
+    }
 }

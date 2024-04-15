@@ -75,7 +75,7 @@ public class HexModifiersGUI extends GUI {
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack("&aApply Modifiers", Material.ANVIL, (short) 0, 1,
+                return SUtil.getStack(Sputnik.trans("&aApply Modifiers"), Material.ANVIL, (short) 0, 1,
                         Sputnik.trans5("&7Apply miscellaneous item",
                                 "&7modifiers like the",
                                 "&6Recombobulator 3000&7,",

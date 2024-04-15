@@ -120,11 +120,11 @@ public class EnchantmentType {
 
     static {
         ENCHANTMENT_TYPE_CACHE = new HashMap<String, EnchantmentType>();
-        SHARPNESS = new EnchantmentType("Sharpness", "sharpness", "Increases damage dealt by " + ChatColor.GREEN + "%s%", 400, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE); // you do gui till i am doing maxLvl
+        SHARPNESS = new EnchantmentType("Sharpness", "sharpness", "Increases damage dealt by " + ChatColor.GREEN + "%s%", 600, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE); // you do gui till i am doing maxLvl
         LIFE_STEAL = new EnchantmentType("Life Steal", "life_steal", "Heals for " + ChatColor.GREEN + "%s%" + ChatColor.GRAY + " of your max health each time you hit a mob.", 30, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
         EXECUTE = new EnchantmentType("Execute", "execute", "Increases damage by " + ChatColor.GREEN + "%s%" + Sputnik.trans(" &7for each percent of Health missing on your target. "), 30, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
         FIRE_ASPECT = new EnchantmentType("Fire Aspect", "fire_aspect", "Gives whoever this weapon hits %s seconds of fire.", 30, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
-        PROTECTION = new EnchantmentType("Protection", "protection", "Grants " + ChatColor.GREEN + "+%s \u2748 Defense" + ChatColor.GRAY + ".", 1500, SpecificItemType.HELMET, SpecificItemType.CHESTPLATE, SpecificItemType.LEGGINGS, SpecificItemType.BOOTS);
+        PROTECTION = new EnchantmentType("Protection", "protection", "Grants " + ChatColor.GREEN + "+%s \u2748 Defense" + ChatColor.GRAY + ".", 4000, SpecificItemType.HELMET, SpecificItemType.CHESTPLATE, SpecificItemType.LEGGINGS, SpecificItemType.BOOTS);
         GROWTH = new EnchantmentType("Growth", "growth", "Grants " + ChatColor.GREEN + "+%s " + ChatColor.RED + "\u2764 " + ChatColor.RED + "Health" + ChatColor.GRAY + ".", 1500, SpecificItemType.HELMET, SpecificItemType.CHESTPLATE, SpecificItemType.LEGGINGS, SpecificItemType.BOOTS);
         AIMING = new EnchantmentType("Aiming", "aiming", "Arrows home towards nearby mobs if they are within %s blocks.", 30, SpecificItemType.BOW);
         POWER = new EnchantmentType("Power", "power", "Increases bow damage by " + ChatColor.GREEN + "%s%", 320, SpecificItemType.BOW);
@@ -148,6 +148,6 @@ public class EnchantmentType {
         SOUL_EATER = new EnchantmentType("Soul Eater", "soul_eater", Sputnik.trans("Your weapon gains &c%sx&7 damage of the latest monster killed and applies it on your next hit."), true, 20, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE, SpecificItemType.BOW);
         CHIMERA = new EnchantmentType("Chimera", "chimera", Sputnik.trans("Copies &a%s% &7of your active pet's stats."), true, 20, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE, SpecificItemType.BOW);
         LEGION = new EnchantmentType("Legion", "legion", Sputnik.trans("Increases most of your player stats by &e+%s% &7per player per level within &b30 &7blocks of you, up to &a20 &7players."), true, 20, SpecificItemType.HELMET, SpecificItemType.CHESTPLATE, SpecificItemType.LEGGINGS, SpecificItemType.BOOTS);
-        ONE_FOR_ALL = new EnchantmentType("One for All", "one_for_all", Sputnik.trans("Removes all other enchants but increases your weapon damage by &a%s%"), true, 20, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
+        ONE_FOR_ALL = new EnchantmentType("One for All", "one_for_all", Sputnik.trans("Removes all other enchants but increases your weapon damage by &a%s%"), true, 10, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
     }
 }

@@ -55,6 +55,7 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.reflections.Reflections;
 import net.hypixel.skyblock.gui.GUIListener;
 import net.hypixel.skyblock.nms.nmsutil.apihelper.APIManager;
@@ -130,7 +131,17 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
         plugin = this;
         sendMessage("&aEnabling Skyblock Core. Made by " + getDevelopersName());
         long start = System.currentTimeMillis();
+        new BukkitRunnable() {
 
+            @Override
+            public void run() {
+                sendMessage("Cleaning up the JVM (This may cause a short lag spike!)");
+                final long before = System.currentTimeMillis();
+                System.gc();
+                final long after = System.currentTimeMillis();
+                sendMessage("It took " + (after - before) + "ms to cleanup the JVM heap");
+            }
+        }.runTaskTimer(this, 1L, 12000L);
         sendMessage("&aLoading SkyBlock worlds...");
         SkyBlockWorldManager.loadWorlds();
         sendMessage("&aLoading YAML data from disk...");
@@ -138,8 +149,8 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
         this.heads = new Config("heads.yml");
         this.blocks = new Config("blocks.yml");
         this.spawners = new Config("spawners.yml");
-          authenticate();
-       if (authenticated) {
+         // authenticate();
+      // if (authenticated) {
             sendMessage("&aLoading Command map...");
             try {
                 final Field f = Bukkit.getServer().getClass().getDeclaredField("commandMap");
@@ -225,9 +236,9 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
 
             long end = System.currentTimeMillis();
             sendMessage("&aSuccessfully enabled Hub Core in " + CC.getTimeDifferenceAndColor(start, end) + "&a.");
-      } else {
-            throw new NullPointerException("license is not valid or empty. Please insert license in config.yml");
-        }
+     // } else {
+      //      throw new NullPointerException("license is not valid or empty. Please insert license in config.yml");
+      //  }
 
     }
 
@@ -250,7 +261,6 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
         for (User user : User.getCachedUsers()){
             if (user == null) continue;
             if (user.getUuid() == null) continue;
-            if (!user.toBukkitPlayer().isOnline()) continue;
             user.save().thenRun(user::kick);
         }
 

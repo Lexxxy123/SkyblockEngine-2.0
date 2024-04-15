@@ -5,6 +5,7 @@ import com.mongodb.client.MongoCollection;
 import de.tr7zw.nbtapi.NBTItem;
 import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.api.serializer.BukkitSerializeClass;
+import net.hypixel.skyblock.entity.StaticWardenManager;
 import net.hypixel.skyblock.features.auction.AuctionBid;
 import net.hypixel.skyblock.features.auction.AuctionEscrow;
 import net.hypixel.skyblock.features.auction.AuctionItem;
@@ -264,7 +265,6 @@ public class User {
         this.auctionCreationBIN = false;
         this.auctionEscrow = new AuctionEscrow();
         User.USER_CACHE.put(uuid, this);
-        load();
     }
 
     public void unload() {
@@ -343,11 +343,6 @@ public class User {
     public void loadStatic() {
         Player player = Bukkit.getPlayer(this.uuid);
         User user = getUser(this.uuid);
-        try {
-            loadPlayerData();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
         PlayerUtils.AUTO_SLAYER.put(player.getUniqueId(), true);
         PetsGUI.setShowPets(player, true);
     }
@@ -492,37 +487,49 @@ public class User {
             databaseDocument = document;
         }
         if (databaseDocument.containsKey("inventory")) {
-            player.getInventory().setContents(BukkitSerializeClass.itemStackArrayFromBase64(databaseDocument.getString("inventory")));
+            if(player != null) {
+                player.getInventory().setContents(BukkitSerializeClass.itemStackArrayFromBase64(databaseDocument.getString("inventory")));
+            }
         } else {
             player.getInventory().setContents(new ItemStack[player.getInventory().getSize()]);
         }
         if (databaseDocument.containsKey("enderchest")) {
-            player.getEnderChest().setContents(BukkitSerializeClass.itemStackArrayFromBase64(databaseDocument.getString("enderchest")));
+            if(player != null) {
+                player.getEnderChest().setContents(BukkitSerializeClass.itemStackArrayFromBase64(databaseDocument.getString("enderchest")));
+            }
         } else {
             player.getInventory().setContents(new ItemStack[player.getEnderChest().getSize()]);
         }
         if (databaseDocument.containsKey("armor")) {
-            player.getInventory().setArmorContents(BukkitSerializeClass.itemStackArrayFromBase64(databaseDocument.getString("armor")));
+            if(player != null) {
+                player.getInventory().setArmorContents(BukkitSerializeClass.itemStackArrayFromBase64(databaseDocument.getString("armor")));
+            }
         } else {
             player.getInventory().setContents(new ItemStack[player.getInventory().getArmorContents().length]);
         }
         if (databaseDocument.containsKey("minecraft_xp")) {
-            Sputnik.setTotalExperience(player, databaseDocument.getInteger("minecraft_xp"));
+            if(player != null) {
+                Sputnik.setTotalExperience(player, databaseDocument.getInteger("minecraft_xp"));
+            }
         }
         if (document.containsKey("stash")) {
-            ItemStack[] arr = new ItemStack[0];
-            try {
-                arr = BukkitSerializeClass.itemStackArrayFromBase64(databaseDocument.getString("stash"));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            if(player != null) {
+                ItemStack[] arr = new ItemStack[0];
+                try {
+                    arr = BukkitSerializeClass.itemStackArrayFromBase64(databaseDocument.getString("stash"));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                this.stashedItems = Arrays.asList(arr);
             }
-            this.stashedItems = Arrays.asList(arr);
         } else {
             this.stashedItems = new ArrayList<ItemStack>();
         }
         //this.loadEconomy();
         if (document.containsKey("lastslot")) {
-            player.getInventory().setHeldItemSlot(document.getInteger("lastslot"));
+            if(player != null) {
+                player.getInventory().setHeldItemSlot(document.getInteger("lastslot"));
+            }
         }
     }
 
@@ -656,6 +663,12 @@ public class User {
                 try {
                     PlayerUtils.setCookieDurationTicks(player, getLong("cookieDuration" , 0));
                 } catch (NullPointerException ignored) {}
+
+                try {
+                    loadPlayerData();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -719,11 +732,6 @@ public class User {
 
         if (found == null) {
             save();
-            try {
-                loadPlayerData();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
             found = collection.find(query).first();
         }
 
@@ -1426,52 +1434,6 @@ public class User {
             player.setFireTicks(0);
             this.kill(cause, entity);
         }
-
-        double damageReductionPercentage;
-        double removeableDefenseAgainstEnderman = 0;
-
-        if (SItem.find(player.getInventory().getHelmet()) != null) {
-            if (SItem.find(player.getInventory().getHelmet()).getBonusDefense() > 0 && SItem.find(player.getInventory().getHelmet()).getType().equals(SMaterial.VOIDBANE_HELMET)) {
-                removeableDefenseAgainstEnderman += SItem.find(player.getInventory().getHelmet()).getBonusDefense();
-            }
-        }
-
-        if (SItem.find(player.getInventory().getChestplate()) != null) {
-            if (SItem.find(player.getInventory().getChestplate()).getBonusDefense() > 0 && SItem.find(player.getInventory().getChestplate()).getType().equals(SMaterial.VOIDBANE_CHESTPLATE)) {
-                removeableDefenseAgainstEnderman += SItem.find(player.getInventory().getChestplate()).getBonusDefense();
-            }
-        }
-
-        if (SItem.find(player.getInventory().getLeggings()) != null) {
-            if (SItem.find(player.getInventory().getLeggings()).getBonusDefense() > 0 && SItem.find(player.getInventory().getLeggings()).getType().equals(SMaterial.VOIDBANE_LEGGINGS)) {
-                removeableDefenseAgainstEnderman += SItem.find(player.getInventory().getLeggings()).getBonusDefense();
-            }
-        }
-
-        if (SItem.find(player.getInventory().getBoots()) != null) {
-            if (SItem.find(player.getInventory().getBoots()).getBonusDefense() > 0 && SItem.find(player.getInventory().getBoots()).getType().equals(SMaterial.VOIDBANE_BOOTS)) {
-                removeableDefenseAgainstEnderman += SItem.find(player.getInventory().getBoots()).getBonusDefense();
-            }
-        }
-
-        if (removeableDefenseAgainstEnderman > 0 && !(entity instanceof Enderman)) {
-            damageReductionPercentage = (double) statistics.getMaxHealth().addAll() * ((((double) statistics.getDefense().addAll() - removeableDefenseAgainstEnderman )+ 100.0) / 100.0);
-        } else {
-            damageReductionPercentage = (double) statistics.getMaxHealth().addAll() * ((((double) statistics.getDefense().addAll() )+ 100.0) / 100.0);
-        }
-
-        double damageReduction = damageReductionPercentage / 100.0;
-
-        double damageAfterReduction = d * (1 - damageReduction);
-
-        if ((player.getHealth() + human.getAbsorptionHearts()) - damageAfterReduction <= 0.0d) {
-            kill(cause, entity);
-            return;
-        }
-
-        double actualDamage = Math.max(0.0d, damageAfterReduction - human.getAbsorptionHearts());
-
-        player.setHealth(Math.max(0.0d, player.getHealth() - actualDamage));
     }
 
     public void damage(final double d) {
@@ -1598,6 +1560,7 @@ public class User {
             if (e.hasMetadata("owner") && e.getMetadata("owner").get(0).asString().equals(player.getUniqueId().toString())) {
                 e.remove();
                 player.sendMessage(ChatColor.RED + "☠ Your Voidling's Warden Boss has been despawned since you died!");
+                StaticWardenManager.endFight();
             }
         }
         if (PlayerUtils.cookieBuffActive(player)) {

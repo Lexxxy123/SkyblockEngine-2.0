@@ -44,7 +44,7 @@ public class PerfectTalisman implements AccessoryStatistics, MaterialFunction {
 
     @Override
     public double getBaseStrength() {
-        return 180.0;
+        return 580.0;
     }
 
     @Override
@@ -54,7 +54,7 @@ public class PerfectTalisman implements AccessoryStatistics, MaterialFunction {
 
     @Override
     public double getBaseCritDamage() {
-        return 0.15;
+        return 0.5;
     }
 
     @Override

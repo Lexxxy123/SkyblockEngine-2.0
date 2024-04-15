@@ -7,6 +7,7 @@ import net.hypixel.skyblock.features.dungeons.blessing.BlessingType;
 import net.hypixel.skyblock.features.dungeons.blessing.Blessings;
 import net.hypixel.skyblock.features.dungeons.stats.ItemSerial;
 import net.hypixel.skyblock.features.ranks.PlayerRank;
+import net.hypixel.skyblock.util.SLog;
 import net.minecraft.server.v1_8_R3.EntityVillager;
 import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntityLiving;
 import org.bukkit.Bukkit;
@@ -51,6 +52,7 @@ public class SSTest extends SCommand {
                         e.getLocation().add(0.0, 1.7, 0.0).getBlock().setTypeIdAndData(35, (byte) 4, true);
                     }
                 }
+
             } else if (args[0].contains("test")) {
                 final ItemSerial is = ItemSerial.createBlank();
                 if (player.getItemInHand() != null) {
@@ -126,6 +128,13 @@ public class SSTest extends SCommand {
                         this.send("&eCommand (Stop): &6/sstest musicbgm stop");
                         this.send("&eAbout: &cSSMusicEngine-v0.1.0-ALPHA");
                     }
+                } else if (args[0].contains("gc")) {
+                    SLog.info("Cleaning up the JVM (This may cause a short lag spike!)");
+                    final long before = System.currentTimeMillis();
+                    System.gc();
+                    final long after = System.currentTimeMillis();
+                    SLog.info("It took " + (after - before) + "ms to cleanup the JVM heap");
+
                 }
             }
         } else {

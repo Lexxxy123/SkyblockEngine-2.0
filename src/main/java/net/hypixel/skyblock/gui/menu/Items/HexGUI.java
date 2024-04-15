@@ -338,9 +338,8 @@ public class HexGUI extends GUI {
         if (item == null) {
             item = SItem.convert(selected);
         }
-        upgradeableItem = item;
-
         PlayerInventory playerInventory = e.getWhoClicked().getInventory();
+        upgradeableItem = item;
         playerInventory.remove(selected);
         inventory.setItem(22, upgradeableItem.getStack());
     }

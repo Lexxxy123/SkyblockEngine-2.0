@@ -4,6 +4,7 @@ import net.hypixel.skyblock.Repeater;
 import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.features.calendar.SkyBlockCalendar;
 import net.hypixel.skyblock.features.collection.ItemCollection;
+import net.hypixel.skyblock.item.SItem;
 import net.hypixel.skyblock.item.pet.Pet;
 import net.hypixel.skyblock.user.PlayerStatistics;
 import net.hypixel.skyblock.user.PlayerUtils;
@@ -24,6 +25,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class SkyBlockMenuGUI extends GUI {
     public SkyBlockMenuGUI() {
@@ -309,6 +311,42 @@ public class SkyBlockMenuGUI extends GUI {
             @Override
             public int getSlot() {
                 return 52;
+            }
+        });
+
+        set(new GUIClickableItem() {
+            @Override
+            public void run(InventoryClickEvent e) {
+                Player player = (Player) e.getWhoClicked();
+
+                List<SItem> accessories = PlayerUtils.getAccessories(player);
+                if (accessories == null) {
+                    player.sendMessage(SUtil.color("&cYour accessory bag is empty!"));
+                    player.playSound(player.getLocation(), Sound.VILLAGER_NO, 10, 1);
+                    return;
+                }
+
+                for (SItem accessory : accessories) {
+                    accessory.setRecombobulated(true);
+                }
+
+                player.sendMessage(SUtil.color("&aYou recombobulated all your accessories!"));
+                player.playSound(player.getLocation(), Sound.ANVIL_USE, 10, 2);
+            }
+
+            @Override
+            public ItemStack getItem() {
+                return SUtil.getSkullURLStack(Sputnik.trans("&aRecombobulate All"), "57ccd36dc8f72adcb1f8c8e61ee82cd96ead140cf2a16a1366be9b5a8e3cc3fc", 1,
+                        Sputnik.trans4("&7Automatically recombobulates all",
+                                "&7your &dAccessories&7 in one click!",
+                                "&7",
+                                "&eClick to Upgrade!")
+                );
+            }
+
+            @Override
+            public int getSlot() {
+                return 44;
             }
         });
         this.set(new GUIClickableItem() {

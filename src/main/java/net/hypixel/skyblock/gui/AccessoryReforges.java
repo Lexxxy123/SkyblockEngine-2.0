@@ -50,7 +50,7 @@ public class AccessoryReforges extends GUI {
         List<SItem> stones = new ArrayList<>();
 
         for (ReforgeType type : ReforgeType.values()) {
-            if (type.getReforge().getCompatibleTypes().contains(GenericItemType.ACCESSORY)) {
+            if (type.getReforge().getCompatibleTypes().contains(GenericItemType.ACCESSORY) && type.isAccessible()) {
                 SItem stone = SItem.of(SMaterial.REFORGE_STONE);
 
                 stone.setReforge(type.getReforge());

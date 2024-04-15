@@ -57,4 +57,9 @@ public class GoldenJerryArtifact implements AccessoryStatistics {
     public String getURL() {
         return "f27075e621002d12e4d550b91d680bc2ebaced859199f93feb3df18178a7594b";
     }
+
+    @Override
+    public double getBaseStrength() {
+        return 450;
+    }
 }

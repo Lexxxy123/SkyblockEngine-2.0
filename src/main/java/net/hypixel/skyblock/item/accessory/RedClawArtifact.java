@@ -50,4 +50,9 @@ public class RedClawArtifact implements AccessoryStatistics, MaterialFunction {
     public double getBaseCritChance() {
         return 0.05d;
     }
+
+    @Override
+    public double getBaseStrength() {
+        return 450;
+    }
 }
