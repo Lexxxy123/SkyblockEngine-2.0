@@ -33,10 +33,12 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-    - name: Generate release tag
+    - name: Generate release tag and get commit message
       id: tag
       run: |
+        COMMIT_MESSAGE=$(git log -1 --pretty=%B)
         echo "::set-output name=release_tag::$(date +'%Y.%m.%d')-$(git rev-parse --short HEAD)"
+        echo "::set-output name=commit_message::${COMMIT_MESSAGE}"
 
     - name: Add Jar to GitHub releases
       uses: "marvinpinto/action-automatic-releases@latest"
@@ -44,6 +46,7 @@ jobs:
         repo_token: "${{ secrets.REPO_TOKEN }}"
         automatic_release_tag: "${{ steps.tag.outputs.release_tag }}"
         prerelease: false
-        title: "Release ${{ steps.tag.outputs.release_tag }}"
+        title: "Release ${{ steps.tag.outputs.release_tag }} - ${{ steps.tag.outputs.commit_message }}"
         files: |
           target/*.jar
+
