@@ -36,8 +36,9 @@ jobs:
     - name: Generate release tag and get commit message
       id: tag
       run: |
-        COMMIT_MESSAGE=$(git log -1 --pretty=%B)
-        echo "::set-output name=release_tag::$(date +'%Y.%m.%d')-$(git rev-parse --short HEAD)"
+        COMMIT_MESSAGE=$(git log -1 --pretty=%B | tr -d '\n')
+        COMMIT_HASH=$(git rev-parse --short HEAD)
+        echo "::set-output name=release_tag::${COMMIT_HASH}"
         echo "::set-output name=commit_message::${COMMIT_MESSAGE}"
 
     - name: Add Jar to GitHub releases
@@ -46,7 +47,8 @@ jobs:
         repo_token: "${{ secrets.REPO_TOKEN }}"
         automatic_release_tag: "${{ steps.tag.outputs.release_tag }}"
         prerelease: false
-        title: "Release ${{ steps.tag.outputs.release_tag }} - ${{ steps.tag.outputs.commit_message }}"
+        title: "Release [${{ steps.tag.outputs.release_tag }}]: ${{ steps.tag.outputs.commit_message }}"
         files: |
           target/*.jar
+
 
