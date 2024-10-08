@@ -1,17 +1,10 @@
-# GodspunkySkyblockCore
+# SkyblockEngine
 
 ## Hypixel SkyBlock Recreation
 
 ### Description
 
-This Java project aims to recreate the popular Hypixel SkyBlock game from scratch. Hypixel SkyBlock is a unique twist on the classic SkyBlock survival mode, featuring custom items, dungeons, and a rich multiplayer experience.
-
-### Features
-
-- **Island Creation**: Create your own customized islands to survive and thrive.
-- **Custom Items**: Implement unique and powerful items to enhance gameplay.
-- **Dungeons**: Design and explore challenging dungeons with friends or solo.
-- **Multiplayer Experience**: Interact with other players, trade items, and collaborate on islands.
+This Java project aims to recreate the popular Hypixel SkyBlock game. Hypixel SkyBlock is a unique twist on the classic SkyBlock survival mode, featuring custom items, dungeons, and a rich multiplayer experience.
 
 ### Getting Started
 
