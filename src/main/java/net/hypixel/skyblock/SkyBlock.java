@@ -85,6 +85,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
     public Config heads;
     public Config blocks;
     public Config spawners;
+    public Config databaseInformation;
 
     @Getter
     private QuestLineHandler questLineHandler;
@@ -141,6 +142,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
         this.heads = new Config("heads.yml");
         this.blocks = new Config("blocks.yml");
         this.spawners = new Config("spawners.yml");
+        this.databaseInformation = new Config("database.yml");
             sendMessage("&aLoading Command map...");
             try {
                 final Field f = Bukkit.getServer().getClass().getDeclaredField("commandMap");
@@ -152,7 +154,14 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
             }
             sendMessage("&aLoading SQL database...");
             this.sql = new SQLDatabase();
-            DatabaseManager.connectToDatabase("mongodb://admin:gs%40skyblockmongo@170.205.54.29:2004/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.2", "Godspunky");
+            try {
+                DatabaseManager.connectToDatabase(databaseInformation.getString("uri"), databaseInformation.getString("name"));
+            }catch (Exception ex){
+                SLog.warn("Database is not configured!");
+                SLog.warn("Disabling plugin...");
+                Bukkit.getPluginManager().disablePlugin(this);
+                Bukkit.getServer().shutdown();
+            }
             this.regionData = new SQLRegionData();
             this.worldData = new SQLWorldData();
             this.cl = new CommandLoader();
