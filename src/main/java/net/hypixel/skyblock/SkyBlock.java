@@ -29,6 +29,7 @@ import net.hypixel.skyblock.listener.PlayerChatListener;
 import net.hypixel.skyblock.listener.ServerPingListener;
 import net.hypixel.skyblock.listener.WorldListener;
 import net.hypixel.skyblock.features.merchant.MerchantItemHandler;
+import net.hypixel.skyblock.manager.SkyBlockManager;
 import net.hypixel.skyblock.nms.packetevents.*;
 import net.hypixel.skyblock.npc.impl.SkyblockNPC;
 import net.hypixel.skyblock.features.region.Region;
@@ -92,11 +93,9 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
     @Setter
     @Getter
     private int onlinePlayerAcrossServers;
-    public CommandMap commandMap;
     public SQLDatabase sql;
     public SQLRegionData regionData;
     public SQLWorldData worldData;
-    public CommandLoader cl;
     public Repeater repeater;
     @Getter
     private BungeeChannel bc;
@@ -136,6 +135,10 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
             }
         }.runTaskTimer(this, 1L, 12000L);
         sendMessage("&aLoading SkyBlock worlds...");
+
+        SkyBlockManager.loadManagers();
+        SkyBlockManager.startManagers();
+
         SkyBlockWorldManager.loadWorlds();
         sendMessage("&aLoading YAML data from disk...");
         this.config = new Config("config.yml");
@@ -143,19 +146,11 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
         this.blocks = new Config("blocks.yml");
         this.spawners = new Config("spawners.yml");
         this.databaseInformation = new Config("database.yml");
-            sendMessage("&aLoading Command map...");
-            try {
-                final Field f = Bukkit.getServer().getClass().getDeclaredField("commandMap");
-                f.setAccessible(true);
-                this.commandMap = (CommandMap) f.get(Bukkit.getServer());
-            } catch (final IllegalAccessException | NoSuchFieldException e) {
-                SLog.severe("Couldn't load command map: ");
-                e.printStackTrace();
-            }
+
             sendMessage("&aLoading SQL database...");
             this.sql = new SQLDatabase();
             try {
-                DatabaseManager.connectToDatabase(databaseInformation.getString("uri"), databaseInformation.getString("name"));
+                DatabaseManager.connectToDatabase(databaseInformation.getString("mongodb.uri"), databaseInformation.getString("mongodb.name"));
             }catch (Exception ex){
                 SLog.warn("Database is not configured!");
                 SLog.warn("Disabling plugin...");
@@ -164,7 +159,6 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
             }
             this.regionData = new SQLRegionData();
             this.worldData = new SQLWorldData();
-            this.cl = new CommandLoader();
 
 
 
@@ -182,8 +176,6 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
             sendMessage("&aStarting server loop...");
             this.repeater = new Repeater();
             VoidlingsWardenHelmet.startCounting();
-            sendMessage("&aLoading commands...");
-            this.loadCommands();
             sendMessage("&aLoading listeners...");
             this.loadListeners();
             sendMessage("&aInjecting Packet/Ping Listener into the core...");
@@ -249,10 +241,9 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
 
 
 
-
-
     public void onDisable() {
         sendMessage("&aSaving Player data...");
+        SkyBlockManager.stopManagers();
 
         for (User user : User.getCachedUsers()){
             if (user == null) continue;
@@ -322,23 +313,6 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
 
 
 
-    private void loadCommands() {
-        Reflections reflections = new Reflections("net.hypixel.skyblock.command");
-        sendMessage("&eRegistering commands...");
-        int count = 0;
-
-        for (Class<? extends SCommand> command : reflections.getSubTypesOf(SCommand.class)) {
-            try {
-                cl.register(command.getDeclaredConstructor().newInstance());
-                count++;
-            } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
-                     InvocationTargetException exception) {
-                SLog.severe("An exception occured when loading " + command.getSimpleName());
-                SLog.severe(exception.getMessage());
-            }
-        }
-        sendMessage("&eRegistered " + count + " commands");
-    }
 
     private void loadListeners() {
         new net.hypixel.skyblock.listener.BlockListener();
@@ -436,7 +410,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
         for (String name : DEVELOPERS){
             builder.append(name).append(" , ");
         }
-        return builder.toString().substring(0 , builder.length() - 2);
+        return builder.substring(0 , builder.length() - 2);
     }
 
 
@@ -447,7 +421,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
 
 
     public String getPrefix(){
-        return ChatColor.translateAlternateColorCodes('&', "&7[&aGodspunky&bSkyblock&dCore&7] &f");
+        return ChatColor.translateAlternateColorCodes('&', "&7[&aSkyblock&dCore&7] &f");
     }
     public void sendMessage(String message) {
         Bukkit.getConsoleSender().sendMessage(getPrefix() + CC.translate(message));

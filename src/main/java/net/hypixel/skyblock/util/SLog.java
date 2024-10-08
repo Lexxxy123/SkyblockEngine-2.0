@@ -7,33 +7,31 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class SLog {
-    private static final Logger LOGGER;
-    private static final String PREFIX = Sputnik.trans("&7[&aGodspunky&bSkyblock&dCore&7] &f");
-    private static void log(final Object o, final Level l) {
-        SLog.LOGGER.log(l, getPrefix() + o);
+
+    private static final Logger LOGGER = Logger.getLogger("Minecraft");
+    private static final String PREFIX = ChatColor.translateAlternateColorCodes('&', "&7[&aSkyblock&dCore&7] &f");
+
+    private static void log(final Object message, final Level level) {
+        LOGGER.log(level, PREFIX + message);
     }
 
-    public static String getPrefix(){
-        return ChatColor.translateAlternateColorCodes('&', "&7[&aGodspunky&bSkyblock&dCore&7] &f");
+    public static String getPrefix() {
+        return PREFIX;
     }
+
     public static void sendMessage(String message) {
-        Bukkit.getConsoleSender().sendMessage(getPrefix() + CC.translate(message));
-    }
-    public static void info(final Object o) {
-        sendMessage((String) o);
+        Bukkit.getConsoleSender().sendMessage(PREFIX + ChatColor.translateAlternateColorCodes('&', message));
     }
 
-
-
-    public static void warn(final Object o) {
-        log(o, Level.WARNING);
+    public static void info(final Object message) {
+        sendMessage(ChatColor.GREEN + "ℹ️ " + message.toString());
     }
 
-    public static void severe(final Object o) {
-        log(o, Level.SEVERE);
+    public static void warn(final Object message) {
+        log(ChatColor.YELLOW + "⚠️ " + message.toString(), Level.WARNING);
     }
 
-    static {
-        LOGGER = Logger.getLogger("Minecraft");
+    public static void severe(final Object message) {
+        log(ChatColor.RED + "❗ " + message.toString(), Level.SEVERE);
     }
 }

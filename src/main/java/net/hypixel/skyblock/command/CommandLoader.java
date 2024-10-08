@@ -12,7 +12,7 @@ public class CommandLoader {
 
     public void register(SCommand command) {
         commands.add(command);
-        command.register();
+       // command.register();
     }
 
     public int getCommandAmount() {
