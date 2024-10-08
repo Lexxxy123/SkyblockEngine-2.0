@@ -79,7 +79,6 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
     @Getter
     private static SkyBlock plugin;
     private final PacketHelper packetInj;
-    private boolean authenticated;
 
     public static final String[] DEVELOPERS = {"Hamza" , "EpicPortal" , "Dumbo"};
 
@@ -149,8 +148,6 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
         this.heads = new Config("heads.yml");
         this.blocks = new Config("blocks.yml");
         this.spawners = new Config("spawners.yml");
-         // authenticate();
-      // if (authenticated) {
             sendMessage("&aLoading Command map...");
             try {
                 final Field f = Bukkit.getServer().getClass().getDeclaredField("commandMap");
@@ -236,9 +233,6 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
 
             long end = System.currentTimeMillis();
             sendMessage("&aSuccessfully enabled Hub Core in " + CC.getTimeDifferenceAndColor(start, end) + "&a.");
-     // } else {
-      //      throw new NullPointerException("license is not valid or empty. Please insert license in config.yml");
-      //  }
 
     }
 
@@ -449,44 +443,6 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
         Bukkit.getPluginManager().callEvent(e);
     }
 
-    private void authenticate() {
-        final String licenseKey = config.getString("licenseKey");
-
-        SentinelClient client = new SentinelClient(
-                "http://authentication.gsdevelopments.in:2222/api/v1",
-                "rhvs43epk4onhk9atpqrvivli5",
-                "GYCZMI3M4rNYap1Q0JuSmM3b2MR0vaE+U2Kf7KWH1rg=");
-
-        this.authenticated = false;
-
-        try {
-            client.getLicenseController().auth(
-                    licenseKey, "SkyblockCore", null, null, SentinelClient.getCurrentHwid(), SentinelClient.getCurrentIp());
-            this.authenticated = true;
-        } catch (InvalidLicenseException e) {
-            System.out.println("Invalid license key.");
-        } catch (ExpiredLicenseException e) {
-            System.out.println("Expired.");
-        } catch (BlacklistedLicenseException e) {
-            System.out.println("Blacklisted.");
-        } catch (ConnectionMismatchException e) {
-            System.out.println("Provided connection does not match.");
-        } catch (ExcessiveServersException e) {
-            System.out.println("Too many servers. (Max: " + e.getMaxServers() + ")");
-        } catch (ExcessiveIpsException e) {
-            System.out.println("Too many IPs. (Max: " + e.getMaxIps() + ")");
-        } catch (InvalidProductException e) {
-            System.out.println("License is for different product.");
-        } catch (InvalidPlatformException e) {
-            System.out.println("Provided connection platform is invalid.");
-        } catch (IOException e) {
-            System.out.println("An unexpected error occurred.");
-        }
-
-        if (authenticated) {
-            System.out.println("Successfully authenticated.");
-        }
-    }
 
     public String getPrefix(){
         return ChatColor.translateAlternateColorCodes('&', "&7[&aGodspunky&bSkyblock&dCore&7] &f");
