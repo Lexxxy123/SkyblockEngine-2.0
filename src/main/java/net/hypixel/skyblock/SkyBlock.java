@@ -2,10 +2,7 @@ package net.hypixel.skyblock;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import com.google.common.io.Files;
 import de.slikey.effectlib.EffectManager;
-import dev.demeng.sentinel.wrapper.SentinelClient;
-import dev.demeng.sentinel.wrapper.exception.*;
 import net.hypixel.skyblock.api.placeholder.SkyblockPlaceholder;
 import net.hypixel.skyblock.api.worldmanager.SkyBlockWorldManager;
 import net.hypixel.skyblock.database.*;
@@ -15,7 +12,6 @@ import net.hypixel.skyblock.features.auction.AuctionItem;
 import net.hypixel.skyblock.features.calendar.SkyBlockCalendar;
 import net.hypixel.skyblock.command.*;
 import net.hypixel.skyblock.config.Config;
-import net.hypixel.skyblock.features.enchantment.EnchantmentType;
 import net.hypixel.skyblock.entity.EntityPopulator;
 import net.hypixel.skyblock.entity.EntitySpawner;
 import net.hypixel.skyblock.entity.SEntityType;
@@ -66,9 +62,6 @@ import net.hypixel.skyblock.nms.nmsutil.packetlistener.handler.SentPacket;
 import net.hypixel.skyblock.nms.nmsutil.packetlistener.metrics.Metrics;
 import net.hypixel.skyblock.nms.pingrep.PingAPI;
 import net.hypixel.skyblock.npc.impl.SkyblockNPCManager;
-
-import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
