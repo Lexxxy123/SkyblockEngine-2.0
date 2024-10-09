@@ -49,6 +49,7 @@ jobs:
         prerelease: false
         title: "Release [${{ steps.tag.outputs.release_tag }}]: ${{ steps.tag.outputs.commit_message }}"
         files: |
-          target/*.jar
+          target/*[^original]*.jar
+
 
 
