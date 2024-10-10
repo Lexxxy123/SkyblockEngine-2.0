@@ -3,8 +3,10 @@ package net.hypixel.skyblock.database;
 import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.features.region.Region;
 import net.hypixel.skyblock.features.region.RegionType;
+import net.hypixel.skyblock.module.DatabaseModule;
 import org.bukkit.Location;
 
+import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,7 +24,7 @@ public class SQLRegionData {
     private final String DELETE = "DELETE FROM `regions` WHERE name=?";
 
     public boolean exists(final String regionName) {
-        try (final Connection connection = SQLRegionData.plugin.sql.getConnection()) {
+        try (final Connection connection = DatabaseModule.getSqlInstance().getConnection()) {
             final PreparedStatement statement = connection.prepareStatement("SELECT * FROM `regions` WHERE name=?");
             statement.setString(1, regionName);
             final ResultSet set = statement.executeQuery();
@@ -37,13 +39,13 @@ public class SQLRegionData {
         if (!this.exists(name)) {
             return null;
         }
-        try (final Connection connection = SQLRegionData.plugin.sql.getConnection()) {
+        try (final Connection connection = DatabaseModule.getSqlInstance().getConnection()) {
             final PreparedStatement statement = connection.prepareStatement("SELECT * FROM `regions` WHERE name=?");
             statement.setString(1, name);
             final ResultSet set = statement.executeQuery();
             set.next();
-            final Location firstLocation = new Location(SQLRegionData.plugin.worldData.getWorld(set.getInt("world")), set.getInt("x1"), set.getInt("y1"), set.getInt("z1"));
-            final Location secondLocation = new Location(SQLRegionData.plugin.worldData.getWorld(set.getInt("world")), set.getInt("x2"), set.getInt("y2"), set.getInt("z2"));
+            final Location firstLocation = new Location(DatabaseModule.getWorldData().getWorld(set.getInt("world")), set.getInt("x1"), set.getInt("y1"), set.getInt("z1"));
+            final Location secondLocation = new Location(DatabaseModule.getWorldData().getWorld(set.getInt("world")), set.getInt("x2"), set.getInt("y2"), set.getInt("z2"));
             final RegionType type = RegionType.getType(set.getString("type"));
             if (type == null) {
                 final Region region = null;
@@ -61,15 +63,15 @@ public class SQLRegionData {
     }
 
     public List<Region> getAllOfType(final RegionType type) {
-        try (final Connection connection = SQLRegionData.plugin.sql.getConnection()) {
+        try (final Connection connection = DatabaseModule.getSqlInstance().getConnection()) {
             final PreparedStatement statement = connection.prepareStatement("SELECT * FROM `regions` WHERE type=?");
             statement.setInt(1, type.ordinal());
             final ResultSet set = statement.executeQuery();
             final List<Region> regions = new ArrayList<Region>();
             while (set.next()) {
                 final String name = set.getString("name");
-                final Location firstLocation = new Location(SQLRegionData.plugin.worldData.getWorld(set.getInt("world")), set.getInt("x1"), set.getInt("y1"), set.getInt("z1"));
-                final Location secondLocation = new Location(SQLRegionData.plugin.worldData.getWorld(set.getInt("world")), set.getInt("x2"), set.getInt("y2"), set.getInt("z2"));
+                final Location firstLocation = new Location(DatabaseModule.getWorldData().getWorld(set.getInt("world")), set.getInt("x1"), set.getInt("y1"), set.getInt("z1"));
+                final Location secondLocation = new Location(DatabaseModule.getWorldData().getWorld(set.getInt("world")), set.getInt("x2"), set.getInt("y2"), set.getInt("z2"));
                 regions.add(new Region(name, firstLocation, secondLocation, type));
             }
             set.close();
@@ -81,7 +83,7 @@ public class SQLRegionData {
     }
 
     public List<Region> getAll() {
-        try (final Connection connection = SQLRegionData.plugin.sql.getConnection()) {
+        try (final Connection connection = DatabaseModule.getSqlInstance().getConnection()) {
             final PreparedStatement statement = connection.prepareStatement("SELECT * FROM `regions`");
             final ResultSet set = statement.executeQuery();
             final List<Region> regions = new ArrayList<Region>();
@@ -101,7 +103,7 @@ public class SQLRegionData {
         if (this.exists(name)) {
             return this.get(name);
         }
-        try (final Connection connection = SQLRegionData.plugin.sql.getConnection()) {
+        try (final Connection connection = DatabaseModule.getSqlInstance().getConnection()) {
             final PreparedStatement statement = connection.prepareStatement("INSERT INTO `regions` (`name`, `x1`, `y1`, `z1`, `x2`, `y2`, `z2`, `world`, `type`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
             statement.setString(1, name);
             statement.setInt(2, (int) firstLocation.getX());
@@ -110,7 +112,7 @@ public class SQLRegionData {
             statement.setInt(5, (int) secondLocation.getX());
             statement.setInt(6, (int) secondLocation.getY());
             statement.setInt(7, (int) secondLocation.getZ());
-            statement.setInt(8, SQLRegionData.plugin.worldData.getWorldID(firstLocation.getWorld()));
+            statement.setInt(8, DatabaseModule.getWorldData().getWorldID(firstLocation.getWorld()));
             statement.setString(9, type.name());
             statement.execute();
             return new Region(name, firstLocation, secondLocation, type);
@@ -121,7 +123,7 @@ public class SQLRegionData {
     }
 
     public void save(final Region region) {
-        try (final Connection connection = SQLRegionData.plugin.sql.getConnection()) {
+        try (final Connection connection = DatabaseModule.getSqlInstance().getConnection()) {
             final PreparedStatement statement = connection.prepareStatement("UPDATE `regions` SET x1=?, y1=?, z1=?, x2=?, y2=?, z2=?, world=?, type=? WHERE name=?");
             statement.setInt(1, (int) region.getFirstLocation().getX());
             statement.setInt(2, (int) region.getFirstLocation().getY());
@@ -129,7 +131,7 @@ public class SQLRegionData {
             statement.setInt(4, (int) region.getSecondLocation().getX());
             statement.setInt(5, (int) region.getSecondLocation().getY());
             statement.setInt(6, (int) region.getSecondLocation().getZ());
-            statement.setInt(7, SQLRegionData.plugin.worldData.getWorldID(region.getFirstLocation().getWorld()));
+            statement.setInt(7, DatabaseModule.getWorldData().getWorldID(region.getFirstLocation().getWorld()));
             statement.setString(8, region.getType().name());
             statement.setString(9, region.getName());
             statement.execute();
@@ -139,7 +141,7 @@ public class SQLRegionData {
     }
 
     public void delete(final Region region) {
-        try (final Connection connection = SQLRegionData.plugin.sql.getConnection()) {
+        try (final Connection connection = DatabaseModule.getSqlInstance().getConnection()) {
             final PreparedStatement statement = connection.prepareStatement("DELETE FROM `regions` WHERE name=?");
             statement.setString(1, region.getName());
             statement.execute();
@@ -149,7 +151,7 @@ public class SQLRegionData {
     }
 
     public int getRegionCount() {
-        try (final Connection connection = SQLRegionData.plugin.sql.getConnection()) {
+        try (final Connection connection = DatabaseModule.getSqlInstance().getConnection()) {
             final PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) AS rows FROM `regions`");
             final ResultSet set = statement.executeQuery();
             set.next();

@@ -3,43 +3,44 @@ package net.hypixel.skyblock;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import de.slikey.effectlib.EffectManager;
+import lombok.Getter;
+import lombok.Setter;
 import net.hypixel.skyblock.api.placeholder.SkyblockPlaceholder;
 import net.hypixel.skyblock.api.worldmanager.SkyBlockWorldManager;
-import net.hypixel.skyblock.database.*;
+import net.hypixel.skyblock.database.RecipeDatabase;
+import net.hypixel.skyblock.entity.EntitySpawner;
+import net.hypixel.skyblock.entity.StaticDragonManager;
+import net.hypixel.skyblock.entity.nms.VoidgloomSeraph;
 import net.hypixel.skyblock.features.auction.AuctionBid;
 import net.hypixel.skyblock.features.auction.AuctionEscrow;
 import net.hypixel.skyblock.features.auction.AuctionItem;
 import net.hypixel.skyblock.features.calendar.SkyBlockCalendar;
-import net.hypixel.skyblock.entity.EntityPopulator;
-import net.hypixel.skyblock.entity.EntitySpawner;
-import net.hypixel.skyblock.entity.SEntityType;
-import net.hypixel.skyblock.entity.StaticDragonManager;
-import net.hypixel.skyblock.entity.nms.VoidgloomSeraph;
-import net.hypixel.skyblock.features.punishment.JoinLeaveEvent;
-import net.hypixel.skyblock.features.punishment.PlayerChat;
+import net.hypixel.skyblock.features.merchant.MerchantItemHandler;
 import net.hypixel.skyblock.features.quest.QuestLineHandler;
 import net.hypixel.skyblock.features.ranks.SetRankCommand;
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.features.region.Region;
+import net.hypixel.skyblock.features.slayer.SlayerQuest;
+import net.hypixel.skyblock.item.Recipe;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.SMaterial;
 import net.hypixel.skyblock.item.armor.VoidlingsWardenHelmet;
 import net.hypixel.skyblock.item.pet.Pet;
-import net.hypixel.skyblock.listener.PacketListener;
-import net.hypixel.skyblock.listener.PlayerChatListener;
-import net.hypixel.skyblock.listener.ServerPingListener;
 import net.hypixel.skyblock.listener.WorldListener;
-import net.hypixel.skyblock.features.merchant.MerchantItemHandler;
-import net.hypixel.skyblock.module.ConfigModule;
 import net.hypixel.skyblock.module.impl.SkyBlockModuleManager;
+import net.hypixel.skyblock.nms.nmsutil.apihelper.APIManager;
+import net.hypixel.skyblock.nms.nmsutil.packetlistener.PacketHelper;
+import net.hypixel.skyblock.nms.nmsutil.packetlistener.handler.PacketHandler;
+import net.hypixel.skyblock.nms.nmsutil.packetlistener.handler.ReceivedPacket;
+import net.hypixel.skyblock.nms.nmsutil.packetlistener.handler.SentPacket;
+import net.hypixel.skyblock.nms.nmsutil.packetlistener.metrics.Metrics;
 import net.hypixel.skyblock.nms.packetevents.*;
-import net.hypixel.skyblock.npc.impl.SkyblockNPC;
-import net.hypixel.skyblock.features.region.Region;
-import net.hypixel.skyblock.features.region.RegionType;
-
-import net.hypixel.skyblock.features.slayer.SlayerQuest;
+import net.hypixel.skyblock.nms.pingrep.PingAPI;
 import net.hypixel.skyblock.user.AuctionSettings;
 import net.hypixel.skyblock.user.User;
-import net.hypixel.skyblock.util.*;
-import lombok.Getter;
-import lombok.Setter;
+import net.hypixel.skyblock.util.CC;
+import net.hypixel.skyblock.util.SLog;
+import net.hypixel.skyblock.util.SUtil;
+import net.hypixel.skyblock.util.SerialNBTTagCompound;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -50,18 +51,10 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.PluginMessageListener;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.reflections.Reflections;
-import net.hypixel.skyblock.gui.GUIListener;
-import net.hypixel.skyblock.nms.nmsutil.apihelper.APIManager;
-import net.hypixel.skyblock.nms.nmsutil.packetlistener.PacketHelper;
-import net.hypixel.skyblock.nms.nmsutil.packetlistener.handler.PacketHandler;
-import net.hypixel.skyblock.nms.nmsutil.packetlistener.handler.ReceivedPacket;
-import net.hypixel.skyblock.nms.nmsutil.packetlistener.handler.SentPacket;
-import net.hypixel.skyblock.nms.nmsutil.packetlistener.metrics.Metrics;
-import net.hypixel.skyblock.nms.pingrep.PingAPI;
-import net.hypixel.skyblock.npc.impl.SkyblockNPCManager;
-import java.util.*;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 public class SkyBlock extends JavaPlugin implements PluginMessageListener {
     @Getter
@@ -70,7 +63,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
     private static SkyBlock plugin;
     private final PacketHelper packetInj;
 
-    public static final String[] DEVELOPERS = {"Hamza" , "EpicPortal" , "Dumbo"};
+    public static final String[] DEVELOPERS = {"Hamza", "EpicPortal", "Dumbo"};
 
 
     public boolean altarCooldown;
@@ -84,19 +77,13 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
     @Setter
     @Getter
     private int onlinePlayerAcrossServers;
-    public SQLDatabase sql;
-    public SQLRegionData regionData;
-    public SQLWorldData worldData;
+
     public Repeater repeater;
-    @Getter
-    private BungeeChannel bc;
     @Setter
     @Getter
     private String serverName;
 
     public List<String> bannedUUID;
-
-
 
     public SkyBlock() {
         this.packetInj = new PacketHelper();
@@ -112,6 +99,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
 
     public void onEnable() {
         plugin = this;
+        instance = this;
         sendMessage("&aEnabling Skyblock Core. Made by " + getDevelopersName());
         long start = System.currentTimeMillis();
 
@@ -122,84 +110,67 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
 
         SkyBlockModuleManager.initModules();
 
-            sendMessage("&aLoading SQL database...");
-            this.sql = new SQLDatabase();
-            try {
-                DatabaseManager.connectToDatabase(ConfigModule.getDatabaseInfo().getString("mongodb.uri"), ConfigModule.getDatabaseInfo().getString("mongodb.name"));
-            }catch (Exception ex){
-                SLog.warn("Database is not configured!");
-                SLog.warn("Disabling plugin...");
-                Bukkit.getPluginManager().disablePlugin(this);
-                Bukkit.getServer().shutdown();
-            }
-            this.regionData = new SQLRegionData();
-            this.worldData = new SQLWorldData();
 
+        sendMessage("&aBegin Protocol injection... (SkyBlockProtocol v0.6.2)");
+        APIManager.registerAPI(this.packetInj, this);
+        if (!this.packetInj.injected) {
+            this.getLogger().warning("[FATAL ERROR] Protocol Injection failed. Disabling the plugin for safety...");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+        sendMessage("&aInjecting...");
+        PingAPI.register();
+        new Metrics(this);
+        APIManager.initAPI(PacketHelper.class);
+        sendMessage("&aStarting server loop...");
+        this.repeater = new Repeater();
+        VoidlingsWardenHelmet.startCounting();
+        sendMessage("&aInjecting Packet/Ping Listener into the core...");
+        this.registerPacketListener();
+        this.registerPingListener();
+        sendMessage("&aStarting entity spawners...");
+        EntitySpawner.startSpawnerTask();
+        sendMessage("&aEstablishing player regions...");
+        Region.cacheRegions();
+        sendMessage("&aLoading auction items from disk...");
+        effectManager = new EffectManager(this);
+        AuctionItem.loadAuctionsFromDisk();
+        sendMessage("&aLoading Quest!");
+        initializeQuests();
+        sendMessage("&aLoading merchants prices...");
+        MerchantItemHandler.init();
+        sendMessage("&aSynchronizing world time with calendar time and removing world entities...");
+        SkyBlockCalendar.synchronize();
+        sendMessage("&aLoading items...");
+        SMaterial.loadItems();
+        sendMessage("&aConverting CraftRecipes into custom recipes...");
+        Recipe.loadRecipes();
+        sendMessage("&aLoading recipes from database...");
+        RecipeDatabase.loadRecipes();
+        sendMessage("&aHooking SkyBlockEngine to PlaceholderAPI and registering...");
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new SkyblockPlaceholder().register();
+            sendMessage("&aHooked to PAPI successfully!");
+        } else {
+            sendMessage("&aERROR! PlaceholderAPI plugin does not exist, disabing placeholder request!");
+        }
+        protocolManager = ProtocolLibrary.getProtocolManager();
+        WorldListener.init();
 
+        sendMessage("&aSuccessfully enabled " + this.getDescription().getFullName());
+        sendMessage("&a===================================");
+        sendMessage("&aSkyBlock ENGINE - MADE BY " + getDevelopersName());
+        sendMessage("&aPLUGIN ENABLED! HOOKED INTO SkyBlock!");
+        sendMessage("&a ");
+        sendMessage("&aThis plugin provide most of SkyBlock functions!");
+        sendMessage("&aOriginally was made by super");
+        sendMessage("&aContinued by GodSpunky (C) 2024");
+        sendMessage("&aAny illegal usage will be suppressed! DO NOT LEAK IT!");
+        sendMessage("&a===================================");
+        this.getCommand("setrank").setExecutor(new SetRankCommand());
 
-            sendMessage("&aBegin Protocol injection... (SkyBlockProtocol v0.6.2)");
-            APIManager.registerAPI(this.packetInj, this);
-            if (!this.packetInj.injected) {
-                this.getLogger().warning("[FATAL ERROR] Protocol Injection failed. Disabling the plugin for safety...");
-                Bukkit.getPluginManager().disablePlugin(this);
-                return;
-            }
-            sendMessage("&aInjecting...");
-            PingAPI.register();
-            new Metrics(this);
-            APIManager.initAPI(PacketHelper.class);
-            sendMessage("&aStarting server loop...");
-            this.repeater = new Repeater();
-            VoidlingsWardenHelmet.startCounting();
-            sendMessage("&aLoading listeners...");
-            this.loadListeners();
-            sendMessage("&aInjecting Packet/Ping Listener into the core...");
-            this.registerPacketListener();
-            this.registerPingListener();
-            sendMessage("&aStarting entity spawners...");
-            EntitySpawner.startSpawnerTask();
-            sendMessage("&aEstablishing player regions...");
-            Region.cacheRegions();
-            sendMessage("&aLoading auction items from disk...");
-            effectManager = new EffectManager(this);
-            AuctionItem.loadAuctionsFromDisk();
-            sendMessage("&aLoading Quest!");
-            initializeQuests();
-            sendMessage("&aLoading merchants prices...");
-            MerchantItemHandler.init();
-            sendMessage("&aSynchronizing world time with calendar time and removing world entities...");
-            SkyBlockCalendar.synchronize();
-            sendMessage("&aLoading items...");
-            SMaterial.loadItems();
-            sendMessage("&aConverting CraftRecipes into custom recipes...");
-            Recipe.loadRecipes();
-            sendMessage("&aLoading recipes from database...");
-            RecipeDatabase.loadRecipes();
-            sendMessage("&aHooking SkyBlockEngine to PlaceholderAPI and registering...");
-            if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-                new SkyblockPlaceholder().register();
-                sendMessage("&aHooked to PAPI successfully!");
-            } else {
-                sendMessage("&aERROR! PlaceholderAPI plugin does not exist, disabing placeholder request!");
-            }
-            protocolManager = ProtocolLibrary.getProtocolManager();
-            WorldListener.init();
-
-            sendMessage("&aSuccessfully enabled " + this.getDescription().getFullName());
-            sendMessage("&a===================================");
-            sendMessage("&aSkyBlock ENGINE - MADE BY " + getDevelopersName());
-            sendMessage("&aPLUGIN ENABLED! HOOKED INTO SkyBlock!");
-            sendMessage("&a ");
-            sendMessage("&aThis plugin provide most of SkyBlock functions!");
-            sendMessage("&aOriginally was made by super");
-            sendMessage("&aContinued by GodSpunky (C) 2024");
-            sendMessage("&aAny illegal usage will be suppressed! DO NOT LEAK IT!");
-            sendMessage("&a===================================");
-            startPopulators();
-            this.getCommand("setrank").setExecutor(new SetRankCommand());
-
-            long end = System.currentTimeMillis();
-            sendMessage("&aSuccessfully enabled Hub Core in " + CC.getTimeDifferenceAndColor(start, end) + "&a.");
+        long end = System.currentTimeMillis();
+        sendMessage("&aSuccessfully enabled Hub Core in " + CC.getTimeDifferenceAndColor(start, end) + "&a.");
 
     }
 
@@ -213,12 +184,11 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
     }
 
 
-
     public void onDisable() {
         sendMessage("&aSaving Player data...");
         SkyBlockModuleManager.stopManagers();
 
-        for (User user : User.getCachedUsers()){
+        for (User user : User.getCachedUsers()) {
             if (user == null) continue;
             if (user.getUuid() == null) continue;
             user.save().thenRun(user::kick);
@@ -234,7 +204,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
                 entity.remove();
             }
         }
-        if (this.repeater != null && EntitySpawner.class != null && EntitySpawner.class != null && StaticDragonManager.class != null && SkyBlockCalendar.class != null) {
+        if (this.repeater != null) {
             sendMessage("&aStopping server loop...");
             this.repeater.stop();
             sendMessage("&aUnloading ores from Dwarven Mines...");
@@ -269,55 +239,6 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
         sendMessage("&a===================================");
     }
 
-
-
-    private void loadListeners() {
-        new net.hypixel.skyblock.listener.BlockListener();
-        new net.hypixel.skyblock.listener.PlayerListener();
-        new ServerPingListener();
-        new ItemListener();
-        new GUIListener();
-        new PacketListener();
-        new WorldListener();
-        new PlayerChatListener();
-        new PlayerChat();
-        new JoinLeaveEvent();
-    }
-
-    private void startPopulators() {
-        new EntityPopulator(5, 10, 200L, SEntityType.ENCHANTED_DIAMOND_SKELETON, RegionType.OBSIDIAN_SANCTUARY).start();
-        new EntityPopulator(5, 10, 200L, SEntityType.ENCHANTED_DIAMOND_ZOMBIE, RegionType.OBSIDIAN_SANCTUARY).start();
-        new EntityPopulator(5, 10, 200L, SEntityType.DIAMOND_ZOMBIE, RegionType.DIAMOND_RESERVE).start();
-        new EntityPopulator(5, 10, 200L, SEntityType.DIAMOND_SKELETON, RegionType.DIAMOND_RESERVE).start();
-        new EntityPopulator(5, 15, 200L, SEntityType.SMALL_SLIME, RegionType.SLIMEHILL).start();
-        new EntityPopulator(5, 10, 200L, SEntityType.MEDIUM_SLIME, RegionType.SLIMEHILL).start();
-        new EntityPopulator(5, 5, 400L, SEntityType.LARGE_SLIME, RegionType.SLIMEHILL).start();
-        new EntityPopulator(5, 30, 400L, SEntityType.PIGMAN, RegionType.PIGMENS_DEN).start();
-        new EntityPopulator(5, 30, 400L, SEntityType.LAPIS_ZOMBIE, RegionType.LAPIS_QUARRY).start();
-        new EntityPopulator(5, 10, 400L, SEntityType.SNEAKY_CREEPER, RegionType.GUNPOWDER_MINES).start();
-        new EntityPopulator(6, 20, 300L, SEntityType.WEAK_ENDERMAN, RegionType.THE_END_NEST).start();
-        new EntityPopulator(6, 20, 300L, SEntityType.ENDERMAN, RegionType.THE_END_NEST).start();
-        new EntityPopulator(6, 20, 300L, SEntityType.STRONG_ENDERMAN, RegionType.THE_END_NEST).start();
-        new EntityPopulator(10, 30, 200L, SEntityType.ZEALOT, RegionType.DRAGONS_NEST).start();
-        new EntityPopulator(1, 5, 1200L, SEntityType.ENDER_CHEST_ZEALOT, RegionType.DRAGONS_NEST).start();
-        new EntityPopulator(5, 20, 200L, SEntityType.WATCHER, RegionType.DRAGONS_NEST).start();
-        new EntityPopulator(5, 10, 200L, SEntityType.OBSIDIAN_DEFENDER, RegionType.DRAGONS_NEST).start();
-        new EntityPopulator(5, 20, 300L, SEntityType.SPLITTER_SPIDER, RegionType.SPIDERS_DEN_HIVE).start();
-        new EntityPopulator(5, 20, 300L, SEntityType.WEAVER_SPIDER, RegionType.SPIDERS_DEN_HIVE).start();
-        new EntityPopulator(5, 20, 300L, SEntityType.VORACIOUS_SPIDER, RegionType.SPIDERS_DEN_HIVE).start();
-        new EntityPopulator(5, 20, 300L, SEntityType.SPIDER_JOCKEY, RegionType.SPIDERS_DEN_HIVE).start();
-        new EntityPopulator(5, 20, 300L, SEntityType.DASHER_SPIDER, RegionType.SPIDERS_DEN_HIVE).start();
-        new EntityPopulator(5, 10, 300L, SEntityType.HIGH_LEVEL_SKELETON, RegionType.HIGH_LEVEL, world -> world.getTime() >= 13188L && world.getTime() <= 22812L).start();
-        new EntityPopulator(5, 15, 200L, SEntityType.ZOMBIE, RegionType.GRAVEYARD).start();
-        new EntityPopulator(5, 15, 200L, SEntityType.ZOMBIE_VILLAGER, RegionType.GRAVEYARD).start();
-        new EntityPopulator(5, 20, 200L, SEntityType.WOLF, RegionType.RUINS).start();
-        new EntityPopulator(2, 4, 200L, SEntityType.OLD_WOLF, RegionType.RUINS).start();
-        new EntityPopulator(5, 30, 200L, SEntityType.CRYPT_GHOUL, RegionType.COAL_MINE_CAVES).start();
-        new EntityPopulator(1, 1, 200L, SEntityType.GOLDEN_GHOUL, RegionType.COAL_MINE_CAVES).start();
-        new EntityPopulator(4, 4, 200L, SEntityType.SOUL_OF_THE_ALPHA, RegionType.HOWLING_CAVE).start();
-        new EntityPopulator(5, 15, 200L, SEntityType.HOWLING_SPIRIT, RegionType.HOWLING_CAVE).start();
-        new EntityPopulator(5, 15, 200L, SEntityType.PACK_SPIRIT, RegionType.HOWLING_CAVE).start();
-    }
 
     private void loadSerializableClasses() {
         ConfigurationSerialization.registerClass(SlayerQuest.class, "SlayerQuest");
@@ -362,12 +283,12 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
     }
 
 
-    public String getDevelopersName(){
+    public String getDevelopersName() {
         StringBuilder builder = new StringBuilder();
-        for (String name : DEVELOPERS){
+        for (String name : DEVELOPERS) {
             builder.append(name).append(" , ");
         }
-        return builder.substring(0 , builder.length() - 2);
+        return builder.substring(0, builder.length() - 2);
     }
 
 
@@ -377,9 +298,10 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
     }
 
 
-    public String getPrefix(){
+    public String getPrefix() {
         return ChatColor.translateAlternateColorCodes('&', "&7[&aSkyblock&dCore&7] &f");
     }
+
     public void sendMessage(String message) {
         Bukkit.getConsoleSender().sendMessage(getPrefix() + CC.translate(message));
     }

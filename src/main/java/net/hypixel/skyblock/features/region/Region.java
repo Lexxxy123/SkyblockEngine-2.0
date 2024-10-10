@@ -3,6 +3,7 @@ package net.hypixel.skyblock.features.region;
 import net.hypixel.skyblock.SkyBlock;
 import lombok.Getter;
 import lombok.Setter;
+import net.hypixel.skyblock.module.DatabaseModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -45,13 +46,13 @@ public class Region
 
     public void save()
     {
-        plugin.regionData.save(this);
+        DatabaseModule.getRegionData().save(this);
     }
 
     public void delete()
     {
         REGION_CACHE.remove(name);
-        plugin.regionData.delete(this);
+        DatabaseModule.getRegionData().delete(this);
     }
 
     public static List<Entity> getPlayersWithinRegionType(RegionType type)
@@ -260,14 +261,14 @@ public class Region
 
     public static Region create(String name, Location firstLocation, Location secondLocation, RegionType type)
     {
-        return plugin.regionData.create(name, firstLocation, secondLocation, type);
+        return DatabaseModule.getRegionData().create(name, firstLocation, secondLocation, type);
     }
 
     public static Region get(String name)
     {
         if (REGION_CACHE.containsKey(name))
             return REGION_CACHE.get(name);
-        return plugin.regionData.get(name);
+        return DatabaseModule.getRegionData().get(name);
     }
 
     public static List<Region> getRegions()
@@ -281,7 +282,7 @@ public class Region
     }
 
     public static void cacheRegions() {
-        for (final Region region : Region.plugin.regionData.getAll()) {
+        for (final Region region : DatabaseModule.getRegionData().getAll()) {
             Region.REGION_CACHE.put(region.getName(), region);
         }
 

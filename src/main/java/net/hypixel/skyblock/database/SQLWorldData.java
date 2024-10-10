@@ -1,6 +1,7 @@
 package net.hypixel.skyblock.database;
 
 import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.module.DatabaseModule;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -17,7 +18,7 @@ public class SQLWorldData {
     private final String COUNT = "SELECT COUNT(*) AS rows FROM `worlds`";
 
     public boolean exists(final World world) {
-        try (final Connection connection = SQLWorldData.plugin.sql.getConnection()) {
+        try (final Connection connection = DatabaseModule.getSqlInstance().getConnection()) {
             final PreparedStatement statement = connection.prepareStatement("SELECT * FROM `worlds` WHERE name=?");
             statement.setString(1, world.getName());
             final ResultSet set = statement.executeQuery();
@@ -29,7 +30,7 @@ public class SQLWorldData {
     }
 
     public boolean existsID(final int id) {
-        try (final Connection connection = SQLWorldData.plugin.sql.getConnection()) {
+        try (final Connection connection = DatabaseModule.getSqlInstance().getConnection()) {
             final PreparedStatement statement = connection.prepareStatement("SELECT * FROM `worlds` WHERE id=?");
             statement.setInt(1, id);
             final ResultSet set = statement.executeQuery();
@@ -41,7 +42,7 @@ public class SQLWorldData {
     }
 
     public int getWorldID(final World world) {
-        try (final Connection connection = SQLWorldData.plugin.sql.getConnection()) {
+        try (final Connection connection = DatabaseModule.getSqlInstance().getConnection()) {
             if (!this.exists(world)) {
                 final PreparedStatement statement = connection.prepareStatement("INSERT INTO `worlds` (`id`, `name`) VALUES (?, ?);");
                 statement.setInt(1, this.getWorldCount() + 1);
@@ -62,7 +63,7 @@ public class SQLWorldData {
     }
 
     public World getWorld(final int id) {
-        try (final Connection connection = SQLWorldData.plugin.sql.getConnection()) {
+        try (final Connection connection = DatabaseModule.getSqlInstance().getConnection()) {
             if (!this.existsID(id)) {
                 final World world = null;
                 if (connection != null) {
@@ -84,7 +85,7 @@ public class SQLWorldData {
     }
 
     public int getWorldCount() {
-        try (final Connection connection = SQLWorldData.plugin.sql.getConnection()) {
+        try (final Connection connection = DatabaseModule.getSqlInstance().getConnection()) {
             final PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) AS rows FROM `worlds`");
             final ResultSet set = statement.executeQuery();
             set.next();
