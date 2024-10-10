@@ -63,8 +63,6 @@ import net.hypixel.skyblock.nms.nmsutil.packetlistener.handler.SentPacket;
 import net.hypixel.skyblock.nms.nmsutil.packetlistener.metrics.Metrics;
 import net.hypixel.skyblock.nms.pingrep.PingAPI;
 import net.hypixel.skyblock.npc.impl.SkyblockNPCManager;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class SkyBlock extends JavaPlugin implements PluginMessageListener {
@@ -87,6 +85,8 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
     public Config blocks;
     public Config spawners;
     public Config databaseInformation;
+    @Getter
+    public Config serverInfo;
 
     @Getter
     private QuestLineHandler questLineHandler;
@@ -146,6 +146,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
         this.blocks = new Config("blocks.yml");
         this.spawners = new Config("spawners.yml");
         this.databaseInformation = new Config("database.yml");
+        this.serverInfo = new Config("serverinfo.yml");
 
             sendMessage("&aLoading SQL database...");
             this.sql = new SQLDatabase();

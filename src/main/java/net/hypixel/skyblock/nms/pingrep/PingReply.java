@@ -1,5 +1,7 @@
 package net.hypixel.skyblock.nms.pingrep;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.util.CachedServerIcon;
 
@@ -8,12 +10,24 @@ import java.util.List;
 public class PingReply {
     private final Object ctx;
     private String motd;
+    @Setter
+    @Getter
     private int onlinePlayers;
+    @Setter
+    @Getter
     private int maxPlayers;
+    @Setter
+    @Getter
     private int protocolVersion;
+    @Setter
+    @Getter
     private String protocolName;
+    @Setter
+    @Getter
     private List<String> playerSample;
     private boolean hidePlayerSample;
+    @Setter
+    @Getter
     private CachedServerIcon icon;
 
     public PingReply(final Object ctx, final String motd, final int onlinePlayers, final int maxPlayers, final int protocolVersion, final String protocolName, final List<String> playerSample) {
@@ -28,67 +42,20 @@ public class PingReply {
         this.playerSample = playerSample;
     }
 
-    public int getOnlinePlayers() {
-        return this.onlinePlayers;
-    }
-
-    public int getMaxPlayers() {
-        return this.maxPlayers;
-    }
-
     public String getMOTD() {
         return this.motd;
-    }
-
-    public int getProtocolVersion() {
-        return this.protocolVersion;
-    }
-
-    public String getProtocolName() {
-        return this.protocolName;
-    }
-
-    public List<String> getPlayerSample() {
-        return this.playerSample;
     }
 
     public boolean isPlayerSampleHidden() {
         return this.hidePlayerSample;
     }
 
-    public CachedServerIcon getIcon() {
-        return this.icon;
-    }
-
-    public void setOnlinePlayers(final int onlinePlayers) {
-        this.onlinePlayers = onlinePlayers;
-    }
-
-    public void setMaxPlayers(final int maxPlayers) {
-        this.maxPlayers = maxPlayers;
-    }
-
     public void setMOTD(final String motd) {
         this.motd = motd;
-    }
-
-    public void setProtocolVersion(final int protocolVersion) {
-        this.protocolVersion = protocolVersion;
-    }
-
-    public void setProtocolName(final String protocolName) {
-        this.protocolName = protocolName;
-    }
-
-    public void setPlayerSample(final List<String> playerSample) {
-        this.playerSample = playerSample;
     }
 
     public void hidePlayerSample(final boolean hidePlayerSample) {
         this.hidePlayerSample = hidePlayerSample;
     }
 
-    public void setIcon(final CachedServerIcon icon) {
-        this.icon = icon;
-    }
 }
