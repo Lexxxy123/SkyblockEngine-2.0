@@ -2,6 +2,8 @@ package net.hypixel.skyblock.npc.impl.type.impl;
 
 import com.mojang.authlib.GameProfile;
 import net.hypixel.skyblock.npc.impl.type.NPCBase;
+import net.hypixel.skyblock.util.SUtil;
+import net.hypixel.skyblock.util.TaskUtility;
 import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -44,7 +46,9 @@ public class NPCPlayerImpl extends EntityPlayer implements NPCBase {
         , this);
         sendPacket(player , infoAddPacket);
         sendPacket(player , spawnPacket);
-        sendPacket(player , infoRemovePacket);
+        TaskUtility.delaySync(()->{
+            sendPacket(player , infoRemovePacket);
+        }, 20 * 5);
     }
     @Override
     public void hide(Player player){

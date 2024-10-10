@@ -24,22 +24,19 @@ public class FerocityCalculation {
         if (ferocity == 0) {
             return 0;
         }
-        final int feroDiv = Math.round((float) (ferocity / 100)) + 1;
-        return feroDiv;
+        return Math.round((float) (ferocity / 100)) + 1;
     }
 
     public static Integer ferocityStrikeCurrent(final int ferocity) {
         if (ferocity < 100) {
             return 0;
         }
-        final int feroDiv = Math.round((float) (ferocity / 100));
-        return feroDiv;
+        return Math.round((float) (ferocity / 100));
     }
 
     public static Double ferocityPercentCurrent(final int ferocity) {
         double returnamount = 0.0;
         final int feroMinus = Math.round((float) (ferocity / 100)) * 100;
-        final int feroLater = ferocity - feroMinus;
         if (feroMinus >= 100) {
             returnamount = 100.0;
         } else {

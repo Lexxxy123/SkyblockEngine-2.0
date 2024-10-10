@@ -93,16 +93,16 @@ public class PacketListener extends PListener {
         if (Bukkit.getServer().hasWhitelist()) {
             pr.setProtocolName(ChatColor.RED + "Maintenance");
             List<String> sample = new ArrayList<String>();
-            pr.setMOTD(Sputnik.trans("             &aGodSpunky Network &c[1.8-1.17]&r\n       &c&lSERVER UNDER MAINTENANCE"));
+            pr.setMOTD(Sputnik.trans("             &aHypixel Network &c[1.8-1.20]&r\n       &c&lSERVER UNDER MAINTENANCE"));
             sample.add(Sputnik.trans("&bJoin our &9Discord &bserver for more info"));
-            sample.add(Sputnik.trans("&6https://discord.godspunky"));
+            sample.add(Sputnik.trans("&6https://discord.hypixel"));
             pr.setPlayerSample(sample);
             pr.setProtocolVersion(-1);
             return;
         }
         if (!RebootServerCommand.secondMap.containsKey(Bukkit.getServer())) {
             List<String> sample = new ArrayList<String>();
-            sample.add(Sputnik.trans("&cPowered by &6GodSpunky Engine&c"));
+            sample.add(Sputnik.trans("&cPowered by &6SkyBlock Engine&c"));
             pr.setPlayerSample(sample);
             pr.setProtocolName(ChatColor.DARK_RED + "SkyBlockEngine 1.8.x - 1.20");
         } else {
@@ -115,7 +115,7 @@ public class PacketListener extends PListener {
             pr.setPlayerSample(sample);
             pr.setProtocolVersion(-1);
         }
-        pr.setMOTD(Sputnik.trans("             &aGodSpunky Network &c[1.8-1.20]&r\n  &c&lDungeon & Enderman Slayer! &8➜ &a&lNOW LIVE!"));
+        pr.setMOTD(Sputnik.trans("             &aHypixel Network &c[1.8-1.20]&r\n  &c&lDungeon & Enderman Slayer! &8➜ &a&lNOW LIVE!"));
         pr.setMaxPlayers(50);
     }
 

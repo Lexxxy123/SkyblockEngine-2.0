@@ -24,14 +24,15 @@ public class SLog {
     }
 
     public static void info(final Object message) {
-        sendMessage(ChatColor.GREEN + "ℹ️ " + message.toString());
+        int emoji = 0x1F5E3;
+        sendMessage(ChatColor.GREEN  + message.toString());
     }
 
     public static void warn(final Object message) {
-        log(ChatColor.YELLOW + "⚠️ " + message.toString(), Level.WARNING);
+        log(ChatColor.YELLOW + "U+1F40A " + message.toString(), Level.WARNING);
     }
 
     public static void severe(final Object message) {
-        log(ChatColor.RED + "❗ " + message.toString(), Level.SEVERE);
+        log(ChatColor.RED + "U+1F99C " + message.toString(), Level.SEVERE);
     }
 }
