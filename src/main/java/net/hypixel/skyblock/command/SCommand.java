@@ -4,7 +4,7 @@ package net.hypixel.skyblock.command;
 
 import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.features.ranks.PlayerRank;
-import net.hypixel.skyblock.manager.CommandManager;
+import net.hypixel.skyblock.module.CommandModule;
 import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.SUtil;
 import org.bukkit.Bukkit;
@@ -15,7 +15,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
@@ -56,7 +55,7 @@ public abstract class SCommand implements CommandExecutor, TabCompleter {
     }
 
     public void register() {
-        CommandManager.getCommandMap().register("", this.command);
+        CommandModule.getCommandMap().register("", this.command);
     }
 
     private static class SECommand extends Command {

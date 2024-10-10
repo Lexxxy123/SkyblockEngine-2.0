@@ -1,6 +1,7 @@
 package net.hypixel.skyblock.features.calendar;
 
 import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.module.ConfigModule;
 import net.hypixel.skyblock.util.SLog;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -45,12 +46,12 @@ public final class SkyBlockCalendar {
 
     public static void saveElapsed() {
         final SkyBlock plugin = SkyBlock.getPlugin();
-        plugin.config.set("timeElapsed", SkyBlockCalendar.ELAPSED);
-        plugin.config.save();
+        ConfigModule.getGenericConfig().set("timeElapsed", SkyBlockCalendar.ELAPSED);
+        ConfigModule.getGenericConfig().save();
     }
 
     public static void synchronize(){
-        SkyBlockCalendar.ELAPSED = SkyBlock.getPlugin().config.getLong("timeElapsed");
+        SkyBlockCalendar.ELAPSED = ConfigModule.getGenericConfig().getLong("timeElapsed");
 
         for (final World world : Bukkit.getWorlds()) {
             for (final Entity entity : world.getEntities()) {

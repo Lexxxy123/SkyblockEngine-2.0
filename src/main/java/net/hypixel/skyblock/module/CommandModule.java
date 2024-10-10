@@ -1,9 +1,9 @@
-package net.hypixel.skyblock.manager;
+package net.hypixel.skyblock.module;
 
 import lombok.Getter;
 import net.hypixel.skyblock.SkyBlock;
-import net.hypixel.skyblock.command.CommandLoader;
 import net.hypixel.skyblock.command.SCommand;
+import net.hypixel.skyblock.module.impl.ModuleImpl;
 import net.hypixel.skyblock.util.ReflectionUtil;
 import net.hypixel.skyblock.util.SLog;
 import org.bukkit.Bukkit;
@@ -11,7 +11,7 @@ import org.bukkit.command.CommandMap;
 
 import java.lang.reflect.Field;
 
-public class CommandManager implements ManagerImpl{
+public class CommandModule implements ModuleImpl {
     @Getter
     private static CommandMap commandMap;
 

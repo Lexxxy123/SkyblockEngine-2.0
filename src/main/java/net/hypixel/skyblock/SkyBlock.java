@@ -10,8 +10,6 @@ import net.hypixel.skyblock.features.auction.AuctionBid;
 import net.hypixel.skyblock.features.auction.AuctionEscrow;
 import net.hypixel.skyblock.features.auction.AuctionItem;
 import net.hypixel.skyblock.features.calendar.SkyBlockCalendar;
-import net.hypixel.skyblock.command.*;
-import net.hypixel.skyblock.config.Config;
 import net.hypixel.skyblock.entity.EntityPopulator;
 import net.hypixel.skyblock.entity.EntitySpawner;
 import net.hypixel.skyblock.entity.SEntityType;
@@ -29,7 +27,8 @@ import net.hypixel.skyblock.listener.PlayerChatListener;
 import net.hypixel.skyblock.listener.ServerPingListener;
 import net.hypixel.skyblock.listener.WorldListener;
 import net.hypixel.skyblock.features.merchant.MerchantItemHandler;
-import net.hypixel.skyblock.manager.SkyBlockManager;
+import net.hypixel.skyblock.module.ConfigModule;
+import net.hypixel.skyblock.module.impl.SkyBlockModuleManager;
 import net.hypixel.skyblock.nms.packetevents.*;
 import net.hypixel.skyblock.npc.impl.SkyblockNPC;
 import net.hypixel.skyblock.features.region.Region;
@@ -45,7 +44,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.command.CommandMap;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
@@ -80,13 +78,6 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
     public static EffectManager effectManager;
     @Getter
     private static SkyBlock instance;
-    public Config config;
-    public Config heads;
-    public Config blocks;
-    public Config spawners;
-    public Config databaseInformation;
-    @Getter
-    public Config serverInfo;
 
     @Getter
     private QuestLineHandler questLineHandler;
@@ -123,35 +114,18 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
         plugin = this;
         sendMessage("&aEnabling Skyblock Core. Made by " + getDevelopersName());
         long start = System.currentTimeMillis();
-        new BukkitRunnable() {
 
-            @Override
-            public void run() {
-                sendMessage("Cleaning up the JVM (This may cause a short lag spike!)");
-                final long before = System.currentTimeMillis();
-                System.gc();
-                final long after = System.currentTimeMillis();
-                sendMessage("It took " + (after - before) + "ms to cleanup the JVM heap");
-            }
-        }.runTaskTimer(this, 1L, 12000L);
         sendMessage("&aLoading SkyBlock worlds...");
-
-        SkyBlockManager.loadManagers();
-        SkyBlockManager.startManagers();
-
         SkyBlockWorldManager.loadWorlds();
-        sendMessage("&aLoading YAML data from disk...");
-        this.config = new Config("config.yml");
-        this.heads = new Config("heads.yml");
-        this.blocks = new Config("blocks.yml");
-        this.spawners = new Config("spawners.yml");
-        this.databaseInformation = new Config("database.yml");
-        this.serverInfo = new Config("serverinfo.yml");
+
+        sendMessage("&aLoading SkyBlock modules...");
+
+        SkyBlockModuleManager.initModules();
 
             sendMessage("&aLoading SQL database...");
             this.sql = new SQLDatabase();
             try {
-                DatabaseManager.connectToDatabase(databaseInformation.getString("mongodb.uri"), databaseInformation.getString("mongodb.name"));
+                DatabaseManager.connectToDatabase(ConfigModule.getDatabaseInfo().getString("mongodb.uri"), ConfigModule.getDatabaseInfo().getString("mongodb.name"));
             }catch (Exception ex){
                 SLog.warn("Database is not configured!");
                 SLog.warn("Disabling plugin...");
@@ -186,8 +160,6 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
             EntitySpawner.startSpawnerTask();
             sendMessage("&aEstablishing player regions...");
             Region.cacheRegions();
-            sendMessage("&aLoading NPCS...");
-            registerNPCS();
             sendMessage("&aLoading auction items from disk...");
             effectManager = new EffectManager(this);
             AuctionItem.loadAuctionsFromDisk();
@@ -244,7 +216,7 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
 
     public void onDisable() {
         sendMessage("&aSaving Player data...");
-        SkyBlockManager.stopManagers();
+        SkyBlockModuleManager.stopManagers();
 
         for (User user : User.getCachedUsers()){
             if (user == null) continue;
@@ -296,22 +268,6 @@ public class SkyBlock extends JavaPlugin implements PluginMessageListener {
         sendMessage("&aPLUGIN DISABLED!");
         sendMessage("&a===================================");
     }
-
-    private void registerNPCS()
-    {
-        Reflections reflections = new Reflections("net.hypixel.skyblock.npc");
-        for (Class<? extends SkyblockNPC> npcClazz : reflections.getSubTypesOf(SkyblockNPC.class)){
-            try {
-                npcClazz.getDeclaredConstructor().newInstance();
-            }catch (Exception ex){
-                ex.printStackTrace();
-
-            }
-        }
-        sendMessage("&aSuccessfully loaded &e" + SkyblockNPCManager.getNPCS().size() + "&a NPCs");
-    }
-
-
 
 
 

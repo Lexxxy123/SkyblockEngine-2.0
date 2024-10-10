@@ -21,6 +21,7 @@ import net.hypixel.skyblock.item.*;
 import net.hypixel.skyblock.features.merchant.MerchantItemHandler;
 import net.hypixel.skyblock.features.potion.PotionColor;
 import net.hypixel.skyblock.features.potion.PotionEffect;
+import net.hypixel.skyblock.module.ConfigModule;
 import net.minecraft.server.v1_8_R3.*;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Material;
@@ -133,11 +134,11 @@ public class SUtil {
         final SkyBlock plugin = SkyBlock.getPlugin();
         String stringUUID;
         if (material != null) {
-            if (!plugin.heads.contains(material.name().toLowerCase())) {
-                plugin.heads.set(material.name().toLowerCase(), UUID.randomUUID().toString());
-                plugin.heads.save();
+            if (!ConfigModule.getHeads().contains(material.name().toLowerCase())) {
+                ConfigModule.getHeads().set(material.name().toLowerCase(), UUID.randomUUID().toString());
+                ConfigModule.getHeads().save();
             }
-            stringUUID = plugin.heads.getString(material.name().toLowerCase());
+            stringUUID = ConfigModule.getHeads().getString(material.name().toLowerCase());
         } else {
             stringUUID = UUID.randomUUID().toString();
         }

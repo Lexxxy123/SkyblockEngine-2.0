@@ -6,6 +6,7 @@ import net.hypixel.skyblock.api.disguise.PlayerDisguise;
 import net.hypixel.skyblock.api.reflection.ReflectionsUtils;
 import net.hypixel.skyblock.config.Config;
 import net.hypixel.skyblock.event.SkyblockPlayerNPCClickEvent;
+import net.hypixel.skyblock.module.ConfigModule;
 import net.hypixel.skyblock.nms.packetevents.*;
 import net.hypixel.skyblock.npc.impl.SkyblockNPCManager;
 import net.md_5.bungee.api.ChatColor;
@@ -116,7 +117,7 @@ public class PacketListener extends PListener {
             pr.setPlayerSample(sample);
             pr.setProtocolVersion(-1);
         }
-        pr.setMOTD(Sputnik.trans(SkyBlock.getPlugin().getServerInfo().getString("motd" , "             &aHypixel Network &c[1.8-1.20]&r\n  &c&lDungeon & Enderman Slayer! &8➜ &a&lNOW LIVE!" )));
+        pr.setMOTD(Sputnik.trans(ConfigModule.getServerInfo().getString("motd" , "             &aHypixel Network &c[1.8-1.20]&r\n  &c&lDungeon & Enderman Slayer! &8➜ &a&lNOW LIVE!" )));
         pr.setMaxPlayers(50);
     }
 

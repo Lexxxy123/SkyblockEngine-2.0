@@ -29,6 +29,7 @@ import net.hypixel.skyblock.features.skill.CombatSkill;
 import net.hypixel.skyblock.features.skill.Skill;
 import net.hypixel.skyblock.features.slayer.SlayerBossType;
 import net.hypixel.skyblock.features.slayer.SlayerQuest;
+import net.hypixel.skyblock.module.ConfigModule;
 import net.hypixel.skyblock.util.*;
 import org.bukkit.*;
 import org.bukkit.block.BlockFace;
@@ -187,7 +188,7 @@ public final class PlayerUtils {
         }
         final User user = User.getUser(player.getUniqueId());
         if (user.getIslandX() == null || user.getIslandX() == 0) {
-            final Config config = SkyBlock.getPlugin().config;
+            final Config config = ConfigModule.getGenericConfig();
             double xOffset = config.getDouble("islands.x");
             double zOffset = config.getDouble("islands.z");
             if (xOffset < -2.5E7 || xOffset > 2.5E7) {
@@ -1197,7 +1198,7 @@ public final class PlayerUtils {
                     final EntityDropType type = drop.getType();
                     final double magicFind = PlayerUtils.STATISTICS_CACHE.get(damager.getUniqueId()).getMagicFind().addAll() / 100.0;
                     double sp = 100.0 * (drop.getDropChance() * (1.0 + magicFind * 10000.0 / 100.0));
-                    if (!SkyBlock.getPlugin().config.getBoolean("disableDebug")) {
+                    if (!ConfigModule.getGenericConfig().getBoolean("disableDebug")) {
                         SLog.info("-------------------------------");
                         SLog.info("Final SP " + sp);
                         SLog.info("Drop chance " + drop.getDropChance());

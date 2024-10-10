@@ -1,6 +1,6 @@
-package net.hypixel.skyblock.manager;
+package net.hypixel.skyblock.module.impl;
 
-public interface ManagerImpl {
+public interface ModuleImpl {
     String name();
     void onStart();
     void onStop();
