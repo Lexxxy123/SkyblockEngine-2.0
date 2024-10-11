@@ -25,6 +25,11 @@ public class CryptGhoul extends BaseZombie {
     public double getDamageDealt() {
         return 350.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 30;
+    }
 
     @Override
     public SEntityEquipment getEntityEquipment() {
@@ -54,10 +59,5 @@ public class CryptGhoul extends BaseZombie {
     @Override
     public boolean isVillager() {
         return false;
-    }
-
-    @Override
-    public int mobLevel() {
-        return 30;
     }
 }

@@ -15,6 +15,11 @@ public class CaveSpider extends BaseSpider {
     public double getDamageDealt() {
         return 5.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 1;
+    }
 
     @Override
     public double getXPDropped() {

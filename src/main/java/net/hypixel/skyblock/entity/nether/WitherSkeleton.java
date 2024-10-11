@@ -26,6 +26,11 @@ public class WitherSkeleton implements SkeletonStatistics, EntityFunction {
     public double getDamageDealt() {
         return 152.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 10;
+    }
 
     @Override
     public boolean isWither() {

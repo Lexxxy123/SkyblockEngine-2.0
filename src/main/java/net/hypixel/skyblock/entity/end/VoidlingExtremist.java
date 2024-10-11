@@ -26,6 +26,11 @@ public class VoidlingExtremist extends BaseEnderman {
     public double getDamageDealt() {
         return 13500.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 100;
+    }
 
     @Override
     public double getXPDropped() {
@@ -35,10 +40,5 @@ public class VoidlingExtremist extends BaseEnderman {
     @Override
     public List<EntityDrop> drops() {
         return Arrays.asList(new EntityDrop(new ItemStack(Material.ENDER_PEARL, SUtil.random(32, 64)), EntityDropType.GUARANTEED, 1.0), new EntityDrop(SMaterial.ENCHANTED_ENDER_PEARL, EntityDropType.RARE, 0.05), new EntityDrop(SMaterial.SUMMONING_EYE, EntityDropType.EXTRAORDINARILY_RARE, 0.01));
-    }
-
-    @Override
-    public int mobLevel() {
-        return 100;
     }
 }

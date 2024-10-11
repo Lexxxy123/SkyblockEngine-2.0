@@ -22,6 +22,11 @@ public class Wolf extends BaseWolf {
     public double getDamageDealt() {
         return 80.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 15;
+    }
 
     @Override
     public List<EntityDrop> drops() {
@@ -36,10 +41,5 @@ public class Wolf extends BaseWolf {
     @Override
     public boolean isAngry() {
         return true;
-    }
-
-    @Override
-    public int mobLevel() {
-        return 15;
     }
 }

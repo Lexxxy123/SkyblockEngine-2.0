@@ -18,6 +18,11 @@ public class MediumMagmaCube implements SlimeStatistics, EntityFunction {
     public double getDamageDealt() {
         return 120.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 6;
+    }
 
     @Override
     public double getXPDropped() {

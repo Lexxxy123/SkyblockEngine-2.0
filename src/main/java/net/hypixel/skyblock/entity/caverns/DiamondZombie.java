@@ -14,7 +14,7 @@ import java.util.List;
 public class DiamondZombie extends BaseZombie {
     @Override
     public String getEntityName() {
-        return "Zombie";
+        return "Miner Zombie";
     }
 
     @Override
@@ -25,6 +25,11 @@ public class DiamondZombie extends BaseZombie {
     @Override
     public double getDamageDealt() {
         return 200.0;
+    }
+    
+    @Override
+    public int mobLevel() {
+        return 15;
     }
 
     @Override

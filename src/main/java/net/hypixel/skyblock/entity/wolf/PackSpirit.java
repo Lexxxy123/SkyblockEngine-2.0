@@ -23,6 +23,11 @@ public class PackSpirit extends BaseWolf {
     public double getDamageDealt() {
         return 270.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 30;
+    }
 
     @Override
     public List<EntityDrop> drops() {
@@ -37,10 +42,5 @@ public class PackSpirit extends BaseWolf {
     @Override
     public boolean isAngry() {
         return true;
-    }
-
-    @Override
-    public int mobLevel() {
-        return 30;
     }
 }

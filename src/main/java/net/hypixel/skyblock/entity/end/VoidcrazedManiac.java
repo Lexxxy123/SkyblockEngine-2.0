@@ -23,6 +23,11 @@ public class VoidcrazedManiac extends BaseEnderman {
     public double getDamageDealt() {
         return 15000.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 4330;
+    }
 
     @Override
     public double getXPDropped() {

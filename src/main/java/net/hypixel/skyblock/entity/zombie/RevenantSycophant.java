@@ -26,6 +26,11 @@ public class RevenantSycophant extends BaseZombie {
     public double getDamageDealt() {
         return 850.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 70;
+    }
 
     @Override
     public double getXPDropped() {

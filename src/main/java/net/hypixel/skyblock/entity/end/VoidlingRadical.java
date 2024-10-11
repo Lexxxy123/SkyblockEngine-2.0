@@ -22,6 +22,11 @@ public class VoidlingRadical extends BaseEnderman {
     public double getDamageDealt() {
         return 6000.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 2500;
+    }
 
     @Override
     public double getXPDropped() {

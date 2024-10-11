@@ -26,6 +26,11 @@ public class SpidersDenSkeleton implements EntityStatistics, EntityFunction {
     public double getDamageDealt() {
         return 33.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 2;
+    }
 
     @Override
     public double getXPDropped() {

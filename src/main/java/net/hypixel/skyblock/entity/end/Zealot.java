@@ -35,7 +35,7 @@ public class Zealot extends BaseEnderman {
     public double getDamageDealt() {
         return 1250.0;
     }
-
+    
     @Override
     public int mobLevel() {
         return 55;

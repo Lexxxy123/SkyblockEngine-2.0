@@ -12,7 +12,7 @@ import java.util.List;
 public class DiamondSkeleton implements EntityStatistics, EntityFunction {
     @Override
     public String getEntityName() {
-        return "Skeleton";
+        return "Miner Skeleton";
     }
 
     @Override
@@ -23,6 +23,11 @@ public class DiamondSkeleton implements EntityStatistics, EntityFunction {
     @Override
     public double getDamageDealt() {
         return 150.0;
+    }
+    
+    @Override
+    public int mobLevel() {
+        return 15;
     }
 
     @Override

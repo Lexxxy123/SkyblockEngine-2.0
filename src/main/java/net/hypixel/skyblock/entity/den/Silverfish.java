@@ -18,6 +18,11 @@ public class Silverfish implements EntityStatistics, EntityFunction {
     public double getDamageDealt() {
         return 20.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 2;
+    }
 
     @Override
     public double getXPDropped() {

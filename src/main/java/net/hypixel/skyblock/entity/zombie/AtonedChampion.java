@@ -28,6 +28,11 @@ public class AtonedChampion extends BaseZombie {
     public double getDamageDealt() {
         return 3500.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 390;
+    }
 
     @Override
     public double getXPDropped() {

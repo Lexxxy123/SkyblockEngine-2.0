@@ -35,6 +35,11 @@ public class ObsidianDefender implements EntityFunction, EntityStatistics {
     public double getDamageDealt() {
         return 200.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 55;
+    }
 
     @Override
     public List<EntityDrop> drops() {
@@ -76,10 +81,5 @@ public class ObsidianDefender implements EntityFunction, EntityStatistics {
     @Override
     public double getXPDropped() {
         return 43.2;
-    }
-
-    @Override
-    public int mobLevel() {
-        return 55;
     }
 }

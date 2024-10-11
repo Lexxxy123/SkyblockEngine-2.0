@@ -15,14 +15,14 @@ public class WeakEnderman extends BaseEnderman {
     public double getDamageDealt() {
         return 500.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 42;
+    }
 
     @Override
     public double getXPDropped() {
         return 28.0;
-    }
-
-    @Override
-    public int mobLevel() {
-        return 42;
     }
 }

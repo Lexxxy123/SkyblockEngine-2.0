@@ -30,6 +30,11 @@ public class EnchantedDiamondZombie extends BaseZombie {
     public double getDamageDealt() {
         return 275.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 20;
+    }
 
     @Override
     public SEntityEquipment getEntityEquipment() {

@@ -9,7 +9,7 @@ import net.hypixel.skyblock.entity.SlimeStatistics;
 public class LargeSlime implements SlimeStatistics, EntityFunction {
     @Override
     public String getEntityName() {
-        return "Slime";
+        return "Emerald Slime";
     }
 
     @Override
@@ -20,6 +20,11 @@ public class LargeSlime implements SlimeStatistics, EntityFunction {
     @Override
     public double getDamageDealt() {
         return 150.0;
+    }
+    
+    @Override
+    public int mobLevel() {
+        return 15;
     }
 
     @Override

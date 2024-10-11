@@ -28,6 +28,11 @@ public class HighLevelSkeleton implements EntityStatistics, EntityFunction {
     public double getDamageDealt() {
         return 47.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 6;
+    }
 
     @Override
     public double getXPDropped() {

@@ -27,6 +27,11 @@ public class GoldenGhoul extends BaseZombie {
     public double getDamageDealt() {
         return 800.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 60;
+    }
 
     @Override
     public SEntityEquipment getEntityEquipment() {
@@ -51,10 +56,5 @@ public class GoldenGhoul extends BaseZombie {
     @Override
     public boolean isVillager() {
         return false;
-    }
-
-    @Override
-    public int mobLevel() {
-        return 60;
     }
 }

@@ -25,6 +25,11 @@ public class ZombieVillager extends BaseZombie {
     public double getDamageDealt() {
         return 24.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 1;
+    }
 
     @Override
     public SEntityEquipment getEntityEquipment() {
@@ -54,10 +59,5 @@ public class ZombieVillager extends BaseZombie {
     @Override
     public boolean isVillager() {
         return true;
-    }
-
-    @Override
-    public int mobLevel() {
-        return 1;
     }
 }

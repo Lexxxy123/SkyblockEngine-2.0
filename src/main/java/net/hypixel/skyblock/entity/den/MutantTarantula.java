@@ -31,6 +31,11 @@ public class MutantTarantula extends BaseSpider {
     public double getDamageDealt() {
         return 5000.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 370;
+    }
 
     @Override
     public double getXPDropped() {

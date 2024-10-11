@@ -29,6 +29,11 @@ public class AtonedRevenant extends BaseZombie {
     public double getDamageDealt() {
         return 4800.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 770;
+    }
 
     @Override
     public double getXPDropped() {

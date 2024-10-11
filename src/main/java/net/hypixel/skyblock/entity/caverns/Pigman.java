@@ -12,7 +12,7 @@ import java.util.List;
 public class Pigman implements EntityFunction, EntityStatistics {
     @Override
     public String getEntityName() {
-        return "Pigman";
+        return "Redstone Pigman";
     }
 
     @Override
@@ -23,6 +23,11 @@ public class Pigman implements EntityFunction, EntityStatistics {
     @Override
     public double getDamageDealt() {
         return 75.0;
+    }
+    
+    @Override
+    public int mobLevel() {
+        return 10;
     }
 
     @Override

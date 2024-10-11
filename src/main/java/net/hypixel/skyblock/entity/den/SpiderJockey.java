@@ -25,6 +25,11 @@ public class SpiderJockey extends BaseSpider implements JockeyStatistics {
     public double getDamageDealt() {
         return 30.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 3;
+    }
 
     @Override
     public double getXPDropped() {
@@ -45,6 +50,11 @@ public class SpiderJockey extends BaseSpider implements JockeyStatistics {
         @Override
         public double getDamageDealt() {
             return 38.0;
+        }
+        
+        @Override
+        public int mobLevel() {
+            return 3;
         }
 
         @Override

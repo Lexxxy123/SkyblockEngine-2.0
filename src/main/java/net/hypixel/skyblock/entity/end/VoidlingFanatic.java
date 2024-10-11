@@ -25,6 +25,11 @@ public class VoidlingFanatic extends BaseEnderman {
     public double getDamageDealt() {
         return 3500.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 85;
+    }
 
     @Override
     public double getXPDropped() {
@@ -34,10 +39,5 @@ public class VoidlingFanatic extends BaseEnderman {
     @Override
     public List<EntityDrop> drops() {
         return Arrays.asList(new EntityDrop(new ItemStack(Material.ENDER_PEARL, SUtil.random(2, 4)), EntityDropType.GUARANTEED, 1.0), new EntityDrop(SMaterial.ENCHANTED_ENDER_PEARL, EntityDropType.RARE, 0.05));
-    }
-
-    @Override
-    public int mobLevel() {
-        return 85;
     }
 }

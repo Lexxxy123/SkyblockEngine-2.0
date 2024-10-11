@@ -24,6 +24,11 @@ public class Zombie extends BaseZombie {
     public double getDamageDealt() {
         return 20.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 1;
+    }
 
     @Override
     public List<EntityDrop> drops() {
@@ -43,10 +48,5 @@ public class Zombie extends BaseZombie {
     @Override
     public double getXPDropped() {
         return 6.0;
-    }
-
-    @Override
-    public int mobLevel() {
-        return 1;
     }
 }

@@ -27,6 +27,11 @@ public class LargeMagmaCube implements SlimeStatistics, EntityFunction {
     public double getDamageDealt() {
         return 150.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 9;
+    }
 
     @Override
     public double getXPDropped() {

@@ -22,6 +22,11 @@ public class TarantulaVermin extends BaseSpider {
     public double getDamageDealt() {
         return 900.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 110;
+    }
 
     @Override
     public double getXPDropped() {

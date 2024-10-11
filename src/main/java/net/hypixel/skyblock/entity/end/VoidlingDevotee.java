@@ -22,6 +22,11 @@ public class VoidlingDevotee extends BaseEnderman {
     public double getDamageDealt() {
         return 5000.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 1730;
+    }
 
     @Override
     public double getXPDropped() {

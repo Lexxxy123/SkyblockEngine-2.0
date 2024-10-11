@@ -15,6 +15,11 @@ public class DasherSpider extends BaseSpider {
     public double getDamageDealt() {
         return 55.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 4;
+    }
 
     @Override
     public double getMovementSpeed() {

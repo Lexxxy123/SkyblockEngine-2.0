@@ -20,6 +20,11 @@ public class BroodMother extends BaseSpider {
     public double getDamageDealt() {
         return 100.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 12;
+    }
 
     @Override
     public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {

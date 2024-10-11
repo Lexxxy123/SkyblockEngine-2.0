@@ -29,6 +29,11 @@ public class DeformedRevenant extends BaseZombie {
     public double getDamageDealt() {
         return 4400.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 300;
+    }
 
     @Override
     public double getXPDropped() {

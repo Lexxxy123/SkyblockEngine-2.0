@@ -25,6 +25,11 @@ public class SvenAlpha extends BaseWolf {
     public double getDamageDealt() {
         return 1300.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 340;
+    }
 
     @Override
     public List<EntityDrop> drops() {

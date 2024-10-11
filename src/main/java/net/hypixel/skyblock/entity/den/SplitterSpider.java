@@ -19,6 +19,11 @@ public class SplitterSpider extends BaseSpider {
     public double getDamageDealt() {
         return 30.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 3;
+    }
 
     @Override
     public double getXPDropped() {

@@ -27,6 +27,11 @@ public class RevenantChampion extends BaseZombie {
     public double getDamageDealt() {
         return 2200.0;
     }
+    
+    @Override
+    public int mobLevel() {
+        return 150;
+    }
 
     @Override
     public double getXPDropped() {
