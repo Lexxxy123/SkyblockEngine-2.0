@@ -1,9 +1,13 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.util;
 
 public interface TriConsumer<T, U, V> {
-    void accept(final T p0, final U p1, final V p2);
+    public void accept(T var1, U var2, V var3);
 
-    default TriConsumer<T, U, V> andThen(final TriConsumer<? super T, ? super U, ? super V> after) {
+    default public TriConsumer<T, U, V> andThen(TriConsumer<? super T, ? super U, ? super V> after) {
         return null;
     }
 }
+

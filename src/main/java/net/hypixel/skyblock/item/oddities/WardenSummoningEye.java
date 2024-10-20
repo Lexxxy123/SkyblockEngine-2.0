@@ -1,12 +1,20 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ */
 package net.hypixel.skyblock.item.oddities;
 
-import org.bukkit.ChatColor;
 import net.hypixel.skyblock.item.GenericItemType;
 import net.hypixel.skyblock.item.MaterialFunction;
 import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.SkullStatistics;
+import org.bukkit.ChatColor;
 
-public class WardenSummoningEye implements SkullStatistics, MaterialFunction {
+public class WardenSummoningEye
+implements SkullStatistics,
+MaterialFunction {
     @Override
     public String getDisplayName() {
         return "Summoning Eye";
@@ -37,3 +45,4 @@ public class WardenSummoningEye implements SkullStatistics, MaterialFunction {
         return "12c318157f5c9daf8a7677a3669f9798940aff014a674ee0af2a574cbb21b8c3";
     }
 }
+

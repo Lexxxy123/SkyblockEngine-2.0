@@ -1,6 +1,25 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ *  org.bukkit.Material
+ *  org.bukkit.Sound
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.inventory.InventoryClickEvent
+ *  org.bukkit.inventory.ItemStack
+ *  org.bukkit.inventory.meta.ItemMeta
+ */
 package net.hypixel.skyblock.gui;
 
+import java.util.HashMap;
+import java.util.List;
+import net.hypixel.skyblock.gui.GUI;
+import net.hypixel.skyblock.gui.GUIClickableItem;
+import net.hypixel.skyblock.gui.GUIOpenEvent;
 import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.user.User;
+import net.hypixel.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -8,32 +27,28 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import net.hypixel.skyblock.user.User;
-import net.hypixel.skyblock.util.SUtil;
 
-import java.util.List;
-import java.util.Map;
-
-public class ShopTradingOptionsGUI extends GUI {
+public class ShopTradingOptionsGUI
+extends GUI {
     private final SItem item;
     private final GUI ret;
 
-    public ShopTradingOptionsGUI(final SItem item, final GUI ret) {
+    public ShopTradingOptionsGUI(SItem item, GUI ret) {
         super("Shop Trading Options", 54);
         this.item = item;
         this.ret = ret;
     }
 
     @Override
-    public void onOpen(final GUIOpenEvent e) {
-        final Player player = e.getPlayer();
+    public void onOpen(GUIOpenEvent e2) {
+        Player player = e2.getPlayer();
         this.fill(BLACK_STAINED_GLASS_PANE);
-        this.set(createTrade(this.item, 20, 1, player));
-        this.set(createTrade(this.item, 21, 5, player));
-        this.set(createTrade(this.item, 22, 10, player));
-        this.set(createTrade(this.item, 23, 32, player));
-        this.set(createTrade(this.item, 24, 64, player));
-        this.set(GUIClickableItem.createGUIOpenerItem(this.ret, player, ChatColor.GREEN + "Go Back", 48, Material.ARROW, (short) 0, ChatColor.GRAY + "To " + this.ret.getTitle()));
+        this.set(ShopTradingOptionsGUI.createTrade(this.item, 20, 1, player));
+        this.set(ShopTradingOptionsGUI.createTrade(this.item, 21, 5, player));
+        this.set(ShopTradingOptionsGUI.createTrade(this.item, 22, 10, player));
+        this.set(ShopTradingOptionsGUI.createTrade(this.item, 23, 32, player));
+        this.set(ShopTradingOptionsGUI.createTrade(this.item, 24, 64, player));
+        this.set(GUIClickableItem.createGUIOpenerItem(this.ret, player, ChatColor.GREEN + "Go Back", 48, Material.ARROW, (short)0, ChatColor.GRAY + "To " + this.ret.getTitle()));
         this.set(GUIClickableItem.getCloseItem(49));
     }
 
@@ -41,29 +56,32 @@ public class ShopTradingOptionsGUI extends GUI {
         final User user = User.getUser(player.getUniqueId());
         final SItem display = item.clone();
         display.getStack().setAmount(amount);
-        final ItemMeta meta = display.getStack().getItemMeta();
+        ItemMeta meta = display.getStack().getItemMeta();
         if (amount != 1) {
             meta.setDisplayName(meta.getDisplayName() + ChatColor.DARK_GRAY + " x" + amount);
         }
-        final List<String> lore = meta.getLore();
+        List lore = meta.getLore();
         lore.add(" ");
         lore.add(ChatColor.GRAY + "Cost");
-        if (item.getPrice() == null) return null;
-        final long price = item.getPrice() * amount;
-        lore.add(ChatColor.GOLD + SUtil.commaify(price) + " Coin" + ((price != 1L) ? "s" : ""));
+        if (item.getPrice() == null) {
+            return null;
+        }
+        final long price = item.getPrice() * (long)amount;
+        lore.add(ChatColor.GOLD + SUtil.commaify(price) + " Coin" + (price != 1L ? "s" : ""));
         lore.add(" ");
         lore.add(ChatColor.YELLOW + "Click to purchase!");
         meta.setLore(lore);
         display.getStack().setItemMeta(meta);
-        return new GUIClickableItem() {
+        return new GUIClickableItem(){
+
             @Override
-            public void run(final InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 if (price > user.getCoins()) {
                     player.sendMessage(ChatColor.RED + "You don't have enough coins!");
                     return;
                 }
-                final Map<Integer, ItemStack> m = player.getInventory().addItem(SUtil.setSItemAmount(item.clone(), amount).getStack());
-                if (m.size() != 0) {
+                HashMap m2 = player.getInventory().addItem(new ItemStack[]{SUtil.setSItemAmount(item.clone(), amount).getStack()});
+                if (m2.size() != 0) {
                     player.sendMessage(ChatColor.RED + "Free up inventory space to purchase this!");
                     return;
                 }
@@ -83,3 +101,4 @@ public class ShopTradingOptionsGUI extends GUI {
         };
     }
 }
+

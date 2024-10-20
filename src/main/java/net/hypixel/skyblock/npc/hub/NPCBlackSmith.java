@@ -1,31 +1,35 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.npc.hub;
 
 import net.hypixel.skyblock.gui.GUIType;
 import net.hypixel.skyblock.npc.impl.NPCParameters;
-import net.hypixel.skyblock.npc.impl.SkyblockNPC;
+import net.hypixel.skyblock.npc.impl.SkyBlockNPC;
 import net.hypixel.skyblock.npc.impl.enums.NPCType;
 import org.bukkit.entity.Player;
 
-public class NPCBlackSmith extends SkyblockNPC {
-
+public class NPCBlackSmith
+extends SkyBlockNPC {
     public NPCBlackSmith() {
-        super(new NPCParameters() {
+        super(new NPCParameters(){
+
+            @Override
+            public String id() {
+                return "BLACKSMITH";
+            }
+
             @Override
             public String name() {
-                return "blacksmith";
+                return "&fBlacksmith";
             }
 
             @Override
             public NPCType type() {
                 return NPCType.VILLAGER;
-            }
-
-            @Override
-            public String[] holograms() {
-                return new String[]{
-                        "&fBlacksmith",
-                        CLICK
-                };
             }
 
             @Override
@@ -49,9 +53,10 @@ public class NPCBlackSmith extends SkyblockNPC {
             }
 
             @Override
-            public void onInteract(Player player, SkyblockNPC npc) {
+            public void onInteract(Player player, SkyBlockNPC npc) {
                 GUIType.REFORGE_ANVIL.getGUI().open(player);
             }
         });
     }
 }
+

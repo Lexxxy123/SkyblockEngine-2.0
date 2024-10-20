@@ -1,16 +1,22 @@
-
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ *  org.bukkit.Material
+ *  org.bukkit.Sound
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.inventory.InventoryClickEvent
+ *  org.bukkit.event.inventory.InventoryCloseEvent
+ *  org.bukkit.inventory.ItemStack
+ */
 package net.hypixel.skyblock.gui.menu.Items;
 
-import net.hypixel.skyblock.SkyBlock;
-import net.hypixel.skyblock.features.enchantment.Enchantment;
-import net.hypixel.skyblock.features.enchantment.EnchantmentType;
 import net.hypixel.skyblock.gui.GUI;
 import net.hypixel.skyblock.gui.GUIClickableItem;
-import net.hypixel.skyblock.gui.GUIItem;
+import net.hypixel.skyblock.gui.menu.Items.HexGUI;
 import net.hypixel.skyblock.item.SItem;
 import net.hypixel.skyblock.item.SMaterial;
-import net.hypixel.skyblock.item.SpecificItemType;
-import net.hypixel.skyblock.util.PaginationList;
 import net.hypixel.skyblock.util.SUtil;
 import net.hypixel.skyblock.util.Sputnik;
 import org.bukkit.ChatColor;
@@ -21,27 +27,24 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class HexModifiersGUI extends GUI {
+public class HexModifiersGUI
+extends GUI {
     SItem upgradeableItem;
-
     public boolean forceclose = false;
 
-    public HexModifiersGUI(SItem item) {
+    public HexModifiersGUI(final SItem item) {
         super("The Hex -> Modifiers", 54);
-        fill(BLACK_STAINED_GLASS_PANE);
-        upgradeableItem = item;
+        this.fill(BLACK_STAINED_GLASS_PANE);
+        this.upgradeableItem = item;
+        this.set(new GUIClickableItem(){
 
-        //Recombobulator
-        set(new GUIClickableItem() {
             @Override
-            public void run(InventoryClickEvent e) {
-                upgradeableItem = item;
+            public void run(InventoryClickEvent e2) {
+                HexModifiersGUI.this.upgradeableItem = item;
                 item.setRecombobulated(true);
-
-                Player player = (Player) e.getWhoClicked();
-                player.playSound(player.getLocation(), Sound.ORB_PICKUP, 10, 2);
-
-                e.getWhoClicked().sendMessage(ChatColor.translateAlternateColorCodes('&', "&aYou recombobulated your " + item.getFullName() + "!"));
+                Player player = (Player)e2.getWhoClicked();
+                player.playSound(player.getLocation(), Sound.ORB_PICKUP, 10.0f, 2.0f);
+                e2.getWhoClicked().sendMessage(ChatColor.translateAlternateColorCodes((char)'&', (String)("&aYou recombobulated your " + item.getFullName() + "!")));
             }
 
             @Override
@@ -54,18 +57,16 @@ public class HexModifiersGUI extends GUI {
                 return SItem.of(SMaterial.RECOMBOBULATOR_3000).getStack();
             }
         });
+        this.set(new GUIClickableItem(){
 
-        //Close ( with rizz )
-        set(new GUIClickableItem() {
             @Override
-            public void run(InventoryClickEvent e) {
-                e.getWhoClicked().sendMessage(ChatColor.translateAlternateColorCodes('&', "&d&lSUCCESS! &r&dYou modified your " + item.getFullName() + "!"));
-                forceclose = true;
-                Player p = (Player) e.getWhoClicked();
-                p.playSound(p.getLocation(), Sound.ANVIL_USE, 10, 1);
-
-                new HexGUI(p.getPlayer(), item).open(p);
-                upgradeableItem = null;
+            public void run(InventoryClickEvent e2) {
+                e2.getWhoClicked().sendMessage(ChatColor.translateAlternateColorCodes((char)'&', (String)("&d&lSUCCESS! &r&dYou modified your " + item.getFullName() + "!")));
+                HexModifiersGUI.this.forceclose = true;
+                Player p2 = (Player)e2.getWhoClicked();
+                p2.playSound(p2.getLocation(), Sound.ANVIL_USE, 10.0f, 1.0f);
+                new HexGUI(p2.getPlayer(), item).open(p2);
+                HexModifiersGUI.this.upgradeableItem = null;
             }
 
             @Override
@@ -75,27 +76,18 @@ public class HexModifiersGUI extends GUI {
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(Sputnik.trans("&aApply Modifiers"), Material.ANVIL, (short) 0, 1,
-                        Sputnik.trans5("&7Apply miscellaneous item",
-                                "&7modifiers like the",
-                                "&6Recombobulator 3000&7,",
-                                "&5Wither Scrolls&7, and &cMaster",
-                                "&cStars&7!")
-                );
+                return SUtil.getStack(Sputnik.trans("&aApply Modifiers"), Material.ANVIL, (short)0, 1, Sputnik.trans5("&7Apply miscellaneous item", "&7modifiers like the", "&6Recombobulator 3000&7,", "&5Wither Scrolls&7, and &cMaster", "&cStars&7!"));
             }
         });
-
-        set(GUIClickableItem.getCloseItem(49));
-        set(19, item.getStack());
-
+        this.set(GUIClickableItem.getCloseItem(49));
+        this.set(19, item.getStack());
     }
+
     @Override
-    public void onClose(InventoryCloseEvent e){
-        if(!forceclose) {
-            if (upgradeableItem != null) {
-                e.getPlayer().getInventory().addItem(upgradeableItem.getStack());
-            }
+    public void onClose(InventoryCloseEvent e2) {
+        if (!this.forceclose && this.upgradeableItem != null) {
+            e2.getPlayer().getInventory().addItem(new ItemStack[]{this.upgradeableItem.getStack()});
         }
     }
-
 }
+

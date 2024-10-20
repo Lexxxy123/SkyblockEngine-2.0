@@ -1,39 +1,46 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.nms.nmsutil.reflection.resolver;
 
+import net.hypixel.skyblock.nms.nmsutil.reflection.resolver.ResolverAbstract;
+import net.hypixel.skyblock.nms.nmsutil.reflection.resolver.ResolverQuery;
 import net.hypixel.skyblock.nms.nmsutil.reflection.resolver.wrapper.ClassWrapper;
 
-public class ClassResolver extends ResolverAbstract<Class> {
-    public ClassWrapper resolveWrapper(final String... names) {
+public class ClassResolver
+extends ResolverAbstract<Class> {
+    public ClassWrapper resolveWrapper(String ... names) {
         return new ClassWrapper(this.resolveSilent(names));
     }
 
-    public Class resolveSilent(final String... names) {
+    public Class resolveSilent(String ... names) {
         try {
             return this.resolve(names);
-        } catch (final Exception e) {
+        } catch (Exception e2) {
             return null;
         }
     }
 
-    public Class resolve(final String... names) throws ClassNotFoundException {
-        final ResolverQuery.Builder builder = ResolverQuery.builder();
-        for (final String name : names) {
+    public Class resolve(String ... names) throws ClassNotFoundException {
+        ResolverQuery.Builder builder = ResolverQuery.builder();
+        for (String name : names) {
             builder.with(name);
         }
         try {
-            return super.resolve(builder.build());
-        } catch (final ReflectiveOperationException e) {
-            throw (ClassNotFoundException) e;
+            return (Class)super.resolve(builder.build());
+        } catch (ReflectiveOperationException e2) {
+            throw (ClassNotFoundException)e2;
         }
     }
 
     @Override
-    protected Class resolveObject(final ResolverQuery query) throws ReflectiveOperationException {
+    protected Class resolveObject(ResolverQuery query) throws ReflectiveOperationException {
         return Class.forName(query.getName());
     }
 
     @Override
-    protected ClassNotFoundException notFoundException(final String joinedNames) {
+    protected ClassNotFoundException notFoundException(String joinedNames) {
         return new ClassNotFoundException("Could not resolve class for " + joinedNames);
     }
 }
+

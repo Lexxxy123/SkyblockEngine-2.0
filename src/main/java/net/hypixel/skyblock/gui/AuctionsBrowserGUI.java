@@ -1,6 +1,28 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ *  org.bukkit.Material
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.inventory.InventoryClickEvent
+ *  org.bukkit.inventory.ItemStack
+ */
 package net.hypixel.skyblock.gui;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 import net.hypixel.skyblock.features.auction.AuctionItem;
+import net.hypixel.skyblock.gui.AuctionViewGUI;
+import net.hypixel.skyblock.gui.GUI;
+import net.hypixel.skyblock.gui.GUIClickableItem;
+import net.hypixel.skyblock.gui.GUIOpenEvent;
+import net.hypixel.skyblock.gui.GUIQueryItem;
+import net.hypixel.skyblock.gui.GUIType;
+import net.hypixel.skyblock.item.ItemCategory;
 import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.user.AuctionSettings;
 import net.hypixel.skyblock.user.User;
@@ -11,18 +33,13 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import net.hypixel.skyblock.item.ItemCategory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-
-public class AuctionsBrowserGUI extends GUI {
-    private static final int[] INTERIOR;
+public class AuctionsBrowserGUI
+extends GUI {
+    private static final int[] INTERIOR = new int[]{11, 12, 13, 14, 15, 16, 20, 21, 22, 23, 24, 25, 29, 30, 31, 32, 33, 34, 38, 39, 40, 41, 42, 43};
     private int page;
 
-    public AuctionsBrowserGUI(final int page) {
+    public AuctionsBrowserGUI(int page) {
         super("Auctions Browser", 54);
         this.page = page;
     }
@@ -32,32 +49,33 @@ public class AuctionsBrowserGUI extends GUI {
     }
 
     @Override
-    public void onOpen(final GUIOpenEvent e) {
-        final Player player = e.getPlayer();
+    public void onOpen(GUIOpenEvent e2) {
+        PaginationList result;
+        final Player player = e2.getPlayer();
         final User user = User.getUser(player.getUniqueId());
         final AuctionSettings settings = user.getAuctionSettings();
         final ItemCategory category = settings.getCategory();
-        PaginationList<AuctionItem> result;
         try {
-            result = new PaginationList<AuctionItem>(AuctionItem.search(settings).get(), 24);
-        } catch (final InterruptedException | ExecutionException ex) {
+            result = new PaginationList((Collection)AuctionItem.search(settings).get(), 24);
+        } catch (InterruptedException | ExecutionException ex) {
             player.closeInventory();
             player.sendMessage(ChatColor.RED + "Something went wrong while talking to the Auction House service!");
             return;
         }
         final String browsing = ChatColor.GREEN + "Currently browsing!";
         final String view = ChatColor.YELLOW + "Click to view items!";
-        List<AuctionItem> items = result.getPage(this.page);
+        List items = result.getPage(this.page);
         if (items == null) {
-            items = new ArrayList<AuctionItem>();
+            items = new ArrayList();
         }
         if (items.size() == 0) {
             this.page = 0;
         }
         final int finalPage = this.page;
-        this.set(new GUIClickableItem() {
+        this.set(new GUIClickableItem(){
+
             @Override
-            public void run(final InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 settings.setCategory(ItemCategory.WEAPONS);
                 new AuctionsBrowserGUI().open(player);
             }
@@ -69,12 +87,13 @@ public class AuctionsBrowserGUI extends GUI {
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.GOLD + "Weapons", Material.GOLD_SWORD, (short) 0, 1, ChatColor.DARK_GRAY + "Category", " ", ChatColor.GRAY + "Examples:", ChatColor.DARK_GRAY + "◼ " + ChatColor.GRAY + "Swords", ChatColor.DARK_GRAY + "◼ " + ChatColor.GRAY + "Bows", ChatColor.DARK_GRAY + "◼ " + ChatColor.GRAY + "Axes", ChatColor.DARK_GRAY + "◼ " + ChatColor.GRAY + "Magic Weapons", " ", (category == ItemCategory.WEAPONS) ? browsing : view);
+                return SUtil.getStack(ChatColor.GOLD + "Weapons", Material.GOLD_SWORD, (short)0, 1, ChatColor.DARK_GRAY + "Category", " ", ChatColor.GRAY + "Examples:", ChatColor.DARK_GRAY + "\u25fc " + ChatColor.GRAY + "Swords", ChatColor.DARK_GRAY + "\u25fc " + ChatColor.GRAY + "Bows", ChatColor.DARK_GRAY + "\u25fc " + ChatColor.GRAY + "Axes", ChatColor.DARK_GRAY + "\u25fc " + ChatColor.GRAY + "Magic Weapons", " ", category == ItemCategory.WEAPONS ? browsing : view);
             }
         });
-        this.set(new GUIClickableItem() {
+        this.set(new GUIClickableItem(){
+
             @Override
-            public void run(final InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 settings.setCategory(ItemCategory.ARMOR);
                 new AuctionsBrowserGUI().open(player);
             }
@@ -86,12 +105,13 @@ public class AuctionsBrowserGUI extends GUI {
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.AQUA + "Armor", Material.DIAMOND_CHESTPLATE, (short) 0, 1, ChatColor.DARK_GRAY + "Category", " ", ChatColor.GRAY + "Examples:", ChatColor.DARK_GRAY + "◼ " + ChatColor.GRAY + "Hats", ChatColor.DARK_GRAY + "◼ " + ChatColor.GRAY + "Chestplates", ChatColor.DARK_GRAY + "◼ " + ChatColor.GRAY + "Leggings", ChatColor.DARK_GRAY + "◼ " + ChatColor.GRAY + "Boots", " ", (category == ItemCategory.ARMOR) ? browsing : view);
+                return SUtil.getStack(ChatColor.AQUA + "Armor", Material.DIAMOND_CHESTPLATE, (short)0, 1, ChatColor.DARK_GRAY + "Category", " ", ChatColor.GRAY + "Examples:", ChatColor.DARK_GRAY + "\u25fc " + ChatColor.GRAY + "Hats", ChatColor.DARK_GRAY + "\u25fc " + ChatColor.GRAY + "Chestplates", ChatColor.DARK_GRAY + "\u25fc " + ChatColor.GRAY + "Leggings", ChatColor.DARK_GRAY + "\u25fc " + ChatColor.GRAY + "Boots", " ", category == ItemCategory.ARMOR ? browsing : view);
             }
         });
-        this.set(new GUIClickableItem() {
+        this.set(new GUIClickableItem(){
+
             @Override
-            public void run(final InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 settings.setCategory(ItemCategory.ACCESSORIES);
                 new AuctionsBrowserGUI().open(player);
             }
@@ -103,12 +123,13 @@ public class AuctionsBrowserGUI extends GUI {
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getSkullURLStack(ChatColor.DARK_GREEN + "Accessories", "f36b821c1afdd5a5d14e3b3bd0a32263c8df5df5db6e1e88bf65e97b27a8530", 1, ChatColor.DARK_GRAY + "Category", " ", ChatColor.GRAY + "Examples:", ChatColor.DARK_GRAY + "◼ " + ChatColor.GRAY + "Talismans", ChatColor.DARK_GRAY + "◼ " + ChatColor.GRAY + "Rings", ChatColor.DARK_GRAY + "◼ " + ChatColor.GRAY + "Orbs", ChatColor.DARK_GRAY + "◼ " + ChatColor.GRAY + "Artifacts", " ", (category == ItemCategory.ACCESSORIES) ? browsing : view);
+                return SUtil.getSkullURLStack(ChatColor.DARK_GREEN + "Accessories", "f36b821c1afdd5a5d14e3b3bd0a32263c8df5df5db6e1e88bf65e97b27a8530", 1, ChatColor.DARK_GRAY + "Category", " ", ChatColor.GRAY + "Examples:", ChatColor.DARK_GRAY + "\u25fc " + ChatColor.GRAY + "Talismans", ChatColor.DARK_GRAY + "\u25fc " + ChatColor.GRAY + "Rings", ChatColor.DARK_GRAY + "\u25fc " + ChatColor.GRAY + "Orbs", ChatColor.DARK_GRAY + "\u25fc " + ChatColor.GRAY + "Artifacts", " ", category == ItemCategory.ACCESSORIES ? browsing : view);
             }
         });
-        this.set(new GUIClickableItem() {
+        this.set(new GUIClickableItem(){
+
             @Override
-            public void run(final InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 settings.setCategory(ItemCategory.CONSUMABLES);
                 new AuctionsBrowserGUI().open(player);
             }
@@ -120,12 +141,13 @@ public class AuctionsBrowserGUI extends GUI {
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.RED + "Consumables", Material.APPLE, (short) 0, 1, ChatColor.DARK_GRAY + "Category", " ", ChatColor.GRAY + "Examples:", ChatColor.DARK_GRAY + "◼ " + ChatColor.GRAY + "Potions", ChatColor.DARK_GRAY + "◼ " + ChatColor.GRAY + "Food", ChatColor.DARK_GRAY + "◼ " + ChatColor.GRAY + "Books", " ", (category == ItemCategory.CONSUMABLES) ? browsing : view);
+                return SUtil.getStack(ChatColor.RED + "Consumables", Material.APPLE, (short)0, 1, ChatColor.DARK_GRAY + "Category", " ", ChatColor.GRAY + "Examples:", ChatColor.DARK_GRAY + "\u25fc " + ChatColor.GRAY + "Potions", ChatColor.DARK_GRAY + "\u25fc " + ChatColor.GRAY + "Food", ChatColor.DARK_GRAY + "\u25fc " + ChatColor.GRAY + "Books", " ", category == ItemCategory.CONSUMABLES ? browsing : view);
             }
         });
-        this.set(new GUIClickableItem() {
+        this.set(new GUIClickableItem(){
+
             @Override
-            public void run(final InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 settings.setCategory(ItemCategory.BLOCKS);
                 new AuctionsBrowserGUI().open(player);
             }
@@ -137,12 +159,13 @@ public class AuctionsBrowserGUI extends GUI {
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.YELLOW + "Blocks", Material.COBBLESTONE, (short) 0, 1, ChatColor.DARK_GRAY + "Category", " ", ChatColor.GRAY + "Examples:", ChatColor.DARK_GRAY + "◼ " + ChatColor.GRAY + "Dirt", ChatColor.DARK_GRAY + "◼ " + ChatColor.GRAY + "Stone", ChatColor.DARK_GRAY + "◼ " + ChatColor.GRAY + "Any blocks really", " ", (category == ItemCategory.BLOCKS) ? browsing : view);
+                return SUtil.getStack(ChatColor.YELLOW + "Blocks", Material.COBBLESTONE, (short)0, 1, ChatColor.DARK_GRAY + "Category", " ", ChatColor.GRAY + "Examples:", ChatColor.DARK_GRAY + "\u25fc " + ChatColor.GRAY + "Dirt", ChatColor.DARK_GRAY + "\u25fc " + ChatColor.GRAY + "Stone", ChatColor.DARK_GRAY + "\u25fc " + ChatColor.GRAY + "Any blocks really", " ", category == ItemCategory.BLOCKS ? browsing : view);
             }
         });
-        this.set(new GUIClickableItem() {
+        this.set(new GUIClickableItem(){
+
             @Override
-            public void run(final InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 settings.setCategory(ItemCategory.TOOLS_MISC);
                 new AuctionsBrowserGUI().open(player);
             }
@@ -154,15 +177,16 @@ public class AuctionsBrowserGUI extends GUI {
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.LIGHT_PURPLE + "Tools & Misc", Material.STICK, (short) 0, 1, ChatColor.DARK_GRAY + "Category", " ", ChatColor.GRAY + "Examples:", ChatColor.DARK_GRAY + "◼ " + ChatColor.GRAY + "Tools", ChatColor.DARK_GRAY + "◼ " + ChatColor.GRAY + "Specials", ChatColor.DARK_GRAY + "◼ " + ChatColor.GRAY + "Magic", ChatColor.DARK_GRAY + "◼ " + ChatColor.GRAY + "Staff items", " ", (category == ItemCategory.TOOLS_MISC) ? browsing : view);
+                return SUtil.getStack(ChatColor.LIGHT_PURPLE + "Tools & Misc", Material.STICK, (short)0, 1, ChatColor.DARK_GRAY + "Category", " ", ChatColor.GRAY + "Examples:", ChatColor.DARK_GRAY + "\u25fc " + ChatColor.GRAY + "Tools", ChatColor.DARK_GRAY + "\u25fc " + ChatColor.GRAY + "Specials", ChatColor.DARK_GRAY + "\u25fc " + ChatColor.GRAY + "Magic", ChatColor.DARK_GRAY + "\u25fc " + ChatColor.GRAY + "Staff items", " ", category == ItemCategory.TOOLS_MISC ? browsing : view);
             }
         });
         this.border(category.getStainedGlassPane(), 1, 53);
         if (this.page > 1) {
-            this.set(new GUIClickableItem() {
+            this.set(new GUIClickableItem(){
+
                 @Override
-                public void run(final InventoryClickEvent e) {
-                    if (e.isRightClick()) {
+                public void run(InventoryClickEvent e2) {
+                    if (e2.isRightClick()) {
                         new AuctionsBrowserGUI(0).open(player);
                     } else {
                         new AuctionsBrowserGUI(finalPage - 1).open(player);
@@ -176,15 +200,16 @@ public class AuctionsBrowserGUI extends GUI {
 
                 @Override
                 public ItemStack getItem() {
-                    return SUtil.getStack(ChatColor.GREEN + "Previous Page", Material.ARROW, (short) 0, 1, ChatColor.GRAY + "(" + finalPage + "/" + result.getPageCount() + ")", " ", ChatColor.AQUA + "Right-Click to skip!", ChatColor.YELLOW + "Click to turn page!");
+                    return SUtil.getStack(ChatColor.GREEN + "Previous Page", Material.ARROW, (short)0, 1, ChatColor.GRAY + "(" + finalPage + "/" + result.getPageCount() + ")", " ", ChatColor.AQUA + "Right-Click to skip!", ChatColor.YELLOW + "Click to turn page!");
                 }
             });
         }
         if (this.page != result.getPageCount()) {
-            this.set(new GUIClickableItem() {
+            this.set(new GUIClickableItem(){
+
                 @Override
-                public void run(final InventoryClickEvent e) {
-                    if (e.isRightClick()) {
+                public void run(InventoryClickEvent e2) {
+                    if (e2.isRightClick()) {
                         new AuctionsBrowserGUI(result.getPageCount()).open(player);
                     } else {
                         new AuctionsBrowserGUI(finalPage + 1).open(player);
@@ -198,13 +223,14 @@ public class AuctionsBrowserGUI extends GUI {
 
                 @Override
                 public ItemStack getItem() {
-                    return SUtil.getStack(ChatColor.GREEN + "Next Page", Material.ARROW, (short) 0, 1, ChatColor.GRAY + "(" + finalPage + "/" + result.getPageCount() + ")", " ", ChatColor.AQUA + "Right-Click to skip!", ChatColor.YELLOW + "Click to turn page!");
+                    return SUtil.getStack(ChatColor.GREEN + "Next Page", Material.ARROW, (short)0, 1, ChatColor.GRAY + "(" + finalPage + "/" + result.getPageCount() + ")", " ", ChatColor.AQUA + "Right-Click to skip!", ChatColor.YELLOW + "Click to turn page!");
                 }
             });
         }
-        this.set(new GUIClickableItem() {
+        this.set(new GUIClickableItem(){
+
             @Override
-            public void run(final InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 settings.setQuery(null);
                 settings.setSort(AuctionSettings.Sort.HIGHEST_BID);
                 settings.setTier(null);
@@ -218,16 +244,17 @@ public class AuctionsBrowserGUI extends GUI {
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.GREEN + "Reset Settings", Material.ANVIL, (short) 0, 1, ChatColor.GRAY + "Clears your auction", ChatColor.GRAY + "browsing settings except", ChatColor.GRAY + "BIN Filter.", " ", ChatColor.YELLOW + "Click to clear!");
+                return SUtil.getStack(ChatColor.GREEN + "Reset Settings", Material.ANVIL, (short)0, 1, ChatColor.GRAY + "Clears your auction", ChatColor.GRAY + "browsing settings except", ChatColor.GRAY + "BIN Filter.", " ", ChatColor.YELLOW + "Click to clear!");
             }
         });
-        this.set(new GUIQueryItem() {
+        this.set(new GUIQueryItem(){
+
             @Override
-            public void run(final InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
             }
 
             @Override
-            public GUI onQueryFinish(final String query) {
+            public GUI onQueryFinish(String query) {
                 settings.setQuery(query);
                 return new AuctionsBrowserGUI();
             }
@@ -239,13 +266,14 @@ public class AuctionsBrowserGUI extends GUI {
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.GREEN + "Search", Material.SIGN, (short) 0, 1, ChatColor.GRAY + "Find items by name, type,", ChatColor.GRAY + "lore or enchants.", " ", ChatColor.YELLOW + "Click to search!");
+                return SUtil.getStack(ChatColor.GREEN + "Search", Material.SIGN, (short)0, 1, ChatColor.GRAY + "Find items by name, type,", ChatColor.GRAY + "lore or enchants.", " ", ChatColor.YELLOW + "Click to search!");
             }
         });
-        this.set(new GUIClickableItem() {
+        this.set(new GUIClickableItem(){
+
             @Override
-            public void run(final InventoryClickEvent e) {
-                if (e.isRightClick()) {
+            public void run(InventoryClickEvent e2) {
+                if (e2.isRightClick()) {
                     settings.setSort(settings.getSort().previous());
                 } else {
                     settings.setSort(settings.getSort().next());
@@ -260,25 +288,26 @@ public class AuctionsBrowserGUI extends GUI {
 
             @Override
             public ItemStack getItem() {
-                final List<String> lore = new ArrayList<String>(Collections.singletonList(" "));
-                for (final AuctionSettings.Sort s : AuctionSettings.Sort.values()) {
-                    if (settings.getSort() == s) {
-                        lore.add(ChatColor.AQUA + "▶ " + s.getDisplay());
-                    } else {
-                        lore.add(ChatColor.GRAY + s.getDisplay());
+                ArrayList<String> lore = new ArrayList<String>(Collections.singletonList(" "));
+                for (AuctionSettings.Sort s2 : AuctionSettings.Sort.values()) {
+                    if (settings.getSort() == s2) {
+                        lore.add(ChatColor.AQUA + "\u25b6 " + s2.getDisplay());
+                        continue;
                     }
+                    lore.add(ChatColor.GRAY + s2.getDisplay());
                 }
                 lore.add(" ");
                 lore.add(ChatColor.AQUA + "Right-Click to go backwards!");
                 lore.add(ChatColor.YELLOW + "Click to switch sort!");
-                return SUtil.getStack(ChatColor.GREEN + "Sort", Material.HOPPER, (short) 0, 1, lore);
+                return SUtil.getStack(ChatColor.GREEN + "Sort", Material.HOPPER, (short)0, 1, lore);
             }
         });
-        this.set(new GUIClickableItem() {
+        this.set(new GUIClickableItem(){
+
             @Override
-            public void run(final InventoryClickEvent e) {
-                final Rarity tier = settings.getTier();
-                if (e.isRightClick()) {
+            public void run(InventoryClickEvent e2) {
+                Rarity tier = settings.getTier();
+                if (e2.isRightClick()) {
                     if (tier == null) {
                         settings.setTier(Rarity.values()[Rarity.values().length - 1]);
                     } else if (tier.ordinal() == 0) {
@@ -303,30 +332,31 @@ public class AuctionsBrowserGUI extends GUI {
 
             @Override
             public ItemStack getItem() {
-                final List<String> lore = new ArrayList<String>(Collections.singletonList(" "));
+                ArrayList<String> lore = new ArrayList<String>(Collections.singletonList(" "));
                 if (settings.getTier() == null) {
-                    lore.add(ChatColor.DARK_GRAY + "▶ No filter");
+                    lore.add(ChatColor.DARK_GRAY + "\u25b6 No filter");
                 } else {
                     lore.add(ChatColor.GRAY + "No filter");
                 }
-                for (final Rarity rarity : Rarity.values()) {
-                    final String normal = SUtil.toNormalCase(rarity.name());
+                for (Rarity rarity : Rarity.values()) {
+                    String normal = SUtil.toNormalCase(rarity.name());
                     if (settings.getTier() == rarity) {
-                        lore.add(rarity.getColor() + "▶ " + normal);
-                    } else {
-                        lore.add(ChatColor.GRAY + normal);
+                        lore.add(rarity.getColor() + "\u25b6 " + normal);
+                        continue;
                     }
+                    lore.add(ChatColor.GRAY + normal);
                 }
                 lore.add(" ");
                 lore.add(ChatColor.AQUA + "Right-Click to go backwards!");
                 lore.add(ChatColor.YELLOW + "Click to switch rarity!");
-                return SUtil.getStack(ChatColor.GREEN + "Item Tier", Material.EYE_OF_ENDER, (short) 0, 1, lore);
+                return SUtil.getStack(ChatColor.GREEN + "Item Tier", Material.EYE_OF_ENDER, (short)0, 1, lore);
             }
         });
-        this.set(new GUIClickableItem() {
+        this.set(new GUIClickableItem(){
+
             @Override
-            public void run(final InventoryClickEvent e) {
-                if (e.isRightClick()) {
+            public void run(InventoryClickEvent e2) {
+                if (e2.isRightClick()) {
                     settings.setType(settings.getType().previous());
                 } else {
                     settings.setType(settings.getType().next());
@@ -341,27 +371,28 @@ public class AuctionsBrowserGUI extends GUI {
 
             @Override
             public ItemStack getItem() {
-                final List<String> lore = new ArrayList<String>(Collections.singletonList(" "));
-                for (final AuctionSettings.Type t : AuctionSettings.Type.values()) {
-                    if (settings.getType() == t) {
-                        lore.add(ChatColor.DARK_AQUA + "▶ " + t.getDisplay());
-                    } else {
-                        lore.add(ChatColor.GRAY + t.getDisplay());
+                ArrayList<String> lore = new ArrayList<String>(Collections.singletonList(" "));
+                for (AuctionSettings.Type t2 : AuctionSettings.Type.values()) {
+                    if (settings.getType() == t2) {
+                        lore.add(ChatColor.DARK_AQUA + "\u25b6 " + t2.getDisplay());
+                        continue;
                     }
+                    lore.add(ChatColor.GRAY + t2.getDisplay());
                 }
                 lore.add(" ");
                 lore.add(ChatColor.AQUA + "Right-Click to go backwards!");
                 lore.add(ChatColor.YELLOW + "Click to switch filter!");
-                return SUtil.getStack(ChatColor.GREEN + "BIN Filter", Material.GOLD_BLOCK, (short) 0, 1, lore);
+                return SUtil.getStack(ChatColor.GREEN + "BIN Filter", Material.GOLD_BLOCK, (short)0, 1, lore);
             }
         });
         this.set(GUIClickableItem.createGUIOpenerItem(GUIType.AUCTION_HOUSE, player, ChatColor.GREEN + "Go Back", 49, Material.ARROW, ChatColor.GRAY + "To Auction House"));
-        for (int i = 0; i < items.size(); ++i) {
-            final int slot = AuctionsBrowserGUI.INTERIOR[i];
-            final AuctionItem item = items.get(i);
-            this.set(new GUIClickableItem() {
+        for (int i2 = 0; i2 < items.size(); ++i2) {
+            final int slot = INTERIOR[i2];
+            final AuctionItem item = (AuctionItem)items.get(i2);
+            this.set(new GUIClickableItem(){
+
                 @Override
-                public void run(final InventoryClickEvent e) {
+                public void run(InventoryClickEvent e2) {
                     new AuctionViewGUI(item, AuctionsBrowserGUI.this).open(player);
                 }
 
@@ -377,8 +408,5 @@ public class AuctionsBrowserGUI extends GUI {
             });
         }
     }
-
-    static {
-        INTERIOR = new int[]{11, 12, 13, 14, 15, 16, 20, 21, 22, 23, 24, 25, 29, 30, 31, 32, 33, 34, 38, 39, 40, 41, 42, 43};
-    }
 }
+

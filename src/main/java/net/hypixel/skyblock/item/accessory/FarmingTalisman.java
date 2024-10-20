@@ -1,15 +1,27 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.item.accessory;
 
 import net.hypixel.skyblock.features.region.Region;
 import net.hypixel.skyblock.features.region.RegionType;
-import org.bukkit.entity.Player;
 import net.hypixel.skyblock.item.GenericItemType;
 import net.hypixel.skyblock.item.PlayerBoostStatistics;
 import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.accessory.AccessoryFunction;
+import net.hypixel.skyblock.item.accessory.AccessoryStatistics;
 import net.hypixel.skyblock.user.PlayerUtils;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
-public class FarmingTalisman implements AccessoryStatistics, AccessoryFunction {
+public class FarmingTalisman
+implements AccessoryStatistics,
+AccessoryFunction {
     @Override
     public String getDisplayName() {
         return "Farming Talisman";
@@ -26,15 +38,16 @@ public class FarmingTalisman implements AccessoryStatistics, AccessoryFunction {
     }
 
     @Override
-    public void update(final SItem instance, final Player player, final int accessorySlot) {
-        final Region region = Region.getQuickRegionOfEntity(player);
+    public void update(SItem instance, Player player, int accessorySlot) {
+        Region region = Region.getQuickRegionOfEntity((Entity)player);
         if (region == null) {
             return;
         }
         if (region.getType() != RegionType.THE_BARN && region.getType() != RegionType.MUSHROOM_DESERT) {
             return;
         }
-        PlayerUtils.addBoostStatistics(PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId()), accessorySlot, new PlayerBoostStatistics() {
+        PlayerUtils.addBoostStatistics(PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId()), accessorySlot, new PlayerBoostStatistics(){
+
             @Override
             public String getDisplayName() {
                 return null;
@@ -57,3 +70,4 @@ public class FarmingTalisman implements AccessoryStatistics, AccessoryFunction {
         });
     }
 }
+

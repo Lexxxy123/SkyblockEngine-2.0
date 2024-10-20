@@ -1,6 +1,12 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.entity.end;
 
-public class Enderman extends BaseEnderman {
+import net.hypixel.skyblock.entity.end.BaseEnderman;
+
+public class Enderman
+extends BaseEnderman {
     @Override
     public String getEntityName() {
         return "Enderman";
@@ -15,14 +21,15 @@ public class Enderman extends BaseEnderman {
     public double getDamageDealt() {
         return 600.0;
     }
-    
-    @Override
-    public int mobLevel() {
-        return 45;
-    }
 
     @Override
     public double getXPDropped() {
         return 32.0;
     }
+
+    @Override
+    public int mobLevel() {
+        return 45;
+    }
 }
+

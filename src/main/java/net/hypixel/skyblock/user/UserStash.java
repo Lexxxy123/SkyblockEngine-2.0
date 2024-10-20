@@ -1,23 +1,29 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.md_5.bungee.api.chat.TextComponent
+ *  org.bukkit.inventory.ItemStack
+ */
 package net.hypixel.skyblock.user;
 
-import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.inventory.ItemStack;
+import java.util.ArrayList;
+import java.util.UUID;
+import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.SUtil;
 import net.hypixel.skyblock.util.Sputnik;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.inventory.ItemStack;
 
 public class UserStash {
     private final UUID user;
     private final User u;
 
-    public static UserStash getStash(final UUID u) {
-        return new UserStash(u);
+    public static UserStash getStash(UUID u2) {
+        return new UserStash(u2);
     }
 
-    public UserStash(final UUID uuid) {
+    public UserStash(UUID uuid) {
         this.user = uuid;
         this.u = User.getUser(this.user);
     }
@@ -36,15 +42,15 @@ public class UserStash {
 
     public int getStashQuantity() {
         int quant = 0;
-        for (final ItemStack items : this.u.getStashedItems()) {
+        for (ItemStack items : this.u.getStashedItems()) {
             quant += items.getAmount();
         }
         return quant;
     }
 
-    public void addItemInStash(final ItemStack i) {
-        final List<ItemStack> modifiableList = new ArrayList<ItemStack>(this.u.getStashedItems());
-        modifiableList.add(i);
+    public void addItemInStash(ItemStack i2) {
+        ArrayList<ItemStack> modifiableList = new ArrayList<ItemStack>(this.u.getStashedItems());
+        modifiableList.add(i2);
         this.u.setStashedItems(modifiableList);
         this.u.send("&cAn item didn't fit into your inventory and was added to your item stash! Use /pickupstash to get it back!");
     }
@@ -59,23 +65,24 @@ public class UserStash {
             this.u.send("&cYour inventory is full!");
             return;
         }
-        for (final ItemStack i : this.u.getStashedItems()) {
+        for (ItemStack i2 : this.u.getStashedItems()) {
             if (this.u.toBukkitPlayer().getInventory().firstEmpty() == -1) {
                 this.u.send("&eYou picked up &a" + SUtil.commaify(picked) + " &eitems from your item stash!");
                 this.u.send("&eYou still have &b" + SUtil.commaify(this.getStashQuantity()) + " &eitems in there!");
                 return;
             }
-            this.u.toBukkitPlayer().getInventory().addItem(i);
-            picked += i.getAmount();
-            final List<ItemStack> modifiableList = new ArrayList<ItemStack>(this.u.getStashedItems());
-            modifiableList.remove(i);
+            this.u.toBukkitPlayer().getInventory().addItem(new ItemStack[]{i2});
+            picked += (long)i2.getAmount();
+            ArrayList<ItemStack> modifiableList = new ArrayList<ItemStack>(this.u.getStashedItems());
+            modifiableList.remove(i2);
             this.u.setStashedItems(modifiableList);
-            if (i.getAmount() < 2) {
-                this.u.send("&eFrom stash: &f" + i.getItemMeta().getDisplayName());
-            } else {
-                this.u.send("&eFrom stash: &7" + i.getAmount() + "x &f" + i.getItemMeta().getDisplayName());
+            if (i2.getAmount() < 2) {
+                this.u.send("&eFrom stash: &f" + i2.getItemMeta().getDisplayName());
+                continue;
             }
+            this.u.send("&eFrom stash: &7" + i2.getAmount() + "x &f" + i2.getItemMeta().getDisplayName());
         }
         this.u.send("&eYou picked up &aall &eitems from your item stash!");
     }
 }
+

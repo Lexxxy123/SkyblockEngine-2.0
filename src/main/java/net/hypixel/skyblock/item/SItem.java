@@ -1,16 +1,56 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.minecraft.server.v1_8_R3.Item
+ *  net.minecraft.server.v1_8_R3.ItemStack
+ *  net.minecraft.server.v1_8_R3.NBTBase
+ *  net.minecraft.server.v1_8_R3.NBTTagCompound
+ *  org.bukkit.Color
+ *  org.bukkit.Location
+ *  org.bukkit.Material
+ *  org.bukkit.Sound
+ *  org.bukkit.configuration.serialization.ConfigurationSerializable
+ *  org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack
+ *  org.bukkit.enchantments.Enchantment
+ *  org.bukkit.entity.Player
+ *  org.bukkit.inventory.ItemFlag
+ *  org.bukkit.inventory.ItemStack
+ *  org.bukkit.inventory.meta.ItemMeta
+ */
 package net.hypixel.skyblock.item;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import net.hypixel.skyblock.features.enchantment.EnchantmentType;
-import net.hypixel.skyblock.item.armor.LeatherArmorStatistics;
 import net.hypixel.skyblock.features.potion.PotionColor;
 import net.hypixel.skyblock.features.potion.PotionEffect;
 import net.hypixel.skyblock.features.potion.PotionEffectType;
 import net.hypixel.skyblock.features.reforge.Reforge;
 import net.hypixel.skyblock.features.reforge.ReforgeType;
+import net.hypixel.skyblock.item.Enchantable;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.ItemLore;
+import net.hypixel.skyblock.item.ItemOrigin;
+import net.hypixel.skyblock.item.LoreableMaterialStatistics;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.MaterialStatistics;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.Reforgable;
+import net.hypixel.skyblock.item.SMaterial;
+import net.hypixel.skyblock.item.SkullStatistics;
+import net.hypixel.skyblock.item.armor.LeatherArmorStatistics;
+import net.hypixel.skyblock.util.SUtil;
 import net.hypixel.skyblock.util.SerialNBTTagCompound;
+import net.hypixel.skyblock.util.Sputnik;
 import net.minecraft.server.v1_8_R3.Item;
+import net.minecraft.server.v1_8_R3.NBTBase;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
-import org.bson.Document;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -22,14 +62,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import net.hypixel.skyblock.util.SUtil;
-import net.hypixel.skyblock.util.Sputnik;
 
-import java.util.*;
-
-public class SItem implements Cloneable, ConfigurationSerializable {
-    private static final List<String> GLOBAL_NBT_TAGS;
-    private static final List<String> GLOBAL_DATA_KEYS;
+public class SItem
+implements Cloneable,
+ConfigurationSerializable {
+    private static final List<String> GLOBAL_NBT_TAGS = Arrays.asList("type", "rarity", "origin", "recombobulated", "ExtraAttributes");
+    private static final List<String> GLOBAL_DATA_KEYS = Arrays.asList("type", "variant", "stack", "rarity", "origin", "recombobulated", "ExtraAttributes");
     private final SMaterial type;
     private final short variant;
     private final ItemStack stack;
@@ -53,9 +91,9 @@ public class SItem implements Cloneable, ConfigurationSerializable {
             if (!(type.getStatistics() instanceof LoreableMaterialStatistics)) {
                 meta.setLore(this.lore.asBukkitLore());
             } else {
-                meta.setLore(((LoreableMaterialStatistics) type.getStatistics()).getCustomLore(this));
+                meta.setLore(((LoreableMaterialStatistics)type.getStatistics()).getCustomLore(this));
             }
-            meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_POTION_EFFECTS);
+            meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_POTION_EFFECTS});
             meta.spigot().setUnbreakable(true);
             this.stack.setItemMeta(meta);
             this.update();
@@ -63,31 +101,38 @@ public class SItem implements Cloneable, ConfigurationSerializable {
     }
 
     public void setBonusDefense(Integer nextInteger) {
-        data.setInt("bonusDefense", nextInteger);
-        update();
+        this.data.setInt("bonusDefense", nextInteger.intValue());
+        this.update();
     }
+
     public void setNextDefense(Integer nextInteger) {
-        data.setInt("nextDefense", nextInteger);
-        update();
+        this.data.setInt("nextDefense", nextInteger.intValue());
+        this.update();
     }
+
     public void setRequiredKills(Integer kills) {
-        data.setInt("requiredKills", kills);
-        update();
+        this.data.setInt("requiredKills", kills.intValue());
+        this.update();
     }
+
     public void setProgressKills(Integer kills) {
-        data.setInt("progressKills", kills);
+        this.data.setInt("progressKills", kills.intValue());
     }
 
     public int getBonusDefense() {
-        return data.getInt("bonusDefense");
+        return this.data.getInt("bonusDefense");
     }
+
     public int getRequiredKills() {
-        return data.getInt("requiredKills");
+        return this.data.getInt("requiredKills");
     }
-    public int getNextDefense() { return data.getInt("nextDefense"); }
+
+    public int getNextDefense() {
+        return this.data.getInt("nextDefense");
+    }
 
     public int getProgressKills() {
-        return data.getInt("progressKills");
+        return this.data.getInt("progressKills");
     }
 
     public void enchant(boolean enchant) {
@@ -122,10 +167,10 @@ public class SItem implements Cloneable, ConfigurationSerializable {
             this.stack.setItemMeta(meta);
         }
         NBTTagCompound es = this.data.getCompound("enchantments");
-        for (net.hypixel.skyblock.features.enchantment.Enchantment e : enchantments) {
-            es.setInt(e.getType().getNamespace(), e.getLevel());
+        for (net.hypixel.skyblock.features.enchantment.Enchantment e2 : enchantments) {
+            es.setInt(e2.getType().getNamespace(), e2.getLevel());
         }
-        this.data.set("enchantments", es);
+        this.data.set("enchantments", (NBTBase)es);
         this.update();
         return true;
     }
@@ -135,7 +180,7 @@ public class SItem implements Cloneable, ConfigurationSerializable {
             return false;
         }
         List<net.hypixel.skyblock.features.enchantment.Enchantment> enchantments = this.getEnchantments();
-        boolean removeIf = enchantments.removeIf(e -> e.getType().equals(type));
+        boolean removeIf = enchantments.removeIf(e2 -> e2.getType().equals(type));
         if (null != type.getVanilla()) {
             ItemMeta meta = this.stack.getItemMeta();
             meta.removeEnchant(type.getVanilla());
@@ -145,35 +190,33 @@ public class SItem implements Cloneable, ConfigurationSerializable {
         for (net.hypixel.skyblock.features.enchantment.Enchantment enchantment : enchantments) {
             es.setInt(enchantment.getType().getNamespace(), enchantment.getLevel());
         }
-        this.data.set("enchantments", es);
+        this.data.set("enchantments", (NBTBase)es);
         this.update();
         return removeIf;
     }
 
     public Long getPrice() {
-        if (!data.hasKey("price")) {
+        if (!this.data.hasKey("price")) {
             return null;
-        } else {
-            return data.getLong("price");
         }
+        return this.data.getLong("price");
     }
 
     public Long getItemValue() {
-        if (!data.hasKey("itemValue")) {
+        if (!this.data.hasKey("itemValue")) {
             return null;
-        } else {
-            return data.getLong("itemValue");
         }
+        return this.data.getLong("itemValue");
     }
 
-    public void setItemValue(final Long value) {
-        data.setLong("itemValue", value);
-        update();
+    public void setItemValue(Long value) {
+        this.data.setLong("itemValue", value.longValue());
+        this.update();
     }
 
-    public void setPrice(final Long value) {
-        data.setLong("price", value);
-        update();
+    public void setPrice(Long value) {
+        this.data.setLong("price", value.longValue());
+        this.update();
     }
 
     public boolean hasEnchantment(EnchantmentType type) {
@@ -182,9 +225,8 @@ public class SItem implements Cloneable, ConfigurationSerializable {
         }
         List<net.hypixel.skyblock.features.enchantment.Enchantment> enchantments = this.getEnchantments();
         for (net.hypixel.skyblock.features.enchantment.Enchantment enchantment : enchantments) {
-            if (enchantment.getType() == type) {
-                return true;
-            }
+            if (enchantment.getType() != type) continue;
+            return true;
         }
         return false;
     }
@@ -195,9 +237,8 @@ public class SItem implements Cloneable, ConfigurationSerializable {
         }
         List<net.hypixel.skyblock.features.enchantment.Enchantment> enchantments = this.getEnchantments();
         for (net.hypixel.skyblock.features.enchantment.Enchantment enchantment : enchantments) {
-            if (enchantment.getType() == type) {
-                return enchantment;
-            }
+            if (enchantment.getType() != type) continue;
+            return enchantment;
         }
         return null;
     }
@@ -207,7 +248,7 @@ public class SItem implements Cloneable, ConfigurationSerializable {
             return null;
         }
         NBTTagCompound es = this.data.hasKey("enchantments") ? this.data.getCompound("enchantments") : new NBTTagCompound();
-        List<net.hypixel.skyblock.features.enchantment.Enchantment> enchantments = new ArrayList<net.hypixel.skyblock.features.enchantment.Enchantment>();
+        ArrayList<net.hypixel.skyblock.features.enchantment.Enchantment> enchantments = new ArrayList<net.hypixel.skyblock.features.enchantment.Enchantment>();
         for (String key : es.c()) {
             enchantments.add(new net.hypixel.skyblock.features.enchantment.Enchantment(EnchantmentType.getByNamespace(key), es.getInt(key)));
         }
@@ -222,10 +263,10 @@ public class SItem implements Cloneable, ConfigurationSerializable {
         this.removePotionEffect(effect.getType());
         effects.add(effect);
         NBTTagCompound es = this.data.getCompound("effects");
-        for (PotionEffect e : effects) {
-            es.set(e.getType().getNamespace(), e.toCompound());
+        for (PotionEffect e2 : effects) {
+            es.set(e2.getType().getNamespace(), (NBTBase)e2.toCompound());
         }
-        this.data.set("effects", es);
+        this.data.set("effects", (NBTBase)es);
         this.update();
         return true;
     }
@@ -235,14 +276,14 @@ public class SItem implements Cloneable, ConfigurationSerializable {
             return false;
         }
         List<PotionEffect> effects = this.getPotionEffects();
-        boolean removeIf = effects.removeIf(e -> e.getType().equals(type));
+        boolean removeIf = effects.removeIf(e2 -> e2.getType().equals(type));
         PotionColor top = SUtil.getTopColor(this);
-        this.stack.setDurability((null != top) ? (this.isSplashPotion() ? top.getSplashData() : top.getData()) : 0);
+        this.stack.setDurability(null != top ? (this.isSplashPotion() ? top.getSplashData() : top.getData()) : (short)0);
         NBTTagCompound es = this.data.getCompound("effects");
-        for (final PotionEffect e : effects) {
-            es.set(e.getType().getNamespace(), e.toCompound());
+        for (PotionEffect e3 : effects) {
+            es.set(e3.getType().getNamespace(), (NBTBase)e3.toCompound());
         }
-        this.data.set("effects", es);
+        this.data.set("effects", (NBTBase)es);
         this.update();
         return removeIf;
     }
@@ -253,9 +294,8 @@ public class SItem implements Cloneable, ConfigurationSerializable {
         }
         List<PotionEffect> effects = this.getPotionEffects();
         for (PotionEffect effect : effects) {
-            if (effect.getType() == type) {
-                return effect;
-            }
+            if (effect.getType() != type) continue;
+            return effect;
         }
         return null;
     }
@@ -265,7 +305,7 @@ public class SItem implements Cloneable, ConfigurationSerializable {
             return null;
         }
         NBTTagCompound es = this.data.hasKey("effects") ? this.data.getCompound("effects") : new NBTTagCompound();
-        List<PotionEffect> effects = new ArrayList<PotionEffect>();
+        ArrayList<PotionEffect> effects = new ArrayList<PotionEffect>();
         for (String key : es.c()) {
             effects.add(PotionEffect.ofCompound(key, es.getCompound(key)));
         }
@@ -309,16 +349,16 @@ public class SItem implements Cloneable, ConfigurationSerializable {
     }
 
     public void setKills(Integer kills) {
-        this.data.setInt("kills", kills);
+        this.data.setInt("kills", kills.intValue());
         this.update();
     }
 
     public void setHPBs(Integer hpbs) {
-        this.data.setInt("hpb", hpbs);
+        this.data.setInt("hpb", hpbs.intValue());
         this.update();
     }
 
-    public int getHPBs(){
+    public int getHPBs() {
         return this.getDataInt("hpb");
     }
 
@@ -326,7 +366,7 @@ public class SItem implements Cloneable, ConfigurationSerializable {
         if (!this.type.getStatistics().displayCoins()) {
             throw new UnsupportedOperationException("You cannot display coins bidded on this item");
         }
-        this.data.setInt("coins", coins);
+        this.data.setInt("coins", coins.intValue());
         this.update();
     }
 
@@ -387,7 +427,7 @@ public class SItem implements Cloneable, ConfigurationSerializable {
     }
 
     public String getFullName() {
-        return this.rarity.getColor() + (this.data.hasKey("reforge") ? (ReforgeType.getReforgeType(this.data.getString("reforge")).getReforge().getName() + " ") : "") + this.getType().getDisplayName(this.variant);
+        return this.rarity.getColor() + (this.data.hasKey("reforge") ? ReforgeType.getReforgeType(this.data.getString("reforge")).getReforge().getName() + " " : "") + this.getType().getDisplayName(this.variant);
     }
 
     public String getDisplayName() {
@@ -453,7 +493,7 @@ public class SItem implements Cloneable, ConfigurationSerializable {
     }
 
     public void setDataCompound(String key, NBTTagCompound value) {
-        this.data.set(key, value);
+        this.data.set(key, (NBTBase)value);
         this.update();
     }
 
@@ -481,11 +521,12 @@ public class SItem implements Cloneable, ConfigurationSerializable {
     }
 
     public void update(boolean instanceUpdate) {
-        net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(this.stack);
+        MaterialFunction function;
+        net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy((ItemStack)this.stack);
         if (null == nmsStack) {
             return;
         }
-        NBTTagCompound compound = (null != nmsStack.getTag()) ? nmsStack.getTag() : new NBTTagCompound();
+        NBTTagCompound compound = null != nmsStack.getTag() ? nmsStack.getTag() : new NBTTagCompound();
         compound.remove("type");
         compound.remove("variant");
         compound.remove("ExtraAttributes");
@@ -499,17 +540,14 @@ public class SItem implements Cloneable, ConfigurationSerializable {
         compound.remove("recombobulated");
         for (String key : this.data.c()) {
             compound.remove(key);
-            if (!this.data.get(key).isEmpty()) {
-                compound.set(key, this.data.get(key));
-            }
+            if (this.data.get(key).isEmpty()) continue;
+            compound.set(key, this.data.get(key));
         }
         compound.remove("amount");
         compound.setString("type", this.type.name());
-
-        NBTTagCompound  extraAttributesTag = new NBTTagCompound();
-        extraAttributesTag.setString("id", type.name());
-        compound.set("ExtraAttributes", extraAttributesTag);
-
+        NBTTagCompound extraAttributesTag = new NBTTagCompound();
+        extraAttributesTag.setString("id", this.type.name());
+        compound.set("ExtraAttributes", (NBTBase)extraAttributesTag);
         if (0 != this.variant) {
             compound.setShort("variant", this.variant);
         }
@@ -526,7 +564,7 @@ public class SItem implements Cloneable, ConfigurationSerializable {
             compound.setString("uuid", UUID.randomUUID().toString());
         }
         nmsStack.setTag(compound);
-        this.stack.setItemMeta(CraftItemStack.getItemMeta(nmsStack));
+        this.stack.setItemMeta(CraftItemStack.getItemMeta((net.minecraft.server.v1_8_R3.ItemStack)nmsStack));
         ItemMeta meta = this.stack.getItemMeta();
         MaterialStatistics statistics = this.type.getStatistics();
         Reforge reforge = null;
@@ -544,14 +582,13 @@ public class SItem implements Cloneable, ConfigurationSerializable {
         if (!(statistics instanceof LoreableMaterialStatistics)) {
             meta.setLore(this.lore.asBukkitLore());
         } else {
-            meta.setLore(((LoreableMaterialStatistics) statistics).getCustomLore(this));
+            meta.setLore(((LoreableMaterialStatistics)statistics).getCustomLore(this));
         }
         this.stack.setItemMeta(meta);
         if (this.type.getGenericInstance() instanceof Enchantable || statistics.isEnchanted()) {
             this.enchant(0 != this.data.getCompound("enchantments").c().size() || statistics.isEnchanted());
         }
-        MaterialFunction function = this.type.getFunction();
-        if (null != function && instanceUpdate) {
+        if (null != (function = this.type.getFunction()) && instanceUpdate) {
             this.type.getFunction().onInstanceUpdate(this);
         }
     }
@@ -564,28 +601,28 @@ public class SItem implements Cloneable, ConfigurationSerializable {
         ItemStack stack = new ItemStack(specMaterial.getCraftMaterial(), 1, variant);
         MaterialStatistics statistics = specMaterial.getStatistics();
         if (Material.SKULL_ITEM == specMaterial.getCraftMaterial() && statistics instanceof SkullStatistics) {
-            stack.setDurability((short) 3);
-            SUtil.getSkull(((SkullStatistics) statistics).getURL(), stack, specMaterial);
+            stack.setDurability((short)3);
+            SUtil.getSkull(((SkullStatistics)statistics).getURL(), stack, specMaterial);
         }
         if (statistics instanceof LeatherArmorStatistics) {
-            SUtil.applyColorToLeatherArmor(stack, Color.fromRGB(((LeatherArmorStatistics) statistics).getColor()));
+            SUtil.applyColorToLeatherArmor(stack, Color.fromRGB((int)((LeatherArmorStatistics)statistics).getColor()));
         }
         ItemMeta meta = stack.getItemMeta();
         meta.setDisplayName(statistics.getRarity().getColor() + specMaterial.getDisplayName(variant));
         stack.setItemMeta(meta);
-        return new SItem(specMaterial, variant, stack, statistics.getRarity(), origin, false, (null != specMaterial.getItemData()) ? specMaterial.getItemData().getData() : new NBTTagCompound(), true);
+        return new SItem(specMaterial, variant, stack, statistics.getRarity(), origin, false, null != specMaterial.getItemData() ? specMaterial.getItemData().getData() : new NBTTagCompound(), true);
     }
 
     public static SItem of(SMaterial specMaterial, ItemOrigin origin) {
-        return of(specMaterial, specMaterial.getData(), origin);
+        return SItem.of(specMaterial, specMaterial.getData(), origin);
     }
 
     public static SItem of(SMaterial specMaterial, short variant) {
-        return of(specMaterial, variant, ItemOrigin.UNKNOWN);
+        return SItem.of(specMaterial, variant, ItemOrigin.UNKNOWN);
     }
 
     public static SItem of(SMaterial specMaterial) {
-        return of(specMaterial, specMaterial.getData());
+        return SItem.of(specMaterial, specMaterial.getData());
     }
 
     public void setStarAmount(int star) {
@@ -603,23 +640,23 @@ public class SItem implements Cloneable, ConfigurationSerializable {
         if (null == material) {
             return null;
         }
-        if (null == Item.getById(material.getCraftMaterial().getId())) {
+        if (null == Item.getById((int)material.getCraftMaterial().getId())) {
             return null;
         }
-        SItem n = of(material, stack.getDurability(), origin);
-        n.getStack().setAmount(stack.getAmount());
-        return n;
+        SItem n2 = SItem.of(material, stack.getDurability(), origin);
+        n2.getStack().setAmount(stack.getAmount());
+        return n2;
     }
 
     public static SItem of(ItemStack stack) {
-        return of(stack, ItemOrigin.UNKNOWN);
+        return SItem.of(stack, ItemOrigin.UNKNOWN);
     }
 
     public static boolean isSpecItem(ItemStack stack) {
         if (null == stack) {
             return false;
         }
-        net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(stack);
+        net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy((ItemStack)stack);
         if (null == nmsStack) {
             return false;
         }
@@ -634,13 +671,12 @@ public class SItem implements Cloneable, ConfigurationSerializable {
         return new SItem(this.type, this.variant, this.stack.clone(), this.rarity, this.origin, this.recombobulated, this.data, true);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof SItem)) {
+    public boolean equals(Object o2) {
+        if (!(o2 instanceof SItem)) {
             return false;
         }
-        SItem item = (SItem) o;
-        return this.type == item.type && this.variant == item.variant && this.stack.equals(item.stack) && this.rarity == item.rarity && this.origin == item.origin && this.recombobulated == item.recombobulated && this.data.equals(item.data);
+        SItem item = (SItem)o2;
+        return this.type == item.type && this.variant == item.variant && this.stack.equals((Object)item.stack) && this.rarity == item.rarity && this.origin == item.origin && this.recombobulated == item.recombobulated && this.data.equals((Object)item.data);
     }
 
     public NBTTagCompound toCompound() {
@@ -650,11 +686,9 @@ public class SItem implements Cloneable, ConfigurationSerializable {
             compound.set(key, this.data.get(key));
         }
         compound.setString("type", this.type.name());
-
-        NBTTagCompound  extraAttributesTag = new NBTTagCompound();
-        extraAttributesTag.setString("id", type.name());
-        compound.set("ExtraAttributes", extraAttributesTag);
-
+        NBTTagCompound extraAttributesTag = new NBTTagCompound();
+        extraAttributesTag.setString("id", this.type.name());
+        compound.set("ExtraAttributes", (NBTBase)extraAttributesTag);
         if (0 != this.variant) {
             compound.setShort("variant", this.variant);
         }
@@ -674,28 +708,24 @@ public class SItem implements Cloneable, ConfigurationSerializable {
         return compound;
     }
 
-
-
     public Map<String, Object> serialize() {
-        Map<String, Object> map = new HashMap<String, Object>();
+        HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("type", this.type.name());
         map.put("variant", this.variant);
         map.put("amount", this.stack.getAmount());
         map.put("rarity", this.rarity.name());
         map.put("origin", this.origin.name());
         map.put("recombobulated", this.recombobulated);
-        for (String k : this.data.c()) {
-            if (k.equals("display")) {
+        for (String k2 : this.data.c()) {
+            if (k2.equals("display")) continue;
+            if (this.data.get(k2) instanceof NBTTagCompound) {
+                SerialNBTTagCompound serial = new SerialNBTTagCompound(this.data.getCompound(k2));
+                for (Map.Entry<String, Object> entry : serial.serialize().entrySet()) {
+                    map.put(k2 + "." + entry.getKey(), entry.getValue());
+                }
                 continue;
             }
-            if (this.data.get(k) instanceof NBTTagCompound) {
-                SerialNBTTagCompound serial = new SerialNBTTagCompound(this.data.getCompound(k));
-                for (Map.Entry<String, Object> entry : serial.serialize().entrySet()) {
-                    map.put(k + "." + entry.getKey(), entry.getValue());
-                }
-            } else {
-                map.put(k, SUtil.getObjectFromCompound(this.data, k));
-            }
+            map.put(k2, SUtil.getObjectFromCompound(this.data, k2));
         }
         return map;
     }
@@ -703,32 +733,28 @@ public class SItem implements Cloneable, ConfigurationSerializable {
     public static SItem deserialize(Map<String, Object> map) {
         NBTTagCompound data = new NBTTagCompound();
         for (Map.Entry<String, Object> entry : map.entrySet()) {
-            if (GLOBAL_DATA_KEYS.contains(entry.getKey())) {
-                continue;
-            }
+            if (GLOBAL_DATA_KEYS.contains(entry.getKey())) continue;
             String key = entry.getKey();
             String[] dir = entry.getKey().split("\\.");
             if (2 <= dir.length) {
                 key = dir[dir.length - 1];
                 NBTTagCompound track = data;
-                for (int i = 0; i < dir.length - 1; ++i) {
-                    if (!track.hasKey(dir[i])) {
-                        track.set(dir[i], new NBTTagCompound());
+                for (int i2 = 0; i2 < dir.length - 1; ++i2) {
+                    if (!track.hasKey(dir[i2])) {
+                        track.set(dir[i2], (NBTBase)new NBTTagCompound());
                     }
-                    track = track.getCompound(dir[i]);
+                    track = track.getCompound(dir[i2]);
                 }
                 track.set(key, SUtil.getBaseFromObject(entry.getValue()));
-            } else {
-                data.set(key, SUtil.getBaseFromObject(entry.getValue()));
+                continue;
             }
+            data.set(key, SUtil.getBaseFromObject(entry.getValue()));
         }
-        SMaterial material = SMaterial.getMaterial((String) map.get("type"));
-        short variant = Short.valueOf((String) map.get("variant"));
-        return new SItem(material, variant, new ItemStack(material.getCraftMaterial(), (int) map.get("amount"), variant), Rarity.getRarity((String) map.get("rarity")), ItemOrigin.valueOf((String) map.get("origin")), (Boolean) map.get("recombobulated"), data, true);
+        SMaterial material = SMaterial.getMaterial((String)map.get("type"));
+        short variant = Short.valueOf((String)map.get("variant"));
+        return new SItem(material, variant, new ItemStack(material.getCraftMaterial(), ((Integer)map.get("amount")).intValue(), variant), Rarity.getRarity((String)map.get("rarity")), ItemOrigin.valueOf((String)map.get("origin")), (Boolean)map.get("recombobulated"), data, true);
     }
 
-
-    @Override
     public String toString() {
         return "SItem{type=" + this.type.name() + ", variant=" + this.variant + ", stack=" + this.stack.toString() + ", rarity=" + this.rarity.name() + ", origin=" + this.origin.name() + ", recombobulated=" + this.recombobulated + ", data=" + this.data.toString() + "}";
     }
@@ -737,15 +763,15 @@ public class SItem implements Cloneable, ConfigurationSerializable {
         if (null == stack) {
             return null;
         }
-        if (!isSpecItem(stack)) {
+        if (!SItem.isSpecItem(stack)) {
             return null;
         }
-        net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy(stack);
+        net.minecraft.server.v1_8_R3.ItemStack nmsStack = CraftItemStack.asNMSCopy((ItemStack)stack);
         NBTTagCompound compound = nmsStack.getTag();
         if (null == compound) {
             return null;
         }
-        return of(compound, stack);
+        return SItem.of(compound, stack);
     }
 
     public static SItem of(NBTTagCompound compound) {
@@ -753,57 +779,53 @@ public class SItem implements Cloneable, ConfigurationSerializable {
         ItemStack stack = new ItemStack(type.getCraftMaterial(), compound.hasKey("amount") ? compound.getInt("amount") : 1, type.getData());
         MaterialStatistics statistics = type.getStatistics();
         if (Material.SKULL_ITEM == type.getCraftMaterial() && statistics instanceof SkullStatistics) {
-            stack.setDurability((short) 3);
-            SUtil.getSkull(((SkullStatistics) statistics).getURL(), stack, type);
+            stack.setDurability((short)3);
+            SUtil.getSkull(((SkullStatistics)statistics).getURL(), stack, type);
         }
         if (statistics instanceof LeatherArmorStatistics) {
-            SUtil.applyColorToLeatherArmor(stack, Color.fromRGB(((LeatherArmorStatistics) statistics).getColor()));
+            SUtil.applyColorToLeatherArmor(stack, Color.fromRGB((int)((LeatherArmorStatistics)statistics).getColor()));
         }
         ItemMeta meta = stack.getItemMeta();
-        short variant = (short) (compound.hasKey("variant") ? compound.getShort("variant") : 0);
+        short variant = compound.hasKey("variant") ? compound.getShort("variant") : (short)0;
         meta.setDisplayName(statistics.getRarity().getColor() + type.getDisplayName(variant));
         stack.setItemMeta(meta);
         NBTTagCompound data = new NBTTagCompound();
         for (String key : compound.c()) {
-            if (GLOBAL_NBT_TAGS.contains(key)) {
-                continue;
-            }
+            if (GLOBAL_NBT_TAGS.contains(key)) continue;
             data.set(key, compound.get(key));
         }
         return new SItem(type, variant, stack, compound.hasKey("rarity") ? Rarity.getRarity(compound.getString("rarity")) : statistics.getRarity(), compound.hasKey("origin") ? ItemOrigin.valueOf(compound.getString("origin")) : ItemOrigin.UNKNOWN, compound.getBoolean("recombobulated"), data, true);
     }
 
     public static SItem convert(ItemStack stack) {
-        return SUtil.setSItemAmount(of(SMaterial.getSpecEquivalent(stack.getType(), stack.getDurability())), stack.getAmount());
+        return SUtil.setSItemAmount(SItem.of(SMaterial.getSpecEquivalent(stack.getType(), stack.getDurability())), stack.getAmount());
     }
 
-    public static SItem find(ItemStack stack , int amount){
-        return SUtil.setSItemAmount(find(stack) , stack.getAmount());
+    public static SItem find(ItemStack stack, int amount) {
+        return SUtil.setSItemAmount(SItem.find(stack), stack.getAmount());
     }
 
     private static SItem of(NBTTagCompound compound, ItemStack stack) {
         SMaterial type = SMaterial.getMaterial(compound.getString("type"));
         NBTTagCompound data = new NBTTagCompound();
         for (String key : compound.c()) {
-            if (GLOBAL_NBT_TAGS.contains(key)) {
-                continue;
-            }
+            if (GLOBAL_NBT_TAGS.contains(key)) continue;
             data.set(key, compound.get(key));
         }
-        return new SItem(type, compound.hasKey("variant") ? compound.getShort("variant") : 0, stack, compound.hasKey("rarity") ? Rarity.getRarity(compound.getString("rarity")) : type.getStatistics().getRarity(), compound.hasKey("origin") ? ItemOrigin.valueOf(compound.getString("origin")) : ItemOrigin.UNKNOWN, compound.hasKey("recombobulated"), data, false);
+        return new SItem(type, compound.hasKey("variant") ? compound.getShort("variant") : (short)0, stack, compound.hasKey("rarity") ? Rarity.getRarity(compound.getString("rarity")) : type.getStatistics().getRarity(), compound.hasKey("origin") ? ItemOrigin.valueOf(compound.getString("origin")) : ItemOrigin.UNKNOWN, compound.hasKey("recombobulated"), data, false);
     }
 
     public static boolean isAbleToDoEtherWarpTeleportation(Player player, SItem sitem) {
         boolean haveBlockInRange = false;
         try {
             for (int range = 1; 57 > range; ++range) {
-                Location location = player.getTargetBlock((Set) null, range).getLocation();
-                if (Material.AIR != location.getBlock().getType()) {
-                    haveBlockInRange = true;
-                    break;
-                }
+                Location location = player.getTargetBlock((Set)null, range).getLocation();
+                if (Material.AIR == location.getBlock().getType()) continue;
+                haveBlockInRange = true;
+                break;
             }
-        } catch (IllegalStateException ex) {
+        } catch (IllegalStateException illegalStateException) {
+            // empty catch block
         }
         return haveBlockInRange;
     }
@@ -812,29 +834,28 @@ public class SItem implements Cloneable, ConfigurationSerializable {
         boolean haveBlockInRange = false;
         try {
             for (int range = 1; 57 > range; ++range) {
-                Location location = player.getTargetBlock((Set) null, range).getLocation();
-                if (Material.AIR != location.getBlock().getType()) {
-                    haveBlockInRange = true;
-                    break;
-                }
+                Location location = player.getTargetBlock((Set)null, range).getLocation();
+                if (Material.AIR == location.getBlock().getType()) continue;
+                haveBlockInRange = true;
+                break;
             }
-        } catch (IllegalStateException ex) {
+        } catch (IllegalStateException range) {
+            // empty catch block
         }
         if (!haveBlockInRange) {
             return;
         }
         try {
+            Location location;
             int f_ = 57;
             for (int range2 = 1; 57 > range2; ++range2) {
-                Location location2 = player.getTargetBlock((Set) null, range2).getLocation();
-                if (Material.AIR != location2.getBlock().getType()) {
-                    f_ = range2;
-                    break;
-                }
+                Location location2 = player.getTargetBlock((Set)null, range2).getLocation();
+                if (Material.AIR == location2.getBlock().getType()) continue;
+                f_ = range2;
+                break;
             }
-            Location location = player.getTargetBlock((Set) null, f_).getLocation().getBlock().getLocation();
-            if (Material.AIR != location.clone().add(0.0, 1.0, 0.0).getBlock().getType() && Material.AIR != location.clone().add(0.0, 2.0, 0.0).getBlock().getType()) {
-                location = player.getTargetBlock((Set) null, f_ - 1).getLocation().getBlock().getLocation();
+            if (Material.AIR != (location = player.getTargetBlock((Set)null, f_).getLocation().getBlock().getLocation()).clone().add(0.0, 1.0, 0.0).getBlock().getType() && Material.AIR != location.clone().add(0.0, 2.0, 0.0).getBlock().getType()) {
+                location = player.getTargetBlock((Set)null, f_ - 1).getLocation().getBlock().getLocation();
             }
             location.setYaw(player.getLocation().getYaw());
             location.setPitch(player.getLocation().getPitch());
@@ -844,7 +865,8 @@ public class SItem implements Cloneable, ConfigurationSerializable {
             } else {
                 Sputnik.teleport(player, player.getLocation());
             }
-        } catch (IllegalStateException ex2) {
+        } catch (IllegalStateException illegalStateException) {
+            // empty catch block
         }
         player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 3.0f, 1.0f);
     }
@@ -880,9 +902,5 @@ public class SItem implements Cloneable, ConfigurationSerializable {
     public NBTTagCompound getData() {
         return this.data;
     }
-
-    static {
-        GLOBAL_NBT_TAGS = Arrays.asList("type", "rarity", "origin", "recombobulated" , "ExtraAttributes");
-        GLOBAL_DATA_KEYS = Arrays.asList("type", "variant", "stack", "rarity", "origin", "recombobulated" , "ExtraAttributes");
-    }
 }
+

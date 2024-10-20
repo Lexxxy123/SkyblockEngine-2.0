@@ -1,7 +1,34 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ *  org.bukkit.Effect
+ *  org.bukkit.Location
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.entity.EntityDamageByEntityEvent
+ *  org.bukkit.util.Vector
+ */
 package net.hypixel.skyblock.item.pet;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.hypixel.skyblock.features.skill.CombatSkill;
 import net.hypixel.skyblock.features.skill.Skill;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.pet.Pet;
+import net.hypixel.skyblock.item.pet.PetAbility;
+import net.hypixel.skyblock.util.SUtil;
+import net.hypixel.skyblock.util.Sputnik;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -9,91 +36,88 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.util.Vector;
-import net.hypixel.skyblock.item.GenericItemType;
-import net.hypixel.skyblock.item.Rarity;
-import net.hypixel.skyblock.item.SItem;
-import net.hypixel.skyblock.util.SUtil;
-import net.hypixel.skyblock.util.Sputnik;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.*;
-
-public class GoldenTigerPet extends Pet {
-    public static final Map<Player, Boolean> COOLDOWN;
+public class GoldenTigerPet
+extends Pet {
+    public static final Map<Player, Boolean> COOLDOWN = new HashMap<Player, Boolean>();
 
     @Override
-    public List<PetAbility> getPetAbilities(final SItem instance) {
-        final int level = Pet.getLevel(instance);
-        final BigDecimal fero = new BigDecimal(level * 0.1).setScale(1, RoundingMode.HALF_EVEN);
-        final BigDecimal buffstat = new BigDecimal(level * 0.1).setScale(1, RoundingMode.HALF_EVEN);
-        final BigDecimal buffstat2 = new BigDecimal(level * 0.05).setScale(1, RoundingMode.HALF_EVEN);
-        final BigDecimal buffstat3 = new BigDecimal(level * 0.1).setScale(1, RoundingMode.HALF_EVEN);
-        final List<PetAbility> abilities = new ArrayList<PetAbility>(Collections.singletonList(new PetAbility() {
+    public List<PetAbility> getPetAbilities(SItem instance) {
+        int level = Pet.getLevel(instance);
+        final BigDecimal fero = new BigDecimal((double)level * 0.1).setScale(1, RoundingMode.HALF_EVEN);
+        final BigDecimal buffstat = new BigDecimal((double)level * 0.1).setScale(1, RoundingMode.HALF_EVEN);
+        final BigDecimal buffstat2 = new BigDecimal((double)level * 0.05).setScale(1, RoundingMode.HALF_EVEN);
+        final BigDecimal buffstat3 = new BigDecimal((double)level * 0.1).setScale(1, RoundingMode.HALF_EVEN);
+        ArrayList<PetAbility> abilities = new ArrayList<PetAbility>(Collections.singletonList(new PetAbility(){
+
             @Override
             public String getName() {
                 return "Lucky New Year";
             }
 
             @Override
-            public List<String> getDescription(final SItem instance) {
-                return Arrays.asList(Sputnik.trans("&7Grant &e1% &7of your &c❁ Strength"), Sputnik.trans("&7as &b✯ Magic Find"));
+            public List<String> getDescription(SItem instance) {
+                return Arrays.asList(Sputnik.trans("&7Grant &e1% &7of your &c\u2741 Strength"), Sputnik.trans("&7as &b\u272f Magic Find"));
             }
         }));
         if (instance.getRarity().isAtLeast(Rarity.EPIC)) {
-            abilities.add(new PetAbility() {
+            abilities.add(new PetAbility(){
+
                 @Override
                 public String getName() {
                     return "Atrocities";
                 }
 
                 @Override
-                public List<String> getDescription(final SItem instance) {
-                    return Arrays.asList(Sputnik.trans("&7For every &c30⫽ Ferocity&7,"), Sputnik.trans("&7adds &c" + fero.toPlainString() + " &7base damage"), ChatColor.GRAY + "to your weapons.");
+                public List<String> getDescription(SItem instance) {
+                    return Arrays.asList(Sputnik.trans("&7For every &c30\u2afd Ferocity&7,"), Sputnik.trans("&7adds &c" + fero.toPlainString() + " &7base damage"), ChatColor.GRAY + "to your weapons.");
                 }
             });
         }
         if (instance.getRarity().isAtLeast(Rarity.LEGENDARY)) {
-            abilities.add(new PetAbility() {
+            abilities.add(new PetAbility(){
+
                 @Override
                 public String getName() {
                     return "Reinforced Body";
                 }
 
                 @Override
-                public List<String> getDescription(final SItem instance) {
+                public List<String> getDescription(SItem instance) {
                     return Collections.singletonList("Immune to any type of knockback.");
                 }
 
                 @Override
-                public void onHurt(final EntityDamageByEntityEvent e, final Entity damager) {
-                    final Entity en = e.getEntity();
-                    final Vector v = new Vector(0, 0, 0);
-                    SUtil.delay(() -> en.setVelocity(v), 0L);
+                public void onHurt(EntityDamageByEntityEvent e2, Entity damager) {
+                    Entity en = e2.getEntity();
+                    Vector v2 = new Vector(0, 0, 0);
+                    SUtil.delay(() -> en.setVelocity(v2), 0L);
                 }
             });
-            abilities.add(new PetAbility() {
+            abilities.add(new PetAbility(){
+
                 @Override
                 public String getName() {
                     return "King of the Jungle";
                 }
 
                 @Override
-                public List<String> getDescription(final SItem instance) {
+                public List<String> getDescription(SItem instance) {
                     return Collections.singletonList("Increases most stats by " + ChatColor.GREEN + buffstat.toPlainString() + "%");
                 }
             });
         }
         if (instance.getRarity().isAtLeast(Rarity.MYTHIC)) {
-            abilities.add(new PetAbility() {
+            abilities.add(new PetAbility(){
+
                 @Override
                 public String getName() {
                     return "Golden Scaling";
                 }
 
                 @Override
-                public List<String> getDescription(final SItem instance) {
-                    return Arrays.asList(Sputnik.trans("&7For each digit in your &bBits"), Sputnik.trans("&bpurse &7gain &c+" + buffstat3 + "⫽ Ferocity"), Sputnik.trans("&7and &b+" + buffstat2 + "✯ Magic Find"));
+                public List<String> getDescription(SItem instance) {
+                    return Arrays.asList(Sputnik.trans("&7For each digit in your &bBits"), Sputnik.trans("&bpurse &7gain &c+" + buffstat3 + "\u2afd Ferocity"), Sputnik.trans("&7and &b+" + buffstat2 + "\u272f Magic Find"));
                 }
             });
         }
@@ -151,12 +175,9 @@ public class GoldenTigerPet extends Pet {
     }
 
     @Override
-    public void particleBelowA(final Player p, final Location l) {
-        p.spigot().playEffect(l, Effect.COLOURED_DUST, 0, 1, 0.92156863f, 0.8980392f, 0.20392157f, 1.0f, 0, 64);
-        p.spigot().playEffect(l, Effect.COLOURED_DUST, 0, 1, 0.9882353f, 0.7294118f, 0.011764706f, 1.0f, 0, 64);
-    }
-
-    static {
-        COOLDOWN = new HashMap<Player, Boolean>();
+    public void particleBelowA(Player p2, Location l2) {
+        p2.spigot().playEffect(l2, Effect.COLOURED_DUST, 0, 1, 0.92156863f, 0.8980392f, 0.20392157f, 1.0f, 0, 64);
+        p2.spigot().playEffect(l2, Effect.COLOURED_DUST, 0, 1, 0.9882353f, 0.7294118f, 0.011764706f, 1.0f, 0, 64);
     }
 }
+

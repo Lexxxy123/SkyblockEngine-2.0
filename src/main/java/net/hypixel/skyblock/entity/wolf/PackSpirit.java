@@ -1,14 +1,21 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.md_5.bungee.api.ChatColor
+ */
 package net.hypixel.skyblock.entity.wolf;
-
-import net.md_5.bungee.api.ChatColor;
-import net.hypixel.skyblock.entity.EntityDrop;
-import net.hypixel.skyblock.entity.EntityDropType;
-import net.hypixel.skyblock.item.SMaterial;
 
 import java.util.Arrays;
 import java.util.List;
+import net.hypixel.skyblock.entity.EntityDrop;
+import net.hypixel.skyblock.entity.EntityDropType;
+import net.hypixel.skyblock.entity.wolf.BaseWolf;
+import net.hypixel.skyblock.item.SMaterial;
+import net.md_5.bungee.api.ChatColor;
 
-public class PackSpirit extends BaseWolf {
+public class PackSpirit
+extends BaseWolf {
     @Override
     public String getEntityName() {
         return ChatColor.AQUA + "Pack Spirit";
@@ -22,11 +29,6 @@ public class PackSpirit extends BaseWolf {
     @Override
     public double getDamageDealt() {
         return 270.0;
-    }
-    
-    @Override
-    public int mobLevel() {
-        return 30;
     }
 
     @Override
@@ -43,4 +45,10 @@ public class PackSpirit extends BaseWolf {
     public boolean isAngry() {
         return true;
     }
+
+    @Override
+    public int mobLevel() {
+        return 30;
+    }
 }
+

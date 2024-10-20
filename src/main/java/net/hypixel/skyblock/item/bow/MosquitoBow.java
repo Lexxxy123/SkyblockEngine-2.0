@@ -1,9 +1,34 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ *  org.bukkit.Sound
+ *  org.bukkit.entity.Arrow
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.entity.EntityShootBowEvent
+ *  org.bukkit.metadata.FixedMetadataValue
+ *  org.bukkit.metadata.MetadataValue
+ *  org.bukkit.plugin.Plugin
+ */
 package net.hypixel.skyblock.item.bow;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.Repeater;
+import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.item.Ability;
+import net.hypixel.skyblock.item.AbilityActivation;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.ToolStatistics;
+import net.hypixel.skyblock.item.bow.BowFunction;
+import net.hypixel.skyblock.user.PlayerUtils;
 import net.hypixel.skyblock.util.DefenseReplacement;
 import net.hypixel.skyblock.util.ManaReplacement;
+import net.hypixel.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
@@ -11,12 +36,13 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.metadata.FixedMetadataValue;
-import net.hypixel.skyblock.Repeater;
-import net.hypixel.skyblock.SkyBlock;
-import net.hypixel.skyblock.user.PlayerUtils;
-import net.hypixel.skyblock.util.SUtil;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
 
-public class MosquitoBow implements ToolStatistics, BowFunction, Ability {
+public class MosquitoBow
+implements ToolStatistics,
+BowFunction,
+Ability {
     @Override
     public String getAbilityName() {
         return "Nasty Bite";
@@ -28,7 +54,7 @@ public class MosquitoBow implements ToolStatistics, BowFunction, Ability {
     }
 
     @Override
-    public void onAbilityUse(final Player player, final SItem sItem) {
+    public void onAbilityUse(Player player, SItem sItem) {
     }
 
     @Override
@@ -82,21 +108,22 @@ public class MosquitoBow implements ToolStatistics, BowFunction, Ability {
     }
 
     @Override
-    public void onBowShoot(final SItem bow, final EntityShootBowEvent e) {
-        final Player player = (Player) e.getEntity();
+    public void onBowShoot(SItem bow, EntityShootBowEvent e2) {
+        Player player = (Player)e2.getEntity();
         if (!player.isSneaking()) {
             return;
         }
-        if (e.getForce() != 1.0f) {
+        if (e2.getForce() != 1.0f) {
             return;
         }
-        final int manaPool = SUtil.blackMagic(PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId()).getIntelligence().addAll() + 100.0);
-        final int cost = PlayerUtils.getFinalManaCost(player, bow, (int) (manaPool * 0.11));
-        final boolean take = PlayerUtils.takeMana(player, cost);
+        int manaPool = SUtil.blackMagic(PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId()).getIntelligence().addAll() + 100.0);
+        final int cost = PlayerUtils.getFinalManaCost(player, bow, (int)((double)manaPool * 0.11));
+        boolean take = PlayerUtils.takeMana(player, cost);
         if (!take) {
             player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
-            final long c = System.currentTimeMillis();
-            Repeater.MANA_REPLACEMENT_MAP.put(player.getUniqueId(), new ManaReplacement() {
+            final long c2 = System.currentTimeMillis();
+            Repeater.MANA_REPLACEMENT_MAP.put(player.getUniqueId(), new ManaReplacement(){
+
                 @Override
                 public String getReplacement() {
                     return "" + ChatColor.RED + ChatColor.BOLD + "NOT ENOUGH MANA";
@@ -104,13 +131,14 @@ public class MosquitoBow implements ToolStatistics, BowFunction, Ability {
 
                 @Override
                 public long getEnd() {
-                    return c + 1500L;
+                    return c2 + 1500L;
                 }
             });
             return;
         }
-        final long c = System.currentTimeMillis();
-        Repeater.DEFENSE_REPLACEMENT_MAP.put(player.getUniqueId(), new DefenseReplacement() {
+        final long c3 = System.currentTimeMillis();
+        Repeater.DEFENSE_REPLACEMENT_MAP.put(player.getUniqueId(), new DefenseReplacement(){
+
             @Override
             public String getReplacement() {
                 return ChatColor.AQUA + "-" + cost + " Mana (" + ChatColor.GOLD + MosquitoBow.this.getAbilityName() + ChatColor.AQUA + ")";
@@ -118,18 +146,19 @@ public class MosquitoBow implements ToolStatistics, BowFunction, Ability {
 
             @Override
             public long getEnd() {
-                return c + 2000L;
+                return c3 + 2000L;
             }
         });
-        player.setHealth(Math.min(player.getMaxHealth(), player.getHealth() + manaPool * 0.11 * 2.0));
-        e.getProjectile().setMetadata("bite", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        player.setHealth(Math.min(player.getMaxHealth(), player.getHealth() + (double)manaPool * 0.11 * 2.0));
+        e2.getProjectile().setMetadata("bite", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
     }
 
     @Override
-    public void onBowHit(final Entity hit, final Player shooter, final Arrow arrow, final SItem weapon, final AtomicDouble finalDamage) {
+    public void onBowHit(Entity hit, Player shooter, Arrow arrow, SItem weapon, AtomicDouble finalDamage) {
         if (!arrow.hasMetadata("bite")) {
             return;
         }
         finalDamage.set(finalDamage.get() + finalDamage.get() * 0.19);
     }
 }
+

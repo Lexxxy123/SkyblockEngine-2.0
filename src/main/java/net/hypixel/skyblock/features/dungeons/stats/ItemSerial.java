@@ -1,37 +1,27 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.features.dungeons.stats;
-
-import net.hypixel.skyblock.item.SItem;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.hypixel.skyblock.item.SItem;
 
 public class ItemSerial {
-    private double damage;
-    private double strength;
-    private double critchance;
-    private double critdamage;
-    private double ferocity;
-    private double intelligence;
-    private double atkSpeed;
-    private double speed;
-    private double health;
-    private double defense;
-    private double magicFind;
-    private final List<Double> intarr;
+    private double damage = 0.0;
+    private double strength = 0.0;
+    private double critchance = 0.0;
+    private double critdamage = 0.0;
+    private double ferocity = 0.0;
+    private double intelligence = 0.0;
+    private double atkSpeed = 0.0;
+    private double speed = 0.0;
+    private double health = 0.0;
+    private double defense = 0.0;
+    private double magicFind = 0.0;
+    private final List<Double> intarr = new ArrayList<Double>();
 
-    public ItemSerial(final double damage, final double strength, final double critdamage, final double critchance, final double ferocity, final double intelligence, final double speed, final double atkSpeed, final double health, final double defense, final double magicFind) {
-        this.damage = 0.0;
-        this.strength = 0.0;
-        this.critchance = 0.0;
-        this.critdamage = 0.0;
-        this.ferocity = 0.0;
-        this.intelligence = 0.0;
-        this.atkSpeed = 0.0;
-        this.speed = 0.0;
-        this.health = 0.0;
-        this.defense = 0.0;
-        this.magicFind = 0.0;
-        this.intarr = new ArrayList<Double>();
+    public ItemSerial(double damage, double strength, double critdamage, double critchance, double ferocity, double intelligence, double speed, double atkSpeed, double health, double defense, double magicFind) {
         this.damage = damage;
         this.strength = strength;
         this.critdamage = critdamage;
@@ -45,7 +35,7 @@ public class ItemSerial {
         this.magicFind = magicFind;
     }
 
-    public void saveTo(final SItem sitem) {
+    public void saveTo(SItem sitem) {
         this.intarr.add(this.damage);
         this.intarr.add(this.strength);
         this.intarr.add(this.critdamage);
@@ -57,45 +47,46 @@ public class ItemSerial {
         this.intarr.add(this.health);
         this.intarr.add(this.defense);
         this.intarr.add(this.magicFind);
-        final StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         sb.append("ItemBoost[");
-        for (int j = 0; j < this.intarr.size(); ++j) {
-            if (j == this.intarr.size() - 1) {
-                sb.append(this.intarr.get(j));
-            } else {
-                sb.append(this.intarr.get(j) + ",");
+        for (int j2 = 0; j2 < this.intarr.size(); ++j2) {
+            if (j2 == this.intarr.size() - 1) {
+                sb.append(this.intarr.get(j2));
+                continue;
             }
+            sb.append(this.intarr.get(j2) + ",");
         }
         sb.append("]");
         sitem.setDataString("boost", sb.toString());
         sitem.setDataBoolean("dungeons_item", true);
     }
 
-    public static ItemSerial getItemBoostStatistics(final SItem sitem) {
-        String s = sitem.getDataString("boost");
-        if (!s.contains("ItemBoost")) {
-            return createBlank();
+    public static ItemSerial getItemBoostStatistics(SItem sitem) {
+        String s2 = sitem.getDataString("boost");
+        if (!s2.contains("ItemBoost")) {
+            return ItemSerial.createBlank();
         }
-        s = s.replace("ItemBoost[", "");
-        s = s.replace("]", "");
-        final String[] sta = s.split(",");
-        final float[] f = new float[11];
-        for (int i = 0; i < sta.length; ++i) {
+        s2 = s2.replace("ItemBoost[", "");
+        s2 = s2.replace("]", "");
+        String[] sta = s2.split(",");
+        float[] f2 = new float[11];
+        for (int i2 = 0; i2 < sta.length; ++i2) {
             try {
-                f[i] = Float.parseFloat(sta[i]);
-            } catch (final NumberFormatException e) {
-                e.printStackTrace();
+                f2[i2] = Float.parseFloat(sta[i2]);
+                continue;
+            } catch (NumberFormatException e2) {
+                e2.printStackTrace();
             }
         }
-        return new ItemSerial(f[0], f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], f[9], f[10]);
+        return new ItemSerial(f2[0], f2[1], f2[2], f2[3], f2[4], f2[5], f2[6], f2[7], f2[8], f2[9], f2[10]);
     }
 
     public static ItemSerial createBlank() {
-        final float[] f = new float[11];
-        return new ItemSerial(f[0], f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], f[9], f[10]);
+        float[] f2 = new float[11];
+        return new ItemSerial(f2[0], f2[1], f2[2], f2[3], f2[4], f2[5], f2[6], f2[7], f2[8], f2[9], f2[10]);
     }
 
-    public void setDamage(final double damage) {
+    public void setDamage(double damage) {
         this.damage = damage;
     }
 
@@ -103,7 +94,7 @@ public class ItemSerial {
         return this.damage;
     }
 
-    public void setStrength(final double strength) {
+    public void setStrength(double strength) {
         this.strength = strength;
     }
 
@@ -111,7 +102,7 @@ public class ItemSerial {
         return this.strength;
     }
 
-    public void setCritchance(final double critchance) {
+    public void setCritchance(double critchance) {
         this.critchance = critchance;
     }
 
@@ -119,7 +110,7 @@ public class ItemSerial {
         return this.critchance;
     }
 
-    public void setCritdamage(final double critdamage) {
+    public void setCritdamage(double critdamage) {
         this.critdamage = critdamage;
     }
 
@@ -127,7 +118,7 @@ public class ItemSerial {
         return this.critdamage;
     }
 
-    public void setFerocity(final double ferocity) {
+    public void setFerocity(double ferocity) {
         this.ferocity = ferocity;
     }
 
@@ -135,7 +126,7 @@ public class ItemSerial {
         return this.ferocity;
     }
 
-    public void setIntelligence(final double intelligence) {
+    public void setIntelligence(double intelligence) {
         this.intelligence = intelligence;
     }
 
@@ -143,7 +134,7 @@ public class ItemSerial {
         return this.intelligence;
     }
 
-    public void setAtkSpeed(final double atkSpeed) {
+    public void setAtkSpeed(double atkSpeed) {
         this.atkSpeed = atkSpeed;
     }
 
@@ -151,7 +142,7 @@ public class ItemSerial {
         return this.atkSpeed;
     }
 
-    public void setSpeed(final double speed) {
+    public void setSpeed(double speed) {
         this.speed = speed;
     }
 
@@ -159,7 +150,7 @@ public class ItemSerial {
         return this.speed;
     }
 
-    public void setHealth(final double health) {
+    public void setHealth(double health) {
         this.health = health;
     }
 
@@ -167,7 +158,7 @@ public class ItemSerial {
         return this.health;
     }
 
-    public void setDefense(final double defense) {
+    public void setDefense(double defense) {
         this.defense = defense;
     }
 
@@ -175,7 +166,7 @@ public class ItemSerial {
         return this.defense;
     }
 
-    public void setMagicFind(final double magicFind) {
+    public void setMagicFind(double magicFind) {
         this.magicFind = magicFind;
     }
 
@@ -183,3 +174,4 @@ public class ItemSerial {
         return this.magicFind;
     }
 }
+

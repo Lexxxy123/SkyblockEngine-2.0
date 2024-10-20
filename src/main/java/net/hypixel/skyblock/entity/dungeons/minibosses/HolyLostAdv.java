@@ -1,3 +1,45 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  de.slikey.effectlib.effect.ConeEffect
+ *  de.slikey.effectlib.util.ParticleEffect
+ *  me.libraryaddict.disguise.disguisetypes.PlayerDisguise
+ *  me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher
+ *  net.minecraft.server.v1_8_R3.AttributeInstance
+ *  net.minecraft.server.v1_8_R3.Entity
+ *  net.minecraft.server.v1_8_R3.EntityLiving
+ *  net.minecraft.server.v1_8_R3.GenericAttributes
+ *  net.minecraft.server.v1_8_R3.MathHelper
+ *  net.minecraft.server.v1_8_R3.MobEffectList
+ *  net.minecraft.server.v1_8_R3.Packet
+ *  net.minecraft.server.v1_8_R3.PacketPlayOutAnimation
+ *  org.bukkit.Bukkit
+ *  org.bukkit.Color
+ *  org.bukkit.GameMode
+ *  org.bukkit.Location
+ *  org.bukkit.Material
+ *  org.bukkit.Sound
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie
+ *  org.bukkit.entity.Arrow
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.entity.LivingEntity
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.entity.EntityDamageByEntityEvent
+ *  org.bukkit.event.entity.EntityDamageEvent$DamageCause
+ *  org.bukkit.inventory.ItemStack
+ *  org.bukkit.inventory.meta.ItemMeta
+ *  org.bukkit.metadata.FixedMetadataValue
+ *  org.bukkit.metadata.MetadataValue
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.potion.PotionEffect
+ *  org.bukkit.potion.PotionEffectType
+ *  org.bukkit.projectiles.ProjectileSource
+ *  org.bukkit.scheduler.BukkitRunnable
+ *  org.bukkit.util.Vector
+ */
 package net.hypixel.skyblock.entity.dungeons.minibosses;
 
 import com.google.common.util.concurrent.AtomicDouble;
@@ -5,25 +47,6 @@ import de.slikey.effectlib.effect.ConeEffect;
 import de.slikey.effectlib.util.ParticleEffect;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher;
-import net.minecraft.server.v1_8_R3.*;
-import org.bukkit.Material;
-import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.entity.SEntity;
 import net.hypixel.skyblock.entity.SEntityEquipment;
@@ -36,19 +59,45 @@ import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.EntityManager;
 import net.hypixel.skyblock.util.SUtil;
 import net.hypixel.skyblock.util.Sputnik;
+import net.minecraft.server.v1_8_R3.AttributeInstance;
+import net.minecraft.server.v1_8_R3.Entity;
+import net.minecraft.server.v1_8_R3.EntityLiving;
+import net.minecraft.server.v1_8_R3.GenericAttributes;
+import net.minecraft.server.v1_8_R3.MathHelper;
+import net.minecraft.server.v1_8_R3.MobEffectList;
+import net.minecraft.server.v1_8_R3.Packet;
+import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
+import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.projectiles.ProjectileSource;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
-public class HolyLostAdv extends BaseZombie {
-    private boolean isEating;
-    private boolean isBowing;
-    private boolean EatingCooldown;
-    private boolean CDDR;
-
-    public HolyLostAdv() {
-        this.isEating = false;
-        this.isBowing = false;
-        this.EatingCooldown = false;
-        this.CDDR = false;
-    }
+public class HolyLostAdv
+extends BaseZombie {
+    private boolean isEating = false;
+    private boolean isBowing = false;
+    private boolean EatingCooldown = false;
+    private boolean CDDR = false;
 
     @Override
     public String getEntityName() {
@@ -66,17 +115,18 @@ public class HolyLostAdv extends BaseZombie {
     }
 
     @Override
-    public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
-        ((CraftZombie) entity).setBaby(false);
-        final AttributeInstance followRange = ((CraftLivingEntity) entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
+    public void onSpawn(final LivingEntity entity, SEntity sEntity) {
+        ((CraftZombie)entity).setBaby(false);
+        AttributeInstance followRange = ((CraftLivingEntity)entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
         followRange.setValue(40.0);
-        final PlayerDisguise pl = Sputnik.applyPacketNPC(entity, "ewogICJ0aW1lc3RhbXAiIDogMTU4OTEzOTA2Mjc5NSwKICAicHJvZmlsZUlkIiA6ICJmZDYwZjM2ZjU4NjE0ZjEyYjNjZDQ3YzJkODU1Mjk5YSIsCiAgInByb2ZpbGVOYW1lIiA6ICJSZWFkIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzNhMjZjZjY2YWY0MmE0OGY2YmU1MmEwYTQ4YThlYjU5OGYzYTIzNjM5YjdhNWE4ZWUxNzFjMTM5OTllZTk0YzkiCiAgICB9CiAgfQp9", "CNO1y2pwfuWv79KqIVVbE7ZGWvHbOJe1zFWLzTH+kScgOpuj2ihu1ETrhtSpNYV48x/pSHBcZmlzOBtXCa/GBuS1BjKlb7rzo4naI5vWbJ2R2X7c2rFHficym50VPPQmh12NTuEYhrZbhfaMBZNkcDfKLLi2r89lrYGZhSDGsa1LExlWmdIWPQx4B3hfC+MTBYrIraB2TDWZd2SonwkxRWdMbQgSKQv1SPTrOcQ80+tu9m3QpmldHYvpkVohDb/30xdmqa7Q+b3K4H8+yPRaIuxod+6pNsceyGpF+Ih5W17qpn0xNt/Gyb2SkvcJMvSwZ15wtifRI7unKKXdEVMmATqAcUwUTRxO64mO1nVyJO9eodeKABWqePBdGHH7xQZ2wj5Wmx0Rva5ydKsyxNy1bjL/dnNwAlkbtZmCRsIEdgf2z58URlHLJHbLw/luMYJ9+B4uWs2QqzPVQQFNOnvUw9wvURtqof8zSKL4XoVCLKMIpy/gSOmRdZn2PbM83zNucQe/HFPstUZ19O1GakE4evuujijHcMEjhS9HSyZCCKUn4KttBcLvycPc0vloTkyZG07fN+aZbj+Q7KiLdHMn4z++gB54whE6ClHCFYwN8oV/ngHtmz0uWkS8A+ci1kxKu0TToO0lohYn/lzznT4Vv9gC0QkM846tGqn6JjAwQ8Y=", true);
+        PlayerDisguise pl = Sputnik.applyPacketNPC((org.bukkit.entity.Entity)entity, "ewogICJ0aW1lc3RhbXAiIDogMTU4OTEzOTA2Mjc5NSwKICAicHJvZmlsZUlkIiA6ICJmZDYwZjM2ZjU4NjE0ZjEyYjNjZDQ3YzJkODU1Mjk5YSIsCiAgInByb2ZpbGVOYW1lIiA6ICJSZWFkIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzNhMjZjZjY2YWY0MmE0OGY2YmU1MmEwYTQ4YThlYjU5OGYzYTIzNjM5YjdhNWE4ZWUxNzFjMTM5OTllZTk0YzkiCiAgICB9CiAgfQp9", "CNO1y2pwfuWv79KqIVVbE7ZGWvHbOJe1zFWLzTH+kScgOpuj2ihu1ETrhtSpNYV48x/pSHBcZmlzOBtXCa/GBuS1BjKlb7rzo4naI5vWbJ2R2X7c2rFHficym50VPPQmh12NTuEYhrZbhfaMBZNkcDfKLLi2r89lrYGZhSDGsa1LExlWmdIWPQx4B3hfC+MTBYrIraB2TDWZd2SonwkxRWdMbQgSKQv1SPTrOcQ80+tu9m3QpmldHYvpkVohDb/30xdmqa7Q+b3K4H8+yPRaIuxod+6pNsceyGpF+Ih5W17qpn0xNt/Gyb2SkvcJMvSwZ15wtifRI7unKKXdEVMmATqAcUwUTRxO64mO1nVyJO9eodeKABWqePBdGHH7xQZ2wj5Wmx0Rva5ydKsyxNy1bjL/dnNwAlkbtZmCRsIEdgf2z58URlHLJHbLw/luMYJ9+B4uWs2QqzPVQQFNOnvUw9wvURtqof8zSKL4XoVCLKMIpy/gSOmRdZn2PbM83zNucQe/HFPstUZ19O1GakE4evuujijHcMEjhS9HSyZCCKUn4KttBcLvycPc0vloTkyZG07fN+aZbj+Q7KiLdHMn4z++gB54whE6ClHCFYwN8oV/ngHtmz0uWkS8A+ci1kxKu0TToO0lohYn/lzznT4Vv9gC0QkM846tGqn6JjAwQ8Y=", true);
         final PlayerWatcher skywatch = pl.getWatcher();
-        final LivingEntity target = ((CraftZombie) entity).getTarget();
-        EntityManager.DEFENSE_PERCENTAGE.put(entity, 90);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        entity.setMetadata("LD", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        new BukkitRunnable() {
+        CraftLivingEntity target = ((CraftZombie)entity).getTarget();
+        EntityManager.DEFENSE_PERCENTAGE.put((org.bukkit.entity.Entity)entity, 90);
+        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        entity.setMetadata("LD", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        new BukkitRunnable(){
+
             public void run() {
                 if (entity.isDead()) {
                     this.cancel();
@@ -88,8 +138,9 @@ public class HolyLostAdv extends BaseZombie {
                     Sputnik.sendEatingAnimation(entity);
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 4L);
-        new BukkitRunnable() {
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 4L);
+        new BukkitRunnable(){
+
             public void run() {
                 if (entity.isDead()) {
                     this.cancel();
@@ -101,20 +152,21 @@ public class HolyLostAdv extends BaseZombie {
                     HolyLostAdv.this.isBowing = false;
                     SUtil.delay(() -> HolyLostAdv.this.isEating = true, 5L);
                     entity.getEquipment().setItemInHand(new ItemStack(Material.GOLDEN_APPLE));
-                    new BukkitRunnable() {
+                    new BukkitRunnable(){
+
                         public void run() {
                             if (entity.isDead()) {
                                 return;
                             }
                             entity.getEquipment().setItemInHand(new ItemStack(Material.AIR));
                             entity.getWorld().playSound(entity.getLocation(), Sound.BURP, 1.0f, 1.0f);
-                            final double healamount = HolyLostAdv.this.getEntityMaxHealth() * SUtil.random(50, 70) / 100.0;
+                            double healamount = HolyLostAdv.this.getEntityMaxHealth() * (double)SUtil.random(50, 70) / 100.0;
                             if (!entity.isDead()) {
                                 entity.setHealth(Math.min(entity.getMaxHealth(), entity.getHealth() + healamount));
                             }
                             HolyLostAdv.this.isEating = false;
                             SUtil.delay(() -> {
-                                final Object val$entity = entity;
+                                LivingEntity val$entity = entity;
                                 if (!HolyLostAdv.this.isBowing) {
                                     entity.getEquipment().setItemInHand(SUtil.enchant(SItem.of(SMaterial.ASPECT_OF_THE_DRAGONS).getStack()));
                                 } else {
@@ -123,26 +175,27 @@ public class HolyLostAdv extends BaseZombie {
                             }, 5L);
                             SUtil.delay(() -> HolyLostAdv.this.EatingCooldown = false, SUtil.random(600, 800));
                         }
-                    }.runTaskLater(SkyBlock.getPlugin(), 60L);
+                    }.runTaskLater((Plugin)SkyBlock.getPlugin(), 60L);
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 10L);
-        new BukkitRunnable() {
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 10L);
+        new BukkitRunnable(){
+
             public void run() {
                 if (entity.isDead()) {
-                    Sputnik.zero(entity);
+                    Sputnik.zero((org.bukkit.entity.Entity)entity);
                     this.cancel();
                     return;
                 }
-                final LivingEntity target1 = ((CraftZombie) entity).getTarget();
+                CraftLivingEntity target1 = ((CraftZombie)entity).getTarget();
                 if (target1 != null) {
                     if (target1.getLocation().distance(entity.getLocation()) >= 6.0 && target1.getLocation().distance(entity.getLocation()) < 16.0) {
                         entity.teleport(entity.getLocation().setDirection(target1.getLocation().toVector().subtract(entity.getLocation().toVector())));
-                        Sputnik.sendHeadRotation(entity, entity.getLocation().getYaw(), entity.getLocation().getPitch());
+                        Sputnik.sendHeadRotation((org.bukkit.entity.Entity)entity, entity.getLocation().getYaw(), entity.getLocation().getPitch());
                     }
                     if ((target1.getLocation().distance(entity.getLocation()) < 6.0 || target1.getLocation().distance(entity.getLocation()) > 16.0) && !HolyLostAdv.this.isEating) {
                         SUtil.delay(() -> {
-                            final Object val$entity = entity;
+                            LivingEntity val$entity = entity;
                             entity.getEquipment().setItemInHand(SUtil.enchant(SItem.of(SMaterial.ASPECT_OF_THE_DRAGONS).getStack()));
                         }, 0L);
                         HolyLostAdv.this.isBowing = false;
@@ -152,14 +205,18 @@ public class HolyLostAdv extends BaseZombie {
                         skywatch.setRightClicking(false);
                         entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 10000, 4));
                         entity.getEquipment().setItemInHand(SItem.of(SMaterial.BOW).getStack());
-                        new BukkitRunnable() {
+                        new BukkitRunnable((LivingEntity)target1){
                             int t = 0;
                             int atkCharge = 20;
                             double bowPower = 2.2;
                             boolean crit = true;
+                            final /* synthetic */ LivingEntity val$target1;
+                            {
+                                this.val$target1 = livingEntity;
+                            }
 
                             public void run() {
-                                if (target1.getLocation().distance(entity.getLocation()) <= 10.0) {
+                                if (this.val$target1.getLocation().distance(entity.getLocation()) <= 10.0) {
                                     this.atkCharge = 10;
                                     this.bowPower = 1.1;
                                     this.crit = false;
@@ -187,11 +244,11 @@ public class HolyLostAdv extends BaseZombie {
                                     if (!HolyLostAdv.this.isBowing) {
                                         return;
                                     }
-                                    final Location location = entity.getEyeLocation().add(entity.getEyeLocation().getDirection().toLocation(entity.getWorld()));
-                                    final Location l = location.clone();
-                                    l.setYaw(location.getYaw());
-                                    final Arrow arr = entity.getWorld().spawnArrow(l, l.getDirection(), (float) this.bowPower, 1.6f);
-                                    arr.setShooter(entity);
+                                    Location location = entity.getEyeLocation().add(entity.getEyeLocation().getDirection().toLocation(entity.getWorld()));
+                                    Location l2 = location.clone();
+                                    l2.setYaw(location.getYaw());
+                                    Arrow arr = entity.getWorld().spawnArrow(l2, l2.getDirection(), (float)this.bowPower, 1.6f);
+                                    arr.setShooter((ProjectileSource)entity);
                                     if (!this.crit) {
                                         arr.setCritical(SUtil.random(0, 1) == 1);
                                     } else {
@@ -202,7 +259,7 @@ public class HolyLostAdv extends BaseZombie {
                                     HolyLostAdv.this.isBowing = false;
                                 }
                             }
-                        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
+                        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
                     }
                     if (target1.getLocation().distance(entity.getLocation()) <= 5.0 && !HolyLostAdv.this.isBowing && !HolyLostAdv.this.isEating) {
                         if (SUtil.random(0, 100) > 30) {
@@ -215,23 +272,22 @@ public class HolyLostAdv extends BaseZombie {
                         skywatch.setRightClicking(true);
                         HolyLostAdv.this.playPar(entity.getEyeLocation().setDirection(target1.getLocation().toVector().subtract(entity.getLocation().toVector())));
                         entity.getLocation().getWorld().playSound(entity.getLocation(), Sound.ENDERDRAGON_GROWL, 1.0f, 1.0f);
-                        for (final Entity e : target1.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 3.0, 3.0, 3.0)) {
-                            if (e instanceof Player) {
-                                final Player player = (Player) e;
-                                player.sendMessage(Sputnik.trans("&cLost Adventurer &aused &6Dragon's Breath &aon you!"));
-                                player.setVelocity(entity.getLocation().toVector().subtract(player.getLocation().toVector()).normalize().multiply(-1.0).multiply(4.0));
-                                final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
-                                if (statistics == null) {
-                                    return;
-                                }
-                                final double defense = statistics.getDefense().addAll();
-                                final int dmglater = (int) Math.round(HolyLostAdv.this.getDamageDealt() * 3.0 - HolyLostAdv.this.getDamageDealt() * 3.0 * (defense / (defense + 100.0)));
-                                User.getUser(player.getUniqueId()).damage(dmglater, EntityDamageEvent.DamageCause.ENTITY_ATTACK, entity);
-                                ((LivingEntity) e).damage(1.0E-6, null);
+                        for (org.bukkit.entity.Entity e2 : target1.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 3.0, 3.0, 3.0)) {
+                            if (!(e2 instanceof Player)) continue;
+                            Player player = (Player)e2;
+                            player.sendMessage(Sputnik.trans("&cLost Adventurer &aused &6Dragon's Breath &aon you!"));
+                            player.setVelocity(entity.getLocation().toVector().subtract(player.getLocation().toVector()).normalize().multiply(-1.0).multiply(4.0));
+                            PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
+                            if (statistics == null) {
+                                return;
                             }
+                            double defense = statistics.getDefense().addAll();
+                            int dmglater = (int)Math.round(HolyLostAdv.this.getDamageDealt() * 3.0 - HolyLostAdv.this.getDamageDealt() * 3.0 * (defense / (defense + 100.0)));
+                            User.getUser(player.getUniqueId()).damage(dmglater, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (org.bukkit.entity.Entity)entity);
+                            ((LivingEntity)e2).damage(1.0E-6, null);
                         }
                         SUtil.delay(() -> {
-                            final Object val$skywatch = skywatch;
+                            PlayerWatcher val$skywatch = skywatch;
                             if (!HolyLostAdv.this.isBowing) {
                                 skywatch.setRightClicking(false);
                             }
@@ -243,10 +299,14 @@ public class HolyLostAdv extends BaseZombie {
                     entity.getEquipment().setItemInHand(SUtil.enchant(SItem.of(SMaterial.ASPECT_OF_THE_DRAGONS).getStack()));
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
-        new BukkitRunnable() {
-            Location loc = entity.getLocation();
-            final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 2L);
+        new BukkitRunnable(){
+            Location loc;
+            final EntityLiving nms;
+            {
+                this.loc = entity.getLocation();
+                this.nms = ((CraftLivingEntity)entity).getHandle();
+            }
 
             public void run() {
                 if (entity.isDead()) {
@@ -255,18 +315,18 @@ public class HolyLostAdv extends BaseZombie {
                 }
                 this.loc.setY(0.0);
                 this.nms.setSprinting(false);
-                final Location loc2 = entity.getLocation();
+                Location loc2 = entity.getLocation();
                 loc2.setY(0.0);
                 if (entity.hasMetadata("frozen")) {
                     return;
                 }
-                if (((CraftZombie) entity).getTarget() == null) {
+                if (((CraftZombie)entity).getTarget() == null) {
                     return;
                 }
-                if (((CraftZombie) entity).getTarget().getWorld() != entity.getWorld()) {
+                if (((CraftZombie)entity).getTarget().getWorld() != entity.getWorld()) {
                     return;
                 }
-                if (((CraftZombie) entity).getTarget().getLocation().distance(entity.getLocation()) <= 4.0 || HolyLostAdv.this.isEating || HolyLostAdv.this.isBowing) {
+                if (((CraftZombie)entity).getTarget().getLocation().distance(entity.getLocation()) <= 4.0 || HolyLostAdv.this.isEating || HolyLostAdv.this.isBowing) {
                     return;
                 }
                 if (this.loc.distance(loc2) >= 0.2) {
@@ -276,12 +336,12 @@ public class HolyLostAdv extends BaseZombie {
                         double motX = 0.0;
                         double motZ = 0.0;
                         if (this.nms.hasEffect(MobEffectList.JUMP)) {
-                            motY += (this.nms.getEffect(MobEffectList.JUMP).getAmplifier() + 1) * 0.2f;
+                            motY += (double)((float)(this.nms.getEffect(MobEffectList.JUMP).getAmplifier() + 1) * 0.2f);
                         }
                         if (this.nms.isSprinting()) {
-                            final float f = this.nms.yaw * 0.01745329f;
-                            motX -= MathHelper.sin(f) * 0.9f;
-                            motZ += MathHelper.cos(f) * 0.9f;
+                            float f2 = this.nms.yaw * 0.01745329f;
+                            motX -= (double)(MathHelper.sin((float)f2) * 0.9f);
+                            motZ += (double)(MathHelper.cos((float)f2) * 0.9f);
                         }
                         entity.setVelocity(new Vector(motX, motY, motZ));
                     }
@@ -290,66 +350,44 @@ public class HolyLostAdv extends BaseZombie {
                 }
                 this.nms.setSprinting(false);
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 7L);
-        new BukkitRunnable() {
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 7L);
+        new BukkitRunnable(){
+
             public void run() {
-                final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
+                EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
-                for (final Entity entities : entity.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 1.5, 1.5, 1.5)) {
-                    if (HolyLostAdv.this.isEating) {
-                        continue;
-                    }
-                    if (HolyLostAdv.this.isBowing) {
-                        continue;
-                    }
-                    if (!(entities instanceof Player)) {
-                        continue;
-                    }
-                    final Player target = (Player) entities;
-                    if (target.getGameMode() == GameMode.CREATIVE) {
-                        continue;
-                    }
-                    if (target.getGameMode() == GameMode.SPECTATOR) {
-                        continue;
-                    }
-                    if (target.hasMetadata("NPC")) {
-                        continue;
-                    }
-                    if (target.getNoDamageTicks() == 7) {
-                        continue;
-                    }
-                    if (SUtil.random(0, 10) > 8) {
-                        continue;
-                    }
+                for (org.bukkit.entity.Entity entities : entity.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 1.5, 1.5, 1.5)) {
+                    Player target;
+                    if (HolyLostAdv.this.isEating || HolyLostAdv.this.isBowing || !(entities instanceof Player) || (target = (Player)entities).getGameMode() == GameMode.CREATIVE || target.getGameMode() == GameMode.SPECTATOR || target.hasMetadata("NPC") || target.getNoDamageTicks() == 7 || SUtil.random(0, 10) > 8) continue;
                     entity.teleport(entity.getLocation().setDirection(target.getLocation().subtract(entities.getLocation()).toVector()));
-                    for (final Player players : Bukkit.getOnlinePlayers()) {
-                        ((CraftPlayer) players).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) entity).getHandle(), 0));
+                    for (Player players : Bukkit.getOnlinePlayers()) {
+                        ((CraftPlayer)players).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((Entity)((CraftLivingEntity)entity).getHandle(), 0));
                     }
-                    nms.r(((CraftPlayer) target).getHandle());
+                    nms.r((Entity)((CraftPlayer)target).getHandle());
                     break;
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 2L);
     }
 
     @Override
-    public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
-        final Entity en = sEntity.getEntity();
-        final Vector v = new Vector(0, 0, 0);
-        SUtil.delay(() -> en.setVelocity(v), 1L);
+    public void onDamage(SEntity sEntity, org.bukkit.entity.Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
+        LivingEntity en = sEntity.getEntity();
+        Vector v2 = new Vector(0, 0, 0);
+        SUtil.delay(() -> HolyLostAdv.lambda$onDamage$0((org.bukkit.entity.Entity)en, v2), 1L);
     }
 
     @Override
     public SEntityEquipment getEntityEquipment() {
-        return new SEntityEquipment(SUtil.enchant(SItem.of(SMaterial.ASPECT_OF_THE_DRAGONS).getStack()), SUtil.enchant(SUtil.getSkullURLStack("Holy Dragon Helmet", "d13ad4fa48118d10a1ef42fd6d585472203bd88a98a087ab43182aa0493ea842", 1, "")), SUtil.enchant(st(4706631, Material.LEATHER_CHESTPLATE, "Holy Dragon Chestplate")), SUtil.enchant(st(4706631, Material.LEATHER_LEGGINGS, "Holy Dragon Leggings")), SUtil.enchant(st(4706631, Material.LEATHER_BOOTS, "Holy Dragon Boots")));
+        return new SEntityEquipment(SUtil.enchant(SItem.of(SMaterial.ASPECT_OF_THE_DRAGONS).getStack()), SUtil.enchant(SUtil.getSkullURLStack("Holy Dragon Helmet", "d13ad4fa48118d10a1ef42fd6d585472203bd88a98a087ab43182aa0493ea842", 1, "")), SUtil.enchant(HolyLostAdv.st(4706631, Material.LEATHER_CHESTPLATE, "Holy Dragon Chestplate")), SUtil.enchant(HolyLostAdv.st(4706631, Material.LEATHER_LEGGINGS, "Holy Dragon Leggings")), SUtil.enchant(HolyLostAdv.st(4706631, Material.LEATHER_BOOTS, "Holy Dragon Boots")));
     }
 
-    public static ItemStack st(final int hexcolor, final Material m, final String name) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
+    public static ItemStack st(int hexcolor, Material m2, String name) {
+        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m2), Color.fromRGB((int)hexcolor));
+        ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.setDisplayName(name);
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
@@ -381,15 +419,20 @@ public class HolyLostAdv extends BaseZombie {
         return 0.25;
     }
 
-    public void playPar(final Location l) {
-        final ConeEffect Effect = new ConeEffect(SkyBlock.effectManager);
-        Effect.setLocation(l.clone().add(l.getDirection().normalize().multiply(-0.25)).add(0.0, -0.1, 0.0));
-        Effect.particle = ParticleEffect.FLAME;
-        Effect.angularVelocity = 0.39269908169872414;
-        Effect.lengthGrow = 0.025f;
-        Effect.particles = 30;
-        Effect.period = 3;
-        Effect.iterations = 5;
-        Effect.start();
+    public void playPar(Location l2) {
+        ConeEffect Effect2 = new ConeEffect(SkyBlock.effectManager);
+        Effect2.setLocation(l2.clone().add(l2.getDirection().normalize().multiply(-0.25)).add(0.0, -0.1, 0.0));
+        Effect2.particle = ParticleEffect.FLAME;
+        Effect2.angularVelocity = 0.39269908169872414;
+        Effect2.lengthGrow = 0.025f;
+        Effect2.particles = 30;
+        Effect2.period = 3;
+        Effect2.iterations = 5;
+        Effect2.start();
+    }
+
+    private static /* synthetic */ void lambda$onDamage$0(org.bukkit.entity.Entity en, Vector v2) {
+        en.setVelocity(v2);
     }
 }
+

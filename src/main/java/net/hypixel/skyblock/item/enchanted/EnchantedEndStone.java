@@ -1,9 +1,18 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.enchanted;
 
-import net.hypixel.skyblock.item.*;
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.MaterialQuantifiable;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SMaterial;
+import net.hypixel.skyblock.item.enchanted.EnchantedMaterialStatistics;
 
-public class EnchantedEndStone implements EnchantedMaterialStatistics, MaterialFunction {
+public class EnchantedEndStone
+implements EnchantedMaterialStatistics,
+MaterialFunction {
     @Override
     public String getDisplayName() {
         return "Enchanted End Stone";
@@ -34,3 +43,4 @@ public class EnchantedEndStone implements EnchantedMaterialStatistics, MaterialF
         return new MaterialQuantifiable(SMaterial.ENCHANTED_END_STONE);
     }
 }
+

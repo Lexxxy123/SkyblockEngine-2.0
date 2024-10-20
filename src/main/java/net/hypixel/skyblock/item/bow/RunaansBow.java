@@ -1,13 +1,33 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.md_5.bungee.api.ChatColor
+ *  org.bukkit.Location
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.entity.EntityShootBowEvent
+ *  org.bukkit.projectiles.ProjectileSource
+ */
 package net.hypixel.skyblock.item.bow;
 
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.item.Ability;
+import net.hypixel.skyblock.item.AbilityActivation;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.ToolStatistics;
+import net.hypixel.skyblock.item.bow.BowFunction;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityShootBowEvent;
-import net.hypixel.skyblock.item.*;
+import org.bukkit.projectiles.ProjectileSource;
 
-public class RunaansBow implements ToolStatistics, BowFunction, Ability {
+public class RunaansBow
+implements ToolStatistics,
+BowFunction,
+Ability {
     @Override
     public String getAbilityName() {
         return "Triple-shot";
@@ -64,14 +84,15 @@ public class RunaansBow implements ToolStatistics, BowFunction, Ability {
     }
 
     @Override
-    public void onBowShoot(final SItem bow, final EntityShootBowEvent e) {
-        final Player shooter = (Player) e.getEntity();
-        final Location location = shooter.getEyeLocation().add(shooter.getEyeLocation().getDirection().toLocation(shooter.getWorld()));
-        final float speed = e.getForce() * 3.0f;
-        final Location l = location.clone();
-        l.setYaw(location.getYaw() - 30.0f);
-        shooter.getWorld().spawnArrow(l, l.getDirection(), speed, 1.0f).setShooter(shooter);
-        l.setYaw(location.getYaw() + 30.0f);
-        shooter.getWorld().spawnArrow(l, l.getDirection(), speed, 1.0f).setShooter(shooter);
+    public void onBowShoot(SItem bow, EntityShootBowEvent e2) {
+        Player shooter = (Player)e2.getEntity();
+        Location location = shooter.getEyeLocation().add(shooter.getEyeLocation().getDirection().toLocation(shooter.getWorld()));
+        float speed = e2.getForce() * 3.0f;
+        Location l2 = location.clone();
+        l2.setYaw(location.getYaw() - 30.0f);
+        shooter.getWorld().spawnArrow(l2, l2.getDirection(), speed, 1.0f).setShooter((ProjectileSource)shooter);
+        l2.setYaw(location.getYaw() + 30.0f);
+        shooter.getWorld().spawnArrow(l2, l2.getDirection(), speed, 1.0f).setShooter((ProjectileSource)shooter);
     }
 }
+

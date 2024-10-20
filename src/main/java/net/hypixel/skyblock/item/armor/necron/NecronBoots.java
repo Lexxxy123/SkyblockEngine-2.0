@@ -1,3 +1,6 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.armor.necron;
 
 import net.hypixel.skyblock.item.GenericItemType;
@@ -6,7 +9,9 @@ import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.SpecificItemType;
 import net.hypixel.skyblock.item.armor.LeatherArmorStatistics;
 
-public class NecronBoots implements MaterialFunction, LeatherArmorStatistics {
+public class NecronBoots
+implements MaterialFunction,
+LeatherArmorStatistics {
     @Override
     public double getBaseStrength() {
         return 40.0;
@@ -62,3 +67,4 @@ public class NecronBoots implements MaterialFunction, LeatherArmorStatistics {
         return null;
     }
 }
+

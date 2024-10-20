@@ -1,9 +1,17 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.armor.vanilla.golden;
 
-import net.hypixel.skyblock.item.*;
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.ToolStatistics;
 
-public class GoldenLeggings implements ToolStatistics, MaterialFunction {
+public class GoldenLeggings
+implements ToolStatistics,
+MaterialFunction {
     @Override
     public String getDisplayName() {
         return "Golden Leggings";
@@ -29,3 +37,4 @@ public class GoldenLeggings implements ToolStatistics, MaterialFunction {
         return 15.0;
     }
 }
+

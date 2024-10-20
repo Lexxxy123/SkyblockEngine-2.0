@@ -1,14 +1,24 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.item.armor.sorrow;
-
-import org.bukkit.entity.Player;
-import net.hypixel.skyblock.item.MaterialStatistics;
-import net.hypixel.skyblock.item.SItem;
-import net.hypixel.skyblock.item.armor.TickingSet;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import net.hypixel.skyblock.item.MaterialStatistics;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.armor.TickingSet;
+import net.hypixel.skyblock.item.armor.sorrow.SorrowArmorBoots;
+import net.hypixel.skyblock.item.armor.sorrow.SorrowArmorChestplate;
+import net.hypixel.skyblock.item.armor.sorrow.SorrowArmorHelmet;
+import net.hypixel.skyblock.item.armor.sorrow.SorrowArmorLeggings;
+import org.bukkit.entity.Player;
 
-public class SorrowArmorSet implements TickingSet {
+public class SorrowArmorSet
+implements TickingSet {
     @Override
     public String getName() {
         return "Mist Aura";
@@ -40,6 +50,7 @@ public class SorrowArmorSet implements TickingSet {
     }
 
     @Override
-    public void tick(final Player owner, final SItem helmet, final SItem chestplate, final SItem leggings, final SItem boots, final List<AtomicInteger> counters) {
+    public void tick(Player owner, SItem helmet, SItem chestplate, SItem leggings, SItem boots, List<AtomicInteger> counters) {
     }
 }
+

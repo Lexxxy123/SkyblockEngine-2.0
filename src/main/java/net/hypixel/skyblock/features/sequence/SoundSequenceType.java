@@ -1,26 +1,35 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Location
+ *  org.bukkit.Sound
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.features.sequence;
 
+import java.util.ArrayList;
+import java.util.List;
+import net.hypixel.skyblock.features.sequence.SoundSequence;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class SoundSequenceType {
-    private static final List<SoundSequenceType> TYPES;
-    public static final SoundSequenceType MADDOX_BATPHONE;
-    public static final SoundSequenceType TRADE_COMPLETE;
-    public static final SoundSequenceType SLAYER_BOSS_SPAWN;
-    public static final SoundSequenceType SLAYER_MINIBOSS_SPAWN;
+    private static final List<SoundSequenceType> TYPES = new ArrayList<SoundSequenceType>();
+    public static final SoundSequenceType MADDOX_BATPHONE = new SoundSequenceType("maddox_batphone", new SoundSequence(new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 1L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 3L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 5L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 7L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 9L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 18L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 20L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 22L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 24L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 26L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 35L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 37L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 39L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 41L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 43L), new SoundSequence.DelayedSound(Sound.WOOD_CLICK, 1.0f, 1.0f, 52L)));
+    public static final SoundSequenceType TRADE_COMPLETE = new SoundSequenceType("trade_completed", new SoundSequence(new SoundSequence.DelayedSound(Sound.NOTE_PLING, 0.3f, 0.5f, 1L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 0.3f, 0.69f, 1L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 0.3f, 0.84f, 1L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 0.3f, 1.12f, 3L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 0.3f, 0.55f, 3L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 0.3f, 0.69f, 3L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 0.3f, 0.84f, 5L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 0.3f, 1.12f, 5L)));
+    public static final SoundSequenceType SLAYER_BOSS_SPAWN = new SoundSequenceType("slayer_boss_spawn", new SoundSequence(new SoundSequence.DelayedSound(Sound.WITHER_SHOOT, 1.0f, 9.0f, 1L), new SoundSequence.DelayedSound(Sound.WITHER_SHOOT, 1.0f, 9.0f, 4L), new SoundSequence.DelayedSound(Sound.WITHER_SHOOT, 1.0f, 5.0f, 7L), new SoundSequence.DelayedSound(Sound.WITHER_SHOOT, 1.0f, 5.0f, 10L), new SoundSequence.DelayedSound(Sound.WITHER_SHOOT, 1.0f, 5.0f, 13L), new SoundSequence.DelayedSound(Sound.WITHER_SHOOT, 1.0f, 5.0f, 16L), new SoundSequence.DelayedSound(Sound.WITHER_SHOOT, 1.0f, 1.0f, 19L), new SoundSequence.DelayedSound(Sound.WITHER_SHOOT, 1.0f, 1.0f, 22L), new SoundSequence.DelayedSound(Sound.WITHER_SHOOT, 1.0f, 1.0f, 25L), new SoundSequence.DelayedSound(Sound.WITHER_SPAWN, 1.0f, -25.0f, 28L), new SoundSequence.DelayedSound(Sound.EXPLODE, 1.0f, 1.0f, 28L)));
+    public static final SoundSequenceType SLAYER_MINIBOSS_SPAWN = new SoundSequenceType("slayer_miniboss_spawn", new SoundSequence(new SoundSequence.DelayedSound(Sound.EXPLODE, 1.0f, 2.0f, 0L), new SoundSequence.DelayedSound(Sound.EXPLODE, 1.0f, 2.0f, 3L), new SoundSequence.DelayedSound(Sound.EXPLODE, 1.0f, 2.0f, 6L), new SoundSequence.DelayedSound(Sound.EXPLODE, 1.0f, 2.0f, 9L), new SoundSequence.DelayedSound(Sound.EXPLODE, 1.0f, 2.0f, 12L)));
     private final String namespace;
     private final SoundSequence sequence;
 
-    public SoundSequenceType(final String namespace, final SoundSequence sequence) {
+    public SoundSequenceType(String namespace, SoundSequence sequence) {
         this.namespace = namespace;
         this.sequence = sequence;
-        SoundSequenceType.TYPES.add(this);
+        TYPES.add(this);
     }
 
     public String getNamespace() {
@@ -31,32 +40,24 @@ public class SoundSequenceType {
         return this.sequence;
     }
 
-    public void play(final Location location) {
+    public void play(Location location) {
         this.sequence.play(location);
     }
 
-    public void play(final Entity entity) {
+    public void play(Entity entity) {
         this.sequence.play(entity);
     }
 
-    public void play(final Player p) {
-        this.sequence.play(p);
+    public void play(Player p2) {
+        this.sequence.play(p2);
     }
 
-    public static SoundSequenceType getByNamespace(final String namespace) {
-        for (final SoundSequenceType type : SoundSequenceType.TYPES) {
-            if (namespace.equalsIgnoreCase(type.namespace)) {
-                return type;
-            }
+    public static SoundSequenceType getByNamespace(String namespace) {
+        for (SoundSequenceType type : TYPES) {
+            if (!namespace.equalsIgnoreCase(type.namespace)) continue;
+            return type;
         }
         return null;
     }
-
-    static {
-        TYPES = new ArrayList<SoundSequenceType>();
-        MADDOX_BATPHONE = new SoundSequenceType("maddox_batphone", new SoundSequence(new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 1L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 3L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 5L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 7L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 9L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 18L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 20L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 22L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 24L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 26L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 35L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 37L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 39L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 41L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 1.0f, 26.0f, 43L), new SoundSequence.DelayedSound(Sound.WOOD_CLICK, 1.0f, 1.0f, 52L)));
-        TRADE_COMPLETE = new SoundSequenceType("trade_completed", new SoundSequence(new SoundSequence.DelayedSound(Sound.NOTE_PLING, 0.3f, 0.5f, 1L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 0.3f, 0.69f, 1L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 0.3f, 0.84f, 1L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 0.3f, 1.12f, 3L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 0.3f, 0.55f, 3L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 0.3f, 0.69f, 3L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 0.3f, 0.84f, 5L), new SoundSequence.DelayedSound(Sound.NOTE_PLING, 0.3f, 1.12f, 5L)));
-        SLAYER_BOSS_SPAWN = new SoundSequenceType("slayer_boss_spawn", new SoundSequence(new SoundSequence.DelayedSound(Sound.WITHER_SHOOT, 1.0f, 9.0f, 1L), new SoundSequence.DelayedSound(Sound.WITHER_SHOOT, 1.0f, 9.0f, 4L), new SoundSequence.DelayedSound(Sound.WITHER_SHOOT, 1.0f, 5.0f, 7L), new SoundSequence.DelayedSound(Sound.WITHER_SHOOT, 1.0f, 5.0f, 10L), new SoundSequence.DelayedSound(Sound.WITHER_SHOOT, 1.0f, 5.0f, 13L), new SoundSequence.DelayedSound(Sound.WITHER_SHOOT, 1.0f, 5.0f, 16L), new SoundSequence.DelayedSound(Sound.WITHER_SHOOT, 1.0f, 1.0f, 19L), new SoundSequence.DelayedSound(Sound.WITHER_SHOOT, 1.0f, 1.0f, 22L), new SoundSequence.DelayedSound(Sound.WITHER_SHOOT, 1.0f, 1.0f, 25L), new SoundSequence.DelayedSound(Sound.WITHER_SPAWN, 1.0f, -25.0f, 28L), new SoundSequence.DelayedSound(Sound.EXPLODE, 1.0f, 1.0f, 28L)));
-        SLAYER_MINIBOSS_SPAWN = new SoundSequenceType("slayer_miniboss_spawn", new SoundSequence(new SoundSequence.DelayedSound(Sound.EXPLODE, 1.0f, 2.0f, 0L), new SoundSequence.DelayedSound(Sound.EXPLODE, 1.0f, 2.0f, 3L), new SoundSequence.DelayedSound(Sound.EXPLODE, 1.0f, 2.0f, 6L), new SoundSequence.DelayedSound(Sound.EXPLODE, 1.0f, 2.0f, 9L), new SoundSequence.DelayedSound(Sound.EXPLODE, 1.0f, 2.0f, 12L)));
-    }
 }
+

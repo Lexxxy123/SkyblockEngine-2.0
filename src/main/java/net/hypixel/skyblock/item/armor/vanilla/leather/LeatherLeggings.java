@@ -1,9 +1,17 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.armor.vanilla.leather;
 
-import net.hypixel.skyblock.item.*;
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.ToolStatistics;
 
-public class LeatherLeggings implements ToolStatistics, MaterialFunction {
+public class LeatherLeggings
+implements ToolStatistics,
+MaterialFunction {
     @Override
     public String getDisplayName() {
         return "Leather Leggings";
@@ -29,3 +37,4 @@ public class LeatherLeggings implements ToolStatistics, MaterialFunction {
         return 10.0;
     }
 }
+

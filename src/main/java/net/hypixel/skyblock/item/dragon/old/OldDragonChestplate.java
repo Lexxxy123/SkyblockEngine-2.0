@@ -1,3 +1,6 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.dragon.old;
 
 import net.hypixel.skyblock.item.GenericItemType;
@@ -6,7 +9,9 @@ import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.SpecificItemType;
 import net.hypixel.skyblock.item.armor.LeatherArmorStatistics;
 
-public class OldDragonChestplate implements MaterialFunction, LeatherArmorStatistics {
+public class OldDragonChestplate
+implements MaterialFunction,
+LeatherArmorStatistics {
     @Override
     public double getBaseHealth() {
         return 160.0;
@@ -47,3 +52,4 @@ public class OldDragonChestplate implements MaterialFunction, LeatherArmorStatis
         return null;
     }
 }
+

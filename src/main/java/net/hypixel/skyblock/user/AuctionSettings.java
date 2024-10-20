@@ -1,19 +1,21 @@
-
-//
-// Decompiled by Procyon v0.5.36
-//
-
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.configuration.serialization.ConfigurationSerializable
+ */
 package net.hypixel.skyblock.user;
 
+import java.util.HashMap;
+import java.util.Map;
 import net.hypixel.skyblock.item.ItemCategory;
 import net.hypixel.skyblock.item.Rarity;
 import org.bson.Document;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class AuctionSettings implements Cloneable, ConfigurationSerializable {
+public class AuctionSettings
+implements Cloneable,
+ConfigurationSerializable {
     private ItemCategory category;
     private String query;
     private Sort sort;
@@ -33,7 +35,7 @@ public class AuctionSettings implements Cloneable, ConfigurationSerializable {
     }
 
     public Map<String, Object> serialize() {
-        Map<String, Object> map = new HashMap<String, Object>();
+        HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("category", this.category.name());
         map.put("query", this.query);
         map.put("sort", this.sort.name());
@@ -44,13 +46,12 @@ public class AuctionSettings implements Cloneable, ConfigurationSerializable {
         return map;
     }
 
-
     public static Document serializeAuctionSettings(AuctionSettings settings) {
         Document objectDocument = new Document("category", settings.getCategory().name());
         if (settings.getQuery() == null) {
             objectDocument.append("query", settings.getQuery());
         }
-        if (settings.getSort() !=null) {
+        if (settings.getSort() != null) {
             objectDocument.append("sort", settings.getSort().name());
         }
         if (settings.getTier() != null) {
@@ -62,18 +63,15 @@ public class AuctionSettings implements Cloneable, ConfigurationSerializable {
         return objectDocument;
     }
 
-
-    @Override
     public String toString() {
         return "AuctionSettings{category=" + this.category.name() + ", query=" + this.query + ", sort=" + this.sort.name() + ", tier=" + this.tier.name() + ", type=" + this.type.name() + "}";
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof AuctionSettings)) {
+    public boolean equals(Object o2) {
+        if (!(o2 instanceof AuctionSettings)) {
             return false;
         }
-        AuctionSettings settings = (AuctionSettings) o;
+        AuctionSettings settings = (AuctionSettings)o2;
         return this.category == settings.category && this.query.equals(settings.query) && this.sort == settings.sort && this.tier == settings.tier && this.type == settings.type;
     }
 
@@ -122,9 +120,8 @@ public class AuctionSettings implements Cloneable, ConfigurationSerializable {
     }
 
     public static AuctionSettings deserialize(Map<String, Object> map) {
-        return new AuctionSettings(ItemCategory.valueOf((String) map.get("category")), (String) map.getOrDefault("query", null), Sort.valueOf((String) map.get("sort")), map.containsKey("tier") ? Rarity.getRarity((String) map.get("tier")) : null, Type.valueOf((String) map.get("type")));
+        return new AuctionSettings(ItemCategory.valueOf((String)map.get("category")), map.getOrDefault("query", null), Sort.valueOf((String)map.get("sort")), map.containsKey("tier") ? Rarity.getRarity((String)map.get("tier")) : null, Type.valueOf((String)map.get("type")));
     }
-
 
     public static AuctionSettings deserializeAuctionSettings(Document document) {
         ItemCategory category = ItemCategory.valueOf(document.getString("category"));
@@ -132,56 +129,17 @@ public class AuctionSettings implements Cloneable, ConfigurationSerializable {
         Sort sort = Sort.valueOf(document.getString("sort"));
         Rarity tier = document.containsKey("tier") ? Rarity.getRarity(document.getString("tier")) : null;
         Type type = Type.valueOf(document.getString("type"));
-
         return new AuctionSettings(category, query, sort, tier, type);
     }
 
-
-    public enum Sort {
-        HIGHEST_BID("Highest Bid"),
-        LOWEST_BID("Lowest Bid"),
-        ENDING_SOON("Ending soon"),
-        MOST_BIDS("Most Bids");
-
-        private final String display;
-
-        Sort(String display) {
-            this.display = display;
-        }
-
-        public String getDisplay() {
-            return this.display;
-        }
-
-        public Sort previous() {
-            int prev = this.ordinal() - 1;
-            if (prev < 0) {
-                return values()[values().length - 1];
-            }
-            return values()[prev];
-        }
-
-        public Sort next() {
-            int nex = this.ordinal() + 1;
-            if (nex > values().length - 1) {
-                return values()[0];
-            }
-            return values()[nex];
-        }
-
-
-
-
-    }
-
-    public enum Type {
+    public static enum Type {
         SHOW_ALL("Show All"),
         BIN_ONLY("BIN Only"),
         AUCTIONS_ONLY("Auctions Only");
 
         private final String display;
 
-        Type(String display) {
+        private Type(String display) {
             this.display = display;
         }
 
@@ -192,21 +150,51 @@ public class AuctionSettings implements Cloneable, ConfigurationSerializable {
         public Type previous() {
             int prev = this.ordinal() - 1;
             if (prev < 0) {
-                return values()[values().length - 1];
+                return Type.values()[Type.values().length - 1];
             }
-            return values()[prev];
+            return Type.values()[prev];
         }
 
         public Type next() {
             int nex = this.ordinal() + 1;
-            if (nex > values().length - 1) {
-                return values()[0];
+            if (nex > Type.values().length - 1) {
+                return Type.values()[0];
             }
-            return values()[nex];
+            return Type.values()[nex];
+        }
+    }
+
+    public static enum Sort {
+        HIGHEST_BID("Highest Bid"),
+        LOWEST_BID("Lowest Bid"),
+        ENDING_SOON("Ending soon"),
+        MOST_BIDS("Most Bids");
+
+        private final String display;
+
+        private Sort(String display) {
+            this.display = display;
         }
 
+        public String getDisplay() {
+            return this.display;
+        }
 
+        public Sort previous() {
+            int prev = this.ordinal() - 1;
+            if (prev < 0) {
+                return Sort.values()[Sort.values().length - 1];
+            }
+            return Sort.values()[prev];
+        }
 
-
+        public Sort next() {
+            int nex = this.ordinal() + 1;
+            if (nex > Sort.values().length - 1) {
+                return Sort.values()[0];
+            }
+            return Sort.values()[nex];
+        }
     }
 }
+

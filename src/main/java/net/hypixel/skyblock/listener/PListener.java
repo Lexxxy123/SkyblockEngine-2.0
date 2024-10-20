@@ -1,21 +1,28 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.event.Listener
+ *  org.bukkit.plugin.Plugin
+ */
 package net.hypixel.skyblock.listener;
 
-import lombok.Getter;
 import net.hypixel.skyblock.SkyBlock;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 
-public class PListener implements Listener {
-    @Getter
-    private static int amount;
-    protected SkyBlock plugin;
+public class PListener
+implements Listener {
+    private static int amount = 0;
+    protected SkyBlock plugin = SkyBlock.getPlugin();
 
     protected PListener() {
-        this.plugin = SkyBlock.getPlugin();
-        this.plugin.getServer().getPluginManager().registerEvents(this, this.plugin);
+        this.plugin.getServer().getPluginManager().registerEvents((Listener)this, (Plugin)this.plugin);
         ++amount;
     }
 
-    static {
-        amount = 0;
+    public static int getAmount() {
+        return amount;
     }
 }
+

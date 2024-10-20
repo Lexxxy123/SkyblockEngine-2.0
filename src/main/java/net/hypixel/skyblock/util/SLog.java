@@ -1,38 +1,50 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Bukkit
+ *  org.bukkit.ChatColor
+ */
 package net.hypixel.skyblock.util;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.hypixel.skyblock.util.CC;
+import net.hypixel.skyblock.util.Sputnik;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
 public class SLog {
+    private static final Logger LOGGER;
+    private static final String PREFIX;
 
-    private static final Logger LOGGER = Logger.getLogger("Minecraft");
-    private static final String PREFIX = ChatColor.translateAlternateColorCodes('&', "&7[&aSkyblock&dCore&7] &f");
-
-    private static void log(final Object message, final Level level) {
-        LOGGER.log(level, PREFIX + message);
+    private static void log(Object o2, Level l2) {
+        LOGGER.log(l2, SLog.getPrefix() + o2);
     }
 
     public static String getPrefix() {
-        return PREFIX;
+        return ChatColor.translateAlternateColorCodes((char)'&', (String)"&7[&aHypixel&bSkyblock&dCore&7] &f");
     }
 
     public static void sendMessage(String message) {
-        Bukkit.getConsoleSender().sendMessage(PREFIX + ChatColor.translateAlternateColorCodes('&', message));
+        Bukkit.getConsoleSender().sendMessage(SLog.getPrefix() + CC.translate(message));
     }
 
-    public static void info(final Object message) {
-        int emoji = 0x1F5E3;
-        sendMessage(ChatColor.GREEN  + message.toString());
+    public static void info(Object o2) {
+        SLog.sendMessage((String)o2);
     }
 
-    public static void warn(final Object message) {
-        log(ChatColor.YELLOW + "U+1F40A " + message.toString(), Level.WARNING);
+    public static void warn(Object o2) {
+        SLog.log(o2, Level.WARNING);
     }
 
-    public static void severe(final Object message) {
-        log(ChatColor.RED + "U+1F99C " + message.toString(), Level.SEVERE);
+    public static void severe(Object o2) {
+        SLog.log(o2, Level.SEVERE);
+    }
+
+    static {
+        PREFIX = Sputnik.trans("&7[&aHypixel&bSkyblock&dCore&7] &f");
+        LOGGER = Logger.getLogger("Minecraft");
     }
 }
+

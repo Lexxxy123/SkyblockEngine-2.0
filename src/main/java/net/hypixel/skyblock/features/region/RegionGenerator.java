@@ -1,5 +1,12 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Location
+ */
 package net.hypixel.skyblock.features.region;
 
+import net.hypixel.skyblock.features.region.RegionType;
 import org.bukkit.Location;
 
 public class RegionGenerator {
@@ -10,7 +17,7 @@ public class RegionGenerator {
     private RegionType type;
     private int phase;
 
-    public RegionGenerator(final String modificationType, final String name, final RegionType type) {
+    public RegionGenerator(String modificationType, String name, RegionType type) {
         this.modificationType = modificationType;
         this.name = name;
         this.type = type;
@@ -41,23 +48,24 @@ public class RegionGenerator {
         return this.phase;
     }
 
-    public void setName(final String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public void setFirstLocation(final Location firstLocation) {
+    public void setFirstLocation(Location firstLocation) {
         this.firstLocation = firstLocation;
     }
 
-    public void setSecondLocation(final Location secondLocation) {
+    public void setSecondLocation(Location secondLocation) {
         this.secondLocation = secondLocation;
     }
 
-    public void setType(final RegionType type) {
+    public void setType(RegionType type) {
         this.type = type;
     }
 
-    public void setPhase(final int phase) {
+    public void setPhase(int phase) {
         this.phase = phase;
     }
 }
+

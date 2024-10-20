@@ -1,14 +1,23 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.features.collection;
 
+import net.hypixel.skyblock.features.collection.ItemCollectionReward;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-public class ItemCollectionUpgradeReward extends ItemCollectionReward {
+public class ItemCollectionUpgradeReward
+extends ItemCollectionReward {
     private final String name;
     private final ChatColor color;
 
-    public ItemCollectionUpgradeReward(final String name, final ChatColor color) {
-        super(Type.UPGRADE);
+    public ItemCollectionUpgradeReward(String name, ChatColor color) {
+        super(ItemCollectionReward.Type.UPGRADE);
         this.name = name;
         this.color = color;
     }
@@ -19,7 +28,7 @@ public class ItemCollectionUpgradeReward extends ItemCollectionReward {
     }
 
     @Override
-    public void onAchieve(final Player player) {
-
+    public void onAchieve(Player player) {
     }
 }
+

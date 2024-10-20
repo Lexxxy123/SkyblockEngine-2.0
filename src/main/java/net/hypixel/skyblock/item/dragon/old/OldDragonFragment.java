@@ -1,3 +1,6 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.dragon.old;
 
 import net.hypixel.skyblock.item.GenericItemType;
@@ -5,7 +8,9 @@ import net.hypixel.skyblock.item.MaterialFunction;
 import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.SkullStatistics;
 
-public class OldDragonFragment implements SkullStatistics, MaterialFunction {
+public class OldDragonFragment
+implements SkullStatistics,
+MaterialFunction {
     @Override
     public String getURL() {
         return "7aa09ad177fbccc53fa316cc04bdd2c9366baed889df76c5a29defea8170def5";
@@ -26,3 +31,4 @@ public class OldDragonFragment implements SkullStatistics, MaterialFunction {
         return GenericItemType.ITEM;
     }
 }
+

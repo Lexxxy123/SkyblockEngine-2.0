@@ -1,10 +1,19 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.mining;
 
-import net.hypixel.skyblock.item.*;
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.MaterialStatistics;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SkullStatistics;
 import net.hypixel.skyblock.util.Sputnik;
 
-public class Titanium implements MaterialStatistics, MaterialFunction, SkullStatistics {
+public class Titanium
+implements MaterialStatistics,
+MaterialFunction,
+SkullStatistics {
     @Override
     public String getDisplayName() {
         return "Titanium";
@@ -40,3 +49,4 @@ public class Titanium implements MaterialStatistics, MaterialFunction, SkullStat
         return "a14c6e41a762d37863a9fff6888c738905b92cc6c3898892a38dfdfe2ac4bf";
     }
 }
+

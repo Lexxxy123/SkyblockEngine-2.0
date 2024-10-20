@@ -1,9 +1,19 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.armor.storm;
 
-import net.hypixel.skyblock.item.*;
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SkullStatistics;
+import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.ToolStatistics;
 
-public class StormHelmet implements MaterialFunction, SkullStatistics, ToolStatistics {
+public class StormHelmet
+implements MaterialFunction,
+SkullStatistics,
+ToolStatistics {
     @Override
     public double getBaseIntelligence() {
         return 400.0;
@@ -49,3 +59,4 @@ public class StormHelmet implements MaterialFunction, SkullStatistics, ToolStati
         return null;
     }
 }
+

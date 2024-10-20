@@ -1,39 +1,45 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.entity;
 
+import net.hypixel.skyblock.entity.SEntityEquipment;
+
 public interface EntityStatistics {
-    String getEntityName();
+    public String getEntityName();
 
-    double getEntityMaxHealth();
+    public double getEntityMaxHealth();
 
-    double getDamageDealt();
+    public double getDamageDealt();
 
-    double getXPDropped();
+    public double getXPDropped();
 
-    default SEntityEquipment getEntityEquipment() {
+    default public SEntityEquipment getEntityEquipment() {
         return null;
     }
 
-    default double getMovementSpeed() {
+    default public double getMovementSpeed() {
         return -1.0;
     }
 
-    default int mobLevel() {
+    default public int mobLevel() {
         return 0;
     }
 
-    default boolean dealsTrueDamage() {
+    default public boolean dealsTrueDamage() {
         return false;
     }
 
-    default boolean hasNameTag() {
+    default public boolean hasNameTag() {
         return true;
     }
 
-    default boolean removeWhenFarAway() {
+    default public boolean removeWhenFarAway() {
         return false;
     }
 
-    default boolean isVisible() {
+    default public boolean isVisible() {
         return true;
     }
 }
+

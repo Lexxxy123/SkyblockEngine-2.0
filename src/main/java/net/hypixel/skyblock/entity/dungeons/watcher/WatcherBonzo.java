@@ -1,28 +1,50 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  me.libraryaddict.disguise.disguisetypes.PlayerDisguise
+ *  net.minecraft.server.v1_8_R3.Entity
+ *  net.minecraft.server.v1_8_R3.EntityLiving
+ *  net.minecraft.server.v1_8_R3.EntityZombie
+ *  net.minecraft.server.v1_8_R3.Packet
+ *  net.minecraft.server.v1_8_R3.PacketPlayOutAnimation
+ *  net.minecraft.server.v1_8_R3.PacketPlayOutEntityTeleport
+ *  org.bukkit.Bukkit
+ *  org.bukkit.Color
+ *  org.bukkit.FireworkEffect
+ *  org.bukkit.FireworkEffect$Builder
+ *  org.bukkit.FireworkEffect$Type
+ *  org.bukkit.GameMode
+ *  org.bukkit.Location
+ *  org.bukkit.Material
+ *  org.bukkit.Sound
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie
+ *  org.bukkit.entity.ArmorStand
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.entity.LivingEntity
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.entity.EntityDamageByEntityEvent
+ *  org.bukkit.event.entity.EntityDamageEvent$DamageCause
+ *  org.bukkit.metadata.FixedMetadataValue
+ *  org.bukkit.metadata.MetadataValue
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.potion.PotionEffect
+ *  org.bukkit.potion.PotionEffectType
+ *  org.bukkit.scheduler.BukkitRunnable
+ *  org.bukkit.util.Vector
+ */
 package net.hypixel.skyblock.entity.dungeons.watcher;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import net.hypixel.skyblock.SkyBlock;
+import java.util.Random;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
-import net.minecraft.server.v1_8_R3.EntityLiving;
-import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntityTeleport;
-import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
+import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.entity.SEntity;
 import net.hypixel.skyblock.entity.SEntityEquipment;
+import net.hypixel.skyblock.entity.dungeons.watcher.EnumWatcherType;
+import net.hypixel.skyblock.entity.dungeons.watcher.HeadsOnWall;
 import net.hypixel.skyblock.entity.zombie.BaseZombie;
 import net.hypixel.skyblock.item.SItem;
 import net.hypixel.skyblock.item.SMaterial;
@@ -31,18 +53,40 @@ import net.hypixel.skyblock.util.EntityManager;
 import net.hypixel.skyblock.util.SSU;
 import net.hypixel.skyblock.util.SUtil;
 import net.hypixel.skyblock.util.Sputnik;
+import net.minecraft.server.v1_8_R3.Entity;
+import net.minecraft.server.v1_8_R3.EntityLiving;
+import net.minecraft.server.v1_8_R3.EntityZombie;
+import net.minecraft.server.v1_8_R3.Packet;
+import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntityTeleport;
+import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
-import java.util.Random;
-
-public class WatcherBonzo extends BaseZombie {
+public class WatcherBonzo
+extends BaseZombie {
     private ArmorStand tb;
-    private boolean barrCD;
-    private final String[] bozoCringe;
-
-    public WatcherBonzo() {
-        this.barrCD = true;
-        this.bozoCringe = new String[]{"Cringe.", "Lame.", "Why are you running?", "Leave me alone!", "Oh noes! You got me! Whatever will I do?", "OUCH!", "Stop.", "Hacker!"};
-    }
+    private boolean barrCD = true;
+    private final String[] bozoCringe = new String[]{"Cringe.", "Lame.", "Why are you running?", "Leave me alone!", "Oh noes! You got me! Whatever will I do?", "OUCH!", "Stop.", "Hacker!"};
 
     @Override
     public String getEntityName() {
@@ -60,78 +104,66 @@ public class WatcherBonzo extends BaseZombie {
     }
 
     @Override
-    public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
-        final HeadsOnWall h = new HeadsOnWall(EnumWatcherType.BONZO);
-        final PlayerDisguise p = Sputnik.applyPacketNPC(entity, h.value, h.signature, true);
-        EntityManager.DEFENSE_PERCENTAGE.put(entity, 85);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        entity.setMetadata("LD", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        entity.setMetadata("WATCHER_E", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        p.setReplaceSounds(true);
-        this.tb = Sputnik.spawnDialougeBox(entity, 2.2);
+    public void onSpawn(final LivingEntity entity, SEntity sEntity) {
+        HeadsOnWall h2 = new HeadsOnWall(EnumWatcherType.BONZO);
+        PlayerDisguise p2 = Sputnik.applyPacketNPC((org.bukkit.entity.Entity)entity, h2.value, h2.signature, true);
+        EntityManager.DEFENSE_PERCENTAGE.put((org.bukkit.entity.Entity)entity, 85);
+        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        entity.setMetadata("LD", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        entity.setMetadata("WATCHER_E", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        p2.setReplaceSounds(true);
+        this.tb = Sputnik.spawnDialougeBox((org.bukkit.entity.Entity)entity, 2.2);
         this.sd("I'm back baby!", 10, 50, true);
-        SUtil.delay(() -> this.barrCD = false, 250L);
-        new BukkitRunnable() {
+        SUtil.delay(() -> {
+            this.barrCD = false;
+        }, 250L);
+        new BukkitRunnable(){
+
             public void run() {
                 if (entity.isDead()) {
                     WatcherBonzo.this.sd("Bruh, just you wait...", 0, 40, true);
                     this.cancel();
                     return;
                 }
-                if (!WatcherBonzo.this.barrCD && SUtil.random(0, 30) <= 5 && ((CraftZombie) entity).getTarget() != null) {
+                if (!WatcherBonzo.this.barrCD && SUtil.random(0, 30) <= 5 && ((CraftZombie)entity).getTarget() != null) {
                     WatcherBonzo.this.barrCD = true;
                     WatcherBonzo.this.ballonBarrage(entity);
                     SUtil.delay(() -> WatcherBonzo.this.barrCD = false, 300L);
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
-        new BukkitRunnable() {
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
+        new BukkitRunnable(){
+
             public void run() {
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
-                if (((CraftZombie) entity).getTarget() != null) {
+                if (((CraftZombie)entity).getTarget() != null) {
                     WatcherBonzo.this.sd(WatcherBonzo.this.bozoCringe[SUtil.random(0, WatcherBonzo.this.bozoCringe.length - 1)], 1, 50, true);
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 80L, 80L);
-        new BukkitRunnable() {
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 80L, 80L);
+        new BukkitRunnable(){
+
             public void run() {
-                final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
+                EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
-                for (final Entity entities : entity.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 1.5, 1.5, 1.5)) {
-                    if (!(entities instanceof Player)) {
-                        continue;
-                    }
-                    final Player target = (Player) entities;
-                    if (target.getGameMode() == GameMode.CREATIVE) {
-                        continue;
-                    }
-                    if (target.getGameMode() == GameMode.SPECTATOR) {
-                        continue;
-                    }
-                    if (target.hasMetadata("NPC")) {
-                        continue;
-                    }
-                    if (target.getNoDamageTicks() == 7) {
-                        continue;
-                    }
-                    if (SUtil.random(0, 10) > 8) {
-                        continue;
-                    }
+                for (org.bukkit.entity.Entity entities : entity.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 1.5, 1.5, 1.5)) {
+                    Player target;
+                    if (!(entities instanceof Player) || (target = (Player)entities).getGameMode() == GameMode.CREATIVE || target.getGameMode() == GameMode.SPECTATOR || target.hasMetadata("NPC") || target.getNoDamageTicks() == 7 || SUtil.random(0, 10) > 8) continue;
                     entity.teleport(entity.getLocation().setDirection(target.getLocation().subtract(entities.getLocation()).toVector()));
-                    for (final Player players : Bukkit.getOnlinePlayers()) {
-                        ((CraftPlayer) players).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) entity).getHandle(), 0));
+                    for (Player players : Bukkit.getOnlinePlayers()) {
+                        ((CraftPlayer)players).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((Entity)((CraftLivingEntity)entity).getHandle(), 0));
                     }
-                    nms.r(((CraftPlayer) target).getHandle());
+                    nms.r((Entity)((CraftPlayer)target).getHandle());
                     break;
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 3L);
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 3L);
     }
 
     @Override
@@ -140,25 +172,25 @@ public class WatcherBonzo extends BaseZombie {
     }
 
     @Override
-    public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
-        final Entity en = sEntity.getEntity();
-        final Vector v = new Vector(0, 0, 0);
-        SUtil.delay(() -> en.setVelocity(v), 1L);
+    public void onDamage(SEntity sEntity, org.bukkit.entity.Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
+        LivingEntity en = sEntity.getEntity();
+        Vector v2 = new Vector(0, 0, 0);
+        SUtil.delay(() -> WatcherBonzo.lambda$onDamage$1((org.bukkit.entity.Entity)en, v2), 1L);
     }
 
-    public void say(final String str) {
+    public void say(String str) {
         if (str == null) {
             this.tb.setCustomNameVisible(false);
             return;
         }
-        for (final Player p : this.tb.getWorld().getPlayers()) {
-            p.sendMessage(Sputnik.trans("&c[BOSS] Bonzo&f: " + str));
+        for (Player p2 : this.tb.getWorld().getPlayers()) {
+            p2.sendMessage(Sputnik.trans("&c[BOSS] Bonzo&f: " + str));
         }
         this.tb.setCustomNameVisible(true);
         this.tb.setCustomName(Sputnik.trans("&f&l" + str));
     }
 
-    public void sd(final String str, final int delay, final int timeout, final boolean needTo) {
+    public void sd(String str, int delay, int timeout, boolean needTo) {
         SUtil.delay(() -> this.say(str), delay);
         if (needTo) {
             SUtil.delay(() -> {
@@ -169,89 +201,89 @@ public class WatcherBonzo extends BaseZombie {
         }
     }
 
-    public void ballonBarrage(final LivingEntity e) {
+    public void ballonBarrage(final LivingEntity e2) {
         this.sd("SHOOOOOOWWWWWWWW TIMEEEEEEEEEEEE!!!", 1, 50, true);
-        new BukkitRunnable() {
+        new BukkitRunnable(){
             int i = 0;
 
             public void run() {
-                if (e.isDead() || this.i >= 100) {
-                    e.removePotionEffect(PotionEffectType.SLOW);
+                if (e2.isDead() || this.i >= 100) {
+                    e2.removePotionEffect(PotionEffectType.SLOW);
                     this.cancel();
                     return;
                 }
                 ++this.i;
-                e.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1000, 10));
-                final Location lc = e.getLocation();
-                lc.setYaw(lc.getYaw() + SUtil.random(0, 360));
-                ((CraftZombie) e).getHandle().setPositionRotation(lc.getX(), lc.getY(), lc.getZ(), lc.getYaw(), lc.getPitch());
-                WatcherBonzo.sendHeadRotation(e, lc.getYaw(), lc.getPitch());
-                WatcherBonzo.this.launchBaloon(e);
+                e2.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 1000, 10));
+                Location lc = e2.getLocation();
+                lc.setYaw(lc.getYaw() + (float)SUtil.random(0, 360));
+                ((CraftZombie)e2).getHandle().setPositionRotation(lc.getX(), lc.getY(), lc.getZ(), lc.getYaw(), lc.getPitch());
+                WatcherBonzo.sendHeadRotation((org.bukkit.entity.Entity)e2, lc.getYaw(), lc.getPitch());
+                WatcherBonzo.this.launchBaloon(e2);
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 2L);
     }
 
-    public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
-        final net.minecraft.server.v1_8_R3.Entity pl = ((CraftZombie) e).getHandle();
-        pl.setLocation(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), yaw, pitch);
-        final PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(pl);
-        for (final Player p : e.getWorld().getPlayers()) {
-            ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
+    public static void sendHeadRotation(org.bukkit.entity.Entity e2, float yaw, float pitch) {
+        EntityZombie pl = ((CraftZombie)e2).getHandle();
+        pl.setLocation(e2.getLocation().getX(), e2.getLocation().getY(), e2.getLocation().getZ(), yaw, pitch);
+        PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport((Entity)pl);
+        for (Player p2 : e2.getWorld().getPlayers()) {
+            ((CraftPlayer)p2).getHandle().playerConnection.sendPacket((Packet)packet);
         }
     }
 
     public void launchBaloon(final LivingEntity player1) {
         player1.getWorld().playSound(player1.getLocation(), Sound.GHAST_MOAN, 1.0f, 2.0f);
         final Location location = player1.getLocation().add(0.0, -0.5, 0.0);
-        final Vector vecTo = location.getDirection().normalize().multiply(1);
-        final Location location2 = player1.getLocation();
-        final Random random = new Random();
-        final int i = random.nextInt(9);
+        Vector vecTo = location.getDirection().normalize().multiply(1);
+        Location location2 = player1.getLocation();
+        Random random = new Random();
+        int i2 = random.nextInt(9);
         Color color = Color.RED;
-        final ArmorStand stand = (ArmorStand) player1.getWorld().spawn(location.add(player1.getLocation().getDirection().multiply(1)), (Class) ArmorStand.class);
+        final ArmorStand stand = (ArmorStand)player1.getWorld().spawn(location.add(player1.getLocation().getDirection().multiply(1)), ArmorStand.class);
         stand.setVisible(false);
         stand.setGravity(false);
         stand.setMarker(true);
         stand.teleport(player1.getEyeLocation().add(vecTo));
-        if (i == 1) {
+        if (i2 == 1) {
             stand.setHelmet(SItem.of(SMaterial.BONZO_BALLOON_1).getStack());
             color = Color.RED;
         }
-        if (i == 2) {
+        if (i2 == 2) {
             stand.setHelmet(SItem.of(SMaterial.BONZO_BALLOON_2).getStack());
             color = Color.ORANGE;
         }
-        if (i == 3) {
+        if (i2 == 3) {
             stand.setHelmet(SItem.of(SMaterial.BONZO_BALLOON_3).getStack());
             color = Color.YELLOW;
         }
-        if (i == 4) {
+        if (i2 == 4) {
             stand.setHelmet(SItem.of(SMaterial.BONZO_BALLOON_4).getStack());
             color = Color.PURPLE;
         }
-        if (i == 5) {
+        if (i2 == 5) {
             stand.setHelmet(SItem.of(SMaterial.BONZO_BALLOON_5).getStack());
             color = Color.BLUE;
         }
-        if (i == 6) {
+        if (i2 == 6) {
             stand.setHelmet(SItem.of(SMaterial.BONZO_BALLOON_6).getStack());
             color = Color.AQUA;
         }
-        if (i == 7) {
+        if (i2 == 7) {
             stand.setHelmet(SItem.of(SMaterial.BONZO_BALLOON_7).getStack());
             color = Color.LIME;
         }
-        if (i == 8) {
+        if (i2 == 8) {
             stand.setHelmet(SItem.of(SMaterial.BONZO_BALLOON_8).getStack());
             color = Color.FUCHSIA;
         }
-        if (i == 9) {
+        if (i2 == 9) {
             stand.setHelmet(SItem.of(SMaterial.BONZO_BALLOON_9).getStack());
             color = Color.GREEN;
         }
         final Color color2 = color;
         final Vector direction = location2.getDirection();
-        new BukkitRunnable() {
+        new BukkitRunnable(){
             double t = 0.0;
             int tick = 0;
 
@@ -263,43 +295,42 @@ public class WatcherBonzo extends BaseZombie {
                     yaw *= -1.0f;
                 }
                 location.setYaw(yaw);
-                final double x = direction.getX() * this.t;
-                final double y = direction.getY() * this.t;
-                final double z = direction.getZ() * this.t;
-                location.add(x, y, z);
+                double x2 = direction.getX() * this.t;
+                double y2 = direction.getY() * this.t;
+                double z2 = direction.getZ() * this.t;
+                location.add(x2, y2, z2);
                 stand.teleport(location);
-                location.subtract(x, y, z);
+                location.subtract(x2, y2, z2);
                 if (this.t >= 50.0) {
                     this.cancel();
                     stand.remove();
                 }
-                final Location locof = stand.getLocation();
+                Location locof = stand.getLocation();
                 locof.setY(locof.getY() + 1.0);
                 if (locof.getBlock().getType() != Material.AIR) {
                     stand.remove();
-                    final FireworkEffect.Builder builder = FireworkEffect.builder();
-                    final FireworkEffect effect = builder.flicker(false).trail(false).with(FireworkEffect.Type.BURST).withColor(color2).build();
-                    SSU.spawn(stand.getLocation(), effect);
+                    FireworkEffect.Builder builder = FireworkEffect.builder();
+                    FireworkEffect effect = builder.flicker(false).trail(false).with(FireworkEffect.Type.BURST).withColor(color2).build();
+                    SSU.spawn(stand.getLocation(), effect, new Player[0]);
                     this.cancel();
                 }
-                for (final Entity en : stand.getNearbyEntities(1.0, 1.0, 1.0)) {
-                    if (en instanceof Player) {
-                        final Player p = (Player) en;
-                        p.getWorld().playSound(p.getLocation(), Sound.ITEM_BREAK, 1.0f, 1.0f);
-                        User.getUser(p.getUniqueId()).damage(p.getMaxHealth() * 30.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, player1);
-                        p.sendMessage(Sputnik.trans("&4&lMaster Bonzo&7's Balloon hit you for &c" + SUtil.commaify(p.getMaxHealth() * 20.0 / 100.0) + " &7damage."));
-                        p.damage(1.0E-5);
-                        p.setVelocity(player1.getLocation().toVector().subtract(p.getLocation().toVector()).normalize().multiply(-1.0).multiply(1.5));
-                        final FireworkEffect.Builder builder2 = FireworkEffect.builder();
-                        final FireworkEffect effect2 = builder2.flicker(false).trail(false).with(FireworkEffect.Type.BURST).withColor(color2).build();
-                        SSU.spawn(stand.getLocation(), effect2);
-                        stand.remove();
-                        this.cancel();
-                        break;
-                    }
+                for (org.bukkit.entity.Entity en : stand.getNearbyEntities(1.0, 1.0, 1.0)) {
+                    if (!(en instanceof Player)) continue;
+                    Player p2 = (Player)en;
+                    p2.getWorld().playSound(p2.getLocation(), Sound.ITEM_BREAK, 1.0f, 1.0f);
+                    User.getUser(p2.getUniqueId()).damage(p2.getMaxHealth() * 30.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (org.bukkit.entity.Entity)player1);
+                    p2.sendMessage(Sputnik.trans("&4&lMaster Bonzo&7's Balloon hit you for &c" + SUtil.commaify(p2.getMaxHealth() * 20.0 / 100.0) + " &7damage."));
+                    p2.damage(1.0E-5);
+                    p2.setVelocity(player1.getLocation().toVector().subtract(p2.getLocation().toVector()).normalize().multiply(-1.0).multiply(1.5));
+                    FireworkEffect.Builder builder2 = FireworkEffect.builder();
+                    FireworkEffect effect2 = builder2.flicker(false).trail(false).with(FireworkEffect.Type.BURST).withColor(color2).build();
+                    SSU.spawn(stand.getLocation(), effect2, new Player[0]);
+                    stand.remove();
+                    this.cancel();
+                    break;
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
     }
 
     @Override
@@ -321,4 +352,9 @@ public class WatcherBonzo extends BaseZombie {
     public int mobLevel() {
         return 540;
     }
+
+    private static /* synthetic */ void lambda$onDamage$1(org.bukkit.entity.Entity en, Vector v2) {
+        en.setVelocity(v2);
+    }
 }
+

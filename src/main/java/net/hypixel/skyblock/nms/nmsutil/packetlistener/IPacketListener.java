@@ -1,9 +1,16 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.event.Cancellable
+ */
 package net.hypixel.skyblock.nms.nmsutil.packetlistener;
 
 import org.bukkit.event.Cancellable;
 
 public interface IPacketListener {
-    Object onPacketSend(final Object p0, final Object p1, final Cancellable p2);
+    public Object onPacketSend(Object var1, Object var2, Cancellable var3);
 
-    Object onPacketReceive(final Object p0, final Object p1, final Cancellable p2);
+    public Object onPacketReceive(Object var1, Object var2, Cancellable var3);
 }
+

@@ -1,29 +1,53 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.minecraft.server.v1_8_R3.AttributeInstance
+ *  net.minecraft.server.v1_8_R3.Entity
+ *  net.minecraft.server.v1_8_R3.EntityLiving
+ *  net.minecraft.server.v1_8_R3.GenericAttributes
+ *  net.minecraft.server.v1_8_R3.MathHelper
+ *  net.minecraft.server.v1_8_R3.MobEffectList
+ *  net.minecraft.server.v1_8_R3.Packet
+ *  net.minecraft.server.v1_8_R3.PacketPlayOutAnimation
+ *  org.bukkit.Bukkit
+ *  org.bukkit.Effect
+ *  org.bukkit.GameMode
+ *  org.bukkit.Location
+ *  org.bukkit.Material
+ *  org.bukkit.SkullType
+ *  org.bukkit.Sound
+ *  org.bukkit.World
+ *  org.bukkit.block.Block
+ *  org.bukkit.block.BlockFace
+ *  org.bukkit.block.Skull
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie
+ *  org.bukkit.entity.ArmorStand
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.entity.EntityType
+ *  org.bukkit.entity.Item
+ *  org.bukkit.entity.LivingEntity
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.entity.EntityDamageByEntityEvent
+ *  org.bukkit.inventory.ItemStack
+ *  org.bukkit.metadata.FixedMetadataValue
+ *  org.bukkit.metadata.MetadataValue
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.scheduler.BukkitRunnable
+ *  org.bukkit.util.EulerAngle
+ *  org.bukkit.util.Vector
+ */
 package net.hypixel.skyblock.entity.dungeons.boss.sadan;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import java.util.ArrayList;
 import net.hypixel.skyblock.SkyBlock;
-import net.minecraft.server.v1_8_R3.*;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.*;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.Skull;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.*;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.EulerAngle;
-import org.bukkit.util.Vector;
 import net.hypixel.skyblock.entity.SEntity;
 import net.hypixel.skyblock.entity.SEntityEquipment;
 import net.hypixel.skyblock.entity.SEntityType;
+import net.hypixel.skyblock.entity.dungeons.boss.sadan.SadanHuman;
 import net.hypixel.skyblock.entity.zombie.BaseZombie;
 import net.hypixel.skyblock.gui.SkySimBrainCell;
 import net.hypixel.skyblock.item.SItem;
@@ -32,19 +56,48 @@ import net.hypixel.skyblock.util.EntityManager;
 import net.hypixel.skyblock.util.MagicFlowerPot;
 import net.hypixel.skyblock.util.SUtil;
 import net.hypixel.skyblock.util.Sputnik;
+import net.minecraft.server.v1_8_R3.AttributeInstance;
+import net.minecraft.server.v1_8_R3.Entity;
+import net.minecraft.server.v1_8_R3.EntityLiving;
+import net.minecraft.server.v1_8_R3.GenericAttributes;
+import net.minecraft.server.v1_8_R3.MathHelper;
+import net.minecraft.server.v1_8_R3.MobEffectList;
+import net.minecraft.server.v1_8_R3.Packet;
+import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
+import org.bukkit.Bukkit;
+import org.bukkit.Effect;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.SkullType;
+import org.bukkit.Sound;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.Skull;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.EulerAngle;
+import org.bukkit.util.Vector;
 import xyz.xenondevs.particle.ParticleBuilder;
 import xyz.xenondevs.particle.ParticleEffect;
 import xyz.xenondevs.particle.data.texture.ItemTexture;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-public class TerracottaSadan extends BaseZombie {
-    private double y;
-
-    public TerracottaSadan() {
-        this.y = 0.85;
-    }
+public class TerracottaSadan
+extends BaseZombie {
+    private double y = 0.85;
 
     @Override
     public String getEntityName() {
@@ -62,30 +115,31 @@ public class TerracottaSadan extends BaseZombie {
     }
 
     @Override
-    public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
+    public void onSpawn(final LivingEntity entity, SEntity sEntity) {
         if (entity.getWorld().getPlayers().size() == 0) {
             return;
         }
-        final Player p = entity.getWorld().getPlayers().get(SUtil.random(0, entity.getWorld().getPlayers().size() - 1));
-        if (p != null && p.getGameMode() != GameMode.SPECTATOR && p.getGameMode() != GameMode.CREATIVE) {
-            ((CraftZombie) entity).setTarget(p);
+        Player p2 = (Player)entity.getWorld().getPlayers().get(SUtil.random(0, entity.getWorld().getPlayers().size() - 1));
+        if (p2 != null && p2.getGameMode() != GameMode.SPECTATOR && p2.getGameMode() != GameMode.CREATIVE) {
+            ((CraftZombie)entity).setTarget((LivingEntity)p2);
         }
-        final AttributeInstance followRange = ((CraftLivingEntity) entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
+        AttributeInstance followRange = ((CraftLivingEntity)entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
         followRange.setValue(500.0);
-        ((CraftZombie) entity).setBaby(false);
-        Sputnik.applyPacketNPC(entity, "Ethelian", null, false);
+        ((CraftZombie)entity).setBaby(false);
+        Sputnik.applyPacketNPC((org.bukkit.entity.Entity)entity, "Ethelian", null, false);
         SUtil.delay(() -> entity.getEquipment().setItemInHand(SItem.of(SMaterial.FLOWER_OF_TRUTH).getStack()), 10L);
-        EntityManager.DEFENSE_PERCENTAGE.put(entity, 30);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        entity.setMetadata("LD", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        entity.setMetadata("t_sadan", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        new BukkitRunnable() {
+        EntityManager.DEFENSE_PERCENTAGE.put((org.bukkit.entity.Entity)entity, 30);
+        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        entity.setMetadata("LD", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        entity.setMetadata("t_sadan", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        new BukkitRunnable(){
+
             public void run() {
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
-                final LivingEntity target = ((CraftZombie) entity).getTarget();
+                CraftLivingEntity target = ((CraftZombie)entity).getTarget();
                 if (target != null && entity.getTicksLived() > 10) {
                     if (target.getWorld() != entity.getWorld()) {
                         return;
@@ -95,17 +149,18 @@ public class TerracottaSadan extends BaseZombie {
                     }
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 30L);
-        new BukkitRunnable() {
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 30L);
+        new BukkitRunnable(){
+
             public void run() {
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
-                Sputnik.applyPacketNPC(entity, "Ethelian", null, false);
+                Sputnik.applyPacketNPC((org.bukkit.entity.Entity)entity, "Ethelian", null, false);
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1000L);
-        final SkySimBrainCell sbc = SkySimBrainCell.loadFromDB("localhost:27786/skysim/artifical_intelligence/cloud/");
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1000L);
+        SkySimBrainCell sbc = SkySimBrainCell.loadFromDB("localhost:27786/skysim/artifical_intelligence/cloud/");
         sbc.accessAIFrom(SkySimBrainCell.BrainCellFor.MELEE);
         sbc.accessAIFrom(SkySimBrainCell.BrainCellFor.MOVEMENT);
         sbc.accessAIFrom(SkySimBrainCell.BrainCellFor.ABILITY_USAGE);
@@ -113,9 +168,13 @@ public class TerracottaSadan extends BaseZombie {
         sbc.accessAIFrom(SkySimBrainCell.BrainCellFor.ENTITY_TRACKER);
         sbc.accessAIFrom(SkySimBrainCell.BrainCellFor.ATTACK_PLAYER);
         SkySimBrainCell.applyAIToNMSPlayer(this, 140, sbc);
-        new BukkitRunnable() {
-            Location loc = entity.getLocation();
-            final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
+        new BukkitRunnable(){
+            Location loc;
+            final EntityLiving nms;
+            {
+                this.loc = entity.getLocation();
+                this.nms = ((CraftLivingEntity)entity).getHandle();
+            }
 
             public void run() {
                 if (entity.isDead()) {
@@ -124,18 +183,18 @@ public class TerracottaSadan extends BaseZombie {
                 }
                 this.loc.setY(0.0);
                 this.nms.setSprinting(false);
-                final Location loc2 = entity.getLocation();
+                Location loc2 = entity.getLocation();
                 loc2.setY(0.0);
                 if (entity.hasMetadata("frozen")) {
                     return;
                 }
-                if (((CraftZombie) entity).getTarget() == null) {
+                if (((CraftZombie)entity).getTarget() == null) {
                     return;
                 }
-                if (((CraftZombie) entity).getTarget().getWorld() != entity.getWorld()) {
+                if (((CraftZombie)entity).getTarget().getWorld() != entity.getWorld()) {
                     return;
                 }
-                if (((CraftZombie) entity).getTarget().getLocation().distance(entity.getLocation()) <= 4.0) {
+                if (((CraftZombie)entity).getTarget().getLocation().distance(entity.getLocation()) <= 4.0) {
                     return;
                 }
                 if (this.loc.distance(loc2) >= 0.2) {
@@ -145,12 +204,12 @@ public class TerracottaSadan extends BaseZombie {
                         double motX = 0.0;
                         double motZ = 0.0;
                         if (this.nms.hasEffect(MobEffectList.JUMP)) {
-                            motY += (this.nms.getEffect(MobEffectList.JUMP).getAmplifier() + 1) * 0.2f;
+                            motY += (double)((float)(this.nms.getEffect(MobEffectList.JUMP).getAmplifier() + 1) * 0.2f);
                         }
                         if (this.nms.isSprinting()) {
-                            final float f = this.nms.yaw * 0.01745329f;
-                            motX -= MathHelper.sin(f) * 0.6f;
-                            motZ += MathHelper.cos(f) * 0.6f;
+                            float f2 = this.nms.yaw * 0.01745329f;
+                            motX -= (double)(MathHelper.sin((float)f2) * 0.6f);
+                            motZ += (double)(MathHelper.cos((float)f2) * 0.6f);
                         }
                         entity.setVelocity(new Vector(motX, motY, motZ));
                     }
@@ -159,63 +218,47 @@ public class TerracottaSadan extends BaseZombie {
                 }
                 this.nms.setSprinting(false);
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 7L);
-        new BukkitRunnable() {
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 7L);
+        new BukkitRunnable(){
+
             public void run() {
-                final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
+                EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
-                for (final Entity entities : entity.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 1.5, 1.5, 1.5)) {
-                    if (!(entities instanceof Player)) {
-                        continue;
-                    }
-                    final Player target = (Player) entities;
-                    if (target.getGameMode() == GameMode.CREATIVE) {
-                        continue;
-                    }
-                    if (target.getGameMode() == GameMode.SPECTATOR) {
-                        continue;
-                    }
-                    if (target.hasMetadata("NPC")) {
-                        continue;
-                    }
+                for (org.bukkit.entity.Entity entities : entity.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 1.5, 1.5, 1.5)) {
+                    Player target;
+                    if (!(entities instanceof Player) || (target = (Player)entities).getGameMode() == GameMode.CREATIVE || target.getGameMode() == GameMode.SPECTATOR || target.hasMetadata("NPC")) continue;
                     entity.teleport(entity.getLocation().setDirection(target.getLocation().toVector().subtract(target.getLocation().toVector())));
-                    for (final Player players : Bukkit.getOnlinePlayers()) {
-                        ((CraftPlayer) players).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) entity).getHandle(), 0));
+                    for (Player players : Bukkit.getOnlinePlayers()) {
+                        ((CraftPlayer)players).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((Entity)((CraftLivingEntity)entity).getHandle(), 0));
                     }
-                    nms.r(((CraftPlayer) target).getHandle());
+                    nms.r((Entity)((CraftPlayer)target).getHandle());
                     break;
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 2L);
     }
 
-    public void t(final ArmorStand respawnAnchor) {
-    }
-
-    @Override
-    public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
+    public void t(ArmorStand respawnAnchor) {
     }
 
     @Override
-    public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
+    public void onDamage(SEntity sEntity, org.bukkit.entity.Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
+    }
+
+    @Override
+    public void onDeath(SEntity sEntity, org.bukkit.entity.Entity killed, org.bukkit.entity.Entity damager) {
         Sputnik.zero(killed);
         Location l1 = killed.getLocation();
         if (l1.getBlock().getType() != Material.AIR) {
-            final double x = l1.getBlockX();
-            final double y = l1.getBlockY();
-            final double z = l1.getBlockZ();
-            Location l2 = new Location(l1.getWorld(), 194.0, y, z);
-            if (l2.getBlock().getType() != Material.AIR) {
-                l2 = new Location(l1.getWorld(), 188.0, y, z);
-                if (l2.getBlock().getType() != Material.AIR) {
-                    l2 = new Location(l1.getWorld(), 194.0, y + 1.0, z);
-                    if (l2.getBlock().getType() != Material.AIR) {
-                        l2 = new Location(l1.getWorld(), 188.0, y + 1.0, z);
-                    }
-                }
+            double x2 = l1.getBlockX();
+            double y2 = l1.getBlockY();
+            double z2 = l1.getBlockZ();
+            Location l2 = new Location(l1.getWorld(), 194.0, y2, z2);
+            if (l2.getBlock().getType() != Material.AIR && (l2 = new Location(l1.getWorld(), 188.0, y2, z2)).getBlock().getType() != Material.AIR && (l2 = new Location(l1.getWorld(), 194.0, y2 + 1.0, z2)).getBlock().getType() != Material.AIR) {
+                l2 = new Location(l1.getWorld(), 188.0, y2 + 1.0, z2);
             }
             l1 = l2;
         }
@@ -223,8 +266,9 @@ public class TerracottaSadan extends BaseZombie {
             SadanHuman.SadanInterest.put(killed.getWorld().getUID(), SadanHuman.SadanInterest.get(killed.getWorld().getUID()) - 1);
         }
         killed.remove();
-        final ArmorStand respawnAnchor = (ArmorStand) killed.getWorld().spawn(this.a(l1), (Class) ArmorStand.class);
-        new BukkitRunnable() {
+        final ArmorStand respawnAnchor = (ArmorStand)killed.getWorld().spawn(this.a(l1), ArmorStand.class);
+        new BukkitRunnable(){
+
             public void run() {
                 if (respawnAnchor.isDead()) {
                     this.cancel();
@@ -233,13 +277,14 @@ public class TerracottaSadan extends BaseZombie {
                 respawnAnchor.getLocation().getBlock().getLocation().clone().getWorld().spigot().playEffect(respawnAnchor.getLocation().clone().add(0.0, TerracottaSadan.this.y, 0.0), Effect.LARGE_SMOKE, 21, 0, 0.1f, 0.0f, 0.1f, 0.01f, 1, 30);
                 respawnAnchor.getLocation().getBlock().getLocation().clone().getWorld().spigot().playEffect(respawnAnchor.getLocation().clone().add(0.0, TerracottaSadan.this.y, 0.0), Effect.WITCH_MAGIC, 21, 0, 0.1f, 0.0f, 0.1f, 0.01f, 1, 30);
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 3L);
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 3L);
         respawnAnchor.setVisible(false);
-        respawnAnchor.setMetadata("t_sadan", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        respawnAnchor.setMetadata("t_sadan", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
         respawnAnchor.setGravity(false);
         respawnAnchor.setMarker(true);
         this.f(respawnAnchor.getLocation().add(0.0, this.y, 0.0));
-        new BukkitRunnable() {
+        new BukkitRunnable(){
+
             public void run() {
                 if (respawnAnchor.isDead()) {
                     this.cancel();
@@ -247,8 +292,9 @@ public class TerracottaSadan extends BaseZombie {
                 }
                 TerracottaSadan.this.f(respawnAnchor.getLocation().clone().add(0.0, TerracottaSadan.this.y + 0.2, 0.0));
             }
-        }.runTaskLater(SkyBlock.getPlugin(), 66L);
-        new BukkitRunnable() {
+        }.runTaskLater((Plugin)SkyBlock.getPlugin(), 66L);
+        new BukkitRunnable(){
+
             public void run() {
                 if (respawnAnchor.isDead()) {
                     this.cancel();
@@ -256,8 +302,9 @@ public class TerracottaSadan extends BaseZombie {
                 }
                 TerracottaSadan.this.f(respawnAnchor.getLocation().clone().add(0.0, TerracottaSadan.this.y + 0.2, 0.0));
             }
-        }.runTaskLater(SkyBlock.getPlugin(), 131L);
-        new BukkitRunnable() {
+        }.runTaskLater((Plugin)SkyBlock.getPlugin(), 131L);
+        new BukkitRunnable(){
+
             public void run() {
                 if (respawnAnchor.isDead()) {
                     this.cancel();
@@ -265,181 +312,170 @@ public class TerracottaSadan extends BaseZombie {
                 }
                 TerracottaSadan.this.f(respawnAnchor.getLocation().clone().add(0.0, TerracottaSadan.this.y + 0.2, 0.0));
             }
-        }.runTaskLater(SkyBlock.getPlugin(), 201L);
-        this.sendPacketBlock(respawnAnchor.getLocation().getBlock().getLocation().clone().add(0.0, 0.0, 0.0), respawnAnchor.getWorld(), 0, killed.getLocation().getYaw(), (LivingEntity) killed, respawnAnchor);
+        }.runTaskLater((Plugin)SkyBlock.getPlugin(), 201L);
+        this.sendPacketBlock(respawnAnchor.getLocation().getBlock().getLocation().clone().add(0.0, 0.0, 0.0), respawnAnchor.getWorld(), 0, killed.getLocation().getYaw(), (LivingEntity)killed, respawnAnchor);
         SUtil.delay(() -> respawnAnchor.remove(), 202L);
-        new BukkitRunnable() {
+        new BukkitRunnable(){
+
             public void run() {
                 if (respawnAnchor.isDead()) {
                     this.cancel();
                     return;
                 }
-                new SEntity(respawnAnchor.getLocation().clone(), SEntityType.TERRACOTTA_SADAN);
+                new SEntity(respawnAnchor.getLocation().clone(), SEntityType.TERRACOTTA_SADAN, new Object[0]);
             }
-        }.runTaskLater(SkyBlock.getPlugin(), 201L);
+        }.runTaskLater((Plugin)SkyBlock.getPlugin(), 201L);
     }
 
     public void summonOnLoc() {
     }
 
-    public void f(final Location loc) {
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.4, Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.4, Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.4, Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
-        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
+    public void f(Location loc) {
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.4, (double)Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.4, (double)Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.4, (double)Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
+        new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.SOUL_SAND))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
     }
 
-    public Location getBlockLoc(final Block b) {
-        final Location l = b.getLocation();
-        double x = l.getX() + 0.5;
-        double z = l.getZ() + 0.5;
-        if (l.getX() < 0.0) {
-            x = l.getX() - 0.5;
+    public Location getBlockLoc(Block b2) {
+        Location l2 = b2.getLocation();
+        double x2 = l2.getX() + 0.5;
+        double z2 = l2.getZ() + 0.5;
+        if (l2.getX() < 0.0) {
+            x2 = l2.getX() - 0.5;
         }
-        if (l.getZ() < 0.0) {
-            z = l.getZ() - 0.5;
+        if (l2.getZ() < 0.0) {
+            z2 = l2.getZ() - 0.5;
         }
-        final Location loc = new Location(l.getWorld(), x, l.getY(), z);
+        Location loc = new Location(l2.getWorld(), x2, l2.getY(), z2);
         return loc;
     }
 
-    public Location a(final Location l) {
-        final double x = l.getBlockX();
-        final double z = l.getBlockZ();
-        final Location loc = new Location(l.getWorld(), x, l.getY(), z);
-        final Location loc2 = this.getBlockLoc2(loc);
+    public Location a(Location l2) {
+        double x2 = l2.getBlockX();
+        double z2 = l2.getBlockZ();
+        Location loc = new Location(l2.getWorld(), x2, l2.getY(), z2);
+        Location loc2 = this.getBlockLoc2(loc);
         return loc2;
     }
 
-    public Location getBlockLoc2(final Location l) {
-        double x = l.getX() + 0.5;
-        double z = l.getZ() + 0.5;
-        if (l.getX() < 0.0) {
-            x = l.getX() - 0.5;
+    public Location getBlockLoc2(Location l2) {
+        double x2 = l2.getX() + 0.5;
+        double z2 = l2.getZ() + 0.5;
+        if (l2.getX() < 0.0) {
+            x2 = l2.getX() - 0.5;
         }
-        if (l.getZ() < 0.0) {
-            z = l.getZ() - 0.5;
+        if (l2.getZ() < 0.0) {
+            z2 = l2.getZ() - 0.5;
         }
-        final Location loc = new Location(l.getWorld(), x, l.getY(), z);
+        Location loc = new Location(l2.getWorld(), x2, l2.getY(), z2);
         return loc;
     }
 
-    public void spawnHeadBlock(final Location loc, final LivingEntity e, final ArmorStand s) {
+    public void spawnHeadBlock(final Location loc, LivingEntity e2, final ArmorStand s2) {
         final Material perviousblock = loc.getBlock().getType();
         final byte data = loc.getBlock().getData();
         if (perviousblock != Material.AIR) {
             return;
         }
-        new BukkitRunnable() {
+        new BukkitRunnable(){
+
             public void run() {
-                if (s.isDead()) {
+                if (s2.isDead()) {
                     TerracottaSadan.this.r(loc.getBlock().getLocation(), perviousblock, data);
                     this.cancel();
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
-        double rot = (e.getLocation().getYaw() - 90.0f) % 360.0f;
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
+        double rot = (e2.getLocation().getYaw() - 90.0f) % 360.0f;
         if (rot < 0.0) {
             rot += 360.0;
         }
-        BlockFace facingDirection = null;
-        if (0.0 <= rot && rot < 22.5) {
-            facingDirection = BlockFace.NORTH;
-        } else if (22.5 <= rot && rot < 67.5) {
-            facingDirection = BlockFace.NORTH_EAST;
-        } else if (67.5 <= rot && rot < 112.5) {
-            facingDirection = BlockFace.EAST;
-        } else if (112.5 <= rot && rot < 157.5) {
-            facingDirection = BlockFace.SOUTH_EAST;
-        } else if (157.5 <= rot && rot < 202.5) {
-            facingDirection = BlockFace.SOUTH;
-        } else if (202.5 <= rot && rot < 247.5) {
-            facingDirection = BlockFace.SOUTH_WEST;
-        } else if (247.5 <= rot && rot < 292.5) {
-            facingDirection = BlockFace.WEST;
-        } else if (292.5 <= rot && rot < 337.5) {
-            facingDirection = BlockFace.NORTH_WEST;
-        } else if (337.5 <= rot && rot < 360.0) {
-            facingDirection = BlockFace.NORTH;
-        } else {
-            facingDirection = null;
-        }
-        final Block b = loc.getBlock();
-        b.setTypeIdAndData(Material.SKULL.getId(), (byte) 1, true);
-        final Skull skull = (Skull) b.getState();
+        Object facingDirection = null;
+        facingDirection = 0.0 <= rot && rot < 22.5 ? BlockFace.NORTH : (22.5 <= rot && rot < 67.5 ? BlockFace.NORTH_EAST : (67.5 <= rot && rot < 112.5 ? BlockFace.EAST : (112.5 <= rot && rot < 157.5 ? BlockFace.SOUTH_EAST : (157.5 <= rot && rot < 202.5 ? BlockFace.SOUTH : (202.5 <= rot && rot < 247.5 ? BlockFace.SOUTH_WEST : (247.5 <= rot && rot < 292.5 ? BlockFace.WEST : (292.5 <= rot && rot < 337.5 ? BlockFace.NORTH_WEST : (337.5 <= rot && rot < 360.0 ? BlockFace.NORTH : null))))))));
+        Block b2 = loc.getBlock();
+        b2.setTypeIdAndData(Material.SKULL.getId(), (byte)1, true);
+        Skull skull = (Skull)b2.getState();
         skull.setSkullType(SkullType.PLAYER);
         skull.setOwner("Ethelian");
         skull.setRotation(facingDirection);
         skull.update(true);
-        SUtil.delay(() -> b.getLocation().getBlock().setType(Material.AIR), 70L);
+        SUtil.delay(() -> b2.getLocation().getBlock().setType(Material.AIR), 70L);
         SUtil.delay(() -> this.r(loc.getBlock().getLocation(), perviousblock, data), 70L);
     }
 
-    public void sendPacketBlock(final Location loc, final World w, final int type, final float yaw, final LivingEntity e, final ArmorStand s) {
+    public void sendPacketBlock(final Location loc, World w2, int type, float yaw, LivingEntity e2, final ArmorStand s2) {
         final Material perviousblock = loc.getBlock().getType();
         final byte data = loc.getBlock().getData();
-        new BukkitRunnable() {
+        new BukkitRunnable(){
+
             public void run() {
-                if (s.isDead()) {
+                if (s2.isDead()) {
                     TerracottaSadan.this.r(loc.getBlock().getLocation(), perviousblock, data);
                     TerracottaSadan.this.removeItemOnGround(loc.getBlock().getLocation(), Material.RED_ROSE);
                     this.cancel();
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
-        if (s.isDead()) {
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
+        if (s2.isDead()) {
             this.r(loc.getBlock().getLocation(), perviousblock, data);
             return;
         }
         loc.getBlock().setType(Material.FLOWER_POT);
-        MagicFlowerPot.changePot(loc.getBlock(), true, s);
+        MagicFlowerPot.changePot(loc.getBlock(), true, s2);
         loc.getBlock().getState().update(true);
         SUtil.delay(() -> this.removeItemOnGround(loc.getBlock().getLocation(), Material.RED_ROSE), 65L);
         SUtil.delay(() -> loc.getBlock().setType(Material.AIR), 64L);
-        SUtil.delay(() -> this.spawnHeadBlock(loc.getBlock().getLocation().clone().add(0.0, 1.0, 0.0).getBlock().getLocation(), e, s), 130L);
-        new BukkitRunnable() {
+        SUtil.delay(() -> this.spawnHeadBlock(loc.getBlock().getLocation().clone().add(0.0, 1.0, 0.0).getBlock().getLocation(), e2, s2), 130L);
+        new BukkitRunnable(){
+
             public void run() {
-                if (s.isDead()) {
+                if (s2.isDead()) {
                     this.cancel();
                     return;
                 }
-                loc.getBlock().setTypeIdAndData(159, (byte) 12, true);
+                loc.getBlock().setTypeIdAndData(159, (byte)12, true);
             }
-        }.runTaskLater(SkyBlock.getPlugin(), 65L);
-        SUtil.delay(() -> this.y = 1.2, 65L);
-        SUtil.delay(() -> this.y = 1.7, 130L);
-        SUtil.delay(() -> this.y = 0.85, 200L);
+        }.runTaskLater((Plugin)SkyBlock.getPlugin(), 65L);
+        SUtil.delay(() -> {
+            this.y = 1.2;
+        }, 65L);
+        SUtil.delay(() -> {
+            this.y = 1.7;
+        }, 130L);
+        SUtil.delay(() -> {
+            this.y = 0.85;
+        }, 200L);
         SUtil.delay(() -> this.r(loc.getBlock().getLocation(), perviousblock, data), 200L);
     }
 
-    public void r(final Location loc, final Material perviousblock, final byte data) {
+    public void r(Location loc, Material perviousblock, byte data) {
         if (perviousblock != Material.FLOWER_POT && perviousblock != Material.SKULL) {
             loc.getBlock().setType(perviousblock);
             SUtil.delay(() -> loc.getBlock().setData(data), 1L);
         }
     }
 
-    public void removeItemOnGround(final Location l, final Material mat) {
-        for (final Entity e : l.getWorld().getNearbyEntities(l, 4.0, 4.0, 4.0)) {
-            if (e instanceof Item && ((Item) e).getItemStack().getType() == mat) {
-                e.remove();
-            }
+    public void removeItemOnGround(Location l2, Material mat) {
+        for (org.bukkit.entity.Entity e2 : l2.getWorld().getNearbyEntities(l2, 4.0, 4.0, 4.0)) {
+            if (!(e2 instanceof Item) || ((Item)e2).getItemStack().getType() != mat) continue;
+            e2.remove();
         }
     }
 
@@ -473,32 +509,32 @@ public class TerracottaSadan extends BaseZombie {
         return 0.37;
     }
 
-    public void throwRose(final LivingEntity e) {
-        final Location throwLoc = e.getLocation().add(0.0, 0.2, 0.0);
-        final Vector throwVec = e.getLocation().add(e.getLocation().getDirection().multiply(10)).toVector().subtract(e.getLocation().toVector()).normalize().multiply(1.2);
-        e.getWorld().playSound(e.getLocation(), Sound.EAT, 1.0f, 1.0f);
-        final ArmorStand armorStand1 = (ArmorStand) e.getWorld().spawnEntity(throwLoc, EntityType.ARMOR_STAND);
-        armorStand1.setMetadata("ftd", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+    public void throwRose(final LivingEntity e2) {
+        Location throwLoc = e2.getLocation().add(0.0, 0.2, 0.0);
+        Vector throwVec = e2.getLocation().add(e2.getLocation().getDirection().multiply(10)).toVector().subtract(e2.getLocation().toVector()).normalize().multiply(1.2);
+        e2.getWorld().playSound(e2.getLocation(), Sound.EAT, 1.0f, 1.0f);
+        final ArmorStand armorStand1 = (ArmorStand)e2.getWorld().spawnEntity(throwLoc, EntityType.ARMOR_STAND);
+        armorStand1.setMetadata("ftd", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
         armorStand1.getEquipment().setHelmet(SItem.of(SMaterial.RED_ROSE).getStack());
-        armorStand1.setHeadPose(new EulerAngle(-92.55000305175781, 0.0, 0.0));
+        armorStand1.setHeadPose(new EulerAngle((double)-92.55f, 0.0, 0.0));
         armorStand1.setGravity(false);
         armorStand1.setMarker(true);
         armorStand1.setVisible(false);
-        final Vector[] previousVector = {throwVec};
-        final Collection<Entity> damaged = new ArrayList<Entity>();
-        new BukkitRunnable() {
+        Vector[] previousVector = new Vector[]{throwVec};
+        ArrayList damaged = new ArrayList();
+        new BukkitRunnable(){
             private int run = -1;
             private int ticklived = 0;
 
             public void run() {
-                final Vector teleportTo = armorStand1.getLocation().getDirection().normalize().multiply(1);
+                Vector teleportTo = armorStand1.getLocation().getDirection().normalize().multiply(1);
                 ++this.ticklived;
-                final int i;
-                final int ran = i = 0;
-                final int num = 90;
-                final Location loc = null;
+                int i2 = 0;
+                int ran = 0;
+                int num = 90;
+                Object loc = null;
                 ++this.run;
-                final Location locof = armorStand1.getLocation();
+                Location locof = armorStand1.getLocation();
                 locof.setY(locof.getY() + 1.0);
                 if (this.ticklived >= 18) {
                     armorStand1.remove();
@@ -513,40 +549,30 @@ public class TerracottaSadan extends BaseZombie {
                     this.cancel();
                     return;
                 }
-                for (final Entity e2 : armorStand1.getNearbyEntities(20.0, 20.0, 20.0)) {
-                    if (e2 instanceof Player) {
-                        if (((Player) e2).getGameMode() == GameMode.CREATIVE) {
-                            continue;
-                        }
-                        if (((CraftPlayer) e2).getGameMode() == GameMode.SPECTATOR) {
-                            continue;
-                        }
-                        if (e2.hasMetadata("NPC")) {
-                            continue;
-                        }
-                        armorStand1.teleport(armorStand1.getLocation().setDirection(e2.getLocation().toVector().subtract(armorStand1.getLocation().toVector())));
-                    }
+                for (org.bukkit.entity.Entity e22 : armorStand1.getNearbyEntities(20.0, 20.0, 20.0)) {
+                    if (!(e22 instanceof Player) || ((Player)e22).getGameMode() == GameMode.CREATIVE || ((CraftPlayer)e22).getGameMode() == GameMode.SPECTATOR || e22.hasMetadata("NPC")) continue;
+                    armorStand1.teleport(armorStand1.getLocation().setDirection(e22.getLocation().toVector().subtract(armorStand1.getLocation().toVector())));
                 }
-                if (i % 2 == 0 && i < 13) {
+                if (i2 % 2 == 0 && i2 < 13) {
                     armorStand1.teleport(armorStand1.getLocation().add(teleportTo).multiply(1.0));
                     armorStand1.teleport(armorStand1.getLocation().add(teleportTo).multiply(1.0));
-                } else if (i % 2 == 0) {
+                } else if (i2 % 2 == 0) {
                     armorStand1.teleport(armorStand1.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                     armorStand1.teleport(armorStand1.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                 }
-                for (final Entity e3 : armorStand1.getNearbyEntities(0.5, 0.5, 0.5)) {
-                    if (e3 instanceof Player) {
-                        final Player p = (Player) e3;
-                        p.damage(55000.0, e);
-                        armorStand1.getWorld().playEffect(locof, Effect.SNOWBALL_BREAK, 3);
-                        armorStand1.getWorld().playEffect(locof, Effect.SNOWBALL_BREAK, 10);
-                        armorStand1.getWorld().playEffect(locof, Effect.SNOWBALL_BREAK, 10);
-                        armorStand1.getWorld().playEffect(locof, Effect.SNOWBALL_BREAK, 10);
-                        armorStand1.remove();
-                        this.cancel();
-                    }
+                for (org.bukkit.entity.Entity e3 : armorStand1.getNearbyEntities(0.5, 0.5, 0.5)) {
+                    if (!(e3 instanceof Player)) continue;
+                    Player p2 = (Player)e3;
+                    p2.damage(55000.0, (org.bukkit.entity.Entity)e2);
+                    armorStand1.getWorld().playEffect(locof, Effect.SNOWBALL_BREAK, 3);
+                    armorStand1.getWorld().playEffect(locof, Effect.SNOWBALL_BREAK, 10);
+                    armorStand1.getWorld().playEffect(locof, Effect.SNOWBALL_BREAK, 10);
+                    armorStand1.getWorld().playEffect(locof, Effect.SNOWBALL_BREAK, 10);
+                    armorStand1.remove();
+                    this.cancel();
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 1L, 3L);
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 1L, 3L);
     }
 }
+

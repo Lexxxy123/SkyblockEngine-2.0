@@ -1,3 +1,6 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.dragon.unstable;
 
 import net.hypixel.skyblock.item.GenericItemType;
@@ -6,7 +9,9 @@ import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.SpecificItemType;
 import net.hypixel.skyblock.item.armor.LeatherArmorStatistics;
 
-public class UnstableDragonBoots implements MaterialFunction, LeatherArmorStatistics {
+public class UnstableDragonBoots
+implements MaterialFunction,
+LeatherArmorStatistics {
     @Override
     public double getBaseCritChance() {
         return 0.05;
@@ -57,3 +62,4 @@ public class UnstableDragonBoots implements MaterialFunction, LeatherArmorStatis
         return null;
     }
 }
+

@@ -1,27 +1,40 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  me.clip.placeholderapi.expansion.PlaceholderExpansion
+ *  net.md_5.bungee.api.ChatColor
+ *  org.bukkit.OfflinePlayer
+ *  org.bukkit.inventory.ItemStack
+ */
 package net.hypixel.skyblock.api.placeholder;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import net.hypixel.skyblock.Repeater;
 import net.hypixel.skyblock.SkyBlock;
-import net.hypixel.skyblock.item.SItem;
-import net.hypixel.skyblock.item.pet.Pet;
 import net.hypixel.skyblock.features.potion.ActivePotionEffect;
 import net.hypixel.skyblock.features.skill.CombatSkill;
 import net.hypixel.skyblock.features.skill.Skill;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.pet.Pet;
 import net.hypixel.skyblock.user.PlayerStatistics;
 import net.hypixel.skyblock.user.PlayerUtils;
 import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.SUtil;
 import net.hypixel.skyblock.util.Sputnik;
-import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.codec.binary.Base64;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
-
-public class SkyblockPlaceholder extends PlaceholderExpansion {
-    public static final Map<UUID, String> PTE_CACHE;
+public class SkyblockPlaceholder
+extends PlaceholderExpansion {
+    public static final Map<UUID, String> PTE_CACHE = new HashMap<UUID, String>();
 
     public boolean canRegister() {
         return true;
@@ -39,10 +52,10 @@ public class SkyblockPlaceholder extends PlaceholderExpansion {
         return "0.1.6";
     }
 
-    public String onRequest(final OfflinePlayer player, final String identifier) {
-        final UUID uuid = player.getUniqueId();
-        final User user = User.getUser(player.getUniqueId());
-        final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(uuid);
+    public String onRequest(OfflinePlayer player, String identifier) {
+        UUID uuid = player.getUniqueId();
+        User user = User.getUser(player.getUniqueId());
+        PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(uuid);
         double visualcap = statistics.getCritChance().addAll() * 100.0;
         if (visualcap > 100.0) {
             visualcap = 100.0;
@@ -55,13 +68,13 @@ public class SkyblockPlaceholder extends PlaceholderExpansion {
                 return SUtil.commaify(statistics.getStrength().addAll().intValue());
             }
             if (identifier.equals("speed")) {
-                return String.valueOf((statistics.getSpeed().addAll() * 100.0));
+                return String.valueOf(statistics.getSpeed().addAll() * 100.0);
             }
             if (identifier.equals("critchance")) {
-                return String.valueOf((int) visualcap);
+                return String.valueOf((int)visualcap);
             }
             if (identifier.equals("critdamage")) {
-                return String.valueOf((statistics.getCritDamage().addAll() * 100.0));
+                return String.valueOf(statistics.getCritDamage().addAll() * 100.0);
             }
             if (identifier.equals("int")) {
                 return SUtil.commaify(statistics.getIntelligence().addAll().intValue());
@@ -82,81 +95,84 @@ public class SkyblockPlaceholder extends PlaceholderExpansion {
                 return this.findPet(player);
             }
             if (identifier.equals("pet_lore")) {
-                final StringBuilder sb = new StringBuilder();
-                final Pet.PetItem pet = this.findPetClass(player);
+                StringBuilder sb = new StringBuilder();
+                Pet.PetItem pet = this.findPetClass(player);
                 if (pet == null) {
                     return Sputnik.trans("&cNone");
                 }
-                final SItem item = SItem.of(pet.getType());
+                SItem item = SItem.of(pet.getType());
                 item.setRarity(pet.getRarity());
                 item.setDataDouble("xp", pet.getXp());
                 item.getData().setBoolean("equipped", true);
                 item.update();
-                final ItemStack stacc = item.getStack();
-                for (final String s : stacc.getItemMeta().getLore()) {
-                    sb.append(s + "\n");
+                ItemStack stacc = item.getStack();
+                for (String s2 : stacc.getItemMeta().getLore()) {
+                    sb.append(s2 + "\n");
                 }
                 sb.append(item.getRarity().getBoldedColor() + item.getRarity().getDisplay());
                 return sb.toString();
-            } else if (identifier.equals("pet_texture")) {
-                final Pet pet2 = this.findPetClassA(player);
+            }
+            if (identifier.equals("pet_texture")) {
+                Pet pet2 = this.findPetClassA(player);
                 if (pet2 == null) {
                     return "Steve";
                 }
-                final String URL = "{\"textures\":{\"SKIN\":{\"url\":\"http://textures.minecraft.net/texture/" + pet2.getURL() + "\"}}}";
-                final String encodedString = Base64.encodeBase64String(URL.getBytes());
+                String URL2 = "{\"textures\":{\"SKIN\":{\"url\":\"http://textures.minecraft.net/texture/" + pet2.getURL() + "\"}}}";
+                String encodedString = Base64.encodeBase64String(URL2.getBytes());
                 return encodedString;
-            } else {
-                if (identifier.equals("potion")) {
-                    return this.getEffectLoop(player);
+            }
+            if (identifier.equals("potion")) {
+                return this.getEffectLoop(player);
+            }
+            if (identifier.equals("hitshield")) {
+                return Repeater.get(player.getPlayer());
+            }
+            if (identifier.equals("cookie")) {
+                return PlayerUtils.getCookieDurationDisplay(player.getPlayer());
+            }
+            if (identifier.equals("server_name")) {
+                return SkyBlock.getPlugin().getServerName();
+            }
+            if (identifier.equals("server_date")) {
+                return SUtil.getDate();
+            }
+            if (identifier.equals("badge")) {
+                if (PlayerUtils.getCookieDurationTicks(player.getPlayer()) > 0L) {
+                    return ChatColor.YELLOW + " \u272a";
                 }
-                if (identifier.equals("hitshield")) {
-                    return Repeater.get(player.getPlayer());
+                return "";
+            }
+            if (identifier.equals("cb_status")) {
+                if (PlayerUtils.getCookieDurationTicks(player.getPlayer()) > 0L) {
+                    return SUtil.getFormattedTimeToDay(PlayerUtils.getCookieDurationTicks(player.getPlayer()));
                 }
-                if (identifier.equals("cookie")) {
-                    return PlayerUtils.getCookieDurationDisplay(player.getPlayer());
+                return ChatColor.RED + "Not actived!";
+            }
+            if (identifier.equals("combatlevel")) {
+                CombatSkill skill = CombatSkill.INSTANCE;
+                double xp = skill != null ? user.getSkillXP(skill) : 0.0;
+                int level = skill != null ? Skill.getLevel(xp, ((Skill)skill).hasSixtyLevels()) : 0;
+                return String.valueOf(level);
+            }
+            if (identifier.equals("theendlvl")) {
+                int level;
+                CombatSkill skill = CombatSkill.INSTANCE;
+                double xp = skill != null ? user.getSkillXP(skill) : 0.0;
+                int n2 = level = skill != null ? Skill.getLevel(xp, ((Skill)skill).hasSixtyLevels()) : 0;
+                if (level >= 5) {
+                    return "true";
                 }
-                if (identifier.equals("server_name")) {
-                    return SkyBlock.getPlugin().getServerName();
+                return "false";
+            }
+            if (identifier.equals("dragonlvl")) {
+                int level;
+                CombatSkill skill = CombatSkill.INSTANCE;
+                double xp = skill != null ? user.getSkillXP(skill) : 0.0;
+                int n3 = level = skill != null ? Skill.getLevel(xp, ((Skill)skill).hasSixtyLevels()) : 0;
+                if (level >= 6) {
+                    return "true";
                 }
-                if (identifier.equals("server_date")) {
-                    return SUtil.getDate();
-                }
-                if (identifier.equals("badge")) {
-                    if (PlayerUtils.getCookieDurationTicks(player.getPlayer()) > 0L) {
-                        return ChatColor.YELLOW + " ✪";
-                    }
-                    return "";
-                } else if (identifier.equals("cb_status")) {
-                    if (PlayerUtils.getCookieDurationTicks(player.getPlayer()) > 0L) {
-                        return SUtil.getFormattedTimeToDay(PlayerUtils.getCookieDurationTicks(player.getPlayer()));
-                    }
-                    return ChatColor.RED + "Not actived!";
-                } else {
-                    if (identifier.equals("combatlevel")) {
-                        final Skill skill = CombatSkill.INSTANCE;
-                        final double xp = (skill != null) ? user.getSkillXP(skill) : 0.0;
-                        final int level = (skill != null) ? Skill.getLevel(xp, skill.hasSixtyLevels()) : 0;
-                        return String.valueOf(level);
-                    }
-                    if (identifier.equals("theendlvl")) {
-                        final Skill skill = CombatSkill.INSTANCE;
-                        final double xp = (skill != null) ? user.getSkillXP(skill) : 0.0;
-                        final int level = (skill != null) ? Skill.getLevel(xp, skill.hasSixtyLevels()) : 0;
-                        if (level >= 5) {
-                            return "true";
-                        }
-                        return "false";
-                    } else if (identifier.equals("dragonlvl")) {
-                        final Skill skill = CombatSkill.INSTANCE;
-                        final double xp = (skill != null) ? user.getSkillXP(skill) : 0.0;
-                        final int level = (skill != null) ? Skill.getLevel(xp, skill.hasSixtyLevels()) : 0;
-                        if (level >= 6) {
-                            return "true";
-                        }
-                        return "false";
-                    }
-                }
+                return "false";
             }
         }
         if (identifier.equals("info")) {
@@ -165,41 +181,41 @@ public class SkyblockPlaceholder extends PlaceholderExpansion {
         return null;
     }
 
-    public String findPet(final OfflinePlayer player) {
-        final Pet.PetItem active = User.getUser(player.getUniqueId()).getActivePet();
-        final Pet petclass = User.getUser(player.getUniqueId()).getActivePetClass();
+    public String findPet(OfflinePlayer player) {
+        Pet.PetItem active = User.getUser(player.getUniqueId()).getActivePet();
+        Pet petclass = User.getUser(player.getUniqueId()).getActivePetClass();
         String displayname = Sputnik.trans("&cNone");
         if (active != null && petclass != null) {
-            final int level = Pet.getLevel(active.getXp(), active.getRarity());
+            int level = Pet.getLevel(active.getXp(), active.getRarity());
             displayname = Sputnik.trans("&7[Lvl " + level + "&7] " + active.toItem().getRarity().getColor() + petclass.getDisplayName());
         }
         return displayname;
     }
 
-    public Pet.PetItem findPetClass(final OfflinePlayer player) {
-        final Pet.PetItem active = User.getUser(player.getUniqueId()).getActivePet();
-        final Pet petclass = User.getUser(player.getUniqueId()).getActivePetClass();
-        final String displayname = Sputnik.trans("&cNone");
+    public Pet.PetItem findPetClass(OfflinePlayer player) {
+        Pet.PetItem active = User.getUser(player.getUniqueId()).getActivePet();
+        Pet petclass = User.getUser(player.getUniqueId()).getActivePetClass();
+        String displayname = Sputnik.trans("&cNone");
         if (active != null && petclass != null) {
             return active;
         }
         return null;
     }
 
-    public Pet findPetClassA(final OfflinePlayer player) {
-        final Pet.PetItem active = User.getUser(player.getUniqueId()).getActivePet();
-        final Pet petclass = User.getUser(player.getUniqueId()).getActivePetClass();
-        final String displayname = Sputnik.trans("&cNone");
+    public Pet findPetClassA(OfflinePlayer player) {
+        Pet.PetItem active = User.getUser(player.getUniqueId()).getActivePet();
+        Pet petclass = User.getUser(player.getUniqueId()).getActivePetClass();
+        String displayname = Sputnik.trans("&cNone");
         if (active != null && petclass != null) {
             return petclass;
         }
         return null;
     }
 
-    public String getEffectLoop(final OfflinePlayer player) {
+    public String getEffectLoop(OfflinePlayer player) {
         String returnString = Sputnik.trans(" &7No active effects. Drink Potions or splash \nthem to the ground to buff yourself.");
-        final User user = User.getUser(player.getUniqueId());
-        List<ActivePotionEffect> pte = new ArrayList<ActivePotionEffect>();
+        User user = User.getUser(player.getUniqueId());
+        ArrayList<ActivePotionEffect> pte = new ArrayList();
         if (user != null) {
             pte = user.getEffects();
             if (user.getEffects().size() > 0) {
@@ -209,16 +225,13 @@ public class SkyblockPlaceholder extends PlaceholderExpansion {
         return returnString;
     }
 
-    public String a(final User user, final List<ActivePotionEffect> pte) {
-        final ActivePotionEffect effect = pte.get(Math.min(pte.size(), Repeater.PTN_CACHE.get(user.getUuid())));
-        SkyblockPlaceholder.PTE_CACHE.put(user.getUuid(), effect.getEffect().getType().getName() + " " + SUtil.toRomanNumeral(effect.getEffect().getLevel()) + " " + ChatColor.WHITE + effect.getRemainingDisplay());
-        if (SkyblockPlaceholder.PTE_CACHE.containsKey(user.getUuid())) {
-            return SkyblockPlaceholder.PTE_CACHE.get(user.getUuid());
+    public String a(User user, List<ActivePotionEffect> pte) {
+        ActivePotionEffect effect = pte.get(Math.min(pte.size(), Repeater.PTN_CACHE.get(user.getUuid())));
+        PTE_CACHE.put(user.getUuid(), effect.getEffect().getType().getName() + " " + SUtil.toRomanNumeral(effect.getEffect().getLevel()) + " " + ChatColor.WHITE + effect.getRemainingDisplay());
+        if (PTE_CACHE.containsKey(user.getUuid())) {
+            return PTE_CACHE.get(user.getUuid());
         }
         return "";
     }
-
-    static {
-        PTE_CACHE = new HashMap<UUID, String>();
-    }
 }
+

@@ -1,35 +1,36 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.util;
-
-import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.UUID;
+import org.bukkit.entity.Player;
 
 public class TradeUtil {
-    private static HashMap<UUID, UUID> tradeReq;
-    public static final HashMap<UUID, Boolean> trading;
+    private static HashMap<UUID, UUID> tradeReq = new HashMap();
+    public static final HashMap<UUID, Boolean> trading = new HashMap();
 
-    public static boolean hasRequest(final Player p, final Player requester) {
-        return TradeUtil.tradeReq.containsKey(requester.getUniqueId()) && TradeUtil.tradeReq.get(requester.getUniqueId()) == p.getUniqueId();
+    public static boolean hasRequest(Player p2, Player requester) {
+        return tradeReq.containsKey(requester.getUniqueId()) && tradeReq.get(requester.getUniqueId()) == p2.getUniqueId();
     }
 
-    public static void requestTrade(final Player requester, final Player p) {
-        TradeUtil.tradeReq.put(requester.getUniqueId(), p.getUniqueId());
+    public static void requestTrade(Player requester, Player p2) {
+        tradeReq.put(requester.getUniqueId(), p2.getUniqueId());
     }
 
-    public static void resetTrade(final Player requester) {
-        TradeUtil.tradeReq.remove(requester.getUniqueId());
+    public static void resetTrade(Player requester) {
+        tradeReq.remove(requester.getUniqueId());
     }
 
-    public static boolean isTrading(final Player req) {
-        if (!TradeUtil.trading.containsKey(req.getUniqueId())) {
-            TradeUtil.trading.put(req.getUniqueId(), false);
+    public static boolean isTrading(Player req) {
+        if (!trading.containsKey(req.getUniqueId())) {
+            trading.put(req.getUniqueId(), false);
         }
-        return TradeUtil.trading.get(req.getUniqueId());
-    }
-
-    static {
-        TradeUtil.tradeReq = new HashMap<UUID, UUID>();
-        trading = new HashMap<UUID, Boolean>();
+        return trading.get(req.getUniqueId());
     }
 }
+

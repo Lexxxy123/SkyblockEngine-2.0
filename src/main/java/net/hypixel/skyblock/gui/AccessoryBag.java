@@ -1,29 +1,32 @@
 /*
- * Copyright (C) 2023 by Ruby Game Studios
- * Skyblock is licensed under the Creative Commons Non-Commercial 4.0 International License.
- *
- * You may not use this software for commercial use, however you are free
- * to modify, copy, redistribute, or build upon our codebase. You must give
- * appropriate credit, provide a link to the license, and indicate
- * if changes were made.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
- * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
- * For more information, visit https://creativecommons.org/licenses/by-nc/4.0/legalcode
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  lombok.NonNull
+ *  org.bukkit.Material
+ *  org.bukkit.Sound
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.inventory.InventoryClickEvent
+ *  org.bukkit.event.inventory.InventoryCloseEvent
+ *  org.bukkit.inventory.Inventory
+ *  org.bukkit.inventory.ItemStack
+ *  org.bukkit.inventory.PlayerInventory
  */
 package net.hypixel.skyblock.gui;
 
-
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.IntStream;
 import lombok.NonNull;
-import lombok.SneakyThrows;
-
 import net.hypixel.skyblock.api.serializer.BukkitSerializeClass;
 import net.hypixel.skyblock.config.Config;
+import net.hypixel.skyblock.gui.AccessoryReforges;
+import net.hypixel.skyblock.gui.GUI;
+import net.hypixel.skyblock.gui.GUIClickableItem;
+import net.hypixel.skyblock.gui.GUIOpenEvent;
 import net.hypixel.skyblock.item.GenericItemType;
 import net.hypixel.skyblock.item.ItemListener;
 import net.hypixel.skyblock.item.SItem;
@@ -39,18 +42,11 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-
 import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.IntStream;
-
-public class AccessoryBag extends GUI{
+public class AccessoryBag
+extends GUI {
     private int page;
     private int maxSlot;
     private int closePos;
@@ -61,147 +57,122 @@ public class AccessoryBag extends GUI{
         super("Accessory Bag", size);
         this.page = page;
         this.maxSlot = maxSlot;
-
-        for (int i = 0; i < size; i++) {
-            if (i >= maxSlot) {
-                set(i, BLACK_STAINED_GLASS_PANE);
-            }
+        for (int i2 = 0; i2 < size; ++i2) {
+            if (i2 < maxSlot) continue;
+            this.set(i2, BLACK_STAINED_GLASS_PANE);
         }
-
         this.closePos = closePos;
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e) {
-        inventory = e.getInventory();
-        player = e.getPlayer();
-        loadPage();
+    public void onOpen(GUIOpenEvent e2) {
+        this.inventory = e2.getInventory();
+        this.player = e2.getPlayer();
+        this.loadPage();
     }
 
-    @SneakyThrows
     @Override
-    public void onClose(InventoryCloseEvent e) {
-        savePage();
-        ItemListener.updateStatistics(player);
+    public void onClose(InventoryCloseEvent e2) {
+        this.savePage();
+        ItemListener.updateStatistics(this.player);
     }
 
     @Override
     public void update(Inventory inventory) {
         this.inventory = inventory;
-        savePage();
-        ItemListener.updateStatistics(player);
+        this.savePage();
+        ItemListener.updateStatistics(this.player);
     }
 
-    @SneakyThrows
     private void savePage() {
-        if (inventory == null) {
+        if (this.inventory == null) {
             return;
         }
-
-        User user = User.getUser(player);
+        User user = User.getUser(this.player);
         File home = User.getDataDirectory();
-
         File raw = new File(home, user.getUuid() + "_accessory-bag.yml");
         if (!raw.exists()) {
             raw.createNewFile();
             SLog.info("Creating new Accessory Bag for player " + user.getUuid());
         }
-
         Config file = new Config(home, user.getUuid() + "_accessory-bag.yml");
-
-        List<ItemStack> items = new ArrayList<>();
-        for (int i = 0; i < inventory.getSize(); i++) {
-            if (i > maxSlot || i == closePos || i == closePos - 1 || i == closePos + 1) {
-                continue;
-            }
-
-            items.add(inventory.getItem(i));
+        ArrayList<ItemStack> items = new ArrayList<ItemStack>();
+        for (int i2 = 0; i2 < this.inventory.getSize(); ++i2) {
+            if (i2 > this.maxSlot || i2 == this.closePos || i2 == this.closePos - 1 || i2 == this.closePos + 1) continue;
+            items.add(this.inventory.getItem(i2));
         }
-
-        file.set("bag.page." + SUtil.numToStr[page], BukkitSerializeClass.itemStackArrayToBase64(items.toArray(new ItemStack[0])));
+        file.set("bag.page." + SUtil.numToStr[this.page], BukkitSerializeClass.itemStackArrayToBase64(items.toArray(new ItemStack[0])));
         file.save();
     }
 
-    @SneakyThrows
     public static void setAccessories(@NonNull Player player, int page, List<ItemStack> accessories) {
+        if (player == null) {
+            throw new NullPointerException("player is marked non-null but is null");
+        }
         User user = User.getUser(player);
         File home = User.getDataDirectory();
-
         File raw = new File(home, user.getUuid() + "_accessory-bag.yml");
         if (!raw.exists()) {
             raw.createNewFile();
         }
-
         Config file = new Config(home, user.getUuid() + "_accessory-bag.yml");
-
         file.set("bag.page." + SUtil.numToStr[page], BukkitSerializeClass.itemStackArrayToBase64(accessories.toArray(new ItemStack[0])));
         file.save();
-
         ItemListener.updateStatistics(player);
     }
 
-    public static @Nullable List<ItemStack> getAccessories(@NonNull Player player, int page) {
+    @Nullable
+    public static List<ItemStack> getAccessories(@NonNull Player player, int page) {
+        if (player == null) {
+            throw new NullPointerException("player is marked non-null but is null");
+        }
         User user = User.getUser(player);
         File home = User.getDataDirectory();
-
         File raw = new File(home, user.getUuid() + "_accessory-bag.yml");
         if (!raw.exists()) {
             return null;
         }
-
         Config file = new Config(home, user.getUuid() + "_accessory-bag.yml");
-
         List<ItemStack> items = null;
         try {
             items = Arrays.asList(BukkitSerializeClass.itemStackArrayFromBase64(file.getString("bag.page." + SUtil.numToStr[page])));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (IOException e2) {
+            throw new RuntimeException(e2);
         }
         if (items == null || items.isEmpty()) {
             return null;
         }
-
-        List<ItemStack> filtered = new ArrayList<>();
-
+        ArrayList<ItemStack> filtered = new ArrayList<ItemStack>();
         for (ItemStack item : items) {
-            if (item == null) {
-                continue;
-            }
-
-            if (item.getType().equals(Material.SKULL_ITEM)) {
-                filtered.add(item);
-            }
+            if (item == null || !item.getType().equals((Object)Material.SKULL_ITEM)) continue;
+            filtered.add(item);
         }
-
         return filtered;
     }
 
     private void loadPage() {
-        User user = User.getUser(player);
+        User user = User.getUser(this.player);
         File home = User.getDataDirectory();
-
         File raw = new File(home, user.getUuid() + "_accessory-bag.yml");
         if (!raw.exists()) {
             return;
         }
-
         Config file = new Config(home, user.getUuid() + "_accessory-bag.yml");
         List<ItemStack> items = null;
         try {
-            items = Arrays.asList(BukkitSerializeClass.itemStackArrayFromBase64(file.getString("bag.page." + SUtil.numToStr[page])));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            items = Arrays.asList(BukkitSerializeClass.itemStackArrayFromBase64(file.getString("bag.page." + SUtil.numToStr[this.page])));
+        } catch (IOException e2) {
+            throw new RuntimeException(e2);
         }
-
         try {
             List<ItemStack> finalItems = items;
-            IntStream.range(0, maxSlot).forEach(slot -> {
-                ItemStack vanilla = finalItems.get(slot);
-                set(new GUIClickableItem() {
+            IntStream.range(0, this.maxSlot).forEach(slot -> {
+                final ItemStack vanilla = (ItemStack)finalItems.get(slot);
+                this.set(new GUIClickableItem(){
 
                     @Override
-                    public void run(InventoryClickEvent e) {
-                        update(inventory);
+                    public void run(InventoryClickEvent e2) {
+                        AccessoryBag.this.update(AccessoryBag.this.inventory);
                     }
 
                     @Override
@@ -220,121 +191,97 @@ public class AccessoryBag extends GUI{
                     }
                 });
             });
-        } catch (ArrayIndexOutOfBoundsException e) {
-            SLog.info(e);
+        } catch (ArrayIndexOutOfBoundsException e3) {
+            SLog.info(e3);
         }
-
-        set(GUIClickableItem.getCloseItem(closePos));
-        set(new GUIClickableItem() {
+        this.set(GUIClickableItem.getCloseItem(this.closePos));
+        this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
-                e.getWhoClicked().closeInventory();
-                SUtil.delay(() -> {
-                    new AccessoryReforges().open(player);
-                }, 5);
+            public void run(InventoryClickEvent e2) {
+                e2.getWhoClicked().closeInventory();
+                SUtil.delay(() -> new AccessoryReforges().open(AccessoryBag.this.player), 5L);
             }
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(Sputnik.trans("&aReforge All"), Material.IRON_INGOT, (short) 0, 1,
-                        Sputnik.trans4("&7Reforge all your &dAccessories&7 all",
-                        "&7in one click!",
-                        "&7",
-                        "&eClick to Open!")
-                );
+                return SUtil.getStack(Sputnik.trans("&aReforge All"), Material.IRON_INGOT, (short)0, 1, Sputnik.trans4("&7Reforge all your &dAccessories&7 all", "&7in one click!", "&7", "&eClick to Open!"));
             }
 
             @Override
             public int getSlot() {
-                return closePos + 1;
+                return AccessoryBag.this.closePos + 1;
             }
         });
-        set(new GUIClickableItem() {
-            @Override
-            public void run(InventoryClickEvent e) {
-                Player player = (Player) e.getWhoClicked();
+        this.set(new GUIClickableItem(){
 
+            @Override
+            public void run(InventoryClickEvent e2) {
+                Player player = (Player)e2.getWhoClicked();
                 List<SItem> accessories = PlayerUtils.getAccessories(player);
                 if (accessories == null) {
                     player.sendMessage(SUtil.color("&cYour accessory bag is empty!"));
-                    player.playSound(player.getLocation(), Sound.VILLAGER_NO, 10, 1);
+                    player.playSound(player.getLocation(), Sound.VILLAGER_NO, 10.0f, 1.0f);
                     return;
                 }
-
-                List<ItemStack> stacks = new ArrayList<>();
-
+                ArrayList<ItemStack> stacks = new ArrayList<ItemStack>();
                 for (SItem accessory : accessories) {
                     accessory.setRecombobulated(true);
                     stacks.add(accessory.getStack());
                 }
-
                 player.sendMessage(SUtil.color("&aYou recombobulated all your accessories!"));
-                player.playSound(player.getLocation(), Sound.ANVIL_USE, 10, 2);
-                savePage();
+                player.playSound(player.getLocation(), Sound.ANVIL_USE, 10.0f, 2.0f);
+                AccessoryBag.this.savePage();
                 player.closeInventory();
-
-                SUtil.delay(() -> setAccessories(player, page, stacks), 10);
-                SUtil.delay(() -> new AccessoryBag(page, size, maxSlot, closePos).open(player), 15);
+                SUtil.delay(() -> AccessoryBag.setAccessories(player, AccessoryBag.this.page, stacks), 10L);
+                SUtil.delay(() -> new AccessoryBag(AccessoryBag.this.page, AccessoryBag.this.size, AccessoryBag.this.maxSlot, AccessoryBag.this.closePos).open(player), 15L);
             }
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getSkullURLStack(Sputnik.trans("&aRecombobulate All"), "57ccd36dc8f72adcb1f8c8e61ee82cd96ead140cf2a16a1366be9b5a8e3cc3fc", 1,
-                        Sputnik.trans4("&7Automatically recombobulates all",
-                        "&7your &dAccessories&7 in one click!",
-                        "&7",
-                        "&eClick to Upgrade!")
-                );
+                return SUtil.getSkullURLStack(Sputnik.trans("&aRecombobulate All"), "57ccd36dc8f72adcb1f8c8e61ee82cd96ead140cf2a16a1366be9b5a8e3cc3fc", 1, Sputnik.trans4("&7Automatically recombobulates all", "&7your &dAccessories&7 in one click!", "&7", "&eClick to Upgrade!"));
             }
 
             @Override
             public int getSlot() {
-                return closePos - 1;
+                return AccessoryBag.this.closePos - 1;
             }
         });
     }
 
     @Override
-    public void onBottomClick(InventoryClickEvent e) {
-       // update(inventory);
-
-        ItemStack selected = e.getCurrentItem();
+    public void onBottomClick(InventoryClickEvent e2) {
+        List<ItemStack> accessories;
+        ItemStack selected = e2.getCurrentItem();
         if (selected == null) {
             return;
         }
         if (selected.getType() == Material.AIR) {
             return;
         }
-
         SItem item = SItem.find(selected);
         if (item == null) {
             item = SItem.convert(selected);
         }
-
-        if (!SUtil.getItemType(item.getType()).equals(GenericItemType.ACCESSORY)) {
-            e.setCancelled(true);
-            player.sendMessage(SUtil.color("&cYou cannot put this item in the accessory bag!"));
-            player.playSound(player.getLocation(), Sound.VILLAGER_NO, 10, 1);
+        if (!SUtil.getItemType(item.getType()).equals((Object)GenericItemType.ACCESSORY)) {
+            e2.setCancelled(true);
+            this.player.sendMessage(SUtil.color("&cYou cannot put this item in the accessory bag!"));
+            this.player.playSound(this.player.getLocation(), Sound.VILLAGER_NO, 10.0f, 1.0f);
         }
-
-        List<ItemStack> accessories = getAccessories(player, page);
-        if (accessories != null) {
+        if ((accessories = AccessoryBag.getAccessories(this.player, this.page)) != null) {
             for (ItemStack stack : accessories) {
-                if (stack == null) continue;
-                if (stack.getType().equals(Material.AIR)) continue;
-
+                if (stack == null || stack.getType().equals((Object)Material.AIR)) continue;
                 SItem accessory = SItem.find(stack);
-
-                if (item.getType().equals(accessory.getType())) {
-                    e.setCancelled(true);
-                    player.sendMessage(SUtil.color("&cAn accessory of this type is already in the bag!"));
-                    player.playSound(player.getLocation(), Sound.VILLAGER_NO, 10, 1);
+                if (item.getType().equals((Object)accessory.getType())) {
+                    e2.setCancelled(true);
+                    this.player.sendMessage(SUtil.color("&cAn accessory of this type is already in the bag!"));
+                    this.player.playSound(this.player.getLocation(), Sound.VILLAGER_NO, 10.0f, 1.0f);
                 }
-                PlayerInventory inv = e.getWhoClicked().getInventory();
+                PlayerInventory inv = e2.getWhoClicked().getInventory();
                 inv.remove(item.getStack());
-                inventory.addItem(item.getStack());
+                this.inventory.addItem(new ItemStack[]{item.getStack()});
             }
         }
     }
 }
+

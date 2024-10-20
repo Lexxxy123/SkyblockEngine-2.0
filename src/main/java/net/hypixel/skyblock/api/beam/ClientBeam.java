@@ -1,12 +1,22 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Location
+ *  org.bukkit.entity.Player
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.scheduler.BukkitRunnable
+ */
 package net.hypixel.skyblock.api.beam;
 
 import com.google.common.base.Preconditions;
+import java.util.UUID;
 import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.api.beam.LocationTargetBeam;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.UUID;
 
 public class ClientBeam {
     private final UUID worldUID;
@@ -20,15 +30,15 @@ public class ClientBeam {
     private boolean isViewing;
     private BukkitRunnable runnable;
 
-    public ClientBeam(final Player player, final Location startingPosition, final Location endingPosition) {
+    public ClientBeam(Player player, Location startingPosition, Location endingPosition) {
         this(player, startingPosition, endingPosition, 100.0, 5L);
     }
 
-    public ClientBeam(final Player player, final Location startingPosition, final Location endingPosition, final double viewingRadius, final long updateDelay) {
-        Preconditions.checkNotNull((Object) player, "player cannot be null");
+    public ClientBeam(Player player, Location startingPosition, Location endingPosition, double viewingRadius, long updateDelay) {
+        Preconditions.checkNotNull(player, "player cannot be null");
         Preconditions.checkArgument(player.isOnline(), "The player must be online");
-        Preconditions.checkNotNull((Object) startingPosition, "startingPosition cannot be null");
-        Preconditions.checkNotNull((Object) endingPosition, "endingPosition cannot be null");
+        Preconditions.checkNotNull(startingPosition, "startingPosition cannot be null");
+        Preconditions.checkNotNull(endingPosition, "endingPosition cannot be null");
         Preconditions.checkState(startingPosition.getWorld().equals(endingPosition.getWorld()), "startingPosition and endingPosition must be in the same world");
         Preconditions.checkArgument(viewingRadius > 0.0, "viewingRadius must be positive");
         Preconditions.checkArgument(updateDelay >= 1L, "viewingRadius must be a natural number");
@@ -47,7 +57,8 @@ public class ClientBeam {
         Preconditions.checkState(!this.isActive, "The beam must be disabled in order to start it");
         Preconditions.checkState(this.player != null && !this.player.isOnline(), "The player must be online");
         this.isActive = true;
-        (this.runnable = new ClientBeamUpdater()).runTaskTimer(SkyBlock.getPlugin(), 0L, this.updateDelay);
+        this.runnable = new ClientBeamUpdater();
+        this.runnable.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, this.updateDelay);
     }
 
     public void stop() {
@@ -61,14 +72,14 @@ public class ClientBeam {
         this.runnable = null;
     }
 
-    public void setStartingPosition(final Location location) {
+    public void setStartingPosition(Location location) {
         Preconditions.checkArgument(location.getWorld().getUID().equals(this.worldUID), "location must be in the same world as this beam");
         Preconditions.checkState(this.player != null && !this.player.isOnline(), "The player must be online");
         this.startingPosition = location;
         this.beam.setStartingPosition(this.player, location);
     }
 
-    public void setEndingPosition(final Location location) {
+    public void setEndingPosition(Location location) {
         Preconditions.checkArgument(location.getWorld().getUID().equals(this.worldUID), "location must be in the same world as this beam");
         Preconditions.checkState(this.player != null && !this.player.isOnline(), "The player must be online");
         this.endingPosition = location;
@@ -103,13 +114,18 @@ public class ClientBeam {
         return this.isViewing;
     }
 
-    private boolean isCloseEnough(final Location location) {
+    private boolean isCloseEnough(Location location) {
         return this.startingPosition.distanceSquared(location) <= this.viewingRadiusSquared || this.endingPosition.distanceSquared(location) <= this.viewingRadiusSquared;
     }
 
-    private class ClientBeamUpdater extends BukkitRunnable {
+    private class ClientBeamUpdater
+    extends BukkitRunnable {
+        private ClientBeamUpdater() {
+        }
+
         public void run() {
             ClientBeam.this.update();
         }
     }
 }
+

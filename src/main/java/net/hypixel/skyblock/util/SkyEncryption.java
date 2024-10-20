@@ -1,12 +1,15 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.util;
 
+import java.nio.charset.StandardCharsets;
+import java.security.spec.KeySpec;
+import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
-import java.nio.charset.StandardCharsets;
-import java.security.spec.KeySpec;
-import java.util.Base64;
 
 public class SkyEncryption {
     private static final String UNICODE_FORMAT = "UTF8";
@@ -21,7 +24,7 @@ public class SkyEncryption {
 
     public SkyEncryption() throws Exception {
         this.myEncryptionKey = "ThisIsSpartaThisIsSparta";
-        this.myEncryptionScheme = "DESede";
+        this.myEncryptionScheme = DESEDE_ENCRYPTION_SCHEME;
         this.arrayBytes = this.myEncryptionKey.getBytes(StandardCharsets.UTF_8);
         this.ks = new DESedeKeySpec(this.arrayBytes);
         this.skf = SecretKeyFactory.getInstance(this.myEncryptionScheme);
@@ -29,29 +32,30 @@ public class SkyEncryption {
         this.key = this.skf.generateSecret(this.ks);
     }
 
-    public String encrypt(final String unencryptedString) {
+    public String encrypt(String unencryptedString) {
         String encryptedString = null;
         try {
             this.cipher.init(1, this.key);
-            final byte[] plainText = unencryptedString.getBytes(StandardCharsets.UTF_8);
-            final byte[] encryptedText = this.cipher.doFinal(plainText);
+            byte[] plainText = unencryptedString.getBytes(StandardCharsets.UTF_8);
+            byte[] encryptedText = this.cipher.doFinal(plainText);
             encryptedString = new String(Base64.getEncoder().encode(encryptedText));
-        } catch (final Exception e) {
-            e.printStackTrace();
+        } catch (Exception e2) {
+            e2.printStackTrace();
         }
         return encryptedString;
     }
 
-    public String decrypt(final String encryptedString) {
+    public String decrypt(String encryptedString) {
         String decryptedText = null;
         try {
             this.cipher.init(2, this.key);
-            final byte[] encryptedText = Base64.getDecoder().decode(encryptedString);
-            final byte[] plainText = this.cipher.doFinal(encryptedText);
+            byte[] encryptedText = Base64.getDecoder().decode(encryptedString);
+            byte[] plainText = this.cipher.doFinal(encryptedText);
             decryptedText = new String(plainText);
-        } catch (final Exception e) {
-            e.printStackTrace();
+        } catch (Exception e2) {
+            e2.printStackTrace();
         }
         return decryptedText;
     }
 }
+

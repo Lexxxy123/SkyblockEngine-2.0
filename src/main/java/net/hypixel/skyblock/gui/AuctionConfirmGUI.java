@@ -1,7 +1,21 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ *  org.bukkit.Material
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.inventory.InventoryClickEvent
+ *  org.bukkit.inventory.ItemStack
+ */
 package net.hypixel.skyblock.gui;
 
 import net.hypixel.skyblock.features.auction.AuctionEscrow;
 import net.hypixel.skyblock.features.auction.AuctionItem;
+import net.hypixel.skyblock.gui.AuctionViewGUI;
+import net.hypixel.skyblock.gui.GUI;
+import net.hypixel.skyblock.gui.GUIClickableItem;
+import net.hypixel.skyblock.gui.GUIOpenEvent;
 import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
@@ -10,23 +24,25 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class AuctionConfirmGUI extends GUI {
+public class AuctionConfirmGUI
+extends GUI {
     public AuctionConfirmGUI() {
         super("Confirm", 27);
     }
 
     @Override
-    public void onOpen(final GUIOpenEvent e) {
-        final Player player = e.getPlayer();
-        final User user = User.getUser(e.getPlayer().getUniqueId());
+    public void onOpen(GUIOpenEvent e2) {
+        final Player player = e2.getPlayer();
+        final User user = User.getUser(e2.getPlayer().getUniqueId());
         final AuctionEscrow escrow = user.getAuctionEscrow();
         if (escrow == null) {
             return;
         }
-        this.set(new GUIClickableItem() {
+        this.set(new GUIClickableItem(){
+
             @Override
-            public void run(final InventoryClickEvent e) {
-                final AuctionItem item = AuctionItem.createAuction(escrow.getItem(), escrow.getStarter(), System.currentTimeMillis() + escrow.getDuration(), user.getUuid(), user.isAuctionCreationBIN());
+            public void run(InventoryClickEvent e2) {
+                AuctionItem item = AuctionItem.createAuction(escrow.getItem(), escrow.getStarter(), System.currentTimeMillis() + escrow.getDuration(), user.getUuid(), user.isAuctionCreationBIN());
                 user.subCoins(escrow.getCreationFee(user.isAuctionCreationBIN()));
                 user.setAuctionEscrow(new AuctionEscrow());
                 new AuctionViewGUI(item).open(player);
@@ -34,8 +50,8 @@ public class AuctionConfirmGUI extends GUI {
 
             @Override
             public ItemStack getItem() {
-                final int count = escrow.getItem().getStack().getAmount();
-                return SUtil.getStack(ChatColor.GREEN + "Confirm", Material.STAINED_CLAY, (short) 13, 1, ChatColor.GRAY + "Auctioning: " + ((count != 1) ? (count + "x ") : "") + escrow.getItem().getFullName(), ChatColor.GRAY + "Cost: " + ChatColor.GOLD + escrow.getCreationFee(user.isAuctionCreationBIN()) + " coins");
+                int count = escrow.getItem().getStack().getAmount();
+                return SUtil.getStack(ChatColor.GREEN + "Confirm", Material.STAINED_CLAY, (short)13, 1, ChatColor.GRAY + "Auctioning: " + (count != 1 ? count + "x " : "") + escrow.getItem().getFullName(), ChatColor.GRAY + "Cost: " + ChatColor.GOLD + escrow.getCreationFee(user.isAuctionCreationBIN()) + " coins");
             }
 
             @Override
@@ -43,15 +59,16 @@ public class AuctionConfirmGUI extends GUI {
                 return 11;
             }
         });
-        this.set(new GUIClickableItem() {
+        this.set(new GUIClickableItem(){
+
             @Override
-            public void run(final InventoryClickEvent e) {
-                e.getWhoClicked().closeInventory();
+            public void run(InventoryClickEvent e2) {
+                e2.getWhoClicked().closeInventory();
             }
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.RED + "Cancel", Material.STAINED_CLAY, (short) 14, 1);
+                return SUtil.getStack(ChatColor.RED + "Cancel", Material.STAINED_CLAY, (short)14, 1, new String[0]);
             }
 
             @Override
@@ -61,3 +78,4 @@ public class AuctionConfirmGUI extends GUI {
         });
     }
 }
+

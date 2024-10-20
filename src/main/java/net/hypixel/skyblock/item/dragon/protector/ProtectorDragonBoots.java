@@ -1,3 +1,6 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.dragon.protector;
 
 import net.hypixel.skyblock.item.GenericItemType;
@@ -6,7 +9,9 @@ import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.SpecificItemType;
 import net.hypixel.skyblock.item.armor.LeatherArmorStatistics;
 
-public class ProtectorDragonBoots implements MaterialFunction, LeatherArmorStatistics {
+public class ProtectorDragonBoots
+implements MaterialFunction,
+LeatherArmorStatistics {
     @Override
     public double getBaseHealth() {
         return 60.0;
@@ -47,3 +52,4 @@ public class ProtectorDragonBoots implements MaterialFunction, LeatherArmorStati
         return null;
     }
 }
+

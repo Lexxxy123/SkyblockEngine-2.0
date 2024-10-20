@@ -1,13 +1,19 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.features.skill;
-
-import net.hypixel.skyblock.user.User;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import net.hypixel.skyblock.features.skill.DungeonsSkill;
+import net.hypixel.skyblock.features.skill.Skill;
+import net.hypixel.skyblock.user.User;
 
-public class BerserkSkill extends Skill implements DungeonsSkill {
-    public static final BerserkSkill INSTANCE;
+public class BerserkSkill
+extends Skill
+implements DungeonsSkill {
+    public static final BerserkSkill INSTANCE = new BerserkSkill();
 
     @Override
     public String getName() {
@@ -25,7 +31,7 @@ public class BerserkSkill extends Skill implements DungeonsSkill {
     }
 
     @Override
-    public List<String> getLevelUpInformation(final int level, final int lastLevel, final boolean showOld) {
+    public List<String> getLevelUpInformation(int level, int lastLevel, boolean showOld) {
         return Collections.singletonList("");
     }
 
@@ -35,35 +41,32 @@ public class BerserkSkill extends Skill implements DungeonsSkill {
     }
 
     @Override
-    public void onSkillUpdate(final User user, final double previousXP) {
+    public void onSkillUpdate(User user, double previousXP) {
         super.onSkillUpdate(user, previousXP);
     }
 
     @Override
     public List<String> getPassive() {
-        final List<String> t = new ArrayList<String>();
-        t.add("Bloodlust");
-        t.add("Lust for Blood");
-        return t;
+        ArrayList<String> t2 = new ArrayList<String>();
+        t2.add("Bloodlust");
+        t2.add("Lust for Blood");
+        return t2;
     }
 
     @Override
     public List<String> getOrb() {
-        final List<String> t = new ArrayList<String>();
-        t.add("Throwing Axe");
-        t.add("Ragnagrok");
-        return t;
+        ArrayList<String> t2 = new ArrayList<String>();
+        t2.add("Throwing Axe");
+        t2.add("Ragnagrok");
+        return t2;
     }
 
     @Override
     public List<String> getGhost() {
-        final List<String> t = new ArrayList<String>();
-        t.add("Throwing Axe");
-        t.add("Strength Potion");
-        return t;
-    }
-
-    static {
-        INSTANCE = new BerserkSkill();
+        ArrayList<String> t2 = new ArrayList<String>();
+        t2.add("Throwing Axe");
+        t2.add("Strength Potion");
+        return t2;
     }
 }
+

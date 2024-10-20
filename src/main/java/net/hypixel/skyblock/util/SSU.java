@@ -1,6 +1,25 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.minecraft.server.v1_8_R3.Entity
+ *  net.minecraft.server.v1_8_R3.EntityFireworks
+ *  net.minecraft.server.v1_8_R3.Packet
+ *  net.minecraft.server.v1_8_R3.PacketPlayOutEntityStatus
+ *  net.minecraft.server.v1_8_R3.World
+ *  org.bukkit.FireworkEffect
+ *  org.bukkit.Location
+ *  org.bukkit.craftbukkit.v1_8_R3.CraftWorld
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
+ *  org.bukkit.entity.Firework
+ *  org.bukkit.entity.Player
+ *  org.bukkit.inventory.meta.FireworkMeta
+ */
 package net.hypixel.skyblock.util;
 
+import net.minecraft.server.v1_8_R3.Entity;
 import net.minecraft.server.v1_8_R3.EntityFireworks;
+import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityStatus;
 import net.minecraft.server.v1_8_R3.World;
 import org.bukkit.FireworkEffect;
@@ -11,16 +30,15 @@ import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 
-public class SSU extends EntityFireworks {
-    Player[] players;
-    boolean gone;
+public class SSU
+extends EntityFireworks {
+    Player[] players = null;
+    boolean gone = false;
 
-    public SSU(final World world, final Player... p) {
+    public SSU(World world, Player ... p2) {
         super(world);
-        this.players = null;
-        this.gone = false;
-        this.players = p;
-        this.a(0.25f, 0.25f);
+        this.players = p2;
+        this.a(new float[]{0.25f, 0.25f});
     }
 
     public void t_() {
@@ -31,29 +49,30 @@ public class SSU extends EntityFireworks {
             this.gone = true;
             if (this.players != null) {
                 if (this.players.length > 0) {
-                    for (final Player player : this.players) {
-                        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityStatus(this, (byte) 17));
+                    for (Player player : this.players) {
+                        ((CraftPlayer)player).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutEntityStatus((Entity)this, 17));
                     }
                 } else {
-                    this.world.broadcastEntityEffect(this, (byte) 17);
+                    this.world.broadcastEntityEffect((Entity)this, (byte)17);
                 }
             }
             this.die();
         }
     }
 
-    public static void spawn(final Location location, final FireworkEffect effect, final Player... players) {
+    public static void spawn(Location location, FireworkEffect effect, Player ... players) {
         try {
-            final SSU firework = new SSU(((CraftWorld) location.getWorld()).getHandle(), players);
-            final FireworkMeta meta = ((Firework) firework.getBukkitEntity()).getFireworkMeta();
+            SSU firework = new SSU((World)((CraftWorld)location.getWorld()).getHandle(), players);
+            FireworkMeta meta = ((Firework)firework.getBukkitEntity()).getFireworkMeta();
             meta.addEffect(effect);
-            ((Firework) firework.getBukkitEntity()).setFireworkMeta(meta);
+            ((Firework)firework.getBukkitEntity()).setFireworkMeta(meta);
             firework.setPosition(location.getX(), location.getY(), location.getZ());
-            if (((CraftWorld) location.getWorld()).getHandle().addEntity(firework)) {
+            if (((CraftWorld)location.getWorld()).getHandle().addEntity((Entity)firework)) {
                 firework.setInvisible(true);
             }
-        } catch (final Exception e) {
-            e.printStackTrace();
+        } catch (Exception e2) {
+            e2.printStackTrace();
         }
     }
 }
+

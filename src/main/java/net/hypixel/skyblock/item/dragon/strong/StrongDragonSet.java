@@ -1,9 +1,17 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.dragon.strong;
 
 import net.hypixel.skyblock.item.MaterialStatistics;
 import net.hypixel.skyblock.item.armor.ArmorSet;
+import net.hypixel.skyblock.item.dragon.strong.StrongDragonBoots;
+import net.hypixel.skyblock.item.dragon.strong.StrongDragonChestplate;
+import net.hypixel.skyblock.item.dragon.strong.StrongDragonHelmet;
+import net.hypixel.skyblock.item.dragon.strong.StrongDragonLeggings;
 
-public class StrongDragonSet implements ArmorSet {
+public class StrongDragonSet
+implements ArmorSet {
     @Override
     public String getName() {
         return "Strong Blood";
@@ -34,3 +42,4 @@ public class StrongDragonSet implements ArmorSet {
         return StrongDragonBoots.class;
     }
 }
+

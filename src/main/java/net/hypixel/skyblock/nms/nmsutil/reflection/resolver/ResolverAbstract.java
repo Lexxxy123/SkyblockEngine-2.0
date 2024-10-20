@@ -1,50 +1,49 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.nms.nmsutil.reflection.resolver;
 
 import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import net.hypixel.skyblock.nms.nmsutil.reflection.resolver.ResolverQuery;
 
 public abstract class ResolverAbstract<T> {
-    protected final Map<ResolverQuery, T> resolvedObjects;
+    protected final Map<ResolverQuery, T> resolvedObjects = new ConcurrentHashMap<ResolverQuery, T>();
 
-    public ResolverAbstract() {
-        this.resolvedObjects = new ConcurrentHashMap<ResolverQuery, T>();
-    }
-
-    protected T resolveSilent(final ResolverQuery... queries) {
+    protected T resolveSilent(ResolverQuery ... queries) {
         try {
             return this.resolve(queries);
-        } catch (final Exception e) {
+        } catch (Exception e2) {
             return null;
         }
     }
 
-    protected T resolve(final ResolverQuery... queries) throws ReflectiveOperationException {
+    protected T resolve(ResolverQuery ... queries) throws ReflectiveOperationException {
         if (queries == null || queries.length <= 0) {
             throw new IllegalArgumentException("Given possibilities are empty");
         }
-        final int length = queries.length;
-        int i = 0;
-        while (i < length) {
-            final ResolverQuery query = queries[i];
+        int length = queries.length;
+        for (int i2 = 0; i2 < length; ++i2) {
+            ResolverQuery query = queries[i2];
             if (this.resolvedObjects.containsKey(query)) {
                 return this.resolvedObjects.get(query);
             }
             try {
-                final T resolved = this.resolveObject(query);
+                T resolved = this.resolveObject(query);
                 this.resolvedObjects.put(query, resolved);
                 return resolved;
-            } catch (final ReflectiveOperationException e) {
-                ++i;
+            } catch (ReflectiveOperationException e2) {
                 continue;
             }
         }
         throw this.notFoundException(Arrays.asList(queries).toString());
     }
 
-    protected abstract T resolveObject(final ResolverQuery p0) throws ReflectiveOperationException;
+    protected abstract T resolveObject(ResolverQuery var1) throws ReflectiveOperationException;
 
-    protected ReflectiveOperationException notFoundException(final String joinedNames) {
+    protected ReflectiveOperationException notFoundException(String joinedNames) {
         return new ReflectiveOperationException("Objects could not be resolved: " + joinedNames);
     }
 }
+

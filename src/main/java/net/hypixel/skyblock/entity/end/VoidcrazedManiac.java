@@ -1,14 +1,21 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.md_5.bungee.api.ChatColor
+ */
 package net.hypixel.skyblock.entity.end;
-
-import net.md_5.bungee.api.ChatColor;
-import net.hypixel.skyblock.entity.EntityDrop;
-import net.hypixel.skyblock.entity.EntityDropType;
-import net.hypixel.skyblock.item.SMaterial;
 
 import java.util.Collections;
 import java.util.List;
+import net.hypixel.skyblock.entity.EntityDrop;
+import net.hypixel.skyblock.entity.EntityDropType;
+import net.hypixel.skyblock.entity.end.BaseEnderman;
+import net.hypixel.skyblock.item.SMaterial;
+import net.md_5.bungee.api.ChatColor;
 
-public class VoidcrazedManiac extends BaseEnderman {
+public class VoidcrazedManiac
+extends BaseEnderman {
     @Override
     public String getEntityName() {
         return ChatColor.DARK_RED + "Voidcrazed Maniac";
@@ -23,11 +30,6 @@ public class VoidcrazedManiac extends BaseEnderman {
     public double getDamageDealt() {
         return 15000.0;
     }
-    
-    @Override
-    public int mobLevel() {
-        return 4330;
-    }
 
     @Override
     public double getXPDropped() {
@@ -39,3 +41,4 @@ public class VoidcrazedManiac extends BaseEnderman {
         return Collections.singletonList(new EntityDrop(SMaterial.NULL_SPHERE, EntityDropType.GUARANTEED, 1.0));
     }
 }
+

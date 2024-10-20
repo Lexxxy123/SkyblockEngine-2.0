@@ -1,3 +1,6 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item;
 
 public enum SpecificItemType {
@@ -23,11 +26,11 @@ public enum SpecificItemType {
 
     private final boolean stackable;
 
-    SpecificItemType(final boolean stackable) {
+    private SpecificItemType(boolean stackable) {
         this.stackable = stackable;
     }
 
-    SpecificItemType() {
+    private SpecificItemType() {
         this(true);
     }
 
@@ -39,3 +42,4 @@ public enum SpecificItemType {
         return this.stackable;
     }
 }
+

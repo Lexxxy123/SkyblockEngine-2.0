@@ -1,36 +1,70 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.npc.impl;
 
+import net.hypixel.skyblock.npc.impl.NPCSkin;
+import net.hypixel.skyblock.npc.impl.SkyBlockNPC;
 import net.hypixel.skyblock.npc.impl.enums.NPCType;
 import org.bukkit.entity.Player;
 
 public interface NPCParameters {
+    public static final String CLICK = "&e&lCLICK";
 
-    String name();
-    default NPCType type(){
+    public String id();
+
+    default public String name() {
+        return null;
+    }
+
+    default public NPCType type() {
         return NPCType.PLAYER;
     }
-   default String[] messages(){
-        return null;
-   }
-    String[] holograms();
-    default NPCSkin skin(){
+
+    default public String[] messages() {
         return null;
     }
-    String world();
-    double x();
-    double y();
-    double z();
-   default float yaw(){
-       return 0;
-   }
-   default float pitch(){
-       return 0;
-   }
-   String CLICK = "&e&lCLICK";
 
+    default public String[] holograms() {
+        String[] stringArray;
+        if (this.name() != null) {
+            String[] stringArray2 = new String[2];
+            stringArray2[0] = this.name();
+            stringArray = stringArray2;
+            stringArray2[1] = CLICK;
+        } else {
+            stringArray = null;
+        }
+        return stringArray;
+    }
 
-   default boolean looking(){
-       return true;
-   }
-    void onInteract(Player player , SkyblockNPC npc);
+    default public NPCSkin skin() {
+        return null;
+    }
+
+    public String world();
+
+    public double x();
+
+    public double y();
+
+    public double z();
+
+    default public float yaw() {
+        return 0.0f;
+    }
+
+    default public float pitch() {
+        return 0.0f;
+    }
+
+    default public boolean looking() {
+        return true;
+    }
+
+    public void onInteract(Player var1, SkyBlockNPC var2);
 }
+

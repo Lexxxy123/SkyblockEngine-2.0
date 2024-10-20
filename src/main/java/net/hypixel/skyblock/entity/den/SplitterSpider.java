@@ -1,10 +1,18 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.entity.Entity
+ */
 package net.hypixel.skyblock.entity.den;
 
-import org.bukkit.entity.Entity;
 import net.hypixel.skyblock.entity.SEntity;
 import net.hypixel.skyblock.entity.SEntityType;
+import net.hypixel.skyblock.entity.den.BaseSpider;
+import org.bukkit.entity.Entity;
 
-public class SplitterSpider extends BaseSpider {
+public class SplitterSpider
+extends BaseSpider {
     @Override
     public String getEntityName() {
         return "Splitter Spider";
@@ -19,11 +27,6 @@ public class SplitterSpider extends BaseSpider {
     public double getDamageDealt() {
         return 30.0;
     }
-    
-    @Override
-    public int mobLevel() {
-        return 3;
-    }
 
     @Override
     public double getXPDropped() {
@@ -31,10 +34,11 @@ public class SplitterSpider extends BaseSpider {
     }
 
     @Override
-    public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
+    public void onDeath(SEntity sEntity, Entity killed, Entity damager) {
         super.onDeath(sEntity, killed, damager);
-        for (int i = 0; i < 2; ++i) {
-            new SEntity(sEntity.getEntity(), SEntityType.SILVERFISH);
+        for (int i2 = 0; i2 < 2; ++i2) {
+            new SEntity((Entity)sEntity.getEntity(), SEntityType.SILVERFISH, new Object[0]);
         }
     }
 }
+

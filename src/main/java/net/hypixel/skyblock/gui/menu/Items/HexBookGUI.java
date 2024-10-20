@@ -1,27 +1,21 @@
 /*
- * Copyright (C) 2023 by Ruby Game Studios
- * Skyblock is licensed under the Creative Commons Non-Commercial 4.0 International License.
- *
- * You may not use this software for commercial use, however you are free
- * to modify, copy, redistribute, or build upon our codebase. You must give
- * appropriate credit, provide a link to the license, and indicate
- * if changes were made.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
- * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
- * For more information, visit https://creativecommons.org/licenses/by-nc/4.0/legalcode
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ *  org.bukkit.Material
+ *  org.bukkit.Sound
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.inventory.InventoryClickEvent
+ *  org.bukkit.event.inventory.InventoryCloseEvent
+ *  org.bukkit.inventory.ItemStack
  */
 package net.hypixel.skyblock.gui.menu.Items;
-
 
 import net.hypixel.skyblock.features.dungeons.stats.ItemSerial;
 import net.hypixel.skyblock.gui.GUI;
 import net.hypixel.skyblock.gui.GUIClickableItem;
+import net.hypixel.skyblock.gui.menu.Items.HexGUI;
 import net.hypixel.skyblock.item.GenericItemType;
 import net.hypixel.skyblock.item.MaterialStatistics;
 import net.hypixel.skyblock.item.SItem;
@@ -35,42 +29,30 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class HexBookGUI extends GUI {
+public class HexBookGUI
+extends GUI {
     private SItem item;
-
     public boolean forceclose = false;
 
-    public HexBookGUI(SItem item) {
+    public HexBookGUI(final SItem item) {
         super("The Hex -> Books", 54);
-        fill(BLACK_STAINED_GLASS_PANE);
-
+        this.fill(BLACK_STAINED_GLASS_PANE);
         this.item = item;
-
-        set(19, item.getStack());
-        set(new GUIClickableItem() {
+        this.set(19, item.getStack());
+        this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
-                e.getWhoClicked().sendMessage(SUtil.color("&d&lSUCCESS! &r&aYou applied all selected modifications to your " + item.getFullName() + "!"));
-
-                forceclose = true;
-                Player p = (Player) e.getWhoClicked();
-                p.playSound(p.getLocation(), Sound.ORB_PICKUP, 10f, 10f);
-
-                new HexGUI(p.getPlayer(), item).open(p);
+            public void run(InventoryClickEvent e2) {
+                e2.getWhoClicked().sendMessage(SUtil.color("&d&lSUCCESS! &r&aYou applied all selected modifications to your " + item.getFullName() + "!"));
+                HexBookGUI.this.forceclose = true;
+                Player p2 = (Player)e2.getWhoClicked();
+                p2.playSound(p2.getLocation(), Sound.ORB_PICKUP, 10.0f, 10.0f);
+                new HexGUI(p2.getPlayer(), item).open(p2);
             }
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(
-                        Sputnik.trans("&aApply Books And Stars"),
-                        Material.ANVIL,
-                        (short) 0,
-                        1,
-                        Sputnik.trans3("&7Knowledge is &6power&7! Apply",
-                        "&7special books to your item to",
-                        "&7upgrade it!")
-                );
+                return SUtil.getStack(Sputnik.trans("&aApply Books And Stars"), Material.ANVIL, (short)0, 1, Sputnik.trans3("&7Knowledge is &6power&7! Apply", "&7special books to your item to", "&7upgrade it!"));
             }
 
             @Override
@@ -78,41 +60,26 @@ public class HexBookGUI extends GUI {
                 return 28;
             }
         });
-
         MaterialStatistics statistics = item.getType().getStatistics();
-        if (statistics.getType().equals(GenericItemType.WEAPON) || statistics.getType().equals(GenericItemType.ARMOR) || statistics.getType().equals(GenericItemType.RANGED_WEAPON)) {
-            set(new GUIClickableItem() {
+        if (statistics.getType().equals((Object)GenericItemType.WEAPON) || statistics.getType().equals((Object)GenericItemType.ARMOR) || statistics.getType().equals((Object)GenericItemType.RANGED_WEAPON)) {
+            this.set(new GUIClickableItem(){
+
                 @Override
-                public void run(InventoryClickEvent e) {
+                public void run(InventoryClickEvent e2) {
                     int current = item.getHPBs();
                     if (current < 10) {
                         item.setHPBs(current + 1);
-                        ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.ANVIL_USE, 10, 2);
-                        e.getWhoClicked().sendMessage(SUtil.color("&aYou added 1 Hot Potato book to your item!"));
+                        ((Player)e2.getWhoClicked()).playSound(e2.getWhoClicked().getLocation(), Sound.ANVIL_USE, 10.0f, 2.0f);
+                        e2.getWhoClicked().sendMessage(SUtil.color("&aYou added 1 Hot Potato book to your item!"));
                     } else {
-                        e.getWhoClicked().sendMessage(SUtil.color("&cYou have already applied the maximum amount of Hot Potato Books to this item!"));
-                        ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.VILLAGER_NO, 10, 1);
+                        e2.getWhoClicked().sendMessage(SUtil.color("&cYou have already applied the maximum amount of Hot Potato Books to this item!"));
+                        ((Player)e2.getWhoClicked()).playSound(e2.getWhoClicked().getLocation(), Sound.VILLAGER_NO, 10.0f, 1.0f);
                     }
                 }
 
                 @Override
                 public ItemStack getItem() {
-                    return SUtil.getStack(
-                            Sputnik.trans("&5Hot Potato Book"),
-                            Material.BOOK,
-                            (short) 0,
-                            1,
-                            Sputnik.trans5("&7When applied to armor, grants",
-                            "&a+2❈ Defense&7 and &c+4❤",
-                            "&cHealth&7.",
-                            "&7",
-                            "&7When applied to weapons, grants",
-                            "&c+2❁ Strength&7 and &c+❁2"),
-                            Sputnik.trans4( "&cDamage&7.",
-                            "&7",
-                            "&7This can be applied to an item",
-                            "&7up to &a10&7 times!")
-                    );
+                    return SUtil.getStack(Sputnik.trans("&5Hot Potato Book"), Material.BOOK, (short)0, 1, Sputnik.trans5("&7When applied to armor, grants", "&a+2\u2748 Defense&7 and &c+4\u2764", "&cHealth&7.", "&7", "&7When applied to weapons, grants", "&c+2\u2741 Strength&7 and &c+\u27412"), Sputnik.trans4("&cDamage&7.", "&7", "&7This can be applied to an item", "&7up to &a10&7 times!"));
                 }
 
                 @Override
@@ -120,25 +87,26 @@ public class HexBookGUI extends GUI {
                     return 22;
                 }
             });
-
-            set(new GUIClickableItem() {
+            this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e) {
+                public void run(InventoryClickEvent e2) {
                     int amount = item.getStar();
-                    if(item.getStar() == 5) return;
+                    if (item.getStar() == 5) {
+                        return;
+                    }
                     ItemSerial is = ItemSerial.createBlank();
                     is.saveTo(item);
                     item.setDungeonsItem(true);
                     item.setStarAmount(0);
                     item.setStarAmount(item.getStar() + amount);
-                        ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.ANVIL_USE, 10, 2);
-                        e.getWhoClicked().sendMessage(SUtil.color("&aYou added 1 Star to your item!"));
+                    ((Player)e2.getWhoClicked()).playSound(e2.getWhoClicked().getLocation(), Sound.ANVIL_USE, 10.0f, 2.0f);
+                    e2.getWhoClicked().sendMessage(SUtil.color("&aYou added 1 Star to your item!"));
                 }
 
                 @Override
                 public ItemStack getItem() {
-                    return SUtil.getSkullURLStack(ChatColor.RED+"Add Star", "8216ee40593c0981ed28f5bd674879781c425ce0841b687481c4f7118bb5c3b1", 1, ChatColor.GRAY+"Add or remove stars", ChatColor.GRAY+"from your items.");
+                    return SUtil.getSkullURLStack(ChatColor.RED + "Add Star", "8216ee40593c0981ed28f5bd674879781c425ce0841b687481c4f7118bb5c3b1", 1, ChatColor.GRAY + "Add or remove stars", ChatColor.GRAY + "from your items.");
                 }
 
                 @Override
@@ -147,17 +115,13 @@ public class HexBookGUI extends GUI {
                 }
             });
         }
-
-
     }
 
     @Override
-    public void onClose(InventoryCloseEvent e){
-        if(!forceclose) {
-            if (item != null) {
-                e.getPlayer().getInventory().addItem(item.getStack());
-            }
+    public void onClose(InventoryCloseEvent e2) {
+        if (!this.forceclose && this.item != null) {
+            e2.getPlayer().getInventory().addItem(new ItemStack[]{this.item.getStack()});
         }
     }
-
 }
+

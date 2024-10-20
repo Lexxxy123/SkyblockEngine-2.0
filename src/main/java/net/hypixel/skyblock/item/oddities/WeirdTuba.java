@@ -1,14 +1,31 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Sound
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.entity.LivingEntity
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.item.oddities;
 
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.item.Ability;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.MaterialStatistics;
+import net.hypixel.skyblock.item.PlayerBoostStatistics;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.user.PlayerUtils;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import net.hypixel.skyblock.item.*;
-import net.hypixel.skyblock.user.PlayerUtils;
 
-public class WeirdTuba implements MaterialStatistics, MaterialFunction, Ability {
+public class WeirdTuba
+implements MaterialStatistics,
+MaterialFunction,
+Ability {
     @Override
     public String getAbilityName() {
         return "Howl";
@@ -25,9 +42,10 @@ public class WeirdTuba implements MaterialStatistics, MaterialFunction, Ability 
     }
 
     @Override
-    public void onAbilityUse(final Player player, final SItem sItem) {
+    public void onAbilityUse(Player player, SItem sItem) {
         player.getWorld().playSound(player.getLocation(), Sound.WOLF_HOWL, 1.0f, 1.0f);
-        PlayerUtils.boostPlayer(PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId()), new PlayerBoostStatistics() {
+        PlayerUtils.boostPlayer(PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId()), new PlayerBoostStatistics(){
+
             @Override
             public String getDisplayName() {
                 return null;
@@ -58,40 +76,40 @@ public class WeirdTuba implements MaterialStatistics, MaterialFunction, Ability 
                 return 30.0;
             }
         }, 400L);
-        for (final Entity e : player.getNearbyEntities(4.0, 4.0, 4.0)) {
-            if (e instanceof LivingEntity && e instanceof Player) {
-                PlayerUtils.boostPlayer(PlayerUtils.STATISTICS_CACHE.get(e.getUniqueId()), new PlayerBoostStatistics() {
-                    @Override
-                    public String getDisplayName() {
-                        return null;
-                    }
+        for (Entity e2 : player.getNearbyEntities(4.0, 4.0, 4.0)) {
+            if (!(e2 instanceof LivingEntity) || !(e2 instanceof Player)) continue;
+            PlayerUtils.boostPlayer(PlayerUtils.STATISTICS_CACHE.get(e2.getUniqueId()), new PlayerBoostStatistics(){
 
-                    @Override
-                    public Rarity getRarity() {
-                        return null;
-                    }
+                @Override
+                public String getDisplayName() {
+                    return null;
+                }
 
-                    @Override
-                    public String getLore() {
-                        return null;
-                    }
+                @Override
+                public Rarity getRarity() {
+                    return null;
+                }
 
-                    @Override
-                    public GenericItemType getType() {
-                        return null;
-                    }
+                @Override
+                public String getLore() {
+                    return null;
+                }
 
-                    @Override
-                    public double getBaseSpeed() {
-                        return 0.3;
-                    }
+                @Override
+                public GenericItemType getType() {
+                    return null;
+                }
 
-                    @Override
-                    public double getBaseStrength() {
-                        return 30.0;
-                    }
-                }, 400L);
-            }
+                @Override
+                public double getBaseSpeed() {
+                    return 0.3;
+                }
+
+                @Override
+                public double getBaseStrength() {
+                    return 30.0;
+                }
+            }, 400L);
         }
     }
 
@@ -120,3 +138,4 @@ public class WeirdTuba implements MaterialStatistics, MaterialFunction, Ability 
         return false;
     }
 }
+

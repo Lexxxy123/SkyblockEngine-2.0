@@ -1,3 +1,6 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.armor.eleganttux;
 
 import net.hypixel.skyblock.item.GenericItemType;
@@ -6,7 +9,9 @@ import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.SpecificItemType;
 import net.hypixel.skyblock.item.armor.LeatherArmorStatistics;
 
-public class ElegantTuxBoots implements LeatherArmorStatistics, MaterialFunction {
+public class ElegantTuxBoots
+implements LeatherArmorStatistics,
+MaterialFunction {
     @Override
     public String getDisplayName() {
         return "Elegant Tuxedo Oxfords";
@@ -44,6 +49,7 @@ public class ElegantTuxBoots implements LeatherArmorStatistics, MaterialFunction
 
     @Override
     public int getColor() {
-        return 1644825;
+        return 0x191919;
     }
 }
+

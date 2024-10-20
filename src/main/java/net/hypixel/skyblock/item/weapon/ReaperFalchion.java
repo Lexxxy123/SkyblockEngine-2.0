@@ -1,10 +1,21 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ */
 package net.hypixel.skyblock.item.weapon;
 
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.ToolStatistics;
 import org.bukkit.ChatColor;
-import net.hypixel.skyblock.item.*;
 
-public class ReaperFalchion implements ToolStatistics, MaterialFunction {
+public class ReaperFalchion
+implements ToolStatistics,
+MaterialFunction {
     @Override
     public int getBaseDamage() {
         return 120;
@@ -37,7 +48,7 @@ public class ReaperFalchion implements ToolStatistics, MaterialFunction {
 
     @Override
     public String getLore() {
-        return "Heal " + ChatColor.RED + "10" + ChatColor.RED + "❤" + ChatColor.GRAY + " per hit. Deal " + ChatColor.GREEN + "+200% " + ChatColor.GRAY + "damage to Zombies. Receive " + ChatColor.GREEN + "20% " + ChatColor.GRAY + "less damage from Zombies when held.";
+        return "Heal " + ChatColor.RED + "10" + ChatColor.RED + "\u2764" + ChatColor.GRAY + " per hit. Deal " + ChatColor.GREEN + "+200% " + ChatColor.GRAY + "damage to Zombies. Receive " + ChatColor.GREEN + "20% " + ChatColor.GRAY + "less damage from Zombies when held.";
     }
 
     @Override
@@ -45,3 +56,4 @@ public class ReaperFalchion implements ToolStatistics, MaterialFunction {
         return SpecificItemType.SWORD;
     }
 }
+

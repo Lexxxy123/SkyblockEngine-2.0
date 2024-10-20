@@ -1,8 +1,13 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.features.reforge;
 
+import net.hypixel.skyblock.features.reforge.Reforge;
 import net.hypixel.skyblock.item.RarityValue;
 
-public class OverpoweredReforge implements Reforge {
+public class OverpoweredReforge
+implements Reforge {
     @Override
     public String getName() {
         return "Overpowered";
@@ -28,3 +33,4 @@ public class OverpoweredReforge implements Reforge {
         return RarityValue.singleDouble(500.0);
     }
 }
+

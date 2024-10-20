@@ -1,43 +1,55 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Bukkit
+ *  org.bukkit.entity.Player
+ *  org.bukkit.scoreboard.DisplaySlot
+ *  org.bukkit.scoreboard.Objective
+ *  org.bukkit.scoreboard.Score
+ *  org.bukkit.scoreboard.Scoreboard
+ *  org.bukkit.scoreboard.ScoreboardManager
+ */
 package net.hypixel.skyblock.features.scoreboard;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Score;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
 
 public class Sidebar {
-    private static ScoreboardManager manager;
+    private static ScoreboardManager manager = Bukkit.getScoreboardManager();
     private final String name;
     private final String identifier;
     private final Scoreboard board;
     private final Objective obj;
     private final List<Score> scores;
 
-    public Sidebar(final String name, final String identifier) {
+    public Sidebar(String name, String identifier) {
         this.name = name;
         this.identifier = identifier;
-        this.board = Sidebar.manager.getNewScoreboard();
+        this.board = manager.getNewScoreboard();
         this.obj = this.board.registerNewObjective(identifier, "");
         this.scores = new ArrayList<Score>();
         this.obj.setDisplaySlot(DisplaySlot.SIDEBAR);
         this.obj.setDisplayName(name);
     }
 
-    public void add(final String s) {
-        final Score score = this.obj.getScore(s);
+    public void add(String s2) {
+        Score score = this.obj.getScore(s2);
         this.scores.add(0, score);
     }
 
-    public void apply(final Player player) {
-        for (int i = 0; i < this.scores.size(); ++i) {
-            this.scores.get(i).setScore(i);
+    public void apply(Player player) {
+        for (int i2 = 0; i2 < this.scores.size(); ++i2) {
+            this.scores.get(i2).setScore(i2);
         }
         player.setScoreboard(this.board);
     }
-
-    static {
-        Sidebar.manager = Bukkit.getScoreboardManager();
-    }
 }
+

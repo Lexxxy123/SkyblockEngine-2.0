@@ -1,7 +1,14 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.features.requirement.enums;
 
-import lombok.Getter;
-import net.hypixel.skyblock.features.skill.*;
+import net.hypixel.skyblock.features.skill.CombatSkill;
+import net.hypixel.skyblock.features.skill.EnchantingSkill;
+import net.hypixel.skyblock.features.skill.FarmingSkill;
+import net.hypixel.skyblock.features.skill.ForagingSkill;
+import net.hypixel.skyblock.features.skill.MiningSkill;
+import net.hypixel.skyblock.features.skill.Skill;
 
 public enum SkillType {
     COMBAT(new CombatSkill()),
@@ -10,13 +17,14 @@ public enum SkillType {
     FORAGING(new ForagingSkill()),
     MINING(new MiningSkill());
 
-
-    @Getter
     private final Skill skill;
 
-    SkillType(Skill skill){
+    private SkillType(Skill skill) {
         this.skill = skill;
     }
 
-
+    public Skill getSkill() {
+        return this.skill;
+    }
 }
+

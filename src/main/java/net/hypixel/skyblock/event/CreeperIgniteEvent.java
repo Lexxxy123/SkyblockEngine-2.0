@@ -1,39 +1,49 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.entity.Creeper
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.event.Cancellable
+ *  org.bukkit.event.HandlerList
+ *  org.bukkit.event.entity.EntityEvent
+ */
 package net.hypixel.skyblock.event;
 
 import org.bukkit.entity.Creeper;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.EntityEvent;
 
-public class CreeperIgniteEvent extends EntityEvent implements Cancellable {
-    private static final HandlerList handlers;
+public class CreeperIgniteEvent
+extends EntityEvent
+implements Cancellable {
+    private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
 
-    public CreeperIgniteEvent(final Creeper what) {
-        super(what);
+    public CreeperIgniteEvent(Creeper what) {
+        super((Entity)what);
     }
 
     public Creeper getEntity() {
-        return (Creeper) this.entity;
+        return (Creeper)this.entity;
     }
 
     public boolean isCancelled() {
         return this.cancelled;
     }
 
-    public void setCancelled(final boolean cancel) {
+    public void setCancelled(boolean cancel) {
         this.cancelled = cancel;
     }
 
     public HandlerList getHandlers() {
-        return CreeperIgniteEvent.handlers;
+        return handlers;
     }
 
     public static HandlerList getHandlerList() {
-        return CreeperIgniteEvent.handlers;
-    }
-
-    static {
-        handlers = new HandlerList();
+        return handlers;
     }
 }
+

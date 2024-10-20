@@ -1,163 +1,186 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  com.sk89q.worldedit.BlockVector
+ *  com.sk89q.worldedit.EditSession
+ *  com.sk89q.worldedit.LocalWorld
+ *  com.sk89q.worldedit.MaxChangedBlocksException
+ *  com.sk89q.worldedit.Vector
+ *  com.sk89q.worldedit.WorldEdit
+ *  com.sk89q.worldedit.blocks.BaseBlock
+ *  com.sk89q.worldedit.bukkit.BukkitUtil
+ *  com.sk89q.worldedit.regions.CuboidRegion
+ *  com.sk89q.worldedit.regions.Region
+ *  com.sk89q.worldedit.world.World
+ *  org.bukkit.Location
+ *  org.bukkit.Sound
+ *  org.bukkit.World
+ *  org.bukkit.entity.Entity
+ */
 package net.hypixel.skyblock.entity.dungeons.boss.sadan;
 
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.LocalWorld;
 import com.sk89q.worldedit.MaxChangedBlocksException;
+import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.bukkit.BukkitUtil;
 import com.sk89q.worldedit.regions.CuboidRegion;
-import org.bukkit.Location;
-import org.bukkit.Sound;
-import org.bukkit.World;
-import org.bukkit.entity.Entity;
+import com.sk89q.worldedit.regions.Region;
+import com.sk89q.worldedit.world.World;
 import net.hypixel.skyblock.entity.SEntity;
 import net.hypixel.skyblock.entity.SEntityType;
 import net.hypixel.skyblock.util.SUtil;
 import net.hypixel.skyblock.util.Sputnik;
+import org.bukkit.Location;
+import org.bukkit.Sound;
+import org.bukkit.entity.Entity;
 
 public class AnimationSequence {
-    public static void chainAnimation(final World w) {
-        final boolean chaining = false;
-        if (w.getName().contains("f6")) {
-            beginRenderDown(w);
-            SUtil.delay(() -> beginRenderUp(w), 330L);
+    public static void chainAnimation(org.bukkit.World w2) {
+        boolean chaining = false;
+        if (w2.getName().contains("f6")) {
+            AnimationSequence.beginRenderDown(w2);
+            SUtil.delay(() -> AnimationSequence.beginRenderUp(w2), 330L);
         }
     }
 
-    public static void pasteBase(final World w, final int delay) {
-        SUtil.delay(() -> Sputnik.pasteSchematic("chain_base", true, 186.0f, 105.0f, 271.0f, w), delay - 1);
-        SUtil.delay(() -> Sputnik.pasteSchematic("chain_base", true, 186.0f, 105.0f, 271.0f, w), delay);
-        SUtil.delay(() -> Sputnik.pasteSchematic("chain_base", true, 186.0f, 105.0f, 271.0f, w), delay + 1);
+    public static void pasteBase(org.bukkit.World w2, int delay) {
+        SUtil.delay(() -> Sputnik.pasteSchematic("chain_base", true, 186.0f, 105.0f, 271.0f, w2), delay - 1);
+        SUtil.delay(() -> Sputnik.pasteSchematic("chain_base", true, 186.0f, 105.0f, 271.0f, w2), delay);
+        SUtil.delay(() -> Sputnik.pasteSchematic("chain_base", true, 186.0f, 105.0f, 271.0f, w2), delay + 1);
     }
 
-    public static void pasteGlass(final World w, final int delay, final int phase) {
+    public static void pasteGlass(org.bukkit.World w2, int delay, int phase) {
         if (phase == 0) {
-            SUtil.delay(() -> Sputnik.pasteSchematic("f6_h1", true, 189.0f, 71.0f, 266.0f, w), delay);
+            SUtil.delay(() -> Sputnik.pasteSchematic("f6_h1", true, 189.0f, 71.0f, 266.0f, w2), delay);
         } else if (phase == 1) {
-            SUtil.delay(() -> Sputnik.pasteSchematic("f6_h2", true, 190.0f, 71.0f, 269.0f, w), delay);
+            SUtil.delay(() -> Sputnik.pasteSchematic("f6_h2", true, 190.0f, 71.0f, 269.0f, w2), delay);
         } else if (phase == 2) {
-            SUtil.delay(() -> Sputnik.pasteSchematic("f6_h3", true, 191.0f, 73.0f, 266.0f, w), delay);
+            SUtil.delay(() -> Sputnik.pasteSchematic("f6_h3", true, 191.0f, 73.0f, 266.0f, w2), delay);
         }
     }
 
-    public static void pasteChain(final World w, final float y, final int delay, final boolean up) {
-        SUtil.delay(() -> Sputnik.pasteSchematic("chain_main", true, 195.0f, y, 261.0f, w), delay);
-        SUtil.delay(() -> w.playSound(new Location(w, 195.0, y, 261.0), Sound.HORSE_ARMOR, 100.0f, 0.0f), delay);
+    public static void pasteChain(org.bukkit.World w2, float y2, int delay, boolean up) {
+        SUtil.delay(() -> Sputnik.pasteSchematic("chain_main", true, 195.0f, y2, 261.0f, w2), delay);
+        SUtil.delay(() -> w2.playSound(new Location(w2, 195.0, (double)y2, 261.0), Sound.HORSE_ARMOR, 100.0f, 0.0f), delay);
     }
 
-    public static void pasteAir(final World w, final float y, final int delay) {
-        SUtil.delay(() -> edit(new Location(w, 191.0, y - 2.0f, 266.0), new Location(w, 191.0, 69.0, 266.0), w), delay + 1);
+    public static void pasteAir(org.bukkit.World w2, float y2, int delay) {
+        SUtil.delay(() -> AnimationSequence.edit(new Location(w2, 191.0, (double)(y2 - 2.0f), 266.0), new Location(w2, 191.0, 69.0, 266.0), w2), delay + 1);
     }
 
-    public static void beginRenderUp(final World w) {
-        pasteChain(w, 69.0f, 1, false);
-        pasteBase(w, 1);
-        pasteChain(w, 71.0f, 20, false);
-        pasteBase(w, 20);
-        pasteAir(w, 71.0f, 20);
-        pasteChain(w, 73.0f, 40, false);
-        pasteBase(w, 40);
-        pasteAir(w, 73.0f, 40);
-        pasteChain(w, 75.0f, 60, false);
-        pasteBase(w, 60);
-        pasteAir(w, 75.0f, 60);
-        pasteChain(w, 77.0f, 80, false);
-        pasteBase(w, 80);
-        pasteAir(w, 77.0f, 80);
-        pasteChain(w, 79.0f, 100, false);
-        pasteBase(w, 100);
-        pasteAir(w, 79.0f, 100);
-        pasteChain(w, 81.0f, 120, false);
-        pasteBase(w, 120);
-        pasteAir(w, 81.0f, 120);
-        pasteChain(w, 83.0f, 140, false);
-        pasteBase(w, 140);
-        pasteGlass(w, 140, 0);
-        pasteAir(w, 83.0f, 140);
-        pasteChain(w, 85.0f, 160, false);
-        pasteBase(w, 160);
-        pasteAir(w, 85.0f, 160);
-        pasteChain(w, 87.0f, 180, false);
-        pasteBase(w, 180);
-        pasteAir(w, 87.0f, 180);
-        pasteChain(w, 89.0f, 200, false);
-        pasteBase(w, 200);
-        pasteAir(w, 89.0f, 200);
-        pasteChain(w, 91.0f, 220, false);
-        pasteBase(w, 220);
-        pasteAir(w, 91.0f, 220);
-        pasteChain(w, 93.0f, 240, false);
-        pasteBase(w, 240);
-        pasteAir(w, 93.0f, 240);
-        pasteChain(w, 95.0f, 260, false);
-        pasteBase(w, 260);
-        pasteAir(w, 95.0f, 260);
-        pasteChain(w, 97.0f, 280, false);
-        pasteBase(w, 280);
-        pasteAir(w, 97.0f, 280);
-        pasteChain(w, 99.0f, 300, false);
-        pasteBase(w, 300);
-        pasteAir(w, 99.0f, 300);
-        pasteBase(w, 301);
+    public static void beginRenderUp(org.bukkit.World w2) {
+        AnimationSequence.pasteChain(w2, 69.0f, 1, false);
+        AnimationSequence.pasteBase(w2, 1);
+        AnimationSequence.pasteChain(w2, 71.0f, 20, false);
+        AnimationSequence.pasteBase(w2, 20);
+        AnimationSequence.pasteAir(w2, 71.0f, 20);
+        AnimationSequence.pasteChain(w2, 73.0f, 40, false);
+        AnimationSequence.pasteBase(w2, 40);
+        AnimationSequence.pasteAir(w2, 73.0f, 40);
+        AnimationSequence.pasteChain(w2, 75.0f, 60, false);
+        AnimationSequence.pasteBase(w2, 60);
+        AnimationSequence.pasteAir(w2, 75.0f, 60);
+        AnimationSequence.pasteChain(w2, 77.0f, 80, false);
+        AnimationSequence.pasteBase(w2, 80);
+        AnimationSequence.pasteAir(w2, 77.0f, 80);
+        AnimationSequence.pasteChain(w2, 79.0f, 100, false);
+        AnimationSequence.pasteBase(w2, 100);
+        AnimationSequence.pasteAir(w2, 79.0f, 100);
+        AnimationSequence.pasteChain(w2, 81.0f, 120, false);
+        AnimationSequence.pasteBase(w2, 120);
+        AnimationSequence.pasteAir(w2, 81.0f, 120);
+        AnimationSequence.pasteChain(w2, 83.0f, 140, false);
+        AnimationSequence.pasteBase(w2, 140);
+        AnimationSequence.pasteGlass(w2, 140, 0);
+        AnimationSequence.pasteAir(w2, 83.0f, 140);
+        AnimationSequence.pasteChain(w2, 85.0f, 160, false);
+        AnimationSequence.pasteBase(w2, 160);
+        AnimationSequence.pasteAir(w2, 85.0f, 160);
+        AnimationSequence.pasteChain(w2, 87.0f, 180, false);
+        AnimationSequence.pasteBase(w2, 180);
+        AnimationSequence.pasteAir(w2, 87.0f, 180);
+        AnimationSequence.pasteChain(w2, 89.0f, 200, false);
+        AnimationSequence.pasteBase(w2, 200);
+        AnimationSequence.pasteAir(w2, 89.0f, 200);
+        AnimationSequence.pasteChain(w2, 91.0f, 220, false);
+        AnimationSequence.pasteBase(w2, 220);
+        AnimationSequence.pasteAir(w2, 91.0f, 220);
+        AnimationSequence.pasteChain(w2, 93.0f, 240, false);
+        AnimationSequence.pasteBase(w2, 240);
+        AnimationSequence.pasteAir(w2, 93.0f, 240);
+        AnimationSequence.pasteChain(w2, 95.0f, 260, false);
+        AnimationSequence.pasteBase(w2, 260);
+        AnimationSequence.pasteAir(w2, 95.0f, 260);
+        AnimationSequence.pasteChain(w2, 97.0f, 280, false);
+        AnimationSequence.pasteBase(w2, 280);
+        AnimationSequence.pasteAir(w2, 97.0f, 280);
+        AnimationSequence.pasteChain(w2, 99.0f, 300, false);
+        AnimationSequence.pasteBase(w2, 300);
+        AnimationSequence.pasteAir(w2, 99.0f, 300);
+        AnimationSequence.pasteBase(w2, 301);
     }
 
-    public static void beginRenderDown(final World w) {
-        pasteChain(w, 99.0f, 1, false);
-        pasteBase(w, 1);
-        pasteChain(w, 97.0f, 20, false);
-        pasteBase(w, 20);
-        pasteChain(w, 95.0f, 40, false);
-        pasteBase(w, 40);
-        pasteChain(w, 93.0f, 60, false);
-        pasteBase(w, 60);
-        pasteChain(w, 91.0f, 80, false);
-        pasteBase(w, 80);
-        pasteChain(w, 89.0f, 110, false);
-        pasteBase(w, 110);
-        pasteChain(w, 87.0f, 130, false);
-        pasteBase(w, 130);
-        pasteChain(w, 85.0f, 150, false);
-        pasteBase(w, 150);
-        pasteChain(w, 83.0f, 170, false);
-        pasteBase(w, 170);
-        pasteChain(w, 81.0f, 180, false);
-        pasteBase(w, 180);
-        pasteChain(w, 79.0f, 200, false);
-        pasteBase(w, 200);
-        pasteChain(w, 77.0f, 220, false);
-        pasteBase(w, 220);
-        pasteChain(w, 75.0f, 240, false);
-        pasteBase(w, 240);
-        pasteChain(w, 73.0f, 260, false);
-        pasteBase(w, 260);
-        pasteChain(w, 71.0f, 280, false);
-        pasteGlass(w, 280, 1);
-        pasteBase(w, 280);
-        pasteChain(w, 69.0f, 300, false);
-        pasteBase(w, 300);
-        pasteGlass(w, 300, 2);
-        pasteBase(w, 301);
-        SUtil.delay(() -> r(w), 301L);
-        SUtil.delay(() -> new SEntity(new Location(w, 191.5, 54.0, 266.5, 180.0f, 0.0f), SEntityType.DUMMY_FUNCTION_2), 300L);
+    public static void beginRenderDown(org.bukkit.World w2) {
+        AnimationSequence.pasteChain(w2, 99.0f, 1, false);
+        AnimationSequence.pasteBase(w2, 1);
+        AnimationSequence.pasteChain(w2, 97.0f, 20, false);
+        AnimationSequence.pasteBase(w2, 20);
+        AnimationSequence.pasteChain(w2, 95.0f, 40, false);
+        AnimationSequence.pasteBase(w2, 40);
+        AnimationSequence.pasteChain(w2, 93.0f, 60, false);
+        AnimationSequence.pasteBase(w2, 60);
+        AnimationSequence.pasteChain(w2, 91.0f, 80, false);
+        AnimationSequence.pasteBase(w2, 80);
+        AnimationSequence.pasteChain(w2, 89.0f, 110, false);
+        AnimationSequence.pasteBase(w2, 110);
+        AnimationSequence.pasteChain(w2, 87.0f, 130, false);
+        AnimationSequence.pasteBase(w2, 130);
+        AnimationSequence.pasteChain(w2, 85.0f, 150, false);
+        AnimationSequence.pasteBase(w2, 150);
+        AnimationSequence.pasteChain(w2, 83.0f, 170, false);
+        AnimationSequence.pasteBase(w2, 170);
+        AnimationSequence.pasteChain(w2, 81.0f, 180, false);
+        AnimationSequence.pasteBase(w2, 180);
+        AnimationSequence.pasteChain(w2, 79.0f, 200, false);
+        AnimationSequence.pasteBase(w2, 200);
+        AnimationSequence.pasteChain(w2, 77.0f, 220, false);
+        AnimationSequence.pasteBase(w2, 220);
+        AnimationSequence.pasteChain(w2, 75.0f, 240, false);
+        AnimationSequence.pasteBase(w2, 240);
+        AnimationSequence.pasteChain(w2, 73.0f, 260, false);
+        AnimationSequence.pasteBase(w2, 260);
+        AnimationSequence.pasteChain(w2, 71.0f, 280, false);
+        AnimationSequence.pasteGlass(w2, 280, 1);
+        AnimationSequence.pasteBase(w2, 280);
+        AnimationSequence.pasteChain(w2, 69.0f, 300, false);
+        AnimationSequence.pasteBase(w2, 300);
+        AnimationSequence.pasteGlass(w2, 300, 2);
+        AnimationSequence.pasteBase(w2, 301);
+        SUtil.delay(() -> AnimationSequence.r(w2), 301L);
+        SUtil.delay(() -> new SEntity(new Location(w2, 191.5, 54.0, 266.5, 180.0f, 0.0f), SEntityType.DUMMY_FUNCTION_2, new Object[0]), 300L);
     }
 
-    public static void r(final World w) {
-        for (final Entity e1 : w.getEntities()) {
-            if (e1.hasMetadata("dummy_r")) {
-                e1.remove();
-            }
+    public static void r(org.bukkit.World w2) {
+        for (Entity e1 : w2.getEntities()) {
+            if (!e1.hasMetadata("dummy_r")) continue;
+            e1.remove();
         }
     }
 
-    public static void edit(final Location pos1, final Location pos2, final World w) {
-        final com.sk89q.worldedit.world.World world = BukkitUtil.getLocalWorld(w);
-        final CuboidRegion selection = new CuboidRegion(world, BlockVector.toBlockPoint(pos1.getX(), pos1.getY(), pos1.getZ()), BlockVector.toBlockPoint(pos2.getX(), pos2.getY(), pos2.getZ()));
-        final EditSession e = WorldEdit.getInstance().getEditSessionFactory().getEditSession(world, -1);
+    public static void edit(Location pos1, Location pos2, org.bukkit.World w2) {
+        LocalWorld world = BukkitUtil.getLocalWorld((org.bukkit.World)w2);
+        CuboidRegion selection = new CuboidRegion((World)world, (Vector)BlockVector.toBlockPoint((double)pos1.getX(), (double)pos1.getY(), (double)pos1.getZ()), (Vector)BlockVector.toBlockPoint((double)pos2.getX(), (double)pos2.getY(), (double)pos2.getZ()));
+        EditSession e2 = WorldEdit.getInstance().getEditSessionFactory().getEditSession((World)world, -1);
         try {
-            e.setBlocks(selection, new BaseBlock(0));
-        } catch (final MaxChangedBlocksException e2) {
-            e2.printStackTrace();
+            e2.setBlocks((Region)selection, new BaseBlock(0));
+        } catch (MaxChangedBlocksException e22) {
+            e22.printStackTrace();
         }
     }
 }
+

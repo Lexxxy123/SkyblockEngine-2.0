@@ -1,46 +1,53 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Effect
+ *  org.bukkit.Location
+ *  org.bukkit.World
+ *  org.bukkit.configuration.serialization.ConfigurationSerializable
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.scheduler.BukkitRunnable
+ */
 package net.hypixel.skyblock.features.slayer;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import lombok.Setter;
+import java.util.HashMap;
+import java.util.Map;
+import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.entity.SEntity;
+import net.hypixel.skyblock.entity.SEntityType;
 import net.hypixel.skyblock.features.sequence.SoundSequenceType;
+import net.hypixel.skyblock.features.slayer.SlayerBossType;
+import net.hypixel.skyblock.util.SUtil;
 import org.bson.Document;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Entity;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import net.hypixel.skyblock.SkyBlock;
-import net.hypixel.skyblock.entity.SEntity;
-import net.hypixel.skyblock.entity.SEntityType;
-import net.hypixel.skyblock.util.SUtil;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class SlayerQuest implements ConfigurationSerializable {
+public class SlayerQuest
+implements ConfigurationSerializable {
     private final SlayerBossType type;
     private final long started;
-    @Setter
     private double xp;
-    @Setter
     private long spawned;
-    @Setter
     private long killed;
-    @Setter
     private long died;
-    @Setter
     private SEntityType lastKilled;
-    @Setter
     private SEntity entity;
 
-    public SlayerQuest(final SlayerBossType type, final long started) {
+    public SlayerQuest(SlayerBossType type, long started) {
         this.type = type;
         this.started = started;
         this.entity = null;
     }
 
-    private SlayerQuest(final SlayerBossType type, final long started, final double xp, final long spawned, final long killed, final long died, final SEntityType lastKilled) {
+    private SlayerQuest(SlayerBossType type, long started, double xp, long spawned, long killed, long died, SEntityType lastKilled) {
         this.type = type;
         this.started = started;
         this.xp = xp;
@@ -52,7 +59,7 @@ public class SlayerQuest implements ConfigurationSerializable {
     }
 
     public Map<String, Object> serialize() {
-        final Map<String, Object> map = new HashMap<String, Object>();
+        HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("type", this.type.getNamespace());
         map.put("started", this.started);
         map.put("xp", this.xp);
@@ -63,13 +70,9 @@ public class SlayerQuest implements ConfigurationSerializable {
         return map;
     }
 
-
-
     public static SlayerQuest deserialize(Map<String, Object> map) {
-        return new SlayerQuest(SlayerBossType.getByNamespace(String.valueOf(map.get("type"))), ((Number) map.get("started")).longValue(), ((Number) map.get("xp")).doubleValue(), ((Number) map.get("spawned")).longValue(), ((Number) map.get("killed")).longValue(), ((Number) map.get("died")).longValue(), null);
+        return new SlayerQuest(SlayerBossType.getByNamespace(String.valueOf(map.get("type"))), ((Number)map.get("started")).longValue(), ((Number)map.get("xp")).doubleValue(), ((Number)map.get("spawned")).longValue(), ((Number)map.get("killed")).longValue(), ((Number)map.get("died")).longValue(), null);
     }
-
-
 
     public static SlayerQuest deserializeSlayerQuest(Document document) {
         SlayerBossType type = SlayerBossType.getByNamespace(document.getString("type"));
@@ -81,19 +84,19 @@ public class SlayerQuest implements ConfigurationSerializable {
         return new SlayerQuest(type, started, xp, spawned, killed, died, null);
     }
 
-    public static void playMinibossSpawn(final Location location, final Entity sound) {
-        final Location clone = location.clone();
-        final World world = location.getWorld();
+    public static void playMinibossSpawn(Location location, Entity sound) {
+        Location clone = location.clone();
+        World world = location.getWorld();
         if (sound != null) {
             SoundSequenceType.SLAYER_MINIBOSS_SPAWN.play(sound);
         } else {
             SoundSequenceType.SLAYER_MINIBOSS_SPAWN.play(clone);
         }
-        final AtomicDouble additive = new AtomicDouble();
+        AtomicDouble additive = new AtomicDouble();
         SUtil.runIntervalForTicks(() -> world.spigot().playEffect(clone.clone().add(0.0, additive.getAndAdd(0.5), 0.0), Effect.EXPLOSION_LARGE, 1, 0, 0.0f, 0.0f, 0.0f, 0.0f, 1, 16), 3L, 12L);
     }
 
-    public static void playBossSpawn(final Location location, final Entity sound) {
+    public static void playBossSpawn(Location location, Entity sound) {
         final Location clone = location.clone();
         final World world = location.getWorld();
         if (sound != null) {
@@ -102,24 +105,25 @@ public class SlayerQuest implements ConfigurationSerializable {
             SoundSequenceType.SLAYER_BOSS_SPAWN.play(clone);
         }
         SUtil.runIntervalForTicks(() -> {
-            for (int i = 0; i < 50; ++i) {
-                world.playEffect(clone.clone().add(0.0, -0.2, 0.0), Effect.WITCH_MAGIC, (Object) Effect.SPELL.getData());
-                world.playEffect(clone, Effect.SPELL, (Object) Effect.SPELL.getData());
-                world.playEffect(clone, Effect.FLYING_GLYPH, (Object) Effect.FLYING_GLYPH.getData());
-                world.playEffect(clone.clone().add(0.0, -0.2, 0.0), Effect.FLYING_GLYPH, (Object) Effect.FLYING_GLYPH.getData());
-                world.playEffect(clone, Effect.WITCH_MAGIC, (Object) Effect.WITCH_MAGIC.getData());
+            for (int i2 = 0; i2 < 50; ++i2) {
+                world.playEffect(clone.clone().add(0.0, -0.2, 0.0), Effect.WITCH_MAGIC, (Object)Effect.SPELL.getData());
+                world.playEffect(clone, Effect.SPELL, (Object)Effect.SPELL.getData());
+                world.playEffect(clone, Effect.FLYING_GLYPH, (Object)Effect.FLYING_GLYPH.getData());
+                world.playEffect(clone.clone().add(0.0, -0.2, 0.0), Effect.FLYING_GLYPH, (Object)Effect.FLYING_GLYPH.getData());
+                world.playEffect(clone, Effect.WITCH_MAGIC, (Object)Effect.WITCH_MAGIC.getData());
             }
         }, 5L, 28L);
-        new BukkitRunnable() {
+        new BukkitRunnable(){
+
             public void run() {
-                world.playEffect(clone, Effect.EXPLOSION_HUGE, (Object) Effect.EXPLOSION_HUGE.getData());
-                world.playEffect(clone, Effect.EXPLOSION_HUGE, (Object) Effect.EXPLOSION_HUGE.getData());
-                world.playEffect(clone, Effect.EXPLOSION_HUGE, (Object) Effect.EXPLOSION_HUGE.getData());
-                world.playEffect(clone, Effect.EXPLOSION_HUGE, (Object) Effect.EXPLOSION_HUGE.getData());
-                world.playEffect(clone, Effect.EXPLOSION_HUGE, (Object) Effect.EXPLOSION_HUGE.getData());
-                world.playEffect(clone, Effect.EXPLOSION_HUGE, (Object) Effect.EXPLOSION_HUGE.getData());
+                world.playEffect(clone, Effect.EXPLOSION_HUGE, (Object)Effect.EXPLOSION_HUGE.getData());
+                world.playEffect(clone, Effect.EXPLOSION_HUGE, (Object)Effect.EXPLOSION_HUGE.getData());
+                world.playEffect(clone, Effect.EXPLOSION_HUGE, (Object)Effect.EXPLOSION_HUGE.getData());
+                world.playEffect(clone, Effect.EXPLOSION_HUGE, (Object)Effect.EXPLOSION_HUGE.getData());
+                world.playEffect(clone, Effect.EXPLOSION_HUGE, (Object)Effect.EXPLOSION_HUGE.getData());
+                world.playEffect(clone, Effect.EXPLOSION_HUGE, (Object)Effect.EXPLOSION_HUGE.getData());
             }
-        }.runTaskLater(SkyBlock.getPlugin(), 28L);
+        }.runTaskLater((Plugin)SkyBlock.getPlugin(), 28L);
     }
 
     public SlayerBossType getType() {
@@ -154,4 +158,28 @@ public class SlayerQuest implements ConfigurationSerializable {
         return this.entity;
     }
 
+    public void setXp(double xp) {
+        this.xp = xp;
+    }
+
+    public void setSpawned(long spawned) {
+        this.spawned = spawned;
+    }
+
+    public void setKilled(long killed) {
+        this.killed = killed;
+    }
+
+    public void setDied(long died) {
+        this.died = died;
+    }
+
+    public void setLastKilled(SEntityType lastKilled) {
+        this.lastKilled = lastKilled;
+    }
+
+    public void setEntity(SEntity entity) {
+        this.entity = entity;
+    }
 }
+

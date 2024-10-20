@@ -1,14 +1,30 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.inventory.InventoryClickEvent
+ *  org.bukkit.event.player.PlayerInteractEvent
+ */
 package net.hypixel.skyblock.item.oddities;
 
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.gui.GUIType;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.MaterialStatistics;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.Untradeable;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import net.hypixel.skyblock.gui.GUIType;
-import net.hypixel.skyblock.item.*;
 
-public class SkyBlockMenu implements MaterialStatistics, MaterialFunction, Untradeable {
+public class SkyBlockMenu
+implements MaterialStatistics,
+MaterialFunction,
+Untradeable {
     @Override
     public String getDisplayName() {
         return ChatColor.GREEN + "SkyBlock Menu " + ChatColor.GRAY + "(Right Click)";
@@ -35,13 +51,14 @@ public class SkyBlockMenu implements MaterialStatistics, MaterialFunction, Untra
     }
 
     @Override
-    public void onInteraction(final PlayerInteractEvent e) {
-        GUIType.SKYBLOCK_MENU.getGUI().open(e.getPlayer());
+    public void onInteraction(PlayerInteractEvent e2) {
+        GUIType.SKYBLOCK_MENU.getGUI().open(e2.getPlayer());
     }
 
     @Override
-    public void onInventoryClick(final SItem instance, final InventoryClickEvent e) {
-        e.setCancelled(true);
-        GUIType.SKYBLOCK_MENU.getGUI().open((Player) e.getWhoClicked());
+    public void onInventoryClick(SItem instance, InventoryClickEvent e2) {
+        e2.setCancelled(true);
+        GUIType.SKYBLOCK_MENU.getGUI().open((Player)e2.getWhoClicked());
     }
 }
+

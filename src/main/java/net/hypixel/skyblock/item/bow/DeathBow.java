@@ -1,12 +1,21 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.md_5.bungee.api.ChatColor
+ */
 package net.hypixel.skyblock.item.bow;
 
-import net.md_5.bungee.api.ChatColor;
 import net.hypixel.skyblock.item.GenericItemType;
 import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.SpecificItemType;
 import net.hypixel.skyblock.item.ToolStatistics;
+import net.hypixel.skyblock.item.bow.BowFunction;
+import net.md_5.bungee.api.ChatColor;
 
-public class DeathBow implements ToolStatistics, BowFunction {
+public class DeathBow
+implements ToolStatistics,
+BowFunction {
     @Override
     public String getDisplayName() {
         return "Death Bow";
@@ -37,3 +46,4 @@ public class DeathBow implements ToolStatistics, BowFunction {
         return SpecificItemType.BOW;
     }
 }
+

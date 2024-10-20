@@ -1,19 +1,33 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.minecraft.server.v1_8_R3.NBTTagCompound
+ *  org.bukkit.ChatColor
+ */
 package net.hypixel.skyblock.item.oddities;
-
-import net.hypixel.skyblock.item.*;
-import net.hypixel.skyblock.features.potion.PotionEffect;
-import net.hypixel.skyblock.features.potion.PotionEffectType;
-import net.minecraft.server.v1_8_R3.NBTTagCompound;
-import org.bukkit.ChatColor;
-import net.hypixel.skyblock.util.SUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.hypixel.skyblock.features.potion.PotionEffect;
+import net.hypixel.skyblock.features.potion.PotionEffectType;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.ItemData;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.MaterialStatistics;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.util.SUtil;
+import net.minecraft.server.v1_8_R3.NBTTagCompound;
+import org.bukkit.ChatColor;
 
-public class WaterBottle implements MaterialStatistics, MaterialFunction, ItemData {
+public class WaterBottle
+implements MaterialStatistics,
+MaterialFunction,
+ItemData {
     @Override
     public NBTTagCompound getData() {
-        final NBTTagCompound compound = new NBTTagCompound();
+        NBTTagCompound compound = new NBTTagCompound();
         compound.setBoolean("splash", false);
         return compound;
     }
@@ -34,21 +48,21 @@ public class WaterBottle implements MaterialStatistics, MaterialFunction, ItemDa
     }
 
     @Override
-    public List<String> getDataLore(final String key, final Object value) {
+    public List<String> getDataLore(String key, Object value) {
         if (!key.equals("effects")) {
             return null;
         }
-        final NBTTagCompound compound = (NBTTagCompound) value;
-        final List<String> lore = new ArrayList<String>();
-        for (final String k : compound.c()) {
+        NBTTagCompound compound = (NBTTagCompound)value;
+        ArrayList<String> lore = new ArrayList<String>();
+        for (String k2 : compound.c()) {
             lore.add(" ");
-            final NBTTagCompound effectData = compound.getCompound(k);
-            final PotionEffectType type = PotionEffectType.getByNamespace(k);
-            final int level = effectData.getInt("level");
-            final long duration = effectData.getLong("duration");
-            final PotionEffect effect = new PotionEffect(type, level, duration);
-            lore.add(type.getName() + " " + SUtil.toRomanNumeral(effect.getLevel()) + (effect.getType().isInstant() ? "" : (ChatColor.WHITE + " (" + effect.getDurationDisplay() + ")")));
-            for (final String line : SUtil.splitByWordAndLength(effect.getDescription(), 30, "\\s")) {
+            NBTTagCompound effectData = compound.getCompound(k2);
+            PotionEffectType type = PotionEffectType.getByNamespace(k2);
+            int level = effectData.getInt("level");
+            long duration = effectData.getLong("duration");
+            PotionEffect effect = new PotionEffect(type, level, duration);
+            lore.add(type.getName() + " " + SUtil.toRomanNumeral(effect.getLevel()) + (effect.getType().isInstant() ? "" : ChatColor.WHITE + " (" + effect.getDurationDisplay() + ")"));
+            for (String line : SUtil.splitByWordAndLength(effect.getDescription(), 30, "\\s")) {
                 lore.add(ChatColor.GRAY + line);
             }
         }
@@ -56,16 +70,15 @@ public class WaterBottle implements MaterialStatistics, MaterialFunction, ItemDa
     }
 
     @Override
-    public void onInstanceUpdate(final SItem instance) {
+    public void onInstanceUpdate(SItem instance) {
         int max = 0;
-        for (final PotionEffect effect : instance.getPotionEffects()) {
-            if (effect.getLevel() > max) {
-                max = effect.getLevel();
-            }
+        for (PotionEffect effect : instance.getPotionEffects()) {
+            if (effect.getLevel() <= max) continue;
+            max = effect.getLevel();
         }
         instance.setRarity(SUtil.findPotionRarity(max), false);
         if (instance.getPotionEffects().size() == 1) {
-            instance.setDisplayName(ChatColor.stripColor(instance.getPotionEffects().get(0).getType().getName() + " " + SUtil.toRomanNumeral(instance.getPotionEffects().get(0).getLevel())) + (instance.isSplashPotion() ? " Splash" : "") + " Potion");
+            instance.setDisplayName(ChatColor.stripColor((String)(instance.getPotionEffects().get(0).getType().getName() + " " + SUtil.toRomanNumeral(instance.getPotionEffects().get(0).getLevel()))) + (instance.isSplashPotion() ? " Splash" : "") + " Potion");
         }
         if (instance.getPotionEffects().size() > 1) {
             instance.setDisplayName((instance.isSplashPotion() ? "Splash " : "") + "Potion");
@@ -75,3 +88,4 @@ public class WaterBottle implements MaterialStatistics, MaterialFunction, ItemDa
         }
     }
 }
+

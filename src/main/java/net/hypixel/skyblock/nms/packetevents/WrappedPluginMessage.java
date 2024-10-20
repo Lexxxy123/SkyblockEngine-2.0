@@ -1,3 +1,9 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.nms.packetevents;
 
 import org.bukkit.entity.Player;
@@ -7,9 +13,9 @@ public class WrappedPluginMessage {
     private final Player player;
     private final byte[] message;
 
-    public WrappedPluginMessage(final String cn, final Player p, final byte[] msg) {
+    public WrappedPluginMessage(String cn, Player p2, byte[] msg) {
         this.channelName = cn;
-        this.player = p;
+        this.player = p2;
         this.message = msg;
     }
 
@@ -25,3 +31,4 @@ public class WrappedPluginMessage {
         return this.message;
     }
 }
+

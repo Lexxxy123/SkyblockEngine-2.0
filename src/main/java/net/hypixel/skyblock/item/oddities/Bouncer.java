@@ -1,10 +1,22 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.minecraft.server.v1_8_R3.NBTTagCompound
+ */
 package net.hypixel.skyblock.item.oddities;
 
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.ItemData;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.MaterialStatistics;
+import net.hypixel.skyblock.item.Rarity;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
-import net.hypixel.skyblock.item.*;
 
-public class Bouncer implements MaterialStatistics, MaterialFunction, ItemData {
+public class Bouncer
+implements MaterialStatistics,
+MaterialFunction,
+ItemData {
     @Override
     public String getDisplayName() {
         return "Bouncer";
@@ -31,3 +43,4 @@ public class Bouncer implements MaterialStatistics, MaterialFunction, ItemData {
         return compound;
     }
 }
+

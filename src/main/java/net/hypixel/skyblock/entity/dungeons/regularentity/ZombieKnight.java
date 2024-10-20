@@ -1,6 +1,36 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.minecraft.server.v1_8_R3.Entity
+ *  net.minecraft.server.v1_8_R3.EntityLiving
+ *  net.minecraft.server.v1_8_R3.Packet
+ *  net.minecraft.server.v1_8_R3.PacketPlayOutAnimation
+ *  org.bukkit.Bukkit
+ *  org.bukkit.GameMode
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.entity.LivingEntity
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.entity.EntityDamageByEntityEvent
+ *  org.bukkit.metadata.FixedMetadataValue
+ *  org.bukkit.metadata.MetadataValue
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.scheduler.BukkitRunnable
+ */
 package net.hypixel.skyblock.entity.dungeons.regularentity;
 
+import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.entity.SEntity;
+import net.hypixel.skyblock.entity.SEntityEquipment;
+import net.hypixel.skyblock.entity.zombie.BaseZombie;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.SMaterial;
+import net.hypixel.skyblock.util.EntityManager;
+import net.hypixel.skyblock.util.SUtil;
 import net.minecraft.server.v1_8_R3.EntityLiving;
+import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -11,17 +41,12 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import net.hypixel.skyblock.SkyBlock;
-import net.hypixel.skyblock.entity.SEntity;
-import net.hypixel.skyblock.entity.SEntityEquipment;
-import net.hypixel.skyblock.entity.zombie.BaseZombie;
-import net.hypixel.skyblock.item.SItem;
-import net.hypixel.skyblock.item.SMaterial;
-import net.hypixel.skyblock.util.EntityManager;
-import net.hypixel.skyblock.util.SUtil;
 
-public class ZombieKnight extends BaseZombie {
+public class ZombieKnight
+extends BaseZombie {
     @Override
     public String getEntityName() {
         return "Zombie Knight";
@@ -38,46 +63,30 @@ public class ZombieKnight extends BaseZombie {
     }
 
     @Override
-    public void onSpawn(LivingEntity entity, SEntity sEntity) {
-        EntityManager.DEFENSE_PERCENTAGE.put(entity, 61);
-        entity.setMetadata("DungeonMobs", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        new BukkitRunnable() {
+    public void onSpawn(final LivingEntity entity, SEntity sEntity) {
+        EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 61);
+        entity.setMetadata("DungeonMobs", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        new BukkitRunnable(){
+
             public void run() {
-                EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
+                EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
                 for (Entity entities : entity.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 1.5, 1.5, 1.5)) {
-                    if (!(entities instanceof Player)) {
-                        continue;
-                    }
-                    Player target = (Player) entities;
-                    if (GameMode.CREATIVE == target.getGameMode()) {
-                        continue;
-                    }
-                    if (GameMode.SPECTATOR == target.getGameMode()) {
-                        continue;
-                    }
-                    if (target.hasMetadata("NPC")) {
-                        continue;
-                    }
-                    if (7 == target.getNoDamageTicks()) {
-                        continue;
-                    }
-                    if (8 < SUtil.random(0, 10)) {
-                        continue;
-                    }
+                    Player target;
+                    if (!(entities instanceof Player) || GameMode.CREATIVE == (target = (Player)entities).getGameMode() || GameMode.SPECTATOR == target.getGameMode() || target.hasMetadata("NPC") || 7 == target.getNoDamageTicks() || 8 < SUtil.random(0, 10)) continue;
                     entity.teleport(entity.getLocation().setDirection(target.getLocation().subtract(entities.getLocation()).toVector()));
                     for (Player players : Bukkit.getOnlinePlayers()) {
-                        ((CraftPlayer) players).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) entity).getHandle(), 0));
+                        ((CraftPlayer)players).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)entity).getHandle(), 0));
                     }
-                    nms.r(((CraftPlayer) target).getHandle());
+                    nms.r((net.minecraft.server.v1_8_R3.Entity)((CraftPlayer)target).getHandle());
                     break;
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 3L);
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 3L);
     }
 
     @Override
@@ -86,8 +95,8 @@ public class ZombieKnight extends BaseZombie {
     }
 
     @Override
-    public void onAttack(EntityDamageByEntityEvent e) {
-        ((LivingEntity) e.getDamager()).setHealth(Math.min(((LivingEntity) e.getDamager()).getMaxHealth(), ((LivingEntity) e.getDamager()).getHealth() + ((LivingEntity) e.getDamager()).getMaxHealth() / 100.0));
+    public void onAttack(EntityDamageByEntityEvent e2) {
+        ((LivingEntity)e2.getDamager()).setHealth(Math.min(((LivingEntity)e2.getDamager()).getMaxHealth(), ((LivingEntity)e2.getDamager()).getHealth() + ((LivingEntity)e2.getDamager()).getMaxHealth() / 100.0));
     }
 
     @Override
@@ -115,3 +124,4 @@ public class ZombieKnight extends BaseZombie {
         return 0.25;
     }
 }
+

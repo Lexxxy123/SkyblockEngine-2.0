@@ -1,30 +1,39 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.minecraft.server.v1_8_R3.PacketStatusOutPong
+ */
 package net.hypixel.skyblock.nms.pingrep;
-
-import net.minecraft.server.v1_8_R3.PacketStatusOutPong;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import net.hypixel.skyblock.nms.pingrep.PingEvent;
+import net.hypixel.skyblock.nms.pingrep.PingReply;
+import net.hypixel.skyblock.nms.pingrep.PongPacket;
+import net.minecraft.server.v1_8_R3.PacketStatusOutPong;
 
-public class PongPacketHandler extends PongPacket {
-    public PongPacketHandler(final PingEvent reply) {
+public class PongPacketHandler
+extends PongPacket {
+    public PongPacketHandler(PingEvent reply) {
         super(reply);
     }
 
     @Override
     public void send() {
         try {
-            final PingReply reply = this.getEvent().getReply();
-            final PacketStatusOutPong packet = new PacketStatusOutPong();
-            final Field field = this.getEvent().getReply().getClass().getDeclaredField("ctx");
+            PingReply reply = this.getEvent().getReply();
+            PacketStatusOutPong packet = new PacketStatusOutPong();
+            Field field = this.getEvent().getReply().getClass().getDeclaredField("ctx");
             field.setAccessible(true);
-            final Object ctx = field.get(reply);
-            final Method writeAndFlush = ctx.getClass().getMethod("writeAndFlush", Object.class);
+            Object ctx = field.get(reply);
+            Method writeAndFlush = ctx.getClass().getMethod("writeAndFlush", Object.class);
             writeAndFlush.setAccessible(true);
             writeAndFlush.invoke(ctx, packet);
-        } catch (final NoSuchFieldException | IllegalAccessException | IllegalArgumentException |
-                       InvocationTargetException | NoSuchMethodException | SecurityException e) {
-            e.printStackTrace();
+        } catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException | NoSuchMethodException | SecurityException | InvocationTargetException e2) {
+            e2.printStackTrace();
         }
     }
 }
+

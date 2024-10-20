@@ -1,3 +1,6 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.armor.miner;
 
 import net.hypixel.skyblock.item.GenericItemType;
@@ -6,7 +9,9 @@ import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.SpecificItemType;
 import net.hypixel.skyblock.item.armor.LeatherArmorStatistics;
 
-public class MinerChestplate implements LeatherArmorStatistics, MaterialFunction {
+public class MinerChestplate
+implements LeatherArmorStatistics,
+MaterialFunction {
     @Override
     public String getDisplayName() {
         return "Miner Chestplate";
@@ -37,3 +42,4 @@ public class MinerChestplate implements LeatherArmorStatistics, MaterialFunction
         return 255;
     }
 }
+

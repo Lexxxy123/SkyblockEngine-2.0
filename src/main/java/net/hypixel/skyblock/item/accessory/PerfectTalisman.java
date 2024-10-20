@@ -1,12 +1,18 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.accessory;
 
 import net.hypixel.skyblock.item.GenericItemType;
 import net.hypixel.skyblock.item.MaterialFunction;
 import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.accessory.AccessoryStatistics;
 import net.hypixel.skyblock.util.Sputnik;
 
-public class PerfectTalisman implements AccessoryStatistics, MaterialFunction {
+public class PerfectTalisman
+implements AccessoryStatistics,
+MaterialFunction {
     @Override
     public String getURL() {
         return "13e8bbc8d174aecd6b46888fa63f9bade14b042e5e17063139d67f8e0163a38";
@@ -82,3 +88,4 @@ public class PerfectTalisman implements AccessoryStatistics, MaterialFunction {
         return false;
     }
 }
+

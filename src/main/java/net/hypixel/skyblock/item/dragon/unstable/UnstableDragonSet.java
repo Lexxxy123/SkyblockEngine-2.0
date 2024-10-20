@@ -1,9 +1,17 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.dragon.unstable;
 
 import net.hypixel.skyblock.item.MaterialStatistics;
 import net.hypixel.skyblock.item.armor.ArmorSet;
+import net.hypixel.skyblock.item.dragon.unstable.UnstableDragonBoots;
+import net.hypixel.skyblock.item.dragon.unstable.UnstableDragonChestplate;
+import net.hypixel.skyblock.item.dragon.unstable.UnstableDragonHelmet;
+import net.hypixel.skyblock.item.dragon.unstable.UnstableDragonLeggings;
 
-public class UnstableDragonSet implements ArmorSet {
+public class UnstableDragonSet
+implements ArmorSet {
     @Override
     public String getName() {
         return "Unstable Blood";
@@ -34,3 +42,4 @@ public class UnstableDragonSet implements ArmorSet {
         return UnstableDragonBoots.class;
     }
 }
+

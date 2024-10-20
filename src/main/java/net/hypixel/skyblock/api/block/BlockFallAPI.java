@@ -1,10 +1,33 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.minecraft.server.v1_8_R3.Entity
+ *  net.minecraft.server.v1_8_R3.EntityFallingBlock
+ *  net.minecraft.server.v1_8_R3.Packet
+ *  net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy
+ *  net.minecraft.server.v1_8_R3.PacketPlayOutEntityVelocity
+ *  net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntity
+ *  net.minecraft.server.v1_8_R3.World
+ *  net.minecraft.server.v1_8_R3.WorldServer
+ *  org.bukkit.Location
+ *  org.bukkit.Material
+ *  org.bukkit.World
+ *  org.bukkit.craftbukkit.v1_8_R3.CraftWorld
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
+ *  org.bukkit.entity.Player
+ *  org.bukkit.util.Vector
+ */
 package net.hypixel.skyblock.api.block;
 
 import net.hypixel.skyblock.util.SUtil;
+import net.minecraft.server.v1_8_R3.Entity;
 import net.minecraft.server.v1_8_R3.EntityFallingBlock;
+import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityVelocity;
 import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntity;
+import net.minecraft.server.v1_8_R3.WorldServer;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -14,51 +37,52 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 public class BlockFallAPI {
-    public static void sendVelocityBlock(final Location loc, final Material mat, final byte data, final World players, final Integer delay, final Vector vec) {
-        final net.minecraft.server.v1_8_R3.World world = ((CraftWorld) loc.getWorld()).getHandle();
-        final EntityFallingBlock entityfallingblock = new EntityFallingBlock(world);
+    public static void sendVelocityBlock(Location loc, Material mat, byte data, World players, Integer delay, Vector vec) {
+        WorldServer world = ((CraftWorld)loc.getWorld()).getHandle();
+        EntityFallingBlock entityfallingblock = new EntityFallingBlock((net.minecraft.server.v1_8_R3.World)world);
         entityfallingblock.setLocation(loc.getX(), loc.getY(), loc.getZ(), 0.0f, 0.0f);
-        final PacketPlayOutSpawnEntity packet = new PacketPlayOutSpawnEntity(entityfallingblock, 70, mat.getId() + (data << 12));
-        final double x = vec.getX();
-        final double y = vec.getY();
-        final double z = vec.getZ();
-        for (final Player player : players.getPlayers()) {
-            ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
-            ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutEntityVelocity(entityfallingblock.getId(), x, y, z));
+        PacketPlayOutSpawnEntity packet = new PacketPlayOutSpawnEntity((Entity)entityfallingblock, 70, mat.getId() + (data << 12));
+        double x2 = vec.getX();
+        double y2 = vec.getY();
+        double z2 = vec.getZ();
+        for (Player player : players.getPlayers()) {
+            ((CraftPlayer)player).getHandle().playerConnection.sendPacket((Packet)packet);
+            ((CraftPlayer)player).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutEntityVelocity(entityfallingblock.getId(), x2, y2, z2));
         }
-        SUtil.delay(() -> removeBlock(entityfallingblock, players), delay);
+        SUtil.delay(() -> BlockFallAPI.removeBlock(entityfallingblock, players), delay.intValue());
     }
 
-    public static void sendBlock(final Location loc, final Material mat, final byte data, final World players, final Integer delay) {
-        final net.minecraft.server.v1_8_R3.World world = ((CraftWorld) loc.getWorld()).getHandle();
-        final EntityFallingBlock entityfallingblock = new EntityFallingBlock(world);
+    public static void sendBlock(Location loc, Material mat, byte data, World players, Integer delay) {
+        WorldServer world = ((CraftWorld)loc.getWorld()).getHandle();
+        EntityFallingBlock entityfallingblock = new EntityFallingBlock((net.minecraft.server.v1_8_R3.World)world);
         entityfallingblock.setLocation(loc.getX(), loc.getY(), loc.getZ(), 0.0f, 0.0f);
-        final PacketPlayOutSpawnEntity packet = new PacketPlayOutSpawnEntity(entityfallingblock, 70, mat.getId() + (data << 12));
-        for (final Player player : players.getPlayers()) {
-            ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+        PacketPlayOutSpawnEntity packet = new PacketPlayOutSpawnEntity((Entity)entityfallingblock, 70, mat.getId() + (data << 12));
+        for (Player player : players.getPlayers()) {
+            ((CraftPlayer)player).getHandle().playerConnection.sendPacket((Packet)packet);
         }
-        SUtil.delay(() -> removeBlock(entityfallingblock, players), delay);
+        SUtil.delay(() -> BlockFallAPI.removeBlock(entityfallingblock, players), delay.intValue());
     }
 
-    public static void removeBlock(final EntityFallingBlock entityfallingblock, final World players) {
+    public static void removeBlock(EntityFallingBlock entityfallingblock, World players) {
         if (entityfallingblock == null) {
             return;
         }
-        final PacketPlayOutEntityDestroy destroy = new PacketPlayOutEntityDestroy(entityfallingblock.getId());
-        for (final Player player : players.getPlayers()) {
-            ((CraftPlayer) player).getHandle().playerConnection.sendPacket(destroy);
+        PacketPlayOutEntityDestroy destroy = new PacketPlayOutEntityDestroy(new int[]{entityfallingblock.getId()});
+        for (Player player : players.getPlayers()) {
+            ((CraftPlayer)player).getHandle().playerConnection.sendPacket((Packet)destroy);
         }
     }
 
-    public static EntityFallingBlock sendBlockDestroyWithSignal(final Location loc, final Material mat, final byte data, final World players) {
-        final net.minecraft.server.v1_8_R3.World world = ((CraftWorld) loc.getWorld()).getHandle();
-        final EntityFallingBlock entityfallingblock = new EntityFallingBlock(world);
+    public static EntityFallingBlock sendBlockDestroyWithSignal(Location loc, Material mat, byte data, World players) {
+        WorldServer world = ((CraftWorld)loc.getWorld()).getHandle();
+        EntityFallingBlock entityfallingblock = new EntityFallingBlock((net.minecraft.server.v1_8_R3.World)world);
         entityfallingblock.setLocation(loc.getX(), loc.getY(), loc.getZ(), 0.0f, 0.0f);
-        final PacketPlayOutSpawnEntity packet = new PacketPlayOutSpawnEntity(entityfallingblock, 70, mat.getId() + (data << 12));
-        for (final Player player : players.getPlayers()) {
-            ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+        PacketPlayOutSpawnEntity packet = new PacketPlayOutSpawnEntity((Entity)entityfallingblock, 70, mat.getId() + (data << 12));
+        for (Player player : players.getPlayers()) {
+            ((CraftPlayer)player).getHandle().playerConnection.sendPacket((Packet)packet);
         }
-        SUtil.delay(() -> removeBlock(entityfallingblock, players), 300L);
+        SUtil.delay(() -> BlockFallAPI.removeBlock(entityfallingblock, players), 300L);
         return entityfallingblock;
     }
 }
+

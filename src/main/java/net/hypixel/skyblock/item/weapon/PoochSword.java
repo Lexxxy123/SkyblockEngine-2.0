@@ -1,10 +1,21 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ */
 package net.hypixel.skyblock.item.weapon;
 
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.ToolStatistics;
 import org.bukkit.ChatColor;
-import net.hypixel.skyblock.item.*;
 
-public class PoochSword implements ToolStatistics, MaterialFunction {
+public class PoochSword
+implements ToolStatistics,
+MaterialFunction {
     @Override
     public int getBaseDamage() {
         return 120;
@@ -42,7 +53,7 @@ public class PoochSword implements ToolStatistics, MaterialFunction {
 
     @Override
     public String getLore() {
-        return ChatColor.translateAlternateColorCodes('&', "Deal &c+1 Damage &7per &c50 &cmax Health ❤&7. Receive &a-20% &7damage from wolves. &7Gain &c+150❁ Strength &7against wolves.");
+        return ChatColor.translateAlternateColorCodes((char)'&', (String)"Deal &c+1 Damage &7per &c50 &cmax Health \u2764&7. Receive &a-20% &7damage from wolves. &7Gain &c+150\u2741 Strength &7against wolves.");
     }
 
     @Override
@@ -50,3 +61,4 @@ public class PoochSword implements ToolStatistics, MaterialFunction {
         return SpecificItemType.SWORD;
     }
 }
+

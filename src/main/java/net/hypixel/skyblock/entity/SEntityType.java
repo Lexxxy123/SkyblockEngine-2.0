@@ -1,34 +1,160 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.minecraft.server.v1_8_R3.EntityInsentient
+ *  net.minecraft.server.v1_8_R3.EntityTypes
+ *  org.bukkit.entity.EntityType
+ */
 package net.hypixel.skyblock.entity;
-
-import net.hypixel.skyblock.entity.caverns.*;
-import net.hypixel.skyblock.entity.den.*;
-import net.hypixel.skyblock.entity.dragon.type.*;
-import net.hypixel.skyblock.entity.dungeons.TestingMob;
-import net.hypixel.skyblock.entity.dungeons.boss.sadan.*;
-import net.hypixel.skyblock.entity.dungeons.minibosses.*;
-import net.hypixel.skyblock.entity.dungeons.regularentity.*;
-import net.hypixel.skyblock.entity.dungeons.watcher.*;
-import net.hypixel.skyblock.entity.end.*;
-import net.hypixel.skyblock.entity.end.Watcher;
-import net.hypixel.skyblock.entity.insentient.WheatCrystal;
-import net.hypixel.skyblock.entity.nether.LargeMagmaCube;
-import net.hypixel.skyblock.entity.nether.MediumMagmaCube;
-import net.hypixel.skyblock.entity.nether.SmallMagmaCube;
-import net.hypixel.skyblock.entity.nether.WitherSkeleton;
-import net.hypixel.skyblock.entity.nms.*;
-import net.hypixel.skyblock.entity.skeleton.HighLevelSkeleton;
-import net.hypixel.skyblock.entity.wolf.*;
-import net.hypixel.skyblock.entity.zombie.*;
-import net.minecraft.server.v1_8_R3.EntityInsentient;
-import net.minecraft.server.v1_8_R3.EntityTypes;
-import org.bukkit.entity.EntityType;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+import net.hypixel.skyblock.entity.EntityFunction;
+import net.hypixel.skyblock.entity.EntityStatistics;
+import net.hypixel.skyblock.entity.Stronker;
+import net.hypixel.skyblock.entity.caverns.DiamondSkeleton;
+import net.hypixel.skyblock.entity.caverns.DiamondZombie;
+import net.hypixel.skyblock.entity.caverns.EnchantedDiamondSkeleton;
+import net.hypixel.skyblock.entity.caverns.EnchantedDiamondZombie;
+import net.hypixel.skyblock.entity.caverns.LapisZombie;
+import net.hypixel.skyblock.entity.caverns.LargeSlime;
+import net.hypixel.skyblock.entity.caverns.MediumSlime;
+import net.hypixel.skyblock.entity.caverns.Pigman;
+import net.hypixel.skyblock.entity.caverns.SmallSlime;
+import net.hypixel.skyblock.entity.caverns.UndeadGiaKhanhvn;
+import net.hypixel.skyblock.entity.den.BroodMother;
+import net.hypixel.skyblock.entity.den.CaveSpider;
+import net.hypixel.skyblock.entity.den.DasherSpider;
+import net.hypixel.skyblock.entity.den.MutantTarantula;
+import net.hypixel.skyblock.entity.den.Silverfish;
+import net.hypixel.skyblock.entity.den.SpiderJockey;
+import net.hypixel.skyblock.entity.den.SpidersDenSkeleton;
+import net.hypixel.skyblock.entity.den.SpidersDenSlime;
+import net.hypixel.skyblock.entity.den.SplitterSpider;
+import net.hypixel.skyblock.entity.den.TarantulaBeast;
+import net.hypixel.skyblock.entity.den.TarantulaVermin;
+import net.hypixel.skyblock.entity.den.VoraciousSpider;
+import net.hypixel.skyblock.entity.den.WeaverSpider;
+import net.hypixel.skyblock.entity.dragon.type.OldDragon;
+import net.hypixel.skyblock.entity.dragon.type.ProtectorDragon;
+import net.hypixel.skyblock.entity.dragon.type.StrongDragon;
+import net.hypixel.skyblock.entity.dragon.type.SuperiorDragon;
+import net.hypixel.skyblock.entity.dragon.type.UnstableDragon;
+import net.hypixel.skyblock.entity.dragon.type.WiseDragon;
+import net.hypixel.skyblock.entity.dragon.type.YoungDragon;
+import net.hypixel.skyblock.entity.dungeons.TestingMob;
+import net.hypixel.skyblock.entity.dungeons.boss.sadan.BigfootGiant;
+import net.hypixel.skyblock.entity.dungeons.boss.sadan.DiamondGiant;
+import net.hypixel.skyblock.entity.dungeons.boss.sadan.GiantsDummy;
+import net.hypixel.skyblock.entity.dungeons.boss.sadan.JollyPinkGiant;
+import net.hypixel.skyblock.entity.dungeons.boss.sadan.LASRGiant;
+import net.hypixel.skyblock.entity.dungeons.boss.sadan.SadanDummy;
+import net.hypixel.skyblock.entity.dungeons.boss.sadan.SadanDummy_Idle;
+import net.hypixel.skyblock.entity.dungeons.boss.sadan.SadanGiant;
+import net.hypixel.skyblock.entity.dungeons.boss.sadan.SadanHuman;
+import net.hypixel.skyblock.entity.dungeons.boss.sadan.SleepingGolem_S;
+import net.hypixel.skyblock.entity.dungeons.boss.sadan.TerracottaDummy;
+import net.hypixel.skyblock.entity.dungeons.boss.sadan.TerracottaSadan;
+import net.hypixel.skyblock.entity.dungeons.minibosses.AngryArchaeologist;
+import net.hypixel.skyblock.entity.dungeons.minibosses.FrozenAdv;
+import net.hypixel.skyblock.entity.dungeons.minibosses.HolyLostAdv;
+import net.hypixel.skyblock.entity.dungeons.minibosses.ShadowAssassins;
+import net.hypixel.skyblock.entity.dungeons.minibosses.SuperiorLostAdv;
+import net.hypixel.skyblock.entity.dungeons.minibosses.Unstable;
+import net.hypixel.skyblock.entity.dungeons.minibosses.YoungLostAdv;
+import net.hypixel.skyblock.entity.dungeons.regularentity.CryptDreadlord;
+import net.hypixel.skyblock.entity.dungeons.regularentity.CryptLurker;
+import net.hypixel.skyblock.entity.dungeons.regularentity.CryptSoulstealer;
+import net.hypixel.skyblock.entity.dungeons.regularentity.CryptUndead;
+import net.hypixel.skyblock.entity.dungeons.regularentity.Fels;
+import net.hypixel.skyblock.entity.dungeons.regularentity.ScaredSkeleton;
+import net.hypixel.skyblock.entity.dungeons.regularentity.SkeletonMaster;
+import net.hypixel.skyblock.entity.dungeons.regularentity.SkeletonSoldier;
+import net.hypixel.skyblock.entity.dungeons.regularentity.Skeletor;
+import net.hypixel.skyblock.entity.dungeons.regularentity.SkeletorPrime;
+import net.hypixel.skyblock.entity.dungeons.regularentity.Sniper;
+import net.hypixel.skyblock.entity.dungeons.regularentity.SuperArcher;
+import net.hypixel.skyblock.entity.dungeons.regularentity.SuperTankZombie;
+import net.hypixel.skyblock.entity.dungeons.regularentity.TankZombie;
+import net.hypixel.skyblock.entity.dungeons.regularentity.UndeadSkeleton;
+import net.hypixel.skyblock.entity.dungeons.regularentity.Withermancer;
+import net.hypixel.skyblock.entity.dungeons.regularentity.ZombieKnight;
+import net.hypixel.skyblock.entity.dungeons.regularentity.ZombieSoldier;
+import net.hypixel.skyblock.entity.dungeons.watcher.WatcherBonzo;
+import net.hypixel.skyblock.entity.dungeons.watcher.WatcherCannibal;
+import net.hypixel.skyblock.entity.dungeons.watcher.WatcherFlamer;
+import net.hypixel.skyblock.entity.dungeons.watcher.WatcherFreak;
+import net.hypixel.skyblock.entity.dungeons.watcher.WatcherFrost;
+import net.hypixel.skyblock.entity.dungeons.watcher.WatcherLeech;
+import net.hypixel.skyblock.entity.dungeons.watcher.WatcherLivid;
+import net.hypixel.skyblock.entity.dungeons.watcher.WatcherMrDead;
+import net.hypixel.skyblock.entity.dungeons.watcher.WatcherMute;
+import net.hypixel.skyblock.entity.dungeons.watcher.WatcherOoze;
+import net.hypixel.skyblock.entity.dungeons.watcher.WatcherParasite;
+import net.hypixel.skyblock.entity.dungeons.watcher.WatcherParasiteFish;
+import net.hypixel.skyblock.entity.dungeons.watcher.WatcherPsycho;
+import net.hypixel.skyblock.entity.dungeons.watcher.WatcherPutrid;
+import net.hypixel.skyblock.entity.dungeons.watcher.WatcherReaper;
+import net.hypixel.skyblock.entity.dungeons.watcher.WatcherRevoker;
+import net.hypixel.skyblock.entity.dungeons.watcher.WatcherSkull;
+import net.hypixel.skyblock.entity.dungeons.watcher.WatcherTear;
+import net.hypixel.skyblock.entity.dungeons.watcher.WatcherVader;
+import net.hypixel.skyblock.entity.dungeons.watcher.WatcherWalker;
+import net.hypixel.skyblock.entity.end.Enderman;
+import net.hypixel.skyblock.entity.end.ObsidianDefender;
+import net.hypixel.skyblock.entity.end.StrongEnderman;
+import net.hypixel.skyblock.entity.end.VoidcrazedManiac;
+import net.hypixel.skyblock.entity.end.VoidlingDevotee;
+import net.hypixel.skyblock.entity.end.VoidlingExtremist;
+import net.hypixel.skyblock.entity.end.VoidlingFanatic;
+import net.hypixel.skyblock.entity.end.VoidlingRadical;
+import net.hypixel.skyblock.entity.end.Watcher;
+import net.hypixel.skyblock.entity.end.WeakEnderman;
+import net.hypixel.skyblock.entity.end.Zealot;
+import net.hypixel.skyblock.entity.insentient.WheatCrystal;
+import net.hypixel.skyblock.entity.nether.LargeMagmaCube;
+import net.hypixel.skyblock.entity.nether.MediumMagmaCube;
+import net.hypixel.skyblock.entity.nether.SmallMagmaCube;
+import net.hypixel.skyblock.entity.nether.WitherSkeleton;
+import net.hypixel.skyblock.entity.nms.AtonedHorror;
+import net.hypixel.skyblock.entity.nms.BorisYeltsin;
+import net.hypixel.skyblock.entity.nms.CrimsonSathanas;
+import net.hypixel.skyblock.entity.nms.Giant;
+import net.hypixel.skyblock.entity.nms.RevenantHorror;
+import net.hypixel.skyblock.entity.nms.SneakyCreeper;
+import net.hypixel.skyblock.entity.nms.SvenPackmaster;
+import net.hypixel.skyblock.entity.nms.TarantulaBroodfather;
+import net.hypixel.skyblock.entity.nms.UncollidableArmorStand;
+import net.hypixel.skyblock.entity.nms.VelocityArmorStand;
+import net.hypixel.skyblock.entity.nms.VoidgloomSeraph;
+import net.hypixel.skyblock.entity.skeleton.HighLevelSkeleton;
+import net.hypixel.skyblock.entity.wolf.HowlingSpirit;
+import net.hypixel.skyblock.entity.wolf.OldWolf;
+import net.hypixel.skyblock.entity.wolf.PackEnforcer;
+import net.hypixel.skyblock.entity.wolf.PackSpirit;
+import net.hypixel.skyblock.entity.wolf.SoulOfTheAlpha;
+import net.hypixel.skyblock.entity.wolf.SvenAlpha;
+import net.hypixel.skyblock.entity.wolf.SvenFollower;
+import net.hypixel.skyblock.entity.wolf.SvenPup;
+import net.hypixel.skyblock.entity.wolf.Wolf;
+import net.hypixel.skyblock.entity.zombie.AtonedChampion;
+import net.hypixel.skyblock.entity.zombie.AtonedRevenant;
+import net.hypixel.skyblock.entity.zombie.CryptGhoul;
+import net.hypixel.skyblock.entity.zombie.DeformedRevenant;
+import net.hypixel.skyblock.entity.zombie.DiamondGoblinzine;
+import net.hypixel.skyblock.entity.zombie.Goblinzine;
+import net.hypixel.skyblock.entity.zombie.GoldenGhoul;
+import net.hypixel.skyblock.entity.zombie.RevenantChampion;
+import net.hypixel.skyblock.entity.zombie.RevenantSycophant;
+import net.hypixel.skyblock.entity.zombie.Zombie;
+import net.hypixel.skyblock.entity.zombie.ZombieVillager;
+import net.minecraft.server.v1_8_R3.EntityInsentient;
+import net.minecraft.server.v1_8_R3.EntityTypes;
+import org.bukkit.entity.EntityType;
 
 public enum SEntityType {
     WATCHER_CANNIBAL(EntityType.ZOMBIE, WatcherCannibal.class),
@@ -64,7 +190,6 @@ public enum SEntityType {
     SHADOW_ASSASSINS(EntityType.ZOMBIE, ShadowAssassins.class),
     TERRORANT(EntityType.ZOMBIE, Giant.class),
     TEST_OBJECT(EntityType.ZOMBIE, Zombie.class),
-    VOIDLINGS_WARDEN(EntityType.ZOMBIE, VoidlingsWardenMob.class),
     TEST_CHIMMY_OBJECT_T34(EntityType.ZOMBIE, TestingMob.class),
     TERRACOTTA_SADAN(EntityType.ZOMBIE, TerracottaSadan.class),
     BIGFOOT_SADAN(EntityType.ZOMBIE, BigfootGiant.class),
@@ -179,44 +304,43 @@ public enum SEntityType {
     private final Class<?> clazz;
     private final boolean specific;
 
-    SEntityType(final EntityType craftType, final Class<?> clazz, final boolean specific) {
+    private SEntityType(EntityType craftType, Class<?> clazz, boolean specific) {
         this.craftType = craftType;
         this.clazz = clazz;
         this.specific = specific;
         if (EntityInsentient.class.isAssignableFrom(clazz)) {
-            registerEntity(this.name(), craftType.getTypeId(), (Class<? extends EntityInsentient>) clazz);
+            SEntityType.registerEntity(this.name(), craftType.getTypeId(), clazz);
         }
     }
 
-    SEntityType(final EntityType craftType, final Class<?> clazz) {
+    private SEntityType(EntityType craftType, Class<?> clazz) {
         this(craftType, clazz, false);
     }
 
     public EntityStatistics getStatistics() {
-        final Object generic = this.getGenericInstance();
+        Object generic = this.getGenericInstance();
         if (generic instanceof EntityStatistics) {
-            return (EntityStatistics) generic;
+            return (EntityStatistics)generic;
         }
         return null;
     }
 
     public EntityFunction getFunction() {
-        final Object generic = this.getGenericInstance();
+        Object generic = this.getGenericInstance();
         if (generic instanceof EntityFunction) {
-            return (EntityFunction) generic;
+            return (EntityFunction)generic;
         }
         return null;
     }
 
-    public Object instance(final Object... params) {
+    public Object instance(Object ... params) {
         try {
-            final Class<?>[] paramTypes = new Class[params.length];
-            for (int i = 0; i < paramTypes.length; ++i) {
-                paramTypes[i] = params[i].getClass();
+            Class[] paramTypes = new Class[params.length];
+            for (int i2 = 0; i2 < paramTypes.length; ++i2) {
+                paramTypes[i2] = params[i2].getClass();
             }
             return this.clazz.getConstructor(paramTypes).newInstance(params);
-        } catch (final InstantiationException | IllegalAccessException | NoSuchMethodException |
-                       InvocationTargetException ex) {
+        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
             ex.printStackTrace();
             return null;
         }
@@ -225,35 +349,34 @@ public enum SEntityType {
     public Object getGenericInstance() {
         try {
             return this.clazz.newInstance();
-        } catch (final InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (IllegalAccessException | InstantiationException e2) {
+            e2.printStackTrace();
             return null;
         }
     }
 
-    private static void registerEntity(final String name, final int id, final Class<? extends EntityInsentient> clazz) {
+    private static void registerEntity(String name, int id, Class<? extends EntityInsentient> clazz) {
         try {
-            final List<Map<?, ?>> dataMap = new ArrayList<Map<?, ?>>();
-            for (final Field f : EntityTypes.class.getDeclaredFields()) {
-                if (f.getType().getSimpleName().equals(Map.class.getSimpleName())) {
-                    f.setAccessible(true);
-                    dataMap.add((Map) f.get(null));
-                }
+            ArrayList<Map> dataMap = new ArrayList<Map>();
+            for (Field f2 : EntityTypes.class.getDeclaredFields()) {
+                if (!f2.getType().getSimpleName().equals(Map.class.getSimpleName())) continue;
+                f2.setAccessible(true);
+                dataMap.add((Map)f2.get(null));
             }
-            if (dataMap.get(2).containsKey(id)) {
-                dataMap.get(0).remove(name);
-                dataMap.get(2).remove(id);
+            if (((Map)dataMap.get(2)).containsKey(id)) {
+                ((Map)dataMap.get(0)).remove(name);
+                ((Map)dataMap.get(2)).remove(id);
             }
-            final Method method = EntityTypes.class.getDeclaredMethod("a", Class.class, String.class, Integer.TYPE);
+            Method method = EntityTypes.class.getDeclaredMethod("a", Class.class, String.class, Integer.TYPE);
             method.setAccessible(true);
             method.invoke(null, clazz, name, id);
-        } catch (final Exception e) {
-            e.printStackTrace();
+        } catch (Exception e2) {
+            e2.printStackTrace();
         }
     }
 
-    public static SEntityType getEntityType(final String name) {
-        return valueOf(name.toUpperCase());
+    public static SEntityType getEntityType(String name) {
+        return SEntityType.valueOf(name.toUpperCase());
     }
 
     public EntityType getCraftType() {
@@ -268,3 +391,4 @@ public enum SEntityType {
         return this.specific;
     }
 }
+

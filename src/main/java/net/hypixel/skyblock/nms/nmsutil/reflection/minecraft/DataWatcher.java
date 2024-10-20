@@ -1,29 +1,35 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.nms.nmsutil.reflection.minecraft;
-
-import net.hypixel.skyblock.nms.nmsutil.reflection.resolver.*;
-import net.hypixel.skyblock.nms.nmsutil.reflection.resolver.minecraft.NMSClassResolver;
-import net.hypixel.skyblock.nms.nmsutil.reflection.resolver.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Map;
+import net.hypixel.skyblock.nms.nmsutil.reflection.minecraft.Minecraft;
+import net.hypixel.skyblock.nms.nmsutil.reflection.resolver.ClassResolver;
+import net.hypixel.skyblock.nms.nmsutil.reflection.resolver.ConstructorResolver;
+import net.hypixel.skyblock.nms.nmsutil.reflection.resolver.FieldResolver;
+import net.hypixel.skyblock.nms.nmsutil.reflection.resolver.MethodResolver;
+import net.hypixel.skyblock.nms.nmsutil.reflection.resolver.ResolverQuery;
+import net.hypixel.skyblock.nms.nmsutil.reflection.resolver.minecraft.NMSClassResolver;
 
 public class DataWatcher {
-    static ClassResolver classResolver;
-    static NMSClassResolver nmsClassResolver;
-    static Class<?> ItemStack;
-    static Class<?> ChunkCoordinates;
-    static Class<?> BlockPosition;
-    static Class<?> Vector3f;
-    static Class<?> DataWatcher;
-    static Class<?> Entity;
-    static Class<?> TIntObjectMap;
-    static ConstructorResolver DataWacherConstructorResolver;
-    static FieldResolver DataWatcherFieldResolver;
-    static MethodResolver TIntObjectMapMethodResolver;
-    static MethodResolver DataWatcherMethodResolver;
+    static ClassResolver classResolver = new ClassResolver();
+    static NMSClassResolver nmsClassResolver = new NMSClassResolver();
+    static Class<?> ItemStack = nmsClassResolver.resolveSilent("ItemStack");
+    static Class<?> ChunkCoordinates = nmsClassResolver.resolveSilent("ChunkCoordinates");
+    static Class<?> BlockPosition = nmsClassResolver.resolveSilent("BlockPosition");
+    static Class<?> Vector3f = nmsClassResolver.resolveSilent("Vector3f");
+    static Class<?> DataWatcher = nmsClassResolver.resolveSilent("DataWatcher");
+    static Class<?> Entity = nmsClassResolver.resolveSilent("Entity");
+    static Class<?> TIntObjectMap = classResolver.resolveSilent("gnu.trove.map.TIntObjectMap", "net.minecraft.util.gnu.trove.map.TIntObjectMap");
+    static ConstructorResolver DataWacherConstructorResolver = new ConstructorResolver(DataWatcher);
+    static FieldResolver DataWatcherFieldResolver = new FieldResolver(DataWatcher);
+    static MethodResolver TIntObjectMapMethodResolver = new MethodResolver(TIntObjectMap);
+    static MethodResolver DataWatcherMethodResolver = new MethodResolver(DataWatcher);
 
     public static Object newDataWatcher(Object entity) throws ReflectiveOperationException {
         return DataWacherConstructorResolver.resolve(new Class[][]{{Entity}}).newInstance(entity);
@@ -37,10 +43,10 @@ public class DataWatcher {
     }
 
     public static Object setValue(Object dataWatcher, int index, V1_9.ValueType type, Object value) throws ReflectiveOperationException {
-        return setValue(dataWatcher, index, type.getType(), value);
+        return net.hypixel.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.setValue(dataWatcher, index, type.getType(), value);
     }
 
-    public static Object setValue(Object dataWatcher, int index, Object value, FieldResolver dataWatcherObjectFieldResolver, String... dataWatcherObjectFieldNames) throws ReflectiveOperationException {
+    public static Object setValue(Object dataWatcher, int index, Object value, FieldResolver dataWatcherObjectFieldResolver, String ... dataWatcherObjectFieldNames) throws ReflectiveOperationException {
         if (Minecraft.VERSION.olderThan(Minecraft.Version.v1_9_R1)) {
             return V1_8.setValue(dataWatcher, index, value);
         }
@@ -53,11 +59,11 @@ public class DataWatcher {
         if (Minecraft.VERSION.olderThan(Minecraft.Version.v1_9_R1)) {
             return V1_8.getValue(dataWatcher, index);
         }
-        return V1_9.getValue(dataWatcher, index);
+        return V1_9.getValue((Object)dataWatcher, index);
     }
 
     public static Object getValue(Object dataWatcher, int index, V1_9.ValueType type) throws ReflectiveOperationException {
-        return getValue(dataWatcher, index, type.getType());
+        return net.hypixel.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.getValue(dataWatcher, index, type.getType());
     }
 
     public static Object getValue(Object dataWatcher, int index, Object dataWatcherObject) throws ReflectiveOperationException {
@@ -94,42 +100,76 @@ public class DataWatcher {
     private DataWatcher() {
     }
 
-    static {
-        classResolver = new ClassResolver();
-        nmsClassResolver = new NMSClassResolver();
-        ItemStack = nmsClassResolver.resolveSilent("ItemStack");
-        ChunkCoordinates = nmsClassResolver.resolveSilent("ChunkCoordinates");
-        BlockPosition = nmsClassResolver.resolveSilent("BlockPosition");
-        Vector3f = nmsClassResolver.resolveSilent("Vector3f");
-        DataWatcher = nmsClassResolver.resolveSilent("DataWatcher");
-        Entity = nmsClassResolver.resolveSilent("Entity");
-        TIntObjectMap = classResolver.resolveSilent("gnu.trove.map.TIntObjectMap", "net.minecraft.util.gnu.trove.map.TIntObjectMap");
-        DataWacherConstructorResolver = new ConstructorResolver(DataWatcher);
-        DataWatcherFieldResolver = new FieldResolver(DataWatcher);
-        TIntObjectMapMethodResolver = new MethodResolver(TIntObjectMap);
-        DataWatcherMethodResolver = new MethodResolver(DataWatcher);
+    public static class V1_8 {
+        static Class<?> WatchableObject = nmsClassResolver.resolveSilent("WatchableObject", "DataWatcher$WatchableObject");
+        static ConstructorResolver WatchableObjectConstructorResolver;
+        static FieldResolver WatchableObjectFieldResolver;
+
+        public static Object newWatchableObject(int index, Object value) throws ReflectiveOperationException {
+            return V1_8.newWatchableObject(net.hypixel.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.getValueType(value), index, value);
+        }
+
+        public static Object newWatchableObject(int type, int index, Object value) throws ReflectiveOperationException {
+            if (null == WatchableObjectConstructorResolver) {
+                WatchableObjectConstructorResolver = new ConstructorResolver(WatchableObject);
+            }
+            return WatchableObjectConstructorResolver.resolve(new Class[][]{{Integer.TYPE, Integer.TYPE, Object.class}}).newInstance(type, index, value);
+        }
+
+        public static Object setValue(Object dataWatcher, int index, Object value) throws ReflectiveOperationException {
+            int type = net.hypixel.skyblock.nms.nmsutil.reflection.minecraft.DataWatcher.getValueType(value);
+            Map map = (Map)DataWatcherFieldResolver.resolveByLastType(Map.class).get(dataWatcher);
+            map.put(index, V1_8.newWatchableObject(type, index, value));
+            return dataWatcher;
+        }
+
+        public static Object getValue(Object dataWatcher, int index) throws ReflectiveOperationException {
+            Map map = (Map)DataWatcherFieldResolver.resolveByLastType(Map.class).get(dataWatcher);
+            return map.get(index);
+        }
+
+        public static int getWatchableObjectIndex(Object object) throws ReflectiveOperationException {
+            if (null == WatchableObjectFieldResolver) {
+                WatchableObjectFieldResolver = new FieldResolver(WatchableObject);
+            }
+            return WatchableObjectFieldResolver.resolve("b").getInt(object);
+        }
+
+        public static int getWatchableObjectType(Object object) throws ReflectiveOperationException {
+            if (null == WatchableObjectFieldResolver) {
+                WatchableObjectFieldResolver = new FieldResolver(WatchableObject);
+            }
+            return WatchableObjectFieldResolver.resolve("a").getInt(object);
+        }
+
+        public static Object getWatchableObjectValue(Object object) throws ReflectiveOperationException {
+            if (null == WatchableObjectFieldResolver) {
+                WatchableObjectFieldResolver = new FieldResolver(WatchableObject);
+            }
+            return WatchableObjectFieldResolver.resolve("c").get(object);
+        }
     }
 
     public static class V1_9 {
-        static Class<?> DataWatcherItem;
-        static Class<?> DataWatcherObject;
+        static Class<?> DataWatcherItem = nmsClassResolver.resolveSilent("DataWatcher$Item");
+        static Class<?> DataWatcherObject = nmsClassResolver.resolveSilent("DataWatcherObject");
         static ConstructorResolver DataWatcherItemConstructorResolver;
         static FieldResolver DataWatcherItemFieldResolver;
         static FieldResolver DataWatcherObjectFieldResolver;
 
         public static Object newDataWatcherItem(Object dataWatcherObject, Object value) throws ReflectiveOperationException {
-            if (null == V1_9.DataWatcherItemConstructorResolver) {
+            if (null == DataWatcherItemConstructorResolver) {
                 DataWatcherItemConstructorResolver = new ConstructorResolver(DataWatcherItem);
             }
             return DataWatcherItemConstructorResolver.resolveFirstConstructor().newInstance(dataWatcherObject, value);
         }
 
         public static Object setItem(Object dataWatcher, int index, Object dataWatcherObject, Object value) throws ReflectiveOperationException {
-            return setItem(dataWatcher, index, newDataWatcherItem(dataWatcherObject, value));
+            return V1_9.setItem(dataWatcher, index, V1_9.newDataWatcherItem(dataWatcherObject, value));
         }
 
         public static Object setItem(Object dataWatcher, int index, Object dataWatcherItem) throws ReflectiveOperationException {
-            Map<Integer, Object> map = (Map<Integer, Object>) DataWatcherFieldResolver.resolveByLastTypeSilent(Map.class).get(dataWatcher);
+            Map map = (Map)DataWatcherFieldResolver.resolveByLastTypeSilent(Map.class).get(dataWatcher);
             map.put(index, dataWatcherItem);
             return dataWatcher;
         }
@@ -148,11 +188,11 @@ public class DataWatcher {
         }
 
         public static Object getValue(Object dataWatcher, ValueType type) throws ReflectiveOperationException {
-            return getValue(dataWatcher, type.getType());
+            return V1_9.getValue(dataWatcher, type.getType());
         }
 
         public static Object getItemObject(Object item) throws ReflectiveOperationException {
-            if (null == V1_9.DataWatcherItemFieldResolver) {
+            if (null == DataWatcherItemFieldResolver) {
                 DataWatcherItemFieldResolver = new FieldResolver(DataWatcherItem);
             }
             return DataWatcherItemFieldResolver.resolve("a").get(item);
@@ -160,37 +200,32 @@ public class DataWatcher {
 
         public static int getItemIndex(Object dataWatcher, Object item) throws ReflectiveOperationException {
             int index = -1;
-            Map<Integer, Object> map = (Map<Integer, Object>) DataWatcherFieldResolver.resolveByLastTypeSilent(Map.class).get(dataWatcher);
-            for (Map.Entry<Integer, Object> entry : map.entrySet()) {
-                if (entry.getValue().equals(item)) {
-                    index = entry.getKey();
-                    break;
-                }
+            Map map = (Map)DataWatcherFieldResolver.resolveByLastTypeSilent(Map.class).get(dataWatcher);
+            for (Map.Entry entry : map.entrySet()) {
+                if (!entry.getValue().equals(item)) continue;
+                index = (Integer)entry.getKey();
+                break;
             }
             return index;
         }
 
         public static Type getItemType(Object item) throws ReflectiveOperationException {
-            if (null == V1_9.DataWatcherObjectFieldResolver) {
+            Type[] actualTypes;
+            Type type;
+            if (null == DataWatcherObjectFieldResolver) {
                 DataWatcherObjectFieldResolver = new FieldResolver(DataWatcherObject);
             }
-            Object object = getItemObject(item);
+            Object object = V1_9.getItemObject(item);
             Object serializer = DataWatcherObjectFieldResolver.resolve("b").get(object);
             Type[] genericInterfaces = serializer.getClass().getGenericInterfaces();
-            if (0 < genericInterfaces.length) {
-                Type type = genericInterfaces[0];
-                if (type instanceof ParameterizedType) {
-                    Type[] actualTypes = ((ParameterizedType) type).getActualTypeArguments();
-                    if (0 < actualTypes.length) {
-                        return actualTypes[0];
-                    }
-                }
+            if (0 < genericInterfaces.length && (type = genericInterfaces[0]) instanceof ParameterizedType && 0 < (actualTypes = ((ParameterizedType)type).getActualTypeArguments()).length) {
+                return actualTypes[0];
             }
             return null;
         }
 
         public static Object getItemValue(Object item) throws ReflectiveOperationException {
-            if (null == V1_9.DataWatcherItemFieldResolver) {
+            if (null == DataWatcherItemFieldResolver) {
                 DataWatcherItemFieldResolver = new FieldResolver(DataWatcherItem);
             }
             return DataWatcherItemFieldResolver.resolve("b").get(item);
@@ -200,12 +235,7 @@ public class DataWatcher {
             DataWatcherItemFieldResolver.resolve("b").set(item, value);
         }
 
-        static {
-            DataWatcherItem = nmsClassResolver.resolveSilent("DataWatcher$Item");
-            DataWatcherObject = nmsClassResolver.resolveSilent("DataWatcherObject");
-        }
-
-        public enum ValueType {
+        public static enum ValueType {
             ENTITY_FLAG("Entity", 57, 0),
             ENTITY_AIR_TICKS("Entity", 58, 1),
             ENTITY_NAME("Entity", 59, 2),
@@ -236,39 +266,40 @@ public class DataWatcher {
 
             private Object type;
 
-            ValueType(String className, String[] fieldNames) {
-                try {
-                    this.type = new FieldResolver(nmsClassResolver.resolve(className)).resolve(fieldNames).get(null);
-                } catch (Exception e) {
-                    if (Minecraft.VERSION.newerThan(Minecraft.Version.v1_9_R1)) {
+            private ValueType(String className, String[] fieldNames) {
+                block2: {
+                    try {
+                        this.type = new FieldResolver(nmsClassResolver.resolve(className)).resolve(fieldNames).get(null);
+                    } catch (Exception e2) {
+                        if (!Minecraft.VERSION.newerThan(Minecraft.Version.v1_9_R1)) break block2;
                         System.err.println("[SkyBlocl Reflection Injector] Failed to find DataWatcherObject for " + className + " " + Arrays.toString(fieldNames));
                     }
                 }
             }
 
-            ValueType(String className, int index) {
-                try {
-                    this.type = new FieldResolver(nmsClassResolver.resolve(className)).resolveIndex(index).get(null);
-                } catch (Exception e) {
-                    if (Minecraft.VERSION.newerThan(Minecraft.Version.v1_9_R1)) {
+            private ValueType(String className, int index) {
+                block2: {
+                    try {
+                        this.type = new FieldResolver(nmsClassResolver.resolve(className)).resolveIndex(index).get(null);
+                    } catch (Exception e2) {
+                        if (!Minecraft.VERSION.newerThan(Minecraft.Version.v1_9_R1)) break block2;
                         System.err.println("[SkyBlock Reflection Injector] Failed to find DataWatcherObject for " + className + " #" + index);
                     }
                 }
             }
 
-            ValueType(String className, int index, int offset) {
-                int firstObject = 0;
-                try {
-                    Class<?> clazz = nmsClassResolver.resolve(className);
-                    for (Field field : clazz.getDeclaredFields()) {
-                        if ("DataWatcherObject".equals(field.getType().getSimpleName())) {
-                            break;
+            private ValueType(String className, int index, int offset) {
+                block3: {
+                    int firstObject = 0;
+                    try {
+                        Class clazz = nmsClassResolver.resolve(className);
+                        for (Field field : clazz.getDeclaredFields()) {
+                            if ("DataWatcherObject".equals(field.getType().getSimpleName())) break;
+                            ++firstObject;
                         }
-                        ++firstObject;
-                    }
-                    this.type = new FieldResolver(clazz).resolveIndex(firstObject + offset).get(null);
-                } catch (Exception e) {
-                    if (Minecraft.VERSION.newerThan(Minecraft.Version.v1_9_R1)) {
+                        this.type = new FieldResolver(clazz).resolveIndex(firstObject + offset).get(null);
+                    } catch (Exception e2) {
+                        if (!Minecraft.VERSION.newerThan(Minecraft.Version.v1_9_R1)) break block3;
                         System.err.println("[SkyBlock Reflection Injector] Failed to find DataWatcherObject for " + className + " #" + index + " (" + firstObject + "+" + offset + ")");
                     }
                 }
@@ -283,58 +314,5 @@ public class DataWatcher {
             }
         }
     }
-
-    public static class V1_8 {
-        static Class<?> WatchableObject;
-        static ConstructorResolver WatchableObjectConstructorResolver;
-        static FieldResolver WatchableObjectFieldResolver;
-
-        public static Object newWatchableObject(int index, Object value) throws ReflectiveOperationException {
-            return newWatchableObject(getValueType(value), index, value);
-        }
-
-        public static Object newWatchableObject(int type, int index, Object value) throws ReflectiveOperationException {
-            if (null == V1_8.WatchableObjectConstructorResolver) {
-                WatchableObjectConstructorResolver = new ConstructorResolver(WatchableObject);
-            }
-            return WatchableObjectConstructorResolver.resolve(new Class[][]{{Integer.TYPE, Integer.TYPE, Object.class}}).newInstance(type, index, value);
-        }
-
-        public static Object setValue(Object dataWatcher, int index, Object value) throws ReflectiveOperationException {
-            int type = getValueType(value);
-            Map map = (Map) DataWatcherFieldResolver.resolveByLastType(Map.class).get(dataWatcher);
-            map.put(index, newWatchableObject(type, index, value));
-            return dataWatcher;
-        }
-
-        public static Object getValue(Object dataWatcher, int index) throws ReflectiveOperationException {
-            Map map = (Map) DataWatcherFieldResolver.resolveByLastType(Map.class).get(dataWatcher);
-            return map.get(index);
-        }
-
-        public static int getWatchableObjectIndex(Object object) throws ReflectiveOperationException {
-            if (null == V1_8.WatchableObjectFieldResolver) {
-                WatchableObjectFieldResolver = new FieldResolver(WatchableObject);
-            }
-            return WatchableObjectFieldResolver.resolve("b").getInt(object);
-        }
-
-        public static int getWatchableObjectType(Object object) throws ReflectiveOperationException {
-            if (null == V1_8.WatchableObjectFieldResolver) {
-                WatchableObjectFieldResolver = new FieldResolver(WatchableObject);
-            }
-            return WatchableObjectFieldResolver.resolve("a").getInt(object);
-        }
-
-        public static Object getWatchableObjectValue(Object object) throws ReflectiveOperationException {
-            if (null == V1_8.WatchableObjectFieldResolver) {
-                WatchableObjectFieldResolver = new FieldResolver(WatchableObject);
-            }
-            return WatchableObjectFieldResolver.resolve("c").get(object);
-        }
-
-        static {
-            WatchableObject = nmsClassResolver.resolveSilent("WatchableObject", "DataWatcher$WatchableObject");
-        }
-    }
 }
+

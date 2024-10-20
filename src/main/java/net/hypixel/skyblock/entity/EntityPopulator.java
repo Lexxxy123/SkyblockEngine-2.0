@@ -1,27 +1,37 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Location
+ *  org.bukkit.World
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.scheduler.BukkitRunnable
+ *  org.bukkit.scheduler.BukkitTask
+ */
 package net.hypixel.skyblock.entity;
-
-import lombok.Getter;
-import net.hypixel.skyblock.features.region.Region;
-import net.hypixel.skyblock.features.region.RegionType;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
-import net.hypixel.skyblock.SkyBlock;
-import net.hypixel.skyblock.util.SUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.entity.SEntity;
+import net.hypixel.skyblock.entity.SEntityType;
+import net.hypixel.skyblock.features.region.Region;
+import net.hypixel.skyblock.features.region.RegionType;
+import net.hypixel.skyblock.util.SUtil;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 public class EntityPopulator {
-    private static final List<EntityPopulator> POPULATORS;
+    private static final List<EntityPopulator> POPULATORS = new ArrayList<EntityPopulator>();
     private final int amount;
     private final int max;
     private final long delay;
     private final SEntityType type;
     private final Predicate<World> condition;
-    @Getter
     private final RegionType regionType;
     private BukkitTask task;
     private final List<SEntity> spawned;
@@ -30,7 +40,7 @@ public class EntityPopulator {
         return POPULATORS;
     }
 
-    public EntityPopulator(final int amount, final int max, final long delay, final SEntityType type, final RegionType regionType, final Predicate<World> condition) {
+    public EntityPopulator(int amount, int max, long delay, SEntityType type, RegionType regionType, Predicate<World> condition) {
         this.amount = amount;
         this.max = max;
         this.delay = delay;
@@ -38,64 +48,61 @@ public class EntityPopulator {
         this.regionType = regionType;
         this.spawned = new ArrayList<SEntity>();
         this.condition = condition;
-        EntityPopulator.POPULATORS.add(this);
+        POPULATORS.add(this);
     }
 
-    public EntityPopulator(final int amount, final int max, final long delay, final SEntityType type, final RegionType regionType) {
+    public EntityPopulator(int amount, int max, long delay, SEntityType type, RegionType regionType) {
         this(amount, max, delay, type, regionType, null);
     }
 
     public void start() {
-        this.task = new BukkitRunnable() {
+        this.task = new BukkitRunnable(){
+
             public void run() {
-                spawned.removeIf(sEntity -> sEntity.getEntity().isDead());
-                final List<Region> regions = Region.getRegionsOfType(regionType);
+                EntityPopulator.this.spawned.removeIf(sEntity -> sEntity.getEntity().isDead());
+                List<Region> regions = Region.getRegionsOfType(EntityPopulator.this.regionType);
                 if (regions.isEmpty()) {
                     return;
                 }
-
-                if (Region.getPlayersWithinRegionType(regionType).isEmpty()) {
-                    for (final SEntity s : spawned) {
-                        s.remove();
+                if (Region.getPlayersWithinRegionType(EntityPopulator.this.regionType).isEmpty()) {
+                    for (SEntity s2 : EntityPopulator.this.spawned) {
+                        s2.remove();
                     }
-                    spawned.clear();
+                    EntityPopulator.this.spawned.clear();
                     return;
                 }
-                if (condition != null && !condition.test(SUtil.getRandom(regions).getFirstLocation().getWorld())) {
+                if (EntityPopulator.this.condition != null && !EntityPopulator.this.condition.test(SUtil.getRandom(regions).getFirstLocation().getWorld())) {
                     return;
                 }
-                if (spawned.size() >= max) {
+                if (EntityPopulator.this.spawned.size() >= EntityPopulator.this.max) {
                     return;
                 }
-                for (int i = 0; i < amount; ++i) {
-                    int attempts = 0;
+                for (int i2 = 0; i2 < EntityPopulator.this.amount; ++i2) {
                     Location available;
-                    do {
-                        available = SUtil.getRandom(regions).getRandomAvailableLocation();
-                        ++attempts;
-                    } while (available == null && attempts <= 150);
-                    if (available != null) {
-                        SEntity sEntity = new SEntity(available.clone().add(0.5, 0.0, 0.5), type);
-                        spawned.add(sEntity);
+                    int attempts = 0;
+                    while ((available = SUtil.getRandom(regions).getRandomAvailableLocation()) == null && ++attempts <= 150) {
                     }
+                    if (available == null) continue;
+                    SEntity sEntity2 = new SEntity(available.clone().add(0.5, 0.0, 0.5), EntityPopulator.this.type, new Object[0]);
+                    EntityPopulator.this.spawned.add(sEntity2);
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, this.delay);
-
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, this.delay);
         new BukkitRunnable(){
-            @Override
+
             public void run() {
-                if (spawned.isEmpty()) return;
-                if (Region.getPlayersWithinRegionType(regionType).isEmpty()) {
-                    for (final SEntity s : spawned) {
-                        s.remove();
+                if (EntityPopulator.this.spawned.isEmpty()) {
+                    return;
+                }
+                if (Region.getPlayersWithinRegionType(EntityPopulator.this.regionType).isEmpty()) {
+                    for (SEntity s2 : EntityPopulator.this.spawned) {
+                        s2.remove();
                     }
-                    spawned.clear();
+                    EntityPopulator.this.spawned.clear();
                 }
             }
-        }.runTaskTimerAsynchronously(SkyBlock.getPlugin() , 0L , 20);
+        }.runTaskTimerAsynchronously((Plugin)SkyBlock.getPlugin(), 0L, 20L);
     }
-
 
     public void stop() {
         if (this.task == null) {
@@ -105,12 +112,13 @@ public class EntityPopulator {
     }
 
     public static void stopAll() {
-        for (final EntityPopulator populator : EntityPopulator.POPULATORS) {
+        for (EntityPopulator populator : POPULATORS) {
             populator.stop();
         }
     }
 
-    static {
-        POPULATORS = new ArrayList<EntityPopulator>();
+    public RegionType getRegionType() {
+        return this.regionType;
     }
 }
+

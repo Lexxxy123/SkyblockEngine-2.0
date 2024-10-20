@@ -1,9 +1,14 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.entity.dungeons.watcher;
 
 import net.hypixel.skyblock.entity.EntityFunction;
 import net.hypixel.skyblock.entity.EntityStatistics;
 
-public class WatcherParasiteFish implements EntityStatistics, EntityFunction {
+public class WatcherParasiteFish
+implements EntityStatistics,
+EntityFunction {
     @Override
     public String getEntityName() {
         return "Parasite";
@@ -29,3 +34,4 @@ public class WatcherParasiteFish implements EntityStatistics, EntityFunction {
         return 125;
     }
 }
+

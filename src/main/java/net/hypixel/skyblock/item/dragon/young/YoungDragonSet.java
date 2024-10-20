@@ -1,13 +1,24 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.item.dragon.young;
 
-import org.bukkit.entity.Player;
 import net.hypixel.skyblock.item.GenericItemType;
 import net.hypixel.skyblock.item.MaterialStatistics;
 import net.hypixel.skyblock.item.PlayerBoostStatistics;
 import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.armor.ArmorSet;
+import net.hypixel.skyblock.item.dragon.young.YoungDragonBoots;
+import net.hypixel.skyblock.item.dragon.young.YoungDragonChestplate;
+import net.hypixel.skyblock.item.dragon.young.YoungDragonHelmet;
+import net.hypixel.skyblock.item.dragon.young.YoungDragonLeggings;
+import org.bukkit.entity.Player;
 
-public class YoungDragonSet implements ArmorSet {
+public class YoungDragonSet
+implements ArmorSet {
     @Override
     public String getName() {
         return "Young Blood";
@@ -40,7 +51,8 @@ public class YoungDragonSet implements ArmorSet {
 
     @Override
     public PlayerBoostStatistics whileHasFullSet(final Player player) {
-        return new PlayerBoostStatistics() {
+        return new PlayerBoostStatistics(){
+
             @Override
             public double getBaseSpeed() {
                 if (player.getHealth() > player.getMaxHealth() / 2.0) {
@@ -71,3 +83,4 @@ public class YoungDragonSet implements ArmorSet {
         };
     }
 }
+

@@ -1,3 +1,6 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.entity;
 
 import net.hypixel.skyblock.item.GenericItemType;
@@ -5,7 +8,9 @@ import net.hypixel.skyblock.item.MaterialFunction;
 import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.SkullStatistics;
 
-public class BS7 implements SkullStatistics, MaterialFunction {
+public class BS7
+implements SkullStatistics,
+MaterialFunction {
     @Override
     public String getURL() {
         return "7a2df315b43583b1896231b77bae1a507dbd7e43ad86c1cfbe3b2b8ef3430e9e";
@@ -26,3 +31,4 @@ public class BS7 implements SkullStatistics, MaterialFunction {
         return GenericItemType.ARMOR;
     }
 }
+

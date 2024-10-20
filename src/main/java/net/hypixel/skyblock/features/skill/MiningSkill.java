@@ -1,15 +1,22 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ */
 package net.hypixel.skyblock.features.skill;
-
-import org.bukkit.ChatColor;
-import net.hypixel.skyblock.user.PlayerStatistics;
-import net.hypixel.skyblock.user.PlayerUtils;
-import net.hypixel.skyblock.user.User;
 
 import java.util.Arrays;
 import java.util.List;
+import net.hypixel.skyblock.features.skill.Skill;
+import net.hypixel.skyblock.user.PlayerStatistics;
+import net.hypixel.skyblock.user.PlayerUtils;
+import net.hypixel.skyblock.user.User;
+import org.bukkit.ChatColor;
 
-public class MiningSkill extends Skill {
-    public static final MiningSkill INSTANCE;
+public class MiningSkill
+extends Skill {
+    public static final MiningSkill INSTANCE = new MiningSkill();
 
     @Override
     public String getName() {
@@ -26,25 +33,25 @@ public class MiningSkill extends Skill {
         return Arrays.asList("Spelunk islands for ores and", "valuable materials to earn", "Mining XP!");
     }
 
-    public double getDoubleDropChance(final int level) {
-        return level * 4.0 / 100.0;
+    public double getDoubleDropChance(int level) {
+        return (double)level * 4.0 / 100.0;
     }
 
-    public double getTripleDropChance(final int level) {
-        return (level - 25.0) * 4.0 / 100.0;
+    public double getTripleDropChance(int level) {
+        return ((double)level - 25.0) * 4.0 / 100.0;
     }
 
-    public double getDefense(final int level) {
-        return (level < 15.0) ? level : (level + (level - 14.0));
+    public double getDefense(int level) {
+        return (double)level < 15.0 ? (double)level : (double)level + ((double)level - 14.0);
     }
 
     @Override
-    public List<String> getLevelUpInformation(final int level, final int lastLevel, final boolean showOld) {
-        String dropChance = (showOld ? (ChatColor.DARK_GRAY + "" + lastLevel * 4 + "➜") : "") + ChatColor.GREEN + level * 4;
+    public List<String> getLevelUpInformation(int level, int lastLevel, boolean showOld) {
+        String dropChance = (showOld ? ChatColor.DARK_GRAY + "" + lastLevel * 4 + "\u279c" : "") + ChatColor.GREEN + level * 4;
         if (level > 25) {
-            dropChance = (showOld ? (ChatColor.DARK_GRAY + "" + (lastLevel - 25) * 4 + "➜") : "") + ChatColor.GREEN + (level - 25) * 4;
+            dropChance = (showOld ? ChatColor.DARK_GRAY + "" + (lastLevel - 25) * 4 + "\u279c" : "") + ChatColor.GREEN + (level - 25) * 4;
         }
-        return Arrays.asList(ChatColor.WHITE + " Grants " + dropChance + "%" + ChatColor.WHITE + " chance", ChatColor.WHITE + " to drop " + ((level > 25) ? "3" : "2") + "x ores.", ChatColor.DARK_GRAY + "+" + ChatColor.GREEN + ((level >= 15) ? "2" : "1") + " " + ChatColor.GREEN + "❈ Defense");
+        return Arrays.asList(ChatColor.WHITE + " Grants " + dropChance + "%" + ChatColor.WHITE + " chance", ChatColor.WHITE + " to drop " + (level > 25 ? "3" : "2") + "x ores.", ChatColor.DARK_GRAY + "+" + ChatColor.GREEN + (level >= 15 ? "2" : "1") + " " + ChatColor.GREEN + "\u2748 Defense");
     }
 
     @Override
@@ -53,14 +60,11 @@ public class MiningSkill extends Skill {
     }
 
     @Override
-    public void onSkillUpdate(final User user, final double previousXP) {
+    public void onSkillUpdate(User user, double previousXP) {
         super.onSkillUpdate(user, previousXP);
-        final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(user.getUuid());
+        PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(user.getUuid());
         statistics.zeroAll(11);
-        statistics.getDefense().set(11, Double.valueOf(this.getDefense(getLevel(user.getSkillXP(this), this.hasSixtyLevels()))));
-    }
-
-    static {
-        INSTANCE = new MiningSkill();
+        statistics.getDefense().set(11, this.getDefense(MiningSkill.getLevel(user.getSkillXP(this), this.hasSixtyLevels())));
     }
 }
+

@@ -1,12 +1,24 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.md_5.bungee.api.ChatColor
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.item.armor.necron;
 
-import net.md_5.bungee.api.ChatColor;
-import org.bukkit.entity.Player;
 import net.hypixel.skyblock.item.MaterialStatistics;
 import net.hypixel.skyblock.item.PlayerBoostStatistics;
 import net.hypixel.skyblock.item.armor.ArmorSet;
+import net.hypixel.skyblock.item.armor.necron.NecronBoots;
+import net.hypixel.skyblock.item.armor.necron.NecronChestplate;
+import net.hypixel.skyblock.item.armor.necron.NecronHelmet;
+import net.hypixel.skyblock.item.armor.necron.NecronLeggings;
+import net.md_5.bungee.api.ChatColor;
+import org.bukkit.entity.Player;
 
-public class NecronFullSet implements ArmorSet {
+public class NecronFullSet
+implements ArmorSet {
     @Override
     public String getName() {
         return "Witherborn";
@@ -38,7 +50,8 @@ public class NecronFullSet implements ArmorSet {
     }
 
     @Override
-    public PlayerBoostStatistics whileHasFullSet(final Player player) {
+    public PlayerBoostStatistics whileHasFullSet(Player player) {
         return null;
     }
 }
+

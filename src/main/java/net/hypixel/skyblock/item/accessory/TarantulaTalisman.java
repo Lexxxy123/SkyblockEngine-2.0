@@ -1,19 +1,29 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.item.accessory;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import net.hypixel.skyblock.item.GenericItemType;
 import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.SItem;
 import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.accessory.AccessoryFunction;
+import net.hypixel.skyblock.item.accessory.AccessoryStatistics;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
-public class TarantulaTalisman implements AccessoryStatistics, AccessoryFunction {
-    private static final Map<UUID, Integer> HITS;
+public class TarantulaTalisman
+implements AccessoryStatistics,
+AccessoryFunction {
+    private static final Map<UUID, Integer> HITS = new HashMap<UUID, Integer>();
 
     @Override
     public String getDisplayName() {
@@ -41,15 +51,12 @@ public class TarantulaTalisman implements AccessoryStatistics, AccessoryFunction
     }
 
     @Override
-    public void onDamageInInventory(final SItem weapon, final Player damager, final Entity damaged, final SItem accessory, final AtomicDouble damage) {
-        TarantulaTalisman.HITS.put(damager.getUniqueId(), TarantulaTalisman.HITS.getOrDefault(damager.getUniqueId(), 0) + 1);
-        if (TarantulaTalisman.HITS.get(damager.getUniqueId()) >= 10) {
+    public void onDamageInInventory(SItem weapon, Player damager, Entity damaged, SItem accessory, AtomicDouble damage) {
+        HITS.put(damager.getUniqueId(), HITS.getOrDefault(damager.getUniqueId(), 0) + 1);
+        if (HITS.get(damager.getUniqueId()) >= 10) {
             damage.addAndGet(damage.get() * 0.1);
-            TarantulaTalisman.HITS.remove(damager.getUniqueId());
+            HITS.remove(damager.getUniqueId());
         }
     }
-
-    static {
-        HITS = new HashMap<UUID, Integer>();
-    }
 }
+

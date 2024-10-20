@@ -1,23 +1,44 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  me.libraryaddict.disguise.disguisetypes.PlayerDisguise
+ *  net.minecraft.server.v1_8_R3.Entity
+ *  net.minecraft.server.v1_8_R3.EntityLiving
+ *  net.minecraft.server.v1_8_R3.Packet
+ *  net.minecraft.server.v1_8_R3.PacketPlayOutAnimation
+ *  org.bukkit.Bukkit
+ *  org.bukkit.Effect
+ *  org.bukkit.GameMode
+ *  org.bukkit.Location
+ *  org.bukkit.Material
+ *  org.bukkit.Sound
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie
+ *  org.bukkit.entity.ArmorStand
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.entity.EntityType
+ *  org.bukkit.entity.LivingEntity
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.entity.EntityDamageByEntityEvent
+ *  org.bukkit.event.entity.EntityDamageEvent$DamageCause
+ *  org.bukkit.metadata.FixedMetadataValue
+ *  org.bukkit.metadata.MetadataValue
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.scheduler.BukkitRunnable
+ *  org.bukkit.util.EulerAngle
+ *  org.bukkit.util.Vector
+ */
 package net.hypixel.skyblock.entity.dungeons.watcher;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import net.hypixel.skyblock.SkyBlock;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
-import net.minecraft.server.v1_8_R3.EntityLiving;
-import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
-import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
-import org.bukkit.entity.*;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.EulerAngle;
-import org.bukkit.util.Vector;
+import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.entity.SEntity;
 import net.hypixel.skyblock.entity.SEntityEquipment;
+import net.hypixel.skyblock.entity.dungeons.watcher.EnumWatcherType;
+import net.hypixel.skyblock.entity.dungeons.watcher.HeadsOnWall;
 import net.hypixel.skyblock.entity.zombie.BaseZombie;
 import net.hypixel.skyblock.item.SItem;
 import net.hypixel.skyblock.item.SMaterial;
@@ -25,8 +46,34 @@ import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.EntityManager;
 import net.hypixel.skyblock.util.SUtil;
 import net.hypixel.skyblock.util.Sputnik;
+import net.minecraft.server.v1_8_R3.EntityLiving;
+import net.minecraft.server.v1_8_R3.Packet;
+import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
+import org.bukkit.Bukkit;
+import org.bukkit.Effect;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.EulerAngle;
+import org.bukkit.util.Vector;
 
-public class WatcherSkull extends BaseZombie {
+public class WatcherSkull
+extends BaseZombie {
     @Override
     public String getEntityName() {
         return Sputnik.trans("&4&lMaster Skull");
@@ -43,61 +90,46 @@ public class WatcherSkull extends BaseZombie {
     }
 
     @Override
-    public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
-        final HeadsOnWall h = new HeadsOnWall(EnumWatcherType.SKULL);
-        final PlayerDisguise p = Sputnik.applyPacketNPC(entity, h.value, h.signature, true);
-        EntityManager.DEFENSE_PERCENTAGE.put(entity, 99);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        entity.setMetadata("LD", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        entity.setMetadata("WATCHER_E", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        p.setReplaceSounds(false);
-        new BukkitRunnable() {
+    public void onSpawn(final LivingEntity entity, SEntity sEntity) {
+        HeadsOnWall h2 = new HeadsOnWall(EnumWatcherType.SKULL);
+        PlayerDisguise p2 = Sputnik.applyPacketNPC((Entity)entity, h2.value, h2.signature, true);
+        EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 99);
+        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        entity.setMetadata("LD", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        entity.setMetadata("WATCHER_E", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        p2.setReplaceSounds(false);
+        new BukkitRunnable(){
+
             public void run() {
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
-                if (((CraftZombie) entity).getTarget() != null) {
-                    WatcherSkull.this.throwThickAssBone(entity);
+                if (((CraftZombie)entity).getTarget() != null) {
+                    WatcherSkull.this.throwThickAssBone((Entity)entity);
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 240L, 240L);
-        new BukkitRunnable() {
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 240L, 240L);
+        new BukkitRunnable(){
+
             public void run() {
-                final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
+                EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
-                for (final Entity entities : entity.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 1.5, 1.5, 1.5)) {
-                    if (!(entities instanceof Player)) {
-                        continue;
-                    }
-                    final Player target = (Player) entities;
-                    if (target.getGameMode() == GameMode.CREATIVE) {
-                        continue;
-                    }
-                    if (target.getGameMode() == GameMode.SPECTATOR) {
-                        continue;
-                    }
-                    if (target.hasMetadata("NPC")) {
-                        continue;
-                    }
-                    if (target.getNoDamageTicks() == 7) {
-                        continue;
-                    }
-                    if (SUtil.random(0, 10) > 8) {
-                        continue;
-                    }
+                for (Entity entities : entity.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 1.5, 1.5, 1.5)) {
+                    Player target;
+                    if (!(entities instanceof Player) || (target = (Player)entities).getGameMode() == GameMode.CREATIVE || target.getGameMode() == GameMode.SPECTATOR || target.hasMetadata("NPC") || target.getNoDamageTicks() == 7 || SUtil.random(0, 10) > 8) continue;
                     entity.teleport(entity.getLocation().setDirection(target.getLocation().subtract(entities.getLocation()).toVector()));
-                    for (final Player players : Bukkit.getOnlinePlayers()) {
-                        ((CraftPlayer) players).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) entity).getHandle(), 0));
+                    for (Player players : Bukkit.getOnlinePlayers()) {
+                        ((CraftPlayer)players).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)entity).getHandle(), 0));
                     }
-                    nms.r(((CraftPlayer) target).getHandle());
+                    nms.r((net.minecraft.server.v1_8_R3.Entity)((CraftPlayer)target).getHandle());
                     break;
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 3L);
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 3L);
     }
 
     @Override
@@ -106,18 +138,18 @@ public class WatcherSkull extends BaseZombie {
     }
 
     @Override
-    public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
-        final Entity en = sEntity.getEntity();
-        final Vector v = new Vector(0, 0, 0);
-        SUtil.delay(() -> en.setVelocity(v), 1L);
+    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
+        LivingEntity en = sEntity.getEntity();
+        Vector v2 = new Vector(0, 0, 0);
+        SUtil.delay(() -> WatcherSkull.lambda$onDamage$0((Entity)en, v2), 1L);
     }
 
     @Override
-    public void onAttack(final EntityDamageByEntityEvent e) {
+    public void onAttack(EntityDamageByEntityEvent e2) {
     }
 
     @Override
-    public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
+    public void onDeath(SEntity sEntity, Entity killed, Entity damager) {
     }
 
     @Override
@@ -150,79 +182,85 @@ public class WatcherSkull extends BaseZombie {
         return 540;
     }
 
-    public void throwThickAssBone(final Entity e) {
-        final Vector throwVec = e.getLocation().add(e.getLocation().getDirection().multiply(10)).toVector().subtract(e.getLocation().toVector()).normalize().multiply(1.2);
-        final Location throwLoc = e.getLocation().add(0.0, 0.5, 0.0);
-        final ArmorStand armorStand1 = (ArmorStand) e.getWorld().spawnEntity(throwLoc, EntityType.ARMOR_STAND);
+    public void throwThickAssBone(final Entity e2) {
+        final Vector throwVec = e2.getLocation().add(e2.getLocation().getDirection().multiply(10)).toVector().subtract(e2.getLocation().toVector()).normalize().multiply(1.2);
+        Location throwLoc = e2.getLocation().add(0.0, 0.5, 0.0);
+        final ArmorStand armorStand1 = (ArmorStand)e2.getWorld().spawnEntity(throwLoc, EntityType.ARMOR_STAND);
         armorStand1.getEquipment().setItemInHand(SItem.of(SMaterial.BONE).getStack());
         armorStand1.setGravity(false);
         armorStand1.setVisible(false);
         armorStand1.setMarker(true);
-        final Vector teleportTo = e.getLocation().getDirection().normalize().multiply(1);
-        final Vector[] previousVector = {throwVec};
-        new BukkitRunnable() {
+        final Vector teleportTo = e2.getLocation().getDirection().normalize().multiply(1);
+        final Vector[] previousVector = new Vector[]{throwVec};
+        new BukkitRunnable(){
             private int run = -1;
 
             public void run() {
-                final int i;
-                final int ran = i = 0;
-                final int num = 90;
-                final Location loc = null;
+                boolean bl2;
+                int angle;
+                Vector newVector;
+                int i2 = 0;
+                int ran = 0;
+                int num = 90;
+                Object loc = null;
                 ++this.run;
                 if (this.run > 100) {
                     this.cancel();
                     return;
                 }
-                for (int j = 0; j < 20; ++j) {
-                    armorStand1.getWorld().spigot().playEffect(armorStand1.getLocation().clone().add(0.0, 1.75, 0.0), Effect.CRIT, 0, 1, (float) SUtil.random(-0.5, 0.5), (float) SUtil.random(0.0, 0.5), (float) SUtil.random(-0.5, 0.5), 0.0f, 1, 20);
+                for (int j2 = 0; j2 < 20; ++j2) {
+                    armorStand1.getWorld().spigot().playEffect(armorStand1.getLocation().clone().add(0.0, 1.75, 0.0), Effect.CRIT, 0, 1, (float)SUtil.random(-0.5, 0.5), (float)SUtil.random(0.0, 0.5), (float)SUtil.random(-0.5, 0.5), 0.0f, 1, 20);
                 }
-                final Location locof = armorStand1.getLocation();
+                Location locof = armorStand1.getLocation();
                 locof.setY(locof.getY() + 1.0);
                 if (locof.getBlock().getType() != Material.AIR) {
                     armorStand1.remove();
                     this.cancel();
                     return;
                 }
-                final double xPos = armorStand1.getRightArmPose().getX();
+                double xPos = armorStand1.getRightArmPose().getX();
                 armorStand1.setRightArmPose(new EulerAngle(xPos + 0.7, 0.0, 0.0));
-                final Vector newVector = new Vector(throwVec.getX(), previousVector[0].getY() - 0.03, throwVec.getZ());
-                previousVector[0] = newVector;
+                previousVector[0] = newVector = new Vector(throwVec.getX(), previousVector[0].getY() - 0.03, throwVec.getZ());
                 armorStand1.setVelocity(newVector);
-                if (i < 13) {
-                    final int angle = i * 20 + num;
-                    final boolean back = false;
+                if (i2 < 13) {
+                    angle = i2 * 20 + 90;
+                    bl2 = false;
                 } else {
-                    final int angle = i * 20 - num;
-                    final boolean back = true;
+                    angle = i2 * 20 - 90;
+                    bl2 = true;
                 }
                 if (locof.getBlock().getType() != Material.AIR && locof.getBlock().getType() != Material.WATER) {
                     armorStand1.remove();
                     this.cancel();
                     return;
                 }
-                if (i % 2 == 0 && i < 13) {
+                if (i2 % 2 == 0 && i2 < 13) {
                     armorStand1.teleport(armorStand1.getLocation().add(teleportTo).multiply(1.0));
                     armorStand1.teleport(armorStand1.getLocation().add(teleportTo).multiply(1.0));
-                } else if (i % 2 == 0) {
+                } else if (i2 % 2 == 0) {
                     armorStand1.teleport(armorStand1.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                     armorStand1.teleport(armorStand1.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                 }
-                for (final Entity en : armorStand1.getNearbyEntities(1.0, 1.0, 1.0)) {
-                    if (en instanceof Player) {
-                        final Player p = (Player) en;
-                        p.getWorld().playSound(p.getLocation(), Sound.ITEM_BREAK, 1.0f, 1.0f);
-                        User.getUser(p.getUniqueId()).damage(p.getMaxHealth() * 10.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, e);
-                        p.damage(1.0E-5);
-                        armorStand1.remove();
-                        this.cancel();
-                        break;
-                    }
+                for (Entity en : armorStand1.getNearbyEntities(1.0, 1.0, 1.0)) {
+                    if (!(en instanceof Player)) continue;
+                    Player p2 = (Player)en;
+                    p2.getWorld().playSound(p2.getLocation(), Sound.ITEM_BREAK, 1.0f, 1.0f);
+                    User.getUser(p2.getUniqueId()).damage(p2.getMaxHealth() * 10.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, e2);
+                    p2.damage(1.0E-5);
+                    armorStand1.remove();
+                    this.cancel();
+                    break;
                 }
             }
 
             public synchronized void cancel() throws IllegalStateException {
                 super.cancel();
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 2L);
+    }
+
+    private static /* synthetic */ void lambda$onDamage$0(Entity en, Vector v2) {
+        en.setVelocity(v2);
     }
 }
+

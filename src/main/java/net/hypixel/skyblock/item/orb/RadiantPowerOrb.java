@@ -1,12 +1,23 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ *  org.bukkit.Effect
+ *  org.bukkit.Location
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.item.orb;
 
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.orb.PowerOrb;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import net.hypixel.skyblock.item.Rarity;
 
-public class RadiantPowerOrb extends PowerOrb {
+public class RadiantPowerOrb
+extends PowerOrb {
     @Override
     public String getAbilityDescription() {
         return "Place an orb for " + ChatColor.GREEN + "30s " + ChatColor.GRAY + "buffing up to " + ChatColor.AQUA + "5" + ChatColor.GRAY + " players within " + ChatColor.GREEN + "18 " + ChatColor.GRAY + "blocks. " + ChatColor.DARK_GRAY + "Costs " + ChatColor.DARK_GRAY + "50% of max mana. " + ChatColor.DARK_GRAY + "Only " + ChatColor.DARK_GRAY + "one orb applies per player.";
@@ -34,11 +45,11 @@ public class RadiantPowerOrb extends PowerOrb {
 
     @Override
     public String getBuffDescription() {
-        return "Heals " + ChatColor.RED + "1% " + ChatColor.GRAY + "of max " + ChatColor.RED + "❤ " + ChatColor.GRAY + "per second.";
+        return "Heals " + ChatColor.RED + "1% " + ChatColor.GRAY + "of max " + ChatColor.RED + "\u2764 " + ChatColor.GRAY + "per second.";
     }
 
     @Override
-    protected void buff(final Player player) {
+    protected void buff(Player player) {
         player.setHealth(Math.min(player.getMaxHealth(), player.getHealth() + player.getMaxHealth() * 0.01));
     }
 
@@ -53,7 +64,8 @@ public class RadiantPowerOrb extends PowerOrb {
     }
 
     @Override
-    protected void playEffect(final Location location) {
-        location.getWorld().playEffect(location, Effect.HAPPY_VILLAGER, (Object) Effect.HAPPY_VILLAGER.getData());
+    protected void playEffect(Location location) {
+        location.getWorld().playEffect(location, Effect.HAPPY_VILLAGER, (Object)Effect.HAPPY_VILLAGER.getData());
     }
 }
+

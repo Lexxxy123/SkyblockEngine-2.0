@@ -1,22 +1,40 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.md_5.bungee.api.ChatColor
+ *  org.bukkit.Bukkit
+ *  org.bukkit.Server
+ *  org.bukkit.Sound
+ *  org.bukkit.command.CommandSender
+ *  org.bukkit.entity.Player
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.scheduler.BukkitRunnable
+ */
 package net.hypixel.skyblock.command;
 
+import java.util.HashMap;
+import java.util.Map;
 import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.command.CommandParameters;
+import net.hypixel.skyblock.command.CommandSource;
+import net.hypixel.skyblock.command.SCommand;
 import net.hypixel.skyblock.features.ranks.PlayerRank;
+import net.hypixel.skyblock.util.SUtil;
+import net.hypixel.skyblock.util.Sputnik;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.Sound;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import net.hypixel.skyblock.util.SUtil;
-import net.hypixel.skyblock.util.Sputnik;
 
-import java.util.HashMap;
-import java.util.Map;
-
-@CommandParameters(description = "Spec test command.", aliases = "rebootserver", permission = PlayerRank.OWNER)
-public class RebootServerCommand extends SCommand {
-    public static Map<Server, Integer> secondMap;
+@CommandParameters(description="Spec test command.", aliases="rebootserver", permission=PlayerRank.OWNER)
+public class RebootServerCommand
+extends SCommand {
+    public static Map<Server, Integer> secondMap = new HashMap<Server, Integer>();
 
     @Override
     public void run(CommandSource sender, String[] args) {
@@ -30,56 +48,54 @@ public class RebootServerCommand extends SCommand {
         }
         String reasonraw = "";
         if (args[0].contains("time")) {
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ptitle2");
+            Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), (String)"ptitle2");
             reasonraw = "Scheduled Reboot";
         } else if (args[0].contains("update")) {
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ptitle1");
+            Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), (String)"ptitle1");
             reasonraw = "For a game update";
         } else {
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "ptitle3");
+            Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), (String)"ptitle3");
             reasonraw = "Unknown Reason!";
         }
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 0.0f);
+        for (Player p2 : Bukkit.getOnlinePlayers()) {
+            p2.playSound(p2.getLocation(), Sound.LEVEL_UP, 1.0f, 0.0f);
         }
-        String reason = reasonraw;
-        Bukkit.broadcastMessage(Sputnik.trans("&c[Important] &eThe server will restart soon: &b" + reason));
-        Bukkit.broadcastMessage(Sputnik.trans("&eYou have &a30 seconds &eto disconnect to prevent &cdata corruptions &ethat can result to inventories wipes!"));
+        final String reason = reasonraw;
+        Bukkit.broadcastMessage((String)Sputnik.trans("&c[Important] &eThe server will restart soon: &b" + reason));
+        Bukkit.broadcastMessage((String)Sputnik.trans("&eYou have &a30 seconds &eto disconnect to prevent &cdata corruptions &ethat can result to inventories wipes!"));
         secondMap.put(Bukkit.getServer(), 30);
-        new BukkitRunnable() {
+        new BukkitRunnable(){
+
             public void run() {
                 secondMap.put(Bukkit.getServer(), secondMap.get(Bukkit.getServer()) - 1);
-                if (5 >= RebootServerCommand.secondMap.get(Bukkit.getServer()) && 0 < RebootServerCommand.secondMap.get(Bukkit.getServer())) {
-                    Bukkit.broadcastMessage(Sputnik.trans("&c[Important] &eThe server will restart soon: &b" + reason));
-                    Bukkit.broadcastMessage(Sputnik.trans("&eServer closing down in &c" + secondMap.get(Bukkit.getServer()) + " &eseconds"));
-                } else if (0 >= RebootServerCommand.secondMap.get(Bukkit.getServer())) {
-                    Bukkit.broadcastMessage(Sputnik.trans("&c[Important] &eThe server will restart soon: &b" + reason));
-                    Bukkit.broadcastMessage(Sputnik.trans("&eServer is &cshutting down&e!"));
+                if (5 >= secondMap.get(Bukkit.getServer()) && 0 < secondMap.get(Bukkit.getServer())) {
+                    Bukkit.broadcastMessage((String)Sputnik.trans("&c[Important] &eThe server will restart soon: &b" + reason));
+                    Bukkit.broadcastMessage((String)Sputnik.trans("&eServer closing down in &c" + secondMap.get(Bukkit.getServer()) + " &eseconds"));
+                } else if (0 >= secondMap.get(Bukkit.getServer())) {
+                    Bukkit.broadcastMessage((String)Sputnik.trans("&c[Important] &eThe server will restart soon: &b" + reason));
+                    Bukkit.broadcastMessage((String)Sputnik.trans("&eServer is &cshutting down&e!"));
                     this.cancel();
                     SUtil.delay(() -> {
-                        Bukkit.broadcastMessage(Sputnik.trans("&7Saving..."));
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "fsd");
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "kickall &cThe Server is restarting!");
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "stop");
+                        Bukkit.broadcastMessage((String)Sputnik.trans("&7Saving..."));
+                        Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), (String)"fsd");
+                        Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), (String)"kickall &cThe Server is restarting!");
+                        Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), (String)"stop");
                     }, 10L);
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 20L, 20L);
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 20L, 20L);
     }
 
-    public static boolean isPrimeNumber(int n) {
-        if (2 > n) {
+    public static boolean isPrimeNumber(int n2) {
+        if (2 > n2) {
             return false;
         }
-        for (int squareRoot = (int) Math.sqrt(n), i = 2; i <= squareRoot; ++i) {
-            if (0 == n % i) {
-                return false;
-            }
+        int squareRoot = (int)Math.sqrt(n2);
+        for (int i2 = 2; i2 <= squareRoot; ++i2) {
+            if (0 != n2 % i2) continue;
+            return false;
         }
         return true;
     }
-
-    static {
-        secondMap = new HashMap<Server, Integer>();
-    }
 }
+

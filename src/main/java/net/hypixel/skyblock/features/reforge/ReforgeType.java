@@ -1,4 +1,31 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.features.reforge;
+
+import net.hypixel.skyblock.features.reforge.Ancient;
+import net.hypixel.skyblock.features.reforge.EpicReforge;
+import net.hypixel.skyblock.features.reforge.Fabled;
+import net.hypixel.skyblock.features.reforge.FastReforge;
+import net.hypixel.skyblock.features.reforge.FierceReforge;
+import net.hypixel.skyblock.features.reforge.GeniusReforge;
+import net.hypixel.skyblock.features.reforge.Hasty;
+import net.hypixel.skyblock.features.reforge.HeroicReforge;
+import net.hypixel.skyblock.features.reforge.LegendaryReforge;
+import net.hypixel.skyblock.features.reforge.Necrotic;
+import net.hypixel.skyblock.features.reforge.OddReforge;
+import net.hypixel.skyblock.features.reforge.OverpoweredReforge;
+import net.hypixel.skyblock.features.reforge.RapidReforge;
+import net.hypixel.skyblock.features.reforge.Reforge;
+import net.hypixel.skyblock.features.reforge.Renowned;
+import net.hypixel.skyblock.features.reforge.SharpReforge;
+import net.hypixel.skyblock.features.reforge.SpicyReforge;
+import net.hypixel.skyblock.features.reforge.Spiritual;
+import net.hypixel.skyblock.features.reforge.StronkReforge;
+import net.hypixel.skyblock.features.reforge.SupergeniusReforge;
+import net.hypixel.skyblock.features.reforge.Unreal;
+import net.hypixel.skyblock.features.reforge.Wise;
+import net.hypixel.skyblock.features.reforge.WitheredReforge;
 
 public enum ReforgeType {
     OVERPOWERED(OverpoweredReforge.class, false),
@@ -27,33 +54,32 @@ public enum ReforgeType {
     private final Class<? extends Reforge> clazz;
     private final boolean accessible;
 
-    ReforgeType(final Class<? extends Reforge> clazz, final boolean accessible) {
+    private ReforgeType(Class<? extends Reforge> clazz, boolean accessible) {
         this.clazz = clazz;
         this.accessible = accessible;
     }
 
-    ReforgeType(final Class<? extends Reforge> clazz) {
+    private ReforgeType(Class<? extends Reforge> clazz) {
         this(clazz, true);
     }
 
     public Reforge getReforge() {
         try {
             return this.clazz.newInstance();
-        } catch (final InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (IllegalAccessException | InstantiationException e2) {
+            e2.printStackTrace();
             return null;
         }
     }
 
-    public static ReforgeType getReforgeType(final String name) {
-        return valueOf(name.toUpperCase());
+    public static ReforgeType getReforgeType(String name) {
+        return ReforgeType.valueOf(name.toUpperCase());
     }
 
-    public static ReforgeType getByClass(final Class<? extends Reforge> clazz) {
-        for (final ReforgeType type : values()) {
-            if (type.clazz == clazz) {
-                return type;
-            }
+    public static ReforgeType getByClass(Class<? extends Reforge> clazz) {
+        for (ReforgeType type : ReforgeType.values()) {
+            if (type.clazz != clazz) continue;
+            return type;
         }
         return null;
     }
@@ -62,3 +88,4 @@ public enum ReforgeType {
         return this.accessible;
     }
 }
+

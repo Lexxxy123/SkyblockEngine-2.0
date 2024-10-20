@@ -1,11 +1,29 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.md_5.bungee.api.ChatColor
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.item.armor;
 
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.item.Ability;
+import net.hypixel.skyblock.item.AbilityActivation;
+import net.hypixel.skyblock.item.FlightStatistics;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.TickingMaterial;
+import net.hypixel.skyblock.item.armor.LeatherArmorStatistics;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.entity.Player;
-import net.hypixel.skyblock.item.*;
 
-public class BigBounceBoots implements LeatherArmorStatistics, TickingMaterial, FlightStatistics, Ability {
+public class BigBounceBoots
+implements LeatherArmorStatistics,
+TickingMaterial,
+FlightStatistics,
+Ability {
     @Override
     public String getAbilityName() {
         return "Larger Double Jump";
@@ -27,7 +45,7 @@ public class BigBounceBoots implements LeatherArmorStatistics, TickingMaterial, 
     }
 
     @Override
-    public void onAbilityUse(final Player player, final SItem sItem) {
+    public void onAbilityUse(Player player, SItem sItem) {
     }
 
     @Override
@@ -71,7 +89,7 @@ public class BigBounceBoots implements LeatherArmorStatistics, TickingMaterial, 
     }
 
     @Override
-    public void tick(final SItem item, final Player owner) {
+    public void tick(SItem item, Player owner) {
     }
 
     @Override
@@ -84,3 +102,4 @@ public class BigBounceBoots implements LeatherArmorStatistics, TickingMaterial, 
         return 9548515;
     }
 }
+

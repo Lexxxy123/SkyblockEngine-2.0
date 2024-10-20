@@ -1,3 +1,6 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.armor.storm;
 
 import net.hypixel.skyblock.item.GenericItemType;
@@ -6,7 +9,9 @@ import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.SpecificItemType;
 import net.hypixel.skyblock.item.armor.LeatherArmorStatistics;
 
-public class StormLeggings implements MaterialFunction, LeatherArmorStatistics {
+public class StormLeggings
+implements MaterialFunction,
+LeatherArmorStatistics {
     @Override
     public double getBaseIntelligence() {
         return 250.0;
@@ -52,3 +57,4 @@ public class StormLeggings implements MaterialFunction, LeatherArmorStatistics {
         return null;
     }
 }
+

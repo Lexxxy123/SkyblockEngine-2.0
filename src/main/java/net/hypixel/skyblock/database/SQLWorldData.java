@@ -1,104 +1,138 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Bukkit
+ *  org.bukkit.World
+ */
 package net.hypixel.skyblock.database;
-
-import net.hypixel.skyblock.SkyBlock;
-import net.hypixel.skyblock.module.DatabaseModule;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import net.hypixel.skyblock.SkyBlock;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 
 public class SQLWorldData {
-    private static final SkyBlock plugin;
+    private static final SkyBlock plugin = SkyBlock.getPlugin();
     private final String SELECT = "SELECT * FROM `worlds` WHERE name=?";
     private final String SELECT_ID = "SELECT * FROM `worlds` WHERE id=?";
     private final String INSERT = "INSERT INTO `worlds` (`id`, `name`) VALUES (?, ?);";
     private final String COUNT = "SELECT COUNT(*) AS rows FROM `worlds`";
 
-    public boolean exists(final World world) {
-        try (final Connection connection = DatabaseModule.getSqlInstance().getConnection()) {
-            final PreparedStatement statement = connection.prepareStatement("SELECT * FROM `worlds` WHERE name=?");
+    /*
+     * Enabled aggressive block sorting
+     * Enabled unnecessary exception pruning
+     * Enabled aggressive exception aggregation
+     */
+    public boolean exists(World world) {
+        try (Connection connection = SQLWorldData.plugin.sql.getConnection();){
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM `worlds` WHERE name=?");
             statement.setString(1, world.getName());
-            final ResultSet set = statement.executeQuery();
-            return set.next();
-        } catch (final SQLException ex) {
+            ResultSet set = statement.executeQuery();
+            boolean bl2 = set.next();
+            return bl2;
+        } catch (SQLException ex) {
             ex.printStackTrace();
             return false;
         }
     }
 
-    public boolean existsID(final int id) {
-        try (final Connection connection = DatabaseModule.getSqlInstance().getConnection()) {
-            final PreparedStatement statement = connection.prepareStatement("SELECT * FROM `worlds` WHERE id=?");
+    /*
+     * Enabled aggressive block sorting
+     * Enabled unnecessary exception pruning
+     * Enabled aggressive exception aggregation
+     */
+    public boolean existsID(int id) {
+        try (Connection connection = SQLWorldData.plugin.sql.getConnection();){
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM `worlds` WHERE id=?");
             statement.setInt(1, id);
-            final ResultSet set = statement.executeQuery();
-            return set.next();
-        } catch (final SQLException ex) {
+            ResultSet set = statement.executeQuery();
+            boolean bl2 = set.next();
+            return bl2;
+        } catch (SQLException ex) {
             ex.printStackTrace();
             return false;
         }
     }
 
-    public int getWorldID(final World world) {
-        try (final Connection connection = DatabaseModule.getSqlInstance().getConnection()) {
+    /*
+     * Enabled aggressive block sorting
+     * Enabled unnecessary exception pruning
+     * Enabled aggressive exception aggregation
+     */
+    public int getWorldID(World world) {
+        try (Connection connection = SQLWorldData.plugin.sql.getConnection();){
+            PreparedStatement statement;
             if (!this.exists(world)) {
-                final PreparedStatement statement = connection.prepareStatement("INSERT INTO `worlds` (`id`, `name`) VALUES (?, ?);");
+                statement = connection.prepareStatement("INSERT INTO `worlds` (`id`, `name`) VALUES (?, ?);");
                 statement.setInt(1, this.getWorldCount() + 1);
                 statement.setString(2, world.getName());
                 statement.execute();
             }
-            final PreparedStatement statement = connection.prepareStatement("SELECT * FROM `worlds` WHERE name=?");
+            statement = connection.prepareStatement("SELECT * FROM `worlds` WHERE name=?");
             statement.setString(1, world.getName());
-            final ResultSet set = statement.executeQuery();
+            ResultSet set = statement.executeQuery();
             set.next();
-            final int id = set.getInt("id");
+            int id = set.getInt("id");
             set.close();
-            return id;
-        } catch (final SQLException ex) {
+            int n2 = id;
+            return n2;
+        } catch (SQLException ex) {
             ex.printStackTrace();
             return -1;
         }
     }
 
-    public World getWorld(final int id) {
-        try (final Connection connection = DatabaseModule.getSqlInstance().getConnection()) {
+    /*
+     * Enabled aggressive block sorting
+     * Enabled unnecessary exception pruning
+     * Enabled aggressive exception aggregation
+     */
+    public World getWorld(int id) {
+        try (Connection connection = SQLWorldData.plugin.sql.getConnection();){
             if (!this.existsID(id)) {
-                final World world = null;
+                World world3 = null;
                 if (connection != null) {
                     connection.close();
                 }
-                return world;
+                World world2 = world3;
+                return world2;
             }
-            final PreparedStatement statement = connection.prepareStatement("SELECT * FROM `worlds` WHERE id=?");
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM `worlds` WHERE id=?");
             statement.setInt(1, id);
-            final ResultSet set = statement.executeQuery();
+            ResultSet set = statement.executeQuery();
             set.next();
-            final String name = set.getString("name");
+            String name = set.getString("name");
             set.close();
-            return Bukkit.getWorld(name);
-        } catch (final SQLException ex) {
+            World world = Bukkit.getWorld((String)name);
+            return world;
+        } catch (SQLException ex) {
             ex.printStackTrace();
             return null;
         }
     }
 
+    /*
+     * Enabled aggressive block sorting
+     * Enabled unnecessary exception pruning
+     * Enabled aggressive exception aggregation
+     */
     public int getWorldCount() {
-        try (final Connection connection = DatabaseModule.getSqlInstance().getConnection()) {
-            final PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) AS rows FROM `worlds`");
-            final ResultSet set = statement.executeQuery();
+        try (Connection connection = SQLWorldData.plugin.sql.getConnection();){
+            PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) AS rows FROM `worlds`");
+            ResultSet set = statement.executeQuery();
             set.next();
-            final int count = set.getInt("rows");
+            int count = set.getInt("rows");
             set.close();
-            return count;
-        } catch (final SQLException ex) {
+            int n2 = count;
+            return n2;
+        } catch (SQLException ex) {
             ex.printStackTrace();
             return 0;
         }
     }
-
-    static {
-        plugin = SkyBlock.getPlugin();
-    }
 }
+

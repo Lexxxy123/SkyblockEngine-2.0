@@ -1,22 +1,29 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  com.comphenix.protocol.ProtocolLibrary
+ *  com.comphenix.protocol.events.PacketContainer
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.api.protocol;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
-import org.bukkit.entity.Player;
-
 import java.lang.reflect.InvocationTargetException;
+import org.bukkit.entity.Player;
 
 public class WrappedBeamPacket {
     private final PacketContainer handle;
 
-    public WrappedBeamPacket(final PacketContainer container) {
+    public WrappedBeamPacket(PacketContainer container) {
         this.handle = container;
     }
 
-    public void send(final Player receiver) {
+    public void send(Player receiver) {
         try {
             ProtocolLibrary.getProtocolManager().sendServerPacket(receiver, this.handle);
-        } catch (final InvocationTargetException ex) {
+        } catch (InvocationTargetException ex) {
             throw new RuntimeException("son of a bitch, did you actually fuck sth up????.", ex);
         }
     }
@@ -25,3 +32,4 @@ public class WrappedBeamPacket {
         return this.handle;
     }
 }
+

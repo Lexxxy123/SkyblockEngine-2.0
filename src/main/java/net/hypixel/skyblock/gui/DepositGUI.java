@@ -1,5 +1,22 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ *  org.bukkit.Material
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.inventory.InventoryClickEvent
+ *  org.bukkit.inventory.ItemStack
+ */
 package net.hypixel.skyblock.gui;
 
+import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.gui.BankerGUI;
+import net.hypixel.skyblock.gui.GUI;
+import net.hypixel.skyblock.gui.GUIClickableItem;
+import net.hypixel.skyblock.gui.GUIOpenEvent;
+import net.hypixel.skyblock.gui.GUIQueryItem;
+import net.hypixel.skyblock.gui.GUIType;
 import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
@@ -8,24 +25,30 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class DepositGUI extends GUI {
+public class DepositGUI
+extends GUI {
     public DepositGUI() {
         super("Bank Deposit", 36);
     }
 
     @Override
-    public void onOpen(final GUIOpenEvent e) {
+    public void onOpen(GUIOpenEvent e2) {
         this.fill(BLACK_STAINED_GLASS_PANE);
-        final Player player = e.getPlayer();
+        final Player player = e2.getPlayer();
         this.set(GUIClickableItem.createGUIOpenerItem(GUIType.BANKER, player, ChatColor.GREEN + "Go Back", 31, Material.ARROW, ChatColor.GRAY + "To Personal Bank Account"));
         final User user = User.getUser(player.getUniqueId());
-        this.set(new GUIClickableItem() {
+        this.set(new GUIClickableItem(){
+
             @Override
-            public void run(final InventoryClickEvent e) {
-                final long coins = user.getCoins();
+            public void run(InventoryClickEvent e2) {
+                long coins = user.getCoins();
                 user.subCoins(coins);
                 user.addBankCoins(coins);
-                user.save();
+                if (SkyBlock.getPlugin().config.getBoolean("Config")) {
+                    user.configsave();
+                } else {
+                    user.save();
+                }
                 player.sendMessage(ChatColor.GREEN + "You have deposited " + ChatColor.GOLD + SUtil.commaify(coins) + " coins" + ChatColor.GREEN + "! You now have " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()) + " coins " + ChatColor.GREEN + "in your account!");
                 GUIType.BANKER.getGUI().open(player);
             }
@@ -37,16 +60,21 @@ public class DepositGUI extends GUI {
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.GREEN + "Your whole purse", Material.CHEST, (short) 0, 64, ChatColor.DARK_GRAY + "Bank deposit", " ", ChatColor.GRAY + "Current balance: " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()), ChatColor.GRAY + "Amount to deposit: " + ChatColor.GOLD + SUtil.commaify(user.getCoins()), " ", ChatColor.YELLOW + "Click to deposit coins!");
+                return SUtil.getStack(ChatColor.GREEN + "Your whole purse", Material.CHEST, (short)0, 64, ChatColor.DARK_GRAY + "Bank deposit", " ", ChatColor.GRAY + "Current balance: " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()), ChatColor.GRAY + "Amount to deposit: " + ChatColor.GOLD + SUtil.commaify(user.getCoins()), " ", ChatColor.YELLOW + "Click to deposit coins!");
             }
         });
-        this.set(new GUIClickableItem() {
+        this.set(new GUIClickableItem(){
+
             @Override
-            public void run(final InventoryClickEvent e) {
-                final long coins = user.getCoins() / 2L;
+            public void run(InventoryClickEvent e2) {
+                long coins = user.getCoins() / 2L;
                 user.subCoins(coins);
                 user.addBankCoins(coins);
-                user.save();
+                if (SkyBlock.getPlugin().config.getBoolean("Config")) {
+                    user.configsave();
+                } else {
+                    user.save();
+                }
                 player.sendMessage(ChatColor.GREEN + "You have deposited " + ChatColor.GOLD + SUtil.commaify(coins) + " coins" + ChatColor.GREEN + "! You now have " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()) + " coins " + ChatColor.GREEN + "in your account!");
                 GUIType.BANKER.getGUI().open(player);
             }
@@ -58,14 +86,15 @@ public class DepositGUI extends GUI {
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.GREEN + "Half your purse", Material.CHEST, (short) 0, 32, ChatColor.DARK_GRAY + "Bank deposit", " ", ChatColor.GRAY + "Current balance: " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()), ChatColor.GRAY + "Amount to deposit: " + ChatColor.GOLD + SUtil.commaify(user.getCoins() / 2L), " ", ChatColor.YELLOW + "Click to deposit coins!");
+                return SUtil.getStack(ChatColor.GREEN + "Half your purse", Material.CHEST, (short)0, 32, ChatColor.DARK_GRAY + "Bank deposit", " ", ChatColor.GRAY + "Current balance: " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()), ChatColor.GRAY + "Amount to deposit: " + ChatColor.GOLD + SUtil.commaify(user.getCoins() / 2L), " ", ChatColor.YELLOW + "Click to deposit coins!");
             }
         });
-        this.set(new GUIQueryItem() {
+        this.set(new GUIQueryItem(){
+
             @Override
-            public GUI onQueryFinish(final String query) {
+            public GUI onQueryFinish(String query) {
                 try {
-                    final long coins = Long.parseLong(query);
+                    long coins = Long.parseLong(query);
                     if (coins < 0L) {
                         player.sendMessage(ChatColor.RED + "Enter a positive number!");
                         return null;
@@ -76,9 +105,13 @@ public class DepositGUI extends GUI {
                     }
                     user.subCoins(coins);
                     user.addBankCoins(coins);
-                    user.save();
+                    if (SkyBlock.getPlugin().config.getBoolean("Config")) {
+                        user.configsave();
+                    } else {
+                        user.save();
+                    }
                     player.sendMessage(ChatColor.GREEN + "You have deposited " + ChatColor.GOLD + SUtil.commaify(coins) + " coins" + ChatColor.GREEN + "! You now have " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()) + " coins " + ChatColor.GREEN + "in your account!");
-                } catch (final NumberFormatException ex) {
+                } catch (NumberFormatException ex) {
                     player.sendMessage(ChatColor.RED + "That is not a valid number!");
                     return null;
                 }
@@ -86,7 +119,7 @@ public class DepositGUI extends GUI {
             }
 
             @Override
-            public void run(final InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
             }
 
             @Override
@@ -96,8 +129,9 @@ public class DepositGUI extends GUI {
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.GREEN + "Specific amount", Material.SIGN, (short) 0, 1, ChatColor.GRAY + "Current balance: " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()), " ", ChatColor.YELLOW + "Click to deposit coins!");
+                return SUtil.getStack(ChatColor.GREEN + "Specific amount", Material.SIGN, (short)0, 1, ChatColor.GRAY + "Current balance: " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()), " ", ChatColor.YELLOW + "Click to deposit coins!");
             }
         });
     }
 }
+

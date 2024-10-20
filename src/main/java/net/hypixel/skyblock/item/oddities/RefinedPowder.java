@@ -1,3 +1,6 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.oddities;
 
 import net.hypixel.skyblock.item.GenericItemType;
@@ -6,7 +9,9 @@ import net.hypixel.skyblock.item.MaterialStatistics;
 import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.util.Sputnik;
 
-public class RefinedPowder implements MaterialStatistics, MaterialFunction {
+public class RefinedPowder
+implements MaterialStatistics,
+MaterialFunction {
     @Override
     public String getDisplayName() {
         return "Refined Powder";
@@ -37,3 +42,4 @@ public class RefinedPowder implements MaterialStatistics, MaterialFunction {
         return Sputnik.trans("Smell like... fish?");
     }
 }
+

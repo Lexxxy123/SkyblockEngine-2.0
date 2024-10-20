@@ -1,3 +1,9 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ */
 package net.hypixel.skyblock.entity;
 
 import org.bukkit.ChatColor;
@@ -14,7 +20,7 @@ public enum EntityDropType {
 
     private final ChatColor color;
 
-    EntityDropType(final ChatColor color) {
+    private EntityDropType(ChatColor color) {
         this.color = color;
     }
 
@@ -26,3 +32,4 @@ public enum EntityDropType {
         return this.color;
     }
 }
+

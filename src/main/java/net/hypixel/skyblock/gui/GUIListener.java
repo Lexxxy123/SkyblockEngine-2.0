@@ -1,5 +1,41 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ *  org.bukkit.Material
+ *  org.bukkit.block.Block
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.EventHandler
+ *  org.bukkit.event.block.Action
+ *  org.bukkit.event.inventory.InventoryClickEvent
+ *  org.bukkit.event.inventory.InventoryCloseEvent
+ *  org.bukkit.event.player.AsyncPlayerChatEvent
+ *  org.bukkit.event.player.PlayerInteractEvent
+ *  org.bukkit.inventory.Inventory
+ *  org.bukkit.inventory.ItemStack
+ */
 package net.hypixel.skyblock.gui;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import net.hypixel.skyblock.gui.AnvilGUI;
+import net.hypixel.skyblock.gui.CraftingTableGUI;
+import net.hypixel.skyblock.gui.DungeonsItemConverting;
+import net.hypixel.skyblock.gui.DungeonsLootGUI;
+import net.hypixel.skyblock.gui.GUI;
+import net.hypixel.skyblock.gui.GUIClickableItem;
+import net.hypixel.skyblock.gui.GUIItem;
+import net.hypixel.skyblock.gui.GUIOpenEvent;
+import net.hypixel.skyblock.gui.GUIQueryItem;
+import net.hypixel.skyblock.gui.GUISignItem;
+import net.hypixel.skyblock.gui.GUIType;
+import net.hypixel.skyblock.gui.QuiverGUI;
+import net.hypixel.skyblock.gui.RecipeCreatorGUI;
+import net.hypixel.skyblock.gui.ReforgeAnvilGUI;
+import net.hypixel.skyblock.gui.TrashGUI;
 import net.hypixel.skyblock.item.SItem;
 import net.hypixel.skyblock.listener.PListener;
 import net.hypixel.skyblock.user.User;
@@ -18,136 +54,128 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
-public class GUIListener extends PListener {
-    public static final Map<UUID, GUIQueryItem> QUERY_MAP;
-    public static final Map<UUID, Boolean> QUERY_MAPPING;
-
+public class GUIListener
+extends PListener {
+    public static final Map<UUID, GUIQueryItem> QUERY_MAP = new HashMap<UUID, GUIQueryItem>();
+    public static final Map<UUID, Boolean> QUERY_MAPPING = new HashMap<UUID, Boolean>();
 
     @EventHandler
-    public void onInventoryClick(final InventoryClickEvent e) {
-        final GUI gui = GUI.GUI_MAP.get(e.getWhoClicked().getUniqueId());
+    public void onInventoryClick(InventoryClickEvent e2) {
+        GUI gui = GUI.GUI_MAP.get(e2.getWhoClicked().getUniqueId());
         if (gui == null) {
             return;
         }
-        if (e.getClickedInventory() == e.getView().getTopInventory()) {
-            final int slot = e.getSlot();
-            gui.onTopClick(e);
-            final GUIItem item = gui.get(slot);
+        if (e2.getClickedInventory() == e2.getView().getTopInventory()) {
+            int slot = e2.getSlot();
+            gui.onTopClick(e2);
+            GUIItem item = gui.get(slot);
             if (item != null) {
+                Player player;
                 if (!item.canPickup()) {
-                    e.setCancelled(true);
+                    e2.setCancelled(true);
                 }
                 if (item instanceof GUIClickableItem) {
-                    final GUIClickableItem clickable = (GUIClickableItem) item;
+                    GUIClickableItem clickable = (GUIClickableItem)item;
                     try {
-                        clickable.run(e);
+                        clickable.run(e2);
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
                 }
                 if (item instanceof GUIQueryItem) {
-                    final GUIQueryItem query = (GUIQueryItem) item;
-                    final Player player = (Player) e.getWhoClicked();
-                    GUIListener.QUERY_MAPPING.put(player.getUniqueId(), true);
+                    GUIQueryItem query = (GUIQueryItem)item;
+                    player = (Player)e2.getWhoClicked();
+                    QUERY_MAPPING.put(player.getUniqueId(), true);
                     player.closeInventory();
                     player.sendMessage(ChatColor.GREEN + "Enter your query:");
-                    GUIListener.QUERY_MAP.put(player.getUniqueId(), query);
+                    QUERY_MAP.put(player.getUniqueId(), query);
                 }
                 if (item instanceof GUISignItem) {
-                    final GUISignItem query2 = (GUISignItem) item;
-                    final Player player = (Player) e.getWhoClicked();
+                    GUISignItem query2 = (GUISignItem)item;
+                    player = (Player)e2.getWhoClicked();
                     SignInput.SIGN_INPUT_QUERY.put(player.getUniqueId(), query2);
                     new SignInput(player, new String[]{"", "^^^^^^^", "Enter amount", "of Bits"}, 15, query2.inti());
                 }
             }
         } else {
             try {
-                gui.onBottomClick(e);
+                gui.onBottomClick(e2);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
         }
-        gui.update(e.getView().getTopInventory());
+        gui.update(e2.getView().getTopInventory());
     }
 
     @EventHandler
-    public void onInventoryClickEven(final InventoryClickEvent event) {
-        final GUI gui = GUI.GUI_MAP.get(event.getWhoClicked().getUniqueId());
-        if (gui != null && !gui.getClass().equals(CraftingTableGUI.class) && !gui.getClass().equals(ReforgeAnvilGUI.class) && !gui.getClass().equals(AnvilGUI.class) && !gui.getClass().equals(QuiverGUI.class) && !gui.getClass().equals(TrashGUI.class) && !gui.getClass().equals(DungeonsItemConverting.class) && !gui.getClass().equals(DungeonsLootGUI.class) && !gui.getClass().equals(RecipeCreatorGUI.class)) {
+    public void onInventoryClickEven(InventoryClickEvent event) {
+        ItemStack stack;
+        GUI gui = GUI.GUI_MAP.get(event.getWhoClicked().getUniqueId());
+        if (!(gui == null || gui.getClass().equals(CraftingTableGUI.class) || gui.getClass().equals(ReforgeAnvilGUI.class) || gui.getClass().equals(AnvilGUI.class) || gui.getClass().equals(QuiverGUI.class) || gui.getClass().equals(TrashGUI.class) || gui.getClass().equals(DungeonsItemConverting.class) || gui.getClass().equals(DungeonsLootGUI.class) || gui.getClass().equals(RecipeCreatorGUI.class))) {
             event.setCancelled(true);
         }
-        if (gui != null && gui.getClass().equals(QuiverGUI.class)) {
-            final ItemStack stack = event.getCurrentItem();
-            if (stack != null && stack.getType() != Material.ARROW) {
-                event.setCancelled(true);
-            }
+        if (gui != null && gui.getClass().equals(QuiverGUI.class) && (stack = event.getCurrentItem()) != null && stack.getType() != Material.ARROW) {
+            event.setCancelled(true);
         }
     }
 
     @EventHandler
-    public void onGUIOpen(final GUIOpenEvent e) {
-        final GUI gui = e.getOpened();
+    public void onGUIOpen(GUIOpenEvent e2) {
+        GUI gui = e2.getOpened();
         try {
-            e.getOpened().onOpen(e);
+            e2.getOpened().onOpen(e2);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
     }
 
-
     @EventHandler
-    public void onBlockInteract(final PlayerInteractEvent e) {
-        if (e.getAction() != Action.RIGHT_CLICK_BLOCK) {
+    public void onBlockInteract(PlayerInteractEvent e2) {
+        if (e2.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return;
         }
-        final Block block = e.getClickedBlock();
+        Block block = e2.getClickedBlock();
         GUI toOpen = null;
-
-        switch (block.getType()){
-            case WORKBENCH:
-               toOpen = GUIType.CRAFTING_TABLE.getGUI();
-               break;
-            case ANVIL:
-                toOpen = GUIType.ANVIL.getGUI();
+        switch (block.getType()) {
+            case WORKBENCH: {
+                toOpen = GUIType.CRAFTING_TABLE.getGUI();
                 break;
+            }
+            case ANVIL: {
+                toOpen = GUIType.ANVIL.getGUI();
+            }
         }
-        if (toOpen != null){
-            e.setCancelled(true);
-            toOpen.open(e.getPlayer());
+        if (toOpen != null) {
+            e2.setCancelled(true);
+            toOpen.open(e2.getPlayer());
         }
-
     }
 
     @EventHandler
-    public void onPlayerChat(final AsyncPlayerChatEvent e) {
-        final Player player = e.getPlayer();
-        if (!GUIListener.QUERY_MAP.containsKey(player.getUniqueId())) {
+    public void onPlayerChat(AsyncPlayerChatEvent e2) {
+        Player player = e2.getPlayer();
+        if (!QUERY_MAP.containsKey(player.getUniqueId())) {
             return;
         }
-        e.setCancelled(true);
-        final GUIQueryItem item = GUIListener.QUERY_MAP.get(player.getUniqueId());
-        player.sendMessage(ChatColor.GOLD + "Querying for: " + e.getMessage());
-        final GUI next = item.onQueryFinish(e.getMessage());
+        e2.setCancelled(true);
+        GUIQueryItem item = QUERY_MAP.get(player.getUniqueId());
+        player.sendMessage(ChatColor.GOLD + "Querying for: " + e2.getMessage());
+        GUI next = item.onQueryFinish(e2.getMessage());
         if (next != null) {
             next.open(player);
         }
-        GUIListener.QUERY_MAP.remove(player.getUniqueId());
-        GUIListener.QUERY_MAPPING.remove(player.getUniqueId());
+        QUERY_MAP.remove(player.getUniqueId());
+        QUERY_MAPPING.remove(player.getUniqueId());
     }
 
     @EventHandler
-    public void onInventoryClose(final InventoryCloseEvent e) {
-        final Inventory inventory = e.getInventory();
-        if (!(e.getPlayer() instanceof Player)) {
+    public void onInventoryClose(InventoryCloseEvent e2) {
+        Inventory inventory = e2.getInventory();
+        if (!(e2.getPlayer() instanceof Player)) {
             return;
         }
-        final Player player = (Player) e.getPlayer();
-        final GUI gui = GUI.GUI_MAP.get(player.getUniqueId());
+        Player player = (Player)e2.getPlayer();
+        GUI gui = GUI.GUI_MAP.get(player.getUniqueId());
         if (gui == null) {
             return;
         }
@@ -155,21 +183,21 @@ public class GUIListener extends PListener {
             if (gui.getClass().equals(AnvilGUI.class)) {
                 if (inventory.getItem(29) != null) {
                     if (player.getInventory().firstEmpty() != -1) {
-                        player.getInventory().addItem(inventory.getItem(29));
+                        player.getInventory().addItem(new ItemStack[]{inventory.getItem(29)});
                     } else {
                         player.getWorld().dropItem(player.getLocation(), inventory.getItem(29));
                     }
                 }
                 if (inventory.getItem(33) != null) {
                     if (player.getInventory().firstEmpty() != -1) {
-                        player.getInventory().addItem(inventory.getItem(33));
+                        player.getInventory().addItem(new ItemStack[]{inventory.getItem(33)});
                     } else {
                         player.getWorld().dropItem(player.getLocation(), inventory.getItem(33));
                     }
                 }
                 if (inventory.getItem(13).getType().toString() != "BARRIER" && inventory.getItem(29) == null && inventory.getItem(33) == null) {
                     if (player.getInventory().firstEmpty() != -1) {
-                        player.getInventory().addItem(inventory.getItem(13));
+                        player.getInventory().addItem(new ItemStack[]{inventory.getItem(13)});
                     } else {
                         player.getWorld().dropItem(player.getLocation(), inventory.getItem(13));
                     }
@@ -178,7 +206,7 @@ public class GUIListener extends PListener {
             if (gui.getClass().equals(ReforgeAnvilGUI.class)) {
                 if (player.getInventory().firstEmpty() != -1) {
                     if (inventory.getItem(13) != null) {
-                        player.getInventory().addItem(inventory.getItem(13));
+                        player.getInventory().addItem(new ItemStack[]{inventory.getItem(13)});
                     }
                 } else if (inventory.getItem(13) != null) {
                     player.getWorld().dropItem(player.getLocation(), inventory.getItem(13));
@@ -194,70 +222,70 @@ public class GUIListener extends PListener {
             if (gui.getClass().equals(CraftingTableGUI.class)) {
                 if (inventory.getItem(10) != null) {
                     if (player.getInventory().firstEmpty() != -1) {
-                        player.getInventory().addItem(inventory.getItem(10));
+                        player.getInventory().addItem(new ItemStack[]{inventory.getItem(10)});
                     } else {
                         player.getWorld().dropItem(player.getLocation(), inventory.getItem(10));
                     }
                 }
                 if (inventory.getItem(11) != null) {
                     if (player.getInventory().firstEmpty() != -1) {
-                        player.getInventory().addItem(inventory.getItem(11));
+                        player.getInventory().addItem(new ItemStack[]{inventory.getItem(11)});
                     } else {
                         player.getWorld().dropItem(player.getLocation(), inventory.getItem(11));
                     }
                 }
                 if (inventory.getItem(12) != null) {
                     if (player.getInventory().firstEmpty() != -1) {
-                        player.getInventory().addItem(inventory.getItem(12));
+                        player.getInventory().addItem(new ItemStack[]{inventory.getItem(12)});
                     } else {
                         player.getWorld().dropItem(player.getLocation(), inventory.getItem(12));
                     }
                 }
                 if (inventory.getItem(19) != null) {
                     if (player.getInventory().firstEmpty() != -1) {
-                        player.getInventory().addItem(inventory.getItem(19));
+                        player.getInventory().addItem(new ItemStack[]{inventory.getItem(19)});
                     } else {
                         player.getWorld().dropItem(player.getLocation(), inventory.getItem(19));
                     }
                 }
                 if (inventory.getItem(20) != null) {
                     if (player.getInventory().firstEmpty() != -1) {
-                        player.getInventory().addItem(inventory.getItem(20));
+                        player.getInventory().addItem(new ItemStack[]{inventory.getItem(20)});
                     } else {
                         player.getWorld().dropItem(player.getLocation(), inventory.getItem(20));
                     }
                 }
                 if (inventory.getItem(21) != null) {
                     if (player.getInventory().firstEmpty() != -1) {
-                        player.getInventory().addItem(inventory.getItem(21));
+                        player.getInventory().addItem(new ItemStack[]{inventory.getItem(21)});
                     } else {
                         player.getWorld().dropItem(player.getLocation(), inventory.getItem(21));
                     }
                 }
                 if (inventory.getItem(28) != null) {
                     if (player.getInventory().firstEmpty() != -1) {
-                        player.getInventory().addItem(inventory.getItem(28));
+                        player.getInventory().addItem(new ItemStack[]{inventory.getItem(28)});
                     } else {
                         player.getWorld().dropItem(player.getLocation(), inventory.getItem(28));
                     }
                 }
                 if (inventory.getItem(29) != null) {
                     if (player.getInventory().firstEmpty() != -1) {
-                        player.getInventory().addItem(inventory.getItem(29));
+                        player.getInventory().addItem(new ItemStack[]{inventory.getItem(29)});
                     } else {
                         player.getWorld().dropItem(player.getLocation(), inventory.getItem(29));
                     }
                 }
                 if (inventory.getItem(30) != null) {
                     if (player.getInventory().firstEmpty() != -1) {
-                        player.getInventory().addItem(inventory.getItem(30));
+                        player.getInventory().addItem(new ItemStack[]{inventory.getItem(30)});
                     } else {
                         player.getWorld().dropItem(player.getLocation(), inventory.getItem(30));
                     }
                 }
                 if (inventory.getItem(24).getType().toString() != "BARRIER" && inventory.getItem(10) == null && inventory.getItem(11) == null && inventory.getItem(12) == null && inventory.getItem(19) == null && inventory.getItem(20) == null && inventory.getItem(21) == null && inventory.getItem(28) == null && inventory.getItem(29) == null && inventory.getItem(30) == null) {
                     if (player.getInventory().firstEmpty() != -1) {
-                        player.getInventory().addItem(inventory.getItem(24));
+                        player.getInventory().addItem(new ItemStack[]{inventory.getItem(24)});
                     } else {
                         player.getWorld().dropItem(player.getLocation(), inventory.getItem(24));
                     }
@@ -265,17 +293,13 @@ public class GUIListener extends PListener {
             }
         }
         GUI.GUI_MAP.remove(player.getUniqueId());
-        if (GUIListener.QUERY_MAPPING.containsKey(player.getUniqueId()) && GUIListener.QUERY_MAPPING.get(player.getUniqueId())) {
+        if (QUERY_MAPPING.containsKey(player.getUniqueId()) && QUERY_MAPPING.get(player.getUniqueId()).booleanValue()) {
             return;
         }
         if (User.getUser(player.getUniqueId()) != null && User.getUser(player.getUniqueId()).isWaitingForSign()) {
             return;
         }
-        gui.onClose(e);
-    }
-
-    static {
-        QUERY_MAP = new HashMap<UUID, GUIQueryItem>();
-        QUERY_MAPPING = new HashMap<UUID, Boolean>();
+        gui.onClose(e2);
     }
 }
+

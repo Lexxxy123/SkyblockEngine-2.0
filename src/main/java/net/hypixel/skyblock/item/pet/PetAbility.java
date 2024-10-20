@@ -1,23 +1,30 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.event.entity.EntityDamageByEntityEvent
+ */
 package net.hypixel.skyblock.item.pet;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import java.util.List;
+import net.hypixel.skyblock.item.SItem;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import net.hypixel.skyblock.item.SItem;
-
-import java.util.List;
 
 public interface PetAbility {
-    String getName();
+    public String getName();
 
-    List<String> getDescription(final SItem p0);
+    public List<String> getDescription(SItem var1);
 
-    default void onHurt(final EntityDamageByEntityEvent e, final Entity damager) {
+    default public void onHurt(EntityDamageByEntityEvent e2, Entity damager) {
     }
 
-    default void onDamage(final EntityDamageByEntityEvent e) {
+    default public void onDamage(EntityDamageByEntityEvent e2) {
     }
 
-    default void onZealotAttempt(final AtomicDouble chance) {
+    default public void onZealotAttempt(AtomicDouble chance) {
     }
 }
+

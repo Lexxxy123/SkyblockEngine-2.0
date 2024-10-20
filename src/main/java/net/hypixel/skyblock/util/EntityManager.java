@@ -1,5 +1,20 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.minecraft.server.v1_8_R3.Entity
+ *  net.minecraft.server.v1_8_R3.NBTTagCompound
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.entity.LivingEntity
+ *  org.bukkit.entity.Player
+ *  org.bukkit.potion.PotionEffect
+ *  org.bukkit.potion.PotionEffectType
+ */
 package net.hypixel.skyblock.util;
 
+import java.util.HashMap;
+import java.util.Map;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.entity.Entity;
@@ -8,14 +23,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class EntityManager {
-    public static final Map<Entity, Integer> DEFENSE_PERCENTAGE;
+    public static final Map<Entity, Integer> DEFENSE_PERCENTAGE = new HashMap<Entity, Integer>();
 
-    public static void noAI(final Entity bukkitEntity) {
-        final net.minecraft.server.v1_8_R3.Entity nmsEntity = ((CraftEntity) bukkitEntity).getHandle();
+    public static void noAI(Entity bukkitEntity) {
+        net.minecraft.server.v1_8_R3.Entity nmsEntity = ((CraftEntity)bukkitEntity).getHandle();
         NBTTagCompound tag = nmsEntity.getNBTTag();
         if (tag == null) {
             tag = new NBTTagCompound();
@@ -25,8 +37,8 @@ public class EntityManager {
         nmsEntity.f(tag);
     }
 
-    public static void yesAI(final Entity bukkitEntity) {
-        final net.minecraft.server.v1_8_R3.Entity nmsEntity = ((CraftEntity) bukkitEntity).getHandle();
+    public static void yesAI(Entity bukkitEntity) {
+        net.minecraft.server.v1_8_R3.Entity nmsEntity = ((CraftEntity)bukkitEntity).getHandle();
         NBTTagCompound tag = nmsEntity.getNBTTag();
         if (tag == null) {
             tag = new NBTTagCompound();
@@ -36,19 +48,19 @@ public class EntityManager {
         nmsEntity.f(tag);
     }
 
-    public static void setNBTTag(final Entity bukkitEntity, final String t, final int obj) {
-        final net.minecraft.server.v1_8_R3.Entity nmsEntity = ((CraftEntity) bukkitEntity).getHandle();
+    public static void setNBTTag(Entity bukkitEntity, String t2, int obj) {
+        net.minecraft.server.v1_8_R3.Entity nmsEntity = ((CraftEntity)bukkitEntity).getHandle();
         NBTTagCompound tag = nmsEntity.getNBTTag();
         if (tag == null) {
             tag = new NBTTagCompound();
         }
         nmsEntity.c(tag);
-        tag.setInt(t, obj);
+        tag.setInt(t2, obj);
         nmsEntity.f(tag);
     }
 
-    public static void noHit(final Entity bukkitEntity) {
-        final net.minecraft.server.v1_8_R3.Entity nmsEntity = ((CraftEntity) bukkitEntity).getHandle();
+    public static void noHit(Entity bukkitEntity) {
+        net.minecraft.server.v1_8_R3.Entity nmsEntity = ((CraftEntity)bukkitEntity).getHandle();
         NBTTagCompound tag = nmsEntity.getNBTTag();
         if (tag == null) {
             tag = new NBTTagCompound();
@@ -58,8 +70,8 @@ public class EntityManager {
         nmsEntity.f(tag);
     }
 
-    public static void shutTheFuckUp(final Entity bukkitEntity) {
-        final net.minecraft.server.v1_8_R3.Entity nmsEntity = ((CraftEntity) bukkitEntity).getHandle();
+    public static void shutTheFuckUp(Entity bukkitEntity) {
+        net.minecraft.server.v1_8_R3.Entity nmsEntity = ((CraftEntity)bukkitEntity).getHandle();
         NBTTagCompound tag = nmsEntity.getNBTTag();
         if (tag == null) {
             tag = new NBTTagCompound();
@@ -69,23 +81,20 @@ public class EntityManager {
         nmsEntity.f(tag);
     }
 
-    public static void Woosh(final Player player) {
+    public static void Woosh(Player player) {
         player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 100000, 1));
     }
 
-    public static void NoWoosh(final Player player) {
+    public static void NoWoosh(Player player) {
         player.removePotionEffect(PotionEffectType.INVISIBILITY);
     }
 
-    public static void Woosh(final LivingEntity player) {
+    public static void Woosh(LivingEntity player) {
         player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 100000, 1));
     }
 
-    public static void NoWoosh(final LivingEntity player) {
+    public static void NoWoosh(LivingEntity player) {
         player.removePotionEffect(PotionEffectType.INVISIBILITY);
-    }
-
-    static {
-        DEFENSE_PERCENTAGE = new HashMap<Entity, Integer>();
     }
 }
+

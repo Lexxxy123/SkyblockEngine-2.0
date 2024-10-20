@@ -1,7 +1,34 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  me.libraryaddict.disguise.disguisetypes.PlayerDisguise
+ *  net.minecraft.server.v1_8_R3.AttributeInstance
+ *  net.minecraft.server.v1_8_R3.GenericAttributes
+ *  org.bukkit.Color
+ *  org.bukkit.Material
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.entity.LivingEntity
+ *  org.bukkit.event.entity.EntityDamageByEntityEvent
+ *  org.bukkit.inventory.ItemStack
+ *  org.bukkit.inventory.meta.ItemMeta
+ *  org.bukkit.metadata.FixedMetadataValue
+ *  org.bukkit.metadata.MetadataValue
+ *  org.bukkit.plugin.Plugin
+ */
 package net.hypixel.skyblock.entity.dungeons;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
+import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.entity.SEntity;
+import net.hypixel.skyblock.entity.SEntityEquipment;
+import net.hypixel.skyblock.entity.zombie.BaseZombie;
+import net.hypixel.skyblock.util.EntityManager;
+import net.hypixel.skyblock.util.SUtil;
+import net.hypixel.skyblock.util.Sputnik;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
 import net.minecraft.server.v1_8_R3.GenericAttributes;
 import org.bukkit.Color;
@@ -14,15 +41,11 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
-import net.hypixel.skyblock.SkyBlock;
-import net.hypixel.skyblock.entity.SEntity;
-import net.hypixel.skyblock.entity.SEntityEquipment;
-import net.hypixel.skyblock.entity.zombie.BaseZombie;
-import net.hypixel.skyblock.util.EntityManager;
-import net.hypixel.skyblock.util.SUtil;
-import net.hypixel.skyblock.util.Sputnik;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
 
-public class TestObject extends BaseZombie {
+public class TestObject
+extends BaseZombie {
     private final boolean isEating;
     private final boolean isBowing;
     private final boolean EatingCooldown;
@@ -48,23 +71,23 @@ public class TestObject extends BaseZombie {
         return 4.0E8;
     }
 
-    public static ItemStack b(final int hexcolor, final Material m) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
+    public static ItemStack b(int hexcolor, Material m2) {
+        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m2), Color.fromRGB((int)hexcolor));
+        ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
         return stack;
     }
 
     @Override
-    public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
-        ((CraftZombie) entity).setBaby(false);
-        final AttributeInstance followRange = ((CraftLivingEntity) entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
+    public void onSpawn(LivingEntity entity, SEntity sEntity) {
+        ((CraftZombie)entity).setBaby(false);
+        AttributeInstance followRange = ((CraftLivingEntity)entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
         followRange.setValue(40.0);
-        final PlayerDisguise pl = Sputnik.applyPacketNPC(entity, "dungeon", null, false);
+        PlayerDisguise pl = Sputnik.applyPacketNPC((Entity)entity, "dungeon", null, false);
         pl.getWatcher().setRightClicking(false);
-        EntityManager.DEFENSE_PERCENTAGE.put(entity, 99);
-        entity.setMetadata("LD", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 99);
+        entity.setMetadata("LD", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
     }
 
     @Override
@@ -88,7 +111,7 @@ public class TestObject extends BaseZombie {
     }
 
     @Override
-    public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
+    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
     }
 
     @Override
@@ -101,3 +124,4 @@ public class TestObject extends BaseZombie {
         return 0.35;
     }
 }
+

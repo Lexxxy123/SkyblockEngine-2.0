@@ -1,3 +1,6 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.tarantula;
 
 import net.hypixel.skyblock.item.GenericItemType;
@@ -5,7 +8,9 @@ import net.hypixel.skyblock.item.MaterialFunction;
 import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.SkullStatistics;
 
-public class SpiderCatalyst implements SkullStatistics, MaterialFunction {
+public class SpiderCatalyst
+implements SkullStatistics,
+MaterialFunction {
     @Override
     public String getDisplayName() {
         return "Spider Catalyst";
@@ -26,3 +31,4 @@ public class SpiderCatalyst implements SkullStatistics, MaterialFunction {
         return "983b30e9d135b05190eea2c3ac61e2ab55a2d81e1a58dbb26983a14082664";
     }
 }
+

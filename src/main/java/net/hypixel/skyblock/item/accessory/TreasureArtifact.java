@@ -1,33 +1,16 @@
 /*
- * Copyright (C) 2023 by Ruby Game Studios
- * Skyblock is licensed under the Creative Commons Non-Commercial 4.0 International License.
- *
- * You may not use this software for commercial use, however you are free
- * to modify, copy, redistribute, or build upon our codebase. You must give
- * appropriate credit, provide a link to the license, and indicate
- * if changes were made.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
- * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
- * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
- * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- *
- * For more information, visit https://creativecommons.org/licenses/by-nc/4.0/legalcode
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
  */
 package net.hypixel.skyblock.item.accessory;
 
-
-import net.hypixel.skyblock.item.MaterialFunction;
+import java.util.Arrays;
+import java.util.List;
 import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.accessory.AccessoryStatistics;
 import net.hypixel.skyblock.util.Sputnik;
-import org.bukkit.ChatColor;
 
-import java.util.*;
-
-public class TreasureArtifact implements AccessoryStatistics {
-
+public class TreasureArtifact
+implements AccessoryStatistics {
     @Override
     public String getDisplayName() {
         return "Treasure Artifact";
@@ -40,10 +23,7 @@ public class TreasureArtifact implements AccessoryStatistics {
 
     @Override
     public List<String> getListLore() {
-        return Arrays.asList(
-                Sputnik.trans2( "&7Grants &a+3 extra loot to end",
-                "&7of dungeon chests.")
-        );
+        return Arrays.asList(Sputnik.trans2("&7Grants &a+3 extra loot to end", "&7of dungeon chests."));
     }
 
     @Override
@@ -53,6 +33,7 @@ public class TreasureArtifact implements AccessoryStatistics {
 
     @Override
     public double getBaseStrength() {
-        return 350;
+        return 350.0;
     }
 }
+

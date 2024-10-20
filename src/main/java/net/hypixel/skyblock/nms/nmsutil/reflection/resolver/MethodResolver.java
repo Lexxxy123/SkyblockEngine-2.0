@@ -1,124 +1,129 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.nms.nmsutil.reflection.resolver;
 
-import net.hypixel.skyblock.nms.nmsutil.reflection.util.AccessUtil;
-import net.hypixel.skyblock.nms.nmsutil.reflection.resolver.wrapper.MethodWrapper;
-
 import java.lang.reflect.Method;
+import net.hypixel.skyblock.nms.nmsutil.reflection.resolver.MemberResolver;
+import net.hypixel.skyblock.nms.nmsutil.reflection.resolver.ResolverQuery;
+import net.hypixel.skyblock.nms.nmsutil.reflection.resolver.wrapper.MethodWrapper;
+import net.hypixel.skyblock.nms.nmsutil.reflection.util.AccessUtil;
 
-public class MethodResolver extends MemberResolver<Method> {
-    public MethodResolver(final Class<?> clazz) {
+public class MethodResolver
+extends MemberResolver<Method> {
+    public MethodResolver(Class<?> clazz) {
         super(clazz);
     }
 
-    public MethodResolver(final String className) throws ClassNotFoundException {
+    public MethodResolver(String className) throws ClassNotFoundException {
         super(className);
     }
 
-    public Method resolveSignature(final String... signatures) throws ReflectiveOperationException {
-        for (final Method method : this.clazz.getDeclaredMethods()) {
-            final String methodSignature = MethodWrapper.getMethodSignature(method);
-            for (final String s : signatures) {
-                if (s.equals(methodSignature)) {
-                    return AccessUtil.setAccessible(method);
-                }
+    public Method resolveSignature(String ... signatures) throws ReflectiveOperationException {
+        for (Method method : this.clazz.getDeclaredMethods()) {
+            String methodSignature = MethodWrapper.getMethodSignature(method);
+            for (String s2 : signatures) {
+                if (!s2.equals(methodSignature)) continue;
+                return AccessUtil.setAccessible(method);
             }
         }
         return null;
     }
 
-    public Method resolveSignatureSilent(final String... signatures) {
+    public Method resolveSignatureSilent(String ... signatures) {
         try {
             return this.resolveSignature(signatures);
-        } catch (final ReflectiveOperationException ignored) {
+        } catch (ReflectiveOperationException ignored) {
             return null;
         }
     }
 
-    public MethodWrapper resolveSignatureWrapper(final String... signatures) {
+    public MethodWrapper resolveSignatureWrapper(String ... signatures) {
         return new MethodWrapper(this.resolveSignatureSilent(signatures));
     }
 
     @Override
-    public Method resolveIndex(final int index) throws IndexOutOfBoundsException, ReflectiveOperationException {
+    public Method resolveIndex(int index) throws IndexOutOfBoundsException, ReflectiveOperationException {
         return AccessUtil.setAccessible(this.clazz.getDeclaredMethods()[index]);
     }
 
     @Override
-    public Method resolveIndexSilent(final int index) {
+    public Method resolveIndexSilent(int index) {
         try {
             return this.resolveIndex(index);
-        } catch (final IndexOutOfBoundsException | ReflectiveOperationException ex2) {
+        } catch (IndexOutOfBoundsException | ReflectiveOperationException ex2) {
             return null;
         }
     }
 
     @Override
-    public MethodWrapper resolveIndexWrapper(final int index) {
+    public MethodWrapper resolveIndexWrapper(int index) {
         return new MethodWrapper(this.resolveIndexSilent(index));
     }
 
-    public MethodWrapper resolveWrapper(final String... names) {
+    public MethodWrapper resolveWrapper(String ... names) {
         return new MethodWrapper(this.resolveSilent(names));
     }
 
-    public MethodWrapper resolveWrapper(final ResolverQuery... queries) {
+    public MethodWrapper resolveWrapper(ResolverQuery ... queries) {
         return new MethodWrapper(this.resolveSilent(queries));
     }
 
-    public Method resolveSilent(final String... names) {
+    public Method resolveSilent(String ... names) {
         try {
             return this.resolve(names);
-        } catch (final Exception e) {
+        } catch (Exception e2) {
             return null;
         }
     }
 
-    public Method resolveSilent(final ResolverQuery... queries) {
-        return super.resolveSilent(queries);
+    @Override
+    public Method resolveSilent(ResolverQuery ... queries) {
+        return (Method)super.resolveSilent(queries);
     }
 
-    public Method resolve(final String... names) throws NoSuchMethodException {
-        final ResolverQuery.Builder builder = ResolverQuery.builder();
-        for (final String name : names) {
+    public Method resolve(String ... names) throws NoSuchMethodException {
+        ResolverQuery.Builder builder = ResolverQuery.builder();
+        for (String name : names) {
             builder.with(name);
         }
         return this.resolve(builder.build());
     }
 
-    public Method resolve(final ResolverQuery... queries) throws NoSuchMethodException {
+    @Override
+    public Method resolve(ResolverQuery ... queries) throws NoSuchMethodException {
         try {
-            return super.resolve(queries);
-        } catch (final ReflectiveOperationException e) {
-            throw (NoSuchMethodException) e;
+            return (Method)super.resolve(queries);
+        } catch (ReflectiveOperationException e2) {
+            throw (NoSuchMethodException)e2;
         }
     }
 
     @Override
-    protected Method resolveObject(final ResolverQuery query) throws ReflectiveOperationException {
-        for (final Method method : this.clazz.getDeclaredMethods()) {
-            if (method.getName().equals(query.getName()) && (query.getTypes().length == 0 || ClassListEqual(query.getTypes(), method.getParameterTypes()))) {
-                return AccessUtil.setAccessible(method);
-            }
+    protected Method resolveObject(ResolverQuery query) throws ReflectiveOperationException {
+        for (Method method : this.clazz.getDeclaredMethods()) {
+            if (!method.getName().equals(query.getName()) || query.getTypes().length != 0 && !MethodResolver.ClassListEqual(query.getTypes(), method.getParameterTypes())) continue;
+            return AccessUtil.setAccessible(method);
         }
         throw new NoSuchMethodException();
     }
 
     @Override
-    protected NoSuchMethodException notFoundException(final String joinedNames) {
+    protected NoSuchMethodException notFoundException(String joinedNames) {
         return new NoSuchMethodException("Could not resolve method for " + joinedNames + " in class " + this.clazz);
     }
 
-    static boolean ClassListEqual(final Class<?>[] l1, final Class<?>[] l2) {
+    static boolean ClassListEqual(Class<?>[] l1, Class<?>[] l2) {
         boolean equal = true;
         if (l1.length != l2.length) {
             return false;
         }
-        for (int i = 0; i < l1.length; ++i) {
-            if (l1[i] != l2[i]) {
-                equal = false;
-                break;
-            }
+        for (int i2 = 0; i2 < l1.length; ++i2) {
+            if (l1[i2] == l2[i2]) continue;
+            equal = false;
+            break;
         }
         return equal;
     }
 }
+

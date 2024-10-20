@@ -1,33 +1,40 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.util.Vector
+ */
 package net.hypixel.skyblock.util;
 
 import org.bukkit.util.Vector;
 
 public class VelocityUtil {
-    public static Vector calculateVelocity(final Vector from, final Vector to, final int heightGain) {
-        final double gravity = 0.115;
-        final int endGain = to.getBlockY() - from.getBlockY();
-        final double horizDist = Math.sqrt(distanceSquared(from, to));
-        final int gain = heightGain;
-        final double maxGain = (gain > endGain + gain) ? gain : ((double) (endGain + gain));
-        final double a = -horizDist * horizDist / (4.0 * maxGain);
-        final double b = horizDist;
-        final double c = -endGain;
-        final double slope = -b / (2.0 * a) - Math.sqrt(b * b - 4.0 * a * c) / (2.0 * a);
-        final double vy = Math.sqrt(maxGain * gravity);
-        final double vh = vy / slope;
-        final int dx = to.getBlockX() - from.getBlockX();
-        final int dz = to.getBlockZ() - from.getBlockZ();
-        final double mag = Math.sqrt(dx * dx + dz * dz);
-        final double dirx = dx / mag;
-        final double dirz = dz / mag;
-        final double vx = vh * dirx;
-        final double vz = vh * dirz;
+    public static Vector calculateVelocity(Vector from, Vector to, int heightGain) {
+        double gravity = 0.115;
+        int endGain = to.getBlockY() - from.getBlockY();
+        double horizDist = Math.sqrt(VelocityUtil.distanceSquared(from, to));
+        int gain = heightGain;
+        double maxGain = gain > endGain + gain ? (double)gain : (double)(endGain + gain);
+        double a2 = -horizDist * horizDist / (4.0 * maxGain);
+        double b2 = horizDist;
+        double c2 = -endGain;
+        double slope = -b2 / (2.0 * a2) - Math.sqrt(b2 * b2 - 4.0 * a2 * c2) / (2.0 * a2);
+        double vy = Math.sqrt(maxGain * 0.115);
+        double vh = vy / slope;
+        int dx = to.getBlockX() - from.getBlockX();
+        int dz = to.getBlockZ() - from.getBlockZ();
+        double mag = Math.sqrt(dx * dx + dz * dz);
+        double dirx = (double)dx / mag;
+        double dirz = (double)dz / mag;
+        double vx = vh * dirx;
+        double vz = vh * dirz;
         return new Vector(vx, vy, vz);
     }
 
-    private static double distanceSquared(final Vector from, final Vector to) {
-        final double dx = to.getBlockX() - from.getBlockX();
-        final double dz = to.getBlockZ() - from.getBlockZ();
+    private static double distanceSquared(Vector from, Vector to) {
+        double dx = to.getBlockX() - from.getBlockX();
+        double dz = to.getBlockZ() - from.getBlockZ();
         return dx * dx + dz * dz;
     }
 }
+

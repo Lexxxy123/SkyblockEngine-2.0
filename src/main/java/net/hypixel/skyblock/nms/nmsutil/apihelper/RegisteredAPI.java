@@ -1,27 +1,30 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.plugin.Plugin
+ */
 package net.hypixel.skyblock.nms.nmsutil.apihelper;
-
-import net.hypixel.skyblock.nms.nmsutil.apihelper.exception.MissingHostException;
-import org.bukkit.plugin.Plugin;
-import net.hypixel.skyblock.nms.nmsutil.apihelper.exception.HostRegistrationException;
 
 import java.util.HashSet;
 import java.util.Set;
+import net.hypixel.skyblock.nms.nmsutil.apihelper.API;
+import net.hypixel.skyblock.nms.nmsutil.apihelper.exception.HostRegistrationException;
+import net.hypixel.skyblock.nms.nmsutil.apihelper.exception.MissingHostException;
+import org.bukkit.plugin.Plugin;
 
 public class RegisteredAPI {
     protected final API api;
-    protected final Set<Plugin> hosts;
-    protected boolean initialized;
+    protected final Set<Plugin> hosts = new HashSet<Plugin>();
+    protected boolean initialized = false;
     protected Plugin initializerHost;
-    protected boolean eventsRegistered;
+    protected boolean eventsRegistered = false;
 
-    public RegisteredAPI(final API api) {
-        this.hosts = new HashSet<Plugin>();
-        this.initialized = false;
-        this.eventsRegistered = false;
+    public RegisteredAPI(API api) {
         this.api = api;
     }
 
-    public void registerHost(final Plugin host) throws HostRegistrationException {
+    public void registerHost(Plugin host) throws HostRegistrationException {
         if (this.hosts.contains(host)) {
             throw new HostRegistrationException("API host '" + host.getName() + "' for '" + this.api.getClass().getName() + "' is already registered");
         }
@@ -29,16 +32,15 @@ public class RegisteredAPI {
     }
 
     public Plugin getNextHost() throws MissingHostException {
-        if (this.api instanceof Plugin && ((Plugin) this.api).isEnabled()) {
-            return (Plugin) this.api;
+        if (this.api instanceof Plugin && ((Plugin)this.api).isEnabled()) {
+            return (Plugin)this.api;
         }
         if (this.hosts.isEmpty()) {
             throw new MissingHostException("API '" + this.api.getClass().getName() + "' is disabled, but no other Hosts have been registered");
         }
-        for (final Plugin host : this.hosts) {
-            if (host.isEnabled()) {
-                return host;
-            }
+        for (Plugin host : this.hosts) {
+            if (!host.isEnabled()) continue;
+            return host;
         }
         throw new MissingHostException("API '" + this.api.getClass().getName() + "' is disabled and all registered Hosts are as well");
     }
@@ -47,7 +49,8 @@ public class RegisteredAPI {
         if (this.initialized) {
             return;
         }
-        this.api.init(this.initializerHost = this.getNextHost());
+        this.initializerHost = this.getNextHost();
+        this.api.init(this.initializerHost);
         this.initialized = true;
     }
 
@@ -59,3 +62,4 @@ public class RegisteredAPI {
         this.initialized = false;
     }
 }
+

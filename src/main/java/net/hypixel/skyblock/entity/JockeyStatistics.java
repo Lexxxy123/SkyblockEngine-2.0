@@ -1,5 +1,13 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.entity;
 
-public interface JockeyStatistics extends EntityStatistics {
-    SEntityType getPassenger();
+import net.hypixel.skyblock.entity.EntityStatistics;
+import net.hypixel.skyblock.entity.SEntityType;
+
+public interface JockeyStatistics
+extends EntityStatistics {
+    public SEntityType getPassenger();
 }
+

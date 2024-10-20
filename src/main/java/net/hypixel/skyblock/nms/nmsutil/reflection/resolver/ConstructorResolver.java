@@ -1,73 +1,78 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.nms.nmsutil.reflection.resolver;
 
+import java.lang.reflect.Constructor;
+import net.hypixel.skyblock.nms.nmsutil.reflection.resolver.MemberResolver;
+import net.hypixel.skyblock.nms.nmsutil.reflection.resolver.ResolverQuery;
 import net.hypixel.skyblock.nms.nmsutil.reflection.resolver.wrapper.ConstructorWrapper;
 import net.hypixel.skyblock.nms.nmsutil.reflection.util.AccessUtil;
 
-import java.lang.reflect.Constructor;
-
-public class ConstructorResolver extends MemberResolver<Constructor> {
-    public ConstructorResolver(final Class<?> clazz) {
+public class ConstructorResolver
+extends MemberResolver<Constructor> {
+    public ConstructorResolver(Class<?> clazz) {
         super(clazz);
     }
 
-    public ConstructorResolver(final String className) throws ClassNotFoundException {
+    public ConstructorResolver(String className) throws ClassNotFoundException {
         super(className);
     }
 
     @Override
-    public Constructor resolveIndex(final int index) throws IndexOutOfBoundsException, ReflectiveOperationException {
+    public Constructor resolveIndex(int index) throws IndexOutOfBoundsException, ReflectiveOperationException {
         return AccessUtil.setAccessible(this.clazz.getDeclaredConstructors()[index]);
     }
 
     @Override
-    public Constructor resolveIndexSilent(final int index) {
+    public Constructor resolveIndexSilent(int index) {
         try {
             return this.resolveIndex(index);
-        } catch (final IndexOutOfBoundsException | ReflectiveOperationException ex2) {
+        } catch (IndexOutOfBoundsException | ReflectiveOperationException ex2) {
             return null;
         }
     }
 
     @Override
-    public ConstructorWrapper resolveIndexWrapper(final int index) {
+    public ConstructorWrapper resolveIndexWrapper(int index) {
         return new ConstructorWrapper(this.resolveIndexSilent(index));
     }
 
-    public ConstructorWrapper resolveWrapper(final Class<?>[]... types) {
+    public ConstructorWrapper resolveWrapper(Class<?>[] ... types) {
         return new ConstructorWrapper(this.resolveSilent(types));
     }
 
-    public Constructor resolveSilent(final Class<?>[]... types) {
+    public Constructor resolveSilent(Class<?>[] ... types) {
         try {
             return this.resolve(types);
-        } catch (final Exception e) {
+        } catch (Exception e2) {
             return null;
         }
     }
 
-    public Constructor resolve(final Class<?>[]... types) throws NoSuchMethodException {
-        final ResolverQuery.Builder builder = ResolverQuery.builder();
-        for (final Class<?>[] type : types) {
+    public Constructor resolve(Class<?>[] ... types) throws NoSuchMethodException {
+        ResolverQuery.Builder builder = ResolverQuery.builder();
+        for (Class<?>[] type : types) {
             builder.with(type);
         }
         try {
-            return super.resolve(builder.build());
-        } catch (final ReflectiveOperationException e) {
-            throw (NoSuchMethodException) e;
+            return (Constructor)super.resolve(builder.build());
+        } catch (ReflectiveOperationException e2) {
+            throw (NoSuchMethodException)e2;
         }
     }
 
     @Override
-    protected Constructor resolveObject(final ResolverQuery query) throws ReflectiveOperationException {
+    protected Constructor resolveObject(ResolverQuery query) throws ReflectiveOperationException {
         return AccessUtil.setAccessible(this.clazz.getDeclaredConstructor(query.getTypes()));
     }
 
     public Constructor resolveFirstConstructor() throws ReflectiveOperationException {
-        final Constructor<?>[] declaredConstructors = this.clazz.getDeclaredConstructors();
-        final int length = declaredConstructors.length;
-        final int n = 0;
+        Constructor<?>[] declaredConstructors = this.clazz.getDeclaredConstructors();
+        int length = declaredConstructors.length;
+        boolean n2 = false;
         if (0 < length) {
-            final Constructor constructor = declaredConstructors[0];
+            Constructor<?> constructor = declaredConstructors[0];
             return AccessUtil.setAccessible(constructor);
         }
         return null;
@@ -76,19 +81,17 @@ public class ConstructorResolver extends MemberResolver<Constructor> {
     public Constructor resolveFirstConstructorSilent() {
         try {
             return this.resolveFirstConstructor();
-        } catch (final Exception e) {
+        } catch (Exception e2) {
             return null;
         }
     }
 
     public Constructor resolveLastConstructor() throws ReflectiveOperationException {
-        Constructor constructor = null;
-        final Constructor<?>[] declaredConstructors = this.clazz.getDeclaredConstructors();
-        for (int length = declaredConstructors.length, i = 0; i < length; ++i) {
-            constructor = declaredConstructors[i];
+        Constructor<?> constructor2 = null;
+        for (Constructor<?> constructor2 : this.clazz.getDeclaredConstructors()) {
         }
-        if (constructor != null) {
-            return AccessUtil.setAccessible(constructor);
+        if (constructor2 != null) {
+            return AccessUtil.setAccessible(constructor2);
         }
         return null;
     }
@@ -96,13 +99,14 @@ public class ConstructorResolver extends MemberResolver<Constructor> {
     public Constructor resolveLastConstructorSilent() {
         try {
             return this.resolveLastConstructor();
-        } catch (final Exception e) {
+        } catch (Exception e2) {
             return null;
         }
     }
 
     @Override
-    protected NoSuchMethodException notFoundException(final String joinedNames) {
+    protected NoSuchMethodException notFoundException(String joinedNames) {
         return new NoSuchMethodException("Could not resolve constructor for " + joinedNames + " in class " + this.clazz);
     }
 }
+

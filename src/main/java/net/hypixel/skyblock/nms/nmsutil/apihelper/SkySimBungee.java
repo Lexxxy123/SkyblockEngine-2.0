@@ -1,22 +1,29 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Bukkit
+ *  org.bukkit.entity.Player
+ *  org.bukkit.plugin.Plugin
+ */
 package net.hypixel.skyblock.nms.nmsutil.apihelper;
 
 import com.google.common.collect.Iterables;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import java.util.ArrayList;
+import java.util.List;
 import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.util.SLog;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.bukkit.plugin.Plugin;
 
 public class SkySimBungee {
     private final String channel;
-    private final List<String> servers;
+    private final List<String> servers = new ArrayList<String>();
 
-    public SkySimBungee(final String channel) {
-        this.servers = new ArrayList<String>();
+    public SkySimBungee(String channel) {
         this.channel = channel;
     }
 
@@ -24,22 +31,18 @@ public class SkySimBungee {
         return new SkySimBungee("BungeeCord");
     }
 
-    public void sendData(final Player p, final String subchannel, final String args) {
+    public void sendData(Player p2, String subchannel, String args) {
         Player sender = null;
-        final ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF(subchannel);
         if (args != null) {
             out.writeUTF(args);
         }
-        if (p == null) {
-            sender = (Player) Iterables.getFirst(Bukkit.getOnlinePlayers(), (Object) null);
-        } else {
-            sender = p;
-        }
-        if (sender != null) {
-            sender.sendPluginMessage(SkyBlock.getPlugin(), this.channel, out.toByteArray());
+        if ((sender = p2 == null ? (Player)Iterables.getFirst(Bukkit.getOnlinePlayers(), null) : p2) != null) {
+            sender.sendPluginMessage((Plugin)SkyBlock.getPlugin(), this.channel, out.toByteArray());
         } else {
             SLog.warn("Player object mustn't be null!");
         }
     }
 }
+

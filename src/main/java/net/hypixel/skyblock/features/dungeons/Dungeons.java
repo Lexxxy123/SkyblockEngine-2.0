@@ -1,55 +1,59 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Location
+ *  org.bukkit.World
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.features.dungeons;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import net.hypixel.skyblock.entity.SEntity;
+import net.hypixel.skyblock.entity.SEntityType;
 import net.hypixel.skyblock.util.SLog;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import net.hypixel.skyblock.entity.SEntity;
-import net.hypixel.skyblock.entity.SEntityType;
-
-import java.util.*;
 
 public class Dungeons {
-    private static Map<World, Dungeons> DUNGEONS_CACHE;
-    public List<Player> players;
-    public int witherKeys;
-    public boolean bloodKey;
-    public boolean isBloodCleared;
+    private static Map<World, Dungeons> DUNGEONS_CACHE = new HashMap<World, Dungeons>();
+    public List<Player> players = new ArrayList<Player>();
+    public int witherKeys = 0;
+    public boolean bloodKey = false;
+    public boolean isBloodCleared = false;
     public List<String> openedRooms;
-    public int deaths;
-    public int cryptsBlown;
-    public int score;
+    public int deaths = 0;
+    public int cryptsBlown = 0;
+    public int score = 0;
     private final World world;
     private final UUID runUUID;
 
-    public Dungeons(final World world, final List<Player> listPlayers) {
-        this.players = new ArrayList<Player>();
-        this.witherKeys = 0;
-        this.bloodKey = false;
-        this.isBloodCleared = false;
-        this.deaths = 0;
-        this.cryptsBlown = 0;
-        this.score = 0;
+    public Dungeons(World world, List<Player> listPlayers) {
         this.world = world;
         this.players = listPlayers;
         this.runUUID = UUID.randomUUID();
-        Dungeons.DUNGEONS_CACHE.put(world, this);
+        DUNGEONS_CACHE.put(world, this);
     }
 
-    public static Dungeons getDungeonsInstance(final World w) {
-        if (Dungeons.DUNGEONS_CACHE.containsKey(w)) {
-            return Dungeons.DUNGEONS_CACHE.get(w);
+    public static Dungeons getDungeonsInstance(World w2) {
+        if (DUNGEONS_CACHE.containsKey(w2)) {
+            return DUNGEONS_CACHE.get(w2);
         }
         SLog.severe("Cannot find dungeons instance for this world.");
         return null;
     }
 
-    public void spawnMobAt(final Location loc, final SEntityType type, final boolean starred, final UUID roomUUID) {
-        final SEntity sentity = new SEntity(loc, type);
+    public void spawnMobAt(Location loc, SEntityType type, boolean starred, UUID roomUUID) {
+        SEntity sentity = new SEntity(loc, type, new Object[0]);
         sentity.setStarred(starred);
     }
 
-    public void spawnMobWithCustomStats(final Location loc, final SEntityType type, final boolean starred, final double HP, final double damage) {
+    public void spawnMobWithCustomStats(Location loc, SEntityType type, boolean starred, double HP, double damage) {
     }
 
     public void spawnKeyAt() {
@@ -59,7 +63,7 @@ public class Dungeons {
         return this.players;
     }
 
-    public void setWitherKeys(final int witherKeys) {
+    public void setWitherKeys(int witherKeys) {
         this.witherKeys = witherKeys;
     }
 
@@ -67,7 +71,7 @@ public class Dungeons {
         return this.witherKeys;
     }
 
-    public void setBloodKey(final boolean bloodKey) {
+    public void setBloodKey(boolean bloodKey) {
         this.bloodKey = bloodKey;
     }
 
@@ -75,7 +79,7 @@ public class Dungeons {
         return this.bloodKey;
     }
 
-    public void setBloodCleared(final boolean isBloodCleared) {
+    public void setBloodCleared(boolean isBloodCleared) {
         this.isBloodCleared = isBloodCleared;
     }
 
@@ -83,7 +87,7 @@ public class Dungeons {
         return this.isBloodCleared;
     }
 
-    public void setOpenedRooms(final List<String> openedRooms) {
+    public void setOpenedRooms(List<String> openedRooms) {
         this.openedRooms = openedRooms;
     }
 
@@ -95,7 +99,7 @@ public class Dungeons {
         return this.deaths;
     }
 
-    public void setDeaths(final int deaths) {
+    public void setDeaths(int deaths) {
         this.deaths = deaths;
     }
 
@@ -103,7 +107,7 @@ public class Dungeons {
         return this.cryptsBlown;
     }
 
-    public void setCryptsBlown(final int cryptsBlown) {
+    public void setCryptsBlown(int cryptsBlown) {
         this.cryptsBlown = cryptsBlown;
     }
 
@@ -111,11 +115,8 @@ public class Dungeons {
         return this.score;
     }
 
-    public void setScore(final int score) {
+    public void setScore(int score) {
         this.score = score;
     }
-
-    static {
-        Dungeons.DUNGEONS_CACHE = new HashMap<World, Dungeons>();
-    }
 }
+

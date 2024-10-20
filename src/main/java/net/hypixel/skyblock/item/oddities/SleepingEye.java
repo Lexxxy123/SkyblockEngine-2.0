@@ -1,3 +1,6 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.oddities;
 
 import net.hypixel.skyblock.item.GenericItemType;
@@ -5,7 +8,9 @@ import net.hypixel.skyblock.item.MaterialFunction;
 import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.SkullStatistics;
 
-public class SleepingEye implements SkullStatistics, MaterialFunction {
+public class SleepingEye
+implements SkullStatistics,
+MaterialFunction {
     @Override
     public String getDisplayName() {
         return "Sleeping Eye";
@@ -36,3 +41,4 @@ public class SleepingEye implements SkullStatistics, MaterialFunction {
         return "37c0d010dd0e512ffea108d7c5fe69d576c31ec266c884b51ec0b28cc457";
     }
 }
+

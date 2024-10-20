@@ -1,3 +1,6 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.nms.nmsutil.reflection.resolver.wrapper;
 
 import java.lang.reflect.Method;
@@ -5,8 +8,10 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import net.hypixel.skyblock.nms.nmsutil.reflection.resolver.wrapper.WrapperAbstract;
 
-public class MethodWrapper<R> extends WrapperAbstract {
+public class MethodWrapper<R>
+extends WrapperAbstract {
     private final Method method;
 
     public MethodWrapper(Method method) {
@@ -22,18 +27,18 @@ public class MethodWrapper<R> extends WrapperAbstract {
         return this.method.getName();
     }
 
-    public R invoke(Object object, Object... args) {
+    public R invoke(Object object, Object ... args) {
         try {
-            return (R) this.method.invoke(object, args);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            return (R)this.method.invoke(object, args);
+        } catch (Exception e2) {
+            throw new RuntimeException(e2);
         }
     }
 
-    public R invokeSilent(Object object, Object... args) {
+    public R invokeSilent(Object object, Object ... args) {
         try {
-            return (R) this.method.invoke(object, args);
-        } catch (Exception e) {
+            return (R)this.method.invoke(object, args);
+        } catch (Exception e2) {
             return null;
         }
     }
@@ -42,7 +47,6 @@ public class MethodWrapper<R> extends WrapperAbstract {
         return this.method;
     }
 
-    @Override
     public boolean equals(Object object) {
         if (this == object) {
             return true;
@@ -50,13 +54,12 @@ public class MethodWrapper<R> extends WrapperAbstract {
         if (null == object || this.getClass() != object.getClass()) {
             return false;
         }
-        MethodWrapper<?> that = (MethodWrapper<?>) object;
+        MethodWrapper that = (MethodWrapper)object;
         return Objects.equals(this.method, that.method);
     }
 
-    @Override
     public int hashCode() {
-        return (null != this.method) ? this.method.hashCode() : 0;
+        return null != this.method ? this.method.hashCode() : 0;
     }
 
     public static String getMethodSignature(Method method, boolean fullClassNames) {
@@ -64,11 +67,11 @@ public class MethodWrapper<R> extends WrapperAbstract {
     }
 
     public static String getMethodSignature(Method method) {
-        return getMethodSignature(method, false);
+        return MethodWrapper.getMethodSignature(method, false);
     }
 
     public static class MethodSignature {
-        static final Pattern SIGNATURE_STRING_PATTERN;
+        static final Pattern SIGNATURE_STRING_PATTERN = Pattern.compile("(.+) (.*)\\((.*)\\)");
         private final String returnType;
         private final Pattern returnTypePattern;
         private final String name;
@@ -98,20 +101,11 @@ public class MethodWrapper<R> extends WrapperAbstract {
         public static MethodSignature of(Method method, boolean fullClassNames) {
             Class<?> returnType = method.getReturnType();
             Class<?>[] parameterTypes = method.getParameterTypes();
-            final String returnTypeString;
-            if (returnType.isPrimitive()) {
-                returnTypeString = returnType.toString();
-            } else {
-                returnTypeString = (fullClassNames ? returnType.getName() : returnType.getSimpleName());
-            }
+            String returnTypeString = returnType.isPrimitive() ? returnType.toString() : (fullClassNames ? returnType.getName() : returnType.getSimpleName());
             String methodName = method.getName();
             String[] parameterTypeStrings = new String[parameterTypes.length];
-            for (int i = 0; i < parameterTypeStrings.length; ++i) {
-                if (parameterTypes[i].isPrimitive()) {
-                    parameterTypeStrings[i] = parameterTypes[i].toString();
-                } else {
-                    parameterTypeStrings[i] = (fullClassNames ? parameterTypes[i].getName() : parameterTypes[i].getSimpleName());
-                }
+            for (int i2 = 0; i2 < parameterTypeStrings.length; ++i2) {
+                parameterTypeStrings[i2] = parameterTypes[i2].isPrimitive() ? parameterTypes[i2].toString() : (fullClassNames ? parameterTypes[i2].getName() : parameterTypes[i2].getSimpleName());
             }
             return new MethodSignature(returnTypeString, methodName, parameterTypeStrings);
         }
@@ -175,27 +169,24 @@ public class MethodWrapper<R> extends WrapperAbstract {
             if (this.parameterTypes.length != other.parameterTypes.length) {
                 return false;
             }
-            for (int i = 0; i < this.parameterTypes.length; ++i) {
-                if (!Pattern.compile(this.getParameterType(i).replace("?", "\\w").replace("*", "\\w*")).matcher(other.getParameterType(i)).matches()) {
-                    return false;
-                }
+            for (int i2 = 0; i2 < this.parameterTypes.length; ++i2) {
+                if (Pattern.compile(this.getParameterType(i2).replace("?", "\\w").replace("*", "\\w*")).matcher(other.getParameterType(i2)).matches()) continue;
+                return false;
             }
             return true;
         }
 
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
+        public boolean equals(Object o2) {
+            if (this == o2) {
                 return true;
             }
-            if (null == o || this.getClass() != o.getClass()) {
+            if (null == o2 || this.getClass() != o2.getClass()) {
                 return false;
             }
-            MethodSignature signature1 = (MethodSignature) o;
+            MethodSignature signature1 = (MethodSignature)o2;
             return this.returnType.equals(signature1.returnType) && this.name.equals(signature1.name) && Arrays.equals(this.parameterTypes, signature1.parameterTypes) && this.signature.equals(signature1.signature);
         }
 
-        @Override
         public int hashCode() {
             int result = this.returnType.hashCode();
             result = 31 * result + this.name.hashCode();
@@ -204,13 +195,9 @@ public class MethodWrapper<R> extends WrapperAbstract {
             return result;
         }
 
-        @Override
         public String toString() {
             return this.getSignature();
         }
-
-        static {
-            SIGNATURE_STRING_PATTERN = Pattern.compile("(.+) (.*)\\((.*)\\)");
-        }
     }
 }
+

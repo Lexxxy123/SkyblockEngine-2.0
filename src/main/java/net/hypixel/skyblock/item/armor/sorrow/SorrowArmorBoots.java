@@ -1,9 +1,17 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.armor.sorrow;
 
-import net.hypixel.skyblock.item.*;
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.ToolStatistics;
 
-public class SorrowArmorBoots implements ToolStatistics, MaterialFunction {
+public class SorrowArmorBoots
+implements ToolStatistics,
+MaterialFunction {
     @Override
     public String getDisplayName() {
         return "Sorrow Boots";
@@ -34,3 +42,4 @@ public class SorrowArmorBoots implements ToolStatistics, MaterialFunction {
         return 75.0;
     }
 }
+

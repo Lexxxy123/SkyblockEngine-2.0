@@ -1,39 +1,39 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.api.reflection;
 
-public class ReflectionTPS implements Runnable {
-    public static int TICK_COUNT;
-    public static long[] TICKS;
-    public static long LAST_TICK;
+public class ReflectionTPS
+implements Runnable {
+    public static int TICK_COUNT = 0;
+    public static long[] TICKS = new long[600];
+    public static long LAST_TICK = 0L;
 
     public static double getTPS() {
-        return getTPS(100);
+        return ReflectionTPS.getTPS(100);
     }
 
-    public static double getTPS(final int ticks) {
-        if (ReflectionTPS.TICK_COUNT < ticks) {
+    public static double getTPS(int ticks) {
+        if (TICK_COUNT < ticks) {
             return 20.0;
         }
-        final int target = (ReflectionTPS.TICK_COUNT - 1 - ticks) % ReflectionTPS.TICKS.length;
-        final long elapsed = System.currentTimeMillis() - ReflectionTPS.TICKS[target];
-        return ticks / (elapsed / 1000.0);
+        int target = (TICK_COUNT - 1 - ticks) % TICKS.length;
+        long elapsed = System.currentTimeMillis() - TICKS[target];
+        return (double)ticks / ((double)elapsed / 1000.0);
     }
 
-    public static long getElapsed(final int tickID) {
-        if (ReflectionTPS.TICK_COUNT - tickID >= ReflectionTPS.TICKS.length) {
+    public static long getElapsed(int tickID) {
+        if (TICK_COUNT - tickID >= TICKS.length) {
+            // empty if block
         }
-        final long time = ReflectionTPS.TICKS[tickID % ReflectionTPS.TICKS.length];
+        long time = TICKS[tickID % TICKS.length];
         return System.currentTimeMillis() - time;
     }
 
     @Override
     public void run() {
         ReflectionTPS.TICKS[ReflectionTPS.TICK_COUNT % ReflectionTPS.TICKS.length] = System.currentTimeMillis();
-        ++ReflectionTPS.TICK_COUNT;
-    }
-
-    static {
-        ReflectionTPS.TICK_COUNT = 0;
-        ReflectionTPS.TICKS = new long[600];
-        ReflectionTPS.LAST_TICK = 0L;
+        ++TICK_COUNT;
     }
 }
+

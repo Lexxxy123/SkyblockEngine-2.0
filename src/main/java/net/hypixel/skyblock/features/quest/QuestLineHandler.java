@@ -1,100 +1,92 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.features.quest;
 
-
-
-
-
-import lombok.Getter;
-import net.hypixel.skyblock.features.quest.dungeon.Dungeon;
-import net.hypixel.skyblock.features.quest.dungeon.Mort;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import net.hypixel.skyblock.features.quest.Objective;
+import net.hypixel.skyblock.features.quest.QuestLine;
+import net.hypixel.skyblock.features.quest.hub.IntroduceYourselfQuest;
+import net.hypixel.skyblock.features.quest.starting.GettingStartedQuest;
 import net.hypixel.skyblock.features.region.RegionType;
 import net.hypixel.skyblock.user.User;
 
-import java.util.*;
-
-@Getter
 public class QuestLineHandler {
-
-    private final HashMap<RegionType, List<QuestLine>> quests = new HashMap<>();
+    private final HashMap<RegionType, List<QuestLine>> quests = new HashMap();
 
     public QuestLineHandler() {
-        register(RegionType.MOUNTAIN, new Mort());
-        register(RegionType.F6 , new Dungeon());
-
-
-        for (List<QuestLine> quest : quests.values()) {
+        this.register(RegionType.PRIVATE_ISLAND, (QuestLine)new GettingStartedQuest());
+        this.register(RegionType.VILLAGE, (QuestLine)new IntroduceYourselfQuest());
+        for (List<QuestLine> quest : this.quests.values()) {
             quest.forEach(QuestLine::onEnable);
         }
     }
 
     public void disable() {
-        for (List<QuestLine> quest : quests.values()) {
+        for (List<QuestLine> quest : this.quests.values()) {
             quest.forEach(QuestLine::onDisable);
         }
     }
 
     public void register(RegionType[] locations, QuestLine line) {
         for (RegionType loc : locations) {
-            register(loc, line);
+            this.register(loc, line);
         }
     }
 
     public void register(RegionType location, QuestLine line) {
-        if (quests.containsKey(location)) {
-            quests.get(location).add(line);
+        if (this.quests.containsKey((Object)location)) {
+            this.quests.get((Object)location).add(line);
         } else {
-            ArrayList<QuestLine> list = new ArrayList<>();
+            ArrayList<QuestLine> list = new ArrayList<QuestLine>();
             list.add(line);
-
-            quests.put(location, list);
+            this.quests.put(location, list);
         }
     }
 
     public QuestLine getFromPlayer(User player) {
-        if (player.getRegion() == null) return null;
+        if (player.getRegion() == null) {
+            return null;
+        }
         RegionType loc = player.getRegion().getType();
-
-        List<QuestLine> lines = quests.get(loc);
-
+        List<QuestLine> lines = this.quests.get((Object)loc);
         if (lines == null || lines.isEmpty()) {
             return null;
         }
-
         List<String> completed = player.getCompletedQuests();
-
-        if (lines == null) return null;
-
+        if (lines == null) {
+            return null;
+        }
         for (QuestLine quest : lines) {
             if (completed.contains(quest.getName())) continue;
-
             return quest;
         }
-
         return null;
     }
 
     public QuestLine getQuest(Objective objective) {
-        for (List<QuestLine> lines : quests.values()) {
+        for (List<QuestLine> lines : this.quests.values()) {
             for (QuestLine line : lines) {
                 for (Objective obj : line.getLine()) {
-                    if (obj.getId().equals(objective.getId())) return line;
+                    if (!obj.getId().equals(objective.getId())) continue;
+                    return line;
                 }
             }
         }
-
         return null;
     }
 
     public List<QuestLine> getQuests() {
-        List<QuestLine> quests = new ArrayList<>();
-
+        ArrayList<QuestLine> quests = new ArrayList<QuestLine>();
         for (List<QuestLine> questLines : this.quests.values()) {
             for (QuestLine quest : questLines) {
                 if (quests.contains(quest)) continue;
                 quests.add(quest);
             }
         }
-
         return quests;
     }
 }
+

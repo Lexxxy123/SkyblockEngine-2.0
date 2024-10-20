@@ -1,91 +1,118 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.minecraft.server.v1_8_R3.Entity
+ *  net.minecraft.server.v1_8_R3.EntityLiving
+ *  net.minecraft.server.v1_8_R3.EntityWither
+ *  net.minecraft.server.v1_8_R3.Packet
+ *  net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy
+ *  net.minecraft.server.v1_8_R3.PacketPlayOutEntityMetadata
+ *  net.minecraft.server.v1_8_R3.PacketPlayOutEntityTeleport
+ *  net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntityLiving
+ *  net.minecraft.server.v1_8_R3.World
+ *  org.bukkit.Location
+ *  org.bukkit.World
+ *  org.bukkit.craftbukkit.v1_8_R3.CraftWorld
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
+ *  org.bukkit.entity.Player
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.scheduler.BukkitRunnable
+ */
 package net.hypixel.skyblock.entity.dungeons.watcher;
-
-import net.minecraft.server.v1_8_R3.*;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-import net.hypixel.skyblock.SkyBlock;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.hypixel.skyblock.SkyBlock;
+import net.minecraft.server.v1_8_R3.Entity;
+import net.minecraft.server.v1_8_R3.EntityLiving;
+import net.minecraft.server.v1_8_R3.EntityWither;
+import net.minecraft.server.v1_8_R3.Packet;
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntityMetadata;
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntityTeleport;
+import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntityLiving;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
-public class GlobalBossBar extends BukkitRunnable {
+public class GlobalBossBar
+extends BukkitRunnable {
     private String title;
-    private final HashMap<Player, EntityWither> withers;
-    public List<Player> players;
+    private final HashMap<Player, EntityWither> withers = new HashMap();
+    public List<Player> players = new ArrayList<Player>();
     private final World w;
 
-    public GlobalBossBar(final String title, final World w) {
-        this.withers = new HashMap<Player, EntityWither>();
-        this.players = new ArrayList<Player>();
+    public GlobalBossBar(String title, World w2) {
         this.title = title;
-        this.w = w;
-        this.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
+        this.w = w2;
+        this.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
     }
 
-    public void addPlayer(final Player p) {
-        this.players.add(p);
-        final EntityWither wither = new EntityWither(((CraftWorld) p.getWorld()).getHandle());
-        final Location l = this.getWitherLocation(p.getLocation());
+    public void addPlayer(Player p2) {
+        this.players.add(p2);
+        EntityWither wither = new EntityWither((net.minecraft.server.v1_8_R3.World)((CraftWorld)p2.getWorld()).getHandle());
+        Location l2 = this.getWitherLocation(p2.getLocation());
         wither.setCustomName(this.title);
         wither.setInvisible(true);
         wither.r(877);
-        wither.setLocation(l.getX(), l.getY(), l.getZ(), 0.0f, 0.0f);
-        final PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving(wither);
-        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
-        this.withers.put(p, wither);
+        wither.setLocation(l2.getX(), l2.getY(), l2.getZ(), 0.0f, 0.0f);
+        PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving((EntityLiving)wither);
+        ((CraftPlayer)p2).getHandle().playerConnection.sendPacket((Packet)packet);
+        this.withers.put(p2, wither);
     }
 
-    public void removePlayer(final Player p) {
-        this.players.remove(p);
-        final EntityWither wither = this.withers.remove(p);
-        final PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy(wither.getId());
-        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
+    public void removePlayer(Player p2) {
+        this.players.remove(p2);
+        EntityWither wither = this.withers.remove(p2);
+        PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy(new int[]{wither.getId()});
+        ((CraftPlayer)p2).getHandle().playerConnection.sendPacket((Packet)packet);
     }
 
-    public void setTitle(final String title) {
+    public void setTitle(String title) {
         this.title = title;
-        for (final Map.Entry<Player, EntityWither> entry : this.withers.entrySet()) {
-            final EntityWither wither = entry.getValue();
+        for (Map.Entry<Player, EntityWither> entry : this.withers.entrySet()) {
+            EntityWither wither = entry.getValue();
             wither.setCustomName(title);
-            final PacketPlayOutEntityMetadata packet = new PacketPlayOutEntityMetadata(wither.getId(), wither.getDataWatcher(), true);
-            ((CraftPlayer) entry.getKey()).getHandle().playerConnection.sendPacket(packet);
+            PacketPlayOutEntityMetadata packet = new PacketPlayOutEntityMetadata(wither.getId(), wither.getDataWatcher(), true);
+            ((CraftPlayer)entry.getKey()).getHandle().playerConnection.sendPacket((Packet)packet);
         }
     }
 
-    public void setProgress(final double progress) {
-        for (final Map.Entry<Player, EntityWither> entry : this.withers.entrySet()) {
-            final EntityWither wither = entry.getValue();
-            wither.setHealth((float) (progress * wither.getMaxHealth()));
-            final PacketPlayOutEntityMetadata packet = new PacketPlayOutEntityMetadata(wither.getId(), wither.getDataWatcher(), true);
-            ((CraftPlayer) entry.getKey()).getHandle().playerConnection.sendPacket(packet);
+    public void setProgress(double progress) {
+        for (Map.Entry<Player, EntityWither> entry : this.withers.entrySet()) {
+            EntityWither wither = entry.getValue();
+            wither.setHealth((float)(progress * (double)wither.getMaxHealth()));
+            PacketPlayOutEntityMetadata packet = new PacketPlayOutEntityMetadata(wither.getId(), wither.getDataWatcher(), true);
+            ((CraftPlayer)entry.getKey()).getHandle().playerConnection.sendPacket((Packet)packet);
         }
     }
 
-    public Location getWitherLocation(final Location l) {
-        return l.add(l.getDirection().multiply(20)).add(0.0, 1.5, 0.0);
+    public Location getWitherLocation(Location l2) {
+        return l2.add(l2.getDirection().multiply(20)).add(0.0, 1.5, 0.0);
     }
 
     public void run() {
-        for (final Map.Entry<Player, EntityWither> en : this.withers.entrySet()) {
-            final EntityWither wither = en.getValue();
-            final Location l = this.getWitherLocation(en.getKey().getLocation());
-            wither.setLocation(l.getX(), l.getY(), l.getZ(), 0.0f, 0.0f);
-            final PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(wither);
-            ((CraftPlayer) en.getKey()).getHandle().playerConnection.sendPacket(packet);
+        for (Map.Entry<Player, EntityWither> en : this.withers.entrySet()) {
+            EntityWither wither = en.getValue();
+            Location l2 = this.getWitherLocation(en.getKey().getLocation());
+            wither.setLocation(l2.getX(), l2.getY(), l2.getZ(), 0.0f, 0.0f);
+            PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport((Entity)wither);
+            ((CraftPlayer)en.getKey()).getHandle().playerConnection.sendPacket((Packet)packet);
         }
-        for (final Player p : this.w.getPlayers()) {
-            if (!this.players.contains(p)) {
-                this.addPlayer(p);
+        for (Player p2 : this.w.getPlayers()) {
+            if (!this.players.contains(p2)) {
+                this.addPlayer(p2);
             }
-            if (p.getWorld() != this.w || !p.isOnline()) {
-                this.removePlayer(p);
-            }
+            if (p2.getWorld() == this.w && p2.isOnline()) continue;
+            this.removePlayer(p2);
         }
     }
 }
+

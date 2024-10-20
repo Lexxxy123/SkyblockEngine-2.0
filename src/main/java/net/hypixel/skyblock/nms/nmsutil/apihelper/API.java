@@ -1,11 +1,18 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.plugin.Plugin
+ */
 package net.hypixel.skyblock.nms.nmsutil.apihelper;
 
 import org.bukkit.plugin.Plugin;
 
 public interface API {
-    void load();
+    public void load();
 
-    void init(final Plugin p0);
+    public void init(Plugin var1);
 
-    void disable(final Plugin p0);
+    public void disable(Plugin var1);
 }
+

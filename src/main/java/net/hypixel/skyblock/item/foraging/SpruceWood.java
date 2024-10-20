@@ -1,3 +1,6 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.foraging;
 
 import net.hypixel.skyblock.features.skill.ForagingSkill;
@@ -7,7 +10,9 @@ import net.hypixel.skyblock.item.GenericItemType;
 import net.hypixel.skyblock.item.MaterialFunction;
 import net.hypixel.skyblock.item.Rarity;
 
-public class SpruceWood implements ExperienceRewardStatistics, MaterialFunction {
+public class SpruceWood
+implements ExperienceRewardStatistics,
+MaterialFunction {
     @Override
     public double getRewardXP() {
         return 6.0;
@@ -33,3 +38,4 @@ public class SpruceWood implements ExperienceRewardStatistics, MaterialFunction 
         return GenericItemType.ITEM;
     }
 }
+

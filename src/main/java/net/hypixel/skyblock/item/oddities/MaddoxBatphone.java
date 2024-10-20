@@ -1,26 +1,48 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.md_5.bungee.api.chat.BaseComponent
+ *  net.md_5.bungee.api.chat.ClickEvent
+ *  net.md_5.bungee.api.chat.ClickEvent$Action
+ *  net.md_5.bungee.api.chat.HoverEvent
+ *  net.md_5.bungee.api.chat.HoverEvent$Action
+ *  net.md_5.bungee.api.chat.TextComponent
+ *  org.bukkit.ChatColor
+ *  org.bukkit.Sound
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.item.oddities;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 import net.hypixel.skyblock.command.BatphoneCommand;
-import net.hypixel.skyblock.item.*;
 import net.hypixel.skyblock.features.sequence.SoundSequenceType;
+import net.hypixel.skyblock.item.Ability;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.SkullStatistics;
+import net.hypixel.skyblock.util.SUtil;
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import net.hypixel.skyblock.util.SUtil;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-
-public class MaddoxBatphone implements SkullStatistics, MaterialFunction, Ability {
-    private static final List<String> SUCCESSFUL_RESPONSES;
-    private static final List<String> FAILED_RESPONSES;
-    public static final List<UUID> RING_COOLDOWN;
-    public static final List<UUID> CALL_COOLDOWN;
+public class MaddoxBatphone
+implements SkullStatistics,
+MaterialFunction,
+Ability {
+    private static final List<String> SUCCESSFUL_RESPONSES = Arrays.asList("Hello?", "Someone answers!", "How does a lobster answer? Shello!", "Hey what do you need?", "You hear the line pick up...", "You again? What do you want this time?");
+    private static final List<String> FAILED_RESPONSES = Arrays.asList("Please leave your message after the beep.", "How can you tell if a bee is on the phone? You get a buzzy signal!", "The phone keeps ringing, is it broken?", "The phone picks up but it immediately hands up!", "What did the cat say on the phone? Can you hear meow?", "No answer.", "Seems like it's not picking up!", "\"Your call is important to us, please stay on the line\", so you hang up.");
+    public static final List<UUID> RING_COOLDOWN = new ArrayList<UUID>();
+    public static final List<UUID> CALL_COOLDOWN = new ArrayList<UUID>();
 
     @Override
     public String getURL() {
@@ -72,7 +94,6 @@ public class MaddoxBatphone implements SkullStatistics, MaterialFunction, Abilit
         return false;
     }
 
-
     @Override
     public void onAbilityUse(Player player, SItem sItem) {
         if (player.getWorld().getName().contains("f6")) {
@@ -94,18 +115,12 @@ public class MaddoxBatphone implements SkullStatistics, MaterialFunction, Abilit
             return;
         }
         TextComponent message = new TextComponent(ChatColor.DARK_GREEN + " " + ChatColor.BOLD + "[OPEN MENU]");
-        message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponent[]{new TextComponent(ChatColor.YELLOW + "Click!")}));
+        message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, (BaseComponent[])new TextComponent[]{new TextComponent(ChatColor.YELLOW + "Click!")}));
         String key = UUID.randomUUID().toString();
         BatphoneCommand.KEYS.add(key);
         SUtil.delay(() -> BatphoneCommand.KEYS.remove(key), 460L);
         message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/batphone " + BatphoneCommand.ACCESS_KEY + " " + key));
-        SUtil.delay(() -> player.spigot().sendMessage(new TextComponent(new TextComponent(ChatColor.GREEN + "\u2706 " + SUtil.getRandom(SUCCESSFUL_RESPONSES)), message)), 52L);
-    }
-
-    static {
-        SUCCESSFUL_RESPONSES = Arrays.asList("Hello?", "Someone answers!", "How does a lobster answer? Shello!", "Hey what do you need?", "You hear the line pick up...", "You again? What do you want this time?");
-        FAILED_RESPONSES = Arrays.asList("Please leave your message after the beep.", "How can you tell if a bee is on the phone? You get a buzzy signal!", "The phone keeps ringing, is it broken?", "The phone picks up but it immediately hands up!", "What did the cat say on the phone? Can you hear meow?", "No answer.", "Seems like it's not picking up!", "\"Your call is important to us, please stay on the line\", so you hang up.");
-        RING_COOLDOWN = new ArrayList<UUID>();
-        CALL_COOLDOWN = new ArrayList<UUID>();
+        SUtil.delay(() -> player.spigot().sendMessage((BaseComponent)new TextComponent(new BaseComponent[]{new TextComponent(ChatColor.GREEN + "\u2706 " + SUtil.getRandom(SUCCESSFUL_RESPONSES)), message})), 52L);
     }
 }
+

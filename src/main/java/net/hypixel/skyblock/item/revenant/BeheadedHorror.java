@@ -1,3 +1,6 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.revenant;
 
 import net.hypixel.skyblock.item.GenericItemType;
@@ -5,7 +8,9 @@ import net.hypixel.skyblock.item.MaterialFunction;
 import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.SkullStatistics;
 
-public class BeheadedHorror implements SkullStatistics, MaterialFunction {
+public class BeheadedHorror
+implements SkullStatistics,
+MaterialFunction {
     @Override
     public String getDisplayName() {
         return "Beheaded Horror";
@@ -26,3 +31,4 @@ public class BeheadedHorror implements SkullStatistics, MaterialFunction {
         return "dbad99ed3c820b7978190ad08a934a68dfa90d9986825da1c97f6f21f49ad626";
     }
 }
+

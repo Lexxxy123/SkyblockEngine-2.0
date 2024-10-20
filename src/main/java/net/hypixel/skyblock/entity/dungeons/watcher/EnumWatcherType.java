@@ -1,3 +1,6 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.entity.dungeons.watcher;
 
 public enum EnumWatcherType {
@@ -20,5 +23,7 @@ public enum EnumWatcherType {
     WALKER,
     BONZO,
     LIVID,
-    PLAYER
+    PLAYER;
+
 }
+

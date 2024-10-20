@@ -1,9 +1,17 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.armor.vanilla.iron;
 
-import net.hypixel.skyblock.item.*;
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.ToolStatistics;
 
-public class IronBoots implements ToolStatistics, MaterialFunction {
+public class IronBoots
+implements ToolStatistics,
+MaterialFunction {
     @Override
     public String getDisplayName() {
         return "Iron Boots";
@@ -29,3 +37,4 @@ public class IronBoots implements ToolStatistics, MaterialFunction {
         return 10.0;
     }
 }
+

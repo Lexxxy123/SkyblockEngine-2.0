@@ -1,7 +1,21 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.minecraft.server.v1_8_R3.AxisAlignedBB
+ *  net.minecraft.server.v1_8_R3.Block
+ *  net.minecraft.server.v1_8_R3.BlockPosition
+ *  net.minecraft.server.v1_8_R3.IBlockAccess
+ *  net.minecraft.server.v1_8_R3.IBlockData
+ *  org.bukkit.block.Block
+ *  org.bukkit.craftbukkit.v1_8_R3.CraftWorld
+ *  org.bukkit.util.Vector
+ */
 package net.hypixel.skyblock.util;
 
 import net.minecraft.server.v1_8_R3.AxisAlignedBB;
 import net.minecraft.server.v1_8_R3.BlockPosition;
+import net.minecraft.server.v1_8_R3.IBlockAccess;
 import net.minecraft.server.v1_8_R3.IBlockData;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
@@ -11,25 +25,26 @@ public class BoundingBox {
     Vector max;
     Vector min;
 
-    BoundingBox(final Vector min, final Vector max) {
+    BoundingBox(Vector min, Vector max) {
         this.max = max;
         this.min = min;
     }
 
-    BoundingBox(final Block block) {
-        final IBlockData blockData = ((CraftWorld) block.getWorld()).getHandle().getType(new BlockPosition(block.getX(), block.getY(), block.getZ()));
-        final net.minecraft.server.v1_8_R3.Block blockNative = blockData.getBlock();
-        blockNative.updateShape(((CraftWorld) block.getWorld()).getHandle(), new BlockPosition(block.getX(), block.getY(), block.getZ()));
-        this.min = new Vector(block.getX() + blockNative.B(), block.getY() + blockNative.D(), block.getZ() + blockNative.F());
-        this.max = new Vector(block.getX() + blockNative.C(), block.getY() + blockNative.E(), block.getZ() + blockNative.G());
+    BoundingBox(Block block) {
+        IBlockData blockData = ((CraftWorld)block.getWorld()).getHandle().getType(new BlockPosition(block.getX(), block.getY(), block.getZ()));
+        net.minecraft.server.v1_8_R3.Block blockNative = blockData.getBlock();
+        blockNative.updateShape((IBlockAccess)((CraftWorld)block.getWorld()).getHandle(), new BlockPosition(block.getX(), block.getY(), block.getZ()));
+        this.min = new Vector((double)block.getX() + blockNative.B(), (double)block.getY() + blockNative.D(), (double)block.getZ() + blockNative.F());
+        this.max = new Vector((double)block.getX() + blockNative.C(), (double)block.getY() + blockNative.E(), (double)block.getZ() + blockNative.G());
     }
 
-    BoundingBox(final AxisAlignedBB bb) {
-        this.min = new Vector(bb.a, bb.b, bb.c);
-        this.max = new Vector(bb.d, bb.e, bb.f);
+    BoundingBox(AxisAlignedBB bb2) {
+        this.min = new Vector(bb2.a, bb2.b, bb2.c);
+        this.max = new Vector(bb2.d, bb2.e, bb2.f);
     }
 
     public Vector midPoint() {
         return this.max.clone().add(this.min).multiply(0.5);
     }
 }
+

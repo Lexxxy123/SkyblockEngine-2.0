@@ -1,27 +1,45 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  de.slikey.effectlib.effect.ConeEffect
+ *  de.slikey.effectlib.util.ParticleEffect
+ *  me.libraryaddict.disguise.disguisetypes.PlayerDisguise
+ *  me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher
+ *  net.minecraft.server.v1_8_R3.Entity
+ *  net.minecraft.server.v1_8_R3.EntityLiving
+ *  net.minecraft.server.v1_8_R3.Packet
+ *  net.minecraft.server.v1_8_R3.PacketPlayOutAnimation
+ *  org.bukkit.Bukkit
+ *  org.bukkit.GameMode
+ *  org.bukkit.Location
+ *  org.bukkit.Material
+ *  org.bukkit.Sound
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.entity.LivingEntity
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.entity.EntityDamageByEntityEvent
+ *  org.bukkit.event.entity.EntityDamageEvent$DamageCause
+ *  org.bukkit.inventory.ItemStack
+ *  org.bukkit.metadata.FixedMetadataValue
+ *  org.bukkit.metadata.MetadataValue
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.potion.PotionEffect
+ *  org.bukkit.potion.PotionEffectType
+ *  org.bukkit.projectiles.ProjectileSource
+ *  org.bukkit.scheduler.BukkitRunnable
+ *  org.bukkit.util.Vector
+ */
 package net.hypixel.skyblock.entity.dungeons;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import de.slikey.effectlib.effect.ConeEffect;
-import net.hypixel.skyblock.SkyBlock;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher;
-import net.minecraft.server.v1_8_R3.EntityLiving;
-import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
-import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
+import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.entity.SEntity;
 import net.hypixel.skyblock.entity.SEntityEquipment;
 import net.hypixel.skyblock.entity.zombie.BaseZombie;
@@ -33,22 +51,41 @@ import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.EntityManager;
 import net.hypixel.skyblock.util.SUtil;
 import net.hypixel.skyblock.util.Sputnik;
+import net.minecraft.server.v1_8_R3.Entity;
+import net.minecraft.server.v1_8_R3.EntityLiving;
+import net.minecraft.server.v1_8_R3.Packet;
+import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.projectiles.ProjectileSource;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 import xyz.xenondevs.particle.ParticleBuilder;
 import xyz.xenondevs.particle.ParticleEffect;
 import xyz.xenondevs.particle.data.texture.ItemTexture;
 
-public class SuperiorLostAdvNPC extends BaseZombie {
-    private boolean isEating;
-    private boolean isBowing;
-    private boolean EatingCooldown;
-    private boolean CDDR;
-
-    public SuperiorLostAdvNPC() {
-        this.isEating = false;
-        this.isBowing = false;
-        this.EatingCooldown = false;
-        this.CDDR = false;
-    }
+public class SuperiorLostAdvNPC
+extends BaseZombie {
+    private boolean isEating = false;
+    private boolean isBowing = false;
+    private boolean EatingCooldown = false;
+    private boolean CDDR = false;
 
     @Override
     public String getEntityName() {
@@ -66,14 +103,15 @@ public class SuperiorLostAdvNPC extends BaseZombie {
     }
 
     @Override
-    public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
-        final PlayerDisguise pl = Sputnik.applyPacketNPC(entity, "adventuure", null, false);
+    public void onSpawn(final LivingEntity entity, SEntity sEntity) {
+        PlayerDisguise pl = Sputnik.applyPacketNPC((org.bukkit.entity.Entity)entity, "adventuure", null, false);
         final PlayerWatcher skywatch = pl.getWatcher();
-        final LivingEntity target = ((CraftZombie) entity).getTarget();
-        EntityManager.DEFENSE_PERCENTAGE.put(entity, 60);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        entity.setMetadata("LD", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        new BukkitRunnable() {
+        CraftLivingEntity target = ((CraftZombie)entity).getTarget();
+        EntityManager.DEFENSE_PERCENTAGE.put((org.bukkit.entity.Entity)entity, 60);
+        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        entity.setMetadata("LD", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        new BukkitRunnable(){
+
             public void run() {
                 if (entity.isDead()) {
                     this.cancel();
@@ -83,8 +121,9 @@ public class SuperiorLostAdvNPC extends BaseZombie {
                     entity.getWorld().playSound(entity.getLocation(), Sound.EAT, 1.0f, 1.0f);
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 4L);
-        new BukkitRunnable() {
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 4L);
+        new BukkitRunnable(){
+
             public void run() {
                 if (entity.isDead()) {
                     this.cancel();
@@ -92,17 +131,18 @@ public class SuperiorLostAdvNPC extends BaseZombie {
                 }
                 if (SuperiorLostAdvNPC.this.isEating) {
                     entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 65, 4));
-                    final Location loc = entity.getLocation();
+                    Location loc = entity.getLocation();
                     loc.add(0.0, 1.4, 0.0);
                     entity.getEquipment().setItemInHand(new ItemStack(Material.GOLDEN_APPLE));
                     loc.add(entity.getLocation().getDirection().multiply(0.5));
-                    new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.CAULDRON_ITEM))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
-                    new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.CAULDRON_ITEM))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
-                    new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.CAULDRON_ITEM))).setOffset(new Vector(Sputnik.randomVector(), 0.3, Sputnik.randomVector())).display();
+                    new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.CAULDRON_ITEM))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
+                    new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.CAULDRON_ITEM))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
+                    new ParticleBuilder(ParticleEffect.ITEM_CRACK, loc).setParticleData(new ItemTexture(new ItemStack(Material.CAULDRON_ITEM))).setOffset(new Vector((double)Sputnik.randomVector(), 0.3, (double)Sputnik.randomVector())).display();
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 3L);
-        new BukkitRunnable() {
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 3L);
+        new BukkitRunnable(){
+
             public void run() {
                 if (entity.isDead()) {
                     this.cancel();
@@ -113,17 +153,18 @@ public class SuperiorLostAdvNPC extends BaseZombie {
                     entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 65, 4));
                     SUtil.delay(() -> SuperiorLostAdvNPC.this.isEating = true, 5L);
                     entity.getEquipment().setItemInHand(new ItemStack(Material.GOLDEN_APPLE));
-                    new BukkitRunnable() {
+                    new BukkitRunnable(){
+
                         public void run() {
                             entity.getEquipment().setItemInHand(new ItemStack(Material.AIR));
                             entity.getWorld().playSound(entity.getLocation(), Sound.BURP, 1.0f, 1.0f);
-                            final double healamount = SUtil.random(30000000, 40000000);
+                            double healamount = SUtil.random(30000000, 40000000);
                             if (!entity.isDead()) {
                                 entity.setHealth(Math.min(entity.getMaxHealth(), entity.getHealth() + healamount));
                             }
                             SuperiorLostAdvNPC.this.isEating = false;
                             SUtil.delay(() -> {
-                                final Object val$entity = entity;
+                                LivingEntity val$entity = entity;
                                 if (!SuperiorLostAdvNPC.this.isBowing) {
                                     entity.getEquipment().setItemInHand(SUtil.enchant(SItem.of(SMaterial.ASPECT_OF_THE_DRAGONS).getStack()));
                                 } else {
@@ -132,18 +173,19 @@ public class SuperiorLostAdvNPC extends BaseZombie {
                             }, 5L);
                             SUtil.delay(() -> SuperiorLostAdvNPC.this.EatingCooldown = false, SUtil.random(400, 500));
                         }
-                    }.runTaskLater(SkyBlock.getPlugin(), 60L);
+                    }.runTaskLater((Plugin)SkyBlock.getPlugin(), 60L);
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 10L);
-        new BukkitRunnable() {
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 10L);
+        new BukkitRunnable(){
+
             public void run() {
                 if (entity.isDead()) {
-                    Sputnik.zero(entity);
+                    Sputnik.zero((org.bukkit.entity.Entity)entity);
                     this.cancel();
                     return;
                 }
-                final LivingEntity target1 = ((CraftZombie) entity).getTarget();
+                CraftLivingEntity target1 = ((CraftZombie)entity).getTarget();
                 if (target1 != null) {
                     if (target1.getLocation().distance(entity.getLocation()) <= 5.0 && !SuperiorLostAdvNPC.this.isBowing && !SuperiorLostAdvNPC.this.isEating) {
                         if (SUtil.random(0, 100) > 30) {
@@ -156,23 +198,22 @@ public class SuperiorLostAdvNPC extends BaseZombie {
                         skywatch.setRightClicking(true);
                         SuperiorLostAdvNPC.this.playPar(entity.getEyeLocation().setDirection(target1.getLocation().toVector().subtract(entity.getLocation().toVector())));
                         entity.getLocation().getWorld().playSound(entity.getLocation(), Sound.ENDERDRAGON_GROWL, 1.0f, 1.0f);
-                        for (final Entity e : target1.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(3.0)), 3.0, 3.0, 3.0)) {
-                            if (e instanceof Player) {
-                                final Player player = (Player) e;
-                                player.sendMessage(Sputnik.trans("&cLost Adventurer &aused &6Dragon's Breath &aon you!"));
-                                player.setVelocity(player.getLocation().toVector().subtract(player.getLocation().toVector()).normalize().multiply(-1.0).multiply(6.0));
-                                final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
-                                if (statistics == null) {
-                                    return;
-                                }
-                                final double defense = statistics.getDefense().addAll();
-                                final int dmglater = (int) Math.round(105000.0 - 105000.0 * (defense / (defense + 100.0)));
-                                User.getUser(player.getUniqueId()).damage(dmglater, EntityDamageEvent.DamageCause.ENTITY_ATTACK, entity);
-                                ((LivingEntity) e).damage(1.0E-6, null);
+                        for (org.bukkit.entity.Entity e2 : target1.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(3.0)), 3.0, 3.0, 3.0)) {
+                            if (!(e2 instanceof Player)) continue;
+                            Player player = (Player)e2;
+                            player.sendMessage(Sputnik.trans("&cLost Adventurer &aused &6Dragon's Breath &aon you!"));
+                            player.setVelocity(player.getLocation().toVector().subtract(player.getLocation().toVector()).normalize().multiply(-1.0).multiply(6.0));
+                            PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
+                            if (statistics == null) {
+                                return;
                             }
+                            double defense = statistics.getDefense().addAll();
+                            int dmglater = (int)Math.round(105000.0 - 105000.0 * (defense / (defense + 100.0)));
+                            User.getUser(player.getUniqueId()).damage(dmglater, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (org.bukkit.entity.Entity)entity);
+                            ((LivingEntity)e2).damage(1.0E-6, null);
                         }
                         SUtil.delay(() -> {
-                            final Object val$skywatch = skywatch;
+                            PlayerWatcher val$skywatch = skywatch;
                             if (!SuperiorLostAdvNPC.this.isBowing) {
                                 skywatch.setRightClicking(false);
                             }
@@ -188,34 +229,32 @@ public class SuperiorLostAdvNPC extends BaseZombie {
                         entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 35, 3));
                         entity.getEquipment().setItemInHand(SItem.of(SMaterial.BOW).getStack());
                         SUtil.delay(() -> {
-                            final Object val$skywatch2 = skywatch;
-                            if (!SuperiorLostAdvNPC.this.isBowing) {
-                            } else {
+                            PlayerWatcher val$skywatch2 = skywatch;
+                            if (SuperiorLostAdvNPC.this.isBowing) {
                                 skywatch.setRightClicking(true);
                             }
                         }, 5L);
                         SUtil.delay(() -> {
-                            final Object val$skywatch3 = skywatch;
-                            if (!SuperiorLostAdvNPC.this.isBowing) {
-                            } else {
+                            PlayerWatcher val$skywatch3 = skywatch;
+                            if (SuperiorLostAdvNPC.this.isBowing) {
                                 skywatch.setRightClicking(false);
                             }
                         }, 20L);
                         SUtil.delay(() -> {
-                            final Object val$entity = entity;
-                            final Object val$skywatch4 = skywatch;
+                            LivingEntity val$entity = entity;
+                            PlayerWatcher val$skywatch4 = skywatch;
                             if (SuperiorLostAdvNPC.this.isBowing) {
-                                final Location location = entity.getEyeLocation().add(entity.getEyeLocation().getDirection().toLocation(entity.getWorld()));
-                                final Location l = location.clone();
-                                l.setYaw(location.getYaw());
-                                entity.getWorld().spawnArrow(l, l.getDirection(), 2.2f, 1.6f).setShooter(entity);
+                                Location location = entity.getEyeLocation().add(entity.getEyeLocation().getDirection().toLocation(entity.getWorld()));
+                                Location l2 = location.clone();
+                                l2.setYaw(location.getYaw());
+                                entity.getWorld().spawnArrow(l2, l2.getDirection(), 2.2f, 1.6f).setShooter((ProjectileSource)entity);
                                 skywatch.setRightClicking(false);
                                 SuperiorLostAdvNPC.this.isBowing = false;
                             }
                         }, 21L);
                     } else if ((target1.getLocation().distance(entity.getLocation()) < 7.0 || target1.getLocation().distance(entity.getLocation()) > 15.0) && !SuperiorLostAdvNPC.this.isEating) {
                         SUtil.delay(() -> {
-                            final Object val$entity2 = entity;
+                            LivingEntity val$entity2 = entity;
                             entity.getEquipment().setItemInHand(SUtil.enchant(SItem.of(SMaterial.ASPECT_OF_THE_DRAGONS).getStack()));
                         }, 0L);
                         SuperiorLostAdvNPC.this.isBowing = false;
@@ -225,56 +264,34 @@ public class SuperiorLostAdvNPC extends BaseZombie {
                     entity.getEquipment().setItemInHand(SUtil.enchant(SItem.of(SMaterial.ASPECT_OF_THE_DRAGONS).getStack()));
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
-        new BukkitRunnable() {
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 2L);
+        new BukkitRunnable(){
+
             public void run() {
-                final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
+                EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
-                for (final Entity entities : entity.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 1.5, 1.5, 1.5)) {
-                    if (SuperiorLostAdvNPC.this.isEating) {
-                        continue;
-                    }
-                    if (SuperiorLostAdvNPC.this.isBowing) {
-                        continue;
-                    }
-                    if (!(entities instanceof Player)) {
-                        continue;
-                    }
-                    final Player target = (Player) entities;
-                    if (target.getGameMode() == GameMode.CREATIVE) {
-                        continue;
-                    }
-                    if (target.getGameMode() == GameMode.SPECTATOR) {
-                        continue;
-                    }
-                    if (target.hasMetadata("NPC")) {
-                        continue;
-                    }
-                    if (target.getNoDamageTicks() == 7) {
-                        continue;
-                    }
-                    if (SUtil.random(0, 10) > 8) {
-                        continue;
-                    }
+                for (org.bukkit.entity.Entity entities : entity.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 1.5, 1.5, 1.5)) {
+                    Player target;
+                    if (SuperiorLostAdvNPC.this.isEating || SuperiorLostAdvNPC.this.isBowing || !(entities instanceof Player) || (target = (Player)entities).getGameMode() == GameMode.CREATIVE || target.getGameMode() == GameMode.SPECTATOR || target.hasMetadata("NPC") || target.getNoDamageTicks() == 7 || SUtil.random(0, 10) > 8) continue;
                     entity.teleport(entity.getLocation().setDirection(target.getLocation().subtract(entities.getLocation()).toVector()));
-                    for (final Player players : Bukkit.getOnlinePlayers()) {
-                        ((CraftPlayer) players).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) entity).getHandle(), 0));
+                    for (Player players : Bukkit.getOnlinePlayers()) {
+                        ((CraftPlayer)players).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((Entity)((CraftLivingEntity)entity).getHandle(), 0));
                     }
-                    nms.r(((CraftPlayer) target).getHandle());
+                    nms.r((Entity)((CraftPlayer)target).getHandle());
                     break;
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 2L);
     }
 
     @Override
-    public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
-        final Entity en = sEntity.getEntity();
-        final Vector v = new Vector(0, 0, 0);
-        SUtil.delay(() -> en.setVelocity(v), 1L);
+    public void onDamage(SEntity sEntity, org.bukkit.entity.Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
+        LivingEntity en = sEntity.getEntity();
+        Vector v2 = new Vector(0, 0, 0);
+        SUtil.delay(() -> SuperiorLostAdvNPC.lambda$onDamage$0((org.bukkit.entity.Entity)en, v2), 1L);
     }
 
     @Override
@@ -307,15 +324,20 @@ public class SuperiorLostAdvNPC extends BaseZombie {
         return 0.35;
     }
 
-    public void playPar(final Location l) {
-        final ConeEffect Effect = new ConeEffect(SkyBlock.effectManager);
-        Effect.setLocation(l.clone().add(l.getDirection().normalize().multiply(-0.25)).add(0.0, -0.1, 0.0));
-        Effect.particle = de.slikey.effectlib.util.ParticleEffect.FLAME;
-        Effect.angularVelocity = 0.39269908169872414;
-        Effect.lengthGrow = 0.025f;
-        Effect.particles = 30;
-        Effect.period = 3;
-        Effect.iterations = 5;
-        Effect.start();
+    public void playPar(Location l2) {
+        ConeEffect Effect2 = new ConeEffect(SkyBlock.effectManager);
+        Effect2.setLocation(l2.clone().add(l2.getDirection().normalize().multiply(-0.25)).add(0.0, -0.1, 0.0));
+        Effect2.particle = de.slikey.effectlib.util.ParticleEffect.FLAME;
+        Effect2.angularVelocity = 0.39269908169872414;
+        Effect2.lengthGrow = 0.025f;
+        Effect2.particles = 30;
+        Effect2.period = 3;
+        Effect2.iterations = 5;
+        Effect2.start();
+    }
+
+    private static /* synthetic */ void lambda$onDamage$0(org.bukkit.entity.Entity en, Vector v2) {
+        en.setVelocity(v2);
     }
 }
+

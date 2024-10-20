@@ -1,11 +1,15 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.orb;
 
 public interface OrbBuff {
-    String getBuffName();
+    public String getBuffName();
 
-    String getBuffDescription();
+    public String getBuffDescription();
 
-    default String getCustomOrbName() {
+    default public String getCustomOrbName() {
         return null;
     }
 }
+

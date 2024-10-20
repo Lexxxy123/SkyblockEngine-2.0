@@ -1,10 +1,25 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ *  org.bukkit.Material
+ *  org.bukkit.Sound
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.inventory.InventoryClickEvent
+ *  org.bukkit.event.inventory.InventoryCloseEvent
+ *  org.bukkit.inventory.ItemStack
+ */
 package net.hypixel.skyblock.gui.menu.Items;
 
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import net.hypixel.skyblock.features.enchantment.Enchantment;
 import net.hypixel.skyblock.features.enchantment.EnchantmentType;
 import net.hypixel.skyblock.gui.GUI;
 import net.hypixel.skyblock.gui.GUIClickableItem;
+import net.hypixel.skyblock.gui.menu.Items.HexGUI;
 import net.hypixel.skyblock.item.SItem;
 import net.hypixel.skyblock.item.SMaterial;
 import net.hypixel.skyblock.util.PaginationList;
@@ -18,59 +33,44 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
-public class HexEnchantments extends GUI {
-    private static final int[] INTERIOR = new int[]{
-            12, 13, 14, 15, 16,
-            21, 22, 23, 24, 25,
-            30, 31, 32, 33, 34,
-    };
-
+public class HexEnchantments
+extends GUI {
+    private static final int[] INTERIOR = new int[]{12, 13, 14, 15, 16, 21, 22, 23, 24, 25, 30, 31, 32, 33, 34};
     public boolean forceclose = false;
     SItem upgradeableItem;
-    List<EnchantmentType> selected = new ArrayList<>();
-    List<EnchantmentType> exists = new ArrayList<>();
+    List<EnchantmentType> selected = new ArrayList<EnchantmentType>();
+    List<EnchantmentType> exists = new ArrayList<EnchantmentType>();
 
     public HexEnchantments(SItem item) {
         this(item, 1);
     }
 
-    public HexEnchantments(SItem item, int page) {
+    public HexEnchantments(final SItem item, final int page) {
         super("The Hex -> Enchantments", 54);
-        fill(BLACK_STAINED_GLASS_PANE);
-        upgradeableItem = item;
-
-        PaginationList<SItem> pagedEnchantBooks = new PaginationList<>(15);
-
+        this.fill(BLACK_STAINED_GLASS_PANE);
+        this.upgradeableItem = item;
+        PaginationList pagedEnchantBooks = new PaginationList(15);
         for (EnchantmentType type : EnchantmentType.ENCHANTMENT_TYPE_CACHE.values()) {
-            if (type.isUltimate()) continue;
-            if (!(type.getCompatibleTypes().contains(Objects.requireNonNull(item.getType().getStatistics()).getSpecificType()))) continue;
-            //banned enchantments list :3
-
+            if (type.isUltimate() || !type.getCompatibleTypes().contains((Object)Objects.requireNonNull(item.getType().getStatistics()).getSpecificType())) continue;
             SItem bookItem = SItem.of(SMaterial.ENCHANTED_BOOK);
-
             bookItem.addEnchantment(type, type.maxLvl);
-
             pagedEnchantBooks.add(bookItem);
         }
-
         for (Enchantment enchantment : item.getEnchantments()) {
-            exists.add(enchantment.getType());
+            this.exists.add(enchantment.getType());
         }
-
-        List<SItem> items = pagedEnchantBooks.getPage(page);
-        if (items == null) return;
-
+        final List items = pagedEnchantBooks.getPage(page);
+        if (items == null) {
+            return;
+        }
         if (page > 1) {
-            set(new GUIClickableItem() {
+            this.set(new GUIClickableItem(){
+
                 @Override
-                public void run(InventoryClickEvent e) {
-                    forceclose = true;
-                    new HexEnchantments(item, page - 1).open((Player) e.getWhoClicked());
-                   upgradeableItem = null;
+                public void run(InventoryClickEvent e2) {
+                    HexEnchantments.this.forceclose = true;
+                    new HexEnchantments(item, page - 1).open((Player)e2.getWhoClicked());
+                    HexEnchantments.this.upgradeableItem = null;
                 }
 
                 @Override
@@ -85,12 +85,13 @@ public class HexEnchantments extends GUI {
             });
         }
         if (page != pagedEnchantBooks.getPageCount()) {
-            set(new GUIClickableItem() {
+            this.set(new GUIClickableItem(){
+
                 @Override
-                public void run(InventoryClickEvent e) {
-                    forceclose = true;
-                    new HexEnchantments(item, page + 1).open((Player) e.getWhoClicked());
-                    upgradeableItem = null;
+                public void run(InventoryClickEvent e2) {
+                    HexEnchantments.this.forceclose = true;
+                    new HexEnchantments(item, page + 1).open((Player)e2.getWhoClicked());
+                    HexEnchantments.this.upgradeableItem = null;
                 }
 
                 @Override
@@ -104,46 +105,40 @@ public class HexEnchantments extends GUI {
                 }
             });
         }
+        int i2 = 0;
+        while (i2 < items.size()) {
+            final int slot = INTERIOR[i2];
+            final int finalI = i2++;
+            this.set(new GUIClickableItem(){
 
-        for (int i = 0; i < items.size(); i++) {
-            int slot = INTERIOR[i];
-            int finalI = i;
-            set(new GUIClickableItem() {
                 @Override
-                public void run(InventoryClickEvent e) {
-                    forceclose = true;
-                    Player player = (Player) e.getWhoClicked();
-                    player.playSound(player.getLocation(), Sound.ORB_PICKUP, 10, 2);
-
-
-                    for (Enchantment enchantment : items.get(finalI).getEnchantments()) {
+                public void run(InventoryClickEvent e2) {
+                    HexEnchantments.this.forceclose = true;
+                    Player player = (Player)e2.getWhoClicked();
+                    player.playSound(player.getLocation(), Sound.ORB_PICKUP, 10.0f, 2.0f);
+                    for (Enchantment enchantment : ((SItem)items.get(finalI)).getEnchantments()) {
                         EnchantmentType type = enchantment.getType();
-
-                        if (exists.contains(type)) {
-                            exists.remove(type);
+                        if (HexEnchantments.this.exists.contains(type)) {
+                            HexEnchantments.this.exists.remove(type);
                             item.removeEnchantment(type);
                             player.sendMessage(ChatColor.RED + "You removed the enchantment: " + type.getName() + " from your item!");
                             return;
-                        } else {
-                            if (selected.contains(type)) {
-                                player.sendMessage(ChatColor.RED + "You removed the Enchantment " + type.getName() + " from your selection!");
-                                selected.remove(type);
-                                return;
-                            }
-                            if (!selected.contains(type)) {
-                                if (item.hasEnchantment(EnchantmentType.ONE_FOR_ALL)) {
-                                    player.sendMessage(ChatColor.GREEN + "You added the Enchantment " + type.getName() + " to your selection but One For All was removed!");
-                                    selected.add(type);
-
-                                    item.removeEnchantment(EnchantmentType.ONE_FOR_ALL);
-                                } else {
-                                    player.sendMessage(ChatColor.GREEN + "You added the Enchantment " + type.getName() + " to your selection!");
-                                    selected.add(type);
-                                }
-
-                                return;
-                            }
                         }
+                        if (HexEnchantments.this.selected.contains(type)) {
+                            player.sendMessage(ChatColor.RED + "You removed the Enchantment " + type.getName() + " from your selection!");
+                            HexEnchantments.this.selected.remove(type);
+                            return;
+                        }
+                        if (HexEnchantments.this.selected.contains(type)) continue;
+                        if (item.hasEnchantment(EnchantmentType.ONE_FOR_ALL)) {
+                            player.sendMessage(ChatColor.GREEN + "You added the Enchantment " + type.getName() + " to your selection but One For All was removed!");
+                            HexEnchantments.this.selected.add(type);
+                            item.removeEnchantment(EnchantmentType.ONE_FOR_ALL);
+                        } else {
+                            player.sendMessage(ChatColor.GREEN + "You added the Enchantment " + type.getName() + " to your selection!");
+                            HexEnchantments.this.selected.add(type);
+                        }
+                        return;
                     }
                 }
 
@@ -154,30 +149,25 @@ public class HexEnchantments extends GUI {
 
                 @Override
                 public ItemStack getItem() {
-                    return items.get(finalI).getStack();
+                    return ((SItem)items.get(finalI)).getStack();
                 }
             });
         }
+        this.set(GUIClickableItem.getCloseItem(49));
+        this.set(19, item.getStack());
+        this.set(new GUIClickableItem(){
 
-
-        set(GUIClickableItem.getCloseItem(49));
-        set(19, item.getStack());
-
-        set(new GUIClickableItem() {
             @Override
-            public void run(InventoryClickEvent e) {
-                for (EnchantmentType type : selected) {
+            public void run(InventoryClickEvent e2) {
+                for (EnchantmentType type : HexEnchantments.this.selected) {
                     item.addEnchantment(type, type.maxLvl);
                 }
-                forceclose = true;
-
-                e.getWhoClicked().sendMessage(ChatColor.translateAlternateColorCodes('&', "&d&lSUCCESS! &r&dYou enchanted your " + item.getFullName() + "!"));
-
-                Player p = (Player) e.getWhoClicked();
-                p.playSound(p.getLocation(), Sound.ANVIL_USE, 10, 1);
-
-                new HexGUI(p.getPlayer(), item).open(p);
-                upgradeableItem = null;
+                HexEnchantments.this.forceclose = true;
+                e2.getWhoClicked().sendMessage(ChatColor.translateAlternateColorCodes((char)'&', (String)("&d&lSUCCESS! &r&dYou enchanted your " + item.getFullName() + "!")));
+                Player p2 = (Player)e2.getWhoClicked();
+                p2.playSound(p2.getLocation(), Sound.ANVIL_USE, 10.0f, 1.0f);
+                new HexGUI(p2.getPlayer(), item).open(p2);
+                HexEnchantments.this.upgradeableItem = null;
             }
 
             @Override
@@ -187,23 +177,16 @@ public class HexEnchantments extends GUI {
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(Sputnik.trans("&aEnchant Item"), Material.ENCHANTMENT_TABLE, (short) 0, 1,
-                        Sputnik.trans("&7Add and remove enchantments from"),
-                        Sputnik.trans("&7the item in the slot above!")
-                );
+                return SUtil.getStack(Sputnik.trans("&aEnchant Item"), Material.ENCHANTMENT_TABLE, (short)0, 1, Sputnik.trans("&7Add and remove enchantments from"), Sputnik.trans("&7the item in the slot above!"));
             }
         });
-
     }
+
     @Override
-    public void onClose(InventoryCloseEvent e){
-        if(!forceclose) {
-            if (upgradeableItem != null) {
-                e.getPlayer().getInventory().addItem(upgradeableItem.getStack());
-            }
+    public void onClose(InventoryCloseEvent e2) {
+        if (!this.forceclose && this.upgradeableItem != null) {
+            e2.getPlayer().getInventory().addItem(new ItemStack[]{this.upgradeableItem.getStack()});
         }
     }
-
-
-
 }
+

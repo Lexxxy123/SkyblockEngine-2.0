@@ -1,12 +1,19 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.md_5.bungee.api.ChatColor
+ */
 package net.hypixel.skyblock.item.armor;
 
-import net.md_5.bungee.api.ChatColor;
 import net.hypixel.skyblock.item.GenericItemType;
 import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.SpecificItemType;
 import net.hypixel.skyblock.item.ToolStatistics;
+import net.md_5.bungee.api.ChatColor;
 
-public class CrownOfGreed implements ToolStatistics {
+public class CrownOfGreed
+implements ToolStatistics {
     @Override
     public String getDisplayName() {
         return "Crown of Greed";
@@ -44,6 +51,7 @@ public class CrownOfGreed implements ToolStatistics {
 
     @Override
     public String getLore() {
-        return ChatColor.translateAlternateColorCodes('&', "Hits have &c+25% &7base damage, but cost the weapon's base damage in &6coins &7from your purse.");
+        return ChatColor.translateAlternateColorCodes((char)'&', (String)"Hits have &c+25% &7base damage, but cost the weapon's base damage in &6coins &7from your purse.");
     }
 }
+

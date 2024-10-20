@@ -1,12 +1,63 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.minecraft.server.v1_8_R3.AttributeInstance
+ *  net.minecraft.server.v1_8_R3.Entity
+ *  net.minecraft.server.v1_8_R3.EntityLiving
+ *  net.minecraft.server.v1_8_R3.GenericAttributes
+ *  net.minecraft.server.v1_8_R3.Packet
+ *  net.minecraft.server.v1_8_R3.PacketPlayOutAnimation
+ *  org.bukkit.Bukkit
+ *  org.bukkit.Color
+ *  org.bukkit.Effect
+ *  org.bukkit.GameMode
+ *  org.bukkit.Location
+ *  org.bukkit.Material
+ *  org.bukkit.Sound
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie
+ *  org.bukkit.entity.ArmorStand
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.entity.LivingEntity
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.entity.EntityDamageByEntityEvent
+ *  org.bukkit.inventory.ItemStack
+ *  org.bukkit.inventory.meta.ItemMeta
+ *  org.bukkit.metadata.FixedMetadataValue
+ *  org.bukkit.metadata.MetadataValue
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.potion.PotionEffect
+ *  org.bukkit.potion.PotionEffectType
+ *  org.bukkit.scheduler.BukkitRunnable
+ *  org.bukkit.util.Vector
+ */
 package net.hypixel.skyblock.entity.dungeons.boss.sadan;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.api.block.BlockFallAPI;
+import net.hypixel.skyblock.entity.SEntity;
+import net.hypixel.skyblock.entity.SEntityEquipment;
+import net.hypixel.skyblock.entity.dungeons.boss.sadan.SadanFunction;
+import net.hypixel.skyblock.entity.dungeons.boss.sadan.SadanHuman;
+import net.hypixel.skyblock.entity.zombie.BaseZombie;
+import net.hypixel.skyblock.util.EntityManager;
+import net.hypixel.skyblock.util.SUtil;
+import net.hypixel.skyblock.util.Sputnik;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.GenericAttributes;
+import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.Effect;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
@@ -18,27 +69,18 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import net.hypixel.skyblock.entity.SEntity;
-import net.hypixel.skyblock.entity.SEntityEquipment;
-import net.hypixel.skyblock.entity.zombie.BaseZombie;
-import net.hypixel.skyblock.api.block.BlockFallAPI;
-import net.hypixel.skyblock.util.EntityManager;
-import net.hypixel.skyblock.util.SUtil;
-import net.hypixel.skyblock.util.Sputnik;
 
-public class BigfootGiant extends BaseZombie {
+public class BigfootGiant
+extends BaseZombie {
     private static LivingEntity e;
-    private boolean shockWave;
-    private boolean shockWaveCD;
-
-    public BigfootGiant() {
-        this.shockWave = false;
-        this.shockWaveCD = true;
-    }
+    private boolean shockWave = false;
+    private boolean shockWaveCD = true;
 
     @Override
     public String getEntityName() {
@@ -56,25 +98,28 @@ public class BigfootGiant extends BaseZombie {
     }
 
     @Override
-    public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
+    public void onSpawn(final LivingEntity entity, SEntity sEntity) {
         if (entity.getWorld().getPlayers().size() == 0) {
             return;
         }
-        BigfootGiant.e = entity;
-        ((CraftZombie) entity).setBaby(false);
-        final Player p = entity.getWorld().getPlayers().get(SUtil.random(0, entity.getWorld().getPlayers().size() - 1));
-        if (p != null && p.getGameMode() != GameMode.SPECTATOR && p.getGameMode() != GameMode.CREATIVE) {
-            ((CraftZombie) entity).setTarget(p);
+        e = entity;
+        ((CraftZombie)entity).setBaby(false);
+        Player p2 = (Player)entity.getWorld().getPlayers().get(SUtil.random(0, entity.getWorld().getPlayers().size() - 1));
+        if (p2 != null && p2.getGameMode() != GameMode.SPECTATOR && p2.getGameMode() != GameMode.CREATIVE) {
+            ((CraftZombie)entity).setTarget((LivingEntity)p2);
         }
-        final AttributeInstance followRange = ((CraftLivingEntity) entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
+        AttributeInstance followRange = ((CraftLivingEntity)entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
         followRange.setValue(500.0);
-        SUtil.delay(() -> this.shockWaveCD = false, 150L);
-        Sputnik.applyPacketGiant(entity);
-        EntityManager.DEFENSE_PERCENTAGE.put(entity, 25);
-        entity.setMetadata("Giant_", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        entity.setMetadata("highername", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        new BukkitRunnable() {
+        SUtil.delay(() -> {
+            this.shockWaveCD = false;
+        }, 150L);
+        Sputnik.applyPacketGiant((Entity)entity);
+        EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 25);
+        entity.setMetadata("Giant_", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        entity.setMetadata("highername", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        new BukkitRunnable(){
+
             public void run() {
                 if (entity.isDead()) {
                     this.cancel();
@@ -83,55 +128,45 @@ public class BigfootGiant extends BaseZombie {
                 if (!BigfootGiant.this.shockWave && !BigfootGiant.this.shockWaveCD && SUtil.random(1, 100) <= 5) {
                     BigfootGiant.this.shockWaveCD = true;
                     BigfootGiant.this.shockWave = true;
-                    final Vector vec = new Vector(0, 0, 0);
+                    Vector vec = new Vector(0, 0, 0);
                     vec.setY(2);
-                    BigfootGiant.e.setVelocity(vec);
+                    e.setVelocity(vec);
                     SUtil.delay(() -> {
-                        final Object val$entity = entity;
+                        LivingEntity val$entity = entity;
                         BigfootGiant.this.jumpAni(entity);
                     }, 10L);
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
-        new BukkitRunnable() {
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
+        new BukkitRunnable(){
+
             public void run() {
-                final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
+                EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
-                for (final Entity entities : entity.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 1.5, 1.5, 1.5)) {
-                    if (!(entities instanceof Player)) {
-                        continue;
-                    }
-                    final Player target = (Player) entities;
-                    if (target.getGameMode() == GameMode.CREATIVE) {
-                        continue;
-                    }
-                    if (target.getGameMode() == GameMode.SPECTATOR) {
-                        continue;
-                    }
-                    if (target.hasMetadata("NPC")) {
-                        continue;
-                    }
+                for (Entity entities : entity.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 1.5, 1.5, 1.5)) {
+                    Player target;
+                    if (!(entities instanceof Player) || (target = (Player)entities).getGameMode() == GameMode.CREATIVE || target.getGameMode() == GameMode.SPECTATOR || target.hasMetadata("NPC")) continue;
                     entity.teleport(entity.getLocation().setDirection(target.getLocation().toVector().subtract(target.getLocation().toVector())));
-                    for (final Player players : Bukkit.getOnlinePlayers()) {
-                        ((CraftPlayer) players).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) entity).getHandle(), 0));
+                    for (Player players : Bukkit.getOnlinePlayers()) {
+                        ((CraftPlayer)players).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)entity).getHandle(), 0));
                     }
-                    nms.r(((CraftPlayer) target).getHandle());
+                    nms.r((net.minecraft.server.v1_8_R3.Entity)((CraftPlayer)target).getHandle());
                     break;
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 8L);
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 8L);
     }
 
     @Override
     public SEntityEquipment getEntityEquipment() {
-        return new SEntityEquipment(null, null, null, null, b(8991025, Material.LEATHER_BOOTS));
+        return new SEntityEquipment(null, null, null, null, BigfootGiant.b(8991025, Material.LEATHER_BOOTS));
     }
 
     @Override
-    public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
+    public void onDeath(SEntity sEntity, Entity killed, Entity damager) {
         Sputnik.zero(killed);
         if (SadanHuman.SadanGiantsCount.containsKey(killed.getWorld().getUID())) {
             SadanHuman.SadanGiantsCount.put(killed.getWorld().getUID(), SadanHuman.SadanGiantsCount.get(killed.getWorld().getUID()) - 1);
@@ -163,10 +198,11 @@ public class BigfootGiant extends BaseZombie {
         return 0.35;
     }
 
-    public void jumpAni(final LivingEntity e) {
-        new BukkitRunnable() {
+    public void jumpAni(final LivingEntity e2) {
+        new BukkitRunnable(){
+
             public void run() {
-                if (e.isDead()) {
+                if (e2.isDead()) {
                     this.cancel();
                     return;
                 }
@@ -174,77 +210,67 @@ public class BigfootGiant extends BaseZombie {
                     this.cancel();
                     return;
                 }
-                if (e.isOnGround()) {
+                if (e2.isOnGround()) {
                     BigfootGiant.this.shockWave = false;
                     SUtil.delay(() -> BigfootGiant.this.shockWaveCD = false, 400L);
-                    e.getWorld().playEffect(e.getLocation().add(0.0, 0.5, 0.0), Effect.EXPLOSION_HUGE, 3);
-                    e.getWorld().playEffect(e.getLocation(), Effect.EXPLOSION_HUGE, 3);
-                    e.getWorld().playSound(e.getLocation(), Sound.EXPLODE, 3.0f, 0.0f);
+                    e2.getWorld().playEffect(e2.getLocation().add(0.0, 0.5, 0.0), Effect.EXPLOSION_HUGE, 3);
+                    e2.getWorld().playEffect(e2.getLocation(), Effect.EXPLOSION_HUGE, 3);
+                    e2.getWorld().playSound(e2.getLocation(), Sound.EXPLODE, 3.0f, 0.0f);
                     SUtil.delay(() -> {
-                        final Object val$e = e;
-                        e.getWorld().playSound(e.getLocation(), Sound.EXPLODE, 10.0f, 0.0f);
+                        LivingEntity val$e = e2;
+                        e2.getWorld().playSound(e2.getLocation(), Sound.EXPLODE, 10.0f, 0.0f);
                     }, 5L);
-                    for (final Entity entities : e.getNearbyEntities(15.0, 10.0, 15.0)) {
-                        final Vector vec = new Vector(0, 0, 0);
-                        if (entities.hasMetadata("NPC")) {
+                    for (Entity entities : e2.getNearbyEntities(15.0, 10.0, 15.0)) {
+                        Player p2;
+                        Vector vec = new Vector(0, 0, 0);
+                        if (entities.hasMetadata("NPC") || entities instanceof ArmorStand || entities.hasMetadata("highername") || !(entities instanceof Player)) continue;
+                        if (entities.getLocation().distance(e2.getLocation()) <= 5.0) {
+                            p2 = (Player)entities;
+                            p2.sendMessage(Sputnik.trans("&c&lBigfoot &chit you with &eStomp &cfor " + SUtil.commaify(Math.round(SadanFunction.dmgc(40000, p2, (Entity)e2).intValue())) + " &cdamage."));
                             continue;
                         }
-                        if (entities instanceof ArmorStand) {
-                            continue;
-                        }
-                        if (entities.hasMetadata("highername")) {
-                            continue;
-                        }
-                        if (!(entities instanceof Player)) {
-                            continue;
-                        }
-                        if (entities.getLocation().distance(e.getLocation()) <= 5.0) {
-                            final Player p = (Player) entities;
-                            p.sendMessage(Sputnik.trans("&c&lBigfoot &chit you with &eStomp &cfor " + SUtil.commaify(Math.round(SadanFunction.dmgc(40000, p, e))) + " &cdamage."));
-                        } else {
-                            final Player p = (Player) entities;
-                            p.sendMessage(Sputnik.trans("&c&lBigfoot &chit you with &eStomp &cfor " + SUtil.commaify(Math.round(SadanFunction.dmgc(35000, p, e))) + " &cdamage."));
-                        }
+                        p2 = (Player)entities;
+                        p2.sendMessage(Sputnik.trans("&c&lBigfoot &chit you with &eStomp &cfor " + SUtil.commaify(Math.round(SadanFunction.dmgc(35000, p2, (Entity)e2).intValue())) + " &cdamage."));
                     }
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
     }
 
-    public static ItemStack buildColorStack(final int hexcolor) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
+    public static ItemStack buildColorStack(int hexcolor) {
+        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB((int)hexcolor));
+        ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
         return stack;
     }
 
-    public static ItemStack b(final int hexcolor, final Material m) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
+    public static ItemStack b(int hexcolor, Material m2) {
+        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m2), Color.fromRGB((int)hexcolor));
+        ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
         return stack;
     }
 
-    public static ItemStack c(final Material m) {
-        final ItemStack stack = new ItemStack(m);
-        final ItemMeta itemMeta = stack.getItemMeta();
+    public static ItemStack c(Material m2) {
+        ItemStack stack = new ItemStack(m2);
+        ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
         return stack;
     }
 
-    public static void applyEffect(final PotionEffectType e, final Entity en, final int ticks, final int amp) {
-        ((LivingEntity) en).addPotionEffect(new PotionEffect(e, ticks, amp));
+    public static void applyEffect(PotionEffectType e2, Entity en, int ticks, int amp) {
+        ((LivingEntity)en).addPotionEffect(new PotionEffect(e2, ticks, amp));
     }
 
-    public static void createBlockTornado(final Entity e, final Material mat, final byte id) {
-        for (int i = 0; i <= 30; ++i) {
-            final int random = SUtil.random(0, 3);
+    public static void createBlockTornado(Entity e2, Material mat, byte id) {
+        for (int i2 = 0; i2 <= 30; ++i2) {
+            int random = SUtil.random(0, 3);
             double range = 0.0;
-            final Location loc = e.getLocation().clone();
-            loc.setYaw((float) SUtil.random(0, 360));
+            Location loc = e2.getLocation().clone();
+            loc.setYaw((float)SUtil.random(0, 360));
             if (random == 1) {
                 range = 0.6;
             }
@@ -254,14 +280,15 @@ public class BigfootGiant extends BaseZombie {
             if (random == 3) {
                 range = 0.8;
             }
-            final Vector vec = loc.getDirection().normalize().multiply(range);
+            Vector vec = loc.getDirection().normalize().multiply(range);
             vec.setY(1.1);
-            BlockFallAPI.sendVelocityBlock(e.getLocation(), mat, id, e.getWorld(), 70, vec);
+            BlockFallAPI.sendVelocityBlock(e2.getLocation(), mat, id, e2.getWorld(), 70, vec);
         }
     }
 
     @Override
-    public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
-        e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ZOMBIE_HURT, 1.0f, 0.0f);
+    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
+        e2.getEntity().getWorld().playSound(e2.getEntity().getLocation(), Sound.ZOMBIE_HURT, 1.0f, 0.0f);
     }
 }
+

@@ -1,3 +1,6 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.armor.eleganttux;
 
 import net.hypixel.skyblock.item.GenericItemType;
@@ -6,7 +9,9 @@ import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.SpecificItemType;
 import net.hypixel.skyblock.item.armor.LeatherArmorStatistics;
 
-public class ElegantTuxLeggings implements LeatherArmorStatistics, MaterialFunction {
+public class ElegantTuxLeggings
+implements LeatherArmorStatistics,
+MaterialFunction {
     @Override
     public String getDisplayName() {
         return "Elegant Tuxedo Pants";
@@ -42,3 +47,4 @@ public class ElegantTuxLeggings implements LeatherArmorStatistics, MaterialFunct
         return 16711164;
     }
 }
+

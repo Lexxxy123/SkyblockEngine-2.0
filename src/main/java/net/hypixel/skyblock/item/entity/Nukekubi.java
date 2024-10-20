@@ -1,3 +1,6 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.entity;
 
 import net.hypixel.skyblock.item.GenericItemType;
@@ -5,7 +8,9 @@ import net.hypixel.skyblock.item.MaterialFunction;
 import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.SkullStatistics;
 
-public class Nukekubi implements SkullStatistics, MaterialFunction {
+public class Nukekubi
+implements SkullStatistics,
+MaterialFunction {
     @Override
     public String getURL() {
         return "eb07594e2df273921a77c101d0bfdfa1115abed5b9b2029eb496ceba9bdbb4b3";
@@ -26,3 +31,4 @@ public class Nukekubi implements SkullStatistics, MaterialFunction {
         return GenericItemType.ARMOR;
     }
 }
+

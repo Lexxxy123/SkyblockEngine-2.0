@@ -1,54 +1,70 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item;
 
 import java.util.List;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.ItemCategory;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SpecificItemType;
 
 public interface MaterialStatistics {
-    String getDisplayName();
+    public String getDisplayName();
 
-    Rarity getRarity();
+    public Rarity getRarity();
 
-    default String getLore() {
+    default public String getLore() {
         return null;
     }
 
-    default List<String> getListLore() {
+    default public List<String> getListLore() {
         return null;
     }
 
-    GenericItemType getType();
+    public GenericItemType getType();
 
-    default SpecificItemType getSpecificType() {
+    default public SpecificItemType getSpecificType() {
         return SpecificItemType.NONE;
     }
 
-    default boolean isStackable() {
+    default public boolean isStackable() {
         return true;
     }
 
-    default boolean isEnchanted() {
+    default public boolean isEnchanted() {
         return false;
     }
 
-    default boolean displayKills() {
+    default public boolean displayKills() {
         return false;
     }
 
-    default boolean displayCoins() {
+    default public boolean displayCoins() {
         return false;
     }
 
-    default List<String> killReplacementLore() {
+    default public List<String> killReplacementLore() {
         return null;
     }
 
-    default boolean displayRarity() {
+    default public boolean displayRarity() {
         return true;
     }
 
-    default ItemCategory getCategory() {
+    default public ItemCategory getCategory() {
         return ItemCategory.TOOLS_MISC;
     }
 
-    default void load() {
+    default public long getPrice() {
+        return 1L;
+    }
+
+    default public long getValue() {
+        return 1L;
+    }
+
+    default public void load() {
     }
 }
+

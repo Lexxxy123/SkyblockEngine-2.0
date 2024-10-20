@@ -1,14 +1,23 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ */
 package net.hypixel.skyblock.features.skill;
-
-import org.bukkit.ChatColor;
-import net.hypixel.skyblock.user.User;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import net.hypixel.skyblock.features.skill.DungeonsSkill;
+import net.hypixel.skyblock.features.skill.Skill;
+import net.hypixel.skyblock.user.User;
+import org.bukkit.ChatColor;
 
-public class TankSkill extends Skill implements DungeonsSkill {
-    public static final TankSkill INSTANCE;
+public class TankSkill
+extends Skill
+implements DungeonsSkill {
+    public static final TankSkill INSTANCE = new TankSkill();
 
     @Override
     public String getName() {
@@ -26,7 +35,7 @@ public class TankSkill extends Skill implements DungeonsSkill {
     }
 
     @Override
-    public List<String> getLevelUpInformation(final int level, final int lastLevel, final boolean showOld) {
+    public List<String> getLevelUpInformation(int level, int lastLevel, boolean showOld) {
         return Collections.singletonList("");
     }
 
@@ -36,37 +45,34 @@ public class TankSkill extends Skill implements DungeonsSkill {
     }
 
     @Override
-    public void onSkillUpdate(final User user, final double previousXP) {
+    public void onSkillUpdate(User user, double previousXP) {
         super.onSkillUpdate(user, previousXP);
     }
 
     @Override
     public List<String> getPassive() {
-        final List<String> t = new ArrayList<String>();
-        t.add("Protective Barrier" + ChatColor.RED + " Soon!");
-        t.add("Taunt");
-        t.add("Diversion");
-        t.add("Defensive Stance");
-        return t;
+        ArrayList<String> t2 = new ArrayList<String>();
+        t2.add("Protective Barrier" + ChatColor.RED + " Soon!");
+        t2.add("Taunt");
+        t2.add("Diversion");
+        t2.add("Defensive Stance");
+        return t2;
     }
 
     @Override
     public List<String> getOrb() {
-        final List<String> t = new ArrayList<String>();
-        t.add("Seismic Wave");
-        t.add("Castle of Stone");
-        return t;
+        ArrayList<String> t2 = new ArrayList<String>();
+        t2.add("Seismic Wave");
+        t2.add("Castle of Stone");
+        return t2;
     }
 
     @Override
     public List<String> getGhost() {
-        final List<String> t = new ArrayList<String>();
-        t.add("Stun Potion");
-        t.add("Absorption Potion");
-        return t;
-    }
-
-    static {
-        INSTANCE = new TankSkill();
+        ArrayList<String> t2 = new ArrayList<String>();
+        t2.add("Stun Potion");
+        t2.add("Absorption Potion");
+        return t2;
     }
 }
+

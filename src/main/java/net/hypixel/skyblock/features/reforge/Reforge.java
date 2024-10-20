@@ -1,49 +1,51 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.features.reforge;
 
+import java.util.Arrays;
+import java.util.List;
 import net.hypixel.skyblock.item.GenericItemType;
 import net.hypixel.skyblock.item.RarityValue;
 import net.hypixel.skyblock.item.SpecificItemType;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
 public interface Reforge {
-    String getName();
+    public String getName();
 
-    default RarityValue<Double> getStrength() {
+    default public RarityValue<Double> getStrength() {
         return RarityValue.zeroDouble();
     }
 
-    default RarityValue<Double> getCritChance() {
+    default public RarityValue<Double> getCritChance() {
         return RarityValue.zeroDouble();
     }
 
-    default RarityValue<Double> getCritDamage() {
+    default public RarityValue<Double> getCritDamage() {
         return RarityValue.zeroDouble();
     }
 
-    default RarityValue<Double> getIntelligence() {
+    default public RarityValue<Double> getIntelligence() {
         return RarityValue.zeroDouble();
     }
 
-    default RarityValue<Double> getFerocity() {
+    default public RarityValue<Double> getFerocity() {
         return RarityValue.zeroDouble();
     }
 
-    default RarityValue<Double> getAttackSpeed() {
+    default public RarityValue<Double> getAttackSpeed() {
         return RarityValue.zeroDouble();
     }
 
-    default List<GenericItemType> getCompatibleTypes() {
+    default public List<GenericItemType> getCompatibleTypes() {
         return Arrays.asList(GenericItemType.values());
     }
 
-    static Reforge blank() {
+    public static Reforge blank() {
         return () -> "Blank";
     }
 
-    default List<SpecificItemType> getSpecificTypes() {
+    default public List<SpecificItemType> getSpecificTypes() {
         return Arrays.asList(SpecificItemType.values());
     }
 }
+

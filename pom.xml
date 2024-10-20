@@ -51,6 +51,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>3.2.0</version>
+				<configuration>
+					<outputDirectory>server/plugins</outputDirectory>
+				</configuration>
 			</plugin>
 		</plugins>
 		<resources>
@@ -209,6 +212,17 @@
 			<version>23.0.0</version>
 			<scope>compile</scope>
 		</dependency>
-
+		<dependency>
+			<groupId>dev.demeng</groupId>
+			<artifactId>sentinel-java-wrapper</artifactId>
+			<version>1.2.0</version>
+			<!-- Exclude GSON if it's already available -->
+			<exclusions>
+				<exclusion>
+					<groupId>com.google.code.gson</groupId>
+					<artifactId>gson</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 	</dependencies>
 </project>

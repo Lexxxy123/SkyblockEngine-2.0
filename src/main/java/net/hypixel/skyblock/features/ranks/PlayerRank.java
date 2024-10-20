@@ -1,3 +1,6 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.features.ranks;
 
 public enum PlayerRank {
@@ -21,30 +24,28 @@ public enum PlayerRank {
     JERRY("&d[JERRY++]", 18),
     OWNER("&c[OWNER]", 19);
 
-
     private final String prefix;
     private final int level;
 
-    PlayerRank(String prefix, int level) {
+    private PlayerRank(String prefix, int level) {
         this.prefix = prefix;
         this.level = level;
     }
 
     public static PlayerRank getRankOrDefault(int level) {
         for (PlayerRank rank : PlayerRank.values()) {
-            if (rank.level == level) {
-                return rank;
-            }
+            if (rank.level != level) continue;
+            return rank;
         }
         return DEFAULT;
     }
 
     public String getPrefix() {
-        return prefix;
+        return this.prefix;
     }
 
     public int getLevel() {
-        return level;
+        return this.level;
     }
 
     public boolean isBelowOrEqual(PlayerRank rank) {
@@ -60,7 +61,7 @@ public enum PlayerRank {
     }
 
     public boolean isStaff() {
-        return this.level >= HELPER.level;
+        return this.level >= PlayerRank.HELPER.level;
     }
 
     public boolean isDefaultPermission() {
@@ -68,8 +69,7 @@ public enum PlayerRank {
     }
 
     public String getFormattedRank() {
-        return prefix;
+        return this.prefix;
     }
-
-
 }
+

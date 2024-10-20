@@ -1,15 +1,23 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ */
 package net.hypixel.skyblock.item.accessory;
 
-import org.bukkit.ChatColor;
+import java.util.Arrays;
+import java.util.List;
 import net.hypixel.skyblock.item.GenericItemType;
 import net.hypixel.skyblock.item.MaterialFunction;
 import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.accessory.AccessoryStatistics;
+import org.bukkit.ChatColor;
 
-import java.util.Arrays;
-import java.util.List;
-
-public class PiggyBank implements AccessoryStatistics, MaterialFunction {
+public class PiggyBank
+implements AccessoryStatistics,
+MaterialFunction {
     @Override
     public String getURL() {
         return "198df42f477f213ff5e9d7fa5a4cc4a69f20d9cef2b90c4ae4f29bd17287b5";
@@ -40,3 +48,4 @@ public class PiggyBank implements AccessoryStatistics, MaterialFunction {
         return Arrays.asList("Saves your coins from death.", "Only when in player inventory.", ChatColor.RED + "Fragile!", "", ChatColor.DARK_GRAY + "Triggers when losing 20k+ coins.");
     }
 }
+

@@ -1,20 +1,20 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.command;
-
-
-
-
-import net.hypixel.skyblock.features.ranks.PlayerRank;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import net.hypixel.skyblock.features.ranks.PlayerRank;
 
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(value=RetentionPolicy.RUNTIME)
 public @interface CommandParameters {
-    String description() default "";
+    public String description() default "";
 
-    String usage() default "/<command>";
+    public String usage() default "/<command>";
 
-    String aliases() default "";
+    public String aliases() default "";
 
-    PlayerRank permission();
+    public PlayerRank permission();
 }
+

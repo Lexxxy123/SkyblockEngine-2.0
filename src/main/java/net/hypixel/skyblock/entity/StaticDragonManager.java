@@ -1,41 +1,46 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Location
+ *  org.bukkit.block.Block
+ *  org.bukkit.block.BlockState
+ *  org.bukkit.plugin.Plugin
+ */
 package net.hypixel.skyblock.entity;
-
-import org.bukkit.Location;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
-import net.hypixel.skyblock.SkyBlock;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.entity.SEntity;
+import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.plugin.Plugin;
 
 public final class StaticDragonManager {
-    public static boolean ACTIVE;
-    public static Map<UUID, List<Location>> EYES;
-    public static SEntity DRAGON;
+    public static boolean ACTIVE = false;
+    public static Map<UUID, List<Location>> EYES = new HashMap<UUID, List<Location>>();
+    public static SEntity DRAGON = null;
 
     public static void endFight() {
-        if (StaticDragonManager.DRAGON == null) {
+        if (DRAGON == null) {
             return;
         }
-        StaticDragonManager.ACTIVE = false;
-        for (final List<Location> locations : StaticDragonManager.EYES.values()) {
-            for (final Location location : locations) {
-                final Block b = location.getBlock();
-                final BlockState s = b.getState();
-                s.setRawData((byte) 0);
-                s.update();
-                b.removeMetadata("placer", SkyBlock.getPlugin());
+        ACTIVE = false;
+        for (List<Location> locations : EYES.values()) {
+            for (Location location : locations) {
+                Block b2 = location.getBlock();
+                BlockState s2 = b2.getState();
+                s2.setRawData((byte)0);
+                s2.update();
+                b2.removeMetadata("placer", (Plugin)SkyBlock.getPlugin());
             }
         }
-        StaticDragonManager.EYES.clear();
-        StaticDragonManager.DRAGON = null;
-    }
-
-    static {
-        StaticDragonManager.ACTIVE = false;
-        StaticDragonManager.EYES = new HashMap<UUID, List<Location>>();
-        StaticDragonManager.DRAGON = null;
+        EYES.clear();
+        DRAGON = null;
     }
 }
+

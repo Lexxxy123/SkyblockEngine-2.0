@@ -1,50 +1,67 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.minecraft.server.v1_8_R3.Block
+ *  net.minecraft.server.v1_8_R3.BlockPosition
+ *  net.minecraft.server.v1_8_R3.Blocks
+ *  net.minecraft.server.v1_8_R3.Packet
+ *  net.minecraft.server.v1_8_R3.PacketPlayOutBlockAction
+ *  org.bukkit.Location
+ *  org.bukkit.Material
+ *  org.bukkit.block.Block
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
+ *  org.bukkit.entity.Player
+ *  org.bukkit.inventory.ItemStack
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.scheduler.BukkitRunnable
+ */
 package net.hypixel.skyblock.features.dungeons.chest;
-
-import net.hypixel.skyblock.SkyBlock;
-import net.minecraft.server.v1_8_R3.BlockPosition;
-import net.minecraft.server.v1_8_R3.Blocks;
-import net.minecraft.server.v1_8_R3.PacketPlayOutBlockAction;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
-import net.hypixel.skyblock.gui.DungeonsLootGUI;
-import net.hypixel.skyblock.util.SUtil;
-import net.hypixel.skyblock.util.Sputnik;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
+import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.gui.DungeonsLootGUI;
+import net.hypixel.skyblock.util.SUtil;
+import net.hypixel.skyblock.util.Sputnik;
+import net.minecraft.server.v1_8_R3.Block;
+import net.minecraft.server.v1_8_R3.BlockPosition;
+import net.minecraft.server.v1_8_R3.Blocks;
+import net.minecraft.server.v1_8_R3.Packet;
+import net.minecraft.server.v1_8_R3.PacketPlayOutBlockAction;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class ItemChest {
-    public static final Map<Block, ItemChest> ITEM_CHEST_CACHE;
+    public static final Map<org.bukkit.block.Block, ItemChest> ITEM_CHEST_CACHE = new HashMap<org.bukkit.block.Block, ItemChest>();
     private boolean opened;
     private boolean locked;
     private final ItemStack type;
     private final byte state;
-    private final Block chest;
-    private final SkyBlock sse;
+    private final org.bukkit.block.Block chest;
+    private final SkyBlock sse = SkyBlock.getPlugin();
 
-    public ItemChest(final ItemStack type, final Block chest, final byte state) {
-        this.sse = SkyBlock.getPlugin();
+    public ItemChest(ItemStack type, final org.bukkit.block.Block chest, byte state) {
         this.type = type;
         this.state = state;
         this.locked = false;
         this.opened = false;
         this.chest = chest;
-        ItemChest.ITEM_CHEST_CACHE.put(chest, this);
-        new BukkitRunnable() {
+        ITEM_CHEST_CACHE.put(chest, this);
+        new BukkitRunnable(){
+
             public void run() {
-                if (!ItemChest.ITEM_CHEST_CACHE.containsKey(chest)) {
+                if (!ITEM_CHEST_CACHE.containsKey(chest)) {
                     this.cancel();
                     return;
                 }
-                final Collection<Entity> ce = chest.getWorld().getNearbyEntities(chest.getLocation(), 10.0, 10.0, 10.0);
+                Collection ce = chest.getWorld().getNearbyEntities(chest.getLocation(), 10.0, 10.0, 10.0);
                 ce.removeIf(entity -> !(entity instanceof Player));
                 if (ce.size() > 0) {
                     ItemChest.this.show();
@@ -52,10 +69,10 @@ public class ItemChest {
                     ItemChest.this.hide();
                 }
             }
-        }.runTaskTimer(this.sse, 0L, 1L);
+        }.runTaskTimer((Plugin)this.sse, 0L, 1L);
     }
 
-    public void open(final Player opener) {
+    public void open(Player opener) {
         if (!this.opened && !this.locked) {
             new DungeonsLootGUI(this.type, this.chest).open(opener);
             this.opened = true;
@@ -72,7 +89,7 @@ public class ItemChest {
 
     public void destroy() {
         this.chest.setType(Material.AIR);
-        ItemChest.ITEM_CHEST_CACHE.remove(this.chest);
+        ITEM_CHEST_CACHE.remove(this.chest);
     }
 
     public void hide() {
@@ -83,16 +100,13 @@ public class ItemChest {
         if (this.chest.getType() != Material.CHEST) {
             this.chest.getLocation().getBlock().setType(Material.CHEST);
             this.chest.setData(this.state);
-            final Location chestLocation = this.chest.getLocation();
+            Location chestLocation = this.chest.getLocation();
             if (this.isOpened()) {
                 SUtil.delay(() -> {
-                    final BlockPosition pos = new BlockPosition(chestLocation.getBlockX(), chestLocation.getBlockY(), chestLocation.getBlockZ());
-                    final PacketPlayOutBlockAction packet = new PacketPlayOutBlockAction(pos, Blocks.CHEST, 1, 1);
-
-                    final Iterator<Player> iterator = chestLocation.getWorld().getPlayers().iterator();
-                    while (iterator.hasNext()) {
-                        final Player p = iterator.next();
-                        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
+                    BlockPosition pos = new BlockPosition(chestLocation.getBlockX(), chestLocation.getBlockY(), chestLocation.getBlockZ());
+                    PacketPlayOutBlockAction packet = new PacketPlayOutBlockAction(pos, (Block)Blocks.CHEST, 1, 1);
+                    for (Player p2 : chestLocation.getWorld().getPlayers()) {
+                        ((CraftPlayer)p2).getHandle().playerConnection.sendPacket((Packet)packet);
                     }
                 }, 1L);
             }
@@ -103,7 +117,7 @@ public class ItemChest {
         return this.opened;
     }
 
-    public void setOpened(final boolean opened) {
+    public void setOpened(boolean opened) {
         this.opened = opened;
     }
 
@@ -111,15 +125,12 @@ public class ItemChest {
         return this.locked;
     }
 
-    public void setLocked(final boolean locked) {
+    public void setLocked(boolean locked) {
         this.locked = locked;
     }
 
     public ItemStack getType() {
         return this.type;
     }
-
-    static {
-        ITEM_CHEST_CACHE = new HashMap<Block, ItemChest>();
-    }
 }
+

@@ -1,20 +1,36 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.features.collection;
 
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import net.hypixel.skyblock.features.collection.ItemCollectionCategory;
+import net.hypixel.skyblock.features.collection.ItemCollectionRecipeReward;
+import net.hypixel.skyblock.features.collection.ItemCollectionReward;
+import net.hypixel.skyblock.features.collection.ItemCollectionRewards;
+import net.hypixel.skyblock.features.collection.ItemCollectionUpgradeReward;
 import net.hypixel.skyblock.item.SMaterial;
 import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.SUtil;
-
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 public class ItemCollection {
-    private static final Map<String, ItemCollection> COLLECTION_MAP;
-    public static final ItemCollection WHEAT;
-    public static final ItemCollection OAK_WOOD;
-    public static final ItemCollection STRING;
+    private static final Map<String, ItemCollection> COLLECTION_MAP = new HashMap<String, ItemCollection>();
+    public static final ItemCollection WHEAT = new ItemCollection("Wheat", ItemCollectionCategory.FARMING, SMaterial.WHEAT, 0, new ItemCollectionRewards(50, new ItemCollectionRecipeReward(SMaterial.ASPECT_OF_THE_END)), new ItemCollectionRewards(100, new ItemCollectionReward[0]), new ItemCollectionRewards(250, new ItemCollectionReward[0]), new ItemCollectionRewards(500, new ItemCollectionReward[0]), new ItemCollectionRewards(1000, new ItemCollectionReward[0]), new ItemCollectionRewards(2500, new ItemCollectionReward[0]), new ItemCollectionRewards(10000, new ItemCollectionReward[0]), new ItemCollectionRewards(15000, new ItemCollectionReward[0]), new ItemCollectionRewards(25000, new ItemCollectionReward[0]), new ItemCollectionRewards(50000, new ItemCollectionReward[0]), new ItemCollectionRewards(100000, new ItemCollectionReward[0]));
+    public static final ItemCollection OAK_WOOD = new ItemCollection("Oak Wood", ItemCollectionCategory.FORAGING, SMaterial.OAK_WOOD, 0, 9);
+    public static final ItemCollection STRING = new ItemCollection("String", ItemCollectionCategory.COMBAT, SMaterial.STRING, 0, new ItemCollectionRewards(50, new ItemCollectionReward[0]), new ItemCollectionRewards(100, new ItemCollectionReward[0]), new ItemCollectionRewards(250, new ItemCollectionUpgradeReward("Quiver", ChatColor.GREEN)), new ItemCollectionRewards(1000, new ItemCollectionReward[0]), new ItemCollectionRewards(2500, new ItemCollectionReward[0]), new ItemCollectionRewards(5000, new ItemCollectionReward[0]), new ItemCollectionRewards(10000, new ItemCollectionReward[0]), new ItemCollectionRewards(25000, new ItemCollectionReward[0]), new ItemCollectionRewards(50000, new ItemCollectionReward[0]));
     private final String name;
     private final String identifier;
     private final ItemCollectionCategory category;
@@ -23,7 +39,7 @@ public class ItemCollection {
     private final List<ItemCollectionRewards> rewards;
     private final boolean temporary;
 
-    private ItemCollection(final String name, final ItemCollectionCategory category, final SMaterial material, final short data, final ItemCollectionRewards... rewards) {
+    private ItemCollection(String name, ItemCollectionCategory category, SMaterial material, short data, ItemCollectionRewards ... rewards) {
         this.name = name;
         this.identifier = name.toLowerCase().replaceAll(" ", "_");
         this.category = category;
@@ -31,38 +47,37 @@ public class ItemCollection {
         this.data = data;
         this.rewards = new ArrayList<ItemCollectionRewards>(Arrays.asList(rewards));
         this.temporary = false;
-        ItemCollection.COLLECTION_MAP.put(this.identifier, this);
+        COLLECTION_MAP.put(this.identifier, this);
     }
 
-    private ItemCollection(final String name, final ItemCollectionCategory category, final SMaterial material, final short data, final int size) {
+    private ItemCollection(String name, ItemCollectionCategory category, SMaterial material, short data, int size) {
         this.name = name;
         this.identifier = name.toLowerCase().replaceAll(" ", "_");
         this.category = category;
         this.material = material;
         this.data = data;
         this.rewards = new ArrayList<ItemCollectionRewards>();
-        for (int i = 0; i < size; ++i) {
+        for (int i2 = 0; i2 < size; ++i2) {
             this.rewards.add(null);
         }
         this.temporary = true;
-        ItemCollection.COLLECTION_MAP.put(this.identifier, this);
+        COLLECTION_MAP.put(this.identifier, this);
     }
 
-    public static String[] getProgress(final Player player, final ItemCollectionCategory category) {
-        final User user = User.getUser(player.getUniqueId());
-        final AtomicInteger found = new AtomicInteger();
-        final AtomicInteger completed = new AtomicInteger();
-        final Collection<ItemCollection> collections = (category != null) ? getCategoryCollections(category) : getCollections();
-        for (final ItemCollection collection : collections) {
+    public static String[] getProgress(Player player, ItemCollectionCategory category) {
+        String progress;
+        String title;
+        User user = User.getUser(player.getUniqueId());
+        AtomicInteger found = new AtomicInteger();
+        AtomicInteger completed = new AtomicInteger();
+        Collection<ItemCollection> collections = category != null ? ItemCollection.getCategoryCollections(category) : ItemCollection.getCollections();
+        for (ItemCollection collection : collections) {
             if (user.getCollection(collection) > 0) {
                 found.incrementAndGet();
             }
-            if (user.getCollection(collection) >= collection.getMaxAmount()) {
-                completed.incrementAndGet();
-            }
+            if (user.getCollection(collection) < collection.getMaxAmount()) continue;
+            completed.incrementAndGet();
         }
-        String title;
-        String progress;
         if (collections.size() == found.get()) {
             title = SUtil.createProgressText("Collection Maxed Out", completed.get(), collections.size());
             progress = SUtil.createLineProgressBar(20, ChatColor.DARK_GREEN, completed.get(), collections.size());
@@ -84,15 +99,11 @@ public class ItemCollection {
         return this.rewards.size();
     }
 
-    public int getTier(final int amount) {
+    public int getTier(int amount) {
         int tier = 0;
-        for (final ItemCollectionRewards reward : this.rewards) {
-            if (reward == null) {
-                continue;
-            }
-            if (reward.getRequirement() > amount) {
-                break;
-            }
+        for (ItemCollectionRewards reward : this.rewards) {
+            if (reward == null) continue;
+            if (reward.getRequirement() > amount) break;
             ++tier;
         }
         return tier;
@@ -102,7 +113,7 @@ public class ItemCollection {
         if (--tier < 0 || tier > this.rewards.size() - 1) {
             return -1;
         }
-        final ItemCollectionRewards reward = this.rewards.get(tier);
+        ItemCollectionRewards reward = this.rewards.get(tier);
         if (reward == null) {
             return -1;
         }
@@ -116,33 +127,32 @@ public class ItemCollection {
         return this.rewards.get(tier);
     }
 
-    public static ItemCollection getByIdentifier(final String identifier) {
-        return ItemCollection.COLLECTION_MAP.get(identifier.toLowerCase());
+    public static ItemCollection getByIdentifier(String identifier) {
+        return COLLECTION_MAP.get(identifier.toLowerCase());
     }
 
-    public static ItemCollection getByMaterial(final SMaterial material, final short data) {
-        for (final ItemCollection collection : ItemCollection.COLLECTION_MAP.values()) {
-            if (collection.material == material && collection.data == data) {
-                return collection;
-            }
+    public static ItemCollection getByMaterial(SMaterial material, short data) {
+        for (ItemCollection collection : COLLECTION_MAP.values()) {
+            if (collection.material != material || collection.data != data) continue;
+            return collection;
         }
         return null;
     }
 
     public static Map<ItemCollection, Integer> getDefaultCollections() {
-        final Map<ItemCollection, Integer> collections = new HashMap<ItemCollection, Integer>();
-        for (final ItemCollection collection : ItemCollection.COLLECTION_MAP.values()) {
+        HashMap<ItemCollection, Integer> collections = new HashMap<ItemCollection, Integer>();
+        for (ItemCollection collection : COLLECTION_MAP.values()) {
             collections.put(collection, 0);
         }
         return collections;
     }
 
     public static Collection<ItemCollection> getCollections() {
-        return ItemCollection.COLLECTION_MAP.values();
+        return COLLECTION_MAP.values();
     }
 
-    public static List<ItemCollection> getCategoryCollections(final ItemCollectionCategory category) {
-        return getCollections().stream().filter(collection -> collection.category == category).collect(Collectors.toList());
+    public static List<ItemCollection> getCategoryCollections(ItemCollectionCategory category) {
+        return ItemCollection.getCollections().stream().filter(collection -> collection.category == category).collect(Collectors.toList());
     }
 
     public String getName() {
@@ -172,11 +182,5 @@ public class ItemCollection {
     public boolean isTemporary() {
         return this.temporary;
     }
-
-    static {
-        COLLECTION_MAP = new HashMap<String, ItemCollection>();
-        WHEAT = new ItemCollection("Wheat", ItemCollectionCategory.FARMING, SMaterial.WHEAT, (short) 0, new ItemCollectionRewards(50, new ItemCollectionRecipeReward(SMaterial.ASPECT_OF_THE_END)), new ItemCollectionRewards(100), new ItemCollectionRewards(250), new ItemCollectionRewards(500), new ItemCollectionRewards(1000), new ItemCollectionRewards(2500), new ItemCollectionRewards(10000), new ItemCollectionRewards(15000), new ItemCollectionRewards(25000), new ItemCollectionRewards(50000), new ItemCollectionRewards(100000));
-        OAK_WOOD = new ItemCollection("Oak Wood", ItemCollectionCategory.FORAGING, SMaterial.OAK_WOOD, (short) 0, 9);
-        STRING = new ItemCollection("String", ItemCollectionCategory.COMBAT, SMaterial.STRING, (short) 0, new ItemCollectionRewards(50), new ItemCollectionRewards(100), new ItemCollectionRewards(250, new ItemCollectionUpgradeReward("Quiver", ChatColor.GREEN)), new ItemCollectionRewards(1000), new ItemCollectionRewards(2500), new ItemCollectionRewards(5000), new ItemCollectionRewards(10000), new ItemCollectionRewards(25000), new ItemCollectionRewards(50000));
-    }
 }
+

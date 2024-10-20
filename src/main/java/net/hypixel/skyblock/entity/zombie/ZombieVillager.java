@@ -1,16 +1,24 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Material
+ *  org.bukkit.inventory.ItemStack
+ */
 package net.hypixel.skyblock.entity.zombie;
-
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-import net.hypixel.skyblock.entity.EntityDrop;
-import net.hypixel.skyblock.entity.EntityDropType;
-import net.hypixel.skyblock.entity.SEntityEquipment;
-import net.hypixel.skyblock.item.SMaterial;
 
 import java.util.Arrays;
 import java.util.List;
+import net.hypixel.skyblock.entity.EntityDrop;
+import net.hypixel.skyblock.entity.EntityDropType;
+import net.hypixel.skyblock.entity.SEntityEquipment;
+import net.hypixel.skyblock.entity.zombie.BaseZombie;
+import net.hypixel.skyblock.item.SMaterial;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
-public class ZombieVillager extends BaseZombie {
+public class ZombieVillager
+extends BaseZombie {
     @Override
     public String getEntityName() {
         return "Zombie Villager";
@@ -24,11 +32,6 @@ public class ZombieVillager extends BaseZombie {
     @Override
     public double getDamageDealt() {
         return 24.0;
-    }
-    
-    @Override
-    public int mobLevel() {
-        return 1;
     }
 
     @Override
@@ -60,4 +63,10 @@ public class ZombieVillager extends BaseZombie {
     public boolean isVillager() {
         return true;
     }
+
+    @Override
+    public int mobLevel() {
+        return 1;
+    }
 }
+

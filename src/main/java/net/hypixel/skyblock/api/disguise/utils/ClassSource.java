@@ -1,45 +1,23 @@
-//From ProtocolLib
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.api.disguise.utils;
 
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Supplier;
 
-/**
- * Represents an abstract class loader that can only retrieve classes by their canonical name.
- *
- * @author Kristian
- */
 @FunctionalInterface
 public interface ClassSource {
-
-    /**
-     * Construct a class source from the default class loader.
-     *
-     * @return A class source.
-     */
-    static ClassSource fromClassLoader() {
-        return fromClassLoader(ClassSource.class.getClassLoader());
+    public static ClassSource fromClassLoader() {
+        return ClassSource.fromClassLoader(ClassSource.class.getClassLoader());
     }
 
-    /**
-     * Construct a class source from the default class loader and package.
-     *
-     * @param packageName - the package that is prepended to every lookup.
-     * @return A package source.
-     */
-    static ClassSource fromPackage(String packageName) {
-        return fromClassLoader().usingPackage(packageName);
+    public static ClassSource fromPackage(String packageName) {
+        return ClassSource.fromClassLoader().usingPackage(packageName);
     }
 
-    /**
-     * Construct a class source from the given class loader.
-     *
-     * @param loader - the class loader.
-     * @return The corresponding class source.
-     */
-    static ClassSource fromClassLoader(final ClassLoader loader) {
+    public static ClassSource fromClassLoader(ClassLoader loader) {
         return canonicalName -> {
             try {
                 return Optional.of(loader.loadClass(canonicalName));
@@ -49,68 +27,30 @@ public interface ClassSource {
         };
     }
 
-    /**
-     * Construct a class source from a mapping of canonical names and the corresponding classes. If the map is null, it
-     * will be interpreted as an empty map. If the map does not contain a Class with the specified name, or that string
-     * maps to NULL explicitly, an empty optional will be returned
-     *
-     * @param map - map of class names and classes.
-     * @return The class source.
-     */
-    static ClassSource fromMap(final Map<String, Class<?>> map) {
+    public static ClassSource fromMap(Map<String, Class<?>> map) {
         return canonicalName -> Optional.ofNullable(map.get(canonicalName));
     }
 
-    /**
-     * @return A ClassLoader which will never successfully load a class.
-     */
-    static ClassSource empty() {
-        return fromMap(Collections.emptyMap());
+    public static ClassSource empty() {
+        return ClassSource.fromMap(Collections.emptyMap());
     }
 
-    /**
-     * Append to canonical names together.
-     *
-     * @param a - the name to the left.
-     * @param b - the name to the right.
-     * @return The full canonical name, with a dot seperator.
-     */
-    static String append(String a, String b) {
-        boolean left = a.endsWith(".");
-        boolean right = b.endsWith(".");
-
-        // Only add a dot if necessary
+    public static String append(String a2, String b2) {
+        boolean left = a2.endsWith(".");
+        boolean right = b2.endsWith(".");
         if (left && right) {
-            return a.substring(0, a.length() - 1) + b;
-        } else if (left != right) {
-            return a + b;
-        } else {
-            return a + "." + b;
+            return a2.substring(0, a2.length() - 1) + b2;
         }
+        if (left != right) {
+            return a2 + b2;
+        }
+        return a2 + "." + b2;
     }
 
-    /**
-     * Retrieve a class source that will retry failed lookups in the given source.
-     *
-     * @param other - the other class source.
-     * @return A new class source.
-     */
-
-
-    /**
-     * Retrieve a class source that prepends a specific package name to every lookup.
-     *
-     * @param packageName - the package name to prepend.
-     * @return The class source.
-     */
-    default ClassSource usingPackage(final String packageName) {
-        return canonicalName -> this.loadClass(append(packageName, canonicalName));
+    default public ClassSource usingPackage(String packageName) {
+        return canonicalName -> this.loadClass(ClassSource.append(packageName, canonicalName));
     }
 
-    /**
-     * Retrieve a class by its canonical name
-     * @param canonicalName The class's canonical name, i.e. java.lang.Object
-     * @return Optional that may contain a Class
-     */
-    Optional<Class<?>> loadClass(String canonicalName);
+    public Optional<Class<?>> loadClass(String var1);
 }
+

@@ -1,13 +1,17 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Bukkit
+ *  org.bukkit.configuration.file.YamlConfiguration
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.plugin.ServicePriority
+ *  org.bukkit.plugin.java.JavaPlugin
+ *  org.json.simple.JSONArray
+ *  org.json.simple.JSONObject
+ */
 package net.hypixel.skyblock.nms.nmsutil.packetlistener.metrics;
 
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.ServicePriority;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
-import javax.net.ssl.HttpsURLConnection;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -15,9 +19,24 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.zip.GZIPOutputStream;
+import javax.net.ssl.HttpsURLConnection;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.ServicePriority;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 public class Metrics {
     public static final int B_STATS_VERSION = 1;
@@ -25,48 +44,47 @@ public class Metrics {
     private static boolean logFailedRequests;
     private static String serverUUID;
     private final JavaPlugin plugin;
-    private final List<CustomChart> charts;
+    private final List<CustomChart> charts = new ArrayList<CustomChart>();
 
-    public Metrics(final JavaPlugin plugin) {
-        this.charts = new ArrayList<CustomChart>();
+    public Metrics(JavaPlugin plugin) {
         if (plugin == null) {
             throw new IllegalArgumentException("Plugin cannot be null!");
         }
         this.plugin = plugin;
-        final File bStatsFolder = new File(plugin.getDataFolder().getParentFile(), "bStats");
-        final File configFile = new File(bStatsFolder, "config.yml");
-        final YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+        File bStatsFolder = new File(plugin.getDataFolder().getParentFile(), "bStats");
+        File configFile = new File(bStatsFolder, "config.yml");
+        YamlConfiguration config = YamlConfiguration.loadConfiguration((File)configFile);
         if (!config.isSet("serverUuid")) {
-            config.addDefault("enabled", true);
-            config.addDefault("serverUuid", UUID.randomUUID().toString());
-            config.addDefault("logFailedRequests", false);
+            config.addDefault("enabled", (Object)true);
+            config.addDefault("serverUuid", (Object)UUID.randomUUID().toString());
+            config.addDefault("logFailedRequests", (Object)false);
             config.options().header("bStats collects some data for plugin authors like how many servers are using their plugins.\nTo honor their work, you should not disable it.\nThis has nearly no effect on the server performance!\nCheck out https://bStats.org/ to learn more :)").copyDefaults(true);
             try {
                 config.save(configFile);
-            } catch (final IOException ex) {
+            } catch (IOException iOException) {
+                // empty catch block
             }
         }
-        Metrics.serverUUID = config.getString("serverUuid");
-        Metrics.logFailedRequests = config.getBoolean("logFailedRequests", false);
+        serverUUID = config.getString("serverUuid");
+        logFailedRequests = config.getBoolean("logFailedRequests", false);
         if (config.getBoolean("enabled", true)) {
             boolean found = false;
-            for (final Class<?> service : Bukkit.getServicesManager().getKnownServices()) {
+            for (Class service : Bukkit.getServicesManager().getKnownServices()) {
                 try {
                     service.getField("B_STATS_VERSION");
                     found = true;
-                } catch (final NoSuchFieldException ex2) {
-                    continue;
+                    break;
+                } catch (NoSuchFieldException ex2) {
                 }
-                break;
             }
-            Bukkit.getServicesManager().register((Class) Metrics.class, (Object) this, plugin, ServicePriority.Normal);
+            Bukkit.getServicesManager().register(Metrics.class, (Object)this, (Plugin)plugin, ServicePriority.Normal);
             if (!found) {
                 this.startSubmitting();
             }
         }
     }
 
-    public void addCustomChart(final CustomChart chart) {
+    public void addCustomChart(CustomChart chart) {
         if (chart == null) {
             throw new IllegalArgumentException("Chart cannot be null!");
         }
@@ -75,14 +93,16 @@ public class Metrics {
 
     private void startSubmitting() {
         final Timer timer = new Timer(true);
-        timer.scheduleAtFixedRate(new TimerTask() {
+        timer.scheduleAtFixedRate(new TimerTask(){
+
             @Override
             public void run() {
                 if (!Metrics.this.plugin.isEnabled()) {
                     timer.cancel();
                     return;
                 }
-                Bukkit.getScheduler().runTask(Metrics.this.plugin, new Runnable() {
+                Bukkit.getScheduler().runTask((Plugin)Metrics.this.plugin, new Runnable(){
+
                     @Override
                     public void run() {
                         Metrics.this.submitData();
@@ -93,84 +113,83 @@ public class Metrics {
     }
 
     public JSONObject getPluginData() {
-        final JSONObject data = new JSONObject();
-        final String pluginName = this.plugin.getDescription().getName();
-        final String pluginVersion = this.plugin.getDescription().getVersion();
-        data.put("pluginName", pluginName);
-        data.put("pluginVersion", pluginVersion);
-        final JSONArray customCharts = new JSONArray();
-        for (final CustomChart customChart : this.charts) {
-            final JSONObject chart = customChart.getRequestJsonObject();
-            if (chart == null) {
-                continue;
-            }
-            customCharts.add(chart);
+        JSONObject data = new JSONObject();
+        String pluginName = this.plugin.getDescription().getName();
+        String pluginVersion = this.plugin.getDescription().getVersion();
+        data.put((Object)"pluginName", (Object)pluginName);
+        data.put((Object)"pluginVersion", (Object)pluginVersion);
+        JSONArray customCharts = new JSONArray();
+        for (CustomChart customChart : this.charts) {
+            JSONObject chart = customChart.getRequestJsonObject();
+            if (chart == null) continue;
+            customCharts.add((Object)chart);
         }
-        data.put("customCharts", customCharts);
+        data.put((Object)"customCharts", (Object)customCharts);
         return data;
     }
 
     private JSONObject getServerData() {
-        final int playerAmount = Bukkit.getOnlinePlayers().size();
-        final int onlineMode = Bukkit.getOnlineMode() ? 1 : 0;
+        int playerAmount = Bukkit.getOnlinePlayers().size();
+        int onlineMode = Bukkit.getOnlineMode() ? 1 : 0;
         String bukkitVersion = Bukkit.getVersion();
         bukkitVersion = bukkitVersion.substring(bukkitVersion.indexOf("MC: ") + 4, bukkitVersion.length() - 1);
-        final String javaVersion = System.getProperty("java.version");
-        final String osName = System.getProperty("os.name");
-        final String osArch = System.getProperty("os.arch");
-        final String osVersion = System.getProperty("os.version");
-        final int coreCount = Runtime.getRuntime().availableProcessors();
-        final JSONObject data = new JSONObject();
-        data.put("serverUUID", Metrics.serverUUID);
-        data.put("playerAmount", playerAmount);
-        data.put("onlineMode", onlineMode);
-        data.put("bukkitVersion", bukkitVersion);
-        data.put("javaVersion", javaVersion);
-        data.put("osName", osName);
-        data.put("osArch", osArch);
-        data.put("osVersion", osVersion);
-        data.put("coreCount", coreCount);
+        String javaVersion = System.getProperty("java.version");
+        String osName = System.getProperty("os.name");
+        String osArch = System.getProperty("os.arch");
+        String osVersion = System.getProperty("os.version");
+        int coreCount = Runtime.getRuntime().availableProcessors();
+        JSONObject data = new JSONObject();
+        data.put((Object)"serverUUID", (Object)serverUUID);
+        data.put((Object)"playerAmount", (Object)playerAmount);
+        data.put((Object)"onlineMode", (Object)onlineMode);
+        data.put((Object)"bukkitVersion", (Object)bukkitVersion);
+        data.put((Object)"javaVersion", (Object)javaVersion);
+        data.put((Object)"osName", (Object)osName);
+        data.put((Object)"osArch", (Object)osArch);
+        data.put((Object)"osVersion", (Object)osVersion);
+        data.put((Object)"coreCount", (Object)coreCount);
         return data;
     }
 
     private void submitData() {
         final JSONObject data = this.getServerData();
-        final JSONArray pluginData = new JSONArray();
-        for (final Class<?> service : Bukkit.getServicesManager().getKnownServices()) {
+        JSONArray pluginData = new JSONArray();
+        for (Class service : Bukkit.getServicesManager().getKnownServices()) {
             try {
                 service.getField("B_STATS_VERSION");
-            } catch (final NoSuchFieldException ignored) {
+            } catch (NoSuchFieldException ignored) {
                 continue;
             }
             try {
-                pluginData.add(service.getMethod("getPluginData").invoke(Bukkit.getServicesManager().load((Class) service)));
-            } catch (final NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
-            }
+                pluginData.add(service.getMethod("getPluginData", new Class[0]).invoke(Bukkit.getServicesManager().load(service), new Object[0]));
+            } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException reflectiveOperationException) {}
         }
-        data.put("plugins", pluginData);
-        new Thread(new Runnable() {
+        data.put((Object)"plugins", (Object)pluginData);
+        new Thread(new Runnable(){
+
             @Override
             public void run() {
-                try {
-                    sendData(data);
-                } catch (final Exception e) {
-                    if (Metrics.logFailedRequests) {
-                        Metrics.this.plugin.getLogger().log(Level.WARNING, "Could not submit plugin stats of " + Metrics.this.plugin.getName(), e);
+                block2: {
+                    try {
+                        Metrics.sendData(data);
+                    } catch (Exception e2) {
+                        if (!logFailedRequests) break block2;
+                        Metrics.this.plugin.getLogger().log(Level.WARNING, "Could not submit plugin stats of " + Metrics.this.plugin.getName(), e2);
                     }
                 }
             }
         }).start();
     }
 
-    private static void sendData(final JSONObject data) throws Exception {
+    private static void sendData(JSONObject data) throws Exception {
         if (data == null) {
             throw new IllegalArgumentException("Data cannot be null!");
         }
         if (Bukkit.isPrimaryThread()) {
             throw new IllegalAccessException("This method must not be called from the main thread!");
         }
-        final HttpsURLConnection connection = (HttpsURLConnection) new URL("https://bStats.org/submitData").openConnection();
-        final byte[] compressedData = compress(data.toString());
+        HttpsURLConnection connection = (HttpsURLConnection)new URL(URL).openConnection();
+        byte[] compressedData = Metrics.compress(data.toString());
         connection.setRequestMethod("POST");
         connection.addRequestProperty("Accept", "application/json");
         connection.addRequestProperty("Connection", "close");
@@ -179,266 +198,25 @@ public class Metrics {
         connection.setRequestProperty("Content-Type", "application/json");
         connection.setRequestProperty("User-Agent", "MC-Server/1");
         connection.setDoOutput(true);
-        final DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
+        DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
         outputStream.write(compressedData);
         outputStream.flush();
         outputStream.close();
         connection.getInputStream().close();
     }
 
-    private static byte[] compress(final String str) throws IOException {
+    private static byte[] compress(String str) throws IOException {
         if (str == null) {
             return null;
         }
-        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        final GZIPOutputStream gzip = new GZIPOutputStream(outputStream);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        GZIPOutputStream gzip = new GZIPOutputStream(outputStream);
         gzip.write(str.getBytes(StandardCharsets.UTF_8));
         gzip.close();
         return outputStream.toByteArray();
     }
 
-    public abstract static class CustomChart {
-        protected final String chartId;
-
-        public CustomChart(final String chartId) {
-            if (chartId == null || chartId.isEmpty()) {
-                throw new IllegalArgumentException("ChartId cannot be null or empty!");
-            }
-            this.chartId = chartId;
-        }
-
-        protected JSONObject getRequestJsonObject() {
-            final JSONObject chart = new JSONObject();
-            chart.put("chartId", this.chartId);
-            try {
-                final JSONObject data = this.getChartData();
-                if (data == null) {
-                    return null;
-                }
-                chart.put("data", data);
-            } catch (final Throwable t) {
-                if (Metrics.logFailedRequests) {
-                    Bukkit.getLogger().log(Level.WARNING, "Failed to get data for custom chart with id " + this.chartId, t);
-                }
-                return null;
-            }
-            return chart;
-        }
-
-        protected abstract JSONObject getChartData();
-    }
-
-    public abstract static class SimplePie extends CustomChart {
-        public SimplePie(final String chartId) {
-            super(chartId);
-        }
-
-        public abstract String getValue();
-
-        @Override
-        protected JSONObject getChartData() {
-            final JSONObject data = new JSONObject();
-            final String value = this.getValue();
-            if (value == null || value.isEmpty()) {
-                return null;
-            }
-            data.put("value", value);
-            return data;
-        }
-    }
-
-    public abstract static class AdvancedPie extends CustomChart {
-        public AdvancedPie(final String chartId) {
-            super(chartId);
-        }
-
-        public abstract HashMap<String, Integer> getValues(final HashMap<String, Integer> p0);
-
-        @Override
-        protected JSONObject getChartData() {
-            final JSONObject data = new JSONObject();
-            final JSONObject values = new JSONObject();
-            final HashMap<String, Integer> map = this.getValues(new HashMap<String, Integer>());
-            if (map == null || map.isEmpty()) {
-                return null;
-            }
-            boolean allSkipped = true;
-            for (final Map.Entry<String, Integer> entry : map.entrySet()) {
-                if (entry.getValue() == 0) {
-                    continue;
-                }
-                allSkipped = false;
-                values.put(entry.getKey(), entry.getValue());
-            }
-            if (allSkipped) {
-                return null;
-            }
-            data.put("values", values);
-            return data;
-        }
-    }
-
-    public abstract static class SingleLineChart extends CustomChart {
-        public SingleLineChart(final String chartId) {
-            super(chartId);
-        }
-
-        public abstract int getValue();
-
-        @Override
-        protected JSONObject getChartData() {
-            final JSONObject data = new JSONObject();
-            final int value = this.getValue();
-            if (value == 0) {
-                return null;
-            }
-            data.put("value", value);
-            return data;
-        }
-    }
-
-    public abstract static class MultiLineChart extends CustomChart {
-        public MultiLineChart(final String chartId) {
-            super(chartId);
-        }
-
-        public abstract HashMap<String, Integer> getValues(final HashMap<String, Integer> p0);
-
-        @Override
-        protected JSONObject getChartData() {
-            final JSONObject data = new JSONObject();
-            final JSONObject values = new JSONObject();
-            final HashMap<String, Integer> map = this.getValues(new HashMap<String, Integer>());
-            if (map == null || map.isEmpty()) {
-                return null;
-            }
-            boolean allSkipped = true;
-            for (final Map.Entry<String, Integer> entry : map.entrySet()) {
-                if (entry.getValue() == 0) {
-                    continue;
-                }
-                allSkipped = false;
-                values.put(entry.getKey(), entry.getValue());
-            }
-            if (allSkipped) {
-                return null;
-            }
-            data.put("values", values);
-            return data;
-        }
-    }
-
-    public abstract static class SimpleBarChart extends CustomChart {
-        public SimpleBarChart(final String chartId) {
-            super(chartId);
-        }
-
-        public abstract HashMap<String, Integer> getValues(final HashMap<String, Integer> p0);
-
-        @Override
-        protected JSONObject getChartData() {
-            final JSONObject data = new JSONObject();
-            final JSONObject values = new JSONObject();
-            final HashMap<String, Integer> map = this.getValues(new HashMap<String, Integer>());
-            if (map == null || map.isEmpty()) {
-                return null;
-            }
-            for (final Map.Entry<String, Integer> entry : map.entrySet()) {
-                final JSONArray categoryValues = new JSONArray();
-                categoryValues.add(entry.getValue());
-                values.put(entry.getKey(), categoryValues);
-            }
-            data.put("values", values);
-            return data;
-        }
-    }
-
-    public abstract static class AdvancedBarChart extends CustomChart {
-        public AdvancedBarChart(final String chartId) {
-            super(chartId);
-        }
-
-        public abstract HashMap<String, int[]> getValues(final HashMap<String, int[]> p0);
-
-        @Override
-        protected JSONObject getChartData() {
-            final JSONObject data = new JSONObject();
-            final JSONObject values = new JSONObject();
-            final HashMap<String, int[]> map = this.getValues(new HashMap<String, int[]>());
-            if (map == null || map.isEmpty()) {
-                return null;
-            }
-            boolean allSkipped = true;
-            for (final Map.Entry<String, int[]> entry : map.entrySet()) {
-                if (entry.getValue().length == 0) {
-                    continue;
-                }
-                allSkipped = false;
-                final JSONArray categoryValues = new JSONArray();
-                for (final int categoryValue : entry.getValue()) {
-                    categoryValues.add(categoryValue);
-                }
-                values.put(entry.getKey(), categoryValues);
-            }
-            if (allSkipped) {
-                return null;
-            }
-            data.put("values", values);
-            return data;
-        }
-    }
-
-    public abstract static class SimpleMapChart extends CustomChart {
-        public SimpleMapChart(final String chartId) {
-            super(chartId);
-        }
-
-        public abstract Country getValue();
-
-        @Override
-        protected JSONObject getChartData() {
-            final JSONObject data = new JSONObject();
-            final Country value = this.getValue();
-            if (value == null) {
-                return null;
-            }
-            data.put("value", value.getCountryIsoTag());
-            return data;
-        }
-    }
-
-    public abstract static class AdvancedMapChart extends CustomChart {
-        public AdvancedMapChart(final String chartId) {
-            super(chartId);
-        }
-
-        public abstract HashMap<Country, Integer> getValues(final HashMap<Country, Integer> p0);
-
-        @Override
-        protected JSONObject getChartData() {
-            final JSONObject data = new JSONObject();
-            final JSONObject values = new JSONObject();
-            final HashMap<Country, Integer> map = this.getValues(new HashMap<Country, Integer>());
-            if (map == null || map.isEmpty()) {
-                return null;
-            }
-            boolean allSkipped = true;
-            for (final Map.Entry<Country, Integer> entry : map.entrySet()) {
-                if (entry.getValue() == 0) {
-                    continue;
-                }
-                allSkipped = false;
-                values.put(entry.getKey().getCountryIsoTag(), entry.getValue());
-            }
-            if (allSkipped) {
-                return null;
-            }
-            data.put("values", values);
-            return data;
-        }
-    }
-
-    public enum Country {
+    public static enum Country {
         AUTO_DETECT("AUTO", "Auto Detected"),
         ANDORRA("AD", "Andorra"),
         UNITED_ARAB_EMIRATES("AE", "United Arab Emirates"),
@@ -455,7 +233,7 @@ public class Metrics {
         AUSTRIA("AT", "Austria"),
         AUSTRALIA("AU", "Australia"),
         ARUBA("AW", "Aruba"),
-        ÅLAND_ISLANDS("AX", "Åland Islands"),
+        \u00c5LAND_ISLANDS("AX", "\u00c5land Islands"),
         AZERBAIJAN("AZ", "Azerbaijan"),
         BOSNIA_AND_HERZEGOVINA("BA", "Bosnia and Herzegovina"),
         BARBADOS("BB", "Barbados"),
@@ -466,7 +244,7 @@ public class Metrics {
         BAHRAIN("BH", "Bahrain"),
         BURUNDI("BI", "Burundi"),
         BENIN("BJ", "Benin"),
-        SAINT_BARTHÉLEMY("BL", "Saint Barthélemy"),
+        SAINT_BARTH\u00c9LEMY("BL", "Saint Barth\u00e9lemy"),
         BERMUDA("BM", "Bermuda"),
         BRUNEI("BN", "Brunei"),
         BOLIVIA("BO", "Bolivia"),
@@ -484,7 +262,7 @@ public class Metrics {
         CENTRAL_AFRICAN_REPUBLIC("CF", "Central African Republic"),
         CONGO("CG", "Congo"),
         SWITZERLAND("CH", "Switzerland"),
-        CÔTE_D_IVOIRE("CI", "Côte d'Ivoire"),
+        C\u00d4TE_D_IVOIRE("CI", "C\u00f4te d'Ivoire"),
         COOK_ISLANDS("CK", "Cook Islands"),
         CHILE("CL", "Chile"),
         CAMEROON("CM", "Cameroon"),
@@ -493,7 +271,7 @@ public class Metrics {
         COSTA_RICA("CR", "Costa Rica"),
         CUBA("CU", "Cuba"),
         CAPE_VERDE("CV", "Cape Verde"),
-        CURAÇAO("CW", "Curaçao"),
+        CURA\u00c7AO("CW", "Cura\u00e7ao"),
         CHRISTMAS_ISLAND("CX", "Christmas Island"),
         CYPRUS("CY", "Cyprus"),
         CZECH_REPUBLIC("CZ", "Czech Republic"),
@@ -694,7 +472,7 @@ public class Metrics {
         private final String isoTag;
         private final String name;
 
-        Country(final String isoTag, final String name) {
+        private Country(String isoTag, String name) {
             this.isoTag = isoTag;
             this.name = name;
         }
@@ -707,17 +485,258 @@ public class Metrics {
             return this.isoTag;
         }
 
-        public static Country byIsoTag(final String isoTag) {
-            for (final Country country : values()) {
-                if (country.getCountryIsoTag().equals(isoTag)) {
-                    return country;
-                }
+        public static Country byIsoTag(String isoTag) {
+            for (Country country : Country.values()) {
+                if (!country.getCountryIsoTag().equals(isoTag)) continue;
+                return country;
             }
             return null;
         }
 
-        public static Country byLocale(final Locale locale) {
-            return byIsoTag(locale.getCountry());
+        public static Country byLocale(Locale locale) {
+            return Country.byIsoTag(locale.getCountry());
         }
     }
+
+    public static abstract class AdvancedMapChart
+    extends CustomChart {
+        public AdvancedMapChart(String chartId) {
+            super(chartId);
+        }
+
+        public abstract HashMap<Country, Integer> getValues(HashMap<Country, Integer> var1);
+
+        @Override
+        protected JSONObject getChartData() {
+            JSONObject data = new JSONObject();
+            JSONObject values = new JSONObject();
+            HashMap<Country, Integer> map = this.getValues(new HashMap<Country, Integer>());
+            if (map == null || map.isEmpty()) {
+                return null;
+            }
+            boolean allSkipped = true;
+            for (Map.Entry<Country, Integer> entry : map.entrySet()) {
+                if (entry.getValue() == 0) continue;
+                allSkipped = false;
+                values.put((Object)entry.getKey().getCountryIsoTag(), (Object)entry.getValue());
+            }
+            if (allSkipped) {
+                return null;
+            }
+            data.put((Object)"values", (Object)values);
+            return data;
+        }
+    }
+
+    public static abstract class SimpleMapChart
+    extends CustomChart {
+        public SimpleMapChart(String chartId) {
+            super(chartId);
+        }
+
+        public abstract Country getValue();
+
+        @Override
+        protected JSONObject getChartData() {
+            JSONObject data = new JSONObject();
+            Country value = this.getValue();
+            if (value == null) {
+                return null;
+            }
+            data.put((Object)"value", (Object)value.getCountryIsoTag());
+            return data;
+        }
+    }
+
+    public static abstract class AdvancedBarChart
+    extends CustomChart {
+        public AdvancedBarChart(String chartId) {
+            super(chartId);
+        }
+
+        public abstract HashMap<String, int[]> getValues(HashMap<String, int[]> var1);
+
+        @Override
+        protected JSONObject getChartData() {
+            JSONObject data = new JSONObject();
+            JSONObject values = new JSONObject();
+            HashMap<String, int[]> map = this.getValues(new HashMap<String, int[]>());
+            if (map == null || map.isEmpty()) {
+                return null;
+            }
+            boolean allSkipped = true;
+            for (Map.Entry<String, int[]> entry : map.entrySet()) {
+                if (entry.getValue().length == 0) continue;
+                allSkipped = false;
+                JSONArray categoryValues = new JSONArray();
+                for (int categoryValue : entry.getValue()) {
+                    categoryValues.add((Object)categoryValue);
+                }
+                values.put((Object)entry.getKey(), (Object)categoryValues);
+            }
+            if (allSkipped) {
+                return null;
+            }
+            data.put((Object)"values", (Object)values);
+            return data;
+        }
+    }
+
+    public static abstract class SimpleBarChart
+    extends CustomChart {
+        public SimpleBarChart(String chartId) {
+            super(chartId);
+        }
+
+        public abstract HashMap<String, Integer> getValues(HashMap<String, Integer> var1);
+
+        @Override
+        protected JSONObject getChartData() {
+            JSONObject data = new JSONObject();
+            JSONObject values = new JSONObject();
+            HashMap<String, Integer> map = this.getValues(new HashMap<String, Integer>());
+            if (map == null || map.isEmpty()) {
+                return null;
+            }
+            for (Map.Entry<String, Integer> entry : map.entrySet()) {
+                JSONArray categoryValues = new JSONArray();
+                categoryValues.add((Object)entry.getValue());
+                values.put((Object)entry.getKey(), (Object)categoryValues);
+            }
+            data.put((Object)"values", (Object)values);
+            return data;
+        }
+    }
+
+    public static abstract class MultiLineChart
+    extends CustomChart {
+        public MultiLineChart(String chartId) {
+            super(chartId);
+        }
+
+        public abstract HashMap<String, Integer> getValues(HashMap<String, Integer> var1);
+
+        @Override
+        protected JSONObject getChartData() {
+            JSONObject data = new JSONObject();
+            JSONObject values = new JSONObject();
+            HashMap<String, Integer> map = this.getValues(new HashMap<String, Integer>());
+            if (map == null || map.isEmpty()) {
+                return null;
+            }
+            boolean allSkipped = true;
+            for (Map.Entry<String, Integer> entry : map.entrySet()) {
+                if (entry.getValue() == 0) continue;
+                allSkipped = false;
+                values.put((Object)entry.getKey(), (Object)entry.getValue());
+            }
+            if (allSkipped) {
+                return null;
+            }
+            data.put((Object)"values", (Object)values);
+            return data;
+        }
+    }
+
+    public static abstract class SingleLineChart
+    extends CustomChart {
+        public SingleLineChart(String chartId) {
+            super(chartId);
+        }
+
+        public abstract int getValue();
+
+        @Override
+        protected JSONObject getChartData() {
+            JSONObject data = new JSONObject();
+            int value = this.getValue();
+            if (value == 0) {
+                return null;
+            }
+            data.put((Object)"value", (Object)value);
+            return data;
+        }
+    }
+
+    public static abstract class AdvancedPie
+    extends CustomChart {
+        public AdvancedPie(String chartId) {
+            super(chartId);
+        }
+
+        public abstract HashMap<String, Integer> getValues(HashMap<String, Integer> var1);
+
+        @Override
+        protected JSONObject getChartData() {
+            JSONObject data = new JSONObject();
+            JSONObject values = new JSONObject();
+            HashMap<String, Integer> map = this.getValues(new HashMap<String, Integer>());
+            if (map == null || map.isEmpty()) {
+                return null;
+            }
+            boolean allSkipped = true;
+            for (Map.Entry<String, Integer> entry : map.entrySet()) {
+                if (entry.getValue() == 0) continue;
+                allSkipped = false;
+                values.put((Object)entry.getKey(), (Object)entry.getValue());
+            }
+            if (allSkipped) {
+                return null;
+            }
+            data.put((Object)"values", (Object)values);
+            return data;
+        }
+    }
+
+    public static abstract class SimplePie
+    extends CustomChart {
+        public SimplePie(String chartId) {
+            super(chartId);
+        }
+
+        public abstract String getValue();
+
+        @Override
+        protected JSONObject getChartData() {
+            JSONObject data = new JSONObject();
+            String value = this.getValue();
+            if (value == null || value.isEmpty()) {
+                return null;
+            }
+            data.put((Object)"value", (Object)value);
+            return data;
+        }
+    }
+
+    public static abstract class CustomChart {
+        protected final String chartId;
+
+        public CustomChart(String chartId) {
+            if (chartId == null || chartId.isEmpty()) {
+                throw new IllegalArgumentException("ChartId cannot be null or empty!");
+            }
+            this.chartId = chartId;
+        }
+
+        protected JSONObject getRequestJsonObject() {
+            JSONObject chart = new JSONObject();
+            chart.put((Object)"chartId", (Object)this.chartId);
+            try {
+                JSONObject data = this.getChartData();
+                if (data == null) {
+                    return null;
+                }
+                chart.put((Object)"data", (Object)data);
+            } catch (Throwable t2) {
+                if (logFailedRequests) {
+                    Bukkit.getLogger().log(Level.WARNING, "Failed to get data for custom chart with id " + this.chartId, t2);
+                }
+                return null;
+            }
+            return chart;
+        }
+
+        protected abstract JSONObject getChartData();
+    }
 }
+

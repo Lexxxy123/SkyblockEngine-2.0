@@ -1,9 +1,17 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.entity.Player
+ *  org.bukkit.inventory.ItemStack
+ */
 package net.hypixel.skyblock.entity;
 
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import net.hypixel.skyblock.entity.EntityDropType;
 import net.hypixel.skyblock.item.SItem;
 import net.hypixel.skyblock.item.SMaterial;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public class EntityDrop {
     private final ItemStack stack;
@@ -11,33 +19,33 @@ public class EntityDrop {
     private final double dropChance;
     private final Player owner;
 
-    public EntityDrop(final ItemStack stack, final EntityDropType type, final double dropChance, final Player owner) {
+    public EntityDrop(ItemStack stack, EntityDropType type, double dropChance, Player owner) {
         this.stack = stack;
         this.type = type;
         this.dropChance = dropChance;
         this.owner = owner;
     }
 
-    public EntityDrop(final SMaterial material, final byte variant, final EntityDropType type, final double dropChance, final Player owner) {
+    public EntityDrop(SMaterial material, byte variant, EntityDropType type, double dropChance, Player owner) {
         this.stack = SItem.of(material, variant).getStack();
         this.type = type;
         this.dropChance = dropChance;
         this.owner = owner;
     }
 
-    public EntityDrop(final SMaterial material, final EntityDropType type, final double dropChance, final Player owner) {
-        this(material, (byte) material.getData(), type, dropChance, owner);
+    public EntityDrop(SMaterial material, EntityDropType type, double dropChance, Player owner) {
+        this(material, (byte)material.getData(), type, dropChance, owner);
     }
 
-    public EntityDrop(final SMaterial material, final byte variant, final EntityDropType type, final double dropChance) {
+    public EntityDrop(SMaterial material, byte variant, EntityDropType type, double dropChance) {
         this(material, variant, type, dropChance, null);
     }
 
-    public EntityDrop(final ItemStack stack, final EntityDropType type, final double dropChance) {
+    public EntityDrop(ItemStack stack, EntityDropType type, double dropChance) {
         this(stack, type, dropChance, null);
     }
 
-    public EntityDrop(final SMaterial material, final EntityDropType type, final double dropChance) {
+    public EntityDrop(SMaterial material, EntityDropType type, double dropChance) {
         this(material, type, dropChance, null);
     }
 
@@ -57,3 +65,4 @@ public class EntityDrop {
         return this.owner;
     }
 }
+

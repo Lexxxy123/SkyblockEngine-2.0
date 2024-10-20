@@ -1,15 +1,17 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.accessory;
-
 
 import net.hypixel.skyblock.item.GenericItemType;
 import net.hypixel.skyblock.item.MaterialFunction;
 import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.SpecificItemType;
-import org.bukkit.ChatColor;
+import net.hypixel.skyblock.item.accessory.AccessoryStatistics;
 
-import java.util.*;
-
-public class SuperspeedTalisman implements AccessoryStatistics, MaterialFunction {
+public class SuperspeedTalisman
+implements AccessoryStatistics,
+MaterialFunction {
     @Override
     public String getDisplayName() {
         return "Superspeed Talisman";
@@ -45,3 +47,4 @@ public class SuperspeedTalisman implements AccessoryStatistics, MaterialFunction
         return "bb884d61f235235047483ac4ba4ce528691e6424bac13814159272d9673ac";
     }
 }
+

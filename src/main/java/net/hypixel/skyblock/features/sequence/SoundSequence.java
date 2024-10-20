@@ -1,41 +1,54 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Location
+ *  org.bukkit.Sound
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.entity.Player
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.scheduler.BukkitRunnable
+ */
 package net.hypixel.skyblock.features.sequence;
 
+import java.util.Arrays;
+import java.util.List;
 import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.features.sequence.Sequence;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Arrays;
-import java.util.List;
-
-public class SoundSequence implements Sequence {
+public class SoundSequence
+implements Sequence {
     private final List<DelayedSound> sounds;
 
-    public SoundSequence(final DelayedSound... sounds) {
+    public SoundSequence(DelayedSound ... sounds) {
         this.sounds = Arrays.asList(sounds);
     }
 
-    public void append(final DelayedSound sound) {
+    public void append(DelayedSound sound) {
         this.sounds.add(sound);
     }
 
     @Override
-    public void play(final Location location) {
-        for (final DelayedSound sound : this.sounds) {
+    public void play(Location location) {
+        for (DelayedSound sound : this.sounds) {
             sound.play(location);
         }
     }
 
-    public void play(final Player p) {
-        for (final DelayedSound sound : this.sounds) {
-            sound.play(p);
+    public void play(Player p2) {
+        for (DelayedSound sound : this.sounds) {
+            sound.play(p2);
         }
     }
 
     @Override
-    public void play(final Entity entity) {
+    public void play(Entity entity) {
         this.play(entity.getLocation());
     }
 
@@ -45,31 +58,34 @@ public class SoundSequence implements Sequence {
         private final float pitch;
         private final long delay;
 
-        public DelayedSound(final Sound sound, final float volume, final float pitch, final long delay) {
+        public DelayedSound(Sound sound, float volume, float pitch, long delay) {
             this.sound = sound;
             this.volume = volume;
             this.pitch = pitch;
             this.delay = delay;
         }
 
-        public DelayedSound(final Sound sound, final float volume, final float pitch) {
+        public DelayedSound(Sound sound, float volume, float pitch) {
             this(sound, volume, pitch, 0L);
         }
 
         public void play(final Location location) {
-            new BukkitRunnable() {
+            new BukkitRunnable(){
+
                 public void run() {
-                    location.getWorld().playSound(location, DelayedSound.this.sound, DelayedSound.this.volume, DelayedSound.this.pitch);
+                    location.getWorld().playSound(location, sound, volume, pitch);
                 }
-            }.runTaskLater(SkyBlock.getPlugin(), this.delay);
+            }.runTaskLater((Plugin)SkyBlock.getPlugin(), this.delay);
         }
 
         public void play(final Player entity) {
-            new BukkitRunnable() {
+            new BukkitRunnable(){
+
                 public void run() {
-                    entity.playSound(entity.getLocation(), DelayedSound.this.sound, DelayedSound.this.volume, DelayedSound.this.pitch);
+                    entity.playSound(entity.getLocation(), sound, volume, pitch);
                 }
-            }.runTaskLater(SkyBlock.getPlugin(), this.delay);
+            }.runTaskLater((Plugin)SkyBlock.getPlugin(), this.delay);
         }
     }
 }
+

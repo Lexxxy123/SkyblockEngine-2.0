@@ -1,9 +1,14 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.entity.nether;
 
 import net.hypixel.skyblock.entity.EntityFunction;
 import net.hypixel.skyblock.entity.SlimeStatistics;
 
-public class MediumMagmaCube implements SlimeStatistics, EntityFunction {
+public class MediumMagmaCube
+implements SlimeStatistics,
+EntityFunction {
     @Override
     public String getEntityName() {
         return "Magma Cube";
@@ -17,11 +22,6 @@ public class MediumMagmaCube implements SlimeStatistics, EntityFunction {
     @Override
     public double getDamageDealt() {
         return 120.0;
-    }
-    
-    @Override
-    public int mobLevel() {
-        return 6;
     }
 
     @Override
@@ -39,3 +39,4 @@ public class MediumMagmaCube implements SlimeStatistics, EntityFunction {
         return false;
     }
 }
+

@@ -1,10 +1,21 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ */
 package net.hypixel.skyblock.item.weapon;
 
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.ToolStatistics;
 import org.bukkit.ChatColor;
-import net.hypixel.skyblock.item.*;
 
-public class PrismarineBlade implements ToolStatistics, MaterialFunction {
+public class PrismarineBlade
+implements ToolStatistics,
+MaterialFunction {
     @Override
     public int getBaseDamage() {
         return 50;
@@ -40,3 +51,4 @@ public class PrismarineBlade implements ToolStatistics, MaterialFunction {
         return SpecificItemType.SWORD;
     }
 }
+

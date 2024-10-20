@@ -1,15 +1,26 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.md_5.bungee.api.ChatColor
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.item.armor.eleganttux;
-
-import net.md_5.bungee.api.ChatColor;
-import org.bukkit.entity.Player;
-import net.hypixel.skyblock.item.MaterialStatistics;
-import net.hypixel.skyblock.item.SItem;
-import net.hypixel.skyblock.item.armor.TickingSet;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import net.hypixel.skyblock.item.MaterialStatistics;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.armor.TickingSet;
+import net.hypixel.skyblock.item.armor.eleganttux.ElegantTuxBoots;
+import net.hypixel.skyblock.item.armor.eleganttux.ElegantTuxChestplate;
+import net.hypixel.skyblock.item.armor.eleganttux.ElegantTuxLeggings;
+import net.hypixel.skyblock.item.armor.eleganttux.nullhelm;
+import net.md_5.bungee.api.ChatColor;
+import org.bukkit.entity.Player;
 
-public class ElegantTuxedo implements TickingSet {
+public class ElegantTuxedo
+implements TickingSet {
     @Override
     public String getName() {
         return "Dashing!";
@@ -17,7 +28,7 @@ public class ElegantTuxedo implements TickingSet {
 
     @Override
     public String getDescription() {
-        return "Max health set to " + ChatColor.RED + "250❤ " + ChatColor.GRAY + "Deal " + ChatColor.GREEN + "+150% " + ChatColor.GRAY + "more damage!";
+        return "Max health set to " + ChatColor.RED + "250\u2764 " + ChatColor.GRAY + "Deal " + ChatColor.GREEN + "+150% " + ChatColor.GRAY + "more damage!";
     }
 
     @Override
@@ -41,6 +52,7 @@ public class ElegantTuxedo implements TickingSet {
     }
 
     @Override
-    public void tick(final Player owner, final SItem helmet, final SItem chestplate, final SItem leggings, final SItem boots, final List<AtomicInteger> counters) {
+    public void tick(Player owner, SItem helmet, SItem chestplate, SItem leggings, SItem boots, List<AtomicInteger> counters) {
     }
 }
+

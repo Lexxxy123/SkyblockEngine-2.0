@@ -1,8 +1,47 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.minecraft.server.v1_8_R3.AttributeInstance
+ *  net.minecraft.server.v1_8_R3.Entity
+ *  net.minecraft.server.v1_8_R3.EntityLiving
+ *  net.minecraft.server.v1_8_R3.GenericAttributes
+ *  net.minecraft.server.v1_8_R3.MathHelper
+ *  net.minecraft.server.v1_8_R3.MobEffectList
+ *  net.minecraft.server.v1_8_R3.Packet
+ *  net.minecraft.server.v1_8_R3.PacketPlayOutAnimation
+ *  org.bukkit.Bukkit
+ *  org.bukkit.GameMode
+ *  org.bukkit.Location
+ *  org.bukkit.Sound
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.entity.LivingEntity
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.entity.EntityDamageByEntityEvent
+ *  org.bukkit.metadata.FixedMetadataValue
+ *  org.bukkit.metadata.MetadataValue
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.scheduler.BukkitRunnable
+ *  org.bukkit.util.Vector
+ */
 package net.hypixel.skyblock.entity.dungeons.boss.sadan;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import net.hypixel.skyblock.SkyBlock;
-import net.minecraft.server.v1_8_R3.*;
+import net.hypixel.skyblock.entity.SEntity;
+import net.hypixel.skyblock.entity.zombie.BaseZombie;
+import net.hypixel.skyblock.util.EntityManager;
+import net.hypixel.skyblock.util.Sputnik;
+import net.minecraft.server.v1_8_R3.AttributeInstance;
+import net.minecraft.server.v1_8_R3.EntityLiving;
+import net.minecraft.server.v1_8_R3.GenericAttributes;
+import net.minecraft.server.v1_8_R3.MathHelper;
+import net.minecraft.server.v1_8_R3.MobEffectList;
+import net.minecraft.server.v1_8_R3.Packet;
+import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -15,14 +54,13 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import net.hypixel.skyblock.entity.SEntity;
-import net.hypixel.skyblock.entity.zombie.BaseZombie;
-import net.hypixel.skyblock.util.EntityManager;
-import net.hypixel.skyblock.util.Sputnik;
 
-public class WokeGolem_W extends BaseZombie {
+public class WokeGolem_W
+extends BaseZombie {
     @Override
     public String getEntityName() {
         return Sputnik.trans("&c&lWoke Golem");
@@ -39,17 +77,21 @@ public class WokeGolem_W extends BaseZombie {
     }
 
     @Override
-    public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
-        ((CraftZombie) entity).setBaby(false);
-        final AttributeInstance followRange = ((CraftLivingEntity) entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
+    public void onSpawn(final LivingEntity entity, SEntity sEntity) {
+        ((CraftZombie)entity).setBaby(false);
+        AttributeInstance followRange = ((CraftLivingEntity)entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
         followRange.setValue(500.0);
-        Sputnik.applyPacketGolem(entity);
-        EntityManager.DEFENSE_PERCENTAGE.put(entity, 0);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        entity.setMetadata("NNPS", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        new BukkitRunnable() {
-            Location loc = entity.getLocation();
-            final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
+        Sputnik.applyPacketGolem((Entity)entity);
+        EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 0);
+        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        entity.setMetadata("NNPS", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        new BukkitRunnable(){
+            Location loc;
+            final EntityLiving nms;
+            {
+                this.loc = entity.getLocation();
+                this.nms = ((CraftLivingEntity)entity).getHandle();
+            }
 
             public void run() {
                 if (entity.isDead()) {
@@ -58,18 +100,18 @@ public class WokeGolem_W extends BaseZombie {
                 }
                 this.loc.setY(0.0);
                 this.nms.setSprinting(false);
-                final Location loc2 = entity.getLocation();
+                Location loc2 = entity.getLocation();
                 loc2.setY(0.0);
                 if (entity.hasMetadata("frozen")) {
                     return;
                 }
-                if (((CraftZombie) entity).getTarget() == null) {
+                if (((CraftZombie)entity).getTarget() == null) {
                     return;
                 }
-                if (((CraftZombie) entity).getTarget().getWorld() != entity.getWorld()) {
+                if (((CraftZombie)entity).getTarget().getWorld() != entity.getWorld()) {
                     return;
                 }
-                if (((CraftZombie) entity).getTarget().getLocation().distance(entity.getLocation()) <= 4.0) {
+                if (((CraftZombie)entity).getTarget().getLocation().distance(entity.getLocation()) <= 4.0) {
                     return;
                 }
                 if (this.loc.distance(loc2) >= 0.2) {
@@ -79,12 +121,12 @@ public class WokeGolem_W extends BaseZombie {
                         double motX = 0.0;
                         double motZ = 0.0;
                         if (this.nms.hasEffect(MobEffectList.JUMP)) {
-                            motY += (this.nms.getEffect(MobEffectList.JUMP).getAmplifier() + 1) * 0.2f;
+                            motY += (double)((float)(this.nms.getEffect(MobEffectList.JUMP).getAmplifier() + 1) * 0.2f);
                         }
                         if (this.nms.isSprinting()) {
-                            final float f = this.nms.yaw * 0.01745329f;
-                            motX -= MathHelper.sin(f) * 0.6f;
-                            motZ += MathHelper.cos(f) * 0.6f;
+                            float f2 = this.nms.yaw * 0.01745329f;
+                            motX -= (double)(MathHelper.sin((float)f2) * 0.6f);
+                            motZ += (double)(MathHelper.cos((float)f2) * 0.6f);
                         }
                         entity.setVelocity(new Vector(motX, motY, motZ));
                     }
@@ -93,47 +135,37 @@ public class WokeGolem_W extends BaseZombie {
                 }
                 this.nms.setSprinting(false);
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 7L);
-        new BukkitRunnable() {
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 7L);
+        new BukkitRunnable(){
+
             public void run() {
-                final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
+                EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
-                for (final Entity entities : entity.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 1.5, 1.5, 1.5)) {
-                    if (!(entities instanceof Player)) {
-                        continue;
-                    }
-                    final Player target = (Player) entities;
-                    if (target.getGameMode() == GameMode.CREATIVE) {
-                        continue;
-                    }
-                    if (target.getGameMode() == GameMode.SPECTATOR) {
-                        continue;
-                    }
-                    if (target.hasMetadata("NPC")) {
-                        continue;
-                    }
+                for (Entity entities : entity.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 1.5, 1.5, 1.5)) {
+                    Player target;
+                    if (!(entities instanceof Player) || (target = (Player)entities).getGameMode() == GameMode.CREATIVE || target.getGameMode() == GameMode.SPECTATOR || target.hasMetadata("NPC")) continue;
                     entity.teleport(entity.getLocation().setDirection(target.getLocation().toVector().subtract(target.getLocation().toVector())));
-                    for (final Player players : Bukkit.getOnlinePlayers()) {
-                        ((CraftPlayer) players).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) entity).getHandle(), 0));
+                    for (Player players : Bukkit.getOnlinePlayers()) {
+                        ((CraftPlayer)players).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)entity).getHandle(), 0));
                     }
-                    nms.r(((CraftPlayer) target).getHandle());
+                    nms.r((net.minecraft.server.v1_8_R3.Entity)((CraftPlayer)target).getHandle());
                     break;
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 2L);
     }
 
     @Override
-    public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
+    public void onDeath(SEntity sEntity, Entity killed, Entity damager) {
         killed.getWorld().playSound(killed.getLocation(), Sound.IRONGOLEM_DEATH, 1.0f, 1.0f);
     }
 
     @Override
-    public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
-        e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.IRONGOLEM_HIT, 1.0f, 1.0f);
+    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
+        e2.getEntity().getWorld().playSound(e2.getEntity().getLocation(), Sound.IRONGOLEM_HIT, 1.0f, 1.0f);
     }
 
     @Override
@@ -161,3 +193,4 @@ public class WokeGolem_W extends BaseZombie {
         return 0.37;
     }
 }
+

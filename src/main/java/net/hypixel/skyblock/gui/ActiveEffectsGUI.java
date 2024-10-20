@@ -1,7 +1,26 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ *  org.bukkit.Material
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.inventory.InventoryClickEvent
+ *  org.bukkit.inventory.ItemStack
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.scheduler.BukkitRunnable
+ */
 package net.hypixel.skyblock.gui;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.features.potion.ActivePotionEffect;
+import net.hypixel.skyblock.gui.GUI;
+import net.hypixel.skyblock.gui.GUIClickableItem;
+import net.hypixel.skyblock.gui.GUIOpenEvent;
+import net.hypixel.skyblock.gui.GUIType;
 import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.PaginationList;
 import net.hypixel.skyblock.util.SUtil;
@@ -10,17 +29,15 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-public class ActiveEffectsGUI extends GUI {
-    private static final int[] INTERIOR;
+public class ActiveEffectsGUI
+extends GUI {
+    private static final int[] INTERIOR = new int[]{10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43};
     private int page;
 
-    public ActiveEffectsGUI(final int page) {
+    public ActiveEffectsGUI(int page) {
         super("Active Effects", 54);
         this.page = page;
     }
@@ -30,11 +47,11 @@ public class ActiveEffectsGUI extends GUI {
     }
 
     @Override
-    public void onOpen(final GUIOpenEvent e) {
-        final Player player = e.getPlayer();
-        final User user = User.getUser(player.getUniqueId());
+    public void onOpen(GUIOpenEvent e2) {
+        final Player player = e2.getPlayer();
+        User user = User.getUser(player.getUniqueId());
         this.border(BLACK_STAINED_GLASS_PANE);
-        final PaginationList<ActivePotionEffect> paged = new PaginationList<ActivePotionEffect>(28);
+        PaginationList paged = new PaginationList(28);
         paged.addAll(user.getEffects());
         if (paged.size() == 0) {
             this.page = 0;
@@ -42,10 +59,11 @@ public class ActiveEffectsGUI extends GUI {
         final int finalPage = this.page;
         this.title = "(" + this.page + "/" + paged.getPageCount() + ") Active Effects";
         if (this.page > 1) {
-            this.set(new GUIClickableItem() {
+            this.set(new GUIClickableItem(){
+
                 @Override
-                public void run(final InventoryClickEvent e) {
-                    new ActiveEffectsGUI(finalPage - 1).open((Player) e.getWhoClicked());
+                public void run(InventoryClickEvent e2) {
+                    new ActiveEffectsGUI(finalPage - 1).open((Player)e2.getWhoClicked());
                 }
 
                 @Override
@@ -60,10 +78,11 @@ public class ActiveEffectsGUI extends GUI {
             });
         }
         if (this.page != paged.getPageCount()) {
-            this.set(new GUIClickableItem() {
+            this.set(new GUIClickableItem(){
+
                 @Override
-                public void run(final InventoryClickEvent e) {
-                    new ActiveEffectsGUI(finalPage + 1).open((Player) e.getWhoClicked());
+                public void run(InventoryClickEvent e2) {
+                    new ActiveEffectsGUI(finalPage + 1).open((Player)e2.getWhoClicked());
                 }
 
                 @Override
@@ -77,18 +96,18 @@ public class ActiveEffectsGUI extends GUI {
                 }
             });
         }
-        this.set(4, SUtil.getStack(ChatColor.GREEN + "Active Effects", Material.POTION, (short) 0, 1, ChatColor.GRAY + "View and manage all of your", ChatColor.GRAY + "active potion effects.", " ", ChatColor.GRAY + "Drink Potions or splash them", ChatColor.GRAY + "on the ground to buff yourself!", " ", ChatColor.GRAY + "Currently Active: " + ChatColor.YELLOW + user.getEffects().size()));
+        this.set(4, SUtil.getStack(ChatColor.GREEN + "Active Effects", Material.POTION, (short)0, 1, ChatColor.GRAY + "View and manage all of your", ChatColor.GRAY + "active potion effects.", " ", ChatColor.GRAY + "Drink Potions or splash them", ChatColor.GRAY + "on the ground to buff yourself!", " ", ChatColor.GRAY + "Currently Active: " + ChatColor.YELLOW + user.getEffects().size()));
         this.set(GUIClickableItem.createGUIOpenerItem(GUIType.SKYBLOCK_MENU, player, ChatColor.GREEN + "Go Back", 48, Material.ARROW, ChatColor.GRAY + "To SkyBlock Menu"));
         this.set(GUIClickableItem.getCloseItem(49));
-        final List<ActivePotionEffect> p = paged.getPage(this.page);
-        if (p == null) {
+        List p2 = paged.getPage(this.page);
+        if (p2 == null) {
             return;
         }
-        for (int i = 0; i < p.size(); ++i) {
-            final int slot = ActiveEffectsGUI.INTERIOR[i];
-            final ActivePotionEffect effect = p.get(i);
-            final List<String> lore = new ArrayList<String>(Collections.singletonList(" "));
-            for (final String line : SUtil.splitByWordAndLength(effect.getEffect().getDescription(), 20, "\\s")) {
+        for (int i2 = 0; i2 < p2.size(); ++i2) {
+            int slot = INTERIOR[i2];
+            ActivePotionEffect effect = (ActivePotionEffect)p2.get(i2);
+            ArrayList<String> lore = new ArrayList<String>(Collections.singletonList(" "));
+            for (String line : SUtil.splitByWordAndLength(effect.getEffect().getDescription(), 20, "\\s")) {
                 lore.add(ChatColor.GRAY + line);
             }
             lore.add(" ");
@@ -97,17 +116,15 @@ public class ActiveEffectsGUI extends GUI {
             lore.add(SUtil.findPotionRarity(effect.getEffect().getLevel()).getDisplay());
             this.set(slot, SUtil.getStack(effect.getEffect().getType().getName() + " " + SUtil.toRomanNumeral(effect.getEffect().getLevel()), Material.POTION, effect.getEffect().getType().getColor().getData(), 1, lore));
         }
-        new BukkitRunnable() {
+        new BukkitRunnable(){
+
             public void run() {
-                if (ActiveEffectsGUI.this != GUI_MAP.get(player.getUniqueId())) {
+                if (ActiveEffectsGUI.this != GUI.GUI_MAP.get(player.getUniqueId())) {
                     return;
                 }
                 new ActiveEffectsGUI(ActiveEffectsGUI.this.page).open(player);
             }
-        }.runTaskLater(SkyBlock.getPlugin(), 20L);
-    }
-
-    static {
-        INTERIOR = new int[]{10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43};
+        }.runTaskLater((Plugin)SkyBlock.getPlugin(), 20L);
     }
 }
+

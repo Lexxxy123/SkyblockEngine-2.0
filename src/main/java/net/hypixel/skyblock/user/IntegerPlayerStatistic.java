@@ -1,15 +1,21 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.user;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import net.hypixel.skyblock.user.PlayerStatistic;
 
-public class IntegerPlayerStatistic implements PlayerStatistic<Integer> {
+public class IntegerPlayerStatistic
+implements PlayerStatistic<Integer> {
     private final int defaultValue;
     private final ArrayList<Integer> values;
 
-    public IntegerPlayerStatistic(final int defaultValue) {
+    public IntegerPlayerStatistic(int defaultValue) {
         this.defaultValue = defaultValue;
-        (this.values = new ArrayList<Integer>(6)).addAll(Arrays.asList(0, 0, 0, 0, 0, 0));
+        this.values = new ArrayList<Integer>(6);
+        this.values.addAll(Arrays.asList(0, 0, 0, 0, 0, 0));
     }
 
     public IntegerPlayerStatistic() {
@@ -20,46 +26,46 @@ public class IntegerPlayerStatistic implements PlayerStatistic<Integer> {
     public Integer addAll() {
         int result = this.defaultValue;
         for (Integer value : new ArrayList<Integer>(this.values)) {
-            result += value;
+            result += value.intValue();
         }
         return result;
     }
 
     @Override
-    public void add(final int slot, final Integer i) {
-        this.set(slot, Integer.valueOf(this.safeGet(slot) + i));
+    public void add(int slot, Integer i2) {
+        this.set(slot, this.safeGet(slot) + i2);
     }
 
     @Override
-    public void sub(final int slot, final Integer i) {
-        this.set(slot, Integer.valueOf(this.safeGet(slot) - i));
+    public void sub(int slot, Integer i2) {
+        this.set(slot, this.safeGet(slot) - i2);
     }
 
     @Override
-    public void zero(final int slot) {
-        this.set(slot, Integer.valueOf(0));
+    public void zero(int slot) {
+        this.set(slot, 0);
     }
 
     @Override
-    public boolean contains(final int slot) {
+    public boolean contains(int slot) {
         return slot >= 0 && slot < this.values.size();
     }
 
     @Override
-    public Integer safeGet(final int index) {
+    public Integer safeGet(int index) {
         if (index < 0 || index > this.values.size() - 1) {
-            this.set(index, Integer.valueOf(0));
+            this.set(index, 0);
         }
         return this.values.get(index);
     }
 
     @Override
-    public void set(final int slot, final Integer i) {
+    public void set(int slot, Integer i2) {
         this.values.ensureCapacity(slot + 1);
         while (this.values.size() < slot + 1) {
             this.values.add(0);
         }
-        this.values.set(slot, i);
+        this.values.set(slot, i2);
     }
 
     @Override
@@ -68,14 +74,14 @@ public class IntegerPlayerStatistic implements PlayerStatistic<Integer> {
     }
 
     @Override
-    public Integer getFor(final int slot) {
+    public Integer getFor(int slot) {
         return this.safeGet(slot);
     }
 
     public ArrayList<Integer> forInventory() {
-        final ArrayList<Integer> list = new ArrayList<Integer>();
-        for (int i = 6; i < this.values.size(); ++i) {
-            list.add(this.safeGet(i));
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        for (int i2 = 6; i2 < this.values.size(); ++i2) {
+            list.add(this.safeGet(i2));
         }
         return list;
     }
@@ -84,3 +90,4 @@ public class IntegerPlayerStatistic implements PlayerStatistic<Integer> {
         return this.defaultValue;
     }
 }
+

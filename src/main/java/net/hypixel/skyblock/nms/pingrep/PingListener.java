@@ -1,5 +1,11 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.nms.pingrep;
 
+import net.hypixel.skyblock.nms.pingrep.PingEvent;
+
 public interface PingListener {
-    void onPing(final PingEvent p0);
+    public void onPing(PingEvent var1);
 }
+

@@ -1,13 +1,17 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.entity.den;
-
-import net.hypixel.skyblock.entity.EntityDrop;
-import net.hypixel.skyblock.entity.EntityDropType;
-import net.hypixel.skyblock.item.SMaterial;
 
 import java.util.Collections;
 import java.util.List;
+import net.hypixel.skyblock.entity.EntityDrop;
+import net.hypixel.skyblock.entity.EntityDropType;
+import net.hypixel.skyblock.entity.den.BaseSpider;
+import net.hypixel.skyblock.item.SMaterial;
 
-public class TarantulaVermin extends BaseSpider {
+public class TarantulaVermin
+extends BaseSpider {
     @Override
     public String getEntityName() {
         return "Tarantula Vermin";
@@ -22,11 +26,6 @@ public class TarantulaVermin extends BaseSpider {
     public double getDamageDealt() {
         return 900.0;
     }
-    
-    @Override
-    public int mobLevel() {
-        return 110;
-    }
 
     @Override
     public double getXPDropped() {
@@ -38,3 +37,4 @@ public class TarantulaVermin extends BaseSpider {
         return Collections.singletonList(new EntityDrop(SMaterial.TARANTULA_WEB, EntityDropType.GUARANTEED, 1.0));
     }
 }
+

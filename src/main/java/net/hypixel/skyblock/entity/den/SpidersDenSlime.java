@@ -1,13 +1,24 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.event.entity.EntityDamageByEntityEvent
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.scheduler.BukkitRunnable
+ */
 package net.hypixel.skyblock.entity.den;
 
 import net.hypixel.skyblock.SkyBlock;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 import net.hypixel.skyblock.entity.EntityFunction;
 import net.hypixel.skyblock.entity.SlimeStatistics;
 import net.hypixel.skyblock.util.SUtil;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
-public class SpidersDenSlime implements SlimeStatistics, EntityFunction {
+public class SpidersDenSlime
+implements SlimeStatistics,
+EntityFunction {
     @Override
     public String getEntityName() {
         return "Slime";
@@ -29,12 +40,13 @@ public class SpidersDenSlime implements SlimeStatistics, EntityFunction {
     }
 
     @Override
-    public void onAttack(final EntityDamageByEntityEvent e) {
-        new BukkitRunnable() {
+    public void onAttack(final EntityDamageByEntityEvent e2) {
+        new BukkitRunnable(){
+
             public void run() {
-                e.getEntity().setVelocity(e.getEntity().getVelocity().clone().setY(1.5));
+                e2.getEntity().setVelocity(e2.getEntity().getVelocity().clone().setY(1.5));
             }
-        }.runTaskLater(SkyBlock.getPlugin(), 1L);
+        }.runTaskLater((Plugin)SkyBlock.getPlugin(), 1L);
     }
 
     @Override
@@ -42,3 +54,4 @@ public class SpidersDenSlime implements SlimeStatistics, EntityFunction {
         return 4.0;
     }
 }
+

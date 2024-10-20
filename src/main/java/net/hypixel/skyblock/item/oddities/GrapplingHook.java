@@ -1,44 +1,63 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ *  org.bukkit.GameMode
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.player.PlayerFishEvent
+ *  org.bukkit.event.player.PlayerFishEvent$State
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.scheduler.BukkitRunnable
+ */
 package net.hypixel.skyblock.item.oddities;
-
-import net.hypixel.skyblock.SkyBlock;
-import net.hypixel.skyblock.item.*;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerFishEvent;
-import org.bukkit.scheduler.BukkitRunnable;
-import net.hypixel.skyblock.util.Sputnik;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.item.FishingRodFunction;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialStatistics;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.util.Sputnik;
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
-public class GrapplingHook implements MaterialStatistics, FishingRodFunction {
-    private static final List<UUID> COOLDOWN;
+public class GrapplingHook
+implements MaterialStatistics,
+FishingRodFunction {
+    private static final List<UUID> COOLDOWN = new ArrayList<UUID>();
 
     @Override
-    public void onFish(final SItem instance, final PlayerFishEvent e) {
-        final PlayerFishEvent.State state = e.getState();
+    public void onFish(SItem instance, PlayerFishEvent e2) {
+        PlayerFishEvent.State state = e2.getState();
         if (state != PlayerFishEvent.State.FAILED_ATTEMPT && state != PlayerFishEvent.State.IN_GROUND) {
             return;
         }
-        final Player player = e.getPlayer();
+        final Player player = e2.getPlayer();
         if (!Sputnik.tpAbilUsable(player)) {
             player.sendMessage(ChatColor.RED + "Dimoon destroyed your hook! Yikes!");
             return;
         }
-        if (GrapplingHook.COOLDOWN.contains(player.getUniqueId())) {
+        if (COOLDOWN.contains(player.getUniqueId())) {
             player.sendMessage(ChatColor.RED + "Whow! Slow down there!");
             return;
         }
-        player.setVelocity(player.getLocation().toVector().subtract(e.getHook().getLocation().toVector()).multiply(-1.0).multiply(0.5).setY(0.9));
+        player.setVelocity(player.getLocation().toVector().subtract(e2.getHook().getLocation().toVector()).multiply(-1.0).multiply(0.5).setY(0.9));
         if (player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
-            GrapplingHook.COOLDOWN.add(player.getUniqueId());
-            new BukkitRunnable() {
+            COOLDOWN.add(player.getUniqueId());
+            new BukkitRunnable(){
+
                 public void run() {
-                    GrapplingHook.COOLDOWN.remove(player.getUniqueId());
+                    COOLDOWN.remove(player.getUniqueId());
                 }
-            }.runTaskLater(SkyBlock.getPlugin(), 40L);
+            }.runTaskLater((Plugin)SkyBlock.getPlugin(), 40L);
         }
     }
 
@@ -61,8 +80,5 @@ public class GrapplingHook implements MaterialStatistics, FishingRodFunction {
     public String getLore() {
         return "Travel around in style using this Grappling Hook. 2 Second Cooldown";
     }
-
-    static {
-        COOLDOWN = new ArrayList<UUID>();
-    }
 }
+

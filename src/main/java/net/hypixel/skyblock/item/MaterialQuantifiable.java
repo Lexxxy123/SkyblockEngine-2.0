@@ -1,5 +1,14 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Material
+ *  org.bukkit.inventory.ItemStack
+ */
 package net.hypixel.skyblock.item;
 
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.SMaterial;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -26,12 +35,11 @@ public class MaterialQuantifiable {
         return this;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof MaterialQuantifiable)) {
+    public boolean equals(Object o2) {
+        if (!(o2 instanceof MaterialQuantifiable)) {
             return false;
         }
-        MaterialQuantifiable material = (MaterialQuantifiable) o;
+        MaterialQuantifiable material = (MaterialQuantifiable)o2;
         return material.material == this.material && material.amount == this.amount;
     }
 
@@ -39,14 +47,13 @@ public class MaterialQuantifiable {
         return new MaterialQuantifiable(this.material, this.amount);
     }
 
-    @Override
     public String toString() {
-        return "MQ{material=" + ((null != this.material) ? this.material.name() : "?") + ", amount=" + this.amount + "}";
+        return "MQ{material=" + (null != this.material ? this.material.name() : "?") + ", amount=" + this.amount + "}";
     }
 
     public static MaterialQuantifiable of(ItemStack stack) {
         if (null == stack || Material.AIR == stack.getType()) {
-            return new MaterialQuantifiable(SMaterial.AIR, (null != stack) ? stack.getAmount() : 1);
+            return new MaterialQuantifiable(SMaterial.AIR, null != stack ? stack.getAmount() : 1);
         }
         SItem found = SItem.find(stack);
         if (null == found) {
@@ -57,8 +64,8 @@ public class MaterialQuantifiable {
 
     public static MaterialQuantifiable[] of(ItemStack[] stacks) {
         MaterialQuantifiable[] materials = new MaterialQuantifiable[stacks.length];
-        for (int i = 0; i < stacks.length; ++i) {
-            materials[i] = of(stacks[i]);
+        for (int i2 = 0; i2 < stacks.length; ++i2) {
+            materials[i2] = MaterialQuantifiable.of(stacks[i2]);
         }
         return materials;
     }
@@ -71,3 +78,4 @@ public class MaterialQuantifiable {
         return this.amount;
     }
 }
+

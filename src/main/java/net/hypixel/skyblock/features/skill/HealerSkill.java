@@ -1,14 +1,23 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ */
 package net.hypixel.skyblock.features.skill;
-
-import org.bukkit.ChatColor;
-import net.hypixel.skyblock.user.User;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import net.hypixel.skyblock.features.skill.DungeonsSkill;
+import net.hypixel.skyblock.features.skill.Skill;
+import net.hypixel.skyblock.user.User;
+import org.bukkit.ChatColor;
 
-public class HealerSkill extends Skill implements DungeonsSkill {
-    public static final HealerSkill INSTANCE;
+public class HealerSkill
+extends Skill
+implements DungeonsSkill {
+    public static final HealerSkill INSTANCE = new HealerSkill();
 
     @Override
     public String getName() {
@@ -26,7 +35,7 @@ public class HealerSkill extends Skill implements DungeonsSkill {
     }
 
     @Override
-    public List<String> getLevelUpInformation(final int level, final int lastLevel, final boolean showOld) {
+    public List<String> getLevelUpInformation(int level, int lastLevel, boolean showOld) {
         return Collections.singletonList("");
     }
 
@@ -36,38 +45,35 @@ public class HealerSkill extends Skill implements DungeonsSkill {
     }
 
     @Override
-    public void onSkillUpdate(final User user, final double previousXP) {
+    public void onSkillUpdate(User user, double previousXP) {
         super.onSkillUpdate(user, previousXP);
     }
 
     @Override
     public List<String> getPassive() {
-        final List<String> t = new ArrayList<String>();
-        t.add("Renew");
-        t.add("Healing Aura");
-        t.add("Revive");
-        t.add("Orbies" + ChatColor.RED + " Soon!");
-        t.add("Soul Tether" + ChatColor.RED + " Soon!");
-        return t;
+        ArrayList<String> t2 = new ArrayList<String>();
+        t2.add("Renew");
+        t2.add("Healing Aura");
+        t2.add("Revive");
+        t2.add("Orbies" + ChatColor.RED + " Soon!");
+        t2.add("Soul Tether" + ChatColor.RED + " Soon!");
+        return t2;
     }
 
     @Override
     public List<String> getOrb() {
-        final List<String> t = new ArrayList<String>();
-        t.add("Healing Circle");
-        t.add("Wish");
-        return t;
+        ArrayList<String> t2 = new ArrayList<String>();
+        t2.add("Healing Circle");
+        t2.add("Wish");
+        return t2;
     }
 
     @Override
     public List<String> getGhost() {
-        final List<String> t = new ArrayList<String>();
-        t.add("Healing Potion");
-        t.add("Revive Self");
-        return t;
-    }
-
-    static {
-        INSTANCE = new HealerSkill();
+        ArrayList<String> t2 = new ArrayList<String>();
+        t2.add("Healing Potion");
+        t2.add("Revive Self");
+        return t2;
     }
 }
+

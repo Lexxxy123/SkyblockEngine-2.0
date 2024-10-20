@@ -1,29 +1,44 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ *  org.bukkit.World
+ *  org.bukkit.command.ConsoleCommandSender
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.command;
 
+import net.hypixel.skyblock.command.CommandFailException;
+import net.hypixel.skyblock.command.CommandParameters;
+import net.hypixel.skyblock.command.CommandSource;
+import net.hypixel.skyblock.command.SCommand;
 import net.hypixel.skyblock.features.enchantment.Enchantment;
 import net.hypixel.skyblock.features.enchantment.EnchantmentType;
 import net.hypixel.skyblock.features.ranks.PlayerRank;
-import org.bukkit.ChatColor;
-import org.bukkit.World;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
 import net.hypixel.skyblock.item.GenericItemType;
 import net.hypixel.skyblock.item.SItem;
 import net.hypixel.skyblock.item.SMaterial;
 import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.Sputnik;
+import org.bukkit.ChatColor;
+import org.bukkit.World;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 
-@CommandParameters(description = "Adds an enchantment from Spec to the specified item.", aliases = "rench", permission = PlayerRank.DEFAULT)
-public class RemoveEnchantCommand extends SCommand {
+@CommandParameters(description="Adds an enchantment from Spec to the specified item.", aliases="rench", permission=PlayerRank.DEFAULT)
+public class RemoveEnchantCommand
+extends SCommand {
     @Override
-    public void run(final CommandSource sender, final String[] args) {
-        final Player player = sender.getPlayer();
-        final World world = player.getWorld();
-        final SItem sitem = SItem.find(player.getItemInHand());
+    public void run(CommandSource sender, String[] args) {
+        String lowerCase;
+        Player player = sender.getPlayer();
+        World world = player.getWorld();
+        SItem sitem = SItem.find(player.getItemInHand());
         if (sender instanceof ConsoleCommandSender) {
             throw new CommandFailException("Console senders cannot use this command!");
         }
-        final User user = sender.getUser();
+        User user = sender.getUser();
         if (args.length == 0) {
             this.send(ChatColor.RED + "Invaild Syntax! The command is /rench <specific/all> <type> (Only needed for Specific mode)");
             return;
@@ -36,21 +51,20 @@ public class RemoveEnchantCommand extends SCommand {
             this.send(ChatColor.RED + "You can't execute this command while holding this Item!");
             return;
         }
-        final String lowerCase = args[0].toLowerCase();
-        switch (lowerCase) {
+        switch (lowerCase = args[0].toLowerCase()) {
             case "specific": {
                 if (args.length < 2) {
                     this.send(ChatColor.RED + "Missing enchantment type for specific removal mode!");
                     return;
                 }
-                final EnchantmentType type = EnchantmentType.getByNamespace(args[1]);
+                EnchantmentType type = EnchantmentType.getByNamespace(args[1]);
                 if (type == null) {
                     throw new CommandFailException(ChatColor.RED + "Invalid enchantment type!");
                 }
                 if (sitem.getEnchantment(type) == null) {
                     throw new CommandFailException(ChatColor.RED + "You can't remove an Enchantment which does not exist on your item!");
                 }
-                final SItem book = SItem.of(SMaterial.ENCHANTED_BOOK);
+                SItem book = SItem.of(SMaterial.ENCHANTED_BOOK);
                 book.addEnchantment(type, sitem.getEnchantment(type).getLevel());
                 sitem.removeEnchantment(type);
                 player.setItemInHand(sitem.getStack());
@@ -67,10 +81,10 @@ public class RemoveEnchantCommand extends SCommand {
                     this.send(Sputnik.trans("&cThis action cannot be done with this item!"));
                     return;
                 }
-                final SItem book2 = SItem.of(SMaterial.ENCHANTED_BOOK);
-                for (final Enchantment e : sitem.getEnchantments()) {
-                    book2.addEnchantment(e.getType(), sitem.getEnchantment(e.getType()).getLevel());
-                    sitem.removeEnchantment(e.getType());
+                SItem book2 = SItem.of(SMaterial.ENCHANTED_BOOK);
+                for (Enchantment e2 : sitem.getEnchantments()) {
+                    book2.addEnchantment(e2.getType(), sitem.getEnchantment(e2.getType()).getLevel());
+                    sitem.removeEnchantment(e2.getType());
                 }
                 player.setItemInHand(sitem.getStack());
                 Sputnik.smartGiveItem(book2.getStack(), player);
@@ -80,3 +94,4 @@ public class RemoveEnchantCommand extends SCommand {
         }
     }
 }
+

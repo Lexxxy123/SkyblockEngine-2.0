@@ -1,30 +1,37 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ *  org.bukkit.configuration.serialization.ConfigurationSerializable
+ */
 package net.hypixel.skyblock.features.enchantment;
-
-import org.bukkit.ChatColor;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import net.hypixel.skyblock.util.SUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.hypixel.skyblock.features.enchantment.EnchantmentType;
+import net.hypixel.skyblock.util.SUtil;
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
-public class Enchantment implements ConfigurationSerializable {
+public class Enchantment
+implements ConfigurationSerializable {
     private final EnchantmentType type;
     private final int level;
 
-    public Enchantment(final EnchantmentType type, final int level) {
+    public Enchantment(EnchantmentType type, int level) {
         this.type = type;
         this.level = level;
     }
 
-    @Override
     public String toString() {
-        return this.type.getName() + " " + ((this.level <= 3000) ? SUtil.toRomanNumeral(this.level) : SUtil.commaify(this.level));
+        return this.type.getName() + " " + (this.level <= 3000 ? SUtil.toRomanNumeral(this.level) : SUtil.commaify(this.level));
     }
 
     public String getDisplayName() {
-        return (this.type.isUltimate() ? ("" + ChatColor.LIGHT_PURPLE + ChatColor.BOLD) : ChatColor.BLUE) + this.toString();
+        return (this.type.isUltimate() ? "" + ChatColor.LIGHT_PURPLE + ChatColor.BOLD : ChatColor.BLUE) + this.toString();
     }
 
     public String toIdentifiableString() {
@@ -66,7 +73,7 @@ public class Enchantment implements ConfigurationSerializable {
             return this.type.getDescription(this.level * 20);
         }
         if (this.type == EnchantmentType.HARVESTING) {
-            return this.type.getDescription(SUtil.commaify(12.5 * this.level));
+            return this.type.getDescription(SUtil.commaify(12.5 * (double)this.level));
         }
         if (this.type == EnchantmentType.PROTECTION) {
             return this.type.getDescription(3 * this.level);
@@ -81,7 +88,7 @@ public class Enchantment implements ConfigurationSerializable {
             return this.type.getDescription(5 * this.level);
         }
         if (this.type == EnchantmentType.LEGION) {
-            return this.type.getDescription(Math.round(0.07 * this.level * 100.0) / 100.0);
+            return this.type.getDescription((double)Math.round(0.07 * (double)this.level * 100.0) / 100.0);
         }
         if (this.type == EnchantmentType.SOUL_EATER) {
             return this.type.getDescription(2 * this.level);
@@ -90,55 +97,52 @@ public class Enchantment implements ConfigurationSerializable {
             return this.type.getDescription(210 * this.level);
         }
         if (this.type == EnchantmentType.EXECUTE) {
-            return this.type.getDescription(Math.round(0.2 * this.level * 100.0) / 100.0);
+            return this.type.getDescription((double)Math.round(0.2 * (double)this.level * 100.0) / 100.0);
         }
         if (this.type == EnchantmentType.LIFE_STEAL) {
-            return this.type.getDescription(Math.round(0.5 * this.level * 100.0) / 100.0);
+            return this.type.getDescription((double)Math.round(0.5 * (double)this.level * 100.0) / 100.0);
         }
-        return this.type.getDescription();
+        return this.type.getDescription(new Object[0]);
     }
 
-    public static Enchantment getByIdentifiable(final String identifiable) {
-        final String[] spl = identifiable.split("\\.");
+    public static Enchantment getByIdentifiable(String identifiable) {
+        String[] spl = identifiable.split("\\.");
         return new Enchantment(EnchantmentType.getByNamespace(spl[0]), Integer.parseInt(spl[1]));
     }
 
-    public boolean equalsType(final Enchantment enchantment) {
+    public boolean equalsType(Enchantment enchantment) {
         return enchantment.type.equals(this.type);
     }
 
-    @Override
-    public boolean equals(final Object o) {
-        if (!(o instanceof Enchantment)) {
+    public boolean equals(Object o2) {
+        if (!(o2 instanceof Enchantment)) {
             return false;
         }
-        final Enchantment enchantment = (Enchantment) o;
+        Enchantment enchantment = (Enchantment)o2;
         return enchantment.level == this.level && enchantment.type.equals(this.type);
     }
 
     public Map<String, Object> serialize() {
-        final Map<String, Object> map = new HashMap<String, Object>();
+        HashMap<String, Object> map = new HashMap<String, Object>();
         map.put("type", this.type.getNamespace());
         map.put("level", this.level);
         return null;
     }
 
-    public static List<Enchantment> ultimateEnchantsListFromList(final List<Enchantment> list) {
-        final List<Enchantment> filteredList_ultimate = new ArrayList<Enchantment>();
-        for (final Enchantment enchantment : list) {
-            if (enchantment.getDisplayName().contains(ChatColor.LIGHT_PURPLE.toString())) {
-                filteredList_ultimate.add(enchantment);
-            }
+    public static List<Enchantment> ultimateEnchantsListFromList(List<Enchantment> list) {
+        ArrayList<Enchantment> filteredList_ultimate = new ArrayList<Enchantment>();
+        for (Enchantment enchantment : list) {
+            if (!enchantment.getDisplayName().contains(ChatColor.LIGHT_PURPLE.toString())) continue;
+            filteredList_ultimate.add(enchantment);
         }
         return filteredList_ultimate;
     }
 
-    public static List<Enchantment> normalEnchantsListFromList(final List<Enchantment> list) {
-        final List<Enchantment> filteredList_normal = new ArrayList<Enchantment>();
-        for (final Enchantment enchantment : list) {
-            if (!enchantment.getDisplayName().contains(ChatColor.LIGHT_PURPLE.toString())) {
-                filteredList_normal.add(enchantment);
-            }
+    public static List<Enchantment> normalEnchantsListFromList(List<Enchantment> list) {
+        ArrayList<Enchantment> filteredList_normal = new ArrayList<Enchantment>();
+        for (Enchantment enchantment : list) {
+            if (enchantment.getDisplayName().contains(ChatColor.LIGHT_PURPLE.toString())) continue;
+            filteredList_normal.add(enchantment);
         }
         return filteredList_normal;
     }
@@ -151,3 +155,4 @@ public class Enchantment implements ConfigurationSerializable {
         return this.level;
     }
 }
+

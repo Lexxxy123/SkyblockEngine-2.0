@@ -1,14 +1,18 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.features.skill;
 
+import java.util.Arrays;
+import java.util.List;
+import net.hypixel.skyblock.features.skill.Skill;
 import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.SUtil;
 import net.hypixel.skyblock.util.Sputnik;
 
-import java.util.Arrays;
-import java.util.List;
-
-public class CatacombsSkill extends Skill {
-    public static final CatacombsSkill INSTANCE;
+public class CatacombsSkill
+extends Skill {
+    public static final CatacombsSkill INSTANCE = new CatacombsSkill();
 
     @Override
     public String getName() {
@@ -26,7 +30,7 @@ public class CatacombsSkill extends Skill {
     }
 
     @Override
-    public List<String> getLevelUpInformation(final int level, final int lastLevel, final boolean showOld) {
+    public List<String> getLevelUpInformation(int level, int lastLevel, boolean showOld) {
         return Arrays.asList(Sputnik.trans("&7Level " + SUtil.toRomanNumeral(level) + ": &7Increasing the stats"), Sputnik.trans("&7of your Dungeon items by"), Sputnik.trans("&c" + level * 5 + "% &7while in &cThe"), Sputnik.trans("&cCatacombs&7."));
     }
 
@@ -36,11 +40,8 @@ public class CatacombsSkill extends Skill {
     }
 
     @Override
-    public void onSkillUpdate(final User user, final double previousXP) {
+    public void onSkillUpdate(User user, double previousXP) {
         super.onSkillUpdate(user, previousXP);
     }
-
-    static {
-        INSTANCE = new CatacombsSkill();
-    }
 }
+

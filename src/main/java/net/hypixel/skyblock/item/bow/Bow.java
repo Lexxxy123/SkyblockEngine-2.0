@@ -1,11 +1,17 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.bow;
 
 import net.hypixel.skyblock.item.GenericItemType;
 import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.SpecificItemType;
 import net.hypixel.skyblock.item.ToolStatistics;
+import net.hypixel.skyblock.item.bow.BowFunction;
 
-public class Bow implements ToolStatistics, BowFunction {
+public class Bow
+implements ToolStatistics,
+BowFunction {
     @Override
     public String getDisplayName() {
         return "Bow";
@@ -31,3 +37,4 @@ public class Bow implements ToolStatistics, BowFunction {
         return SpecificItemType.BOW;
     }
 }
+

@@ -1,10 +1,22 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ */
 package net.hypixel.skyblock.item.oddities;
 
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.MaterialStatistics;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.Untradeable;
 import org.bukkit.ChatColor;
-import net.hypixel.skyblock.item.*;
 
-public class QuiverArrow implements MaterialStatistics, MaterialFunction, Untradeable {
+public class QuiverArrow
+implements MaterialStatistics,
+MaterialFunction,
+Untradeable {
     @Override
     public String getDisplayName() {
         return ChatColor.DARK_GRAY + "Quiver Arrow";
@@ -30,3 +42,4 @@ public class QuiverArrow implements MaterialStatistics, MaterialFunction, Untrad
         return false;
     }
 }
+

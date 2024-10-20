@@ -1,18 +1,36 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.md_5.bungee.api.ChatColor
+ *  org.bukkit.Location
+ *  org.bukkit.Material
+ *  org.bukkit.Sound
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.item.weapon;
 
-import net.hypixel.skyblock.item.*;
+import java.util.Set;
+import net.hypixel.skyblock.item.Ability;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.PlayerBoostStatistics;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.ToolStatistics;
+import net.hypixel.skyblock.user.PlayerUtils;
+import net.hypixel.skyblock.util.Sputnik;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import net.hypixel.skyblock.item.*;
-import net.hypixel.skyblock.user.PlayerUtils;
-import net.hypixel.skyblock.util.Sputnik;
 
-import java.util.Set;
-
-public class AspectOfTheVoid implements ToolStatistics, MaterialFunction, Ability {
+public class AspectOfTheVoid
+implements ToolStatistics,
+MaterialFunction,
+Ability {
     @Override
     public int getBaseDamage() {
         return 120;
@@ -55,21 +73,20 @@ public class AspectOfTheVoid implements ToolStatistics, MaterialFunction, Abilit
 
     @Override
     public String getAbilityDescription() {
-        return "Teleports you " + ChatColor.GREEN + "8 blocks " + ChatColor.GRAY + "ahead and gain " + ChatColor.GREEN + "+50 " + ChatColor.WHITE + "✦ " + ChatColor.WHITE + "Speed " + ChatColor.GRAY + "for " + ChatColor.GREEN + "3 seconds.";
+        return "Teleports you " + ChatColor.GREEN + "8 blocks " + ChatColor.GRAY + "ahead and gain " + ChatColor.GREEN + "+50 " + ChatColor.WHITE + "\u2726 " + ChatColor.WHITE + "Speed " + ChatColor.GRAY + "for " + ChatColor.GREEN + "3 seconds.";
     }
 
     @Override
-    public void onAbilityUse(final Player player, final SItem sItem) {
+    public void onAbilityUse(Player player, SItem sItem) {
         try {
             int f_ = 8;
             for (int range = 1; range < 8; ++range) {
-                final Location location = player.getTargetBlock((Set) null, range).getLocation();
-                if (location.getBlock().getType() != Material.AIR) {
-                    f_ = range;
-                    break;
-                }
+                Location location = player.getTargetBlock((Set)null, range).getLocation();
+                if (location.getBlock().getType() == Material.AIR) continue;
+                f_ = range;
+                break;
             }
-            final Location location2 = player.getTargetBlock((Set) null, f_ - 1).getLocation();
+            Location location2 = player.getTargetBlock((Set)null, f_ - 1).getLocation();
             location2.setYaw(player.getLocation().getYaw());
             location2.setPitch(player.getLocation().getPitch());
             location2.add(0.5, 0.0, 0.5);
@@ -81,10 +98,12 @@ public class AspectOfTheVoid implements ToolStatistics, MaterialFunction, Abilit
             } else {
                 Sputnik.teleport(player, player.getLocation());
             }
-        } catch (final IllegalStateException ex) {
+        } catch (IllegalStateException illegalStateException) {
+            // empty catch block
         }
         player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 3.0f, 1.0f);
-        PlayerUtils.boostPlayer(PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId()), new PlayerBoostStatistics() {
+        PlayerUtils.boostPlayer(PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId()), new PlayerBoostStatistics(){
+
             @Override
             public String getDisplayName() {
                 return null;
@@ -122,3 +141,4 @@ public class AspectOfTheVoid implements ToolStatistics, MaterialFunction, Abilit
         return 45;
     }
 }
+

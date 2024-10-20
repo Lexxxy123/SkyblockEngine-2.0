@@ -1,28 +1,75 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ *  org.bukkit.Location
+ *  org.bukkit.Material
+ *  org.bukkit.Sound
+ *  org.bukkit.entity.ArmorStand
+ *  org.bukkit.entity.Damageable
+ *  org.bukkit.entity.EnderDragonPart
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.entity.EntityType
+ *  org.bukkit.entity.Item
+ *  org.bukkit.entity.ItemFrame
+ *  org.bukkit.entity.LivingEntity
+ *  org.bukkit.entity.Player
+ *  org.bukkit.entity.Villager
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.scheduler.BukkitRunnable
+ *  org.bukkit.util.EulerAngle
+ *  org.bukkit.util.Vector
+ */
 package net.hypixel.skyblock.item.weapon;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import net.hypixel.skyblock.Repeater;
 import net.hypixel.skyblock.SkyBlock;
-import net.hypixel.skyblock.item.*;
-import net.hypixel.skyblock.util.*;
+import net.hypixel.skyblock.item.Ability;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.SMaterial;
+import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.ToolStatistics;
+import net.hypixel.skyblock.listener.PlayerListener;
+import net.hypixel.skyblock.user.PlayerUtils;
+import net.hypixel.skyblock.user.User;
+import net.hypixel.skyblock.util.DefenseReplacement;
+import net.hypixel.skyblock.util.FerocityCalculation;
+import net.hypixel.skyblock.util.Groups;
+import net.hypixel.skyblock.util.ManaReplacement;
+import net.hypixel.skyblock.util.SLog;
+import net.hypixel.skyblock.util.SUtil;
+import net.hypixel.skyblock.util.Sputnik;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.entity.*;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Damageable;
+import org.bukkit.entity.EnderDragonPart;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.ItemFrame;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
-import net.hypixel.skyblock.Repeater;
-import net.hypixel.skyblock.listener.PlayerListener;
-import net.hypixel.skyblock.user.PlayerUtils;
-import net.hypixel.skyblock.user.User;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-public class AxeOfTheShredded implements ToolStatistics, MaterialFunction, Ability {
-    private static final Map<Player, Integer> axeThrows;
+public class AxeOfTheShredded
+implements ToolStatistics,
+MaterialFunction,
+Ability {
+    private static final Map<Player, Integer> axeThrows = new HashMap<Player, Integer>();
     int currentAxeThrows;
 
     @Override
@@ -67,51 +114,56 @@ public class AxeOfTheShredded implements ToolStatistics, MaterialFunction, Abili
 
     @Override
     public void onAbilityUse(final Player player1, final SItem sItem) {
-        final List<LivingEntity> le = new ArrayList<LivingEntity>();
-        if (!AxeOfTheShredded.axeThrows.containsKey(player1)) {
-            AxeOfTheShredded.axeThrows.put(player1, 0);
+        final ArrayList le = new ArrayList();
+        if (!axeThrows.containsKey(player1)) {
+            axeThrows.put(player1, 0);
         }
-        AxeOfTheShredded.axeThrows.put(player1, AxeOfTheShredded.axeThrows.get(player1) + 1);
-        final int currentAxeThrows1 = AxeOfTheShredded.axeThrows.get(player1);
+        axeThrows.put(player1, axeThrows.get(player1) + 1);
+        int currentAxeThrows1 = axeThrows.get(player1);
         double damageBoost = 0.0;
         int counter = 0;
         int manaCost = 0;
-        this.currentAxeThrows = AxeOfTheShredded.axeThrows.get(player1);
+        this.currentAxeThrows = axeThrows.get(player1);
         switch (this.currentAxeThrows - 1) {
-            case 0:
+            case 0: {
                 manaCost = 20;
                 damageBoost = 0.1;
                 counter = 0;
                 break;
-            case 1:
+            }
+            case 1: {
                 manaCost = 40;
                 damageBoost = 0.2;
                 counter = 1;
                 break;
-            case 2:
+            }
+            case 2: {
                 manaCost = 80;
                 damageBoost = 0.4;
                 counter = 2;
                 break;
-            case 3:
+            }
+            case 3: {
                 manaCost = 160;
                 damageBoost = 0.8;
                 counter = 3;
                 break;
-            default:
+            }
+            default: {
                 manaCost = 320;
                 damageBoost = 1.6;
                 counter = 4;
-                break;
+            }
         }
         final double damageBoost2 = damageBoost;
-        final int manaPool = SUtil.blackMagic(PlayerUtils.STATISTICS_CACHE.get(player1.getUniqueId()).getIntelligence().addAll() + 100.0);
+        int manaPool = SUtil.blackMagic(PlayerUtils.STATISTICS_CACHE.get(player1.getUniqueId()).getIntelligence().addAll() + 100.0);
         final int cost = PlayerUtils.getFinalManaCost(player1, sItem, manaCost);
-        final boolean take = PlayerUtils.takeMana(player1, cost);
+        boolean take = PlayerUtils.takeMana(player1, cost);
         if (!take) {
             player1.playSound(player1.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
-            final long c = System.currentTimeMillis();
-            Repeater.MANA_REPLACEMENT_MAP.put(player1.getUniqueId(), new ManaReplacement() {
+            final long c2 = System.currentTimeMillis();
+            Repeater.MANA_REPLACEMENT_MAP.put(player1.getUniqueId(), new ManaReplacement(){
+
                 @Override
                 public String getReplacement() {
                     return "" + ChatColor.RED + ChatColor.BOLD + "NOT ENOUGH MANA";
@@ -119,13 +171,14 @@ public class AxeOfTheShredded implements ToolStatistics, MaterialFunction, Abili
 
                 @Override
                 public long getEnd() {
-                    return c + 1500L;
+                    return c2 + 1500L;
                 }
             });
             return;
         }
-        final long c = System.currentTimeMillis();
-        Repeater.DEFENSE_REPLACEMENT_MAP.put(player1.getUniqueId(), new DefenseReplacement() {
+        final long c3 = System.currentTimeMillis();
+        Repeater.DEFENSE_REPLACEMENT_MAP.put(player1.getUniqueId(), new DefenseReplacement(){
+
             @Override
             public String getReplacement() {
                 return ChatColor.AQUA + "-" + cost + " Mana (" + ChatColor.GOLD + AxeOfTheShredded.this.getAbilityName() + ChatColor.AQUA + ")";
@@ -133,33 +186,36 @@ public class AxeOfTheShredded implements ToolStatistics, MaterialFunction, Abili
 
             @Override
             public long getEnd() {
-                return c + 2000L;
+                return c3 + 2000L;
             }
         });
-        final Location throwLoc = player1.getLocation().add(0.0, 0.5, 0.0);
+        Location throwLoc = player1.getLocation().add(0.0, 0.5, 0.0);
         final Vector throwVec = player1.getLocation().add(player1.getLocation().getDirection().multiply(10)).toVector().subtract(player1.getLocation().toVector()).normalize().multiply(1.2);
-        final ArmorStand armorStand1 = (ArmorStand) player1.getWorld().spawnEntity(throwLoc, EntityType.ARMOR_STAND);
+        final ArmorStand armorStand1 = (ArmorStand)player1.getWorld().spawnEntity(throwLoc, EntityType.ARMOR_STAND);
         armorStand1.getEquipment().setItemInHand(SItem.of(SMaterial.AXE_OF_THE_SHREDDED).getStack());
         armorStand1.setGravity(false);
         armorStand1.setVisible(false);
         armorStand1.setMarker(true);
-        final Player bukkitPlayer = player1.getPlayer();
+        Player bukkitPlayer = player1.getPlayer();
         final Vector teleportTo = bukkitPlayer.getLocation().getDirection().normalize().multiply(1);
-        final Vector[] previousVector = {throwVec};
+        final Vector[] previousVector = new Vector[]{throwVec};
         if (PlayerUtils.Debugmsg.debugmsg) {
             SLog.info("[AOTS-DEBUG] " + player1.getName() + "'s AOTS Log. Axe Throws Count: " + currentAxeThrows1 + ". Mana Cost: " + cost + ". Data: " + counter);
         }
-        new BukkitRunnable() {
+        new BukkitRunnable(){
             private int run = -1;
 
             public void run() {
-                int j = 0;
-                final int i;
-                final int ran = i = 0;
-                final int num = 90;
-                final Location loc = null;
+                boolean bl2;
+                int angle;
+                Vector newVector;
+                int j2 = 0;
+                int i2 = 0;
+                int ran = 0;
+                int num = 90;
+                Object loc = null;
                 ++this.run;
-                ++j;
+                ++j2;
                 if (this.run > 100) {
                     this.cancel();
                     return;
@@ -168,88 +224,64 @@ public class AxeOfTheShredded implements ToolStatistics, MaterialFunction, Abili
                     this.cancel();
                     return;
                 }
-                final Location locof = armorStand1.getLocation();
+                Location locof = armorStand1.getLocation();
                 locof.setY(locof.getY() + 1.0);
                 if (locof.getBlock().getType() != Material.AIR) {
                     armorStand1.remove();
                     this.cancel();
                     return;
                 }
-                if (j >= 25) {
+                if (j2 >= 25) {
                     armorStand1.remove();
                     this.cancel();
                     return;
                 }
-                final double xPos = armorStand1.getRightArmPose().getX();
+                double xPos = armorStand1.getRightArmPose().getX();
                 armorStand1.setRightArmPose(new EulerAngle(xPos + 0.5, 0.0, 0.0));
-                final Vector newVector = new Vector(throwVec.getX(), previousVector[0].getY() - 0.03, throwVec.getZ());
-                previousVector[0] = newVector;
+                previousVector[0] = newVector = new Vector(throwVec.getX(), previousVector[0].getY() - 0.03, throwVec.getZ());
                 armorStand1.setVelocity(newVector);
-                if (i < 13) {
-                    final int angle = i * 20 + num;
-                    final boolean back = false;
+                if (i2 < 13) {
+                    angle = i2 * 20 + 90;
+                    bl2 = false;
                 } else {
-                    final int angle = i * 20 - num;
-                    final boolean back = true;
+                    angle = i2 * 20 - 90;
+                    bl2 = true;
                 }
                 if (locof.getBlock().getType() != Material.AIR && locof.getBlock().getType() != Material.WATER) {
                     armorStand1.remove();
                     this.cancel();
                     return;
                 }
-                if (i % 2 == 0 && i < 13) {
+                if (i2 % 2 == 0 && i2 < 13) {
                     armorStand1.teleport(armorStand1.getLocation().add(teleportTo).multiply(1.0));
-                } else if (i % 2 == 0) {
+                } else if (i2 % 2 == 0) {
                     armorStand1.teleport(armorStand1.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                 }
-                for (final Entity e : armorStand1.getNearbyEntities(1.0, 1.0, 1.0)) {
-                    if (e instanceof LivingEntity && e != player1.getPlayer()) {
-                        final Damageable entity = (Damageable) e;
-                        if (le.contains(e)) {
-                            continue;
-                        }
-                        if (entity.isDead()) {
-                            continue;
-                        }
-                        if (!(entity instanceof LivingEntity)) {
-                            continue;
-                        }
-                        if (entity instanceof Player || entity instanceof EnderDragonPart || entity instanceof Villager || entity instanceof ArmorStand || entity instanceof Item) {
-                            continue;
-                        }
-                        if (entity instanceof ItemFrame) {
-                            continue;
-                        }
-                        if (entity.hasMetadata("GiantSword")) {
-                            continue;
-                        }
-                        if (entity.hasMetadata("VWE")) {
-                            continue;
-                        }
-                        if (Groups.ENDERMAN.contains(entity.getType())) {
-                            continue;
-                        }
-                        final User user = User.getUser(player1.getUniqueId());
-                        final Object[] atp = Sputnik.calculateDamage(player1, player1, sItem.getStack(), (LivingEntity) entity, false);
-                        final double finalDamage1 = (float) atp[0] * damageBoost2;
-                        le.add((LivingEntity) e);
-                        PlayerListener.spawnDamageInd(entity, (float) atp[2] * damageBoost2, (boolean) atp[1]);
-                        FerocityCalculation.activeFerocityTimes(player1, (LivingEntity) entity, (int) finalDamage1, (boolean) atp[1]);
-                        user.damageEntity(entity, finalDamage1);
-                        if (damageBoost2 == 1.6) {
-                            AxeOfTheShredded.axeThrows.replace(player1, 0);
-                        }
-                        player1.setHealth(Math.min(player1.getMaxHealth(), player1.getHealth() + 50.0));
+                for (Entity e2 : armorStand1.getNearbyEntities(1.0, 1.0, 1.0)) {
+                    if (!(e2 instanceof LivingEntity) || e2 == player1.getPlayer()) continue;
+                    Damageable entity = (Damageable)e2;
+                    if (le.contains(e2) || entity.isDead() || !(entity instanceof LivingEntity) || entity instanceof Player || entity instanceof EnderDragonPart || entity instanceof Villager || entity instanceof ArmorStand || entity instanceof Item || entity instanceof ItemFrame || entity.hasMetadata("GiantSword") || entity.hasMetadata("VWE") || Groups.ENDERMAN.contains(entity.getType())) continue;
+                    User user = User.getUser(player1.getUniqueId());
+                    Object[] atp = Sputnik.calculateDamage(player1, player1, sItem.getStack(), (LivingEntity)entity, false);
+                    double finalDamage1 = (double)((Float)atp[0]).floatValue() * damageBoost2;
+                    le.add((LivingEntity)e2);
+                    PlayerListener.spawnDamageInd((Entity)entity, (double)((Float)atp[2]).floatValue() * damageBoost2, (Boolean)atp[1]);
+                    FerocityCalculation.activeFerocityTimes(player1, (LivingEntity)entity, (int)finalDamage1, (Boolean)atp[1]);
+                    user.damageEntity(entity, finalDamage1);
+                    if (damageBoost2 == 1.6) {
+                        axeThrows.replace(player1, 0);
                     }
+                    player1.setHealth(Math.min(player1.getMaxHealth(), player1.getHealth() + 50.0));
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 1L, 1L);
-        new BukkitRunnable() {
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 1L, 1L);
+        new BukkitRunnable(){
+
             public void run() {
                 armorStand1.remove();
                 this.cancel();
             }
-        }.runTaskLater(SkyBlock.getPlugin(), 40L);
+        }.runTaskLater((Plugin)SkyBlock.getPlugin(), 40L);
     }
 
     @Override
@@ -269,10 +301,7 @@ public class AxeOfTheShredded implements ToolStatistics, MaterialFunction, Abili
 
     @Override
     public String getLore() {
-        return "Heal " + ChatColor.RED + "50" + ChatColor.RED + "❤" + ChatColor.GRAY + " per hit. Deal " + ChatColor.GREEN + "+250% " + ChatColor.GRAY + "damage to Zombies. Receive " + ChatColor.GREEN + "25% " + ChatColor.GRAY + "less damage from Zombies when held.";
-    }
-
-    static {
-        axeThrows = new HashMap<Player, Integer>();
+        return "Heal " + ChatColor.RED + "50" + ChatColor.RED + "\u2764" + ChatColor.GRAY + " per hit. Deal " + ChatColor.GREEN + "+250% " + ChatColor.GRAY + "damage to Zombies. Receive " + ChatColor.GREEN + "25% " + ChatColor.GRAY + "less damage from Zombies when held.";
     }
 }
+

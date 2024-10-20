@@ -1,5 +1,22 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.minecraft.server.v1_8_R3.Entity
+ *  net.minecraft.server.v1_8_R3.EntityArmorStand
+ *  net.minecraft.server.v1_8_R3.World
+ *  org.bukkit.Bukkit
+ *  org.bukkit.Location
+ *  org.bukkit.craftbukkit.v1_8_R3.CraftWorld
+ *  org.bukkit.entity.LivingEntity
+ *  org.bukkit.event.entity.CreatureSpawnEvent$SpawnReason
+ */
 package net.hypixel.skyblock.entity.nms;
 
+import net.hypixel.skyblock.entity.EntityFunction;
+import net.hypixel.skyblock.entity.EntityStatistics;
+import net.hypixel.skyblock.entity.nms.SNMSEntity;
+import net.minecraft.server.v1_8_R3.Entity;
 import net.minecraft.server.v1_8_R3.EntityArmorStand;
 import net.minecraft.server.v1_8_R3.World;
 import org.bukkit.Bukkit;
@@ -7,52 +24,61 @@ import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import net.hypixel.skyblock.entity.EntityFunction;
-import net.hypixel.skyblock.entity.EntityStatistics;
 
-public class VelocityArmorStand extends EntityArmorStand implements EntityStatistics, EntityFunction, SNMSEntity {
-    public VelocityArmorStand(final World world) {
+public class VelocityArmorStand
+extends EntityArmorStand
+implements EntityStatistics,
+EntityFunction,
+SNMSEntity {
+    public VelocityArmorStand(World world) {
         super(world);
         this.setGravity(true);
         this.noclip = true;
     }
 
     public VelocityArmorStand() {
-        this(((CraftWorld) Bukkit.getWorlds().get(0)).getHandle());
+        this((World)((CraftWorld)Bukkit.getWorlds().get(0)).getHandle());
     }
 
-    public void g(final float f, final float f1) {
+    public void g(float f2, float f1) {
         if (!this.hasGravity()) {
-            super.g(f, f1);
+            super.g(f2, f1);
         } else {
             this.move(this.motX, this.motY, this.motZ);
         }
     }
 
+    @Override
     public String getEntityName() {
         return null;
     }
 
+    @Override
     public double getEntityMaxHealth() {
         return 1.0;
     }
 
+    @Override
     public double getDamageDealt() {
         return 0.0;
     }
 
+    @Override
     public boolean hasNameTag() {
         return false;
     }
 
+    @Override
     public double getXPDropped() {
         return 0.0;
     }
 
-    public LivingEntity spawn(final Location location) {
-        this.world = ((CraftWorld) location.getWorld()).getHandle();
+    @Override
+    public LivingEntity spawn(Location location) {
+        this.world = ((CraftWorld)location.getWorld()).getHandle();
         this.setPosition(location.getX(), location.getY(), location.getZ());
-        this.world.addEntity(this, CreatureSpawnEvent.SpawnReason.CUSTOM);
-        return (LivingEntity) this.getBukkitEntity();
+        this.world.addEntity((Entity)this, CreatureSpawnEvent.SpawnReason.CUSTOM);
+        return (LivingEntity)this.getBukkitEntity();
     }
 }
+

@@ -1,11 +1,26 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Sound
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.item.weapon;
 
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.item.Ability;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.ToolStatistics;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import net.hypixel.skyblock.item.*;
 
-public class AspectOfTheJerry implements ToolStatistics, MaterialFunction, Ability {
+public class AspectOfTheJerry
+implements ToolStatistics,
+MaterialFunction,
+Ability {
     @Override
     public String getAbilityName() {
         return "Parley";
@@ -22,7 +37,7 @@ public class AspectOfTheJerry implements ToolStatistics, MaterialFunction, Abili
     }
 
     @Override
-    public void onAbilityUse(final Player player, final SItem sItem) {
+    public void onAbilityUse(Player player, SItem sItem) {
         player.playSound(player.getLocation(), Sound.VILLAGER_IDLE, 1.0f, 1.0f);
     }
 
@@ -56,3 +71,4 @@ public class AspectOfTheJerry implements ToolStatistics, MaterialFunction, Abili
         return SpecificItemType.SWORD;
     }
 }
+

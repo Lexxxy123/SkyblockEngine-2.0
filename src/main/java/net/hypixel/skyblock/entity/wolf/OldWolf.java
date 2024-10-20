@@ -1,13 +1,17 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.entity.wolf;
-
-import net.hypixel.skyblock.entity.EntityDrop;
-import net.hypixel.skyblock.entity.EntityDropType;
-import net.hypixel.skyblock.item.SMaterial;
 
 import java.util.Collections;
 import java.util.List;
+import net.hypixel.skyblock.entity.EntityDrop;
+import net.hypixel.skyblock.entity.EntityDropType;
+import net.hypixel.skyblock.entity.wolf.BaseWolf;
+import net.hypixel.skyblock.item.SMaterial;
 
-public class OldWolf extends BaseWolf {
+public class OldWolf
+extends BaseWolf {
     @Override
     public String getEntityName() {
         return "Old Wolf";
@@ -21,11 +25,6 @@ public class OldWolf extends BaseWolf {
     @Override
     public double getDamageDealt() {
         return 720.0;
-    }
-    
-    @Override
-    public int mobLevel() {
-        return 50;
     }
 
     @Override
@@ -42,4 +41,10 @@ public class OldWolf extends BaseWolf {
     public boolean isAngry() {
         return true;
     }
+
+    @Override
+    public int mobLevel() {
+        return 50;
+    }
 }
+

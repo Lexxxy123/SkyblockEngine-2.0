@@ -1,3 +1,6 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item;
 
 public enum AbilityActivation {
@@ -6,5 +9,7 @@ public enum AbilityActivation {
     FLIGHT,
     SHOOT,
     SNEAK,
-    NO_ACTIVATION
+    NO_ACTIVATION;
+
 }
+

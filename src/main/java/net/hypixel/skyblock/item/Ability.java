@@ -1,43 +1,50 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.item;
 
 import net.hypixel.skyblock.features.requirement.AbstractRequirement;
+import net.hypixel.skyblock.item.AbilityActivation;
+import net.hypixel.skyblock.item.SItem;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-
 public interface Ability {
-    String getAbilityName();
+    public String getAbilityName();
 
-    String getAbilityDescription();
+    public String getAbilityDescription();
 
-    default void onAbilityUse(final Player player, final SItem sItem) {
+    default public void onAbilityUse(Player player, SItem sItem) {
     }
 
-    int getAbilityCooldownTicks();
+    public int getAbilityCooldownTicks();
 
-    int getManaCost();
+    public int getManaCost();
 
-    default AbstractRequirement getRequirement(){
+    default public AbstractRequirement getRequirement() {
         return null;
     }
 
-    default AbilityActivation getAbilityActivation() {
+    default public AbilityActivation getAbilityActivation() {
         return AbilityActivation.RIGHT_CLICK;
     }
 
-    default boolean displayUsage() {
+    default public boolean displayUsage() {
         return true;
     }
 
-    default boolean requirementsUse(final Player player, final SItem sItem) {
+    default public boolean requirementsUse(Player player, SItem sItem) {
         return false;
     }
 
-    default String getAbilityReq() {
+    default public String getAbilityReq() {
         return "";
     }
 
-    default boolean displayCooldown() {
+    default public boolean displayCooldown() {
         return true;
     }
 }
+

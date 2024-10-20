@@ -1,19 +1,34 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.minecraft.server.v1_8_R3.NBTTagCompound
+ *  org.bukkit.Bukkit
+ *  org.bukkit.ChatColor
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.item.weapon;
-
-import net.hypixel.skyblock.item.*;
-import net.minecraft.server.v1_8_R3.NBTTagCompound;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-import net.hypixel.skyblock.item.*;
-import net.hypixel.skyblock.user.User;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.Ownable;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.ToolStatistics;
+import net.hypixel.skyblock.user.User;
+import net.minecraft.server.v1_8_R3.NBTTagCompound;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
-public class EmeraldBlade implements ToolStatistics, MaterialFunction, Ownable {
+public class EmeraldBlade
+implements ToolStatistics,
+MaterialFunction,
+Ownable {
     @Override
     public String getDisplayName() {
         return "Emerald Blade";
@@ -45,19 +60,19 @@ public class EmeraldBlade implements ToolStatistics, MaterialFunction, Ownable {
     }
 
     @Override
-    public List<String> getDataLore(final String key, final Object value) {
+    public List<String> getDataLore(String key, Object value) {
         if (!key.equals("owner")) {
             return null;
         }
-        final Player player = Bukkit.getPlayer(UUID.fromString(String.valueOf(value)));
+        Player player = Bukkit.getPlayer((UUID)UUID.fromString(String.valueOf(value)));
         if (player == null) {
             return null;
         }
-        final User user = User.getUser(player.getUniqueId());
-        final long cap = 35000000000L;
-        final double d1 = Math.pow((double) Math.min(cap, User.getUser(player.getUniqueId()).getCoins()), 0.25);
-        final double finald = 2.5 * d1;
-        final double dmgfin = Math.round(finald / 10.0) * 10.0;
+        User user = User.getUser(player.getUniqueId());
+        long cap = 35000000000L;
+        double d1 = Math.pow(Math.min(35000000000L, User.getUser(player.getUniqueId()).getCoins()), 0.25);
+        double finald = 2.5 * d1;
+        double dmgfin = (double)Math.round(finald / 10.0) * 10.0;
         return Collections.singletonList(ChatColor.GRAY + "Current Damage Bonus: " + ChatColor.GREEN + dmgfin);
     }
 
@@ -66,3 +81,4 @@ public class EmeraldBlade implements ToolStatistics, MaterialFunction, Ownable {
         return new NBTTagCompound();
     }
 }
+

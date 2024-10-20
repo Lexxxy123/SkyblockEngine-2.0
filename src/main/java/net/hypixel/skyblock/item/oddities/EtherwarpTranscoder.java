@@ -1,11 +1,24 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.item.oddities;
 
-import net.hypixel.skyblock.item.*;
-import org.bukkit.entity.Player;
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.item.Ability;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.SkullStatistics;
 import net.hypixel.skyblock.util.Sputnik;
+import org.bukkit.entity.Player;
 
-public class EtherwarpTranscoder implements SkullStatistics, MaterialFunction, Ability {
+public class EtherwarpTranscoder
+implements SkullStatistics,
+MaterialFunction,
+Ability {
     @Override
     public String getURL() {
         return "6e425e5689a9c855f2eb9f1d124f5596c46e1d7731748c0238718d0e6a4da1a8";
@@ -62,7 +75,7 @@ public class EtherwarpTranscoder implements SkullStatistics, MaterialFunction, A
     }
 
     @Override
-    public boolean requirementsUse(final Player player, final SItem sItem) {
+    public boolean requirementsUse(Player player, SItem sItem) {
         return !SItem.isAbleToDoEtherWarpTeleportation(player, sItem);
     }
 
@@ -72,7 +85,8 @@ public class EtherwarpTranscoder implements SkullStatistics, MaterialFunction, A
     }
 
     @Override
-    public void onAbilityUse(final Player player, final SItem sItem) {
+    public void onAbilityUse(Player player, SItem sItem) {
         SItem.etherWarpTeleportation(player, sItem);
     }
 }
+

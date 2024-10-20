@@ -1,5 +1,19 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ *  org.bukkit.Material
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.inventory.InventoryClickEvent
+ *  org.bukkit.inventory.ItemStack
+ */
 package net.hypixel.skyblock.gui;
 
+import net.hypixel.skyblock.gui.GUI;
+import net.hypixel.skyblock.gui.GUIClickableItem;
+import net.hypixel.skyblock.gui.GUIOpenEvent;
+import net.hypixel.skyblock.gui.GUIType;
 import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
@@ -8,25 +22,27 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class BankerGUI extends GUI {
+public class BankerGUI
+extends GUI {
     public BankerGUI() {
         super("Bank", 36);
     }
 
     @Override
-    public void onOpen(final GUIOpenEvent e) {
-        final Player player = e.getPlayer();
-        final User user = User.getUser(e.getPlayer().getUniqueId());
+    public void onOpen(GUIOpenEvent e2) {
+        final Player player = e2.getPlayer();
+        final User user = User.getUser(e2.getPlayer().getUniqueId());
         this.fill(BLACK_STAINED_GLASS_PANE);
         this.set(GUIClickableItem.getCloseItem(31));
-        this.set(new GUIClickableItem() {
+        this.set(new GUIClickableItem(){
+
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.GREEN + "Deposit Coins", Material.CHEST, (short) 0, 1, ChatColor.GRAY + "Current balance: " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()), " ", ChatColor.GRAY + "Store coins in the bank to", ChatColor.GRAY + "keep them safe while you go", ChatColor.GRAY + "on adventures!", " ", ChatColor.GRAY + "You will earn " + ChatColor.AQUA + "2%" + ChatColor.GRAY + " interest every", ChatColor.GRAY + "season for your first " + ChatColor.GOLD + "10 million", ChatColor.GRAY + "banked coins.", " ", ChatColor.GRAY + "Until interest: " + ChatColor.RED + "Unavailable", " ", ChatColor.YELLOW + "Click to make a deposit!");
+                return SUtil.getStack(ChatColor.GREEN + "Deposit Coins", Material.CHEST, (short)0, 1, ChatColor.GRAY + "Current balance: " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()), " ", ChatColor.GRAY + "Store coins in the bank to", ChatColor.GRAY + "keep them safe while you go", ChatColor.GRAY + "on adventures!", " ", ChatColor.GRAY + "You will earn " + ChatColor.AQUA + "2%" + ChatColor.GRAY + " interest every", ChatColor.GRAY + "season for your first " + ChatColor.GOLD + "10 million", ChatColor.GRAY + "banked coins.", " ", ChatColor.GRAY + "Until interest: " + ChatColor.RED + "Unavailable", " ", ChatColor.YELLOW + "Click to make a deposit!");
             }
 
             @Override
-            public void run(final InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 GUIType.BANKER_DEPOSIT.getGUI().open(player);
             }
 
@@ -35,14 +51,15 @@ public class BankerGUI extends GUI {
                 return 11;
             }
         });
-        this.set(new GUIClickableItem() {
+        this.set(new GUIClickableItem(){
+
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.GREEN + "Withdraw Coins", Material.DROPPER, (short) 0, 1, ChatColor.GRAY + "Current balance: " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()), " ", ChatColor.GRAY + "Take your coins out of the", ChatColor.GRAY + "bank in order to spend", ChatColor.GRAY + "them.", " ", ChatColor.YELLOW + "Click to withdraw coins!");
+                return SUtil.getStack(ChatColor.GREEN + "Withdraw Coins", Material.DROPPER, (short)0, 1, ChatColor.GRAY + "Current balance: " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()), " ", ChatColor.GRAY + "Take your coins out of the", ChatColor.GRAY + "bank in order to spend", ChatColor.GRAY + "them.", " ", ChatColor.YELLOW + "Click to withdraw coins!");
             }
 
             @Override
-            public void run(final InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 GUIType.BANKER_WITHDRAWAL.getGUI().open(player);
             }
 
@@ -51,7 +68,8 @@ public class BankerGUI extends GUI {
                 return 13;
             }
         });
-        this.set(15, SUtil.getStack(ChatColor.GREEN + "Recent transactions", Material.MAP, (short) 0, 1, " ", ChatColor.RED + "" + ChatColor.BOLD + "COMING SOON"));
-        this.set(32, SUtil.getStack(ChatColor.GREEN + "Information", Material.REDSTONE_TORCH_ON, (short) 0, 1, ChatColor.GRAY + "Keep your coins safe in the bank!", ChatColor.GRAY + "You lose half the coins in your", ChatColor.GRAY + "purse when dying in combat.", " ", ChatColor.GRAY + "Balance limit: " + ChatColor.GOLD + "50 Million", " ", ChatColor.GRAY + "The banker rewards you every 31", ChatColor.GRAY + "hours with " + ChatColor.AQUA + "interest" + ChatColor.GRAY + " for the", ChatColor.GRAY + "coins in your bank balance.", " ", ChatColor.GRAY + "Interest " + ChatColor.RED + ChatColor.BOLD + "COMING SOON"));
+        this.set(15, SUtil.getStack(ChatColor.GREEN + "Recent transactions", Material.MAP, (short)0, 1, " ", ChatColor.RED + "" + ChatColor.BOLD + "COMING SOON"));
+        this.set(32, SUtil.getStack(ChatColor.GREEN + "Information", Material.REDSTONE_TORCH_ON, (short)0, 1, ChatColor.GRAY + "Keep your coins safe in the bank!", ChatColor.GRAY + "You lose half the coins in your", ChatColor.GRAY + "purse when dying in combat.", " ", ChatColor.GRAY + "Balance limit: " + ChatColor.GOLD + "50 Million", " ", ChatColor.GRAY + "The banker rewards you every 31", ChatColor.GRAY + "hours with " + ChatColor.AQUA + "interest" + ChatColor.GRAY + " for the", ChatColor.GRAY + "coins in your bank balance.", " ", ChatColor.GRAY + "Interest " + ChatColor.RED + ChatColor.BOLD + "COMING SOON"));
     }
 }
+

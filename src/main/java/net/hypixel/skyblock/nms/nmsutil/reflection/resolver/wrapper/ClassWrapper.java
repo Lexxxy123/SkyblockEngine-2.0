@@ -1,8 +1,13 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.nms.nmsutil.reflection.resolver.wrapper;
 
 import java.util.Objects;
+import net.hypixel.skyblock.nms.nmsutil.reflection.resolver.wrapper.WrapperAbstract;
 
-public class ClassWrapper<R> extends WrapperAbstract {
+public class ClassWrapper<R>
+extends WrapperAbstract {
     private final Class<R> clazz;
 
     public ClassWrapper(Class<R> clazz) {
@@ -25,20 +30,19 @@ public class ClassWrapper<R> extends WrapperAbstract {
     public R newInstance() {
         try {
             return this.clazz.newInstance();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (Exception e2) {
+            throw new RuntimeException(e2);
         }
     }
 
     public R newInstanceSilent() {
         try {
             return this.clazz.newInstance();
-        } catch (Exception e) {
+        } catch (Exception e2) {
             return null;
         }
     }
 
-    @Override
     public boolean equals(Object object) {
         if (this == object) {
             return true;
@@ -46,12 +50,12 @@ public class ClassWrapper<R> extends WrapperAbstract {
         if (null == object || this.getClass() != object.getClass()) {
             return false;
         }
-        ClassWrapper<?> that = (ClassWrapper<?>) object;
+        ClassWrapper that = (ClassWrapper)object;
         return Objects.equals(this.clazz, that.clazz);
     }
 
-    @Override
     public int hashCode() {
-        return (null != this.clazz) ? this.clazz.hashCode() : 0;
+        return null != this.clazz ? this.clazz.hashCode() : 0;
     }
 }
+

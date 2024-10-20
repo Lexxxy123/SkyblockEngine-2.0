@@ -1,3 +1,9 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.inventory.ItemStack
+ */
 package net.hypixel.skyblock.entity;
 
 import org.bukkit.inventory.ItemStack;
@@ -9,7 +15,7 @@ public class SEntityEquipment {
     private ItemStack leggings;
     private ItemStack boots;
 
-    public SEntityEquipment(final ItemStack itemInHand, final ItemStack helmet, final ItemStack chestplate, final ItemStack leggings, final ItemStack boots) {
+    public SEntityEquipment(ItemStack itemInHand, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots) {
         this.itemInHand = itemInHand;
         this.helmet = helmet;
         this.chestplate = chestplate;
@@ -37,23 +43,24 @@ public class SEntityEquipment {
         return this.boots;
     }
 
-    public void setItemInHand(final ItemStack itemInHand) {
+    public void setItemInHand(ItemStack itemInHand) {
         this.itemInHand = itemInHand;
     }
 
-    public void setHelmet(final ItemStack helmet) {
+    public void setHelmet(ItemStack helmet) {
         this.helmet = helmet;
     }
 
-    public void setChestplate(final ItemStack chestplate) {
+    public void setChestplate(ItemStack chestplate) {
         this.chestplate = chestplate;
     }
 
-    public void setLeggings(final ItemStack leggings) {
+    public void setLeggings(ItemStack leggings) {
         this.leggings = leggings;
     }
 
-    public void setBoots(final ItemStack boots) {
+    public void setBoots(ItemStack boots) {
         this.boots = boots;
     }
 }
+

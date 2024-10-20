@@ -1,11 +1,67 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  me.libraryaddict.disguise.disguisetypes.PlayerDisguise
+ *  me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher
+ *  net.minecraft.server.v1_8_R3.AttributeInstance
+ *  net.minecraft.server.v1_8_R3.Entity
+ *  net.minecraft.server.v1_8_R3.EntityLiving
+ *  net.minecraft.server.v1_8_R3.EntityZombie
+ *  net.minecraft.server.v1_8_R3.GenericAttributes
+ *  net.minecraft.server.v1_8_R3.Packet
+ *  net.minecraft.server.v1_8_R3.PacketPlayOutAnimation
+ *  net.minecraft.server.v1_8_R3.PacketPlayOutEntityTeleport
+ *  org.bukkit.Bukkit
+ *  org.bukkit.Color
+ *  org.bukkit.GameMode
+ *  org.bukkit.Material
+ *  org.bukkit.Sound
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.entity.LivingEntity
+ *  org.bukkit.entity.Player
+ *  org.bukkit.entity.WitherSkull
+ *  org.bukkit.event.entity.EntityDamageByEntityEvent
+ *  org.bukkit.inventory.ItemStack
+ *  org.bukkit.inventory.meta.ItemMeta
+ *  org.bukkit.metadata.FixedMetadataValue
+ *  org.bukkit.metadata.MetadataValue
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.potion.PotionEffect
+ *  org.bukkit.potion.PotionEffectType
+ *  org.bukkit.projectiles.ProjectileSource
+ *  org.bukkit.scheduler.BukkitRunnable
+ */
 package net.hypixel.skyblock.entity.dungeons.regularentity;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import me.libraryaddict.disguise.disguisetypes.watchers.PlayerWatcher;
-import net.minecraft.server.v1_8_R3.*;
+import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.entity.SEntity;
+import net.hypixel.skyblock.entity.SEntityEquipment;
+import net.hypixel.skyblock.entity.zombie.BaseZombie;
+import net.hypixel.skyblock.entity.zombie.NPCMobs;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.SMaterial;
+import net.hypixel.skyblock.util.EntityManager;
+import net.hypixel.skyblock.util.SUtil;
+import net.hypixel.skyblock.util.Sputnik;
+import net.minecraft.server.v1_8_R3.AttributeInstance;
+import net.minecraft.server.v1_8_R3.EntityLiving;
+import net.minecraft.server.v1_8_R3.EntityZombie;
+import net.minecraft.server.v1_8_R3.GenericAttributes;
+import net.minecraft.server.v1_8_R3.Packet;
+import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
+import net.minecraft.server.v1_8_R3.PacketPlayOutEntityTeleport;
+import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.*;
+import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
@@ -17,26 +73,17 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitRunnable;
-import net.hypixel.skyblock.SkyBlock;
-import net.hypixel.skyblock.entity.SEntity;
-import net.hypixel.skyblock.entity.SEntityEquipment;
-import net.hypixel.skyblock.entity.zombie.BaseZombie;
-import net.hypixel.skyblock.entity.zombie.NPCMobs;
-import net.hypixel.skyblock.item.SItem;
-import net.hypixel.skyblock.item.SMaterial;
-import net.hypixel.skyblock.util.EntityManager;
-import net.hypixel.skyblock.util.SUtil;
-import net.hypixel.skyblock.util.Sputnik;
 
-public class CryptSoulstealer extends BaseZombie implements NPCMobs {
-    private boolean isBowing;
-
-    public CryptSoulstealer() {
-        this.isBowing = false;
-    }
+public class CryptSoulstealer
+extends BaseZombie
+implements NPCMobs {
+    private boolean isBowing = false;
 
     @Override
     public String getEntityName() {
@@ -53,42 +100,43 @@ public class CryptSoulstealer extends BaseZombie implements NPCMobs {
         return 1000000.0;
     }
 
-    public static ItemStack b(final int hexcolor, final Material m) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
+    public static ItemStack b(int hexcolor, Material m2) {
+        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m2), Color.fromRGB((int)hexcolor));
+        ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
         return stack;
     }
 
     @Override
-    public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
-        ((CraftZombie) entity).setBaby(false);
-        final AttributeInstance followRange = ((CraftLivingEntity) entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
+    public void onSpawn(final LivingEntity entity, SEntity sEntity) {
+        ((CraftZombie)entity).setBaby(false);
+        AttributeInstance followRange = ((CraftLivingEntity)entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
         followRange.setValue(40.0);
-        final PlayerDisguise pl = Sputnik.applyPacketNPC(entity, "ewogICJ0aW1lc3RhbXAiIDogMTYyNjMyMjczMDkzMSwKICAicHJvZmlsZUlkIiA6ICIzZmM3ZmRmOTM5NjM0YzQxOTExOTliYTNmN2NjM2ZlZCIsCiAgInByb2ZpbGVOYW1lIiA6ICJZZWxlaGEiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDA5M2Q2NTJjMWI5ZjIyZmUwZTgxZWIxYTAyOGZhNGIwYjY5MDRjZWQ1YzdlZTlkNjI5YTgxOTU2MDc2NDk5YyIKICAgIH0KICB9Cn0=", "NybQzjteIreKG8mUVlpy4+gVYEloMFxsdAQyfRk5+WS2braPgTWfwxVvv8sukxJLpgxQjrOzSOVhwW5k4cO9j2n8ugWUOzUWnrxGzKmvegZ5UTmDVanLhg2ESFce0oFadJ7RrrQeYYgfqFFjKsA/9Q+Aky0KfdV38pt8U2UsGq68IVSjyickXD3QiwHR9u4FINT98th6m4/9iwhm80Oz1wd9C3O4kdpqGwNWrxLJx8MlcTfzmqSnuuw8bpSNXjXeD1yuScqAXkr8CYg78vg106YFQMNMuwNyIJX65HtTnjJD01xjoKVDw+jKZkFy9v/9ejtQyUjv1cumzrD+lQDejbKyFDNq5cuS0FGza3cfZrqXDXLRr4ujxARNQGxDsbRaXHVbGhuVnHfKy2Z5SjjPOgAzk+ZLzt3nINsp0lRj9xxYilOnKLi+6ExC38+1xUwcU2jtqvkqqCHYDe35WtVIj6nir/sBSbOu93z2anM7/eFH2cboGP/JVwrAJ4o5gH2u644DTxfB9zd6uUqs2mKGwSDd6N/S8IYJmjjQbk87mj9NpnMvWbPVpAs7pmROzuLJ12w+wJtUz6LqU1Nr5YgZyT2NgGiG9xZl560RAAXtNDexM29Zy+gNfIL6aYuLoy6Jz0OhPcKmDfsVWsSsUO7AQDRSLcc5cgGO17m/P0E0l6o=", true);
+        final PlayerDisguise pl = Sputnik.applyPacketNPC((Entity)entity, "ewogICJ0aW1lc3RhbXAiIDogMTYyNjMyMjczMDkzMSwKICAicHJvZmlsZUlkIiA6ICIzZmM3ZmRmOTM5NjM0YzQxOTExOTliYTNmN2NjM2ZlZCIsCiAgInByb2ZpbGVOYW1lIiA6ICJZZWxlaGEiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDA5M2Q2NTJjMWI5ZjIyZmUwZTgxZWIxYTAyOGZhNGIwYjY5MDRjZWQ1YzdlZTlkNjI5YTgxOTU2MDc2NDk5YyIKICAgIH0KICB9Cn0=", "NybQzjteIreKG8mUVlpy4+gVYEloMFxsdAQyfRk5+WS2braPgTWfwxVvv8sukxJLpgxQjrOzSOVhwW5k4cO9j2n8ugWUOzUWnrxGzKmvegZ5UTmDVanLhg2ESFce0oFadJ7RrrQeYYgfqFFjKsA/9Q+Aky0KfdV38pt8U2UsGq68IVSjyickXD3QiwHR9u4FINT98th6m4/9iwhm80Oz1wd9C3O4kdpqGwNWrxLJx8MlcTfzmqSnuuw8bpSNXjXeD1yuScqAXkr8CYg78vg106YFQMNMuwNyIJX65HtTnjJD01xjoKVDw+jKZkFy9v/9ejtQyUjv1cumzrD+lQDejbKyFDNq5cuS0FGza3cfZrqXDXLRr4ujxARNQGxDsbRaXHVbGhuVnHfKy2Z5SjjPOgAzk+ZLzt3nINsp0lRj9xxYilOnKLi+6ExC38+1xUwcU2jtqvkqqCHYDe35WtVIj6nir/sBSbOu93z2anM7/eFH2cboGP/JVwrAJ4o5gH2u644DTxfB9zd6uUqs2mKGwSDd6N/S8IYJmjjQbk87mj9NpnMvWbPVpAs7pmROzuLJ12w+wJtUz6LqU1Nr5YgZyT2NgGiG9xZl560RAAXtNDexM29Zy+gNfIL6aYuLoy6Jz0OhPcKmDfsVWsSsUO7AQDRSLcc5cgGO17m/P0E0l6o=", true);
         pl.getWatcher().setRightClicking(false);
         final PlayerWatcher skywatch = pl.getWatcher();
-        EntityManager.DEFENSE_PERCENTAGE.put(entity, 70);
-        entity.setMetadata("LD", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        entity.setMetadata("DungeonMobs", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        new BukkitRunnable() {
+        EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 70);
+        entity.setMetadata("LD", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        entity.setMetadata("DungeonMobs", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        new BukkitRunnable(){
+
             public void run() {
                 if (entity.isDead()) {
-                    Sputnik.zero(entity);
+                    Sputnik.zero((Entity)entity);
                     this.cancel();
                     return;
                 }
-                final LivingEntity target1 = ((CraftZombie) entity).getTarget();
+                CraftLivingEntity target1 = ((CraftZombie)entity).getTarget();
                 if (target1 != null) {
                     if (target1.getLocation().distance(entity.getLocation()) >= 2.0 && target1.getLocation().distance(entity.getLocation()) < 16.0) {
                         entity.teleport(entity.getLocation().setDirection(target1.getLocation().toVector().subtract(entity.getLocation().toVector())));
-                        CryptSoulstealer.sendHeadRotation(entity, entity.getLocation().getYaw(), entity.getLocation().getPitch());
+                        CryptSoulstealer.sendHeadRotation((Entity)entity, entity.getLocation().getYaw(), entity.getLocation().getPitch());
                     }
                     if (target1.getLocation().distance(entity.getLocation()) < 2.0 || target1.getLocation().distance(entity.getLocation()) > 16.0) {
                         SUtil.delay(() -> {
-                            final Object val$entity = entity;
+                            LivingEntity val$entity = entity;
                             entity.getEquipment().setItemInHand(SItem.of(SMaterial.BOW).getStack());
                         }, 0L);
                         CryptSoulstealer.this.isBowing = false;
@@ -98,7 +146,7 @@ public class CryptSoulstealer extends BaseZombie implements NPCMobs {
                         skywatch.setRightClicking(false);
                         entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 10000, 4));
                         entity.getEquipment().setItemInHand(SItem.of(SMaterial.BOW).getStack());
-                        new BukkitRunnable() {
+                        new BukkitRunnable(){
                             int t = 0;
                             final int atkCharge = 20;
 
@@ -132,51 +180,32 @@ public class CryptSoulstealer extends BaseZombie implements NPCMobs {
                                     CryptSoulstealer.this.isBowing = false;
                                 }
                             }
-                        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
+                        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
                     }
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
-        new BukkitRunnable() {
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 2L);
+        new BukkitRunnable(){
+
             public void run() {
-                final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
+                EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
-                final LivingEntity target1 = ((CraftZombie) entity).getTarget();
-                for (final Entity entities : entity.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 1.5, 1.5, 1.5)) {
-                    if (CryptSoulstealer.this.isBowing) {
-                        continue;
-                    }
-                    if (!(entities instanceof Player)) {
-                        continue;
-                    }
-                    final Player target2 = (Player) entities;
-                    if (target2.getGameMode() == GameMode.CREATIVE) {
-                        continue;
-                    }
-                    if (target2.getGameMode() == GameMode.SPECTATOR) {
-                        continue;
-                    }
-                    if (target2.hasMetadata("NPC")) {
-                        continue;
-                    }
-                    if (target2.getNoDamageTicks() == 7) {
-                        continue;
-                    }
-                    if (SUtil.random(0, 10) > 8) {
-                        continue;
-                    }
+                CraftLivingEntity target1 = ((CraftZombie)entity).getTarget();
+                for (Entity entities : entity.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 1.5, 1.5, 1.5)) {
+                    Player target2;
+                    if (CryptSoulstealer.this.isBowing || !(entities instanceof Player) || (target2 = (Player)entities).getGameMode() == GameMode.CREATIVE || target2.getGameMode() == GameMode.SPECTATOR || target2.hasMetadata("NPC") || target2.getNoDamageTicks() == 7 || SUtil.random(0, 10) > 8) continue;
                     entity.teleport(entity.getLocation().setDirection(target2.getLocation().subtract(entities.getLocation()).toVector()));
-                    for (final Player players : Bukkit.getOnlinePlayers()) {
-                        ((CraftPlayer) players).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) entity).getHandle(), 0));
+                    for (Player players : Bukkit.getOnlinePlayers()) {
+                        ((CraftPlayer)players).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)entity).getHandle(), 0));
                     }
-                    nms.r(((CraftPlayer) target2).getHandle());
+                    nms.r((net.minecraft.server.v1_8_R3.Entity)((CraftPlayer)target2).getHandle());
                     break;
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 2L);
     }
 
     @Override
@@ -185,7 +214,7 @@ public class CryptSoulstealer extends BaseZombie implements NPCMobs {
     }
 
     @Override
-    public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
+    public void onDeath(SEntity sEntity, Entity killed, Entity damager) {
     }
 
     @Override
@@ -204,7 +233,7 @@ public class CryptSoulstealer extends BaseZombie implements NPCMobs {
     }
 
     @Override
-    public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
+    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
     }
 
     @Override
@@ -217,16 +246,17 @@ public class CryptSoulstealer extends BaseZombie implements NPCMobs {
         return 0.2;
     }
 
-    public void throwSkull(final LivingEntity e, final PlayerDisguise pl) {
-        final WitherSkull skull = (WitherSkull) e.launchProjectile((Class) WitherSkull.class);
-        skull.setShooter(e);
-        e.getWorld().playSound(e.getLocation(), Sound.WITHER_SHOOT, 1.0f, 1.0f);
+    public void throwSkull(LivingEntity e2, PlayerDisguise pl) {
+        WitherSkull skull = (WitherSkull)e2.launchProjectile(WitherSkull.class);
+        skull.setShooter((ProjectileSource)e2);
+        e2.getWorld().playSound(e2.getLocation(), Sound.WITHER_SHOOT, 1.0f, 1.0f);
     }
 
-    public static void sendHeadRotation(final Entity e, final float yaw, final float pitch) {
-        final net.minecraft.server.v1_8_R3.Entity pl = ((CraftZombie) e).getHandle();
-        pl.setLocation(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), yaw, pitch);
-        final PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport(pl);
-        Sputnik.sendPacket(e.getWorld(), packet);
+    public static void sendHeadRotation(Entity e2, float yaw, float pitch) {
+        EntityZombie pl = ((CraftZombie)e2).getHandle();
+        pl.setLocation(e2.getLocation().getX(), e2.getLocation().getY(), e2.getLocation().getZ(), yaw, pitch);
+        PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport((net.minecraft.server.v1_8_R3.Entity)pl);
+        Sputnik.sendPacket(e2.getWorld(), (Packet)packet);
     }
 }
+

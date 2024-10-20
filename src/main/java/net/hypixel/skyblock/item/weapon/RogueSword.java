@@ -1,11 +1,26 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.item.weapon;
 
-import net.hypixel.skyblock.item.*;
-import org.bukkit.entity.Player;
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.item.Ability;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.PlayerBoostStatistics;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.ToolStatistics;
 import net.hypixel.skyblock.user.PlayerUtils;
+import org.bukkit.entity.Player;
 
-public class RogueSword implements ToolStatistics, MaterialFunction, Ability {
+public class RogueSword
+implements ToolStatistics,
+MaterialFunction,
+Ability {
     @Override
     public String getAbilityName() {
         return "Speed Boost";
@@ -17,8 +32,9 @@ public class RogueSword implements ToolStatistics, MaterialFunction, Ability {
     }
 
     @Override
-    public void onAbilityUse(final Player player, final SItem sItem) {
-        PlayerUtils.boostPlayer(PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId()), new PlayerBoostStatistics() {
+    public void onAbilityUse(Player player, SItem sItem) {
+        PlayerUtils.boostPlayer(PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId()), new PlayerBoostStatistics(){
+
             @Override
             public String getDisplayName() {
                 return null;
@@ -76,3 +92,4 @@ public class RogueSword implements ToolStatistics, MaterialFunction, Ability {
         return 20;
     }
 }
+

@@ -1,5 +1,22 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ *  org.bukkit.Material
+ *  org.bukkit.Sound
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.inventory.InventoryClickEvent
+ *  org.bukkit.inventory.ItemStack
+ */
 package net.hypixel.skyblock.gui;
 
+import java.util.List;
+import net.hypixel.skyblock.gui.GUI;
+import net.hypixel.skyblock.gui.GUIClickableItem;
+import net.hypixel.skyblock.gui.GUIOpenEvent;
+import net.hypixel.skyblock.gui.GUIType;
+import net.hypixel.skyblock.gui.RecipeBookGUI;
 import net.hypixel.skyblock.item.SItem;
 import net.hypixel.skyblock.item.ShapedRecipe;
 import net.hypixel.skyblock.user.User;
@@ -12,33 +29,34 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
-
-public class RecipeBookListGUI extends GUI {
-    private static final int[] INTERIOR;
+public class RecipeBookListGUI
+extends GUI {
+    private static final int[] INTERIOR = new int[]{10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43};
 
     public RecipeBookListGUI(String query, int page, Player player) {
         super("Recipe Book", 54);
         this.border(BLACK_STAINED_GLASS_PANE);
-        if (player == null) return;
-        final PaginationList<SItem> pagedMaterials = new PaginationList<SItem>(28);
-        for (final ShapedRecipe sr : ShapedRecipe.CACHED_RECIPES) {
-            final String lc = sr.getResult().getType().toString().toLowerCase();
-            if (sr.isUnlockedForPlayer(User.getUser(player.getUniqueId())) && !sr.isVanilla()) {
-                pagedMaterials.add(sr.getResult());
-            }
+        if (player == null) {
+            return;
+        }
+        PaginationList pagedMaterials = new PaginationList(28);
+        for (ShapedRecipe sr : ShapedRecipe.CACHED_RECIPES) {
+            String lc = sr.getResult().getType().toString().toLowerCase();
+            if (!sr.isUnlockedForPlayer(User.getUser(player.getUniqueId())) || sr.isVanilla()) continue;
+            pagedMaterials.add(sr.getResult());
         }
         if (pagedMaterials.isEmpty()) {
             page = 0;
         }
         this.title = "Recipe Book (" + page + "/" + pagedMaterials.getPageCount() + ")";
-        final int finalPage;
-        if ((finalPage = page) > 1) {
-            this.set(new GUIClickableItem() {
+        final int finalPage = page;
+        if (finalPage > 1) {
+            this.set(new GUIClickableItem(){
+
                 @Override
-                public void run(final InventoryClickEvent e) {
-                    new RecipeBookListGUI(finalPage - 1).open((Player) e.getWhoClicked());
-                    ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.NOTE_PIANO, 1.0f, 1.0f);
+                public void run(InventoryClickEvent e2) {
+                    new RecipeBookListGUI(finalPage - 1).open((Player)e2.getWhoClicked());
+                    ((Player)e2.getWhoClicked()).playSound(e2.getWhoClicked().getLocation(), Sound.NOTE_PIANO, 1.0f, 1.0f);
                 }
 
                 @Override
@@ -53,11 +71,12 @@ public class RecipeBookListGUI extends GUI {
             });
         }
         if (page != pagedMaterials.getPageCount()) {
-            this.set(new GUIClickableItem() {
+            this.set(new GUIClickableItem(){
+
                 @Override
-                public void run(final InventoryClickEvent e) {
-                    new RecipeBookListGUI(finalPage + 1).open((Player) e.getWhoClicked());
-                    ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.NOTE_PIANO, 1.0f, 1.0f);
+                public void run(InventoryClickEvent e2) {
+                    new RecipeBookListGUI(finalPage + 1).open((Player)e2.getWhoClicked());
+                    ((Player)e2.getWhoClicked()).playSound(e2.getWhoClicked().getLocation(), Sound.NOTE_PIANO, 1.0f, 1.0f);
                 }
 
                 @Override
@@ -72,17 +91,18 @@ public class RecipeBookListGUI extends GUI {
             });
         }
         this.set(GUIClickableItem.getCloseItem(49));
-        final List<SItem> p = pagedMaterials.getPage(page);
-        if (p == null) {
+        List p2 = pagedMaterials.getPage(page);
+        if (p2 == null) {
             return;
         }
-        for (int i = 0; i < p.size(); ++i) {
-            final int slot = RecipeBookListGUI.INTERIOR[i];
-            final SItem sItem = p.get(i);
-            this.set(new GUIClickableItem() {
+        for (int i2 = 0; i2 < p2.size(); ++i2) {
+            final int slot = INTERIOR[i2];
+            final SItem sItem = (SItem)p2.get(i2);
+            this.set(new GUIClickableItem(){
+
                 @Override
-                public void run(final InventoryClickEvent e) {
-                    final Player player = (Player) e.getWhoClicked();
+                public void run(InventoryClickEvent e2) {
+                    Player player = (Player)e2.getWhoClicked();
                     player.playSound(player.getLocation(), Sound.NOTE_PLING, 1.0f, 2.0f);
                     new RecipeBookGUI(sItem).open(player);
                 }
@@ -101,17 +121,16 @@ public class RecipeBookListGUI extends GUI {
     }
 
     @Override
-    public void onOpen(final GUIOpenEvent e) {
-        final Player player = e.getPlayer();
-
+    public void onOpen(GUIOpenEvent e2) {
+        Player player = e2.getPlayer();
         this.set(GUIClickableItem.createGUIOpenerItem(GUIType.SKYBLOCK_MENU, player, ChatColor.GREEN + "Go Back", 48, Material.ARROW, ChatColor.GRAY + "To SkyBlock Menu"));
     }
 
-    public RecipeBookListGUI(final String query, Player player) {
+    public RecipeBookListGUI(String query, Player player) {
         this(query, 1, player);
     }
 
-    public RecipeBookListGUI(final int page) {
+    public RecipeBookListGUI(int page) {
         this("", page, null);
     }
 
@@ -122,8 +141,5 @@ public class RecipeBookListGUI extends GUI {
     public RecipeBookListGUI(Player player) {
         this("", 1, player);
     }
-
-    static {
-        INTERIOR = new int[]{10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43};
-    }
 }
+

@@ -1,12 +1,63 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.minecraft.server.v1_8_R3.AttributeInstance
+ *  net.minecraft.server.v1_8_R3.Entity
+ *  net.minecraft.server.v1_8_R3.EntityLiving
+ *  net.minecraft.server.v1_8_R3.GenericAttributes
+ *  net.minecraft.server.v1_8_R3.Packet
+ *  net.minecraft.server.v1_8_R3.PacketPlayOutAnimation
+ *  org.bukkit.Bukkit
+ *  org.bukkit.Color
+ *  org.bukkit.GameMode
+ *  org.bukkit.Location
+ *  org.bukkit.Material
+ *  org.bukkit.Sound
+ *  org.bukkit.World
+ *  org.bukkit.block.Block
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.entity.FallingBlock
+ *  org.bukkit.entity.LivingEntity
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.entity.EntityDamageByEntityEvent
+ *  org.bukkit.inventory.ItemStack
+ *  org.bukkit.inventory.meta.ItemMeta
+ *  org.bukkit.metadata.FixedMetadataValue
+ *  org.bukkit.metadata.MetadataValue
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.potion.PotionEffect
+ *  org.bukkit.potion.PotionEffectType
+ *  org.bukkit.scheduler.BukkitRunnable
+ */
 package net.hypixel.skyblock.entity.dungeons.boss.sadan;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import java.util.ArrayList;
 import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.entity.SEntity;
+import net.hypixel.skyblock.entity.SEntityEquipment;
+import net.hypixel.skyblock.entity.dungeons.boss.sadan.SadanFunction;
+import net.hypixel.skyblock.entity.dungeons.boss.sadan.SadanHuman;
+import net.hypixel.skyblock.entity.zombie.BaseZombie;
+import net.hypixel.skyblock.util.EntityManager;
+import net.hypixel.skyblock.util.SUtil;
+import net.hypixel.skyblock.util.Sputnik;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.GenericAttributes;
+import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -19,28 +70,17 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import net.hypixel.skyblock.entity.SEntity;
-import net.hypixel.skyblock.entity.SEntityEquipment;
-import net.hypixel.skyblock.entity.zombie.BaseZombie;
-import net.hypixel.skyblock.util.EntityManager;
-import net.hypixel.skyblock.util.SUtil;
-import net.hypixel.skyblock.util.Sputnik;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class JollyPinkGiant extends BaseZombie {
+public class JollyPinkGiant
+extends BaseZombie {
     private static LivingEntity e;
-    private boolean terToss;
-    private boolean terTossCD;
-
-    public JollyPinkGiant() {
-        this.terToss = false;
-        this.terTossCD = true;
-    }
+    private boolean terToss = false;
+    private boolean terTossCD = true;
 
     @Override
     public String getEntityName() {
@@ -58,27 +98,30 @@ public class JollyPinkGiant extends BaseZombie {
     }
 
     @Override
-    public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
+    public void onSpawn(final LivingEntity entity, SEntity sEntity) {
         if (entity.getWorld().getPlayers().size() == 0) {
             return;
         }
-        JollyPinkGiant.e = entity;
-        final AttributeInstance followRange = ((CraftLivingEntity) entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
+        e = entity;
+        AttributeInstance followRange = ((CraftLivingEntity)entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
         followRange.setValue(500.0);
-        ((CraftZombie) entity).setBaby(false);
-        final Player p = entity.getWorld().getPlayers().get(SUtil.random(0, entity.getWorld().getPlayers().size() - 1));
-        if (p != null && p.getGameMode() != GameMode.SPECTATOR && p.getGameMode() != GameMode.CREATIVE) {
-            ((CraftZombie) entity).setTarget(p);
+        ((CraftZombie)entity).setBaby(false);
+        Player p2 = (Player)entity.getWorld().getPlayers().get(SUtil.random(0, entity.getWorld().getPlayers().size() - 1));
+        if (p2 != null && p2.getGameMode() != GameMode.SPECTATOR && p2.getGameMode() != GameMode.CREATIVE) {
+            ((CraftZombie)entity).setTarget((LivingEntity)p2);
         }
-        SUtil.delay(() -> this.terTossCD = false, 60L);
-        Sputnik.applyPacketGiant(entity);
-        EntityManager.DEFENSE_PERCENTAGE.put(entity, 30);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        entity.setMetadata("highername", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        entity.setMetadata("Giant_", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        new BukkitRunnable() {
+        SUtil.delay(() -> {
+            this.terTossCD = false;
+        }, 60L);
+        Sputnik.applyPacketGiant((Entity)entity);
+        EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 30);
+        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        entity.setMetadata("highername", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        entity.setMetadata("Giant_", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        new BukkitRunnable(){
+
             public void run() {
-                final LivingEntity target = ((CraftZombie) entity).getTarget();
+                CraftLivingEntity target = ((CraftZombie)entity).getTarget();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
@@ -90,46 +133,36 @@ public class JollyPinkGiant extends BaseZombie {
                     JollyPinkGiant.this.launchTerrain(entity);
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
-        new BukkitRunnable() {
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
+        new BukkitRunnable(){
+
             public void run() {
-                final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
+                EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
-                for (final Entity entities : entity.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 1.5, 1.5, 1.5)) {
-                    if (!(entities instanceof Player)) {
-                        continue;
-                    }
-                    final Player target = (Player) entities;
-                    if (target.getGameMode() == GameMode.CREATIVE) {
-                        continue;
-                    }
-                    if (target.getGameMode() == GameMode.SPECTATOR) {
-                        continue;
-                    }
-                    if (target.hasMetadata("NPC")) {
-                        continue;
-                    }
+                for (Entity entities : entity.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 1.5, 1.5, 1.5)) {
+                    Player target;
+                    if (!(entities instanceof Player) || (target = (Player)entities).getGameMode() == GameMode.CREATIVE || target.getGameMode() == GameMode.SPECTATOR || target.hasMetadata("NPC")) continue;
                     entity.teleport(entity.getLocation().setDirection(target.getLocation().toVector().subtract(target.getLocation().toVector())));
-                    for (final Player players : Bukkit.getOnlinePlayers()) {
-                        ((CraftPlayer) players).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) entity).getHandle(), 0));
+                    for (Player players : Bukkit.getOnlinePlayers()) {
+                        ((CraftPlayer)players).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)entity).getHandle(), 0));
                     }
-                    nms.r(((CraftPlayer) target).getHandle());
+                    nms.r((net.minecraft.server.v1_8_R3.Entity)((CraftPlayer)target).getHandle());
                     break;
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 5L);
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 5L);
     }
 
     @Override
     public SEntityEquipment getEntityEquipment() {
-        return new SEntityEquipment(null, b(14751108, Material.LEATHER_HELMET), b(14751108, Material.LEATHER_CHESTPLATE), b(14751108, Material.LEATHER_LEGGINGS), b(14751108, Material.LEATHER_BOOTS));
+        return new SEntityEquipment(null, JollyPinkGiant.b(14751108, Material.LEATHER_HELMET), JollyPinkGiant.b(14751108, Material.LEATHER_CHESTPLATE), JollyPinkGiant.b(14751108, Material.LEATHER_LEGGINGS), JollyPinkGiant.b(14751108, Material.LEATHER_BOOTS));
     }
 
     @Override
-    public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
+    public void onDeath(SEntity sEntity, Entity killed, Entity damager) {
         Sputnik.zero(killed);
         if (SadanHuman.SadanGiantsCount.containsKey(killed.getWorld().getUID())) {
             SadanHuman.SadanGiantsCount.put(killed.getWorld().getUID(), SadanHuman.SadanGiantsCount.get(killed.getWorld().getUID()) - 1);
@@ -161,10 +194,11 @@ public class JollyPinkGiant extends BaseZombie {
         return 0.3;
     }
 
-    public void launchTerrain(final LivingEntity e) {
-        new BukkitRunnable() {
+    public void launchTerrain(final LivingEntity e2) {
+        new BukkitRunnable(){
+
             public void run() {
-                if (e.isDead()) {
+                if (e2.isDead()) {
                     this.cancel();
                     return;
                 }
@@ -173,58 +207,58 @@ public class JollyPinkGiant extends BaseZombie {
                     this.cancel();
                     return;
                 }
-                final LivingEntity t = ((CraftZombie) e).getTarget();
-                if (t != null) {
-                    JollyPinkGiant.this.throwTerrain(e, t);
+                CraftLivingEntity t2 = ((CraftZombie)e2).getTarget();
+                if (t2 != null) {
+                    JollyPinkGiant.this.throwTerrain(e2, (Entity)t2);
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 30L);
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 30L);
     }
 
-    public static ItemStack buildColorStack(final int hexcolor) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
+    public static ItemStack buildColorStack(int hexcolor) {
+        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB((int)hexcolor));
+        ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
         return stack;
     }
 
-    public static ItemStack b(final int hexcolor, final Material m) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
+    public static ItemStack b(int hexcolor, Material m2) {
+        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m2), Color.fromRGB((int)hexcolor));
+        ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
         return stack;
     }
 
-    public static ItemStack c(final Material m) {
-        final ItemStack stack = new ItemStack(m);
-        final ItemMeta itemMeta = stack.getItemMeta();
+    public static ItemStack c(Material m2) {
+        ItemStack stack = new ItemStack(m2);
+        ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
         return stack;
     }
 
-    public static void applyEffect(final PotionEffectType e, final Entity en, final int ticks, final int amp) {
-        ((LivingEntity) en).addPotionEffect(new PotionEffect(e, ticks, amp));
+    public static void applyEffect(PotionEffectType e2, Entity en, int ticks, int amp) {
+        ((LivingEntity)en).addPotionEffect(new PotionEffect(e2, ticks, amp));
     }
 
-    public static void damagePlayer(final Player p) {
-        p.sendMessage(Sputnik.trans("&d&lJolly Pink Giant &chit you with &eBoulder Toss &cfor " + SUtil.commaify(SadanFunction.dmgc(30000, p, JollyPinkGiant.e)) + " &cdamage."));
+    public static void damagePlayer(Player p2) {
+        p2.sendMessage(Sputnik.trans("&d&lJolly Pink Giant &chit you with &eBoulder Toss &cfor " + SUtil.commaify(SadanFunction.dmgc(30000, p2, (Entity)e)) + " &cdamage."));
     }
 
-    public void throwTerrain(final LivingEntity e, final Entity target) {
-        final Block b = target.getLocation().getBlock();
-        final World world = e.getWorld();
-        final Location startBlock = e.getLocation().add(e.getLocation().getDirection().multiply(2));
-        final List<Location> locationList = new ArrayList<Location>();
-        final List<Location> endList = new ArrayList<Location>();
-        final List<Material> blockTypes = new ArrayList<Material>();
-        final List<Material> launchTypes = new ArrayList<Material>();
+    public void throwTerrain(LivingEntity e2, Entity target) {
+        Block b2 = target.getLocation().getBlock();
+        World world = e2.getWorld();
+        Location startBlock = e2.getLocation().add(e2.getLocation().getDirection().multiply(2));
+        ArrayList<Location> locationList = new ArrayList<Location>();
+        ArrayList<Location> endList = new ArrayList<Location>();
+        ArrayList blockTypes = new ArrayList();
+        ArrayList launchTypes = new ArrayList();
         for (int length = -1; length < 2; ++length) {
             for (int height = -1; height < 2; ++height) {
-                final Location loc = startBlock.clone().add(length, 0.0, height);
-                final Location end = b.getLocation().clone().add(length, 0.0, height);
+                Location loc = startBlock.clone().add((double)length, 0.0, (double)height);
+                Location end = b2.getLocation().clone().add((double)length, 0.0, (double)height);
                 locationList.add(loc);
                 endList.add(end);
             }
@@ -233,23 +267,23 @@ public class JollyPinkGiant extends BaseZombie {
         locationList.add(startBlock.clone().add(0.0, 0.0, -2.0));
         locationList.add(startBlock.clone().add(2.0, 0.0, 0.0));
         locationList.add(startBlock.clone().add(-2.0, 0.0, 0.0));
-        endList.add(b.getLocation().clone().add(0.0, 0.0, 2.0));
-        endList.add(b.getLocation().clone().add(0.0, 0.0, -2.0));
-        endList.add(b.getLocation().clone().add(2.0, 0.0, 0.0));
-        endList.add(b.getLocation().clone().add(-2.0, 0.0, 0.0));
+        endList.add(b2.getLocation().clone().add(0.0, 0.0, 2.0));
+        endList.add(b2.getLocation().clone().add(0.0, 0.0, -2.0));
+        endList.add(b2.getLocation().clone().add(2.0, 0.0, 0.0));
+        endList.add(b2.getLocation().clone().add(-2.0, 0.0, 0.0));
         locationList.add(startBlock.clone().add(0.0, -1.0, 0.0));
         locationList.add(startBlock.clone().add(1.0, -1.0, 0.0));
         locationList.add(startBlock.clone().add(-1.0, -1.0, 0.0));
         locationList.add(startBlock.clone().add(0.0, -1.0, 1.0));
         locationList.add(startBlock.clone().add(0.0, -1.0, -1.0));
-        endList.add(b.getLocation().clone().add(0.0, -1.0, 0.0));
-        endList.add(b.getLocation().clone().add(1.0, -1.0, 0.0));
-        endList.add(b.getLocation().clone().add(-1.0, -1.0, 0.0));
-        endList.add(b.getLocation().clone().add(0.0, -1.0, 1.0));
-        endList.add(b.getLocation().clone().add(0.0, -1.0, -1.0));
-        final Byte blockData = 0;
+        endList.add(b2.getLocation().clone().add(0.0, -1.0, 0.0));
+        endList.add(b2.getLocation().clone().add(1.0, -1.0, 0.0));
+        endList.add(b2.getLocation().clone().add(-1.0, -1.0, 0.0));
+        endList.add(b2.getLocation().clone().add(0.0, -1.0, 1.0));
+        endList.add(b2.getLocation().clone().add(0.0, -1.0, -1.0));
+        Byte blockData = 0;
         locationList.forEach(block -> {
-            final Location loc2 = block.getBlock().getLocation().clone().subtract(0.0, 1.0, 0.0);
+            Location loc2 = block.getBlock().getLocation().clone().subtract(0.0, 1.0, 0.0);
             Material mat = loc2.getBlock().getType();
             if (mat == Material.AIR) {
                 mat = Material.STONE;
@@ -258,19 +292,20 @@ public class JollyPinkGiant extends BaseZombie {
             blockTypes.add(block.getBlock().getType());
         });
         locationList.forEach(location -> {
-            final Material material = launchTypes.get(locationList.indexOf(location));
-            final Location origin = location.clone().add(0.0, 7.0, 0.0);
-            final int pos = locationList.indexOf(location);
-            final Location endPos = endList.get(pos);
-            final FallingBlock block2 = world.spawnFallingBlock(origin, material, blockData);
+            Material material = (Material)launchTypes.get(locationList.indexOf(location));
+            Location origin = location.clone().add(0.0, 7.0, 0.0);
+            int pos = locationList.indexOf(location);
+            Location endPos = (Location)endList.get(pos);
+            FallingBlock block2 = world.spawnFallingBlock(origin, material, blockData.byteValue());
             block2.setDropItem(false);
-            block2.setMetadata("t", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+            block2.setMetadata("t", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
             block2.setVelocity(Sputnik.calculateVelocityBlock(origin.toVector(), endPos.toVector(), 3));
         });
     }
 
     @Override
-    public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
-        e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ZOMBIE_HURT, 1.0f, 0.0f);
+    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
+        e2.getEntity().getWorld().playSound(e2.getEntity().getLocation(), Sound.ZOMBIE_HURT, 1.0f, 0.0f);
     }
 }
+

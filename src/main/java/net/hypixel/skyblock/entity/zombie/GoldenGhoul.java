@@ -1,18 +1,27 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.md_5.bungee.api.ChatColor
+ *  org.bukkit.Material
+ *  org.bukkit.inventory.ItemStack
+ */
 package net.hypixel.skyblock.entity.zombie;
-
-import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-import net.hypixel.skyblock.entity.EntityDrop;
-import net.hypixel.skyblock.entity.EntityDropType;
-import net.hypixel.skyblock.entity.SEntityEquipment;
-import net.hypixel.skyblock.item.SMaterial;
-import net.hypixel.skyblock.util.SUtil;
 
 import java.util.Arrays;
 import java.util.List;
+import net.hypixel.skyblock.entity.EntityDrop;
+import net.hypixel.skyblock.entity.EntityDropType;
+import net.hypixel.skyblock.entity.SEntityEquipment;
+import net.hypixel.skyblock.entity.zombie.BaseZombie;
+import net.hypixel.skyblock.item.SMaterial;
+import net.hypixel.skyblock.util.SUtil;
+import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
-public class GoldenGhoul extends BaseZombie {
+public class GoldenGhoul
+extends BaseZombie {
     @Override
     public String getEntityName() {
         return ChatColor.GOLD + "Golden Ghoul";
@@ -26,11 +35,6 @@ public class GoldenGhoul extends BaseZombie {
     @Override
     public double getDamageDealt() {
         return 800.0;
-    }
-    
-    @Override
-    public int mobLevel() {
-        return 60;
     }
 
     @Override
@@ -57,4 +61,10 @@ public class GoldenGhoul extends BaseZombie {
     public boolean isVillager() {
         return false;
     }
+
+    @Override
+    public int mobLevel() {
+        return 60;
+    }
 }
+

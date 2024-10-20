@@ -1,3 +1,16 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.minecraft.server.v1_8_R3.BlockPosition
+ *  net.minecraft.server.v1_8_R3.TileEntityFlowerPot
+ *  org.bukkit.Material
+ *  org.bukkit.block.Block
+ *  org.bukkit.craftbukkit.v1_8_R3.CraftWorld
+ *  org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack
+ *  org.bukkit.entity.ArmorStand
+ *  org.bukkit.inventory.ItemStack
+ */
 package net.hypixel.skyblock.util;
 
 import net.minecraft.server.v1_8_R3.BlockPosition;
@@ -10,21 +23,21 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.inventory.ItemStack;
 
 public class MagicFlowerPot {
-    public static final boolean changePot(final Block flowerPot, final boolean refreshChunk, final ArmorStand s) {
-        if (s.isDead()) {
+    public static final boolean changePot(Block flowerPot, boolean refreshChunk, ArmorStand s2) {
+        if (s2.isDead()) {
             return false;
         }
-        if (!s.isDead() && flowerPot.getType() == Material.FLOWER_POT) {
+        if (!s2.isDead() && flowerPot.getType() == Material.FLOWER_POT) {
             try {
-                final ItemStack is = new ItemStack(Material.RED_ROSE);
-                final TileEntityFlowerPot tefp = (TileEntityFlowerPot) ((CraftWorld) flowerPot.getWorld()).getHandle().getTileEntity(new BlockPosition(flowerPot.getX(), flowerPot.getY(), flowerPot.getZ()));
-                tefp.a(CraftItemStack.asNMSCopy(is).getItem(), CraftItemStack.asNMSCopy(is).getData());
+                ItemStack is = new ItemStack(Material.RED_ROSE);
+                TileEntityFlowerPot tefp = (TileEntityFlowerPot)((CraftWorld)flowerPot.getWorld()).getHandle().getTileEntity(new BlockPosition(flowerPot.getX(), flowerPot.getY(), flowerPot.getZ()));
+                tefp.a(CraftItemStack.asNMSCopy((ItemStack)is).getItem(), CraftItemStack.asNMSCopy((ItemStack)is).getData());
                 tefp.update();
-                ((CraftWorld) flowerPot.getWorld()).getHandle().notify(new BlockPosition(flowerPot.getX(), flowerPot.getY(), flowerPot.getZ()));
+                ((CraftWorld)flowerPot.getWorld()).getHandle().notify(new BlockPosition(flowerPot.getX(), flowerPot.getY(), flowerPot.getZ()));
                 if (refreshChunk) {
                     flowerPot.getWorld().refreshChunk(flowerPot.getChunk().getX(), flowerPot.getChunk().getZ());
                 }
-            } catch (final Exception ex) {
+            } catch (Exception ex) {
                 return false;
             }
             return true;
@@ -32,18 +45,18 @@ public class MagicFlowerPot {
         return false;
     }
 
-    public static final boolean changePotAir(final Block flowerPot, final boolean refreshChunk) {
+    public static final boolean changePotAir(Block flowerPot, boolean refreshChunk) {
         if (flowerPot.getType() == Material.FLOWER_POT) {
             try {
-                final ItemStack is = new ItemStack(Material.AIR);
-                final TileEntityFlowerPot tefp = (TileEntityFlowerPot) ((CraftWorld) flowerPot.getWorld()).getHandle().getTileEntity(new BlockPosition(flowerPot.getX(), flowerPot.getY(), flowerPot.getZ()));
-                tefp.a(CraftItemStack.asNMSCopy(is).getItem(), CraftItemStack.asNMSCopy(is).getData());
+                ItemStack is = new ItemStack(Material.AIR);
+                TileEntityFlowerPot tefp = (TileEntityFlowerPot)((CraftWorld)flowerPot.getWorld()).getHandle().getTileEntity(new BlockPosition(flowerPot.getX(), flowerPot.getY(), flowerPot.getZ()));
+                tefp.a(CraftItemStack.asNMSCopy((ItemStack)is).getItem(), CraftItemStack.asNMSCopy((ItemStack)is).getData());
                 tefp.update();
-                ((CraftWorld) flowerPot.getWorld()).getHandle().notify(new BlockPosition(flowerPot.getX(), flowerPot.getY(), flowerPot.getZ()));
+                ((CraftWorld)flowerPot.getWorld()).getHandle().notify(new BlockPosition(flowerPot.getX(), flowerPot.getY(), flowerPot.getZ()));
                 if (refreshChunk) {
                     flowerPot.getWorld().refreshChunk(flowerPot.getChunk().getX(), flowerPot.getChunk().getZ());
                 }
-            } catch (final Exception ex) {
+            } catch (Exception ex) {
                 return false;
             }
             return true;
@@ -51,3 +64,4 @@ public class MagicFlowerPot {
         return false;
     }
 }
+

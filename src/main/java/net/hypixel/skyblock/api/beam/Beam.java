@@ -1,16 +1,27 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Bukkit
+ *  org.bukkit.Location
+ *  org.bukkit.entity.Player
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.scheduler.BukkitRunnable
+ */
 package net.hypixel.skyblock.api.beam;
 
 import com.google.common.base.Preconditions;
-import net.hypixel.skyblock.SkyBlock;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
+import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.api.beam.LocationTargetBeam;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class Beam {
     private final String worldname;
@@ -23,13 +34,13 @@ public class Beam {
     private final Set<UUID> viewers;
     private BukkitRunnable runnable;
 
-    public Beam(final Location startingPosition, final Location endingPosition) {
+    public Beam(Location startingPosition, Location endingPosition) {
         this(startingPosition, endingPosition, 100.0, 5L);
     }
 
-    public Beam(final Location startingPosition, final Location endingPosition, final double viewingRadius, final long updateDelay) {
-        Preconditions.checkNotNull((Object) startingPosition, "startingPosition cannot be null");
-        Preconditions.checkNotNull((Object) endingPosition, "endingPosition cannot be null");
+    public Beam(Location startingPosition, Location endingPosition, double viewingRadius, long updateDelay) {
+        Preconditions.checkNotNull(startingPosition, "startingPosition cannot be null");
+        Preconditions.checkNotNull(endingPosition, "endingPosition cannot be null");
         Preconditions.checkState(startingPosition.getWorld().equals(endingPosition.getWorld()), "startingPosition and endingPosition must be in the same world");
         Preconditions.checkArgument(viewingRadius > 0.0, "viewingRadius must be positive");
         Preconditions.checkArgument(updateDelay >= 1L, "viewingRadius must be a natural number");
@@ -46,72 +57,70 @@ public class Beam {
     public void start() {
         Preconditions.checkState(!this.isActive, "The beam must be disabled in order to start it");
         this.isActive = true;
-        (this.runnable = new BeamUpdater()).runTaskTimer(SkyBlock.getPlugin(), 0L, this.updateDelay);
+        this.runnable = new BeamUpdater();
+        this.runnable.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, this.updateDelay);
     }
 
     public void stop() {
         Preconditions.checkState(this.isActive, "The beam must be enabled in order to stop it");
         this.isActive = false;
-        for (final UUID uuid : this.viewers) {
-            final Player player = Bukkit.getPlayer(uuid);
-            if (player != null && player.getWorld().getName().equalsIgnoreCase(this.worldname) && this.isCloseEnough(player.getLocation())) {
-                this.beam.cleanup(player);
-            }
+        for (UUID uuid : this.viewers) {
+            Player player = Bukkit.getPlayer((UUID)uuid);
+            if (player == null || !player.getWorld().getName().equalsIgnoreCase(this.worldname) || !this.isCloseEnough(player.getLocation())) continue;
+            this.beam.cleanup(player);
         }
         this.viewers.clear();
         this.runnable.cancel();
         this.runnable = null;
     }
 
-    public void setStartingPosition(final Location location) {
+    public void setStartingPosition(Location location) {
         Preconditions.checkArgument(location.getWorld().getName().equalsIgnoreCase(this.worldname), "location must be in the same world as this beam");
         this.startingPosition = location;
-        final Iterator<UUID> iterator = this.viewers.iterator();
+        Iterator<UUID> iterator = this.viewers.iterator();
         while (iterator.hasNext()) {
-            final UUID uuid = iterator.next();
-            final Player player = Bukkit.getPlayer(uuid);
-            if (player == null || !player.isOnline() || !player.getWorld().getName().equalsIgnoreCase(this.worldname) || !this.isCloseEnough(player.getLocation())) {
+            UUID uuid = iterator.next();
+            Player player = Bukkit.getPlayer((UUID)uuid);
+            if (!(player != null && player.isOnline() && player.getWorld().getName().equalsIgnoreCase(this.worldname) && this.isCloseEnough(player.getLocation()))) {
                 iterator.remove();
-            } else {
-                this.beam.setStartingPosition(player, location);
+                continue;
             }
+            this.beam.setStartingPosition(player, location);
         }
     }
 
-    public void setEndingPosition(final Location location) {
+    public void setEndingPosition(Location location) {
         Preconditions.checkArgument(location.getWorld().getName().equalsIgnoreCase(this.worldname), "location must be in the same world as this beam");
         this.endingPosition = location;
-        final Iterator<UUID> iterator = this.viewers.iterator();
+        Iterator<UUID> iterator = this.viewers.iterator();
         while (iterator.hasNext()) {
-            final UUID uuid = iterator.next();
-            final Player player = Bukkit.getPlayer(uuid);
-            if (!player.isOnline() || !player.getWorld().getName().equalsIgnoreCase(this.worldname) || !this.isCloseEnough(player.getLocation())) {
+            UUID uuid = iterator.next();
+            Player player = Bukkit.getPlayer((UUID)uuid);
+            if (!(player.isOnline() && player.getWorld().getName().equalsIgnoreCase(this.worldname) && this.isCloseEnough(player.getLocation()))) {
                 iterator.remove();
-            } else {
-                this.beam.setEndingPosition(player, location);
+                continue;
             }
+            this.beam.setEndingPosition(player, location);
         }
     }
 
     public void update() {
         if (this.isActive) {
-            for (final Player player : Bukkit.getOnlinePlayers()) {
-                final UUID uuid = player.getUniqueId();
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                UUID uuid = player.getUniqueId();
                 if (!player.getWorld().getName().equalsIgnoreCase(this.worldname)) {
                     this.viewers.remove(uuid);
-                } else if (this.isCloseEnough(player.getLocation())) {
-                    if (this.viewers.contains(uuid)) {
-                        continue;
-                    }
+                    continue;
+                }
+                if (this.isCloseEnough(player.getLocation())) {
+                    if (this.viewers.contains(uuid)) continue;
                     this.beam.start(player);
                     this.viewers.add(uuid);
-                } else {
-                    if (!this.viewers.contains(uuid)) {
-                        continue;
-                    }
-                    this.beam.cleanup(player);
-                    this.viewers.remove(uuid);
+                    continue;
                 }
+                if (!this.viewers.contains(uuid)) continue;
+                this.beam.cleanup(player);
+                this.viewers.remove(uuid);
             }
         }
     }
@@ -120,11 +129,11 @@ public class Beam {
         return this.isActive;
     }
 
-    public boolean isViewing(final Player player) {
+    public boolean isViewing(Player player) {
         return this.viewers.contains(player.getUniqueId());
     }
 
-    private boolean isCloseEnough(final Location location) {
+    private boolean isCloseEnough(Location location) {
         return this.startingPosition.distanceSquared(location) <= this.viewingRadiusSquared || this.endingPosition.distanceSquared(location) <= this.viewingRadiusSquared;
     }
 
@@ -132,9 +141,14 @@ public class Beam {
         return true;
     }
 
-    private class BeamUpdater extends BukkitRunnable {
+    private class BeamUpdater
+    extends BukkitRunnable {
+        private BeamUpdater() {
+        }
+
         public void run() {
             Beam.this.update();
         }
     }
 }
+

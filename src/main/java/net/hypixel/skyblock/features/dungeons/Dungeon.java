@@ -1,15 +1,21 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.World
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.features.dungeons;
-
-import org.bukkit.World;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.UUID;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
 
 public class Dungeon {
     private final UUID uuid;
     private final World world;
-    private ArrayList<Player> dungeonsmate;
+    private ArrayList<Player> dungeonsmate = new ArrayList();
     private int deaths;
     private int totalsecretfound;
     private int score;
@@ -18,8 +24,7 @@ public class Dungeon {
     private boolean bloodkey;
     private int witherkeys;
 
-    public Dungeon(final UUID uuid, final World world, final ArrayList<Player> dungeonmembers) {
-        this.dungeonsmate = new ArrayList<Player>();
+    public Dungeon(UUID uuid, World world, ArrayList<Player> dungeonmembers) {
         this.world = world;
         this.deaths = 0;
         this.uuid = uuid;
@@ -39,7 +44,7 @@ public class Dungeon {
         return this.world;
     }
 
-    public void setScore(final int sc) {
+    public void setScore(int sc) {
         this.score = sc;
     }
 
@@ -51,15 +56,15 @@ public class Dungeon {
         return this.bloodkey;
     }
 
-    public void setBloodKey(final boolean bk) {
-        this.bloodkey = bk;
+    public void setBloodKey(boolean bk2) {
+        this.bloodkey = bk2;
     }
 
     public int getDungeonCompletePercent() {
         return this.percentagecomplete;
     }
 
-    public void setBloodKey(final int percent) {
+    public void setBloodKey(int percent) {
         this.percentagecomplete = percent;
     }
 
@@ -67,7 +72,7 @@ public class Dungeon {
         return this.totalsecretfound;
     }
 
-    public void setSecretAmount(final int tsf) {
+    public void setSecretAmount(int tsf) {
         this.totalsecretfound = tsf;
     }
 
@@ -75,7 +80,7 @@ public class Dungeon {
         return this.witherkeys;
     }
 
-    public void setWithersKey(final int wk) {
+    public void setWithersKey(int wk) {
         this.witherkeys = wk;
     }
 
@@ -83,22 +88,22 @@ public class Dungeon {
         return this.deaths;
     }
 
-    public void setDeaths(final int d) {
-        this.deaths = d;
+    public void setDeaths(int d2) {
+        this.deaths = d2;
     }
 
     public ArrayList<Player> getAllDungeonsMembers() {
         return this.dungeonsmate;
     }
 
-    public void addPlayer(final Player p) {
-        this.dungeonsmate.add(p);
+    public void addPlayer(Player p2) {
+        this.dungeonsmate.add(p2);
     }
 
-    public boolean removePlayer(final Player p) {
+    public boolean removePlayer(Player p2) {
         boolean success = false;
-        if (this.dungeonsmate.contains(p)) {
-            this.dungeonsmate.remove(p);
+        if (this.dungeonsmate.contains(p2)) {
+            this.dungeonsmate.remove(p2);
             success = true;
         }
         return success;
@@ -108,3 +113,4 @@ public class Dungeon {
         return this.isBloodCleared;
     }
 }
+

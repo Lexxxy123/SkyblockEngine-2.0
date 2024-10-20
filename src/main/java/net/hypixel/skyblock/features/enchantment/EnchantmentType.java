@@ -1,23 +1,25 @@
-// 
-// Decompiled by Procyon v0.5.36
-// 
-
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ *  org.bukkit.enchantments.Enchantment
+ */
 package net.hypixel.skyblock.features.enchantment;
 
-
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.hypixel.skyblock.item.SpecificItemType;
 import net.hypixel.skyblock.util.Sputnik;
 import org.bukkit.ChatColor;
 import org.bukkit.enchantments.Enchantment;
 
-import java.util.*;
-
-
 public class EnchantmentType {
-
     public static final Map<String, EnchantmentType> ENCHANTMENT_TYPE_CACHE;
-
-    public static List<EnchantmentType> ENCHANTMENT_TYPE_LIST = new ArrayList<>();
+    public static List<EnchantmentType> ENCHANTMENT_TYPE_LIST;
     public static EnchantmentType SHARPNESS;
     public static EnchantmentType LIFE_STEAL;
     public static EnchantmentType EXECUTE;
@@ -55,36 +57,35 @@ public class EnchantmentType {
     private final List<SpecificItemType> compatibleTypes;
     public final int maxLvl;
 
-
-    public EnchantmentType(String name, String namespace, String description, boolean ultimate, Enchantment vanilla, int maxLvl, SpecificItemType... compatibleTypes) {
+    public EnchantmentType(String name, String namespace, String description, boolean ultimate, Enchantment vanilla, int maxLvl, SpecificItemType ... compatibleTypes) {
         this.name = name;
         this.namespace = namespace;
         this.description = description;
         this.ultimate = ultimate;
         this.vanilla = vanilla;
         this.maxLvl = maxLvl;
-        this.compatibleTypes = new ArrayList<>(Arrays.asList(compatibleTypes));
+        this.compatibleTypes = new ArrayList<SpecificItemType>(Arrays.asList(compatibleTypes));
         ENCHANTMENT_TYPE_CACHE.put(namespace, this);
         ENCHANTMENT_TYPE_LIST.add(this);
     }
 
-    public EnchantmentType(String name, String namespace, String description, boolean ultimate, int maxLvl, SpecificItemType... compatibleTypes) {
+    public EnchantmentType(String name, String namespace, String description, boolean ultimate, int maxLvl, SpecificItemType ... compatibleTypes) {
         this(name, namespace, description, ultimate, null, maxLvl, compatibleTypes);
     }
 
-    public EnchantmentType(String name, String namespace, String description, Enchantment vanilla, int maxLvl, SpecificItemType... compatibleTypes) {
+    public EnchantmentType(String name, String namespace, String description, Enchantment vanilla, int maxLvl, SpecificItemType ... compatibleTypes) {
         this(name, namespace, description, false, vanilla, maxLvl, compatibleTypes);
     }
 
-    public EnchantmentType(String name, String namespace, String description, int maxLvl, SpecificItemType... compatibleTypes) {
+    public EnchantmentType(String name, String namespace, String description, int maxLvl, SpecificItemType ... compatibleTypes) {
         this(name, namespace, description, false, maxLvl, compatibleTypes);
     }
 
     public static EnchantmentType getByNamespace(String namespace) {
-        return EnchantmentType.ENCHANTMENT_TYPE_CACHE.get(namespace.toLowerCase());
+        return ENCHANTMENT_TYPE_CACHE.get(namespace.toLowerCase());
     }
 
-    public String getDescription(Object... objects) {
+    public String getDescription(Object ... objects) {
         String description = this.description;
         for (Object object : objects) {
             description = description.replaceFirst("%s", String.valueOf(object));
@@ -92,9 +93,8 @@ public class EnchantmentType {
         return description;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        return o instanceof EnchantmentType && ((EnchantmentType) o).namespace.equals(this.namespace);
+    public boolean equals(Object o2) {
+        return o2 instanceof EnchantmentType && ((EnchantmentType)o2).namespace.equals(this.namespace);
     }
 
     public String getName() {
@@ -117,10 +117,10 @@ public class EnchantmentType {
         return this.compatibleTypes;
     }
 
-
     static {
+        ENCHANTMENT_TYPE_LIST = new ArrayList<EnchantmentType>();
         ENCHANTMENT_TYPE_CACHE = new HashMap<String, EnchantmentType>();
-        SHARPNESS = new EnchantmentType("Sharpness", "sharpness", "Increases damage dealt by " + ChatColor.GREEN + "%s%", 600, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE); // you do gui till i am doing maxLvl
+        SHARPNESS = new EnchantmentType("Sharpness", "sharpness", "Increases damage dealt by " + ChatColor.GREEN + "%s%", 600, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
         LIFE_STEAL = new EnchantmentType("Life Steal", "life_steal", "Heals for " + ChatColor.GREEN + "%s%" + ChatColor.GRAY + " of your max health each time you hit a mob.", 30, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
         EXECUTE = new EnchantmentType("Execute", "execute", "Increases damage by " + ChatColor.GREEN + "%s%" + Sputnik.trans(" &7for each percent of Health missing on your target. "), 30, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
         FIRE_ASPECT = new EnchantmentType("Fire Aspect", "fire_aspect", "Gives whoever this weapon hits %s seconds of fire.", 30, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
@@ -151,3 +151,4 @@ public class EnchantmentType {
         ONE_FOR_ALL = new EnchantmentType("One for All", "one_for_all", Sputnik.trans("Removes all other enchants but increases your weapon damage by &a%s%"), true, 10, SpecificItemType.SWORD, SpecificItemType.LONGSWORD, SpecificItemType.AXE);
     }
 }
+

@@ -1,6 +1,12 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.entity.den;
 
-public class DasherSpider extends BaseSpider {
+import net.hypixel.skyblock.entity.den.BaseSpider;
+
+public class DasherSpider
+extends BaseSpider {
     @Override
     public String getEntityName() {
         return "Dasher Spider";
@@ -15,11 +21,6 @@ public class DasherSpider extends BaseSpider {
     public double getDamageDealt() {
         return 55.0;
     }
-    
-    @Override
-    public int mobLevel() {
-        return 4;
-    }
 
     @Override
     public double getMovementSpeed() {
@@ -31,3 +32,4 @@ public class DasherSpider extends BaseSpider {
         return 10.8;
     }
 }
+

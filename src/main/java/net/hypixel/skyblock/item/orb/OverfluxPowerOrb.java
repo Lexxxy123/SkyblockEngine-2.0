@@ -1,16 +1,27 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ *  org.bukkit.Effect
+ *  org.bukkit.Location
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.item.orb;
 
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.PlayerBoostStatistics;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.orb.PowerOrb;
 import net.hypixel.skyblock.user.PlayerStatistics;
+import net.hypixel.skyblock.user.PlayerUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import net.hypixel.skyblock.item.GenericItemType;
-import net.hypixel.skyblock.item.PlayerBoostStatistics;
-import net.hypixel.skyblock.item.Rarity;
-import net.hypixel.skyblock.user.PlayerUtils;
 
-public class OverfluxPowerOrb extends PowerOrb {
+public class OverfluxPowerOrb
+extends PowerOrb {
     @Override
     public String getAbilityDescription() {
         return "Place an orb for " + ChatColor.GREEN + "60s " + ChatColor.GRAY + "buffing up to " + ChatColor.AQUA + "5 " + ChatColor.GRAY + "players within " + ChatColor.GREEN + "18 " + ChatColor.GRAY + "blocks. " + ChatColor.DARK_GRAY + "Costs " + ChatColor.DARK_GRAY + "50% of max mana. " + ChatColor.DARK_GRAY + "Only " + ChatColor.DARK_GRAY + "one orb applies per player.";
@@ -38,14 +49,15 @@ public class OverfluxPowerOrb extends PowerOrb {
 
     @Override
     public String getBuffDescription() {
-        return "Grants " + ChatColor.AQUA + "+100% " + ChatColor.GRAY + "base mana regen. Heals " + ChatColor.RED + "2.5% " + ChatColor.GRAY + "of max " + ChatColor.RED + "❤ " + ChatColor.GRAY + "per second. Increases all heals by " + ChatColor.GREEN + "5%" + ChatColor.GRAY + ". Grants " + ChatColor.RED + "+25 ❁ Strength";
+        return "Grants " + ChatColor.AQUA + "+100% " + ChatColor.GRAY + "base mana regen. Heals " + ChatColor.RED + "2.5% " + ChatColor.GRAY + "of max " + ChatColor.RED + "\u2764 " + ChatColor.GRAY + "per second. Increases all heals by " + ChatColor.GREEN + "5%" + ChatColor.GRAY + ". Grants " + ChatColor.RED + "+25 \u2741 Strength";
     }
 
     @Override
-    protected void buff(final Player player) {
+    protected void buff(Player player) {
         player.setHealth(Math.min(player.getMaxHealth(), player.getHealth() + player.getMaxHealth() * 0.025));
-        final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
-        PlayerUtils.boostPlayer(statistics, new PlayerBoostStatistics() {
+        PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
+        PlayerUtils.boostPlayer(statistics, new PlayerBoostStatistics(){
+
             @Override
             public String getDisplayName() {
                 return null;
@@ -83,7 +95,8 @@ public class OverfluxPowerOrb extends PowerOrb {
     }
 
     @Override
-    protected void playEffect(final Location location) {
+    protected void playEffect(Location location) {
         location.getWorld().spigot().playEffect(location, Effect.COLOURED_DUST, 0, 1, 0.4f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
     }
 }
+

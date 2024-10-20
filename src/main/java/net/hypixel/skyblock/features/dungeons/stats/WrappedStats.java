@@ -1,3 +1,6 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.features.dungeons.stats;
 
 public class WrappedStats {
@@ -10,15 +13,15 @@ public class WrappedStats {
     private final float defense;
     private final float[] defaultArray;
 
-    public WrappedStats(final float[] z) {
-        this.health = z[0];
-        this.healthRegen = z[1];
-        this.strength = z[2];
-        this.critDamage = z[3];
-        this.intelligence = z[4];
-        this.speed = z[5];
-        this.defense = z[6];
-        this.defaultArray = z;
+    public WrappedStats(float[] z2) {
+        this.health = z2[0];
+        this.healthRegen = z2[1];
+        this.strength = z2[2];
+        this.critDamage = z2[3];
+        this.intelligence = z2[4];
+        this.speed = z2[5];
+        this.defense = z2[6];
+        this.defaultArray = z2;
     }
 
     public float getHealth() {
@@ -53,3 +56,4 @@ public class WrappedStats {
         return this.defaultArray;
     }
 }
+

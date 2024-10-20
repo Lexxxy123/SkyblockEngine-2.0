@@ -1,25 +1,38 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Effect
+ *  org.bukkit.entity.Player
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.scheduler.BukkitRunnable
+ */
 package net.hypixel.skyblock.item.oddities;
 
+import java.util.ArrayList;
 import net.hypixel.skyblock.SkyBlock;
-import net.hypixel.skyblock.item.*;
 import net.hypixel.skyblock.features.potion.PotionEffect;
 import net.hypixel.skyblock.features.potion.PotionEffectType;
-import org.bukkit.Effect;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+import net.hypixel.skyblock.item.Ability;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.SkullStatistics;
 import net.hypixel.skyblock.user.PlayerUtils;
 import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.SUtil;
 import net.hypixel.skyblock.util.Sputnik;
+import org.bukkit.Effect;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-
-public class GodPot implements SkullStatistics, MaterialFunction, Ability {
-    private boolean bool;
-
-    public GodPot() {
-        this.bool = true;
-    }
+public class GodPot
+implements SkullStatistics,
+MaterialFunction,
+Ability {
+    private boolean bool = true;
 
     @Override
     public String getURL() {
@@ -72,9 +85,11 @@ public class GodPot implements SkullStatistics, MaterialFunction, Ability {
     }
 
     @Override
-    public void onAbilityUse(final Player player, final SItem sItem) {
-        SUtil.delay(() -> this.bool = false, 35L);
-        final ArrayList<PotionEffect> effects = new ArrayList<PotionEffect>();
+    public void onAbilityUse(final Player player, SItem sItem) {
+        SUtil.delay(() -> {
+            this.bool = false;
+        }, 35L);
+        ArrayList<PotionEffect> effects = new ArrayList<PotionEffect>();
         effects.add(new PotionEffect(PotionEffectType.FEROCITY, 3, 1728000L));
         effects.add(new PotionEffect(PotionEffectType.ARCHERY, 4, 1728000L));
         effects.add(new PotionEffect(PotionEffectType.CRITICAL, 6, 1728000L));
@@ -93,8 +108,9 @@ public class GodPot implements SkullStatistics, MaterialFunction, Ability {
         effects.add(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 1, 1728000L));
         effects.add(new PotionEffect(PotionEffectType.STAMINA, 4, 1728000L));
         effects.add(new PotionEffect(PotionEffectType.MAGIC_FIND, 5, 1728000L));
-        final User user = User.getUser(player.getUniqueId());
-        new BukkitRunnable() {
+        User user = User.getUser(player.getUniqueId());
+        new BukkitRunnable(){
+
             public void run() {
                 if (!GodPot.this.bool) {
                     player.getWorld().playEffect(player.getLocation().add(0.0, 0.5, 0.0), Effect.EXPLOSION_HUGE, 0);
@@ -103,13 +119,13 @@ public class GodPot implements SkullStatistics, MaterialFunction, Ability {
                     this.cancel();
                     return;
                 }
-                for (int i = 0; i < 100; ++i) {
-                    final double r = SUtil.random(0.0, 1.0);
-                    player.getWorld().playEffect(player.getLocation().add(0.0, r, 0.0), Effect.POTION_SWIRL, 0);
+                for (int i2 = 0; i2 < 100; ++i2) {
+                    double r2 = SUtil.random(0.0, 1.0);
+                    player.getWorld().playEffect(player.getLocation().add(0.0, r2, 0.0), Effect.POTION_SWIRL, 0);
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
-        for (final PotionEffect effect : effects) {
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
+        for (PotionEffect effect : effects) {
             user.removePotionEffect(effect.getType());
             PlayerUtils.updatePotionEffects(user, PlayerUtils.STATISTICS_CACHE.get(user.getUuid()));
             if (effect.getType().getOnDrink() != null) {
@@ -120,3 +136,4 @@ public class GodPot implements SkullStatistics, MaterialFunction, Ability {
         player.setItemInHand(null);
     }
 }
+

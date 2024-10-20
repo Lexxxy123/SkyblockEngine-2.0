@@ -1,6 +1,46 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.minecraft.server.v1_8_R3.GenericAttributes
+ *  org.bukkit.Location
+ *  org.bukkit.Material
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie
+ *  org.bukkit.entity.Ageable
+ *  org.bukkit.entity.Creature
+ *  org.bukkit.entity.Enderman
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.entity.LivingEntity
+ *  org.bukkit.entity.Player
+ *  org.bukkit.entity.Skeleton
+ *  org.bukkit.entity.Skeleton$SkeletonType
+ *  org.bukkit.entity.Slime
+ *  org.bukkit.entity.Wolf
+ *  org.bukkit.entity.Zombie
+ *  org.bukkit.inventory.EntityEquipment
+ *  org.bukkit.material.MaterialData
+ *  org.bukkit.metadata.FixedMetadataValue
+ *  org.bukkit.metadata.MetadataValue
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.scheduler.BukkitRunnable
+ *  org.bukkit.scheduler.BukkitTask
+ */
 package net.hypixel.skyblock.entity;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.entity.Ageable;
+import net.hypixel.skyblock.entity.EntityFunction;
+import net.hypixel.skyblock.entity.EntityStatistics;
+import net.hypixel.skyblock.entity.JockeyStatistics;
+import net.hypixel.skyblock.entity.SEntityEquipment;
+import net.hypixel.skyblock.entity.SEntityType;
+import net.hypixel.skyblock.entity.SkeletonStatistics;
+import net.hypixel.skyblock.entity.SlimeStatistics;
+import net.hypixel.skyblock.entity.ZombieStatistics;
 import net.hypixel.skyblock.entity.end.EndermanStatistics;
 import net.hypixel.skyblock.entity.nms.SNMSEntity;
 import net.hypixel.skyblock.entity.wolf.WolfStatistics;
@@ -10,21 +50,26 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
-import org.bukkit.entity.Ageable;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Creature;
+import org.bukkit.entity.Enderman;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Skeleton;
+import org.bukkit.entity.Slime;
+import org.bukkit.entity.Wolf;
+import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.material.MaterialData;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
 public class SEntity {
-    private static final SkyBlock plugin;
-    public static final Map<Entity, Boolean> isStarred;
+    private static final SkyBlock plugin = SkyBlock.getPlugin();
+    public static final Map<Entity, Boolean> isStarred = new HashMap<Entity, Boolean>();
     private final SEntityType specType;
     private final LivingEntity entity;
     private final Map<UUID, Double> damageDealt;
@@ -34,28 +79,24 @@ public class SEntity {
     private final EntityStatistics statistics;
     private final EntityFunction function;
 
-    public SEntity(final Location location, final SEntityType specType, final Object... params) {
+    public SEntity(Location location, SEntityType specType, Object ... params) {
+        Object instance;
         this.specType = specType;
-        final Object instance = specType.instance(params);
-        this.genericInstance = instance;
-        final EntityFunction function = (EntityFunction) instance;
-        final EntityStatistics statistics = (EntityStatistics) instance;
+        this.genericInstance = instance = specType.instance(params);
+        final EntityFunction function = (EntityFunction)instance;
+        final EntityStatistics statistics = (EntityStatistics)instance;
         this.function = function;
         this.statistics = statistics;
-        if (instance instanceof SNMSEntity) {
-            this.entity = ((SNMSEntity) instance).spawn(location);
-        } else {
-            this.entity = (LivingEntity) location.getWorld().spawnEntity(location, specType.getCraftType());
-        }
+        this.entity = instance instanceof SNMSEntity ? ((SNMSEntity)instance).spawn(location) : (LivingEntity)location.getWorld().spawnEntity(location, specType.getCraftType());
         this.damageDealt = new HashMap<UUID, Double>();
         if (statistics.getMovementSpeed() != -1.0) {
-            ((CraftLivingEntity) this.entity).getHandle().getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).setValue(statistics.getMovementSpeed());
+            ((CraftLivingEntity)this.entity).getHandle().getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).setValue(statistics.getMovementSpeed());
         }
-        final Location move = this.entity.getLocation().clone();
+        Location move = this.entity.getLocation().clone();
         move.setYaw(location.getYaw());
         this.entity.teleport(move);
-        final SEntityEquipment equipment = statistics.getEntityEquipment();
-        final EntityEquipment ee = this.entity.getEquipment();
+        SEntityEquipment equipment = statistics.getEntityEquipment();
+        EntityEquipment ee = this.entity.getEquipment();
         if (equipment != null) {
             ee.setHelmet(equipment.getHelmet());
             ee.setChestplate(equipment.getChestplate());
@@ -68,96 +109,100 @@ public class SEntity {
         this.entity.setRemoveWhenFarAway(statistics.removeWhenFarAway());
         function.onSpawn(this.entity, this);
         if (function.tick(this.entity)) {
-            this.ticker = new BukkitRunnable() {
+            this.ticker = new BukkitRunnable(){
+
                 public void run() {
                     if (SEntity.this.entity.isDead()) {
                         this.cancel();
                     }
                     function.tick(SEntity.this.entity);
                 }
-            }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
+            }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
         }
         if (statistics instanceof SlimeStatistics && this.entity instanceof Slime) {
-            ((Slime) this.entity).setSize(((SlimeStatistics) statistics).getSize());
+            ((Slime)this.entity).setSize(((SlimeStatistics)statistics).getSize());
         }
         if (statistics instanceof EndermanStatistics && this.entity instanceof Enderman) {
-            ((Enderman) this.entity).setCarriedMaterial((((EndermanStatistics) statistics).getCarriedMaterial() != null) ? ((EndermanStatistics) statistics).getCarriedMaterial() : new MaterialData(Material.AIR));
+            ((Enderman)this.entity).setCarriedMaterial(((EndermanStatistics)statistics).getCarriedMaterial() != null ? ((EndermanStatistics)statistics).getCarriedMaterial() : new MaterialData(Material.AIR));
         }
-        if (this.entity instanceof Ageable) {
-            if (this.genericInstance instanceof net.hypixel.skyblock.entity.Ageable && ((net.hypixel.skyblock.entity.Ageable) this.genericInstance).isBaby()) {
-                ((Ageable) this.entity).setBaby();
+        if (this.entity instanceof org.bukkit.entity.Ageable) {
+            if (this.genericInstance instanceof Ageable && ((Ageable)this.genericInstance).isBaby()) {
+                ((org.bukkit.entity.Ageable)this.entity).setBaby();
             } else {
-                ((Ageable) this.entity).setAdult();
+                ((org.bukkit.entity.Ageable)this.entity).setAdult();
             }
         }
         if (statistics instanceof ZombieStatistics && this.entity instanceof Zombie) {
-            ((Zombie) this.entity).setVillager(((ZombieStatistics) statistics).isVillager());
+            ((Zombie)this.entity).setVillager(((ZombieStatistics)statistics).isVillager());
         }
         if (statistics instanceof JockeyStatistics) {
-            this.entity.setPassenger(new SEntity(location, ((JockeyStatistics) statistics).getPassenger()).getEntity());
+            this.entity.setPassenger((Entity)new SEntity(location, ((JockeyStatistics)statistics).getPassenger(), new Object[0]).getEntity());
         }
         if (statistics instanceof WolfStatistics && this.entity instanceof Wolf) {
-            ((Wolf) this.entity).setAngry(((WolfStatistics) statistics).isAngry());
+            ((Wolf)this.entity).setAngry(((WolfStatistics)statistics).isAngry());
         }
         if (statistics instanceof SkeletonStatistics && this.entity instanceof Skeleton) {
-            ((Skeleton) this.entity).setSkeletonType(((SkeletonStatistics) statistics).isWither() ? Skeleton.SkeletonType.WITHER : Skeleton.SkeletonType.NORMAL);
+            ((Skeleton)this.entity).setSkeletonType(((SkeletonStatistics)statistics).isWither() ? Skeleton.SkeletonType.WITHER : Skeleton.SkeletonType.NORMAL);
         }
-        if (this.entity instanceof Ageable) {
-            ((Ageable) this.entity).setAdult();
+        if (this.entity instanceof org.bukkit.entity.Ageable) {
+            ((org.bukkit.entity.Ageable)this.entity).setAdult();
         }
-        new BukkitRunnable() {
+        new BukkitRunnable(){
+
             public void run() {
                 if (!statistics.isVisible()) {
-                    ((CraftLivingEntity) SEntity.this.entity).getHandle().setInvisible(true);
+                    ((CraftLivingEntity)SEntity.this.entity).getHandle().setInvisible(true);
                 }
             }
-        }.runTaskLater(SkyBlock.getPlugin(), 2L);
+        }.runTaskLater((Plugin)SkyBlock.getPlugin(), 2L);
         int rand = 0;
         if (this.entity.hasMetadata("WATCHER_E")) {
             rand = SUtil.random(7, 12);
             rand *= 1000000;
-            ((CraftZombie) this.entity).setBaby(false);
+            ((CraftZombie)this.entity).setBaby(false);
         }
         function.onSpawnNameTag(this.entity, this, specType, params);
-        this.entity.setMaxHealth(statistics.getEntityMaxHealth() + rand);
+        this.entity.setMaxHealth(statistics.getEntityMaxHealth() + (double)rand);
         this.entity.setHealth(this.entity.getMaxHealth());
-        this.entity.setMetadata("specEntityObject", new FixedMetadataValue(SEntity.plugin, this));
-        new BukkitRunnable() {
+        this.entity.setMetadata("specEntityObject", (MetadataValue)new FixedMetadataValue((Plugin)plugin, (Object)this));
+        new BukkitRunnable(){
+
             public void run() {
                 if (SEntity.this.entity.hasMetadata("upsidedown")) {
                     SEntity.this.entity.setCustomName("Dinnerbone");
                     SEntity.this.entity.setCustomNameVisible(false);
                 }
             }
-        }.runTaskLater(SkyBlock.getPlugin(), 2L);
+        }.runTaskLater((Plugin)SkyBlock.getPlugin(), 2L);
     }
 
-    public SEntity(final Entity e, final SEntityType type, final Object... params) {
-        this(e.getLocation(), type, params);
+    public SEntity(Entity e2, SEntityType type, Object ... params) {
+        this(e2.getLocation(), type, params);
     }
 
-    public void addDamageFor(final Player player, double damage) {
-        final UUID uuid = player.getUniqueId();
+    public void addDamageFor(Player player, double damage) {
+        UUID uuid = player.getUniqueId();
         if (this.damageDealt.containsKey(uuid)) {
-            damage += this.damageDealt.get(uuid);
+            damage += this.damageDealt.get(uuid).doubleValue();
         }
         this.damageDealt.remove(uuid);
         this.damageDealt.put(uuid, damage);
     }
 
     public void setVisible(final boolean visible) {
-        new BukkitRunnable() {
+        new BukkitRunnable(){
+
             public void run() {
-                ((CraftLivingEntity) SEntity.this.entity).getHandle().setInvisible(!visible);
+                ((CraftLivingEntity)SEntity.this.entity).getHandle().setInvisible(!visible);
             }
-        }.runTaskLater(SkyBlock.getPlugin(), 2L);
+        }.runTaskLater((Plugin)SkyBlock.getPlugin(), 2L);
     }
 
-    public void setTarget(final LivingEntity target) {
+    public void setTarget(LivingEntity target) {
         if (!(this.entity instanceof Creature)) {
             return;
         }
-        ((Creature) this.entity).setTarget(target);
+        ((Creature)this.entity).setTarget(target);
     }
 
     public void remove() {
@@ -170,28 +215,28 @@ public class SEntity {
         this.entity.remove();
     }
 
-    public void setHealth(final int health) {
+    public void setHealth(int health) {
     }
 
-    public void setDefense(final double percent) {
+    public void setDefense(double percent) {
     }
 
-    public void setStarred(final boolean starred) {
-        SEntity.isStarred.put(this.entity, starred);
+    public void setStarred(boolean starred) {
+        isStarred.put((Entity)this.entity, starred);
     }
 
-    public void setMetadata(final Object metadata) {
-        this.entity.setMetadata("specEntityObject", new FixedMetadataValue(SEntity.plugin, this));
+    public void setMetadata(Object metadata) {
+        this.entity.setMetadata("specEntityObject", (MetadataValue)new FixedMetadataValue((Plugin)plugin, (Object)this));
     }
 
-    public void setDamage(final int damage) {
+    public void setDamage(int damage) {
     }
 
-    public static SEntity findSEntity(final Entity entity) {
-        if (!entity.hasMetadata("specEntityObject") || entity.getMetadata("specEntityObject").isEmpty() || !(entity.getMetadata("specEntityObject").get(0).value() instanceof SEntity)) {
+    public static SEntity findSEntity(Entity entity) {
+        if (!entity.hasMetadata("specEntityObject") || entity.getMetadata("specEntityObject").isEmpty() || !(((MetadataValue)entity.getMetadata("specEntityObject").get(0)).value() instanceof SEntity)) {
             return null;
         }
-        return (SEntity) entity.getMetadata("specEntityObject").get(0).value();
+        return (SEntity)((MetadataValue)entity.getMetadata("specEntityObject").get(0)).value();
     }
 
     public SEntityType getSpecType() {
@@ -225,9 +270,5 @@ public class SEntity {
     public EntityFunction getFunction() {
         return this.function;
     }
-
-    static {
-        plugin = SkyBlock.getPlugin();
-        isStarred = new HashMap<Entity, Boolean>();
-    }
 }
+

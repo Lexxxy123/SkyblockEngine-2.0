@@ -1,10 +1,21 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.md_5.bungee.api.ChatColor
+ */
 package net.hypixel.skyblock.item.weapon;
 
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.ToolStatistics;
 import net.md_5.bungee.api.ChatColor;
-import net.hypixel.skyblock.item.*;
 
-public class VoidwalkerKatana implements ToolStatistics, MaterialFunction {
+public class VoidwalkerKatana
+implements ToolStatistics,
+MaterialFunction {
     @Override
     public int getBaseDamage() {
         return 80;
@@ -45,3 +56,4 @@ public class VoidwalkerKatana implements ToolStatistics, MaterialFunction {
         return SpecificItemType.SWORD;
     }
 }
+

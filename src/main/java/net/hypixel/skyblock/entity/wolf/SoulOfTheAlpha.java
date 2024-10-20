@@ -1,14 +1,21 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ */
 package net.hypixel.skyblock.entity.wolf;
-
-import org.bukkit.ChatColor;
-import net.hypixel.skyblock.entity.EntityDrop;
-import net.hypixel.skyblock.entity.EntityDropType;
-import net.hypixel.skyblock.item.SMaterial;
 
 import java.util.Arrays;
 import java.util.List;
+import net.hypixel.skyblock.entity.EntityDrop;
+import net.hypixel.skyblock.entity.EntityDropType;
+import net.hypixel.skyblock.entity.wolf.BaseWolf;
+import net.hypixel.skyblock.item.SMaterial;
+import org.bukkit.ChatColor;
 
-public class SoulOfTheAlpha extends BaseWolf {
+public class SoulOfTheAlpha
+extends BaseWolf {
     @Override
     public String getEntityName() {
         return ChatColor.DARK_AQUA + "Soul of the Alpha";
@@ -22,11 +29,6 @@ public class SoulOfTheAlpha extends BaseWolf {
     @Override
     public double getDamageDealt() {
         return 1282.0;
-    }
-    
-    @Override
-    public int mobLevel() {
-        return 55;
     }
 
     @Override
@@ -43,4 +45,10 @@ public class SoulOfTheAlpha extends BaseWolf {
     public boolean isAngry() {
         return true;
     }
+
+    @Override
+    public int mobLevel() {
+        return 55;
+    }
 }
+

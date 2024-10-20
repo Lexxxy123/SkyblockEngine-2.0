@@ -1,13 +1,21 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Bukkit
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.Cancellable
+ */
 package net.hypixel.skyblock.nms.nmsutil.packetlistener.handler;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import net.hypixel.skyblock.nms.nmsutil.packetlistener.channel.ChannelWrapper;
+import net.hypixel.skyblock.nms.nmsutil.packetlistener.handler.SentPacket;
 import net.hypixel.skyblock.nms.nmsutil.reflection.resolver.FieldResolver;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
-import net.hypixel.skyblock.nms.nmsutil.packetlistener.channel.ChannelWrapper;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 public abstract class PacketAbstract {
     private Player player;
@@ -16,79 +24,81 @@ public abstract class PacketAbstract {
     private final Cancellable cancellable;
     protected FieldResolver fieldResolver;
 
-    public PacketAbstract(final Object packet, final Cancellable cancellable, final Player player) {
+    public PacketAbstract(Object packet, Cancellable cancellable, Player player) {
         this.player = player;
         this.packet = packet;
         this.cancellable = cancellable;
         this.fieldResolver = new FieldResolver(packet.getClass());
     }
 
-    public PacketAbstract(final Object packet, final Cancellable cancellable, final ChannelWrapper channelWrapper) {
+    public PacketAbstract(Object packet, Cancellable cancellable, ChannelWrapper channelWrapper) {
         this.channelWrapper = channelWrapper;
         this.packet = packet;
         this.cancellable = cancellable;
         this.fieldResolver = new FieldResolver(packet.getClass());
     }
 
-    public void writeField(final String field, final Object value) {
+    public void writeField(String field, Object value) {
         try {
             this.fieldResolver.resolve(field).set(this.getPacket(), value);
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
+        } catch (Exception e2) {
+            throw new RuntimeException(e2);
         }
     }
 
-    public void setPacketValueSilent(final String field, final Object value) {
+    public void setPacketValueSilent(String field, Object value) {
         try {
             this.fieldResolver.resolve(field).set(this.getPacket(), value);
-        } catch (final Exception ex) {
+        } catch (Exception exception) {
+            // empty catch block
         }
     }
 
-    public void write(final int index, final Object value) {
+    public void write(int index, Object value) {
         try {
             this.fieldResolver.resolveIndex(index).set(this.getPacket(), value);
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
+        } catch (Exception e2) {
+            throw new RuntimeException(e2);
         }
     }
 
-    public void setPacketValueSilent(final int index, final Object value) {
+    public void setPacketValueSilent(int index, Object value) {
         try {
             this.fieldResolver.resolveIndex(index).set(this.getPacket(), value);
-        } catch (final Exception ex) {
+        } catch (Exception exception) {
+            // empty catch block
         }
     }
 
-    public Object getPacketValue(final String field) {
+    public Object getPacketValue(String field) {
         try {
             return this.fieldResolver.resolve(field).get(this.getPacket());
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
+        } catch (Exception e2) {
+            throw new RuntimeException(e2);
         }
     }
 
-    public Object getPacketValueSilent(final String field) {
+    public Object getPacketValueSilent(String field) {
         try {
             return this.fieldResolver.resolve(field).get(this.getPacket());
-        } catch (final Exception ex) {
+        } catch (Exception ex) {
             return null;
         }
     }
 
-    public Object read(final int index) {
+    public Object read(int index) {
         try {
             return this.fieldResolver.resolveIndex(index).get(this.getPacket());
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
+        } catch (Exception e2) {
+            throw new RuntimeException(e2);
         }
     }
 
-    public Object getPacketValueSilent(final int index) {
+    public Object getPacketValueSilent(int index) {
         try {
             return this.fieldResolver.resolveIndex(index).get(this.getPacket());
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
+        } catch (Exception e2) {
+            throw new RuntimeException(e2);
         }
     }
 
@@ -96,8 +106,8 @@ public abstract class PacketAbstract {
         return this.fieldResolver;
     }
 
-    public void setCancelled(final boolean b) {
-        this.cancellable.setCancelled(b);
+    public void setCancelled(boolean b2) {
+        this.cancellable.setCancelled(b2);
     }
 
     public boolean isCancelled() {
@@ -127,7 +137,7 @@ public abstract class PacketAbstract {
         return this.player.getName();
     }
 
-    public void setPacket(final Object packet) {
+    public void setPacket(Object packet) {
         this.packet = packet;
     }
 
@@ -136,17 +146,17 @@ public abstract class PacketAbstract {
     }
 
     public Player getPlayerInvolved() {
-        Collection<? extends Player> q = Bukkit.getOnlinePlayers();
-        ArrayList<Player> t = new ArrayList<Player>(q);
-        return t.get(0);
+        Collection q2 = Bukkit.getOnlinePlayers();
+        ArrayList t2 = new ArrayList(q2);
+        return (Player)t2.get(0);
     }
 
     public String getPacketName() {
         return this.packet.getClass().getSimpleName();
     }
 
-    @Override
     public String toString() {
         return "Packet{ " + (this.getClass().equals(SentPacket.class) ? "[> OUT >]" : "[< IN <]") + " " + this.getPacketName() + " " + (this.hasPlayer() ? this.getPlayername() : (this.hasChannel() ? this.getChannel().channel() : "#server#")) + " }";
     }
 }
+

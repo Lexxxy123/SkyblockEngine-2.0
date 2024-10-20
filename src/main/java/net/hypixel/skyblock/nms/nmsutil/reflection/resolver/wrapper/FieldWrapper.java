@@ -1,11 +1,16 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.nms.nmsutil.reflection.resolver.wrapper;
 
 import java.lang.reflect.Field;
+import net.hypixel.skyblock.nms.nmsutil.reflection.resolver.wrapper.WrapperAbstract;
 
-public class FieldWrapper<R> extends WrapperAbstract {
+public class FieldWrapper<R>
+extends WrapperAbstract {
     private final Field field;
 
-    public FieldWrapper(final Field field) {
+    public FieldWrapper(Field field) {
         this.field = field;
     }
 
@@ -18,34 +23,35 @@ public class FieldWrapper<R> extends WrapperAbstract {
         return this.field.getName();
     }
 
-    public R get(final Object object) {
+    public R get(Object object) {
         try {
-            return (R) this.field.get(object);
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
+            return (R)this.field.get(object);
+        } catch (Exception e2) {
+            throw new RuntimeException(e2);
         }
     }
 
-    public R getSilent(final Object object) {
+    public R getSilent(Object object) {
         try {
-            return (R) this.field.get(object);
-        } catch (final Exception e) {
+            return (R)this.field.get(object);
+        } catch (Exception e2) {
             return null;
         }
     }
 
-    public void set(final Object object, final R value) {
+    public void set(Object object, R value) {
         try {
             this.field.set(object, value);
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
+        } catch (Exception e2) {
+            throw new RuntimeException(e2);
         }
     }
 
-    public void setSilent(final Object object, final R value) {
+    public void setSilent(Object object, R value) {
         try {
             this.field.set(object, value);
-        } catch (final Exception ex) {
+        } catch (Exception exception) {
+            // empty catch block
         }
     }
 
@@ -53,22 +59,22 @@ public class FieldWrapper<R> extends WrapperAbstract {
         return this.field;
     }
 
-    @Override
-    public boolean equals(final Object object) {
+    public boolean equals(Object object) {
         if (this == object) {
             return true;
         }
         if (object == null || this.getClass() != object.getClass()) {
             return false;
         }
-        final FieldWrapper<?> that = (FieldWrapper<?>) object;
+        FieldWrapper that = (FieldWrapper)object;
         if (this.field != null) {
             return this.field.equals(that.field);
-        } else return that.field == null;
+        }
+        return that.field == null;
     }
 
-    @Override
     public int hashCode() {
-        return (this.field != null) ? this.field.hashCode() : 0;
+        return this.field != null ? this.field.hashCode() : 0;
     }
 }
+

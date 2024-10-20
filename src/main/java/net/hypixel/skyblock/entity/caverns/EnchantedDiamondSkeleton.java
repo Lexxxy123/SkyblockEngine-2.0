@@ -1,21 +1,33 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Material
+ *  org.bukkit.inventory.ItemStack
+ */
 package net.hypixel.skyblock.entity.caverns;
-
-import net.hypixel.skyblock.features.enchantment.Enchantment;
-import net.hypixel.skyblock.features.enchantment.EnchantmentType;
-import net.hypixel.skyblock.entity.*;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-import net.hypixel.skyblock.item.SItem;
-import net.hypixel.skyblock.item.SMaterial;
-import net.hypixel.skyblock.util.SUtil;
 
 import java.util.Arrays;
 import java.util.List;
+import net.hypixel.skyblock.entity.EntityDrop;
+import net.hypixel.skyblock.entity.EntityDropType;
+import net.hypixel.skyblock.entity.EntityFunction;
+import net.hypixel.skyblock.entity.EntityStatistics;
+import net.hypixel.skyblock.entity.SEntityEquipment;
+import net.hypixel.skyblock.features.enchantment.Enchantment;
+import net.hypixel.skyblock.features.enchantment.EnchantmentType;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.SMaterial;
+import net.hypixel.skyblock.util.SUtil;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
-public class EnchantedDiamondSkeleton implements EntityStatistics, EntityFunction {
+public class EnchantedDiamondSkeleton
+implements EntityStatistics,
+EntityFunction {
     @Override
     public String getEntityName() {
-        return "Miner Skeleton";
+        return "Skeleton";
     }
 
     @Override
@@ -26,11 +38,6 @@ public class EnchantedDiamondSkeleton implements EntityStatistics, EntityFunctio
     @Override
     public double getDamageDealt() {
         return 190.0;
-    }
-    
-    @Override
-    public int mobLevel() {
-        return 20;
     }
 
     @Override
@@ -48,3 +55,4 @@ public class EnchantedDiamondSkeleton implements EntityStatistics, EntityFunctio
         return 24.0;
     }
 }
+

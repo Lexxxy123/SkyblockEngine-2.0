@@ -1,20 +1,27 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Location
+ *  org.bukkit.entity.Entity
+ */
 package net.hypixel.skyblock.features.sequence;
-
-import org.bukkit.Location;
-import org.bukkit.entity.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.hypixel.skyblock.features.sequence.AnimationSequence;
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 
 public class AnimationSequenceType {
-    private static final List<AnimationSequenceType> TYPES;
+    private static final List<AnimationSequenceType> TYPES = new ArrayList<AnimationSequenceType>();
     private final String namespace;
     private final AnimationSequence sequence;
 
-    public AnimationSequenceType(final String namespace, final AnimationSequence sequence) {
+    public AnimationSequenceType(String namespace, AnimationSequence sequence) {
         this.namespace = namespace;
         this.sequence = sequence;
-        AnimationSequenceType.TYPES.add(this);
+        TYPES.add(this);
     }
 
     public String getNamespace() {
@@ -25,24 +32,20 @@ public class AnimationSequenceType {
         return this.sequence;
     }
 
-    public void play(final Location location) {
+    public void play(Location location) {
         this.sequence.play(location);
     }
 
-    public void play(final Entity entity) {
+    public void play(Entity entity) {
         this.sequence.play(entity);
     }
 
-    public static AnimationSequenceType getByNamespace(final String namespace) {
-        for (final AnimationSequenceType type : AnimationSequenceType.TYPES) {
-            if (namespace.equalsIgnoreCase(type.namespace)) {
-                return type;
-            }
+    public static AnimationSequenceType getByNamespace(String namespace) {
+        for (AnimationSequenceType type : TYPES) {
+            if (!namespace.equalsIgnoreCase(type.namespace)) continue;
+            return type;
         }
         return null;
     }
-
-    static {
-        TYPES = new ArrayList<AnimationSequenceType>();
-    }
 }
+

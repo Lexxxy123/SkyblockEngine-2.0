@@ -1,23 +1,56 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.md_5.bungee.api.ChatColor
+ *  net.minecraft.server.v1_8_R3.Entity
+ *  net.minecraft.server.v1_8_R3.Packet
+ *  net.minecraft.server.v1_8_R3.PacketPlayOutAnimation
+ *  org.bukkit.Sound
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
+ *  org.bukkit.entity.ArmorStand
+ *  org.bukkit.entity.Damageable
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.entity.LivingEntity
+ *  org.bukkit.entity.Player
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.scheduler.BukkitRunnable
+ */
 package net.hypixel.skyblock.item.weapon;
 
+import java.util.ArrayList;
+import java.util.List;
 import net.hypixel.skyblock.SkyBlock;
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.item.Ability;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.ToolStatistics;
+import net.hypixel.skyblock.listener.PlayerListener;
+import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.FerocityCalculation;
+import net.hypixel.skyblock.util.Sputnik;
 import net.md_5.bungee.api.ChatColor;
+import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.entity.*;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Damageable;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import net.hypixel.skyblock.listener.PlayerListener;
-import net.hypixel.skyblock.user.User;
-import net.hypixel.skyblock.util.Sputnik;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class ShadowFury implements ToolStatistics, MaterialFunction, Ability {
+public class ShadowFury
+implements ToolStatistics,
+MaterialFunction,
+Ability {
     @Override
     public int getBaseDamage() {
         return 310;
@@ -70,35 +103,32 @@ public class ShadowFury implements ToolStatistics, MaterialFunction, Ability {
 
     @Override
     public void onAbilityUse(final Player player, final SItem sItem) {
-        final int count1 = 0;
-        final List<Entity> inRange = player.getNearbyEntities(12.0, 12.0, 12.0);
-        final List<Entity> filteredList = new ArrayList<Entity>();
-        for (final Entity e : inRange) {
-            if (e instanceof Damageable && e != player && !(e instanceof ArmorStand) && !(e instanceof Player) && !e.hasMetadata("NPC") && !e.hasMetadata("GiantSword")) {
-                if (filteredList.size() >= 5 || filteredList.size() < 0) {
-                    break;
-                }
-                filteredList.add(e);
-            }
+        boolean count1 = false;
+        List inRange = player.getNearbyEntities(12.0, 12.0, 12.0);
+        final ArrayList<Entity> filteredList = new ArrayList<Entity>();
+        for (Entity e2 : inRange) {
+            if (!(e2 instanceof Damageable) || e2 == player || e2 instanceof ArmorStand || e2 instanceof Player || e2.hasMetadata("NPC") || e2.hasMetadata("GiantSword")) continue;
+            if (filteredList.size() >= 5 || filteredList.size() < 0) break;
+            filteredList.add(e2);
         }
         if (inRange.size() != 0) {
-            new BukkitRunnable() {
+            new BukkitRunnable(){
                 private int run = 0;
 
                 public void run() {
                     if (this.run < filteredList.size()) {
-                        if (!filteredList.get(this.run).isDead()) {
-                            player.teleport(filteredList.get(this.run).getLocation().add(filteredList.get(this.run).getLocation().getDirection().multiply(-1)));
+                        if (!((Entity)filteredList.get(this.run)).isDead()) {
+                            player.teleport(((Entity)filteredList.get(this.run)).getLocation().add(((Entity)filteredList.get(this.run)).getLocation().getDirection().multiply(-1)));
                             player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 3.0f, 1.0f);
-                            final User user = User.getUser(player.getUniqueId());
-                            final Entity e = filteredList.get(this.run);
-                            final Object[] atp = Sputnik.calculateDamage(player, player, sItem.getStack(), (LivingEntity) e, false);
-                            final double finalDamage1 = (float) atp[0];
-                            PlayerListener.spawnDamageInd(e, (float) atp[2], (boolean) atp[1]);
-                            FerocityCalculation.activeFerocityTimes(player, (LivingEntity) e, (int) finalDamage1, (boolean) atp[1]);
-                            user.damageEntity((Damageable) e, finalDamage1);
-                            for (final Player p : player.getWorld().getPlayers()) {
-                                ((CraftPlayer) p).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) player).getHandle(), 0));
+                            User user = User.getUser(player.getUniqueId());
+                            Entity e2 = (Entity)filteredList.get(this.run);
+                            Object[] atp = Sputnik.calculateDamage(player, player, sItem.getStack(), (LivingEntity)e2, false);
+                            double finalDamage1 = ((Float)atp[0]).floatValue();
+                            PlayerListener.spawnDamageInd(e2, ((Float)atp[2]).floatValue(), (Boolean)atp[1]);
+                            FerocityCalculation.activeFerocityTimes(player, (LivingEntity)e2, (int)finalDamage1, (Boolean)atp[1]);
+                            user.damageEntity((Damageable)e2, finalDamage1);
+                            for (Player p2 : player.getWorld().getPlayers()) {
+                                ((CraftPlayer)p2).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)player).getHandle(), 0));
                             }
                         }
                         ++this.run;
@@ -106,7 +136,7 @@ public class ShadowFury implements ToolStatistics, MaterialFunction, Ability {
                         this.cancel();
                     }
                 }
-            }.runTaskTimer(SkyBlock.getPlugin(), 1L, 5L);
+            }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 1L, 5L);
         } else {
             player.sendMessage(ChatColor.RED + "No nearby target found.");
         }
@@ -122,3 +152,4 @@ public class ShadowFury implements ToolStatistics, MaterialFunction, Ability {
         return 0;
     }
 }
+

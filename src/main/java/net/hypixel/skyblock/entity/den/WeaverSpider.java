@@ -1,6 +1,12 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.entity.den;
 
-public class WeaverSpider extends BaseSpider {
+import net.hypixel.skyblock.entity.den.BaseSpider;
+
+public class WeaverSpider
+extends BaseSpider {
     @Override
     public String getEntityName() {
         return "Splitter Spider";
@@ -26,7 +32,8 @@ public class WeaverSpider extends BaseSpider {
         return 2;
     }
 
-    public static class Strong extends BaseSpider {
+    public static class Strong
+    extends BaseSpider {
         @Override
         public String getEntityName() {
             return "Splitter Spider";
@@ -53,3 +60,4 @@ public class WeaverSpider extends BaseSpider {
         }
     }
 }
+

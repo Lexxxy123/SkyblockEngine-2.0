@@ -1,4 +1,9 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item;
+
+import net.hypixel.skyblock.item.Rarity;
 
 public class RarityValue<T> {
     private final T common;
@@ -8,7 +13,7 @@ public class RarityValue<T> {
     private final T legendary;
     private final T rest;
 
-    public RarityValue(final T common, final T uncommon, final T rare, final T epic, final T legendary, final T rest) {
+    public RarityValue(T common, T uncommon, T rare, T epic, T legendary, T rest) {
         this.common = common;
         this.uncommon = uncommon;
         this.rare = rare;
@@ -17,21 +22,25 @@ public class RarityValue<T> {
         this.rest = rest;
     }
 
-    public T getForRarity(final Rarity rarity) {
+    public T getForRarity(Rarity rarity) {
         switch (rarity) {
-            case COMMON:
+            case COMMON: {
                 return this.common;
-            case UNCOMMON:
+            }
+            case UNCOMMON: {
                 return this.uncommon;
-            case RARE:
+            }
+            case RARE: {
                 return this.rare;
-            case EPIC:
+            }
+            case EPIC: {
                 return this.epic;
-            case LEGENDARY:
+            }
+            case LEGENDARY: {
                 return this.legendary;
-            default:
-                return this.rest;
+            }
         }
+        return this.rest;
     }
 
     public static RarityValue<Integer> zeroInteger() {
@@ -42,12 +51,12 @@ public class RarityValue<T> {
         return new RarityValue<Double>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
     }
 
-    public static RarityValue<Integer> singleInteger(final Integer i) {
-        return new RarityValue<Integer>(i, i, i, i, i, i);
+    public static RarityValue<Integer> singleInteger(Integer i2) {
+        return new RarityValue<Integer>(i2, i2, i2, i2, i2, i2);
     }
 
-    public static RarityValue<Double> singleDouble(final Double d) {
-        return new RarityValue<Double>(d, d, d, d, d, d);
+    public static RarityValue<Double> singleDouble(Double d2) {
+        return new RarityValue<Double>(d2, d2, d2, d2, d2, d2);
     }
 
     public T getCommon() {
@@ -74,3 +83,4 @@ public class RarityValue<T> {
         return this.rest;
     }
 }
+

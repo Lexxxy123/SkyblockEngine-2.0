@@ -1,35 +1,47 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Effect
+ *  org.bukkit.Location
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.scheduler.BukkitRunnable
+ */
 package net.hypixel.skyblock.features.sequence;
-
-import net.hypixel.skyblock.SkyBlock;
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.entity.Entity;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Arrays;
 import java.util.List;
+import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.features.sequence.Sequence;
+import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
-public class AnimationSequence implements Sequence {
+public class AnimationSequence
+implements Sequence {
     private final List<DelayedAnimation> animations;
 
-    public AnimationSequence(final DelayedAnimation... animations) {
+    public AnimationSequence(DelayedAnimation ... animations) {
         this.animations = Arrays.asList(animations);
     }
 
-    public void append(final DelayedAnimation sound) {
+    public void append(DelayedAnimation sound) {
         this.animations.add(sound);
     }
 
     @Override
-    public void play(final Location location) {
-        for (final DelayedAnimation animation : this.animations) {
+    public void play(Location location) {
+        for (DelayedAnimation animation : this.animations) {
             animation.play(location);
         }
     }
 
     @Override
-    public void play(final Entity entity) {
-        for (final DelayedAnimation animation : this.animations) {
+    public void play(Entity entity) {
+        for (DelayedAnimation animation : this.animations) {
             animation.play(entity);
         }
     }
@@ -41,7 +53,7 @@ public class AnimationSequence implements Sequence {
         private final float speed;
         private final int particleCount;
 
-        public DelayedAnimation(final Effect effect, final int data, final long delay, final float speed, final int particleCount) {
+        public DelayedAnimation(Effect effect, int data, long delay, float speed, int particleCount) {
             this.effect = effect;
             this.data = data;
             this.delay = delay;
@@ -50,15 +62,17 @@ public class AnimationSequence implements Sequence {
         }
 
         public void play(final Location location) {
-            new BukkitRunnable() {
+            new BukkitRunnable(){
+
                 public void run() {
-                    location.getWorld().spigot().playEffect(location, DelayedAnimation.this.effect, 1, DelayedAnimation.this.data, 0.0f, 0.0f, 0.0f, DelayedAnimation.this.speed, DelayedAnimation.this.particleCount, 16);
+                    location.getWorld().spigot().playEffect(location, effect, 1, data, 0.0f, 0.0f, 0.0f, speed, particleCount, 16);
                 }
-            }.runTaskLater(SkyBlock.getPlugin(), this.delay);
+            }.runTaskLater((Plugin)SkyBlock.getPlugin(), this.delay);
         }
 
-        public void play(final Entity entity) {
+        public void play(Entity entity) {
             this.play(entity.getLocation());
         }
     }
 }
+

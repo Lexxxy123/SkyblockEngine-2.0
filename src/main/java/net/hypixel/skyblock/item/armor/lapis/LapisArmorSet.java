@@ -1,13 +1,24 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.item.armor.lapis;
 
-import org.bukkit.entity.Player;
 import net.hypixel.skyblock.item.GenericItemType;
 import net.hypixel.skyblock.item.MaterialStatistics;
 import net.hypixel.skyblock.item.PlayerBoostStatistics;
 import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.armor.ArmorSet;
+import net.hypixel.skyblock.item.armor.lapis.LapisArmorBoots;
+import net.hypixel.skyblock.item.armor.lapis.LapisArmorChestplate;
+import net.hypixel.skyblock.item.armor.lapis.LapisArmorHelmet;
+import net.hypixel.skyblock.item.armor.lapis.LapisArmorLeggings;
+import org.bukkit.entity.Player;
 
-public class LapisArmorSet implements ArmorSet {
+public class LapisArmorSet
+implements ArmorSet {
     @Override
     public String getName() {
         return "Health";
@@ -39,8 +50,9 @@ public class LapisArmorSet implements ArmorSet {
     }
 
     @Override
-    public PlayerBoostStatistics whileHasFullSet(final Player player) {
-        return new PlayerBoostStatistics() {
+    public PlayerBoostStatistics whileHasFullSet(Player player) {
+        return new PlayerBoostStatistics(){
+
             @Override
             public String getDisplayName() {
                 return null;
@@ -63,3 +75,4 @@ public class LapisArmorSet implements ArmorSet {
         };
     }
 }
+

@@ -1,14 +1,23 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.event.Event
+ *  org.bukkit.event.HandlerList
+ */
 package net.hypixel.skyblock.nms.packetevents;
 
+import net.hypixel.skyblock.nms.packetevents.WrappedPluginMessage;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class PluginMessageReceived extends Event {
-    private static final HandlerList handlers;
+public class PluginMessageReceived
+extends Event {
+    private static final HandlerList handlers = new HandlerList();
     private final WrappedPluginMessage a;
 
-    public PluginMessageReceived(final WrappedPluginMessage b) {
-        this.a = b;
+    public PluginMessageReceived(WrappedPluginMessage b2) {
+        this.a = b2;
     }
 
     public WrappedPluginMessage getWrappedPluginMessage() {
@@ -16,14 +25,11 @@ public class PluginMessageReceived extends Event {
     }
 
     public HandlerList getHandlers() {
-        return PluginMessageReceived.handlers;
+        return handlers;
     }
 
     public static HandlerList getHandlerList() {
-        return PluginMessageReceived.handlers;
-    }
-
-    static {
-        handlers = new HandlerList();
+        return handlers;
     }
 }
+

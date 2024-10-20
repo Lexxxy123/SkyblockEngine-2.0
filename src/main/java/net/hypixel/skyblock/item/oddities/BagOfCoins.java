@@ -1,15 +1,28 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.minecraft.server.v1_8_R3.NBTTagCompound
+ *  org.bukkit.ChatColor
+ */
 package net.hypixel.skyblock.item.oddities;
-
-import net.hypixel.skyblock.item.*;
-import net.minecraft.server.v1_8_R3.NBTTagCompound;
-import org.bukkit.ChatColor;
-import net.hypixel.skyblock.item.*;
-import net.hypixel.skyblock.util.SUtil;
 
 import java.util.Collections;
 import java.util.List;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.ItemData;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.SkullStatistics;
+import net.hypixel.skyblock.util.SUtil;
+import net.minecraft.server.v1_8_R3.NBTTagCompound;
+import org.bukkit.ChatColor;
 
-public class BagOfCoins implements SkullStatistics, MaterialFunction, ItemData {
+public class BagOfCoins
+implements SkullStatistics,
+MaterialFunction,
+ItemData {
     @Override
     public String getDisplayName() {
         return "Bag of Coins";
@@ -61,7 +74,7 @@ public class BagOfCoins implements SkullStatistics, MaterialFunction, ItemData {
         if (!key.equals("coins")) {
             return null;
         }
-        return Collections.singletonList(ChatColor.GOLD + "Contents: " + ChatColor.YELLOW + SUtil.commaify((long) value) + " coins");
+        return Collections.singletonList(ChatColor.GOLD + "Contents: " + ChatColor.YELLOW + SUtil.commaify((Long)value) + " coins");
     }
 
     @Override
@@ -69,3 +82,4 @@ public class BagOfCoins implements SkullStatistics, MaterialFunction, ItemData {
         return "8381c529d52e03cd74c3bf38bb6ba3fde1337ae9bf50332faa889e0a28e8081f";
     }
 }
+

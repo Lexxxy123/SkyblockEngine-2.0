@@ -1,11 +1,17 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.accessory;
 
 import net.hypixel.skyblock.item.GenericItemType;
 import net.hypixel.skyblock.item.MaterialFunction;
 import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.accessory.AccessoryStatistics;
 
-public class BrokenPiggyBank implements AccessoryStatistics, MaterialFunction {
+public class BrokenPiggyBank
+implements AccessoryStatistics,
+MaterialFunction {
     @Override
     public String getURL() {
         return "b590207aeea2d8fc80194f2a109f5b1999c91ebd377dff01b9e7ebe091a3a419";
@@ -36,3 +42,4 @@ public class BrokenPiggyBank implements AccessoryStatistics, MaterialFunction {
         return "It broke!";
     }
 }
+

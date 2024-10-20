@@ -1,3 +1,6 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.nms.nmsutil.reflection.resolver;
 
 import java.util.ArrayList;
@@ -8,17 +11,17 @@ public class ResolverQuery {
     private String name;
     private final Class<?>[] types;
 
-    public ResolverQuery(final String name, final Class<?>... types) {
+    public ResolverQuery(String name, Class<?> ... types) {
         this.name = name;
         this.types = types;
     }
 
-    public ResolverQuery(final String name) {
+    public ResolverQuery(String name) {
         this.name = name;
         this.types = new Class[0];
     }
 
-    public ResolverQuery(final Class<?>... types) {
+    public ResolverQuery(Class<?> ... types) {
         this.types = types;
     }
 
@@ -30,33 +33,26 @@ public class ResolverQuery {
         return this.types;
     }
 
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
+    public boolean equals(Object o2) {
+        if (this == o2) {
             return true;
         }
-        if (o == null || this.getClass() != o.getClass()) {
+        if (o2 == null || this.getClass() != o2.getClass()) {
             return false;
         }
-        final ResolverQuery that = (ResolverQuery) o;
-        if (this.name != null) {
-            if (this.name.equals(that.name)) {
-                return Arrays.equals(this.types, that.types);
-            }
-        } else if (that.name == null) {
+        ResolverQuery that = (ResolverQuery)o2;
+        if (this.name != null ? this.name.equals(that.name) : that.name == null) {
             return Arrays.equals(this.types, that.types);
         }
         return false;
     }
 
-    @Override
     public int hashCode() {
-        int result = (this.name != null) ? this.name.hashCode() : 0;
-        result = 31 * result + ((this.types != null) ? Arrays.hashCode(this.types) : 0);
+        int result = this.name != null ? this.name.hashCode() : 0;
+        result = 31 * result + (this.types != null ? Arrays.hashCode(this.types) : 0);
         return result;
     }
 
-    @Override
     public String toString() {
         return "ResolverQuery{name='" + this.name + '\'' + ", types=" + Arrays.toString(this.types) + '}';
     }
@@ -66,23 +62,22 @@ public class ResolverQuery {
     }
 
     public static class Builder {
-        private final List<ResolverQuery> queryList;
+        private final List<ResolverQuery> queryList = new ArrayList<ResolverQuery>();
 
         private Builder() {
-            this.queryList = new ArrayList<ResolverQuery>();
         }
 
-        public Builder with(final String name, final Class<?>[] types) {
+        public Builder with(String name, Class<?>[] types) {
             this.queryList.add(new ResolverQuery(name, types));
             return this;
         }
 
-        public Builder with(final String name) {
+        public Builder with(String name) {
             this.queryList.add(new ResolverQuery(name));
             return this;
         }
 
-        public Builder with(final Class<?>[] types) {
+        public Builder with(Class<?>[] types) {
             this.queryList.add(new ResolverQuery(types));
             return this;
         }
@@ -92,3 +87,4 @@ public class ResolverQuery {
         }
     }
 }
+

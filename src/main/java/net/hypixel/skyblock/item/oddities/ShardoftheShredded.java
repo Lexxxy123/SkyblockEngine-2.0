@@ -1,9 +1,18 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.oddities;
 
-import net.hypixel.skyblock.item.*;
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.MaterialStatistics;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SkullStatistics;
 
-public class ShardoftheShredded implements MaterialStatistics, MaterialFunction, SkullStatistics {
+public class ShardoftheShredded
+implements MaterialStatistics,
+MaterialFunction,
+SkullStatistics {
     @Override
     public String getDisplayName() {
         return "Shard of The Shredded";
@@ -39,3 +48,4 @@ public class ShardoftheShredded implements MaterialStatistics, MaterialFunction,
         return "The core of a powerful weapon, dropped by the Atoned Horror.";
     }
 }
+

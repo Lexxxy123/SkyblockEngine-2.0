@@ -1,19 +1,32 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.inventory.ItemStack
+ */
 package net.hypixel.skyblock.item;
 
-import org.bukkit.inventory.ItemStack;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import net.hypixel.skyblock.item.MaterialQuantifiable;
+import net.hypixel.skyblock.item.Recipe;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.SMaterial;
 import net.hypixel.skyblock.util.SUtil;
+import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
-
-public class ShapedRecipe extends Recipe<ShapedRecipe> {
-    public static final List<ShapedRecipe> CACHED_RECIPES;
+public class ShapedRecipe
+extends Recipe<ShapedRecipe> {
+    public static final List<ShapedRecipe> CACHED_RECIPES = new ArrayList<ShapedRecipe>();
     protected String[] shape;
     private boolean isVanilla;
-    private final Map<Character, MaterialQuantifiable> ingredientMap;
+    private final Map<Character, MaterialQuantifiable> ingredientMap = new HashMap<Character, MaterialQuantifiable>();
 
     public ShapedRecipe(SItem result, boolean usesExchangeables) {
         super(result, usesExchangeables);
-        this.ingredientMap = new HashMap<Character, MaterialQuantifiable>();
         CACHED_RECIPES.add(this);
     }
 
@@ -29,7 +42,7 @@ public class ShapedRecipe extends Recipe<ShapedRecipe> {
         this(SItem.of(material));
     }
 
-    public ShapedRecipe shape(String... lines) {
+    public ShapedRecipe shape(String ... lines) {
         this.shape = lines;
         return this;
     }
@@ -45,26 +58,26 @@ public class ShapedRecipe extends Recipe<ShapedRecipe> {
         return new ArrayList<MaterialQuantifiable>(this.ingredientMap.values());
     }
 
-    public ShapedRecipe set(char k, MaterialQuantifiable material, final boolean isVanilla) {
-        this.ingredientMap.put(k, material.clone());
+    public ShapedRecipe set(char k2, MaterialQuantifiable material, boolean isVanilla) {
+        this.ingredientMap.put(Character.valueOf(k2), material.clone());
         this.isVanilla = isVanilla;
         return this;
     }
 
-    public ShapedRecipe set(char k, SMaterial material, int amount) {
-        return this.set(k, new MaterialQuantifiable(material, amount), false);
+    public ShapedRecipe set(char k2, SMaterial material, int amount) {
+        return this.set(k2, new MaterialQuantifiable(material, amount), false);
     }
 
-    public ShapedRecipe set(char k, SMaterial material, int amount, final boolean isVanilla) {
-        return this.set(k, new MaterialQuantifiable(material, amount), isVanilla);
+    public ShapedRecipe set(char k2, SMaterial material, int amount, boolean isVanilla) {
+        return this.set(k2, new MaterialQuantifiable(material, amount), isVanilla);
     }
 
     public boolean isVanilla() {
-        return isVanilla;
+        return this.isVanilla;
     }
 
-    public ShapedRecipe set(char k, SMaterial material) {
-        return this.set(k, new MaterialQuantifiable(material), false);
+    public ShapedRecipe set(char k2, SMaterial material) {
+        return this.set(k2, new MaterialQuantifiable(material), false);
     }
 
     public MaterialQuantifiable[][] toMQ2DArray() {
@@ -72,11 +85,11 @@ public class ShapedRecipe extends Recipe<ShapedRecipe> {
         String l1 = SUtil.pad(SUtil.getOrDefault(this.shape, 0, "   "), 3);
         String l2 = SUtil.pad(SUtil.getOrDefault(this.shape, 1, "   "), 3);
         String l3 = SUtil.pad(SUtil.getOrDefault(this.shape, 2, "   "), 3);
-        String[] ls = {l1, l2, l3};
-        for (int i = 0; i < ls.length; ++i) {
-            String[] lps = ls[i].split("");
-            for (int j = 0; j < lps.length; ++j) {
-                materials[i][j] = this.ingredientMap.getOrDefault(lps[j].charAt(0), new MaterialQuantifiable(SMaterial.AIR, 1));
+        String[] ls = new String[]{l1, l2, l3};
+        for (int i2 = 0; i2 < ls.length; ++i2) {
+            String[] lps = ls[i2].split("");
+            for (int j2 = 0; j2 < lps.length; ++j2) {
+                materials[i2][j2] = this.ingredientMap.getOrDefault(Character.valueOf(lps[j2].charAt(0)), new MaterialQuantifiable(SMaterial.AIR, 1));
             }
         }
         return materials;
@@ -90,17 +103,13 @@ public class ShapedRecipe extends Recipe<ShapedRecipe> {
         MaterialQuantifiable[] l2 = MaterialQuantifiable.of(Arrays.copyOfRange(stacks, 3, 6));
         MaterialQuantifiable[] l3 = MaterialQuantifiable.of(Arrays.copyOfRange(stacks, 6, 9));
         MaterialQuantifiable[][] grid = Recipe.airless(new MaterialQuantifiable[][]{l1, l2, l3});
-        MaterialQuantifiable[] seg = segment(MaterialQuantifiable.of(stacks));
+        MaterialQuantifiable[] seg = ShapedRecipe.segment(MaterialQuantifiable.of(stacks));
         for (ShapedRecipe recipe : CACHED_RECIPES) {
             MaterialQuantifiable[][] airRecipeGrid = recipe.toMQ2DArray();
             MaterialQuantifiable[][] recipeGrid = Recipe.airless(airRecipeGrid);
-            MaterialQuantifiable[] recipeSeg = segment(SUtil.unnest(airRecipeGrid, MaterialQuantifiable.class));
-            if (recipeAccepted(recipe.useExchangeables, grid, recipeGrid)) {
-                if (!recipeAccepted(recipe.useExchangeables, seg, recipeSeg)) {
-                    continue;
-                }
-                return recipe;
-            }
+            MaterialQuantifiable[] recipeSeg = ShapedRecipe.segment(SUtil.unnest(airRecipeGrid, MaterialQuantifiable.class));
+            if (!ShapedRecipe.recipeAccepted(recipe.useExchangeables, grid, recipeGrid) || !ShapedRecipe.recipeAccepted(recipe.useExchangeables, seg, recipeSeg)) continue;
+            return recipe;
         }
         return null;
     }
@@ -120,14 +129,13 @@ public class ShapedRecipe extends Recipe<ShapedRecipe> {
     private static MaterialQuantifiable[] segment(MaterialQuantifiable[] materials) {
         int firstNonAir = -1;
         int lastNonAir = -1;
-        for (int i = 0; i < materials.length; ++i) {
-            MaterialQuantifiable material = materials[i];
+        for (int i2 = 0; i2 < materials.length; ++i2) {
+            MaterialQuantifiable material = materials[i2];
             if (-1 == firstNonAir && SMaterial.AIR != material.getMaterial()) {
-                firstNonAir = i;
+                firstNonAir = i2;
             }
-            if (SMaterial.AIR != material.getMaterial()) {
-                lastNonAir = i;
-            }
+            if (SMaterial.AIR == material.getMaterial()) continue;
+            lastNonAir = i2;
         }
         if (-1 == firstNonAir || -1 == lastNonAir) {
             return new MaterialQuantifiable[0];
@@ -136,26 +144,24 @@ public class ShapedRecipe extends Recipe<ShapedRecipe> {
     }
 
     private static boolean recipeAccepted(boolean usesExchangeables, MaterialQuantifiable[][] grid, MaterialQuantifiable[][] recipeGrid) {
-        if (!deepSameLength(grid, recipeGrid)) {
+        if (!ShapedRecipe.deepSameLength(grid, recipeGrid)) {
             return false;
         }
         boolean found = true;
         try {
-            for (int i = 0; i < grid.length; ++i) {
-                for (int j = 0; j < grid[i].length; ++j) {
-                    MaterialQuantifiable m1 = grid[i][j];
-                    MaterialQuantifiable m2 = recipeGrid[i][j];
+            for (int i2 = 0; i2 < grid.length; ++i2) {
+                for (int j2 = 0; j2 < grid[i2].length; ++j2) {
+                    MaterialQuantifiable m1 = grid[i2][j2];
+                    MaterialQuantifiable m2 = recipeGrid[i2][j2];
                     List<SMaterial> exchangeables = Recipe.getExchangeablesOf(m2.getMaterial());
-                    if (!usesExchangeables || null == exchangeables || !exchangeables.contains(m1.getMaterial()) || m1.getAmount() < m2.getAmount()) {
-                        if (m1.getMaterial() != m2.getMaterial() || m1.getAmount() < m2.getAmount()) {
-                            found = false;
-                            break;
-                        }
-                    }
-                }
-                if (!found) {
+                    if (usesExchangeables && null != exchangeables && exchangeables.contains((Object)m1.getMaterial()) && m1.getAmount() >= m2.getAmount() || m1.getMaterial() == m2.getMaterial() && m1.getAmount() >= m2.getAmount()) continue;
+                    found = false;
                     break;
                 }
+                if (found) {
+                    continue;
+                }
+                break;
             }
         } catch (IndexOutOfBoundsException ex) {
             return false;
@@ -168,16 +174,13 @@ public class ShapedRecipe extends Recipe<ShapedRecipe> {
             return false;
         }
         boolean found = true;
-        for (int i = 0; i < grid1d.length; ++i) {
-            MaterialQuantifiable m1 = grid1d[i];
-            MaterialQuantifiable m2 = recipeGrid1d[i];
+        for (int i2 = 0; i2 < grid1d.length; ++i2) {
+            MaterialQuantifiable m1 = grid1d[i2];
+            MaterialQuantifiable m2 = recipeGrid1d[i2];
             List<SMaterial> exchangeables = Recipe.getExchangeablesOf(m2.getMaterial());
-            if (!usesExchangeables || null == exchangeables || !exchangeables.contains(m1.getMaterial()) || m1.getAmount() < m2.getAmount()) {
-                if (m1.getMaterial() != m2.getMaterial() || m1.getAmount() < m2.getAmount()) {
-                    found = false;
-                    break;
-                }
-            }
+            if (usesExchangeables && null != exchangeables && exchangeables.contains((Object)m1.getMaterial()) && m1.getAmount() >= m2.getAmount() || m1.getMaterial() == m2.getMaterial() && m1.getAmount() >= m2.getAmount()) continue;
+            found = false;
+            break;
         }
         return found;
     }
@@ -189,8 +192,5 @@ public class ShapedRecipe extends Recipe<ShapedRecipe> {
     public Map<Character, MaterialQuantifiable> getIngredientMap() {
         return this.ingredientMap;
     }
-
-    static {
-        CACHED_RECIPES = new ArrayList<ShapedRecipe>();
-    }
 }
+

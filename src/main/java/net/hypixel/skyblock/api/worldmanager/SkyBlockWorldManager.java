@@ -1,49 +1,56 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Bukkit
+ *  org.bukkit.World
+ */
 package net.hypixel.skyblock.api.worldmanager;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.OpenOption;
+import java.util.ArrayList;
+import java.util.Arrays;
 import net.hypixel.skyblock.api.worldmanager.BlankWorldCreator;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class SkyBlockWorldManager {
-
     private final World bukkitWorld;
 
-
-    public SkyBlockWorldManager(final World world){
+    public SkyBlockWorldManager(World world) {
         this.bukkitWorld = world;
     }
-    public static void loadWorlds(){
+
+    public static void loadWorlds() {
         new BlankWorldCreator("f6").createWorld();
     }
 
-    public boolean unload(final boolean save){
-        try{
-            Bukkit.unloadWorld(bukkitWorld , save);
+    public boolean unload(boolean save) {
+        try {
+            Bukkit.unloadWorld((World)this.bukkitWorld, (boolean)save);
             return true;
-        }catch (final Exception ignored){
+        } catch (Exception ignored) {
             return false;
         }
     }
 
-    public void delete(){
-        final World hub = Bukkit.getWorld("world");
-        bukkitWorld.getPlayers().forEach(player -> player.teleport(hub.getSpawnLocation()));
-        deleteWorldFolder(bukkitWorld.getWorldFolder());
+    public void delete() {
+        World hub = Bukkit.getWorld((String)"world");
+        this.bukkitWorld.getPlayers().forEach(player -> player.teleport(hub.getSpawnLocation()));
+        this.deleteWorldFolder(this.bukkitWorld.getWorldFolder());
     }
 
-    private void deleteWorldFolder(final File folder) {
-        unload(false);
-        if (folder.isDirectory()) {
-            final File[] files = folder.listFiles();
-            if (null != files) {
-                for (final File file : files) {
-                    deleteWorldFolder(file);
-                }
+    private void deleteWorldFolder(File folder) {
+        File[] files;
+        this.unload(false);
+        if (folder.isDirectory() && null != (files = folder.listFiles())) {
+            for (File file : files) {
+                this.deleteWorldFolder(file);
             }
         }
         if (!folder.delete()) {
@@ -51,40 +58,41 @@ public class SkyBlockWorldManager {
         }
     }
 
-    public void cloneWorld(final String newWorldName) {
-        final File copiedFile = new File(Bukkit.getWorldContainer(), newWorldName);
-        copyFileStructure(bukkitWorld.getWorldFolder(), copiedFile);
+    public void cloneWorld(String newWorldName) {
+        File copiedFile = new File(Bukkit.getWorldContainer(), newWorldName);
+        this.copyFileStructure(this.bukkitWorld.getWorldFolder(), copiedFile);
         new BlankWorldCreator(newWorldName).createWorld();
     }
 
-    private void copyFileStructure(final File source, final File target) {
+    private void copyFileStructure(File source, File target) {
         try {
-            final ArrayList<String> ignore = new ArrayList<>(Arrays.asList("uid.dat", "session.lock"));
+            ArrayList<String> ignore = new ArrayList<String>(Arrays.asList("uid.dat", "session.lock"));
             if (!ignore.contains(source.getName())) {
                 if (source.isDirectory()) {
-                    if (!target.exists())
-                        if (!target.mkdirs())
-                            throw new IOException("Couldn't create world directory!");
-                    final String[] files = source.list();
-                    for (final String file : files) {
-                        final File srcFile = new File(source, file);
-                        final File destFile = new File(target, file);
-                        copyFileStructure(srcFile, destFile);
+                    String[] files;
+                    if (!target.exists() && !target.mkdirs()) {
+                        throw new IOException("Couldn't create world directory!");
+                    }
+                    for (String file : files = source.list()) {
+                        File srcFile = new File(source, file);
+                        File destFile = new File(target, file);
+                        this.copyFileStructure(srcFile, destFile);
                     }
                 } else {
-                    final InputStream in = Files.newInputStream(source.toPath());
-                    final OutputStream out = Files.newOutputStream(target.toPath());
-                    final byte[] buffer = new byte[1024];
                     int length;
-                    while (0 < (length = in.read(buffer)))
+                    InputStream in = Files.newInputStream(source.toPath(), new OpenOption[0]);
+                    OutputStream out = Files.newOutputStream(target.toPath(), new OpenOption[0]);
+                    byte[] buffer = new byte[1024];
+                    while (0 < (length = in.read(buffer))) {
                         out.write(buffer, 0, length);
+                    }
                     in.close();
                     out.close();
                 }
             }
-        } catch (final IOException e) {
-            throw new RuntimeException(e);
+        } catch (IOException e2) {
+            throw new RuntimeException(e2);
         }
     }
-
 }
+

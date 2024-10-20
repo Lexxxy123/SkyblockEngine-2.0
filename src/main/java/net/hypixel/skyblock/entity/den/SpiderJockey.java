@@ -1,11 +1,17 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.entity.den;
 
 import net.hypixel.skyblock.entity.EntityFunction;
 import net.hypixel.skyblock.entity.EntityStatistics;
 import net.hypixel.skyblock.entity.JockeyStatistics;
 import net.hypixel.skyblock.entity.SEntityType;
+import net.hypixel.skyblock.entity.den.BaseSpider;
 
-public class SpiderJockey extends BaseSpider implements JockeyStatistics {
+public class SpiderJockey
+extends BaseSpider
+implements JockeyStatistics {
     @Override
     public SEntityType getPassenger() {
         return SEntityType.JOCKEY_SKELETON;
@@ -25,18 +31,15 @@ public class SpiderJockey extends BaseSpider implements JockeyStatistics {
     public double getDamageDealt() {
         return 30.0;
     }
-    
-    @Override
-    public int mobLevel() {
-        return 3;
-    }
 
     @Override
     public double getXPDropped() {
         return 8.0;
     }
 
-    public static class JockeySkeleton implements EntityStatistics, EntityFunction {
+    public static class JockeySkeleton
+    implements EntityStatistics,
+    EntityFunction {
         @Override
         public String getEntityName() {
             return "Jockey Skeleton";
@@ -51,11 +54,6 @@ public class SpiderJockey extends BaseSpider implements JockeyStatistics {
         public double getDamageDealt() {
             return 38.0;
         }
-        
-        @Override
-        public int mobLevel() {
-            return 3;
-        }
 
         @Override
         public double getXPDropped() {
@@ -63,3 +61,4 @@ public class SpiderJockey extends BaseSpider implements JockeyStatistics {
         }
     }
 }
+

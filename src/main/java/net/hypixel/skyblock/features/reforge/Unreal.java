@@ -1,12 +1,16 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.features.reforge;
-
-import net.hypixel.skyblock.item.GenericItemType;
-import net.hypixel.skyblock.item.RarityValue;
 
 import java.util.Collections;
 import java.util.List;
+import net.hypixel.skyblock.features.reforge.Reforge;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.RarityValue;
 
-public class Unreal implements Reforge {
+public class Unreal
+implements Reforge {
     @Override
     public String getName() {
         return "Unreal";
@@ -32,3 +36,4 @@ public class Unreal implements Reforge {
         return Collections.singletonList(GenericItemType.RANGED_WEAPON);
     }
 }
+

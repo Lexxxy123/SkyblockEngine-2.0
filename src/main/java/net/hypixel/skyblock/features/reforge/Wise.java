@@ -1,12 +1,16 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.features.reforge;
-
-import net.hypixel.skyblock.item.GenericItemType;
-import net.hypixel.skyblock.item.RarityValue;
 
 import java.util.Collections;
 import java.util.List;
+import net.hypixel.skyblock.features.reforge.Reforge;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.RarityValue;
 
-public class Wise implements Reforge {
+public class Wise
+implements Reforge {
     @Override
     public String getName() {
         return "Wise";
@@ -22,3 +26,4 @@ public class Wise implements Reforge {
         return Collections.singletonList(GenericItemType.ARMOR);
     }
 }
+

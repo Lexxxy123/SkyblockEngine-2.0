@@ -1,18 +1,38 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftMagmaCube
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.entity.Fireball
+ *  org.bukkit.entity.LivingEntity
+ *  org.bukkit.event.entity.EntityTargetLivingEntityEvent
+ *  org.bukkit.metadata.FixedMetadataValue
+ *  org.bukkit.metadata.MetadataValue
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.scheduler.BukkitRunnable
+ */
 package net.hypixel.skyblock.entity.nether;
 
 import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.entity.EntityFunction;
+import net.hypixel.skyblock.entity.SEntity;
+import net.hypixel.skyblock.entity.SlimeStatistics;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftMagmaCube;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import net.hypixel.skyblock.entity.EntityFunction;
-import net.hypixel.skyblock.entity.SEntity;
-import net.hypixel.skyblock.entity.SlimeStatistics;
 
-public class LargeMagmaCube implements SlimeStatistics, EntityFunction {
+public class LargeMagmaCube
+implements SlimeStatistics,
+EntityFunction {
     @Override
     public String getEntityName() {
         return "Magma Cube";
@@ -27,11 +47,6 @@ public class LargeMagmaCube implements SlimeStatistics, EntityFunction {
     public double getDamageDealt() {
         return 150.0;
     }
-    
-    @Override
-    public int mobLevel() {
-        return 9;
-    }
 
     @Override
     public double getXPDropped() {
@@ -39,35 +54,47 @@ public class LargeMagmaCube implements SlimeStatistics, EntityFunction {
     }
 
     @Override
-    public void onTarget(final SEntity sEntity, final EntityTargetLivingEntityEvent e) {
-        final LivingEntity entity = (LivingEntity) e.getEntity();
-        final Entity found = e.getTarget();
-        new BukkitRunnable() {
+    public void onTarget(SEntity sEntity, EntityTargetLivingEntityEvent e2) {
+        final LivingEntity entity = (LivingEntity)e2.getEntity();
+        LivingEntity found = e2.getTarget();
+        new BukkitRunnable((Entity)found, sEntity){
+            final /* synthetic */ Entity val$found;
+            final /* synthetic */ SEntity val$sEntity;
+            {
+                this.val$found = entity2;
+                this.val$sEntity = sEntity;
+            }
+
             public void run() {
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
-                final Entity target = ((CraftMagmaCube) entity).getHandle().getGoalTarget().getBukkitEntity();
-                if (!found.equals(target)) {
+                CraftEntity target = ((CraftMagmaCube)entity).getHandle().getGoalTarget().getBukkitEntity();
+                if (!this.val$found.equals(target)) {
                     this.cancel();
                     return;
                 }
-                for (int i = 0; i < 3; ++i) {
-                    new BukkitRunnable() {
+                for (int i2 = 0; i2 < 3; ++i2) {
+                    new BukkitRunnable((Entity)target){
+                        final /* synthetic */ Entity val$target;
+                        {
+                            this.val$target = entity;
+                        }
+
                         public void run() {
                             if (entity.isDead()) {
                                 this.cancel();
                                 return;
                             }
-                            final Fireball fireball = (Fireball) entity.getWorld().spawn(entity.getEyeLocation().add(entity.getEyeLocation().getDirection().multiply(3.0)), (Class) Fireball.class);
-                            fireball.setMetadata("magma", new FixedMetadataValue(SkyBlock.getPlugin(), sEntity));
-                            fireball.setDirection(target.getLocation().getDirection().multiply(-1.0).normalize());
+                            Fireball fireball = (Fireball)entity.getWorld().spawn(entity.getEyeLocation().add(entity.getEyeLocation().getDirection().multiply(3.0)), Fireball.class);
+                            fireball.setMetadata("magma", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)val$sEntity));
+                            fireball.setDirection(this.val$target.getLocation().getDirection().multiply(-1.0).normalize());
                         }
-                    }.runTaskLater(SkyBlock.getPlugin(), (i + 1) * 10);
+                    }.runTaskLater((Plugin)SkyBlock.getPlugin(), (long)((i2 + 1) * 10));
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 60L, 100L);
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 60L, 100L);
     }
 
     @Override
@@ -80,3 +107,4 @@ public class LargeMagmaCube implements SlimeStatistics, EntityFunction {
         return false;
     }
 }
+

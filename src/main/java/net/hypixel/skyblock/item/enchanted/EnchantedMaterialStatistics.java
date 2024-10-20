@@ -1,3 +1,6 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.enchanted;
 
 import net.hypixel.skyblock.item.MaterialQuantifiable;
@@ -5,31 +8,34 @@ import net.hypixel.skyblock.item.MaterialStatistics;
 import net.hypixel.skyblock.item.SMaterial;
 import net.hypixel.skyblock.item.ShapelessRecipe;
 
-public interface EnchantedMaterialStatistics extends MaterialStatistics {
-    SMaterial getCraftingMaterial();
+public interface EnchantedMaterialStatistics
+extends MaterialStatistics {
+    public SMaterial getCraftingMaterial();
 
-    MaterialQuantifiable getResult();
+    public MaterialQuantifiable getResult();
 
-    default SMaterial getBlockCraftingMaterial() {
+    default public SMaterial getBlockCraftingMaterial() {
         return null;
     }
 
-    default MaterialQuantifiable getBlockResult() {
+    default public MaterialQuantifiable getBlockResult() {
         return null;
     }
 
-    default int getCraftingRequiredAmount() {
+    default public int getCraftingRequiredAmount() {
         return 32;
     }
 
-    default void load() {
+    @Override
+    default public void load() {
         if (null != this.getBlockCraftingMaterial() && null != this.getBlockResult()) {
-            createRecipe(new MaterialQuantifiable(this.getBlockCraftingMaterial(), this.getCraftingRequiredAmount()), this.getBlockResult());
+            this.createRecipe(new MaterialQuantifiable(this.getBlockCraftingMaterial(), this.getCraftingRequiredAmount()), this.getBlockResult());
         }
-        createRecipe(new MaterialQuantifiable(this.getCraftingMaterial(), this.getCraftingRequiredAmount()), this.getResult());
+        this.createRecipe(new MaterialQuantifiable(this.getCraftingMaterial(), this.getCraftingRequiredAmount()), this.getResult());
     }
 
-    default void createRecipe(MaterialQuantifiable material, MaterialQuantifiable result) {
+    default public void createRecipe(MaterialQuantifiable material, MaterialQuantifiable result) {
         new ShapelessRecipe(result.getMaterial(), result.getAmount()).add(material).add(material).add(material).add(material).add(material);
     }
 }
+

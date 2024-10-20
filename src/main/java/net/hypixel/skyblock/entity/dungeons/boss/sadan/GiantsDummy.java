@@ -1,19 +1,37 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Color
+ *  org.bukkit.Material
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.entity.LivingEntity
+ *  org.bukkit.inventory.ItemStack
+ *  org.bukkit.inventory.meta.ItemMeta
+ *  org.bukkit.metadata.FixedMetadataValue
+ *  org.bukkit.metadata.MetadataValue
+ *  org.bukkit.plugin.Plugin
+ */
 package net.hypixel.skyblock.entity.dungeons.boss.sadan;
 
 import net.hypixel.skyblock.SkyBlock;
-import org.bukkit.Color;
-import org.bukkit.Material;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.metadata.FixedMetadataValue;
 import net.hypixel.skyblock.entity.SEntity;
 import net.hypixel.skyblock.entity.zombie.BaseZombie;
 import net.hypixel.skyblock.util.EntityManager;
 import net.hypixel.skyblock.util.SUtil;
 import net.hypixel.skyblock.util.Sputnik;
+import org.bukkit.Color;
+import org.bukkit.Material;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
 
-public class GiantsDummy extends BaseZombie {
+public class GiantsDummy
+extends BaseZombie {
     @Override
     public String getEntityName() {
         return Sputnik.trans("");
@@ -30,16 +48,16 @@ public class GiantsDummy extends BaseZombie {
     }
 
     @Override
-    public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
-        Sputnik.applyPacketGiant(entity);
-        EntityManager.noAI(entity);
-        EntityManager.DEFENSE_PERCENTAGE.put(entity, 100);
-        EntityManager.noHit(entity);
-        entity.setMetadata("GiantSword", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        entity.setMetadata("NoAffect", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        EntityManager.shutTheFuckUp(entity);
-        entity.setMetadata("dummy_a", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        entity.setMetadata("notDisplay", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+    public void onSpawn(LivingEntity entity, SEntity sEntity) {
+        Sputnik.applyPacketGiant((Entity)entity);
+        EntityManager.noAI((Entity)entity);
+        EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 100);
+        EntityManager.noHit((Entity)entity);
+        entity.setMetadata("GiantSword", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        entity.setMetadata("NoAffect", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        EntityManager.shutTheFuckUp((Entity)entity);
+        entity.setMetadata("dummy_a", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        entity.setMetadata("notDisplay", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
     }
 
     @Override
@@ -67,27 +85,28 @@ public class GiantsDummy extends BaseZombie {
         return 0.0;
     }
 
-    public static ItemStack buildColorStack(final int hexcolor) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
+    public static ItemStack buildColorStack(int hexcolor) {
+        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB((int)hexcolor));
+        ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
         return stack;
     }
 
-    public static ItemStack b(final int hexcolor, final Material m) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
+    public static ItemStack b(int hexcolor, Material m2) {
+        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m2), Color.fromRGB((int)hexcolor));
+        ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
         return stack;
     }
 
-    public static ItemStack c(final Material m) {
-        final ItemStack stack = new ItemStack(m);
-        final ItemMeta itemMeta = stack.getItemMeta();
+    public static ItemStack c(Material m2) {
+        ItemStack stack = new ItemStack(m2);
+        ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
         return stack;
     }
 }
+

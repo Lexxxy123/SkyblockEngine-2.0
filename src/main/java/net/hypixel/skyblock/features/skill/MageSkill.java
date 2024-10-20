@@ -1,13 +1,19 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.features.skill;
-
-import net.hypixel.skyblock.user.User;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import net.hypixel.skyblock.features.skill.DungeonsSkill;
+import net.hypixel.skyblock.features.skill.Skill;
+import net.hypixel.skyblock.user.User;
 
-public class MageSkill extends Skill implements DungeonsSkill {
-    public static final MageSkill INSTANCE;
+public class MageSkill
+extends Skill
+implements DungeonsSkill {
+    public static final MageSkill INSTANCE = new MageSkill();
 
     @Override
     public String getName() {
@@ -25,7 +31,7 @@ public class MageSkill extends Skill implements DungeonsSkill {
     }
 
     @Override
-    public List<String> getLevelUpInformation(final int level, final int lastLevel, final boolean showOld) {
+    public List<String> getLevelUpInformation(int level, int lastLevel, boolean showOld) {
         return Collections.singletonList("");
     }
 
@@ -35,35 +41,32 @@ public class MageSkill extends Skill implements DungeonsSkill {
     }
 
     @Override
-    public void onSkillUpdate(final User user, final double previousXP) {
+    public void onSkillUpdate(User user, double previousXP) {
         super.onSkillUpdate(user, previousXP);
     }
 
     @Override
     public List<String> getPassive() {
-        final List<String> t = new ArrayList<String>();
-        t.add("Mage Staff");
-        t.add("Efficent Spells");
-        return t;
+        ArrayList<String> t2 = new ArrayList<String>();
+        t2.add("Mage Staff");
+        t2.add("Efficent Spells");
+        return t2;
     }
 
     @Override
     public List<String> getOrb() {
-        final List<String> t = new ArrayList<String>();
-        t.add("Guided Sheep");
-        t.add("Thunderstorm");
-        return t;
+        ArrayList<String> t2 = new ArrayList<String>();
+        t2.add("Guided Sheep");
+        t2.add("Thunderstorm");
+        return t2;
     }
 
     @Override
     public List<String> getGhost() {
-        final List<String> t = new ArrayList<String>();
-        t.add("Pop-up Wall");
-        t.add("Fireball");
-        return t;
-    }
-
-    static {
-        INSTANCE = new MageSkill();
+        ArrayList<String> t2 = new ArrayList<String>();
+        t2.add("Pop-up Wall");
+        t2.add("Fireball");
+        return t2;
     }
 }
+

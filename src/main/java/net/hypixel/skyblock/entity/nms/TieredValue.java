@@ -1,3 +1,6 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.entity.nms;
 
 public class TieredValue<T> {
@@ -6,24 +9,26 @@ public class TieredValue<T> {
     private final T iii;
     private final T iv;
 
-    public TieredValue(T i, T ii, T iii, T iv) {
-        this.i = i;
+    public TieredValue(T i2, T ii, T iii, T iv) {
+        this.i = i2;
         this.ii = ii;
         this.iii = iii;
         this.iv = iv;
     }
 
-    public T getByNumber(int n) {
-        switch (n) {
-            case 2:
+    public T getByNumber(int n2) {
+        switch (n2) {
+            case 2: {
                 return this.ii;
-            case 3:
+            }
+            case 3: {
                 return this.iii;
-            case 4:
+            }
+            case 4: {
                 return this.iv;
-            default:
-                return this.i;
+            }
         }
+        return this.i;
     }
 
     public T getTierI() {
@@ -42,3 +47,4 @@ public class TieredValue<T> {
         return this.iv;
     }
 }
+

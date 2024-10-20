@@ -1,26 +1,62 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.md_5.bungee.api.ChatColor
+ *  net.minecraft.server.v1_8_R3.EnumParticle
+ *  net.minecraft.server.v1_8_R3.Packet
+ *  net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles
+ *  org.bukkit.Effect
+ *  org.bukkit.Location
+ *  org.bukkit.Material
+ *  org.bukkit.Sound
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
+ *  org.bukkit.entity.ArmorStand
+ *  org.bukkit.entity.Damageable
+ *  org.bukkit.entity.EnderDragonPart
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.entity.LivingEntity
+ *  org.bukkit.entity.Player
+ *  org.bukkit.entity.Villager
+ *  org.bukkit.util.Vector
+ */
 package net.hypixel.skyblock.item.weapon;
 
-import net.hypixel.skyblock.item.*;
+import java.util.Set;
+import net.hypixel.skyblock.item.Ability;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.ToolStatistics;
+import net.hypixel.skyblock.listener.PlayerListener;
+import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.EntityManager;
+import net.hypixel.skyblock.util.SUtil;
+import net.hypixel.skyblock.util.Sputnik;
 import net.md_5.bungee.api.ChatColor;
 import net.minecraft.server.v1_8_R3.EnumParticle;
+import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayOutWorldParticles;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.entity.*;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Damageable;
+import org.bukkit.entity.EnderDragonPart;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
 import org.bukkit.util.Vector;
-import net.hypixel.skyblock.item.*;
-import net.hypixel.skyblock.listener.PlayerListener;
-import net.hypixel.skyblock.user.User;
-import net.hypixel.skyblock.util.SUtil;
-import net.hypixel.skyblock.util.Sputnik;
 
-import java.util.Set;
-
-public class Scylla implements ToolStatistics, MaterialFunction, Ability {
+public class Scylla
+implements ToolStatistics,
+MaterialFunction,
+Ability {
     @Override
     public int getBaseDamage() {
         return 270;
@@ -73,7 +109,7 @@ public class Scylla implements ToolStatistics, MaterialFunction, Ability {
 
     @Override
     public String getLore() {
-        return "Deals " + ChatColor.RED + "+50% " + ChatColor.GRAY + "damage to withers. Grants " + ChatColor.RED + "+1 Damage " + ChatColor.GRAY + "and" + ChatColor.GREEN + " +1" + ChatColor.BLUE + " ☠ Crit Damage " + ChatColor.GRAY + "per" + ChatColor.RED + " Catacombs " + ChatColor.GRAY + "level.";
+        return "Deals " + ChatColor.RED + "+50% " + ChatColor.GRAY + "damage to withers. Grants " + ChatColor.RED + "+1 Damage " + ChatColor.GRAY + "and" + ChatColor.GREEN + " +1" + ChatColor.BLUE + " \u2620 Crit Damage " + ChatColor.GRAY + "per" + ChatColor.RED + " Catacombs " + ChatColor.GRAY + "level.";
     }
 
     @Override
@@ -83,23 +119,22 @@ public class Scylla implements ToolStatistics, MaterialFunction, Ability {
 
     @Override
     public String getAbilityDescription() {
-        return "Teleports " + ChatColor.GREEN + "10 blocks" + ChatColor.GRAY + " ahead of you. Then implode dealing " + ChatColor.RED + "10,000" + ChatColor.GRAY + " damage to nearby enemies. Also applies the " + ChatColor.GOLD + "wither shield" + ChatColor.GRAY + " scroll ability reducing damage taken and granting an " + ChatColor.GOLD + "❤ " + ChatColor.GOLD + "Absorption" + ChatColor.GRAY + " shield for " + ChatColor.YELLOW + "5" + ChatColor.GRAY + " seconds.";
+        return "Teleports " + ChatColor.GREEN + "10 blocks" + ChatColor.GRAY + " ahead of you. Then implode dealing " + ChatColor.RED + "10,000" + ChatColor.GRAY + " damage to nearby enemies. Also applies the " + ChatColor.GOLD + "wither shield" + ChatColor.GRAY + " scroll ability reducing damage taken and granting an " + ChatColor.GOLD + "\u2764 " + ChatColor.GOLD + "Absorption" + ChatColor.GRAY + " shield for " + ChatColor.YELLOW + "5" + ChatColor.GRAY + " seconds.";
     }
 
     @Override
-    public void onAbilityUse(final Player player, final SItem sItem) {
+    public void onAbilityUse(Player player, SItem sItem) {
         double entityTotal = 0.0;
-        int j = 0;
+        int j2 = 0;
         try {
             int f_ = 10;
             for (int range = 1; range < 10; ++range) {
-                final Location location = player.getTargetBlock((Set) null, range).getLocation();
-                if (location.getBlock().getType() != Material.AIR) {
-                    f_ = range;
-                    break;
-                }
+                Location location = player.getTargetBlock((Set)null, range).getLocation();
+                if (location.getBlock().getType() == Material.AIR) continue;
+                f_ = range;
+                break;
             }
-            final Location location2 = player.getTargetBlock((Set) null, f_ - 1).getLocation();
+            Location location2 = player.getTargetBlock((Set)null, f_ - 1).getLocation();
             location2.setYaw(player.getLocation().getYaw());
             location2.setPitch(player.getLocation().getPitch());
             location2.add(0.5, 0.0, 0.5);
@@ -112,51 +147,35 @@ public class Scylla implements ToolStatistics, MaterialFunction, Ability {
                 Sputnik.teleport(player, player.getLocation());
             }
             Sputnik.witherShieldActive(player);
-            for (final Entity entity : player.getWorld().getNearbyEntities(player.getLocation(), 10.0, 10.0, 10.0)) {
-                if (entity.isDead()) {
-                    continue;
-                }
-                if (!(entity instanceof LivingEntity)) {
-                    continue;
-                }
-                if (entity.hasMetadata("GiantSword")) {
-                    continue;
-                }
-                if (entity.hasMetadata("NoAffect")) {
-                    continue;
-                }
-                if (entity instanceof Player || entity instanceof EnderDragonPart || entity instanceof Villager) {
-                    continue;
-                }
-                if (entity instanceof ArmorStand) {
-                    continue;
-                }
-                ++j;
+            for (Entity entity : player.getWorld().getNearbyEntities(player.getLocation(), 10.0, 10.0, 10.0)) {
+                if (entity.isDead() || !(entity instanceof LivingEntity) || entity.hasMetadata("GiantSword") || entity.hasMetadata("NoAffect") || entity instanceof Player || entity instanceof EnderDragonPart || entity instanceof Villager || entity instanceof ArmorStand) continue;
+                ++j2;
                 double baseDamage = Sputnik.calMagicDamage(player, 10000, 0.3);
-                final User user = User.getUser(player.getUniqueId());
+                User user = User.getUser(player.getUniqueId());
                 if (EntityManager.DEFENSE_PERCENTAGE.containsKey(entity)) {
                     int defensepercent = EntityManager.DEFENSE_PERCENTAGE.get(entity);
                     if (defensepercent > 100) {
                         defensepercent = 100;
                     }
-                    baseDamage -= baseDamage * defensepercent / 100.0;
+                    baseDamage -= baseDamage * (double)defensepercent / 100.0;
                 }
-                user.damageEntityIgnoreShield((Damageable) entity, (int) baseDamage);
+                user.damageEntityIgnoreShield((Damageable)entity, (int)baseDamage);
                 PlayerListener.spawnDamageInd(entity, baseDamage, false);
                 entityTotal += baseDamage;
             }
-        } catch (final IllegalStateException ex) {
+        } catch (IllegalStateException f_) {
+            // empty catch block
         }
         player.playSound(player.getLocation(), Sound.EXPLODE, 3.0f, 2.0f);
-        final PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(EnumParticle.EXPLOSION_LARGE, true, (float) player.getLocation().getX(), (float) player.getLocation().getY(), (float) player.getLocation().getZ(), 0.0f, 0.0f, 0.0f, 7.0f, 6);
-        for (final Player online : player.getWorld().getPlayers()) {
-            ((CraftPlayer) online).getHandle().playerConnection.sendPacket(packet);
+        PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles(EnumParticle.EXPLOSION_LARGE, true, (float)player.getLocation().getX(), (float)player.getLocation().getY(), (float)player.getLocation().getZ(), 0.0f, 0.0f, 0.0f, 7.0f, 6, new int[0]);
+        for (Player online : player.getWorld().getPlayers()) {
+            ((CraftPlayer)online).getHandle().playerConnection.sendPacket((Packet)packet);
         }
-        if (j > 0) {
-            if (j == 1) {
-                player.sendMessage(ChatColor.GRAY + "Your Implosion hit " + ChatColor.RED + j + ChatColor.GRAY + " enemy for " + ChatColor.RED + SUtil.commaify(entityTotal) + ChatColor.GRAY + " damage.");
+        if (j2 > 0) {
+            if (j2 == 1) {
+                player.sendMessage(ChatColor.GRAY + "Your Implosion hit " + ChatColor.RED + j2 + ChatColor.GRAY + " enemy for " + ChatColor.RED + SUtil.commaify(entityTotal) + ChatColor.GRAY + " damage.");
             } else {
-                player.sendMessage(ChatColor.GRAY + "Your Implosion hit " + ChatColor.RED + j + ChatColor.GRAY + " enemies for " + ChatColor.RED + SUtil.commaify(entityTotal) + ChatColor.GRAY + " damage.");
+                player.sendMessage(ChatColor.GRAY + "Your Implosion hit " + ChatColor.RED + j2 + ChatColor.GRAY + " enemies for " + ChatColor.RED + SUtil.commaify(entityTotal) + ChatColor.GRAY + " damage.");
             }
         }
     }
@@ -171,36 +190,38 @@ public class Scylla implements ToolStatistics, MaterialFunction, Ability {
         return 300;
     }
 
-    private void createCircle(final Player player, final double radius, final int distance) {
-        final Vector dist = player.getEyeLocation().getDirection().multiply(distance);
-        final Location mid = player.getEyeLocation().add(dist);
-        for (int particles = 18, i = 0; i < particles; ++i) {
-            final double angle = 6.283185307179586 * i / particles;
-            final double x = Math.cos(angle) * radius;
-            final double y = Math.sin(angle) * radius;
-            Vector v = this.rotateAroundAxisX(new Vector(x, y, 0.0), player.getEyeLocation().getPitch());
-            v = this.rotateAroundAxisY(v, player.getEyeLocation().getYaw());
-            final Location temp = mid.clone().add(v);
+    private void createCircle(Player player, double radius, int distance) {
+        Vector dist = player.getEyeLocation().getDirection().multiply(distance);
+        Location mid = player.getEyeLocation().add(dist);
+        int particles = 18;
+        for (int i2 = 0; i2 < particles; ++i2) {
+            double angle = Math.PI * 2 * (double)i2 / (double)particles;
+            double x2 = Math.cos(angle) * radius;
+            double y2 = Math.sin(angle) * radius;
+            Vector v2 = this.rotateAroundAxisX(new Vector(x2, y2, 0.0), player.getEyeLocation().getPitch());
+            v2 = this.rotateAroundAxisY(v2, player.getEyeLocation().getYaw());
+            Location temp = mid.clone().add(v2);
             player.getWorld().spigot().playEffect(temp, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
         }
     }
 
-    private Vector rotateAroundAxisX(final Vector v, double angle) {
+    private Vector rotateAroundAxisX(Vector v2, double angle) {
         angle = Math.toRadians(angle);
-        final double cos = Math.cos(angle);
-        final double sin = Math.sin(angle);
-        final double y = v.getY() * cos - v.getZ() * sin;
-        final double z = v.getY() * sin + v.getZ() * cos;
-        return v.setY(y).setZ(z);
+        double cos = Math.cos(angle);
+        double sin = Math.sin(angle);
+        double y2 = v2.getY() * cos - v2.getZ() * sin;
+        double z2 = v2.getY() * sin + v2.getZ() * cos;
+        return v2.setY(y2).setZ(z2);
     }
 
-    private Vector rotateAroundAxisY(final Vector v, double angle) {
+    private Vector rotateAroundAxisY(Vector v2, double angle) {
         angle = -angle;
         angle = Math.toRadians(angle);
-        final double cos = Math.cos(angle);
-        final double sin = Math.sin(angle);
-        final double x = v.getX() * cos + v.getZ() * sin;
-        final double z = v.getX() * -sin + v.getZ() * cos;
-        return v.setX(x).setZ(z);
+        double cos = Math.cos(angle);
+        double sin = Math.sin(angle);
+        double x2 = v2.getX() * cos + v2.getZ() * sin;
+        double z2 = v2.getX() * -sin + v2.getZ() * cos;
+        return v2.setX(x2).setZ(z2);
     }
 }
+

@@ -1,10 +1,19 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.oddities;
 
-import net.hypixel.skyblock.item.*;
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.MaterialStatistics;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SkullStatistics;
 import net.hypixel.skyblock.util.Sputnik;
 
-public class EtherwarpMerger implements MaterialStatistics, MaterialFunction, SkullStatistics {
+public class EtherwarpMerger
+implements MaterialStatistics,
+MaterialFunction,
+SkullStatistics {
     @Override
     public String getDisplayName() {
         return "Etherwarp Merger";
@@ -40,3 +49,4 @@ public class EtherwarpMerger implements MaterialStatistics, MaterialFunction, Sk
         return "3e5314f4919691ccbf807743dae47ae45ac2e3ff08f79eecdd452fe602eff7f6";
     }
 }
+

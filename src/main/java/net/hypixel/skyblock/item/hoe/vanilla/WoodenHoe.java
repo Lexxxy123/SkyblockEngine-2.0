@@ -1,9 +1,17 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.hoe.vanilla;
 
-import net.hypixel.skyblock.item.*;
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.ToolStatistics;
 
-public class WoodenHoe implements ToolStatistics, MaterialFunction {
+public class WoodenHoe
+implements ToolStatistics,
+MaterialFunction {
     @Override
     public String getDisplayName() {
         return "Wooden Hoe";
@@ -24,3 +32,4 @@ public class WoodenHoe implements ToolStatistics, MaterialFunction {
         return SpecificItemType.HOE;
     }
 }
+

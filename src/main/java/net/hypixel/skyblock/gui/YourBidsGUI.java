@@ -1,6 +1,23 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ *  org.bukkit.Material
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.inventory.InventoryClickEvent
+ *  org.bukkit.inventory.ItemStack
+ */
 package net.hypixel.skyblock.gui;
 
+import java.util.ArrayList;
+import java.util.List;
 import net.hypixel.skyblock.features.auction.AuctionItem;
+import net.hypixel.skyblock.gui.AuctionViewGUI;
+import net.hypixel.skyblock.gui.GUI;
+import net.hypixel.skyblock.gui.GUIClickableItem;
+import net.hypixel.skyblock.gui.GUIOpenEvent;
+import net.hypixel.skyblock.gui.GUIType;
 import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.SUtil;
 import org.bukkit.ChatColor;
@@ -9,77 +26,83 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class YourBidsGUI extends GUI {
-    private static final int[] INTERIOR = new int[]{
-            10, 11, 12, 13, 14, 15, 16, 19, 20, 21,
-            22, 23, 24, 25, 28, 29, 30, 31, 32, 33,
-            34, 37, 38, 39, 40, 41, 42, 43};
-
+public class YourBidsGUI
+extends GUI {
+    private static final int[] INTERIOR = new int[]{10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43};
     private List<AuctionItem> items;
 
     public YourBidsGUI() {
         super("Your Bids", 27);
-        border(BLACK_STAINED_GLASS_PANE);
+        this.border(BLACK_STAINED_GLASS_PANE);
     }
 
+    @Override
     public void early(Player player) {
         User user = User.getUser(player.getUniqueId());
         this.items = user.getBids();
-        this.size = Math.max(54, Double.valueOf(Math.ceil(this.items.size() / 7.0D)).intValue() * 9 + 18);
+        this.size = Math.max(54, Double.valueOf(Math.ceil((double)this.items.size() / 7.0)).intValue() * 9 + 18);
     }
 
-    public void onOpen(GUIOpenEvent e) {
-        final Player player = e.getPlayer();
-        if (this.items == null)
+    @Override
+    public void onOpen(GUIOpenEvent e2) {
+        final Player player = e2.getPlayer();
+        if (this.items == null) {
             return;
+        }
         int ended = 0;
-        for (AuctionItem item : this.items) {
-            if (item.isExpired())
-                ended++;
+        for (final AuctionItem item : this.items) {
+            if (!item.isExpired()) continue;
+            ++ended;
         }
         if (ended != 0) {
             final int finalEnded = ended;
-            set(new GUIClickableItem() {
-                public void run(InventoryClickEvent e) {
+            this.set(new GUIClickableItem(){
+
+                @Override
+                public void run(InventoryClickEvent e2) {
                     for (AuctionItem item : YourBidsGUI.this.items) {
-                        if (item.isExpired())
-                            item.claim(player);
+                        if (!item.isExpired()) continue;
+                        item.claim(player);
                     }
                     player.closeInventory();
                 }
 
+                @Override
                 public int getSlot() {
                     return 21;
                 }
 
+                @Override
                 public ItemStack getItem() {
-                    List<String> lore = new ArrayList<>();
+                    ArrayList<String> lore = new ArrayList<String>();
                     lore.add(ChatColor.DARK_GRAY + "Ended Auctions");
                     lore.add(" ");
-                    lore.add(ChatColor.GRAY + "You got " + ChatColor.GREEN + finalEnded + " item" + ((finalEnded != 1) ? "s" : "") + ChatColor.GRAY + " to");
+                    lore.add(ChatColor.GRAY + "You got " + ChatColor.GREEN + finalEnded + " item" + (finalEnded != 1 ? "s" : "") + ChatColor.GRAY + " to");
                     lore.add(ChatColor.GRAY + "claim items/reclaim bids.");
                     lore.add(" ");
                     lore.add(ChatColor.YELLOW + "Click to claim!");
-                    return SUtil.getStack(ChatColor.GREEN + "Claim All", Material.CAULDRON_ITEM, (short) 0, 1, lore);
+                    return SUtil.getStack(ChatColor.GREEN + "Claim All", Material.CAULDRON_ITEM, (short)0, 1, lore);
                 }
             });
         }
-        set(GUIClickableItem.createGUIOpenerItem(GUIType.AUCTION_HOUSE, player, ChatColor.GREEN + "Go Back", 22, Material.ARROW, ChatColor.GRAY + "To Auction House"));
-        for (int i = 0; i < this.items.size(); i++) {
-            final AuctionItem item = this.items.get(i);
-            final int slot = INTERIOR[i];
-            set(new GUIClickableItem() {
-                public void run(InventoryClickEvent e) {
-                    (new AuctionViewGUI(item, YourBidsGUI.this)).open(player);
+        this.set(GUIClickableItem.createGUIOpenerItem(GUIType.AUCTION_HOUSE, player, ChatColor.GREEN + "Go Back", 22, Material.ARROW, ChatColor.GRAY + "To Auction House"));
+        for (int i2 = 0; i2 < this.items.size(); ++i2) {
+            AuctionItem item;
+            item = this.items.get(i2);
+            final int slot = INTERIOR[i2];
+            this.set(new GUIClickableItem(){
+
+                @Override
+                public void run(InventoryClickEvent e2) {
+                    new AuctionViewGUI(item, YourBidsGUI.this).open(player);
                 }
 
+                @Override
                 public int getSlot() {
                     return slot;
                 }
 
+                @Override
                 public ItemStack getItem() {
                     return item.getDisplayItem(true, true);
                 }
@@ -87,14 +110,14 @@ public class YourBidsGUI extends GUI {
         }
     }
 
-    private enum Sort {
+    private static enum Sort {
         RECENTLY_UPDATED("Recently Updated"),
         HIGHEST_BID("Highest Bid"),
         MOST_BIDS("Most Bids");
 
         private final String display;
 
-        Sort(String display) {
+        private Sort(String display) {
             this.display = display;
         }
 
@@ -103,17 +126,20 @@ public class YourBidsGUI extends GUI {
         }
 
         public Sort previous() {
-            int prev = ordinal() - 1;
-            if (prev < 0)
-                return values()[(values()).length - 1];
-            return values()[prev];
+            int prev = this.ordinal() - 1;
+            if (prev < 0) {
+                return Sort.values()[Sort.values().length - 1];
+            }
+            return Sort.values()[prev];
         }
 
         public Sort next() {
-            int nex = ordinal() + 1;
-            if (nex > (values()).length - 1)
-                return values()[0];
-            return values()[nex];
+            int nex = this.ordinal() + 1;
+            if (nex > Sort.values().length - 1) {
+                return Sort.values()[0];
+            }
+            return Sort.values()[nex];
         }
     }
 }
+

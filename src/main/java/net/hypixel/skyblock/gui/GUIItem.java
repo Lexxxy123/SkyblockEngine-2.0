@@ -1,3 +1,11 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ *  org.bukkit.Material
+ *  org.bukkit.inventory.ItemStack
+ */
 package net.hypixel.skyblock.gui;
 
 import net.hypixel.skyblock.util.SUtil;
@@ -6,18 +14,19 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 public interface GUIItem {
-    int getSlot();
+    public int getSlot();
 
-    default ItemStack getItem() {
+    default public ItemStack getItem() {
         return new ItemStack(Material.AIR);
     }
 
-    default boolean canPickup() {
+    default public boolean canPickup() {
         return false;
     }
 
-    default GUIItem createLoadingItem(final Material type, final String name, final int slot) {
-        return new GUIItem() {
+    default public GUIItem createLoadingItem(final Material type, final String name, final int slot) {
+        return new GUIItem(){
+
             @Override
             public int getSlot() {
                 return slot;
@@ -25,8 +34,9 @@ public interface GUIItem {
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getSingleLoreStack(name, type, (short) 0, 1, ChatColor.DARK_GRAY + "Loading...");
+                return SUtil.getSingleLoreStack(name, type, (short)0, 1, ChatColor.DARK_GRAY + "Loading...");
             }
         };
     }
 }
+

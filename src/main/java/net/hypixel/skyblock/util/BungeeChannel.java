@@ -1,42 +1,63 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Bukkit
+ *  org.bukkit.entity.Player
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.plugin.messaging.Messenger
+ *  org.bukkit.plugin.messaging.PluginMessageListener
+ */
 package net.hypixel.skyblock.util;
 
 import com.google.common.collect.Iterables;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import java.net.InetSocketAddress;
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Queue;
+import java.util.WeakHashMap;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.BiFunction;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
-import java.net.InetSocketAddress;
-import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.BiFunction;
-
 public class BungeeChannel {
-    private static WeakHashMap<Plugin, BungeeChannel> registeredInstances;
+    private static WeakHashMap<Plugin, BungeeChannel> registeredInstances = new WeakHashMap();
     private final PluginMessageListener messageListener;
     private final Plugin plugin;
     private final Map<String, Queue<CompletableFuture<?>>> callbackMap;
     private Map<String, ForwardConsumer> forwardListeners;
     private ForwardConsumer globalForwardListener;
 
-    public static synchronized BungeeChannel of(final Plugin plugin) {
-        return BungeeChannel.registeredInstances.compute(plugin, (k, v) -> {
-            if (v == null) {
-                v = new BungeeChannel(plugin);
+    public static synchronized BungeeChannel of(Plugin plugin) {
+        return registeredInstances.compute(plugin, (k2, v2) -> {
+            if (v2 == null) {
+                v2 = new BungeeChannel(plugin);
             }
-            return v;
+            return v2;
         });
     }
 
-    public BungeeChannel(final Plugin plugin) {
+    /*
+     * WARNING - Removed try catching itself - possible behaviour change.
+     */
+    public BungeeChannel(Plugin plugin) {
         this.plugin = Objects.requireNonNull(plugin, "plugin cannot be null");
-        this.callbackMap = new HashMap<String, Queue<CompletableFuture<?>>>();
-        synchronized (BungeeChannel.registeredInstances) {
-            BungeeChannel.registeredInstances.compute(plugin, (k, oldInstance) -> {
+        this.callbackMap = new HashMap();
+        WeakHashMap<Plugin, BungeeChannel> weakHashMap = registeredInstances;
+        synchronized (weakHashMap) {
+            registeredInstances.compute(plugin, (k2, oldInstance) -> {
                 if (oldInstance != null) {
                     oldInstance.unregister();
                 }
@@ -44,163 +65,203 @@ public class BungeeChannel {
             });
         }
         this.messageListener = this::onPluginMessageReceived;
-        final Messenger messenger = Bukkit.getServer().getMessenger();
+        Messenger messenger = Bukkit.getServer().getMessenger();
         messenger.registerOutgoingPluginChannel(plugin, "BungeeCord");
         messenger.registerIncomingPluginChannel(plugin, "BungeeCord", this.messageListener);
     }
 
-    public void registerForwardListener(final ForwardConsumer globalListener) {
+    public void registerForwardListener(ForwardConsumer globalListener) {
         this.globalForwardListener = globalListener;
     }
 
-    public void registerForwardListener(final String channelName, final ForwardConsumer listener) {
+    /*
+     * WARNING - Removed try catching itself - possible behaviour change.
+     */
+    public void registerForwardListener(String channelName, ForwardConsumer listener) {
         if (this.forwardListeners == null) {
             this.forwardListeners = new HashMap<String, ForwardConsumer>();
         }
-        synchronized (this.forwardListeners) {
+        Map<String, ForwardConsumer> map = this.forwardListeners;
+        synchronized (map) {
             this.forwardListeners.put(channelName, listener);
         }
     }
 
-    public CompletableFuture<Integer> getPlayerCount(final String serverName) {
-        final Player player = this.getFirstPlayer();
-        final CompletableFuture<Integer> future = new CompletableFuture<Integer>();
-        synchronized (this.callbackMap) {
+    /*
+     * WARNING - Removed try catching itself - possible behaviour change.
+     */
+    public CompletableFuture<Integer> getPlayerCount(String serverName) {
+        Player player = this.getFirstPlayer();
+        CompletableFuture<Integer> future = new CompletableFuture<Integer>();
+        Map<String, Queue<CompletableFuture<?>>> map = this.callbackMap;
+        synchronized (map) {
             this.callbackMap.compute("PlayerCount-" + serverName, this.computeQueueValue(future));
         }
-        final ByteArrayDataOutput output = ByteStreams.newDataOutput();
+        ByteArrayDataOutput output = ByteStreams.newDataOutput();
         output.writeUTF("PlayerCount");
         output.writeUTF(serverName);
         player.sendPluginMessage(this.plugin, "BungeeCord", output.toByteArray());
         return future;
     }
 
-    public CompletableFuture<List<String>> getPlayerList(final String serverName) {
-        final Player player = this.getFirstPlayer();
-        final CompletableFuture<List<String>> future = new CompletableFuture<List<String>>();
-        synchronized (this.callbackMap) {
+    /*
+     * WARNING - Removed try catching itself - possible behaviour change.
+     */
+    public CompletableFuture<List<String>> getPlayerList(String serverName) {
+        Player player = this.getFirstPlayer();
+        CompletableFuture<List<String>> future = new CompletableFuture<List<String>>();
+        Map<String, Queue<CompletableFuture<?>>> map = this.callbackMap;
+        synchronized (map) {
             this.callbackMap.compute("PlayerList-" + serverName, this.computeQueueValue(future));
         }
-        final ByteArrayDataOutput output = ByteStreams.newDataOutput();
+        ByteArrayDataOutput output = ByteStreams.newDataOutput();
         output.writeUTF("PlayerList");
         output.writeUTF(serverName);
         player.sendPluginMessage(this.plugin, "BungeeCord", output.toByteArray());
         return future;
     }
 
+    /*
+     * WARNING - Removed try catching itself - possible behaviour change.
+     */
     public CompletableFuture<List<String>> getServers() {
-        final Player player = this.getFirstPlayer();
-        final CompletableFuture<List<String>> future = new CompletableFuture<List<String>>();
-        synchronized (this.callbackMap) {
+        Player player = this.getFirstPlayer();
+        CompletableFuture<List<String>> future = new CompletableFuture<List<String>>();
+        Map<String, Queue<CompletableFuture<?>>> map = this.callbackMap;
+        synchronized (map) {
             this.callbackMap.compute("GetServers", this.computeQueueValue(future));
         }
-        final ByteArrayDataOutput output = ByteStreams.newDataOutput();
+        ByteArrayDataOutput output = ByteStreams.newDataOutput();
         output.writeUTF("GetServers");
         player.sendPluginMessage(this.plugin, "BungeeCord", output.toByteArray());
         return future;
     }
 
-    public void connect(final Player player, final String serverName) {
-        final ByteArrayDataOutput output = ByteStreams.newDataOutput();
+    public void connect(Player player, String serverName) {
+        ByteArrayDataOutput output = ByteStreams.newDataOutput();
         output.writeUTF("Connect");
         output.writeUTF(serverName);
         player.sendPluginMessage(this.plugin, "BungeeCord", output.toByteArray());
     }
 
-    public void connectOther(final String playerName, final String server) {
-        final Player player = this.getFirstPlayer();
-        final ByteArrayDataOutput output = ByteStreams.newDataOutput();
+    public void connectOther(String playerName, String server) {
+        Player player = this.getFirstPlayer();
+        ByteArrayDataOutput output = ByteStreams.newDataOutput();
         output.writeUTF("ConnectOther");
         output.writeUTF(playerName);
         output.writeUTF(server);
         player.sendPluginMessage(this.plugin, "BungeeCord", output.toByteArray());
     }
 
-    public CompletableFuture<InetSocketAddress> getIp(final Player player) {
-        final CompletableFuture<InetSocketAddress> future = new CompletableFuture<InetSocketAddress>();
-        synchronized (this.callbackMap) {
+    /*
+     * WARNING - Removed try catching itself - possible behaviour change.
+     */
+    public CompletableFuture<InetSocketAddress> getIp(Player player) {
+        CompletableFuture<InetSocketAddress> future = new CompletableFuture<InetSocketAddress>();
+        Map<String, Queue<CompletableFuture<?>>> map = this.callbackMap;
+        synchronized (map) {
             this.callbackMap.compute("IP", this.computeQueueValue(future));
         }
-        final ByteArrayDataOutput output = ByteStreams.newDataOutput();
+        ByteArrayDataOutput output = ByteStreams.newDataOutput();
         output.writeUTF("IP");
         player.sendPluginMessage(this.plugin, "BungeeCord", output.toByteArray());
         return future;
     }
 
-    public void sendMessage(final String playerName, final String message) {
-        final Player player = this.getFirstPlayer();
-        final ByteArrayDataOutput output = ByteStreams.newDataOutput();
+    public void sendMessage(String playerName, String message) {
+        Player player = this.getFirstPlayer();
+        ByteArrayDataOutput output = ByteStreams.newDataOutput();
         output.writeUTF("Message");
         output.writeUTF(playerName);
         output.writeUTF(message);
         player.sendPluginMessage(this.plugin, "BungeeCord", output.toByteArray());
     }
 
+    /*
+     * WARNING - Removed try catching itself - possible behaviour change.
+     */
     public CompletableFuture<String> getServer() {
-        final Player player = this.getFirstPlayer();
-        final CompletableFuture<String> future = new CompletableFuture<String>();
-        synchronized (this.callbackMap) {
+        Player player = this.getFirstPlayer();
+        CompletableFuture<String> future = new CompletableFuture<String>();
+        Map<String, Queue<CompletableFuture<?>>> map = this.callbackMap;
+        synchronized (map) {
             this.callbackMap.compute("GetServer", this.computeQueueValue(future));
         }
-        final ByteArrayDataOutput output = ByteStreams.newDataOutput();
+        ByteArrayDataOutput output = ByteStreams.newDataOutput();
         output.writeUTF("GetServer");
         player.sendPluginMessage(this.plugin, "BungeeCord", output.toByteArray());
         return future;
     }
 
-    public CompletableFuture<String> getUUID(final Player player) {
-        final CompletableFuture<String> future = new CompletableFuture<String>();
-        synchronized (this.callbackMap) {
+    /*
+     * WARNING - Removed try catching itself - possible behaviour change.
+     */
+    public CompletableFuture<String> getUUID(Player player) {
+        CompletableFuture<String> future = new CompletableFuture<String>();
+        Map<String, Queue<CompletableFuture<?>>> map = this.callbackMap;
+        synchronized (map) {
             this.callbackMap.compute("UUID", this.computeQueueValue(future));
         }
-        final ByteArrayDataOutput output = ByteStreams.newDataOutput();
+        ByteArrayDataOutput output = ByteStreams.newDataOutput();
         output.writeUTF("UUID");
         player.sendPluginMessage(this.plugin, "BungeeCord", output.toByteArray());
         return future;
     }
 
-    public CompletableFuture<String> getUUID(final String playerName) {
-        final Player player = this.getFirstPlayer();
-        final CompletableFuture<String> future = new CompletableFuture<String>();
-        synchronized (this.callbackMap) {
+    /*
+     * WARNING - Removed try catching itself - possible behaviour change.
+     */
+    public CompletableFuture<String> getUUID(String playerName) {
+        Player player = this.getFirstPlayer();
+        CompletableFuture<String> future = new CompletableFuture<String>();
+        Map<String, Queue<CompletableFuture<?>>> map = this.callbackMap;
+        synchronized (map) {
             this.callbackMap.compute("UUIDOther-" + playerName, this.computeQueueValue(future));
         }
-        final ByteArrayDataOutput output = ByteStreams.newDataOutput();
+        ByteArrayDataOutput output = ByteStreams.newDataOutput();
         output.writeUTF("UUIDOther");
         output.writeUTF(playerName);
         player.sendPluginMessage(this.plugin, "BungeeCord", output.toByteArray());
         return future;
     }
 
-    public CompletableFuture<InetSocketAddress> getServerIp(final String serverName) {
-        final Player player = this.getFirstPlayer();
-        final CompletableFuture<InetSocketAddress> future = new CompletableFuture<InetSocketAddress>();
-        synchronized (this.callbackMap) {
+    /*
+     * WARNING - Removed try catching itself - possible behaviour change.
+     */
+    public CompletableFuture<InetSocketAddress> getServerIp(String serverName) {
+        Player player = this.getFirstPlayer();
+        CompletableFuture<InetSocketAddress> future = new CompletableFuture<InetSocketAddress>();
+        Map<String, Queue<CompletableFuture<?>>> map = this.callbackMap;
+        synchronized (map) {
             this.callbackMap.compute("ServerIP-" + serverName, this.computeQueueValue(future));
         }
-        final ByteArrayDataOutput output = ByteStreams.newDataOutput();
+        ByteArrayDataOutput output = ByteStreams.newDataOutput();
         output.writeUTF("ServerIP");
         output.writeUTF(serverName);
         player.sendPluginMessage(this.plugin, "BungeeCord", output.toByteArray());
         return future;
     }
 
-    public void kickPlayer(final String playerName, final String kickMessage) {
-        final Player player = this.getFirstPlayer();
-        final CompletableFuture<InetSocketAddress> future = new CompletableFuture<InetSocketAddress>();
-        synchronized (this.callbackMap) {
+    /*
+     * WARNING - Removed try catching itself - possible behaviour change.
+     */
+    public void kickPlayer(String playerName, String kickMessage) {
+        Player player = this.getFirstPlayer();
+        CompletableFuture future = new CompletableFuture();
+        Map<String, Queue<CompletableFuture<?>>> map = this.callbackMap;
+        synchronized (map) {
             this.callbackMap.compute("KickPlayer", this.computeQueueValue(future));
         }
-        final ByteArrayDataOutput output = ByteStreams.newDataOutput();
+        ByteArrayDataOutput output = ByteStreams.newDataOutput();
         output.writeUTF("KickPlayer");
         output.writeUTF(playerName);
         output.writeUTF(kickMessage);
         player.sendPluginMessage(this.plugin, "BungeeCord", output.toByteArray());
     }
 
-    public void forward(final String server, final String channelName, final byte[] data) {
-        final Player player = this.getFirstPlayer();
-        final ByteArrayDataOutput output = ByteStreams.newDataOutput();
+    public void forward(String server, String channelName, byte[] data) {
+        Player player = this.getFirstPlayer();
+        ByteArrayDataOutput output = ByteStreams.newDataOutput();
         output.writeUTF("Forward");
         output.writeUTF(server);
         output.writeUTF(channelName);
@@ -209,9 +270,9 @@ public class BungeeChannel {
         player.sendPluginMessage(this.plugin, "BungeeCord", output.toByteArray());
     }
 
-    public void forwardToPlayer(final String playerName, final String channelName, final byte[] data) {
-        final Player player = this.getFirstPlayer();
-        final ByteArrayDataOutput output = ByteStreams.newDataOutput();
+    public void forwardToPlayer(String playerName, String channelName, byte[] data) {
+        Player player = this.getFirstPlayer();
+        ByteArrayDataOutput output = ByteStreams.newDataOutput();
         output.writeUTF("ForwardToPlayer");
         output.writeUTF(playerName);
         output.writeUTF(channelName);
@@ -220,54 +281,62 @@ public class BungeeChannel {
         player.sendPluginMessage(this.plugin, "BungeeCord", output.toByteArray());
     }
 
-    private void onPluginMessageReceived(final String channel, final Player player, final byte[] message) {
+    /*
+     * WARNING - Removed try catching itself - possible behaviour change.
+     */
+    private void onPluginMessageReceived(String channel, Player player, byte[] message) {
         if (!channel.equalsIgnoreCase("BungeeCord")) {
             return;
         }
-        final ByteArrayDataInput input = ByteStreams.newDataInput(message);
-        final String subchannel = input.readUTF();
-        synchronized (this.callbackMap) {
+        ByteArrayDataInput input = ByteStreams.newDataInput(message);
+        String subchannel = input.readUTF();
+        Map<String, Queue<CompletableFuture<?>>> map = this.callbackMap;
+        synchronized (map) {
             if (subchannel.equals("PlayerCount") || subchannel.equals("PlayerList") || subchannel.equals("UUIDOther") || subchannel.equals("ServerIP")) {
-                final String identifier = input.readUTF();
-                final Queue<CompletableFuture<?>> callbacks = this.callbackMap.get(subchannel + "-" + identifier);
+                String identifier = input.readUTF();
+                Queue<CompletableFuture<?>> callbacks = this.callbackMap.get(subchannel + "-" + identifier);
                 if (callbacks == null || callbacks.isEmpty()) {
                     return;
                 }
-                CompletableFuture<Object> callback = (CompletableFuture<Object>) callbacks.poll();
+                CompletableFuture<?> callback = callbacks.poll();
                 try {
-                    final String s = subchannel;
-                    switch (s) {
-                        case "PlayerCount":
+                    String s2;
+                    switch (s2 = subchannel) {
+                        case "PlayerCount": {
                             callback.complete(input.readInt());
                             break;
-                        case "PlayerList":
+                        }
+                        case "PlayerList": {
                             callback.complete(Arrays.asList(input.readUTF().split(", ")));
                             break;
-                        case "UUIDOther":
+                        }
+                        case "UUIDOther": {
                             callback.complete(input.readUTF());
                             break;
+                        }
                         case "ServerIP": {
-                            final String ip = input.readUTF();
-                            final int port = input.readUnsignedShort();
+                            String ip = input.readUTF();
+                            int port = input.readUnsignedShort();
                             callback.complete(new InetSocketAddress(ip, port));
                             break;
                         }
                     }
-                } catch (final Exception ex) {
+                } catch (Exception ex) {
                     callback.completeExceptionally(ex);
                 }
             } else {
-                final Queue<CompletableFuture<?>> callbacks = this.callbackMap.get(subchannel);
+                Queue<CompletableFuture<?>> callbacks = this.callbackMap.get(subchannel);
                 if (callbacks == null) {
-                    final short dataLength = input.readShort();
-                    final byte[] data = new byte[dataLength];
+                    short dataLength = input.readShort();
+                    byte[] data = new byte[dataLength];
                     input.readFully(data);
                     if (this.globalForwardListener != null) {
                         this.globalForwardListener.accept(subchannel, player, data);
                     }
                     if (this.forwardListeners != null) {
-                        synchronized (this.forwardListeners) {
-                            final ForwardConsumer listener = this.forwardListeners.get(subchannel);
+                        Map<String, ForwardConsumer> map2 = this.forwardListeners;
+                        synchronized (map2) {
+                            ForwardConsumer listener = this.forwardListeners.get(subchannel);
                             if (listener != null) {
                                 listener.accept(subchannel, player, data);
                             }
@@ -278,25 +347,27 @@ public class BungeeChannel {
                 if (callbacks.isEmpty()) {
                     return;
                 }
-                CompletableFuture<Object> callback2 = (CompletableFuture<Object>) callbacks.poll();
+                CompletableFuture<?> callback2 = callbacks.poll();
                 try {
-                    final String s2 = subchannel;
-                    switch (s2) {
-                        case "GetServers":
+                    String s2;
+                    switch (s2 = subchannel) {
+                        case "GetServers": {
                             callback2.complete(Arrays.asList(input.readUTF().split(", ")));
                             break;
-                        case "GetServer":
-                        case "UUID":
+                        }
+                        case "GetServer": 
+                        case "UUID": {
                             callback2.complete(input.readUTF());
                             break;
+                        }
                         case "IP": {
-                            final String ip2 = input.readUTF();
-                            final int port2 = input.readInt();
+                            String ip2 = input.readUTF();
+                            int port2 = input.readInt();
                             callback2.complete(new InetSocketAddress(ip2, port2));
                             break;
                         }
                     }
-                } catch (final Exception ex2) {
+                } catch (Exception ex2) {
                     callback2.completeExceptionally(ex2);
                 }
             }
@@ -304,16 +375,16 @@ public class BungeeChannel {
     }
 
     public void unregister() {
-        final Messenger messenger = Bukkit.getServer().getMessenger();
+        Messenger messenger = Bukkit.getServer().getMessenger();
         messenger.unregisterIncomingPluginChannel(this.plugin, "BungeeCord", this.messageListener);
         messenger.unregisterOutgoingPluginChannel(this.plugin);
         this.callbackMap.clear();
     }
 
-    private BiFunction<String, Queue<CompletableFuture<?>>, Queue<CompletableFuture<?>>> computeQueueValue(final CompletableFuture<?> queueValue) {
+    private BiFunction<String, Queue<CompletableFuture<?>>, Queue<CompletableFuture<?>>> computeQueueValue(CompletableFuture<?> queueValue) {
         return (key, value) -> {
             if (value == null) {
-                value = new ArrayDeque();
+                value = new ArrayDeque<CompletableFuture>();
             }
             value.add(queueValue);
             return value;
@@ -321,27 +392,24 @@ public class BungeeChannel {
     }
 
     private Player getFirstPlayer() {
-        final Player firstPlayer = this.getFirstPlayer0(Bukkit.getOnlinePlayers());
+        Player firstPlayer = this.getFirstPlayer0(Bukkit.getOnlinePlayers());
         if (firstPlayer == null) {
             throw new IllegalArgumentException("Bungee Messaging Api requires at least one player to be online.");
         }
         return firstPlayer;
     }
 
-    private Player getFirstPlayer0(final Player[] playerArray) {
-        return (playerArray.length > 0) ? playerArray[0] : null;
+    private Player getFirstPlayer0(Player[] playerArray) {
+        return playerArray.length > 0 ? playerArray[0] : null;
     }
 
-    private Player getFirstPlayer0(final Collection<? extends Player> playerCollection) {
-        return (Player) Iterables.getFirst(playerCollection, (Object) null);
-    }
-
-    static {
-        BungeeChannel.registeredInstances = new WeakHashMap<Plugin, BungeeChannel>();
+    private Player getFirstPlayer0(Collection<? extends Player> playerCollection) {
+        return Iterables.getFirst(playerCollection, null);
     }
 
     @FunctionalInterface
-    public interface ForwardConsumer {
-        void accept(final String p0, final Player p1, final byte[] p2);
+    public static interface ForwardConsumer {
+        public void accept(String var1, Player var2, byte[] var3);
     }
 }
+

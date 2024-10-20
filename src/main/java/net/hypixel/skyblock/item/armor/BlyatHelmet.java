@@ -1,13 +1,21 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.armor;
 
-import net.hypixel.skyblock.item.*;
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.ToolStatistics;
 import net.hypixel.skyblock.util.Sputnik;
 
-public class BlyatHelmet implements ToolStatistics, MaterialFunction {
+public class BlyatHelmet
+implements ToolStatistics,
+MaterialFunction {
     @Override
     public String getDisplayName() {
-        return "⚚ Gagarin's Space Helmet";
+        return "\u269a Gagarin's Space Helmet";
     }
 
     @Override
@@ -47,6 +55,7 @@ public class BlyatHelmet implements ToolStatistics, MaterialFunction {
 
     @Override
     public String getLore() {
-        return Sputnik.trans("&8Authentic &c✯ USSR &8Product &81945/10 &8quality.");
+        return Sputnik.trans("&8Authentic &c\u272f USSR &8Product &81945/10 &8quality.");
     }
 }
+

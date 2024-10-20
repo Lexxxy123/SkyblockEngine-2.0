@@ -1,5 +1,22 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.minecraft.server.v1_8_R3.Entity
+ *  net.minecraft.server.v1_8_R3.EntityArmorStand
+ *  net.minecraft.server.v1_8_R3.World
+ *  org.bukkit.Bukkit
+ *  org.bukkit.Location
+ *  org.bukkit.craftbukkit.v1_8_R3.CraftWorld
+ *  org.bukkit.entity.LivingEntity
+ *  org.bukkit.event.entity.CreatureSpawnEvent$SpawnReason
+ */
 package net.hypixel.skyblock.entity.nms;
 
+import net.hypixel.skyblock.entity.EntityFunction;
+import net.hypixel.skyblock.entity.EntityStatistics;
+import net.hypixel.skyblock.entity.nms.SNMSEntity;
+import net.minecraft.server.v1_8_R3.Entity;
 import net.minecraft.server.v1_8_R3.EntityArmorStand;
 import net.minecraft.server.v1_8_R3.World;
 import org.bukkit.Bukkit;
@@ -7,43 +24,52 @@ import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import net.hypixel.skyblock.entity.EntityFunction;
-import net.hypixel.skyblock.entity.EntityStatistics;
 
-public class UncollidableArmorStand extends EntityArmorStand implements EntityStatistics, EntityFunction, SNMSEntity {
+public class UncollidableArmorStand
+extends EntityArmorStand
+implements EntityStatistics,
+EntityFunction,
+SNMSEntity {
     public UncollidableArmorStand(World world) {
         super(world);
         this.n(true);
     }
 
     public UncollidableArmorStand() {
-        this(((CraftWorld) Bukkit.getWorlds().get(0)).getHandle());
+        this((World)((CraftWorld)Bukkit.getWorlds().get(0)).getHandle());
     }
 
+    @Override
     public String getEntityName() {
         return null;
     }
 
+    @Override
     public double getEntityMaxHealth() {
         return 1.0;
     }
 
+    @Override
     public double getDamageDealt() {
         return 0.0;
     }
 
+    @Override
     public boolean hasNameTag() {
         return false;
     }
 
+    @Override
     public double getXPDropped() {
         return 0.0;
     }
 
+    @Override
     public LivingEntity spawn(Location location) {
-        this.world = ((CraftWorld) location.getWorld()).getHandle();
+        this.world = ((CraftWorld)location.getWorld()).getHandle();
         this.setPosition(location.getX(), location.getY(), location.getZ());
-        this.world.addEntity(this, CreatureSpawnEvent.SpawnReason.CUSTOM);
-        return (LivingEntity) this.getBukkitEntity();
+        this.world.addEntity((Entity)this, CreatureSpawnEvent.SpawnReason.CUSTOM);
+        return (LivingEntity)this.getBukkitEntity();
     }
 }
+

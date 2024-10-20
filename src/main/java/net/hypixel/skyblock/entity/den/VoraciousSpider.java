@@ -1,6 +1,12 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.entity.den;
 
-public class VoraciousSpider extends BaseSpider {
+import net.hypixel.skyblock.entity.den.BaseSpider;
+
+public class VoraciousSpider
+extends BaseSpider {
     @Override
     public String getEntityName() {
         return "Voracious Spider";
@@ -26,3 +32,4 @@ public class VoraciousSpider extends BaseSpider {
         return 10;
     }
 }
+

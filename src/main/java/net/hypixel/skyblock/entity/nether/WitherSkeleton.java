@@ -1,17 +1,25 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Material
+ *  org.bukkit.inventory.ItemStack
+ */
 package net.hypixel.skyblock.entity.nether;
 
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
+import java.util.Arrays;
+import java.util.List;
 import net.hypixel.skyblock.entity.EntityDrop;
 import net.hypixel.skyblock.entity.EntityDropType;
 import net.hypixel.skyblock.entity.EntityFunction;
 import net.hypixel.skyblock.entity.SkeletonStatistics;
 import net.hypixel.skyblock.item.SMaterial;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
-import java.util.List;
-
-public class WitherSkeleton implements SkeletonStatistics, EntityFunction {
+public class WitherSkeleton
+implements SkeletonStatistics,
+EntityFunction {
     @Override
     public String getEntityName() {
         return "Wither Skeleton";
@@ -25,11 +33,6 @@ public class WitherSkeleton implements SkeletonStatistics, EntityFunction {
     @Override
     public double getDamageDealt() {
         return 152.0;
-    }
-    
-    @Override
-    public int mobLevel() {
-        return 10;
     }
 
     @Override
@@ -47,3 +50,4 @@ public class WitherSkeleton implements SkeletonStatistics, EntityFunction {
         return 13.0;
     }
 }
+

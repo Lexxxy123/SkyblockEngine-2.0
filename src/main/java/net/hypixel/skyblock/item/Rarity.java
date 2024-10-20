@@ -1,3 +1,9 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ */
 package net.hypixel.skyblock.item;
 
 import org.bukkit.ChatColor;
@@ -16,22 +22,22 @@ public enum Rarity {
 
     private final ChatColor color;
 
-    Rarity(final ChatColor color) {
+    private Rarity(ChatColor color) {
         this.color = color;
     }
 
     public Rarity upgrade() {
-        return values()[Math.min(this.ordinal() + 1, values().length - 1)];
+        return Rarity.values()[Math.min(this.ordinal() + 1, Rarity.values().length - 1)];
     }
 
     public Rarity downgrade() {
         if (this.ordinal() - 1 < 0) {
             return this;
         }
-        return values()[this.ordinal() - 1];
+        return Rarity.values()[this.ordinal() - 1];
     }
 
-    public boolean isAtLeast(final Rarity rarity) {
+    public boolean isAtLeast(Rarity rarity) {
         return this.ordinal() >= rarity.ordinal();
     }
 
@@ -43,10 +49,10 @@ public enum Rarity {
         return "" + this.color + ChatColor.BOLD;
     }
 
-    public static Rarity getRarity(final String string) {
+    public static Rarity getRarity(String string) {
         try {
-            return valueOf(string.toUpperCase());
-        } catch (final IllegalArgumentException ex) {
+            return Rarity.valueOf(string.toUpperCase());
+        } catch (IllegalArgumentException ex) {
             return null;
         }
     }
@@ -55,3 +61,4 @@ public enum Rarity {
         return this.color;
     }
 }
+

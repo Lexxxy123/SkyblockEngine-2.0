@@ -1,9 +1,17 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.armor.vanilla.diamond;
 
-import net.hypixel.skyblock.item.*;
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.ToolStatistics;
 
-public class DiamondHelmet implements ToolStatistics, MaterialFunction {
+public class DiamondHelmet
+implements ToolStatistics,
+MaterialFunction {
     @Override
     public String getDisplayName() {
         return "Diamond Helmet";
@@ -29,3 +37,4 @@ public class DiamondHelmet implements ToolStatistics, MaterialFunction {
         return 15.0;
     }
 }
+

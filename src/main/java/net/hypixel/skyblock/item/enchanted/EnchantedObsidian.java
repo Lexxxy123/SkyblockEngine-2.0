@@ -1,9 +1,18 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.enchanted;
 
-import net.hypixel.skyblock.item.*;
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.MaterialQuantifiable;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SMaterial;
+import net.hypixel.skyblock.item.enchanted.EnchantedMaterialStatistics;
 
-public class EnchantedObsidian implements EnchantedMaterialStatistics, MaterialFunction {
+public class EnchantedObsidian
+implements EnchantedMaterialStatistics,
+MaterialFunction {
     @Override
     public String getDisplayName() {
         return "Enchanted Obsidian";
@@ -34,3 +43,4 @@ public class EnchantedObsidian implements EnchantedMaterialStatistics, MaterialF
         return new MaterialQuantifiable(SMaterial.ENCHANTED_OBSIDIAN);
     }
 }
+

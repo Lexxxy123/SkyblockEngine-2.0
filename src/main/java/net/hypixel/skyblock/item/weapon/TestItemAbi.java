@@ -1,13 +1,30 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Location
+ *  org.bukkit.Material
+ *  org.bukkit.World
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.item.weapon;
 
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.item.Ability;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.ToolStatistics;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import net.hypixel.skyblock.item.*;
 
-public class TestItemAbi implements ToolStatistics, MaterialFunction, Ability {
+public class TestItemAbi
+implements ToolStatistics,
+MaterialFunction,
+Ability {
     @Override
     public String getAbilityName() {
         return "Admin Item!";
@@ -24,29 +41,28 @@ public class TestItemAbi implements ToolStatistics, MaterialFunction, Ability {
     }
 
     @Override
-    public void onAbilityUse(final Player player, final SItem sItem) {
+    public void onAbilityUse(Player player, SItem sItem) {
         SItem.etherWarpTeleportation(player, sItem);
     }
 
-    public void cylinder(final Location loc, final int r) {
-        final int cx = loc.getBlockX();
-        final int cy = loc.getBlockY();
-        final int cz = loc.getBlockZ();
-        final World w = loc.getWorld();
-        final int rSquared = r * r;
-        for (int x = cx - r; x <= cx + r; ++x) {
-            for (int z = cz - r; z <= cz + r; ++z) {
-                if ((cx - x) * (cx - x) + (cz - z) * (cz - z) <= rSquared) {
-                    final Location l = new Location(w, x, cy, z);
-                    this.sendPacket(w, l);
-                }
+    public void cylinder(Location loc, int r2) {
+        int cx = loc.getBlockX();
+        int cy = loc.getBlockY();
+        int cz = loc.getBlockZ();
+        World w2 = loc.getWorld();
+        int rSquared = r2 * r2;
+        for (int x2 = cx - r2; x2 <= cx + r2; ++x2) {
+            for (int z2 = cz - r2; z2 <= cz + r2; ++z2) {
+                if ((cx - x2) * (cx - x2) + (cz - z2) * (cz - z2) > rSquared) continue;
+                Location l2 = new Location(w2, (double)x2, (double)cy, (double)z2);
+                this.sendPacket(w2, l2);
             }
         }
     }
 
-    public void sendPacket(final World w, final Location l) {
-        for (final Player p : w.getPlayers()) {
-            p.sendBlockChange(l, Material.BEDROCK, (byte) 0);
+    public void sendPacket(World w2, Location l2) {
+        for (Player p2 : w2.getPlayers()) {
+            p2.sendBlockChange(l2, Material.BEDROCK, (byte)0);
         }
     }
 
@@ -80,3 +96,4 @@ public class TestItemAbi implements ToolStatistics, MaterialFunction, Ability {
         return SpecificItemType.SWORD;
     }
 }
+

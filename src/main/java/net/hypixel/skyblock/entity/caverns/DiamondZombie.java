@@ -1,20 +1,27 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Material
+ *  org.bukkit.inventory.ItemStack
+ */
 package net.hypixel.skyblock.entity.caverns;
 
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
+import java.util.Arrays;
+import java.util.List;
 import net.hypixel.skyblock.entity.EntityDrop;
 import net.hypixel.skyblock.entity.EntityDropType;
 import net.hypixel.skyblock.entity.SEntityEquipment;
 import net.hypixel.skyblock.entity.zombie.BaseZombie;
 import net.hypixel.skyblock.item.SMaterial;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
-import java.util.List;
-
-public class DiamondZombie extends BaseZombie {
+public class DiamondZombie
+extends BaseZombie {
     @Override
     public String getEntityName() {
-        return "Miner Zombie";
+        return "Zombie";
     }
 
     @Override
@@ -25,11 +32,6 @@ public class DiamondZombie extends BaseZombie {
     @Override
     public double getDamageDealt() {
         return 200.0;
-    }
-    
-    @Override
-    public int mobLevel() {
-        return 15;
     }
 
     @Override
@@ -57,3 +59,4 @@ public class DiamondZombie extends BaseZombie {
         return 20.0;
     }
 }
+

@@ -1,9 +1,19 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.dragon.young;
 
-import net.hypixel.skyblock.item.*;
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SkullStatistics;
+import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.ToolStatistics;
 
-public class YoungDragonHelmet implements MaterialFunction, SkullStatistics, ToolStatistics {
+public class YoungDragonHelmet
+implements MaterialFunction,
+SkullStatistics,
+ToolStatistics {
     @Override
     public double getBaseSpeed() {
         return 0.2;
@@ -49,3 +59,4 @@ public class YoungDragonHelmet implements MaterialFunction, SkullStatistics, Too
         return null;
     }
 }
+

@@ -1,6 +1,23 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.minecraft.server.v1_8_R3.Item
+ *  org.bukkit.ChatColor
+ *  org.bukkit.Material
+ *  org.bukkit.Sound
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.inventory.InventoryClickEvent
+ *  org.bukkit.inventory.ItemStack
+ */
 package net.hypixel.skyblock.gui;
 
+import java.util.List;
+import net.hypixel.skyblock.gui.GUI;
+import net.hypixel.skyblock.gui.GUIClickableItem;
+import net.hypixel.skyblock.gui.GUIQueryItem;
 import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.SMaterial;
 import net.hypixel.skyblock.util.PaginationList;
 import net.hypixel.skyblock.util.SUtil;
 import net.minecraft.server.v1_8_R3.Item;
@@ -10,20 +27,18 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import net.hypixel.skyblock.item.SMaterial;
 
-import java.util.List;
+public class ItemBrowserGUI
+extends GUI {
+    private static final int[] INTERIOR = new int[]{10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43};
 
-public class ItemBrowserGUI extends GUI {
-    private static final int[] INTERIOR;
-
-    public ItemBrowserGUI(final String query, int page) {
+    public ItemBrowserGUI(String query, int page) {
         super("Item Browser", 54);
         this.border(BLACK_STAINED_GLASS_PANE);
-        final PaginationList<SMaterial> pagedMaterials = new PaginationList<SMaterial>(28);
+        PaginationList<SMaterial> pagedMaterials = new PaginationList<SMaterial>(28);
         pagedMaterials.addAll(SMaterial.values());
-        pagedMaterials.removeIf((mat) -> mat.name().toLowerCase().contains("dwarven_"));
-        pagedMaterials.removeIf((mat) -> mat.name().toLowerCase().contains("hidden_"));
+        pagedMaterials.removeIf(mat -> mat.name().toLowerCase().contains("dwarven_"));
+        pagedMaterials.removeIf(mat -> mat.name().toLowerCase().contains("hidden_"));
         pagedMaterials.removeIf(mat -> mat.name().toLowerCase().contains("spawn_egg"));
         pagedMaterials.removeIf(mat -> mat.name().toLowerCase().contains("gunga"));
         pagedMaterials.removeIf(mat -> mat.name().toLowerCase().contains("menu"));
@@ -31,7 +46,7 @@ public class ItemBrowserGUI extends GUI {
         pagedMaterials.removeIf(mat -> mat.name().toLowerCase().contains("exterminator"));
         pagedMaterials.removeIf(mat -> mat.name().toLowerCase().contains("voidbane"));
         pagedMaterials.removeIf(mat -> mat.name().toLowerCase().contains("judge"));
-        pagedMaterials.removeIf(mat -> Item.getById(mat.getCraftMaterial().getId()) == null);
+        pagedMaterials.removeIf(mat -> Item.getById((int)mat.getCraftMaterial().getId()) == null);
         if (!query.isEmpty()) {
             pagedMaterials.removeIf(material -> !material.name().toLowerCase().contains(query.replaceAll(" ", "_").toLowerCase()));
         }
@@ -39,13 +54,14 @@ public class ItemBrowserGUI extends GUI {
             page = 0;
         }
         this.title = "Item Browser (" + page + "/" + pagedMaterials.getPageCount() + ")";
-        final int finalPage;
-        if ((finalPage = page) > 1) {
-            this.set(new GUIClickableItem() {
+        final int finalPage = page;
+        if (finalPage > 1) {
+            this.set(new GUIClickableItem(){
+
                 @Override
-                public void run(final InventoryClickEvent e) {
-                    new ItemBrowserGUI(finalPage - 1).open((Player) e.getWhoClicked());
-                    ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.NOTE_PIANO, 1.0f, 1.0f);
+                public void run(InventoryClickEvent e2) {
+                    new ItemBrowserGUI(finalPage - 1).open((Player)e2.getWhoClicked());
+                    ((Player)e2.getWhoClicked()).playSound(e2.getWhoClicked().getLocation(), Sound.NOTE_PIANO, 1.0f, 1.0f);
                 }
 
                 @Override
@@ -60,11 +76,12 @@ public class ItemBrowserGUI extends GUI {
             });
         }
         if (page != pagedMaterials.getPageCount()) {
-            this.set(new GUIClickableItem() {
+            this.set(new GUIClickableItem(){
+
                 @Override
-                public void run(final InventoryClickEvent e) {
-                    new ItemBrowserGUI(finalPage + 1).open((Player) e.getWhoClicked());
-                    ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.NOTE_PIANO, 1.0f, 1.0f);
+                public void run(InventoryClickEvent e2) {
+                    new ItemBrowserGUI(finalPage + 1).open((Player)e2.getWhoClicked());
+                    ((Player)e2.getWhoClicked()).playSound(e2.getWhoClicked().getLocation(), Sound.NOTE_PIANO, 1.0f, 1.0f);
                 }
 
                 @Override
@@ -78,14 +95,15 @@ public class ItemBrowserGUI extends GUI {
                 }
             });
         }
-        this.set(new GUIQueryItem() {
+        this.set(new GUIQueryItem(){
+
             @Override
-            public GUI onQueryFinish(final String query) {
+            public GUI onQueryFinish(String query) {
                 return new ItemBrowserGUI(query);
             }
 
             @Override
-            public void run(final InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
             }
 
             @Override
@@ -99,20 +117,21 @@ public class ItemBrowserGUI extends GUI {
             }
         });
         this.set(GUIClickableItem.getCloseItem(50));
-        final List<SMaterial> p = pagedMaterials.getPage(page);
-        if (p == null) {
+        List p2 = pagedMaterials.getPage(page);
+        if (p2 == null) {
             return;
         }
-        for (int i = 0; i < p.size(); ++i) {
-            final int slot = ItemBrowserGUI.INTERIOR[i];
-            final SItem sItem = SItem.of(p.get(i), (byte) p.get(i).getData());
-            this.set(new GUIClickableItem() {
+        for (int i2 = 0; i2 < p2.size(); ++i2) {
+            final int slot = INTERIOR[i2];
+            final SItem sItem = SItem.of((SMaterial)((Object)p2.get(i2)), (byte)((SMaterial)((Object)p2.get(i2))).getData());
+            this.set(new GUIClickableItem(){
+
                 @Override
-                public void run(final InventoryClickEvent e) {
-                    final Player player = (Player) e.getWhoClicked();
+                public void run(InventoryClickEvent e2) {
+                    Player player = (Player)e2.getWhoClicked();
                     player.playSound(player.getLocation(), Sound.NOTE_PLING, 1.0f, 2.0f);
                     player.sendMessage(ChatColor.GOLD + sItem.getType().getDisplayName(sItem.getVariant()) + ChatColor.GREEN + " has been added to your inventory.");
-                    player.getInventory().addItem(SItem.of(sItem.getType(), sItem.getVariant()).getStack());
+                    player.getInventory().addItem(new ItemStack[]{SItem.of(sItem.getType(), sItem.getVariant()).getStack()});
                 }
 
                 @Override
@@ -128,19 +147,16 @@ public class ItemBrowserGUI extends GUI {
         }
     }
 
-    public ItemBrowserGUI(final String query) {
+    public ItemBrowserGUI(String query) {
         this(query, 1);
     }
 
-    public ItemBrowserGUI(final int page) {
+    public ItemBrowserGUI(int page) {
         this("", page);
     }
 
     public ItemBrowserGUI() {
         this(1);
     }
-
-    static {
-        INTERIOR = new int[]{10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34, 37, 38, 39, 40, 41, 42, 43};
-    }
 }
+

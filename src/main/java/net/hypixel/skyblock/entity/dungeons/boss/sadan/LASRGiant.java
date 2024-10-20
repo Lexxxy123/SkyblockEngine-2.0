@@ -1,12 +1,61 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.minecraft.server.v1_8_R3.AttributeInstance
+ *  net.minecraft.server.v1_8_R3.Entity
+ *  net.minecraft.server.v1_8_R3.EntityLiving
+ *  net.minecraft.server.v1_8_R3.GenericAttributes
+ *  net.minecraft.server.v1_8_R3.Packet
+ *  net.minecraft.server.v1_8_R3.PacketPlayOutAnimation
+ *  org.bukkit.Bukkit
+ *  org.bukkit.Color
+ *  org.bukkit.Effect
+ *  org.bukkit.GameMode
+ *  org.bukkit.Location
+ *  org.bukkit.Material
+ *  org.bukkit.Sound
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.entity.LivingEntity
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.entity.EntityDamageByEntityEvent
+ *  org.bukkit.inventory.ItemStack
+ *  org.bukkit.inventory.meta.ItemMeta
+ *  org.bukkit.metadata.FixedMetadataValue
+ *  org.bukkit.metadata.MetadataValue
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.potion.PotionEffect
+ *  org.bukkit.potion.PotionEffectType
+ *  org.bukkit.scheduler.BukkitRunnable
+ *  org.bukkit.util.Vector
+ */
 package net.hypixel.skyblock.entity.dungeons.boss.sadan;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.entity.SEntity;
+import net.hypixel.skyblock.entity.SEntityEquipment;
+import net.hypixel.skyblock.entity.dungeons.boss.sadan.SadanFunction;
+import net.hypixel.skyblock.entity.dungeons.boss.sadan.SadanHuman;
+import net.hypixel.skyblock.entity.zombie.BaseZombie;
+import net.hypixel.skyblock.util.EntityManager;
+import net.hypixel.skyblock.util.SUtil;
+import net.hypixel.skyblock.util.Sputnik;
 import net.minecraft.server.v1_8_R3.AttributeInstance;
 import net.minecraft.server.v1_8_R3.EntityLiving;
 import net.minecraft.server.v1_8_R3.GenericAttributes;
+import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.Effect;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
@@ -17,26 +66,18 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import net.hypixel.skyblock.entity.SEntity;
-import net.hypixel.skyblock.entity.SEntityEquipment;
-import net.hypixel.skyblock.entity.zombie.BaseZombie;
-import net.hypixel.skyblock.util.EntityManager;
-import net.hypixel.skyblock.util.SUtil;
-import net.hypixel.skyblock.util.Sputnik;
 
-public class LASRGiant extends BaseZombie {
+public class LASRGiant
+extends BaseZombie {
     private static LivingEntity e;
-    private boolean laserActiveCD;
-    private boolean laserActive;
-
-    public LASRGiant() {
-        this.laserActiveCD = true;
-        this.laserActive = false;
-    }
+    private boolean laserActiveCD = true;
+    private boolean laserActive = false;
 
     @Override
     public String getEntityName() {
@@ -54,29 +95,32 @@ public class LASRGiant extends BaseZombie {
     }
 
     @Override
-    public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
+    public void onSpawn(final LivingEntity entity, SEntity sEntity) {
         if (entity.getWorld().getPlayers().size() == 0) {
             return;
         }
-        LASRGiant.e = entity;
-        ((CraftZombie) entity).setBaby(false);
-        final Player p = entity.getWorld().getPlayers().get(SUtil.random(0, entity.getWorld().getPlayers().size() - 1));
-        if (p != null && p.getGameMode() != GameMode.SPECTATOR && p.getGameMode() != GameMode.CREATIVE) {
-            ((CraftZombie) entity).setTarget(p);
+        e = entity;
+        ((CraftZombie)entity).setBaby(false);
+        Player p2 = (Player)entity.getWorld().getPlayers().get(SUtil.random(0, entity.getWorld().getPlayers().size() - 1));
+        if (p2 != null && p2.getGameMode() != GameMode.SPECTATOR && p2.getGameMode() != GameMode.CREATIVE) {
+            ((CraftZombie)entity).setTarget((LivingEntity)p2);
         }
-        final AttributeInstance followRange = ((CraftLivingEntity) entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
+        AttributeInstance followRange = ((CraftLivingEntity)entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
         followRange.setValue(500.0);
-        SUtil.delay(() -> this.laserActiveCD = false, 10L);
-        Sputnik.applyPacketGiant(entity);
-        EntityManager.DEFENSE_PERCENTAGE.put(entity, 60);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        entity.setMetadata("highername", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        entity.setMetadata("Giant_", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        final EntityLiving nmsr = ((CraftLivingEntity) entity).getHandle();
+        SUtil.delay(() -> {
+            this.laserActiveCD = false;
+        }, 10L);
+        Sputnik.applyPacketGiant((Entity)entity);
+        EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 60);
+        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        entity.setMetadata("highername", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        entity.setMetadata("Giant_", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        final EntityLiving nmsr = ((CraftLivingEntity)entity).getHandle();
         nmsr.getBoundingBox().grow(5.0, 5.0, 5.0);
-        new BukkitRunnable() {
+        new BukkitRunnable(){
+
             public void run() {
-                final LivingEntity target = ((CraftZombie) entity).getTarget();
+                CraftLivingEntity target = ((CraftZombie)entity).getTarget();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
@@ -88,57 +132,47 @@ public class LASRGiant extends BaseZombie {
                     LASRGiant.this.laser(entity);
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
-        new BukkitRunnable() {
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
+        new BukkitRunnable(){
+
             public void run() {
-                final EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
+                EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
-                for (final Entity entities : entity.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 1.5, 1.5, 1.5)) {
-                    if (!(entities instanceof Player)) {
-                        continue;
-                    }
-                    final Player target = (Player) entities;
-                    if (target.getGameMode() == GameMode.CREATIVE) {
-                        continue;
-                    }
-                    if (target.getGameMode() == GameMode.SPECTATOR) {
-                        continue;
-                    }
-                    if (target.hasMetadata("NPC")) {
-                        continue;
-                    }
+                for (Entity entities : entity.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 1.5, 1.5, 1.5)) {
+                    Player target;
+                    if (!(entities instanceof Player) || (target = (Player)entities).getGameMode() == GameMode.CREATIVE || target.getGameMode() == GameMode.SPECTATOR || target.hasMetadata("NPC")) continue;
                     entity.teleport(entity.getLocation().setDirection(target.getLocation().toVector().subtract(target.getLocation().toVector())));
-                    for (final Player players : Bukkit.getOnlinePlayers()) {
-                        ((CraftPlayer) players).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) entity).getHandle(), 0));
+                    for (Player players : Bukkit.getOnlinePlayers()) {
+                        ((CraftPlayer)players).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)entity).getHandle(), 0));
                     }
-                    nms.r(((CraftPlayer) target).getHandle());
+                    nms.r((net.minecraft.server.v1_8_R3.Entity)((CraftPlayer)target).getHandle());
                     break;
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 5L);
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 5L);
     }
 
     @Override
     public SEntityEquipment getEntityEquipment() {
-        return new SEntityEquipment(null, b(12228503, Material.LEATHER_HELMET), b(12228503, Material.LEATHER_CHESTPLATE), b(12228503, Material.LEATHER_LEGGINGS), b(12228503, Material.LEATHER_BOOTS));
+        return new SEntityEquipment(null, LASRGiant.b(12228503, Material.LEATHER_HELMET), LASRGiant.b(12228503, Material.LEATHER_CHESTPLATE), LASRGiant.b(12228503, Material.LEATHER_LEGGINGS), LASRGiant.b(12228503, Material.LEATHER_BOOTS));
     }
 
     @Override
-    public void onDeath(final SEntity sEntity, final Entity killed, final Entity damager) {
+    public void onDeath(SEntity sEntity, Entity killed, Entity damager) {
         Sputnik.zero(killed);
         if (SadanHuman.SadanGiantsCount.containsKey(killed.getWorld().getUID())) {
             SadanHuman.SadanGiantsCount.put(killed.getWorld().getUID(), SadanHuman.SadanGiantsCount.get(killed.getWorld().getUID()) - 1);
         }
     }
 
-    public void setArmorHex(final LivingEntity e, final int i) {
-        e.getEquipment().setHelmet(buildColorStackH(i));
-        e.getEquipment().setChestplate(buildColorStackC(i));
-        e.getEquipment().setLeggings(buildColorStackL(i));
-        e.getEquipment().setBoots(buildColorStackB(i));
+    public void setArmorHex(LivingEntity e2, int i2) {
+        e2.getEquipment().setHelmet(LASRGiant.buildColorStackH(i2));
+        e2.getEquipment().setChestplate(LASRGiant.buildColorStackC(i2));
+        e2.getEquipment().setLeggings(LASRGiant.buildColorStackL(i2));
+        e2.getEquipment().setBoots(LASRGiant.buildColorStackB(i2));
     }
 
     @Override
@@ -166,27 +200,32 @@ public class LASRGiant extends BaseZombie {
         return 0.35;
     }
 
-    public void laser(final LivingEntity e) {
-        final int[] array_colors = {12228503, 8739418, 6897985, 6042419, 5385260};
-        SUtil.delay(() -> this.setArmorHex(e, array_colors[0]), 20L);
-        SUtil.delay(() -> this.setArmorHex(e, array_colors[1]), 40L);
-        SUtil.delay(() -> this.setArmorHex(e, array_colors[2]), 60L);
-        SUtil.delay(() -> this.setArmorHex(e, array_colors[3]), 80L);
-        SUtil.delay(() -> this.setArmorHex(e, array_colors[4]), 100L);
-        SUtil.delay(() -> this.laserAni(e), 105L);
-        SUtil.delay(() -> this.laserActive = false, 250L);
-        SUtil.delay(() -> this.setArmorHex(e, array_colors[4]), 270L);
-        SUtil.delay(() -> this.setArmorHex(e, array_colors[3]), 290L);
-        SUtil.delay(() -> this.setArmorHex(e, array_colors[2]), 310L);
-        SUtil.delay(() -> this.setArmorHex(e, array_colors[1]), 330L);
-        SUtil.delay(() -> this.setArmorHex(e, array_colors[0]), 350L);
-        SUtil.delay(() -> this.laserActiveCD = false, 500L);
+    public void laser(LivingEntity e2) {
+        int[] array_colors = new int[]{12228503, 0x855A5A, 6897985, 0x5C3333, 0x522C2C};
+        SUtil.delay(() -> this.setArmorHex(e2, array_colors[0]), 20L);
+        SUtil.delay(() -> this.setArmorHex(e2, array_colors[1]), 40L);
+        SUtil.delay(() -> this.setArmorHex(e2, array_colors[2]), 60L);
+        SUtil.delay(() -> this.setArmorHex(e2, array_colors[3]), 80L);
+        SUtil.delay(() -> this.setArmorHex(e2, array_colors[4]), 100L);
+        SUtil.delay(() -> this.laserAni(e2), 105L);
+        SUtil.delay(() -> {
+            this.laserActive = false;
+        }, 250L);
+        SUtil.delay(() -> this.setArmorHex(e2, array_colors[4]), 270L);
+        SUtil.delay(() -> this.setArmorHex(e2, array_colors[3]), 290L);
+        SUtil.delay(() -> this.setArmorHex(e2, array_colors[2]), 310L);
+        SUtil.delay(() -> this.setArmorHex(e2, array_colors[1]), 330L);
+        SUtil.delay(() -> this.setArmorHex(e2, array_colors[0]), 350L);
+        SUtil.delay(() -> {
+            this.laserActiveCD = false;
+        }, 500L);
     }
 
-    public void laserAni(final LivingEntity e) {
-        new BukkitRunnable() {
+    public void laserAni(final LivingEntity e2) {
+        new BukkitRunnable(){
+
             public void run() {
-                if (e.isDead()) {
+                if (e2.isDead()) {
                     this.cancel();
                     return;
                 }
@@ -194,28 +233,29 @@ public class LASRGiant extends BaseZombie {
                     this.cancel();
                     return;
                 }
-                final LivingEntity target = ((CraftZombie) e).getTarget();
-                final float angle_1 = e.getEyeLocation().getYaw() / 60.0f;
-                final Location loc1 = e.getEyeLocation().add(Math.cos(angle_1), 0.0, Math.sin(angle_1));
-                final Location loc2 = e.getEyeLocation().subtract(Math.cos(angle_1), 0.0, Math.sin(angle_1));
+                CraftLivingEntity target = ((CraftZombie)e2).getTarget();
+                float angle_1 = e2.getEyeLocation().getYaw() / 60.0f;
+                Location loc1 = e2.getEyeLocation().add(Math.cos(angle_1), 0.0, Math.sin(angle_1));
+                Location loc2 = e2.getEyeLocation().subtract(Math.cos(angle_1), 0.0, Math.sin(angle_1));
                 loc1.add(0.0, 9.5, 0.0);
                 loc2.add(0.0, 9.5, 0.0);
                 if (target != null) {
-                    if (target.getLocation().distance(e.getLocation()) < 1.0 || target.getLocation().distance(e.getLocation()) > 100.0) {
+                    if (target.getLocation().distance(e2.getLocation()) < 1.0 || target.getLocation().distance(e2.getLocation()) > 100.0) {
                         return;
                     }
-                    final Location loc1_ = target.getLocation();
-                    final Location loc2_ = target.getLocation();
-                    final Location en1 = loc1_.add(0.0, 0.5, 0.0);
-                    final Location en2 = loc2_.add(0.0, 0.5, 0.0);
+                    Location loc1_ = target.getLocation();
+                    Location loc2_ = target.getLocation();
+                    Location en1 = loc1_.add(0.0, 0.5, 0.0);
+                    Location en2 = loc2_.add(0.0, 0.5, 0.0);
                     LASRGiant.drawLine(loc1, en1, 0.0);
                     LASRGiant.drawLine(loc2, en2, 0.0);
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 5L);
-        new BukkitRunnable() {
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 5L);
+        new BukkitRunnable(){
+
             public void run() {
-                if (e.isDead()) {
+                if (e2.isDead()) {
                     this.cancel();
                     return;
                 }
@@ -223,112 +263,112 @@ public class LASRGiant extends BaseZombie {
                     this.cancel();
                     return;
                 }
-                final LivingEntity target = ((CraftZombie) e).getTarget();
-                final float angle_1 = e.getEyeLocation().getYaw() / 60.0f;
-                final Location loc1 = e.getEyeLocation().add(Math.cos(angle_1), 0.0, Math.sin(angle_1));
-                final Location loc2 = e.getEyeLocation().subtract(Math.cos(angle_1), 0.0, Math.sin(angle_1));
+                CraftLivingEntity target = ((CraftZombie)e2).getTarget();
+                float angle_1 = e2.getEyeLocation().getYaw() / 60.0f;
+                Location loc1 = e2.getEyeLocation().add(Math.cos(angle_1), 0.0, Math.sin(angle_1));
+                Location loc2 = e2.getEyeLocation().subtract(Math.cos(angle_1), 0.0, Math.sin(angle_1));
                 loc1.add(0.0, 9.5, 0.0);
                 loc2.add(0.0, 9.5, 0.0);
                 if (target != null) {
-                    if (target.getLocation().distance(e.getLocation()) < 1.0 || target.getLocation().distance(e.getLocation()) > 100.0) {
+                    if (target.getLocation().distance(e2.getLocation()) < 1.0 || target.getLocation().distance(e2.getLocation()) > 100.0) {
                         return;
                     }
-                    final Location loc1_ = target.getLocation();
-                    final Location loc2_ = target.getLocation();
-                    final Location en1 = loc1_.add(0.0, 0.5, 0.0);
-                    final Location en2 = loc2_.add(0.0, 0.5, 0.0);
-                    LASRGiant.getEntity(loc1, en1, e);
-                    LASRGiant.getEntity(loc2, en2, e);
+                    Location loc1_ = target.getLocation();
+                    Location loc2_ = target.getLocation();
+                    Location en1 = loc1_.add(0.0, 0.5, 0.0);
+                    Location en2 = loc2_.add(0.0, 0.5, 0.0);
+                    LASRGiant.getEntity(loc1, en1, e2);
+                    LASRGiant.getEntity(loc2, en2, e2);
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 10L);
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 10L);
     }
 
-    public static ItemStack buildColorStackH(final int hexcolor) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
+    public static ItemStack buildColorStackH(int hexcolor) {
+        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB((int)hexcolor));
+        ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
         return stack;
     }
 
-    public static ItemStack buildColorStackC(final int hexcolor) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_CHESTPLATE), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
+    public static ItemStack buildColorStackC(int hexcolor) {
+        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_CHESTPLATE), Color.fromRGB((int)hexcolor));
+        ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
         return stack;
     }
 
-    public static ItemStack buildColorStackL(final int hexcolor) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_LEGGINGS), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
+    public static ItemStack buildColorStackL(int hexcolor) {
+        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_LEGGINGS), Color.fromRGB((int)hexcolor));
+        ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
         return stack;
     }
 
-    public static ItemStack buildColorStackB(final int hexcolor) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_BOOTS), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
+    public static ItemStack buildColorStackB(int hexcolor) {
+        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_BOOTS), Color.fromRGB((int)hexcolor));
+        ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
         return stack;
     }
 
-    public static ItemStack b(final int hexcolor, final Material m) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
+    public static ItemStack b(int hexcolor, Material m2) {
+        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m2), Color.fromRGB((int)hexcolor));
+        ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
         return stack;
     }
 
-    public static ItemStack c(final Material m) {
-        final ItemStack stack = new ItemStack(m);
-        final ItemMeta itemMeta = stack.getItemMeta();
+    public static ItemStack c(Material m2) {
+        ItemStack stack = new ItemStack(m2);
+        ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
         return stack;
     }
 
-    public static void drawLine(final Location point1, final Location point2, final double space) {
-        final Location blockLocation = point1;
-        final Location crystalLocation = point2;
-        final Vector vector = blockLocation.clone().add(0.1, 0.0, 0.1).toVector().subtract(crystalLocation.clone().toVector());
-        final double count = 90.0;
-        for (int i = 1; i <= (int) count; ++i) {
-            point1.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply(i / count)), Effect.COLOURED_DUST, 0, 1, 0.8627451f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
-            point1.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply(i / count)), Effect.COLOURED_DUST, 0, 1, 1.0196079f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
+    public static void drawLine(Location point1, Location point2, double space) {
+        Location blockLocation = point1;
+        Location crystalLocation = point2;
+        Vector vector = blockLocation.clone().add(0.1, 0.0, 0.1).toVector().subtract(crystalLocation.clone().toVector());
+        double count = 90.0;
+        for (int i2 = 1; i2 <= 90; ++i2) {
+            point1.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply((double)i2 / 90.0)), Effect.COLOURED_DUST, 0, 1, 0.8627451f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
+            point1.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply((double)i2 / 90.0)), Effect.COLOURED_DUST, 0, 1, 1.0196079f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
         }
     }
 
-    public static void getEntity(final Location finaldestination, final Location ended, final LivingEntity e) {
-        final Location blockLocation = finaldestination;
-        final Location crystalLocation = ended;
-        final Vector vector = blockLocation.clone().add(0.1, 0.1, 0.1).toVector().subtract(crystalLocation.clone().toVector());
-        final double count = 90.0;
-        for (int i = 1; i <= (int) count; ++i) {
-            for (final Entity entity : ended.getWorld().getNearbyEntities(crystalLocation.clone().add(vector.clone().multiply(i / count)), 0.17, 0.0, 0.17)) {
-                if (entity instanceof Player) {
-                    final Player p = (Player) entity;
-                    p.getWorld().playEffect(p.getLocation().clone().add(0.0, 2.2, 0.0), Effect.LAVA_POP, 10);
-                    p.getWorld().playEffect(p.getLocation().clone().add(0.0, 2.2, 0.0), Effect.LAVA_POP, 10);
-                    p.getWorld().playEffect(p.getLocation().clone().add(0.0, 2.2, 0.0), Effect.LAVA_POP, 10);
-                    p.getWorld().playEffect(p.getLocation().clone().add(0.0, 2.2, 0.0), Effect.LAVA_POP, 10);
-                    p.sendMessage(Sputnik.trans("&4&lL.A.S.R. &chit you with &eLaser Eyes &cfor " + SUtil.commaify(SadanFunction.dmgc(15000, p, e)) + " &cdamage."));
-                    return;
-                }
+    public static void getEntity(Location finaldestination, Location ended, LivingEntity e2) {
+        Location blockLocation = finaldestination;
+        Location crystalLocation = ended;
+        Vector vector = blockLocation.clone().add(0.1, 0.1, 0.1).toVector().subtract(crystalLocation.clone().toVector());
+        double count = 90.0;
+        for (int i2 = 1; i2 <= 90; ++i2) {
+            for (Entity entity : ended.getWorld().getNearbyEntities(crystalLocation.clone().add(vector.clone().multiply((double)i2 / 90.0)), 0.17, 0.0, 0.17)) {
+                if (!(entity instanceof Player)) continue;
+                Player p2 = (Player)entity;
+                p2.getWorld().playEffect(p2.getLocation().clone().add(0.0, 2.2, 0.0), Effect.LAVA_POP, 10);
+                p2.getWorld().playEffect(p2.getLocation().clone().add(0.0, 2.2, 0.0), Effect.LAVA_POP, 10);
+                p2.getWorld().playEffect(p2.getLocation().clone().add(0.0, 2.2, 0.0), Effect.LAVA_POP, 10);
+                p2.getWorld().playEffect(p2.getLocation().clone().add(0.0, 2.2, 0.0), Effect.LAVA_POP, 10);
+                p2.sendMessage(Sputnik.trans("&4&lL.A.S.R. &chit you with &eLaser Eyes &cfor " + SUtil.commaify(SadanFunction.dmgc(15000, p2, (Entity)e2)) + " &cdamage."));
+                return;
             }
         }
     }
 
-    public static void applyEffect(final PotionEffectType e, final Entity en, final int ticks, final int amp) {
-        ((LivingEntity) en).addPotionEffect(new PotionEffect(e, ticks, amp));
+    public static void applyEffect(PotionEffectType e2, Entity en, int ticks, int amp) {
+        ((LivingEntity)en).addPotionEffect(new PotionEffect(e2, ticks, amp));
     }
 
     @Override
-    public void onDamage(final SEntity sEntity, final Entity damager, final EntityDamageByEntityEvent e, final AtomicDouble damage) {
-        e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ZOMBIE_HURT, 1.0f, 0.0f);
+    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
+        e2.getEntity().getWorld().playSound(e2.getEntity().getLocation(), Sound.ZOMBIE_HURT, 1.0f, 0.0f);
     }
 }
+

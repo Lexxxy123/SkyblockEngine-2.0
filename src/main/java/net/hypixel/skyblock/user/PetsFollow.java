@@ -1,52 +1,59 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Location
+ *  org.bukkit.entity.ArmorStand
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.user;
-
-import org.bukkit.Location;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
+import org.bukkit.Location;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Player;
 
 public class PetsFollow {
-    public static HashMap<UUID, PetsFollow> pets;
+    public static HashMap<UUID, PetsFollow> pets = new HashMap();
     private Player player;
     private ArmorStand nametag;
     private ArmorStand petitem;
     private ArrayList<Location> locs;
     private Location loc;
 
-    public void setPlayer(final Player player) {
+    public void setPlayer(Player player) {
         this.player = player;
     }
 
-    public void setNameTagAS(final ArmorStand as) {
-        this.nametag = as;
+    public void setNameTagAS(ArmorStand as2) {
+        this.nametag = as2;
     }
 
-    public void setPetAS(final ArmorStand as) {
-        this.petitem = as;
+    public void setPetAS(ArmorStand as2) {
+        this.petitem = as2;
     }
 
-    public void addLocation(final Location loc) {
+    public void addLocation(Location loc) {
         this.locs.add(loc);
     }
 
-    public void setLocs(final ArrayList<Location> locs) {
+    public void setLocs(ArrayList<Location> locs) {
         this.locs = locs;
     }
 
-    public void setLoc(final Location loc) {
+    public void setLoc(Location loc) {
         this.loc = loc;
     }
 
-    public void removeLoc(final int index) {
+    public void removeLoc(int index) {
         if (index < this.locs.size() && this.locs.size() != 0) {
             this.locs.remove(index);
         }
     }
 
-    public void removeLoc(final Location loc) {
+    public void removeLoc(Location loc) {
         this.locs.remove(loc);
     }
 
@@ -69,8 +76,5 @@ public class PetsFollow {
     public ArrayList<Location> getLocs() {
         return this.locs;
     }
-
-    static {
-        PetsFollow.pets = new HashMap<UUID, PetsFollow>();
-    }
 }
+

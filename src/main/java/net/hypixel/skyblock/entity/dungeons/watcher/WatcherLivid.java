@@ -1,25 +1,46 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  me.libraryaddict.disguise.disguisetypes.PlayerDisguise
+ *  net.minecraft.server.v1_8_R3.Entity
+ *  net.minecraft.server.v1_8_R3.EntityLiving
+ *  net.minecraft.server.v1_8_R3.Packet
+ *  net.minecraft.server.v1_8_R3.PacketPlayOutAnimation
+ *  org.bukkit.Bukkit
+ *  org.bukkit.Effect
+ *  org.bukkit.GameMode
+ *  org.bukkit.Location
+ *  org.bukkit.Material
+ *  org.bukkit.Sound
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
+ *  org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie
+ *  org.bukkit.entity.ArmorStand
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.entity.EntityType
+ *  org.bukkit.entity.LivingEntity
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.entity.EntityDamageByEntityEvent
+ *  org.bukkit.event.entity.EntityDamageEvent$DamageCause
+ *  org.bukkit.metadata.FixedMetadataValue
+ *  org.bukkit.metadata.MetadataValue
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.potion.PotionEffect
+ *  org.bukkit.potion.PotionEffectType
+ *  org.bukkit.scheduler.BukkitRunnable
+ *  org.bukkit.util.EulerAngle
+ *  org.bukkit.util.Vector
+ */
 package net.hypixel.skyblock.entity.dungeons.watcher;
 
 import com.google.common.util.concurrent.AtomicDouble;
-import net.hypixel.skyblock.SkyBlock;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
-import net.minecraft.server.v1_8_R3.EntityLiving;
-import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
-import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
-import org.bukkit.entity.*;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.EulerAngle;
-import org.bukkit.util.Vector;
+import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.entity.SEntity;
 import net.hypixel.skyblock.entity.SEntityEquipment;
+import net.hypixel.skyblock.entity.dungeons.watcher.EnumWatcherType;
+import net.hypixel.skyblock.entity.dungeons.watcher.HeadsOnWall;
 import net.hypixel.skyblock.entity.zombie.BaseZombie;
 import net.hypixel.skyblock.item.SItem;
 import net.hypixel.skyblock.item.SMaterial;
@@ -27,8 +48,36 @@ import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.EntityManager;
 import net.hypixel.skyblock.util.SUtil;
 import net.hypixel.skyblock.util.Sputnik;
+import net.minecraft.server.v1_8_R3.EntityLiving;
+import net.minecraft.server.v1_8_R3.Packet;
+import net.minecraft.server.v1_8_R3.PacketPlayOutAnimation;
+import org.bukkit.Bukkit;
+import org.bukkit.Effect;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftZombie;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.EulerAngle;
+import org.bukkit.util.Vector;
 
-public class WatcherLivid extends BaseZombie {
+public class WatcherLivid
+extends BaseZombie {
     @Override
     public String getEntityName() {
         return Sputnik.trans("&4&lMaster Livid");
@@ -45,105 +94,92 @@ public class WatcherLivid extends BaseZombie {
     }
 
     @Override
-    public void onSpawn(LivingEntity entity, SEntity sEntity) {
-        HeadsOnWall h = new HeadsOnWall(EnumWatcherType.LIVID);
-        PlayerDisguise p = Sputnik.applyPacketNPC(entity, h.value, h.signature, true);
-        EntityManager.DEFENSE_PERCENTAGE.put(entity, 87);
-        entity.setMetadata("SlayerBoss", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        entity.setMetadata("LD", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        entity.setMetadata("WATCHER_E", new FixedMetadataValue(SkyBlock.getPlugin(), true));
-        p.setReplaceSounds(true);
-        new BukkitRunnable() {
+    public void onSpawn(final LivingEntity entity, SEntity sEntity) {
+        HeadsOnWall h2 = new HeadsOnWall(EnumWatcherType.LIVID);
+        final PlayerDisguise p2 = Sputnik.applyPacketNPC((Entity)entity, h2.value, h2.signature, true);
+        EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 87);
+        entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        entity.setMetadata("LD", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        entity.setMetadata("WATCHER_E", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        p2.setReplaceSounds(true);
+        new BukkitRunnable(){
+
             public void run() {
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
-                if (null != ((CraftZombie) entity).getTarget()) {
+                if (null != ((CraftZombie)entity).getTarget()) {
                     entity.getEquipment().setItemInHand(SItem.of(SMaterial.LIVID_DAGGER).getStack());
-                    p.getWatcher().setRightClicking(true);
-                    WatcherLivid.this.throwThickAssBone(entity);
+                    p2.getWatcher().setRightClicking(true);
+                    WatcherLivid.this.throwThickAssBone((Entity)entity);
                     SUtil.delay(() -> {
-                        Object val$p = p;
-                        p.getWatcher().setRightClicking(false);
+                        PlayerDisguise val$p = p2;
+                        p2.getWatcher().setRightClicking(false);
                     }, 10L);
                     SUtil.delay(() -> {
-                        Object val$entity = entity;
+                        LivingEntity val$entity = entity;
                         entity.getEquipment().setItemInHand(SItem.of(SMaterial.SHADOW_FURY).getStack());
                     }, 30L);
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 150L, 150L);
-        new BukkitRunnable() {
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 150L, 150L);
+        new BukkitRunnable(){
+
             public void run() {
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
-                for (int j = 0; 5 > j; ++j) {
-                    entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 0.1, 0.0), Effect.WITCH_MAGIC, 0, 1, SUtil.random(-1, 1), SUtil.random(-1, 2), SUtil.random(-1, 1), 0.0f, 1, 20);
+                for (int j2 = 0; 5 > j2; ++j2) {
+                    entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 0.1, 0.0), Effect.WITCH_MAGIC, 0, 1, (float)SUtil.random(-1, 1), (float)SUtil.random(-1, 2), (float)SUtil.random(-1, 1), 0.0f, 1, 20);
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 10L, 10L);
-        new BukkitRunnable() {
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 10L, 10L);
+        new BukkitRunnable(){
+
             public void run() {
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
-                if (null != ((CraftZombie) entity).getTarget()) {
-                    Location lc = ((CraftZombie) entity).getTarget().getLocation();
+                if (null != ((CraftZombie)entity).getTarget()) {
+                    Location lc = ((CraftZombie)entity).getTarget().getLocation();
                     entity.getEquipment().setItemInHand(SItem.of(SMaterial.SHADOW_FURY).getStack());
-                    p.getWatcher().setRightClicking(true);
+                    p2.getWatcher().setRightClicking(true);
                     SUtil.delay(() -> {
-                        Object val$p = p;
-                        p.getWatcher().setRightClicking(false);
+                        PlayerDisguise val$p = p2;
+                        p2.getWatcher().setRightClicking(false);
                     }, 10L);
-                    ((CraftZombie) entity).getTarget().getWorld().playSound(((CraftZombie) entity).getTarget().getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 1.0f);
-                    ((CraftZombie) entity).getHandle().setPositionRotation(lc.getX(), lc.getY(), lc.getZ(), lc.getYaw(), lc.getPitch());
-                    for (int j = 0; 20 > j; ++j) {
-                        entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 1.75, 0.0), Effect.LARGE_SMOKE, 0, 1, SUtil.random(-1, 1), SUtil.random(-1, 2), SUtil.random(-1, 1), 0.0f, 1, 20);
-                        entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 1.75, 0.0), Effect.WITCH_MAGIC, 0, 1, SUtil.random(-1, 1), SUtil.random(-1, 2), SUtil.random(-1, 1), 0.0f, 1, 20);
+                    ((CraftZombie)entity).getTarget().getWorld().playSound(((CraftZombie)entity).getTarget().getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 1.0f);
+                    ((CraftZombie)entity).getHandle().setPositionRotation(lc.getX(), lc.getY(), lc.getZ(), lc.getYaw(), lc.getPitch());
+                    for (int j2 = 0; 20 > j2; ++j2) {
+                        entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 1.75, 0.0), Effect.LARGE_SMOKE, 0, 1, (float)SUtil.random(-1, 1), (float)SUtil.random(-1, 2), (float)SUtil.random(-1, 1), 0.0f, 1, 20);
+                        entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 1.75, 0.0), Effect.WITCH_MAGIC, 0, 1, (float)SUtil.random(-1, 1), (float)SUtil.random(-1, 2), (float)SUtil.random(-1, 1), 0.0f, 1, 20);
                     }
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 220L, 220L);
-        new BukkitRunnable() {
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 220L, 220L);
+        new BukkitRunnable(){
+
             public void run() {
-                EntityLiving nms = ((CraftLivingEntity) entity).getHandle();
+                EntityLiving nms = ((CraftLivingEntity)entity).getHandle();
                 if (entity.isDead()) {
                     this.cancel();
                     return;
                 }
                 for (Entity entities : entity.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 1.5, 1.5, 1.5)) {
-                    if (!(entities instanceof Player)) {
-                        continue;
-                    }
-                    Player target = (Player) entities;
-                    if (GameMode.CREATIVE == target.getGameMode()) {
-                        continue;
-                    }
-                    if (GameMode.SPECTATOR == target.getGameMode()) {
-                        continue;
-                    }
-                    if (target.hasMetadata("NPC")) {
-                        continue;
-                    }
-                    if (7 == target.getNoDamageTicks()) {
-                        continue;
-                    }
-                    if (8 < SUtil.random(0, 10)) {
-                        continue;
-                    }
+                    Player target;
+                    if (!(entities instanceof Player) || GameMode.CREATIVE == (target = (Player)entities).getGameMode() || GameMode.SPECTATOR == target.getGameMode() || target.hasMetadata("NPC") || 7 == target.getNoDamageTicks() || 8 < SUtil.random(0, 10)) continue;
                     entity.teleport(entity.getLocation().setDirection(target.getLocation().subtract(entities.getLocation()).toVector()));
                     for (Player players : Bukkit.getOnlinePlayers()) {
-                        ((CraftPlayer) players).getHandle().playerConnection.sendPacket(new PacketPlayOutAnimation(((CraftLivingEntity) entity).getHandle(), 0));
+                        ((CraftPlayer)players).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)entity).getHandle(), 0));
                     }
-                    nms.r(((CraftPlayer) target).getHandle());
+                    nms.r((net.minecraft.server.v1_8_R3.Entity)((CraftPlayer)target).getHandle());
                     break;
                 }
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 3L);
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 3L);
     }
 
     @Override
@@ -152,16 +188,16 @@ public class WatcherLivid extends BaseZombie {
     }
 
     @Override
-    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e, AtomicDouble damage) {
-        Entity en = sEntity.getEntity();
-        Vector v = new Vector(0, 0, 0);
-        SUtil.delay(() -> en.setVelocity(v), 1L);
+    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
+        LivingEntity en = sEntity.getEntity();
+        Vector v2 = new Vector(0, 0, 0);
+        SUtil.delay(() -> WatcherLivid.lambda$onDamage$0((Entity)en, v2), 1L);
     }
 
     @Override
-    public void onAttack(EntityDamageByEntityEvent e) {
+    public void onAttack(EntityDamageByEntityEvent e2) {
         if (1 == SUtil.random(0, 5)) {
-            ((LivingEntity) e.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40, 5));
+            ((LivingEntity)e2.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 40, 5));
         }
     }
 
@@ -199,31 +235,34 @@ public class WatcherLivid extends BaseZombie {
         return 540;
     }
 
-    public void throwThickAssBone(Entity e) {
-        Vector throwVec = e.getLocation().add(e.getLocation().getDirection().multiply(10)).toVector().subtract(e.getLocation().toVector()).normalize().multiply(1.2);
-        Location throwLoc = e.getLocation().add(0.0, 0.5, 0.0);
-        ArmorStand armorStand1 = (ArmorStand) e.getWorld().spawnEntity(throwLoc, EntityType.ARMOR_STAND);
+    public void throwThickAssBone(final Entity e2) {
+        final Vector throwVec = e2.getLocation().add(e2.getLocation().getDirection().multiply(10)).toVector().subtract(e2.getLocation().toVector()).normalize().multiply(1.2);
+        Location throwLoc = e2.getLocation().add(0.0, 0.5, 0.0);
+        final ArmorStand armorStand1 = (ArmorStand)e2.getWorld().spawnEntity(throwLoc, EntityType.ARMOR_STAND);
         armorStand1.getEquipment().setItemInHand(SItem.of(SMaterial.LIVID_DAGGER).getStack());
         armorStand1.setGravity(false);
         armorStand1.setVisible(false);
         armorStand1.setMarker(true);
-        Vector teleportTo = e.getLocation().getDirection().normalize().multiply(1);
-        Vector[] previousVector = {throwVec};
-        new BukkitRunnable() {
+        final Vector teleportTo = e2.getLocation().getDirection().normalize().multiply(1);
+        final Vector[] previousVector = new Vector[]{throwVec};
+        new BukkitRunnable(){
             private int run = -1;
 
             public void run() {
-                int i;
-                int ran = i = 0;
-                final int num = 90;
-                Location loc = null;
+                boolean bl2;
+                int angle;
+                Vector newVector;
+                int i2 = 0;
+                int ran = 0;
+                int num = 90;
+                Object loc = null;
                 ++this.run;
                 if (100 < this.run) {
                     this.cancel();
                     return;
                 }
-                for (int j = 0; 10 > j; ++j) {
-                    armorStand1.getWorld().spigot().playEffect(armorStand1.getLocation().clone().add(0.0, 1.75, 0.0), Effect.CRIT, 0, 1, (float) SUtil.random(-0.5, 0.5), (float) SUtil.random(0.0, 0.5), (float) SUtil.random(-0.5, 0.5), 0.0f, 1, 20);
+                for (int j2 = 0; 10 > j2; ++j2) {
+                    armorStand1.getWorld().spigot().playEffect(armorStand1.getLocation().clone().add(0.0, 1.75, 0.0), Effect.CRIT, 0, 1, (float)SUtil.random(-0.5, 0.5), (float)SUtil.random(0.0, 0.5), (float)SUtil.random(-0.5, 0.5), 0.0f, 1, 20);
                 }
                 Location locof = armorStand1.getLocation();
                 locof.setY(locof.getY() + 1.0);
@@ -234,44 +273,47 @@ public class WatcherLivid extends BaseZombie {
                 }
                 double xPos = armorStand1.getRightArmPose().getX();
                 armorStand1.setRightArmPose(new EulerAngle(xPos + 0.7, 0.0, 0.0));
-                Vector newVector = new Vector(throwVec.getX(), previousVector[0].getY() - 0.03, throwVec.getZ());
-                previousVector[0] = newVector;
+                previousVector[0] = newVector = new Vector(throwVec.getX(), previousVector[0].getY() - 0.03, throwVec.getZ());
                 armorStand1.setVelocity(newVector);
-                if (13 > i) {
-                    int angle = i * 20 + num;
-                    final boolean back = false;
+                if (13 > i2) {
+                    angle = i2 * 20 + 90;
+                    bl2 = false;
                 } else {
-                    int angle = i * 20 - num;
-                    final boolean back = true;
+                    angle = i2 * 20 - 90;
+                    bl2 = true;
                 }
                 if (Material.AIR != locof.getBlock().getType() && Material.WATER != locof.getBlock().getType()) {
                     armorStand1.remove();
                     this.cancel();
                     return;
                 }
-                if (0 == i % 2 && 13 > i) {
+                if (0 == i2 % 2 && 13 > i2) {
                     armorStand1.teleport(armorStand1.getLocation().add(teleportTo).multiply(1.0));
                     armorStand1.teleport(armorStand1.getLocation().add(teleportTo).multiply(1.0));
-                } else if (0 == i % 2) {
+                } else if (0 == i2 % 2) {
                     armorStand1.teleport(armorStand1.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                     armorStand1.teleport(armorStand1.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                 }
                 for (Entity en : armorStand1.getNearbyEntities(1.0, 1.0, 1.0)) {
-                    if (en instanceof Player) {
-                        Player p = (Player) en;
-                        p.getWorld().playSound(p.getLocation(), Sound.ITEM_BREAK, 1.0f, 1.0f);
-                        User.getUser(p.getUniqueId()).damage(p.getMaxHealth() * 25.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, e);
-                        p.damage(1.0E-5);
-                        armorStand1.remove();
-                        this.cancel();
-                        break;
-                    }
+                    if (!(en instanceof Player)) continue;
+                    Player p2 = (Player)en;
+                    p2.getWorld().playSound(p2.getLocation(), Sound.ITEM_BREAK, 1.0f, 1.0f);
+                    User.getUser(p2.getUniqueId()).damage(p2.getMaxHealth() * 25.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, e2);
+                    p2.damage(1.0E-5);
+                    armorStand1.remove();
+                    this.cancel();
+                    break;
                 }
             }
 
             public synchronized void cancel() throws IllegalStateException {
                 super.cancel();
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 2L);
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 2L);
+    }
+
+    private static /* synthetic */ void lambda$onDamage$0(Entity en, Vector v2) {
+        en.setVelocity(v2);
     }
 }
+

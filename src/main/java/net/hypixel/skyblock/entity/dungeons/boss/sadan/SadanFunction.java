@@ -1,7 +1,42 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Color
+ *  org.bukkit.Effect
+ *  org.bukkit.Location
+ *  org.bukkit.Material
+ *  org.bukkit.World
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.entity.LivingEntity
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.entity.EntityDamageEvent$DamageCause
+ *  org.bukkit.inventory.EntityEquipment
+ *  org.bukkit.inventory.ItemStack
+ *  org.bukkit.inventory.meta.ItemMeta
+ *  org.bukkit.metadata.FixedMetadataValue
+ *  org.bukkit.metadata.MetadataValue
+ *  org.bukkit.plugin.Plugin
+ */
 package net.hypixel.skyblock.entity.dungeons.boss.sadan;
 
+import java.util.Random;
+import net.hypixel.skyblock.Repeater;
 import net.hypixel.skyblock.SkyBlock;
-import org.bukkit.*;
+import net.hypixel.skyblock.entity.SEntity;
+import net.hypixel.skyblock.entity.SEntityType;
+import net.hypixel.skyblock.entity.dungeons.boss.sadan.AnimationSequence;
+import net.hypixel.skyblock.entity.dungeons.boss.sadan.SadanBossManager;
+import net.hypixel.skyblock.user.PlayerStatistics;
+import net.hypixel.skyblock.user.PlayerUtils;
+import net.hypixel.skyblock.user.User;
+import net.hypixel.skyblock.util.SUtil;
+import net.hypixel.skyblock.util.Sputnik;
+import org.bukkit.Color;
+import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -10,297 +45,281 @@ import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
-import net.hypixel.skyblock.Repeater;
-import net.hypixel.skyblock.entity.SEntity;
-import net.hypixel.skyblock.entity.SEntityType;
-import net.hypixel.skyblock.user.PlayerStatistics;
-import net.hypixel.skyblock.user.PlayerUtils;
-import net.hypixel.skyblock.user.User;
-import net.hypixel.skyblock.util.SUtil;
-import net.hypixel.skyblock.util.Sputnik;
-
-import java.util.Random;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
 
 public class SadanFunction {
     public static String generateRandom() {
-        final int leftLimit = 97;
-        final int rightLimit = 122;
-        final int targetStringLength = SUtil.random(5, 6);
-        final Random random = new Random();
-        final String generatedString = random.ints(leftLimit, rightLimit + 1).limit(targetStringLength).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
+        int leftLimit = 97;
+        int rightLimit = 122;
+        int targetStringLength = SUtil.random(5, 6);
+        Random random = new Random();
+        String generatedString = random.ints(97, 123).limit(targetStringLength).collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
         return generatedString;
     }
 
-    public static void jlp(final World w) {
-        final SEntity se_jollypink = new SEntity(new Location(w, 183.5, 84.0, 253.5, -45.0f, 0.0f), SEntityType.GIANT_DUMMY);
-        final LivingEntity e = se_jollypink.getEntity();
-        final EntityEquipment eq = e.getEquipment();
+    public static void jlp(World w2) {
+        SEntity se_jollypink = new SEntity(new Location(w2, 183.5, 84.0, 253.5, -45.0f, 0.0f), SEntityType.GIANT_DUMMY, new Object[0]);
+        LivingEntity e2 = se_jollypink.getEntity();
+        EntityEquipment eq = e2.getEquipment();
         eq.setItemInHand(null);
-        eq.setHelmet(b(14751108, Material.LEATHER_HELMET));
-        eq.setChestplate(b(14751108, Material.LEATHER_CHESTPLATE));
-        eq.setLeggings(b(14751108, Material.LEATHER_LEGGINGS));
-        eq.setBoots(b(14751108, Material.LEATHER_BOOTS));
-        e.setMetadata("JollyPink", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        eq.setHelmet(SadanFunction.b(14751108, Material.LEATHER_HELMET));
+        eq.setChestplate(SadanFunction.b(14751108, Material.LEATHER_CHESTPLATE));
+        eq.setLeggings(SadanFunction.b(14751108, Material.LEATHER_LEGGINGS));
+        eq.setBoots(SadanFunction.b(14751108, Material.LEATHER_BOOTS));
+        e2.setMetadata("JollyPink", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
     }
 
-    public static void lasrg(final World w) {
-        final SEntity se_jollypink = new SEntity(new Location(w, 199.5, 84.0, 253.5, 45.0f, 0.0f), SEntityType.GIANT_DUMMY);
-        final LivingEntity e = se_jollypink.getEntity();
-        final EntityEquipment eq = e.getEquipment();
+    public static void lasrg(World w2) {
+        SEntity se_jollypink = new SEntity(new Location(w2, 199.5, 84.0, 253.5, 45.0f, 0.0f), SEntityType.GIANT_DUMMY, new Object[0]);
+        LivingEntity e2 = se_jollypink.getEntity();
+        EntityEquipment eq = e2.getEquipment();
         eq.setItemInHand(null);
-        eq.setHelmet(b(12228503, Material.LEATHER_HELMET));
-        eq.setChestplate(b(12228503, Material.LEATHER_CHESTPLATE));
-        eq.setLeggings(b(12228503, Material.LEATHER_LEGGINGS));
-        eq.setBoots(b(12228503, Material.LEATHER_BOOTS));
-        e.setMetadata("LASR", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        eq.setHelmet(SadanFunction.b(12228503, Material.LEATHER_HELMET));
+        eq.setChestplate(SadanFunction.b(12228503, Material.LEATHER_CHESTPLATE));
+        eq.setLeggings(SadanFunction.b(12228503, Material.LEATHER_LEGGINGS));
+        eq.setBoots(SadanFunction.b(12228503, Material.LEATHER_BOOTS));
+        e2.setMetadata("LASR", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
     }
 
-    public static void diag(final World w) {
-        final SEntity se_jollypink = new SEntity(new Location(w, 183.5, 84.0, 279.5, -135.0f, 0.0f), SEntityType.GIANT_DUMMY);
-        final LivingEntity e = se_jollypink.getEntity();
-        final EntityEquipment eq = e.getEquipment();
-        eq.setItemInHand(SUtil.enchant(c(Material.DIAMOND_SWORD)));
-        eq.setHelmet(c(Material.DIAMOND_HELMET));
-        eq.setChestplate(c(Material.DIAMOND_CHESTPLATE));
-        eq.setLeggings(c(Material.DIAMOND_LEGGINGS));
-        eq.setBoots(c(Material.DIAMOND_BOOTS));
-        e.setMetadata("Diamond", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+    public static void diag(World w2) {
+        SEntity se_jollypink = new SEntity(new Location(w2, 183.5, 84.0, 279.5, -135.0f, 0.0f), SEntityType.GIANT_DUMMY, new Object[0]);
+        LivingEntity e2 = se_jollypink.getEntity();
+        EntityEquipment eq = e2.getEquipment();
+        eq.setItemInHand(SUtil.enchant(SadanFunction.c(Material.DIAMOND_SWORD)));
+        eq.setHelmet(SadanFunction.c(Material.DIAMOND_HELMET));
+        eq.setChestplate(SadanFunction.c(Material.DIAMOND_CHESTPLATE));
+        eq.setLeggings(SadanFunction.c(Material.DIAMOND_LEGGINGS));
+        eq.setBoots(SadanFunction.c(Material.DIAMOND_BOOTS));
+        e2.setMetadata("Diamond", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
     }
 
-    public static void bfg(final World w) {
-        final SEntity se_jollypink = new SEntity(new Location(w, 199.5, 84.0, 279.5, 135.0f, 0.0f), SEntityType.GIANT_DUMMY);
-        final LivingEntity e = se_jollypink.getEntity();
-        final EntityEquipment eq = e.getEquipment();
+    public static void bfg(World w2) {
+        SEntity se_jollypink = new SEntity(new Location(w2, 199.5, 84.0, 279.5, 135.0f, 0.0f), SEntityType.GIANT_DUMMY, new Object[0]);
+        LivingEntity e2 = se_jollypink.getEntity();
+        EntityEquipment eq = e2.getEquipment();
         eq.setItemInHand(null);
         eq.setHelmet(null);
         eq.setChestplate(null);
         eq.setLeggings(null);
-        eq.setBoots(b(8991025, Material.LEATHER_BOOTS));
-        e.setMetadata("Bigfoot", new FixedMetadataValue(SkyBlock.getPlugin(), true));
+        eq.setBoots(SadanFunction.b(8991025, Material.LEATHER_BOOTS));
+        e2.setMetadata("Bigfoot", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
     }
 
-    public static ItemStack buildColorStack(final int hexcolor) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
+    public static ItemStack buildColorStack(int hexcolor) {
+        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_HELMET), Color.fromRGB((int)hexcolor));
+        ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
         return stack;
     }
 
-    public static ItemStack b(final int hexcolor, final Material m) {
-        final ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB(hexcolor));
-        final ItemMeta itemMeta = stack.getItemMeta();
+    public static ItemStack b(int hexcolor, Material m2) {
+        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m2), Color.fromRGB((int)hexcolor));
+        ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
         return stack;
     }
 
-    public static ItemStack c(final Material m) {
-        final ItemStack stack = new ItemStack(m);
-        final ItemMeta itemMeta = stack.getItemMeta();
+    public static ItemStack c(Material m2) {
+        ItemStack stack = new ItemStack(m2);
+        ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
         return stack;
     }
 
-    public static void endPhase1(final World w) {
-        for (final Entity e : w.getEntities()) {
-            if (e.hasMetadata("ftd")) {
-                e.remove();
+    public static void endPhase1(World w2) {
+        for (Entity e2 : w2.getEntities()) {
+            if (e2.hasMetadata("ftd")) {
+                e2.remove();
             }
-            if (e.hasMetadata("t_sadan")) {
-                e.remove();
-                e.getWorld().playEffect(e.getLocation(), Effect.EXPLOSION, 10);
-                e.getWorld().playEffect(e.getLocation(), Effect.EXPLOSION, 10);
-                e.getWorld().playEffect(e.getLocation(), Effect.EXPLOSION, 10);
-                e.getWorld().playEffect(e.getLocation(), Effect.EXPLOSION, 10);
-                e.getWorld().playEffect(e.getLocation(), Effect.EXPLOSION, 10);
-                e.getWorld().playEffect(e.getLocation(), Effect.EXPLOSION, 10);
-                e.getWorld().playEffect(e.getLocation(), Effect.EXPLOSION, 10);
-                e.getWorld().playEffect(e.getLocation(), Effect.EXPLOSION, 10);
-                e.getWorld().playEffect(e.getLocation(), Effect.EXPLOSION, 10);
-                e.getWorld().playEffect(e.getLocation(), Effect.EXPLOSION, 10);
-                e.getWorld().playEffect(e.getLocation(), Effect.EXPLOSION, 10);
-            }
+            if (!e2.hasMetadata("t_sadan")) continue;
+            e2.remove();
+            e2.getWorld().playEffect(e2.getLocation(), Effect.EXPLOSION, 10);
+            e2.getWorld().playEffect(e2.getLocation(), Effect.EXPLOSION, 10);
+            e2.getWorld().playEffect(e2.getLocation(), Effect.EXPLOSION, 10);
+            e2.getWorld().playEffect(e2.getLocation(), Effect.EXPLOSION, 10);
+            e2.getWorld().playEffect(e2.getLocation(), Effect.EXPLOSION, 10);
+            e2.getWorld().playEffect(e2.getLocation(), Effect.EXPLOSION, 10);
+            e2.getWorld().playEffect(e2.getLocation(), Effect.EXPLOSION, 10);
+            e2.getWorld().playEffect(e2.getLocation(), Effect.EXPLOSION, 10);
+            e2.getWorld().playEffect(e2.getLocation(), Effect.EXPLOSION, 10);
+            e2.getWorld().playEffect(e2.getLocation(), Effect.EXPLOSION, 10);
+            e2.getWorld().playEffect(e2.getLocation(), Effect.EXPLOSION, 10);
         }
     }
 
-    public static void release(final World w) {
-        SUtil.delay(() -> rjp(w), 10L);
-        SUtil.delay(() -> rdia(w), 30L);
-        SUtil.delay(() -> rbf(w), 50L);
-        SUtil.delay(() -> rlasr(w), 70L);
+    public static void release(World w2) {
+        SUtil.delay(() -> SadanFunction.rjp(w2), 10L);
+        SUtil.delay(() -> SadanFunction.rdia(w2), 30L);
+        SUtil.delay(() -> SadanFunction.rbf(w2), 50L);
+        SUtil.delay(() -> SadanFunction.rlasr(w2), 70L);
     }
 
-    public static void rjp(final World w) {
-        for (final Entity e : w.getEntities()) {
-            if (e.hasMetadata("JollyPink")) {
-                e.remove();
-                new SEntity(new Location(e.getWorld(), e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), e.getLocation().getYaw(), 0.0f), SEntityType.JOLLY_PINK_SADAN);
-                w.strikeLightningEffect(e.getLocation());
-                break;
-            }
+    public static void rjp(World w2) {
+        for (Entity e2 : w2.getEntities()) {
+            if (!e2.hasMetadata("JollyPink")) continue;
+            e2.remove();
+            new SEntity(new Location(e2.getWorld(), e2.getLocation().getX(), e2.getLocation().getY(), e2.getLocation().getZ(), e2.getLocation().getYaw(), 0.0f), SEntityType.JOLLY_PINK_SADAN, new Object[0]);
+            w2.strikeLightningEffect(e2.getLocation());
+            break;
         }
-        AnimationSequence.edit(new Location(w, 187.0, 81.0, 257.0), new Location(w, 178.0, 101.0, 248.0), w);
+        AnimationSequence.edit(new Location(w2, 187.0, 81.0, 257.0), new Location(w2, 178.0, 101.0, 248.0), w2);
     }
 
-    public static void rdia(final World w) {
-        for (final Entity e : w.getEntities()) {
-            if (e.hasMetadata("Diamond")) {
-                e.remove();
-                new SEntity(new Location(e.getWorld(), e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), e.getLocation().getYaw(), 0.0f), SEntityType.DIAMOND_SADAN);
-                w.strikeLightningEffect(e.getLocation());
-                break;
-            }
+    public static void rdia(World w2) {
+        for (Entity e2 : w2.getEntities()) {
+            if (!e2.hasMetadata("Diamond")) continue;
+            e2.remove();
+            new SEntity(new Location(e2.getWorld(), e2.getLocation().getX(), e2.getLocation().getY(), e2.getLocation().getZ(), e2.getLocation().getYaw(), 0.0f), SEntityType.DIAMOND_SADAN, new Object[0]);
+            w2.strikeLightningEffect(e2.getLocation());
+            break;
         }
-        AnimationSequence.edit(new Location(w, 187.0, 82.0, 275.0), new Location(w, 178.0, 101.0, 284.0), w);
+        AnimationSequence.edit(new Location(w2, 187.0, 82.0, 275.0), new Location(w2, 178.0, 101.0, 284.0), w2);
     }
 
-    public static void rbf(final World w) {
-        for (final Entity e : w.getEntities()) {
-            if (e.hasMetadata("Bigfoot")) {
-                e.remove();
-                new SEntity(new Location(e.getWorld(), e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), e.getLocation().getYaw(), 0.0f), SEntityType.BIGFOOT_SADAN);
-                w.strikeLightningEffect(e.getLocation());
-                break;
-            }
+    public static void rbf(World w2) {
+        for (Entity e2 : w2.getEntities()) {
+            if (!e2.hasMetadata("Bigfoot")) continue;
+            e2.remove();
+            new SEntity(new Location(e2.getWorld(), e2.getLocation().getX(), e2.getLocation().getY(), e2.getLocation().getZ(), e2.getLocation().getYaw(), 0.0f), SEntityType.BIGFOOT_SADAN, new Object[0]);
+            w2.strikeLightningEffect(e2.getLocation());
+            break;
         }
-        AnimationSequence.edit(new Location(w, 194.0, 82.0, 283.0), new Location(w, 203.0, 101.0, 275.0), w);
+        AnimationSequence.edit(new Location(w2, 194.0, 82.0, 283.0), new Location(w2, 203.0, 101.0, 275.0), w2);
     }
 
-    public static void rlasr(final World w) {
-        for (final Entity e : w.getEntities()) {
-            if (e.hasMetadata("LASR")) {
-                e.remove();
-                new SEntity(new Location(e.getWorld(), e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), e.getLocation().getYaw(), 0.0f), SEntityType.LASR_SADAN);
-                w.strikeLightningEffect(e.getLocation());
-                break;
-            }
+    public static void rlasr(World w2) {
+        for (Entity e2 : w2.getEntities()) {
+            if (!e2.hasMetadata("LASR")) continue;
+            e2.remove();
+            new SEntity(new Location(e2.getWorld(), e2.getLocation().getX(), e2.getLocation().getY(), e2.getLocation().getZ(), e2.getLocation().getYaw(), 0.0f), SEntityType.LASR_SADAN, new Object[0]);
+            w2.strikeLightningEffect(e2.getLocation());
+            break;
         }
-        AnimationSequence.edit(new Location(w, 203.0, 101.0, 248.0), new Location(w, 195.0, 81.0, 257.0), w);
+        AnimationSequence.edit(new Location(w2, 203.0, 101.0, 248.0), new Location(w2, 195.0, 81.0, 257.0), w2);
     }
 
-    public static void a(final World w, double x, double z, final float yaw) {
-        x += 0.5;
-        z += 0.5;
-        new SEntity(new Location(w, x, 69.0, z, yaw, 0.0f), SEntityType.TERRACOTTA_DUMMY);
+    public static void a(World w2, double x2, double z2, float yaw) {
+        new SEntity(new Location(w2, x2 += 0.5, 69.0, z2 += 0.5, yaw, 0.0f), SEntityType.TERRACOTTA_DUMMY, new Object[0]);
     }
 
-    public static void aA(final World w, double x, double z, final float yaw) {
-        x += 0.5;
-        z += 0.5;
-        new SEntity(new Location(w, x, 69.0, z, yaw, 0.0f), SEntityType.SLEEPING_GOLEM);
+    public static void aA(World w2, double x2, double z2, float yaw) {
+        new SEntity(new Location(w2, x2 += 0.5, 69.0, z2 += 0.5, yaw, 0.0f), SEntityType.SLEEPING_GOLEM, new Object[0]);
     }
 
-    public static void b(final World w) {
-        new SEntity(new Location(w, 191.5, 54.0, 266.5, 180.0f, 0.0f), SEntityType.DUMMY_SADAN_1);
+    public static void b(World w2) {
+        new SEntity(new Location(w2, 191.5, 54.0, 266.5, 180.0f, 0.0f), SEntityType.DUMMY_SADAN_1, new Object[0]);
     }
 
-    public static void s_(final Entity e) {
-        final World w = e.getWorld();
-        lasrg(w);
-        diag(w);
-        bfg(w);
-        jlp(w);
-        aA(w, 184.0, 252.0, -45.0f);
-        aA(w, 198.0, 252.0, 45.0f);
-        aA(w, 204.0, 266.0, 90.0f);
-        aA(w, 184.0, 280.0, -135.0f);
-        aA(w, 178.0, 266.0, -90.0f);
-        aA(w, 198.0, 280.0, 135.0f);
-        a(w, 194.0, 295.0, 90.0f);
-        a(w, 188.0, 295.0, -90.0f);
-        a(w, 194.0, 290.0, 90.0f);
-        a(w, 188.0, 290.0, -90.0f);
-        a(w, 194.0, 285.0, 90.0f);
-        a(w, 188.0, 285.0, -90.0f);
-        a(w, 194.0, 280.0, 90.0f);
-        a(w, 188.0, 280.0, -90.0f);
-        a(w, 194.0, 275.0, 90.0f);
-        a(w, 188.0, 275.0, -90.0f);
-        b(w);
-        a(w, 194.0, 257.0, 90.0f);
-        a(w, 188.0, 257.0, -90.0f);
-        a(w, 194.0, 252.0, 90.0f);
-        a(w, 188.0, 252.0, -90.0f);
-        a(w, 194.0, 248.0, 90.0f);
-        a(w, 188.0, 248.0, -90.0f);
-        a(w, 194.0, 243.0, 90.0f);
-        a(w, 188.0, 243.0, -90.0f);
-        a(w, 194.0, 238.0, 90.0f);
-        a(w, 188.0, 238.0, -90.0f);
+    public static void s_(Entity e2) {
+        World w2 = e2.getWorld();
+        SadanFunction.lasrg(w2);
+        SadanFunction.diag(w2);
+        SadanFunction.bfg(w2);
+        SadanFunction.jlp(w2);
+        SadanFunction.aA(w2, 184.0, 252.0, -45.0f);
+        SadanFunction.aA(w2, 198.0, 252.0, 45.0f);
+        SadanFunction.aA(w2, 204.0, 266.0, 90.0f);
+        SadanFunction.aA(w2, 184.0, 280.0, -135.0f);
+        SadanFunction.aA(w2, 178.0, 266.0, -90.0f);
+        SadanFunction.aA(w2, 198.0, 280.0, 135.0f);
+        SadanFunction.a(w2, 194.0, 295.0, 90.0f);
+        SadanFunction.a(w2, 188.0, 295.0, -90.0f);
+        SadanFunction.a(w2, 194.0, 290.0, 90.0f);
+        SadanFunction.a(w2, 188.0, 290.0, -90.0f);
+        SadanFunction.a(w2, 194.0, 285.0, 90.0f);
+        SadanFunction.a(w2, 188.0, 285.0, -90.0f);
+        SadanFunction.a(w2, 194.0, 280.0, 90.0f);
+        SadanFunction.a(w2, 188.0, 280.0, -90.0f);
+        SadanFunction.a(w2, 194.0, 275.0, 90.0f);
+        SadanFunction.a(w2, 188.0, 275.0, -90.0f);
+        SadanFunction.b(w2);
+        SadanFunction.a(w2, 194.0, 257.0, 90.0f);
+        SadanFunction.a(w2, 188.0, 257.0, -90.0f);
+        SadanFunction.a(w2, 194.0, 252.0, 90.0f);
+        SadanFunction.a(w2, 188.0, 252.0, -90.0f);
+        SadanFunction.a(w2, 194.0, 248.0, 90.0f);
+        SadanFunction.a(w2, 188.0, 248.0, -90.0f);
+        SadanFunction.a(w2, 194.0, 243.0, 90.0f);
+        SadanFunction.a(w2, 188.0, 243.0, -90.0f);
+        SadanFunction.a(w2, 194.0, 238.0, 90.0f);
+        SadanFunction.a(w2, 188.0, 238.0, -90.0f);
     }
 
-    public static Integer dmgc(final int damage, final Player p, final Entity e) {
-        final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(p.getUniqueId());
+    public static Integer dmgc(int damage, Player p2, Entity e2) {
+        PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(p2.getUniqueId());
         if (statistics == null) {
             return 0;
         }
-        final double defense = statistics.getDefense().addAll();
-        final int dmglater = (int) Math.round(damage - damage * (defense / (defense + 100.0)));
-        User.getUser(p.getUniqueId()).damage(dmglater, EntityDamageEvent.DamageCause.ENTITY_ATTACK, e);
-        p.damage(1.0E-6, null);
+        double defense = statistics.getDefense().addAll();
+        int dmglater = (int)Math.round((double)damage - (double)damage * (defense / (defense + 100.0)));
+        User.getUser(p2.getUniqueId()).damage(dmglater, EntityDamageEvent.DamageCause.ENTITY_ATTACK, e2);
+        p2.damage(1.0E-6, null);
         return dmglater;
     }
 
-    public static void roomLoop(final World w) {
+    public static void roomLoop(World w2) {
     }
 
-    public static void endRoom1(final World w) {
-        if (w.getName().contains("f6")) {
-            SUtil.broadcastWorld(Sputnik.trans("&c&lSKYSIM MC >> &e&lThis demo floor currently in development so you can't respawn or get reward, sorry! We will update later on, thanks for playing, leave rating on #server-rating"), w);
-            SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c30s"), w), 600L);
-            SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c20s"), w), 1000L);
-            SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c10s"), w), 1200L);
-            SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c5s"), w), 1300L);
-            SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c4s"), w), 1320L);
-            SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c3s"), w), 1340L);
-            SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c2s"), w), 1360L);
-            SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c1s"), w), 1380L);
-            SUtil.delay(() -> SadanBossManager.endFloor(w), 1400L);
+    public static void endRoom1(World w2) {
+        if (w2.getName().contains("f6")) {
+            SUtil.broadcastWorld(Sputnik.trans("&c&lSKYSIM MC >> &e&lThis demo floor currently in development so you can't respawn or get reward, sorry! We will update later on, thanks for playing, leave rating on #server-rating"), w2);
+            SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c30s"), w2), 600L);
+            SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c20s"), w2), 1000L);
+            SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c10s"), w2), 1200L);
+            SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c5s"), w2), 1300L);
+            SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c4s"), w2), 1320L);
+            SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c3s"), w2), 1340L);
+            SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c2s"), w2), 1360L);
+            SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c1s"), w2), 1380L);
+            SUtil.delay(() -> SadanBossManager.endFloor(w2), 1400L);
         }
     }
 
-    public static void sendReMsg(final boolean finishornot, final World w) {
-        if (w.getName().contains("f6") && Repeater.FloorLivingSec.containsKey(w.getUID())) {
+    public static void sendReMsg(boolean finishornot, World w2) {
+        if (w2.getName().contains("f6") && Repeater.FloorLivingSec.containsKey(w2.getUID())) {
             if (finishornot) {
-                final int bitsReward = Math.round((float) ((100000 - Math.min(100000, Repeater.FloorLivingSec.get(w.getUID()))) * 150 / 255));
+                int bitsReward = Math.round((100000 - Math.min(100000, Repeater.FloorLivingSec.get(w2.getUID()))) * 150 / 255);
                 String rew = "&6+" + SUtil.commaify(bitsReward) + " Coins &7(Completion Reward)";
                 if (bitsReward <= 0) {
                     rew = "&cYou have no rewards!";
                 } else {
-                    w.getPlayers().forEach(p -> User.getUser(p.getUniqueId()).addCoins(bitsReward));
+                    w2.getPlayers().forEach(p2 -> User.getUser(p2.getUniqueId()).addCoins(bitsReward));
                 }
-                SUtil.broadcastWorld(Sputnik.trans("&a▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"), w);
-                SUtil.broadcastWorld(Sputnik.trans("        &cThe Catacombs Demo &8- &eFloor VI"), w);
-                SUtil.broadcastWorld(Sputnik.trans("&c"), w);
-                SUtil.broadcastWorld(Sputnik.trans("        &c☠&e Defeated &cSadan &ein &a" + Sputnik.formatTime(Repeater.FloorLivingSec.get(w.getUID()))), w);
-                SUtil.broadcastWorld(Sputnik.trans("&c"), w);
-                SUtil.broadcastWorld(Sputnik.trans("            " + rew), w);
-                SUtil.broadcastWorld(Sputnik.trans("&c"), w);
-                SUtil.broadcastWorld(Sputnik.trans("&a▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"), w);
+                SUtil.broadcastWorld(Sputnik.trans("&a\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac"), w2);
+                SUtil.broadcastWorld(Sputnik.trans("        &cThe Catacombs Demo &8- &eFloor VI"), w2);
+                SUtil.broadcastWorld(Sputnik.trans("&c"), w2);
+                SUtil.broadcastWorld(Sputnik.trans("        &c\u2620&e Defeated &cSadan &ein &a" + Sputnik.formatTime(Repeater.FloorLivingSec.get(w2.getUID()))), w2);
+                SUtil.broadcastWorld(Sputnik.trans("&c"), w2);
+                SUtil.broadcastWorld(Sputnik.trans("            " + rew), w2);
+                SUtil.broadcastWorld(Sputnik.trans("&c"), w2);
+                SUtil.broadcastWorld(Sputnik.trans("&a\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac"), w2);
             } else {
-                SUtil.broadcastWorld(Sputnik.trans("&a▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"), w);
-                SUtil.broadcastWorld(Sputnik.trans("        &cThe Catacombs Demo &8- &eFloor VI"), w);
-                SUtil.broadcastWorld(Sputnik.trans("&c"), w);
-                SUtil.broadcastWorld(Sputnik.trans("        &c☠&e You died, but you can try again!"), w);
-                SUtil.broadcastWorld(Sputnik.trans("&c"), w);
-                SUtil.broadcastWorld(Sputnik.trans("           &cYou have no rewards cause you died."), w);
-                SUtil.broadcastWorld(Sputnik.trans("&c"), w);
-                SUtil.broadcastWorld(Sputnik.trans("&a▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"), w);
+                SUtil.broadcastWorld(Sputnik.trans("&a\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac"), w2);
+                SUtil.broadcastWorld(Sputnik.trans("        &cThe Catacombs Demo &8- &eFloor VI"), w2);
+                SUtil.broadcastWorld(Sputnik.trans("&c"), w2);
+                SUtil.broadcastWorld(Sputnik.trans("        &c\u2620&e You died, but you can try again!"), w2);
+                SUtil.broadcastWorld(Sputnik.trans("&c"), w2);
+                SUtil.broadcastWorld(Sputnik.trans("           &cYou have no rewards cause you died."), w2);
+                SUtil.broadcastWorld(Sputnik.trans("&c"), w2);
+                SUtil.broadcastWorld(Sputnik.trans("&a\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac"), w2);
             }
         }
     }
 
-    public static void endRoom2(final World w) {
-        if (w.getName().contains("f6")) {
-            SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c5s"), w), 200L);
-            SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c4s"), w), 220L);
-            SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c3s"), w), 240L);
-            SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c2s"), w), 260L);
-            SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c1s"), w), 280L);
-            SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eWarping you back to the Hub"), w), 300L);
-            SUtil.delay(() -> SadanBossManager.endFloor(w), 300L);
+    public static void endRoom2(World w2) {
+        if (w2.getName().contains("f6")) {
+            SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c5s"), w2), 200L);
+            SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c4s"), w2), 220L);
+            SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c3s"), w2), 240L);
+            SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c2s"), w2), 260L);
+            SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eThis dungeon will close in &c1s"), w2), 280L);
+            SUtil.delay(() -> SUtil.broadcastWorld(Sputnik.trans("&c[Warning] &eWarping you back to the Hub"), w2), 300L);
+            SUtil.delay(() -> SadanBossManager.endFloor(w2), 300L);
         }
     }
 }
+

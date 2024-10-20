@@ -1,14 +1,22 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.minecraft.server.v1_8_R3.NBTTagCompound
+ *  org.bukkit.Location
+ *  org.bukkit.configuration.ConfigurationSection
+ */
 package net.hypixel.skyblock.item;
 
 import net.hypixel.skyblock.SkyBlock;
-import net.hypixel.skyblock.module.ConfigModule;
+import net.hypixel.skyblock.item.SMaterial;
 import net.hypixel.skyblock.util.SUtil;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class SBlock {
-    protected static final SkyBlock plugin;
+    protected static final SkyBlock plugin = SkyBlock.getPlugin();
     private final Location location;
     private SMaterial type;
     private final NBTTagCompound data;
@@ -36,40 +44,35 @@ public class SBlock {
     }
 
     public static SBlock getBlock(Location location) {
-        ConfigurationSection cs = ConfigModule.getBlocks().getConfigurationSection(toLocationString(location));
+        ConfigurationSection cs = SBlock.plugin.blocks.getConfigurationSection(SBlock.toLocationString(location));
         if (null == cs) {
             return null;
         }
         NBTTagCompound compound = new NBTTagCompound();
         for (String key : cs.getKeys(false)) {
-            if (key.equals("type")) {
-                continue;
-            }
+            if (key.equals("type")) continue;
             compound.set(key, SUtil.getBaseFromObject(cs, key));
         }
         return new SBlock(location, SMaterial.getMaterial(cs.getString("type")), compound);
     }
 
     public void save() {
-        
-        ConfigModule.getBlocks().set(this.toLocationString() + ".type", this.type.name());
+        SBlock.plugin.blocks.set(this.toLocationString() + ".type", this.type.name());
         for (String key : this.data.c()) {
-            Object o = SUtil.getObjectFromCompound(this.data, key);
-            if (o instanceof NBTTagCompound) {
-                continue;
-            }
-            ConfigModule.getBlocks().set(this.toLocationString() + "." + key, o);
+            Object o2 = SUtil.getObjectFromCompound(this.data, key);
+            if (o2 instanceof NBTTagCompound) continue;
+            SBlock.plugin.blocks.set(this.toLocationString() + "." + key, o2);
         }
-        ConfigModule.getBlocks().save();
+        SBlock.plugin.blocks.save();
     }
 
     public void delete() {
-        ConfigModule.getBlocks().set(this.toLocationString(), null);
-        ConfigModule.getBlocks().save();
+        SBlock.plugin.blocks.set(this.toLocationString(), null);
+        SBlock.plugin.blocks.save();
     }
 
     private String toLocationString() {
-        return toLocationString(this.location);
+        return SBlock.toLocationString(this.location);
     }
 
     private static String toLocationString(Location location) {
@@ -91,8 +94,5 @@ public class SBlock {
     public void setType(SMaterial type) {
         this.type = type;
     }
-
-    static {
-        plugin = SkyBlock.getPlugin();
-    }
 }
+

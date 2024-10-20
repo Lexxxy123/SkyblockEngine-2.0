@@ -1,9 +1,14 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ */
 package net.hypixel.skyblock.features.region;
 
 import org.bukkit.ChatColor;
 
 public enum RegionType {
-
     PRIVATE_ISLAND("Private Island", ChatColor.GREEN),
     VILLAGE("Village"),
     MOUNTAIN("Mountain"),
@@ -57,27 +62,27 @@ public enum RegionType {
     private final String name;
     private final ChatColor color;
 
-    RegionType(final String name, final ChatColor color) {
+    private RegionType(String name, ChatColor color) {
         this.name = name;
         this.color = color;
     }
 
-    RegionType(final String name) {
+    private RegionType(String name) {
         this(name, ChatColor.AQUA);
     }
 
-    RegionType() {
+    private RegionType() {
         this(null, ChatColor.GRAY);
     }
 
-    public static RegionType getByID(final int id) {
-        return values()[id];
+    public static RegionType getByID(int id) {
+        return RegionType.values()[id];
     }
 
-    public static RegionType getType(final String string) {
+    public static RegionType getType(String string) {
         try {
-            return valueOf(string);
-        } catch (final IllegalArgumentException ex) {
+            return RegionType.valueOf(string);
+        } catch (IllegalArgumentException ex) {
             return null;
         }
     }
@@ -90,3 +95,4 @@ public enum RegionType {
         return this.color;
     }
 }
+

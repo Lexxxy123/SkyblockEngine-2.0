@@ -1,27 +1,29 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.database;
-
-import net.hypixel.skyblock.SkyBlock;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import net.hypixel.skyblock.SkyBlock;
 
 public class SQLDatabase {
-    private static final SkyBlock plugin;
+    private static final SkyBlock plugin = SkyBlock.getPlugin();
     private static final String DATABASE_FILENAME = "database.db";
     private Connection connection;
     private final File file;
 
     public SQLDatabase() {
-        final File file = new File(SQLDatabase.plugin.getDataFolder(), "database.db");
+        File file = new File(plugin.getDataFolder(), DATABASE_FILENAME);
         if (!file.exists()) {
             try {
                 file.getParentFile().mkdirs();
                 file.createNewFile();
-                SQLDatabase.plugin.saveResource("database.db", false);
-            } catch (final IOException ex) {
+                plugin.saveResource(DATABASE_FILENAME, false);
+            } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
@@ -31,7 +33,7 @@ public class SQLDatabase {
     public Connection getConnection() {
         try {
             Class.forName("org.sqlite.JDBC");
-            final Connection connection = DriverManager.getConnection("jdbc:sqlite:" + this.file.getAbsolutePath());
+            Connection connection = DriverManager.getConnection("jdbc:sqlite:" + this.file.getAbsolutePath());
             if (connection != null) {
                 connection.prepareStatement("CREATE TABLE IF NOT EXISTS `worlds` (\n\t`id` SMALLINT,\n\t`name` TEXT\n);").execute();
                 connection.prepareStatement("CREATE TABLE IF NOT EXISTS `users` (\n\t`id` INT,\n\t`uuid` TINYTEXT\n);").execute();
@@ -39,13 +41,10 @@ public class SQLDatabase {
                 connection.prepareStatement("CREATE TABLE IF NOT EXISTS `launchers` (\n\t`region_name` TINYTEXT,\n\t`x` INT,\n\t`y` INT,\n\t`z` INT\n);").execute();
                 return connection;
             }
-        } catch (final SQLException | ClassNotFoundException ex) {
+        } catch (ClassNotFoundException | SQLException ex) {
             ex.printStackTrace();
         }
         return null;
     }
-
-    static {
-        plugin = SkyBlock.getPlugin();
-    }
 }
+

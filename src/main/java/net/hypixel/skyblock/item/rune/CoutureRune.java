@@ -1,15 +1,22 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ */
 package net.hypixel.skyblock.item.rune;
 
-import org.bukkit.ChatColor;
 import net.hypixel.skyblock.item.GenericItemType;
 import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.Rune;
 import net.hypixel.skyblock.item.SpecificItemType;
+import org.bukkit.ChatColor;
 
-public class CoutureRune implements Rune {
+public class CoutureRune
+implements Rune {
     @Override
     public String getDisplayName() {
-        return ChatColor.AQUA + "◆ Couture Rune";
+        return ChatColor.AQUA + "\u25c6 Couture Rune";
     }
 
     @Override
@@ -32,3 +39,4 @@ public class CoutureRune implements Rune {
         return "734fb3203233efbae82628bd4fca7348cd071e5b7b52407f1d1d2794e31799ff";
     }
 }
+

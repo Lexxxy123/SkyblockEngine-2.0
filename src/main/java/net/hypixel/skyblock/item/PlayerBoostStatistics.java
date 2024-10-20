@@ -1,47 +1,54 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item;
 
-public interface PlayerBoostStatistics extends MaterialStatistics {
-    default int getBaseDamage() {
+import net.hypixel.skyblock.item.MaterialStatistics;
+
+public interface PlayerBoostStatistics
+extends MaterialStatistics {
+    default public int getBaseDamage() {
         return 0;
     }
 
-    default double getBaseStrength() {
+    default public double getBaseStrength() {
         return 0.0;
     }
 
-    default double getBaseCritChance() {
+    default public double getBaseCritChance() {
         return 0.0;
     }
 
-    default double getBaseCritDamage() {
+    default public double getBaseCritDamage() {
         return 0.0;
     }
 
-    default double getBaseMagicFind() {
+    default public double getBaseMagicFind() {
         return 0.0;
     }
 
-    default double getBaseIntelligence() {
+    default public double getBaseIntelligence() {
         return 0.0;
     }
 
-    default double getBaseSpeed() {
+    default public double getBaseSpeed() {
         return 0.0;
     }
 
-    default double getBaseHealth() {
+    default public double getBaseHealth() {
         return 0.0;
     }
 
-    default double getBaseDefense() {
+    default public double getBaseDefense() {
         return 0.0;
     }
 
-    default double getBaseAttackSpeed() {
+    default public double getBaseAttackSpeed() {
         return 0.0;
     }
 
-    default double getBaseFerocity() {
+    default public double getBaseFerocity() {
         return 0.0;
     }
 }
+

@@ -1,30 +1,74 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  net.md_5.bungee.api.ChatColor
+ *  org.bukkit.Effect
+ *  org.bukkit.Location
+ *  org.bukkit.Sound
+ *  org.bukkit.entity.ArmorStand
+ *  org.bukkit.entity.Damageable
+ *  org.bukkit.entity.EnderDragonPart
+ *  org.bukkit.entity.Entity
+ *  org.bukkit.entity.LivingEntity
+ *  org.bukkit.entity.Player
+ *  org.bukkit.entity.Villager
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.scheduler.BukkitRunnable
+ *  org.bukkit.util.Vector
+ */
 package net.hypixel.skyblock.item.armor;
-
-import net.hypixel.skyblock.item.*;
-import net.hypixel.skyblock.features.skill.Skill;
-import net.hypixel.skyblock.util.*;
-import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Sound;
-import org.bukkit.entity.*;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
-import net.hypixel.skyblock.Repeater;
-import net.hypixel.skyblock.SkyBlock;
-import net.hypixel.skyblock.entity.SEntity;
-import net.hypixel.skyblock.entity.SEntityType;
-import net.hypixel.skyblock.user.PlayerUtils;
-import net.hypixel.skyblock.user.User;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import net.hypixel.skyblock.Repeater;
+import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.entity.SEntity;
+import net.hypixel.skyblock.entity.SEntityType;
+import net.hypixel.skyblock.features.skill.Skill;
+import net.hypixel.skyblock.item.Ability;
+import net.hypixel.skyblock.item.AbilityActivation;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.SMaterial;
+import net.hypixel.skyblock.item.SkullStatistics;
+import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.TickingMaterial;
+import net.hypixel.skyblock.item.ToolStatistics;
+import net.hypixel.skyblock.user.PlayerUtils;
+import net.hypixel.skyblock.user.User;
+import net.hypixel.skyblock.util.DefenseReplacement;
+import net.hypixel.skyblock.util.EntityManager;
+import net.hypixel.skyblock.util.ManaReplacement;
+import net.hypixel.skyblock.util.SLog;
+import net.hypixel.skyblock.util.SUtil;
+import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.Sound;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Damageable;
+import org.bukkit.entity.EnderDragonPart;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
-public class PrecursorEye implements MaterialFunction, SkullStatistics, ToolStatistics, Ability, TickingMaterial {
-    public static final Map<UUID, Boolean> PrecursorLaser;
-    public static final Map<UUID, Integer> PrecursorLivingSeconds;
+public class PrecursorEye
+implements MaterialFunction,
+SkullStatistics,
+ToolStatistics,
+Ability,
+TickingMaterial {
+    public static final Map<UUID, Boolean> PrecursorLaser = new HashMap<UUID, Boolean>();
+    public static final Map<UUID, Integer> PrecursorLivingSeconds = new HashMap<UUID, Integer>();
     int boosting;
 
     @Override
@@ -79,7 +123,7 @@ public class PrecursorEye implements MaterialFunction, SkullStatistics, ToolStat
 
     @Override
     public String getAbilityDescription() {
-        return ChatColor.translateAlternateColorCodes('&', "Fire a laser in front of you dealing &c4000 &7damage and costing &b40 &7mana. The damage increases by &c100% &7every second for &b5 &7seconds and the mana cost increases by &d25% &7every second. You can sneak again to de-activate the laser.");
+        return ChatColor.translateAlternateColorCodes((char)'&', (String)"Fire a laser in front of you dealing &c4000 &7damage and costing &b40 &7mana. The damage increases by &c100% &7every second for &b5 &7seconds and the mana cost increases by &d25% &7every second. You can sneak again to de-activate the laser.");
     }
 
     @Override
@@ -99,37 +143,38 @@ public class PrecursorEye implements MaterialFunction, SkullStatistics, ToolStat
 
     @Override
     public void onAbilityUse(final Player player, final SItem sItem) {
-        if (!PrecursorEye.PrecursorLaser.containsKey(player.getUniqueId())) {
-            PrecursorEye.PrecursorLaser.put(player.getUniqueId(), false);
+        if (!PrecursorLaser.containsKey(player.getUniqueId())) {
+            PrecursorLaser.put(player.getUniqueId(), false);
         }
-        if (!PrecursorEye.PrecursorLaser.get(player.getUniqueId())) {
-            PrecursorEye.PrecursorLaser.put(player.getUniqueId(), true);
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&dEye Beam &aActivated!"));
+        if (!PrecursorLaser.get(player.getUniqueId()).booleanValue()) {
+            PrecursorLaser.put(player.getUniqueId(), true);
+            player.sendMessage(ChatColor.translateAlternateColorCodes((char)'&', (String)"&dEye Beam &aActivated!"));
         } else {
-            if (!PrecursorEye.PrecursorLaser.containsKey(player.getUniqueId())) {
-                PrecursorEye.PrecursorLaser.put(player.getUniqueId(), false);
+            if (!PrecursorLaser.containsKey(player.getUniqueId())) {
+                PrecursorLaser.put(player.getUniqueId(), false);
             }
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&dEye Beam &cDe-Activated!"));
-            PrecursorEye.PrecursorLaser.put(player.getUniqueId(), false);
-            PrecursorEye.PrecursorLivingSeconds.put(player.getUniqueId(), 0);
+            player.sendMessage(ChatColor.translateAlternateColorCodes((char)'&', (String)"&dEye Beam &cDe-Activated!"));
+            PrecursorLaser.put(player.getUniqueId(), false);
+            PrecursorLivingSeconds.put(player.getUniqueId(), 0);
         }
-        new BukkitRunnable() {
+        new BukkitRunnable(){
+
             public void run() {
-                if (!PrecursorEye.PrecursorLaser.containsKey(player.getUniqueId())) {
+                if (!PrecursorLaser.containsKey(player.getUniqueId())) {
                     this.cancel();
                     return;
                 }
-                if (!PrecursorEye.PrecursorLaser.get(player.getUniqueId())) {
+                if (!PrecursorLaser.get(player.getUniqueId()).booleanValue()) {
                     this.cancel();
                     return;
                 }
                 PrecursorEye.this.ticking(sItem, player);
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 15L, 15L);
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 15L, 15L);
     }
 
-    public void ticking(final SItem item, final Player player) {
-        final SItem helmet = SItem.find(player.getInventory().getHelmet());
+    public void ticking(SItem item, Player player) {
+        SItem helmet = SItem.find(player.getInventory().getHelmet());
         if (helmet == null) {
             return;
         }
@@ -137,52 +182,58 @@ public class PrecursorEye implements MaterialFunction, SkullStatistics, ToolStat
             return;
         }
         String ACT = "true";
-        if (!PrecursorEye.PrecursorLivingSeconds.containsKey(player.getUniqueId())) {
-            PrecursorEye.PrecursorLivingSeconds.put(player.getUniqueId(), 0);
-        } else if (PrecursorEye.PrecursorLaser.get(player.getUniqueId())) {
-            PrecursorEye.PrecursorLivingSeconds.put(player.getUniqueId(), PrecursorEye.PrecursorLivingSeconds.get(player.getUniqueId()) + 1);
+        if (!PrecursorLivingSeconds.containsKey(player.getUniqueId())) {
+            PrecursorLivingSeconds.put(player.getUniqueId(), 0);
+        } else if (PrecursorLaser.get(player.getUniqueId()).booleanValue()) {
+            PrecursorLivingSeconds.put(player.getUniqueId(), PrecursorLivingSeconds.get(player.getUniqueId()) + 1);
         }
-        if (PrecursorEye.PrecursorLaser.get(player.getUniqueId())) {
-            final Location blockLocation = player.getTargetBlock((Set) null, 30).getLocation();
-            final Location crystalLocation = player.getEyeLocation();
-            final Vector vector = blockLocation.clone().add(0.1, 0.0, 0.1).toVector().subtract(crystalLocation.clone().toVector());
-            final double count = 40.0;
+        if (PrecursorLaser.get(player.getUniqueId()).booleanValue()) {
+            Location blockLocation = player.getTargetBlock((Set)null, 30).getLocation();
+            Location crystalLocation = player.getEyeLocation();
+            Vector vector = blockLocation.clone().add(0.1, 0.0, 0.1).toVector().subtract(crystalLocation.clone().toVector());
+            double count = 40.0;
             int manaCost = 0;
-            this.boosting = PrecursorEye.PrecursorLivingSeconds.get(player.getUniqueId());
+            this.boosting = PrecursorLivingSeconds.get(player.getUniqueId());
             int damage = 0;
             switch (this.boosting - 1) {
-                case 0:
+                case 0: {
                     manaCost = 40;
                     damage = 4000;
                     break;
-                case 1:
+                }
+                case 1: {
                     manaCost = 50;
                     damage = 8000;
                     break;
-                case 2:
+                }
+                case 2: {
                     manaCost = 62;
                     damage = 16000;
                     break;
-                case 3:
+                }
+                case 3: {
                     manaCost = 77;
                     damage = 32000;
                     break;
-                case 4:
+                }
+                case 4: {
                     manaCost = 96;
                     damage = 64000;
                     break;
-                default:
+                }
+                default: {
                     manaCost = 120;
                     damage = 128000;
-                    break;
+                }
             }
-            final int manaPool = SUtil.blackMagic(PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId()).getIntelligence().addAll() + 100.0);
+            int manaPool = SUtil.blackMagic(PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId()).getIntelligence().addAll() + 100.0);
             final int cost = PlayerUtils.getFinalManaCost(player, item, manaCost);
-            final boolean take = PlayerUtils.takeMana(player, cost);
+            boolean take = PlayerUtils.takeMana(player, cost);
             if (!take) {
                 player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
-                final long c = System.currentTimeMillis();
-                Repeater.MANA_REPLACEMENT_MAP.put(player.getUniqueId(), new ManaReplacement() {
+                final long c2 = System.currentTimeMillis();
+                Repeater.MANA_REPLACEMENT_MAP.put(player.getUniqueId(), new ManaReplacement(){
+
                     @Override
                     public String getReplacement() {
                         return "" + ChatColor.RED + ChatColor.BOLD + "NOT ENOUGH MANA";
@@ -190,16 +241,17 @@ public class PrecursorEye implements MaterialFunction, SkullStatistics, ToolStat
 
                     @Override
                     public long getEnd() {
-                        return c + 1500L;
+                        return c2 + 1500L;
                     }
                 });
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&dEye Beam &cDe-Activated!"));
-                PrecursorEye.PrecursorLaser.put(player.getUniqueId(), false);
-                PrecursorEye.PrecursorLivingSeconds.put(player.getUniqueId(), 0);
+                player.sendMessage(ChatColor.translateAlternateColorCodes((char)'&', (String)"&dEye Beam &cDe-Activated!"));
+                PrecursorLaser.put(player.getUniqueId(), false);
+                PrecursorLivingSeconds.put(player.getUniqueId(), 0);
                 return;
             }
-            final long c = System.currentTimeMillis();
-            Repeater.DEFENSE_REPLACEMENT_MAP.put(player.getUniqueId(), new DefenseReplacement() {
+            final long c3 = System.currentTimeMillis();
+            Repeater.DEFENSE_REPLACEMENT_MAP.put(player.getUniqueId(), new DefenseReplacement(){
+
                 @Override
                 public String getReplacement() {
                     return ChatColor.AQUA + "-" + cost + " Mana (" + ChatColor.GOLD + PrecursorEye.this.getAbilityName() + ChatColor.AQUA + ")";
@@ -207,39 +259,25 @@ public class PrecursorEye implements MaterialFunction, SkullStatistics, ToolStat
 
                 @Override
                 public long getEnd() {
-                    return c + 2000L;
+                    return c3 + 2000L;
                 }
             });
-            for (int i = 1; i <= (int) count; ++i) {
-                for (final Entity entity : player.getWorld().getNearbyEntities(crystalLocation.clone().add(vector.clone().multiply(i / count)), 0.5, 0.0, 0.5)) {
+            for (int i2 = 1; i2 <= 40; ++i2) {
+                for (Entity entity : player.getWorld().getNearbyEntities(crystalLocation.clone().add(vector.clone().multiply((double)i2 / 40.0)), 0.5, 0.0, 0.5)) {
                     if (ACT == "false") {
                         return;
                     }
-                    if (entity.isDead()) {
-                        continue;
-                    }
-                    if (!(entity instanceof LivingEntity)) {
-                        continue;
-                    }
-                    if (entity.hasMetadata("GiantSword")) {
-                        continue;
-                    }
-                    if (entity instanceof Player || entity instanceof EnderDragonPart || entity instanceof Villager) {
-                        continue;
-                    }
-                    if (entity instanceof ArmorStand) {
-                        continue;
-                    }
-                    final User user = User.getUser(player.getUniqueId());
-                    final double damage2 = damage;
-                    final int combatLevel = Skill.getLevel(User.getUser(player.getUniqueId()).getCombatXP(), false);
-                    final double damageMultiplier = 1.0 + combatLevel * 0.04;
-                    user.damageEntity((Damageable) entity, (int) damage2 * damageMultiplier);
+                    if (entity.isDead() || !(entity instanceof LivingEntity) || entity.hasMetadata("GiantSword") || entity instanceof Player || entity instanceof EnderDragonPart || entity instanceof Villager || entity instanceof ArmorStand) continue;
+                    User user = User.getUser(player.getUniqueId());
+                    double damage2 = damage;
+                    int combatLevel = Skill.getLevel(User.getUser(player.getUniqueId()).getCombatXP(), false);
+                    double damageMultiplier = 1.0 + (double)combatLevel * 0.04;
+                    user.damageEntity((Damageable)entity, (double)((int)damage2) * damageMultiplier);
                     if (PlayerUtils.Debugmsg.debugmsg) {
-                        SLog.info("[DEBUG] " + player.getName() + " have dealt " + (float) damage2 * damageMultiplier + " damage! (Eye Beam Ability)");
+                        SLog.info("[DEBUG] " + player.getName() + " have dealt " + (double)((float)damage2) * damageMultiplier + " damage! (Eye Beam Ability)");
                     }
-                    final ArmorStand stands = (ArmorStand) new SEntity(entity.getLocation().clone().add(SUtil.random(-1.5, 1.5), 1.0, SUtil.random(-1.5, 1.5)), SEntityType.UNCOLLIDABLE_ARMOR_STAND).getEntity();
-                    int finaldmg = (int) ((int) damage2 * damageMultiplier);
+                    final ArmorStand stands = (ArmorStand)new SEntity(entity.getLocation().clone().add(SUtil.random(-1.5, 1.5), 1.0, SUtil.random(-1.5, 1.5)), SEntityType.UNCOLLIDABLE_ARMOR_STAND, new Object[0]).getEntity();
+                    int finaldmg = (int)((double)((int)damage2) * damageMultiplier);
                     if (EntityManager.DEFENSE_PERCENTAGE.containsKey(entity)) {
                         int defensepercent = EntityManager.DEFENSE_PERCENTAGE.get(entity);
                         if (defensepercent > 100) {
@@ -251,16 +289,17 @@ public class PrecursorEye implements MaterialFunction, SkullStatistics, ToolStat
                     stands.setCustomNameVisible(true);
                     stands.setGravity(false);
                     stands.setVisible(false);
-                    new BukkitRunnable() {
+                    new BukkitRunnable(){
+
                         public void run() {
                             stands.remove();
                             this.cancel();
                         }
-                    }.runTaskLater(SkyBlock.getPlugin(), 30L);
+                    }.runTaskLater((Plugin)SkyBlock.getPlugin(), 30L);
                     ACT = "false";
                 }
-                player.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply(i / count)), Effect.COLOURED_DUST, 0, 1, 0.5882353f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
-                player.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply(i / count)), Effect.COLOURED_DUST, 0, 1, 0.84313726f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
+                player.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply((double)i2 / 40.0)), Effect.COLOURED_DUST, 0, 1, 0.5882353f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
+                player.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply((double)i2 / 40.0)), Effect.COLOURED_DUST, 0, 1, 0.84313726f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
             }
         }
     }
@@ -269,9 +308,5 @@ public class PrecursorEye implements MaterialFunction, SkullStatistics, ToolStat
     public int getManaCost() {
         return 0;
     }
-
-    static {
-        PrecursorLaser = new HashMap<UUID, Boolean>();
-        PrecursorLivingSeconds = new HashMap<UUID, Integer>();
-    }
 }
+

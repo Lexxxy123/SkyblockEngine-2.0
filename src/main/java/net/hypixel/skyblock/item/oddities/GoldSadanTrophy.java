@@ -1,25 +1,40 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.Effect
+ *  org.bukkit.entity.Player
+ *  org.bukkit.plugin.Plugin
+ *  org.bukkit.scheduler.BukkitRunnable
+ */
 package net.hypixel.skyblock.item.oddities;
 
-import net.hypixel.skyblock.item.*;
+import java.util.ArrayList;
+import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.features.potion.PotionEffect;
 import net.hypixel.skyblock.features.potion.PotionEffectType;
-import org.bukkit.Effect;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.item.Ability;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.Ownable;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.SkullStatistics;
 import net.hypixel.skyblock.user.PlayerUtils;
 import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.SUtil;
 import net.hypixel.skyblock.util.Sputnik;
+import org.bukkit.Effect;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-
-public class GoldSadanTrophy implements SkullStatistics, MaterialFunction, Ability, Ownable {
-    private boolean bool;
-
-    public GoldSadanTrophy() {
-        this.bool = true;
-    }
+public class GoldSadanTrophy
+implements SkullStatistics,
+MaterialFunction,
+Ability,
+Ownable {
+    private boolean bool = true;
 
     @Override
     public String getURL() {
@@ -72,7 +87,7 @@ public class GoldSadanTrophy implements SkullStatistics, MaterialFunction, Abili
     }
 
     @Override
-    public boolean requirementsUse(final Player player, final SItem sItem) {
+    public boolean requirementsUse(Player player, SItem sItem) {
         return User.getUser(player.getUniqueId()).getBCollection() < 25L;
     }
 
@@ -82,9 +97,11 @@ public class GoldSadanTrophy implements SkullStatistics, MaterialFunction, Abili
     }
 
     @Override
-    public void onAbilityUse(final Player player, final SItem sItem) {
-        SUtil.delay(() -> this.bool = false, 35L);
-        final ArrayList<PotionEffect> effects = new ArrayList<PotionEffect>();
+    public void onAbilityUse(final Player player, SItem sItem) {
+        SUtil.delay(() -> {
+            this.bool = false;
+        }, 35L);
+        ArrayList<PotionEffect> effects = new ArrayList<PotionEffect>();
         effects.add(new PotionEffect(PotionEffectType.FEROCITY, 7, 72000L));
         effects.add(new PotionEffect(PotionEffectType.ARCHERY, 4, 72000L));
         effects.add(new PotionEffect(PotionEffectType.CRITICAL, 10, 72000L));
@@ -103,8 +120,9 @@ public class GoldSadanTrophy implements SkullStatistics, MaterialFunction, Abili
         effects.add(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 1, 72000L));
         effects.add(new PotionEffect(PotionEffectType.STAMINA, 7, 72000L));
         effects.add(new PotionEffect(PotionEffectType.MAGIC_FIND, 10, 72000L));
-        final User user = User.getUser(player.getUniqueId());
-        new BukkitRunnable() {
+        User user = User.getUser(player.getUniqueId());
+        new BukkitRunnable(){
+
             public void run() {
                 if (!GoldSadanTrophy.this.bool) {
                     player.sendMessage(Sputnik.trans("&a&lWHOOOSH! &eThe &dGolden Sadan Trophy &egrants you super-powers for &91 hour&e!"));
@@ -137,8 +155,8 @@ public class GoldSadanTrophy implements SkullStatistics, MaterialFunction, Abili
                 player.getWorld().playEffect(player.getLocation().add(0.0, 1.0, 0.0), Effect.WITCH_MAGIC, 0);
                 player.getWorld().playEffect(player.getLocation().add(0.0, 1.0, 0.0), Effect.WITCH_MAGIC, 0);
             }
-        }.runTaskTimer(SkyBlock.getPlugin(), 0L, 1L);
-        for (final PotionEffect effect : effects) {
+        }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
+        for (PotionEffect effect : effects) {
             user.removePotionEffect(effect.getType());
             PlayerUtils.updatePotionEffects(user, PlayerUtils.STATISTICS_CACHE.get(user.getUuid()));
             if (effect.getType().getOnDrink() != null) {
@@ -148,3 +166,4 @@ public class GoldSadanTrophy implements SkullStatistics, MaterialFunction, Abili
         }
     }
 }
+

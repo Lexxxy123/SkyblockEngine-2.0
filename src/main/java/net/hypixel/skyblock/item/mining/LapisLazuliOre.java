@@ -1,3 +1,6 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ */
 package net.hypixel.skyblock.item.mining;
 
 import net.hypixel.skyblock.features.skill.MiningSkill;
@@ -7,7 +10,9 @@ import net.hypixel.skyblock.item.GenericItemType;
 import net.hypixel.skyblock.item.MaterialFunction;
 import net.hypixel.skyblock.item.Rarity;
 
-public class LapisLazuliOre implements ExperienceRewardStatistics, MaterialFunction {
+public class LapisLazuliOre
+implements ExperienceRewardStatistics,
+MaterialFunction {
     @Override
     public double getRewardXP() {
         return 7.0;
@@ -33,3 +38,4 @@ public class LapisLazuliOre implements ExperienceRewardStatistics, MaterialFunct
         return GenericItemType.ITEM;
     }
 }
+

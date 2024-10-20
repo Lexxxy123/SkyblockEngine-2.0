@@ -1,22 +1,37 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ *  org.bukkit.Sound
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.item.weapon;
-
-import net.hypixel.skyblock.item.*;
-import net.hypixel.skyblock.util.DefenseReplacement;
-import net.hypixel.skyblock.util.ManaReplacement;
-import org.bukkit.ChatColor;
-import org.bukkit.Sound;
-import org.bukkit.entity.Player;
-import net.hypixel.skyblock.Repeater;
-import net.hypixel.skyblock.item.*;
-import net.hypixel.skyblock.user.PlayerUtils;
-import net.hypixel.skyblock.util.SUtil;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import net.hypixel.skyblock.Repeater;
+import net.hypixel.skyblock.item.Ability;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.ToolStatistics;
+import net.hypixel.skyblock.user.PlayerUtils;
+import net.hypixel.skyblock.util.DefenseReplacement;
+import net.hypixel.skyblock.util.ManaReplacement;
+import net.hypixel.skyblock.util.SUtil;
+import org.bukkit.ChatColor;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 
-public class EdibleMace implements ToolStatistics, MaterialFunction, Ability {
-    public static final Map<UUID, Boolean> edibleMace;
+public class EdibleMace
+implements ToolStatistics,
+MaterialFunction,
+Ability {
+    public static final Map<UUID, Boolean> edibleMace = new HashMap<UUID, Boolean>();
 
     @Override
     public int getBaseDamage() {
@@ -64,19 +79,20 @@ public class EdibleMace implements ToolStatistics, MaterialFunction, Ability {
     }
 
     @Override
-    public void onAbilityUse(final Player player1, final SItem sItem) {
-        if (!EdibleMace.edibleMace.containsKey(player1.getUniqueId())) {
-            EdibleMace.edibleMace.put(player1.getUniqueId(), false);
+    public void onAbilityUse(Player player1, SItem sItem) {
+        if (!edibleMace.containsKey(player1.getUniqueId())) {
+            edibleMace.put(player1.getUniqueId(), false);
         }
-        if (EdibleMace.edibleMace.containsKey(player1.getUniqueId())) {
-            if (!EdibleMace.edibleMace.get(player1.getUniqueId())) {
-                final int manaPool = SUtil.blackMagic(PlayerUtils.STATISTICS_CACHE.get(player1.getUniqueId()).getIntelligence().addAll() + 100.0);
+        if (edibleMace.containsKey(player1.getUniqueId())) {
+            if (!edibleMace.get(player1.getUniqueId()).booleanValue()) {
+                int manaPool = SUtil.blackMagic(PlayerUtils.STATISTICS_CACHE.get(player1.getUniqueId()).getIntelligence().addAll() + 100.0);
                 final int cost = PlayerUtils.getFinalManaCost(player1, sItem, 100);
-                final boolean take = PlayerUtils.takeMana(player1, cost);
+                boolean take = PlayerUtils.takeMana(player1, cost);
                 if (!take) {
                     player1.playSound(player1.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
-                    final long c = System.currentTimeMillis();
-                    Repeater.MANA_REPLACEMENT_MAP.put(player1.getUniqueId(), new ManaReplacement() {
+                    final long c2 = System.currentTimeMillis();
+                    Repeater.MANA_REPLACEMENT_MAP.put(player1.getUniqueId(), new ManaReplacement(){
+
                         @Override
                         public String getReplacement() {
                             return "" + ChatColor.RED + ChatColor.BOLD + "NOT ENOUGH MANA";
@@ -84,13 +100,14 @@ public class EdibleMace implements ToolStatistics, MaterialFunction, Ability {
 
                         @Override
                         public long getEnd() {
-                            return c + 1500L;
+                            return c2 + 1500L;
                         }
                     });
                     return;
                 }
-                final long c = System.currentTimeMillis();
-                Repeater.DEFENSE_REPLACEMENT_MAP.put(player1.getUniqueId(), new DefenseReplacement() {
+                final long c3 = System.currentTimeMillis();
+                Repeater.DEFENSE_REPLACEMENT_MAP.put(player1.getUniqueId(), new DefenseReplacement(){
+
                     @Override
                     public String getReplacement() {
                         return ChatColor.AQUA + "-" + cost + " Mana (" + ChatColor.GOLD + EdibleMace.this.getAbilityName() + ChatColor.AQUA + ")";
@@ -98,10 +115,10 @@ public class EdibleMace implements ToolStatistics, MaterialFunction, Ability {
 
                     @Override
                     public long getEnd() {
-                        return c + 2000L;
+                        return c3 + 2000L;
                     }
                 });
-                EdibleMace.edibleMace.put(player1.getUniqueId(), true);
+                edibleMace.put(player1.getUniqueId(), true);
             } else {
                 player1.sendMessage(ChatColor.RED + "The ability is already active!");
             }
@@ -117,8 +134,5 @@ public class EdibleMace implements ToolStatistics, MaterialFunction, Ability {
     public int getManaCost() {
         return 0;
     }
-
-    static {
-        edibleMace = new HashMap<UUID, Boolean>();
-    }
 }
+

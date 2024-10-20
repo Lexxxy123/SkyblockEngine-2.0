@@ -1,16 +1,27 @@
+/*
+ * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
+ * 
+ * Could not load the following classes:
+ *  org.bukkit.ChatColor
+ *  org.bukkit.entity.Player
+ */
 package net.hypixel.skyblock.item.weapon;
 
-import net.hypixel.skyblock.item.*;
+import net.hypixel.skyblock.item.Ability;
+import net.hypixel.skyblock.item.GenericItemType;
+import net.hypixel.skyblock.item.MaterialFunction;
+import net.hypixel.skyblock.item.Rarity;
+import net.hypixel.skyblock.item.SItem;
+import net.hypixel.skyblock.item.SpecificItemType;
+import net.hypixel.skyblock.item.ToolStatistics;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import net.hypixel.skyblock.item.*;
 
-public class JerryChineGun implements ToolStatistics, MaterialFunction, Ability {
-    String ACT;
-
-    public JerryChineGun() {
-        this.ACT = "true";
-    }
+public class JerryChineGun
+implements ToolStatistics,
+MaterialFunction,
+Ability {
+    String ACT = "true";
 
     @Override
     public int getBaseDamage() {
@@ -58,7 +69,7 @@ public class JerryChineGun implements ToolStatistics, MaterialFunction, Ability 
     }
 
     @Override
-    public void onAbilityUse(final Player player1, final SItem sItem) {
+    public void onAbilityUse(Player player1, SItem sItem) {
         player1.sendMessage(ChatColor.RED + "This item ability has been removed from the game!");
     }
 
@@ -72,3 +83,4 @@ public class JerryChineGun implements ToolStatistics, MaterialFunction, Ability 
         return 0;
     }
 }
+
