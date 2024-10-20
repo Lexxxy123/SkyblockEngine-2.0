@@ -1,3 +1,2 @@
-mongodb:
-  name: 'skyblock'
-  uri: 'localhost'
+name: "SkyBlock"
+uri : "mongodb://localhost:27017"
