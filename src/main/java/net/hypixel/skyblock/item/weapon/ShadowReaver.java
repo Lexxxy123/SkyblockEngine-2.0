@@ -13,7 +13,7 @@ import net.hypixel.skyblock.util.Sputnik;
 import java.math.BigDecimal;
 import java.util.Set;
 
-public class AspectOfTheEnd implements ToolStatistics, MaterialFunction, Ability {
+public class ShadowReaver implements ToolStatistics, MaterialFunction, Ability {
     public BigDecimal a;
 
     @Override
