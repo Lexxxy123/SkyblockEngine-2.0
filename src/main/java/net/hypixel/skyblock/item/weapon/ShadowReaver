@@ -18,17 +18,17 @@ public class AspectOfTheEnd implements ToolStatistics, MaterialFunction, Ability
 
     @Override
     public int getBaseDamage() {
-        return 100;
+        return 9999999999999;
     }
 
     @Override
     public double getBaseStrength() {
-        return 100.0;
+        return 9999999.0;
     }
 
     @Override
     public String getDisplayName() {
-        return "Aspect of the End";
+        return "Shadow Reaver";
     }
 
     @Override
@@ -53,19 +53,19 @@ public class AspectOfTheEnd implements ToolStatistics, MaterialFunction, Ability
 
     @Override
     public String getAbilityName() {
-        return "Instant Transmission";
+        return "Instant Transmission 100x";
     }
 
     @Override
     public String getAbilityDescription() {
-        return "Teleports you " + ChatColor.GREEN + "8 blocks " + ChatColor.GRAY + "ahead and gain " + ChatColor.GREEN + "+50 " + ChatColor.WHITE + "✦ " + ChatColor.WHITE + "Speed " + ChatColor.GRAY + "for " + ChatColor.GREEN + "3 seconds.";
+        return "Teleports you " + ChatColor.GREEN + "99 blocks " + ChatColor.GRAY + "ahead and gain " + ChatColor.GREEN + "+50 " + ChatColor.WHITE + "✦ " + ChatColor.WHITE + "Speed " + ChatColor.GRAY + "for " + ChatColor.GREEN + "3 seconds.";
     }
 
     @Override
     public void onAbilityUse(final Player player, final SItem sItem) {
         try {
-            int f_ = 8;
-            for (int range = 1; range < 8; ++range) {
+            int f_ = 99;
+            for (int range = 1; range < 99; ++range) {
                 final Location location = player.getTargetBlock((Set) null, range).getLocation();
                 if (location.getBlock().getType() != Material.AIR) {
                     f_ = range;
@@ -76,7 +76,7 @@ public class AspectOfTheEnd implements ToolStatistics, MaterialFunction, Ability
             location2.setYaw(player.getLocation().getYaw());
             location2.setPitch(player.getLocation().getPitch());
             location2.add(0.5, 0.0, 0.5);
-            if (f_ != 8) {
+            if (f_ != 99) {
                 player.sendMessage(ChatColor.RED + "There are blocks in the way!");
             }
             if (f_ > 1) {
