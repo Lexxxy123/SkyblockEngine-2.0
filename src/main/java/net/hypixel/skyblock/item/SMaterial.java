@@ -80,6 +80,7 @@ import java.util.stream.Collectors;
 public enum SMaterial {
     DWARVEN_MITRIL(Material.PRISMARINE_CRYSTALS, Mitril.class),
     DWARVEN_TITANIUM(Material.SKULL_ITEM, Titanium.class),
+    HIDDEN_SHADOW_REAVER(Material.DIAMOND_SWORD, ShadowReaver.class), 
     HIDDEN_BOOSTER_COOKIE(Material.COOKIE, BoosterCookie.class),
     HIDDEN_ETHERWARP_CONDUIT(Material.SKULL_ITEM, EtherwarpConduit.class),
     HIDDEN_ETHERWARP_MERGER(Material.SKULL_ITEM, EtherwarpMerger.class),
