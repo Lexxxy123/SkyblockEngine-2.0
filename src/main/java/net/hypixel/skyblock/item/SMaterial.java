@@ -52,12 +52,22 @@ import net.hypixel.skyblock.item.armor.PrecursorEye;
 import net.hypixel.skyblock.item.armor.ShadowGoggles;
 import net.hypixel.skyblock.item.armor.SpidersBoots;
 import net.hypixel.skyblock.item.armor.TarantulaHelmet;
+import net.hypixel.skyblock.item.armor.VoidlingsWardenHelmet;
 import net.hypixel.skyblock.item.armor.WardenHelmet;
 import net.hypixel.skyblock.item.armor.WitherGoggles;
 import net.hypixel.skyblock.item.armor.enderman.VoidbaneBoots;
 import net.hypixel.skyblock.item.armor.enderman.VoidbaneChestplate;
 import net.hypixel.skyblock.item.armor.enderman.VoidbaneHelmet;
 import net.hypixel.skyblock.item.armor.enderman.VoidbaneLeggings;
+import net.hypixel.skyblock.item.armor.gigachad.GigachadBoots;
+import net.hypixel.skyblock.item.armor.gigachad.GigachadChestplate;
+import net.hypixel.skyblock.item.armor.gigachad.GigachadHelmet;
+import net.hypixel.skyblock.item.armor.gigachad.GigachadLeggings;
+import net.hypixel.skyblock.item.armor.gigachad.GigachadSet;
+import net.hypixel.skyblock.item.armor.googlearmour.GoogleBoots;
+import net.hypixel.skyblock.item.armor.googlearmour.GoogleChestplate;
+import net.hypixel.skyblock.item.armor.googlearmour.GoogleHelmet;
+import net.hypixel.skyblock.item.armor.googlearmour.GoogleLeggings;
 import net.hypixel.skyblock.item.armor.hardened.HardenedDiamondBoots;
 import net.hypixel.skyblock.item.armor.hardened.HardenedDiamondChestplate;
 import net.hypixel.skyblock.item.armor.hardened.HardenedDiamondHelmet;
@@ -72,6 +82,11 @@ import net.hypixel.skyblock.item.armor.miner.MinerChestplate;
 import net.hypixel.skyblock.item.armor.miner.MinerHelmet;
 import net.hypixel.skyblock.item.armor.miner.MinerLeggings;
 import net.hypixel.skyblock.item.armor.miner.MinerSet;
+import net.hypixel.skyblock.item.armor.minichad.MinichadBoots;
+import net.hypixel.skyblock.item.armor.minichad.MinichadChestplate;
+import net.hypixel.skyblock.item.armor.minichad.MinichadHelmet;
+import net.hypixel.skyblock.item.armor.minichad.MinichadLeggings;
+import net.hypixel.skyblock.item.armor.minichad.MinichadSet;
 import net.hypixel.skyblock.item.armor.necron.NecronBoots;
 import net.hypixel.skyblock.item.armor.necron.NecronChestplate;
 import net.hypixel.skyblock.item.armor.necron.NecronFullSet;
@@ -238,9 +253,15 @@ import net.hypixel.skyblock.item.mining.Titanium;
 import net.hypixel.skyblock.item.oddities.BagOfCoins;
 import net.hypixel.skyblock.item.oddities.Bedrock;
 import net.hypixel.skyblock.item.oddities.BoosterCookie;
+import net.hypixel.skyblock.item.oddities.CompressedBits;
+import net.hypixel.skyblock.item.oddities.CompressedVoidFrag;
 import net.hypixel.skyblock.item.oddities.CreativeMind;
 import net.hypixel.skyblock.item.oddities.CrystalFragment;
 import net.hypixel.skyblock.item.oddities.DeadBushOfLove;
+import net.hypixel.skyblock.item.oddities.DemonsPearl;
+import net.hypixel.skyblock.item.oddities.DiamondSadanTrophy;
+import net.hypixel.skyblock.item.oddities.DimoonCatalyst;
+import net.hypixel.skyblock.item.oddities.DimoonFragment;
 import net.hypixel.skyblock.item.oddities.EtherwarpConduit;
 import net.hypixel.skyblock.item.oddities.EtherwarpMerger;
 import net.hypixel.skyblock.item.oddities.EtherwarpTranscoder;
@@ -250,6 +271,7 @@ import net.hypixel.skyblock.item.oddities.GodPot;
 import net.hypixel.skyblock.item.oddities.GoldSadanTrophy;
 import net.hypixel.skyblock.item.oddities.GoldenPowder;
 import net.hypixel.skyblock.item.oddities.GrapplingHook;
+import net.hypixel.skyblock.item.oddities.GyrokineticEye;
 import net.hypixel.skyblock.item.oddities.HotPotatoBook;
 import net.hypixel.skyblock.item.oddities.JudgementCore;
 import net.hypixel.skyblock.item.oddities.MaddoxBatphone;
@@ -261,6 +283,7 @@ import net.hypixel.skyblock.item.oddities.RefinedPowder;
 import net.hypixel.skyblock.item.oddities.ReforgeStone;
 import net.hypixel.skyblock.item.oddities.RemnantOfTheEye;
 import net.hypixel.skyblock.item.oddities.RevenantViscera;
+import net.hypixel.skyblock.item.oddities.ShardOftheVoidOrb;
 import net.hypixel.skyblock.item.oddities.ShardoftheDiamondOrb;
 import net.hypixel.skyblock.item.oddities.ShardoftheShredded;
 import net.hypixel.skyblock.item.oddities.SkyBlockMenu;
@@ -278,7 +301,11 @@ import net.hypixel.skyblock.item.orb.ManaFluxPowerOrb;
 import net.hypixel.skyblock.item.orb.OrbBuff;
 import net.hypixel.skyblock.item.orb.OverfluxPowerOrb;
 import net.hypixel.skyblock.item.orb.PlasmafluxPowerOrb;
+import net.hypixel.skyblock.item.orb.QuantumfluxPowerOrb;
 import net.hypixel.skyblock.item.orb.RadiantPowerOrb;
+import net.hypixel.skyblock.item.pet.AragornPet;
+import net.hypixel.skyblock.item.pet.ArchivyPet;
+import net.hypixel.skyblock.item.pet.BabyGhast;
 import net.hypixel.skyblock.item.pet.BabyYeti;
 import net.hypixel.skyblock.item.pet.BabyYeti2;
 import net.hypixel.skyblock.item.pet.BlackCat;
@@ -288,6 +315,7 @@ import net.hypixel.skyblock.item.pet.EndermanPet;
 import net.hypixel.skyblock.item.pet.GoldenTigerPet;
 import net.hypixel.skyblock.item.pet.MagicivyPet;
 import net.hypixel.skyblock.item.pet.TankPet;
+import net.hypixel.skyblock.item.pet.VoidlingsPet;
 import net.hypixel.skyblock.item.pickaxe.vanilla.DiamondPickaxe;
 import net.hypixel.skyblock.item.pickaxe.vanilla.GoldenPickaxe;
 import net.hypixel.skyblock.item.pickaxe.vanilla.IronPickaxe;
@@ -333,6 +361,7 @@ import net.hypixel.skyblock.item.weapon.AxeOfTheShredded;
 import net.hypixel.skyblock.item.weapon.Bonemerang;
 import net.hypixel.skyblock.item.weapon.BonzoStaff;
 import net.hypixel.skyblock.item.weapon.Dagger;
+import net.hypixel.skyblock.item.weapon.DimoonizaryDagger;
 import net.hypixel.skyblock.item.weapon.EdibleMace;
 import net.hypixel.skyblock.item.weapon.EmeraldBlade;
 import net.hypixel.skyblock.item.weapon.Excrarion;
@@ -340,6 +369,7 @@ import net.hypixel.skyblock.item.weapon.FloridZombieSword;
 import net.hypixel.skyblock.item.weapon.FlowerOfTruth;
 import net.hypixel.skyblock.item.weapon.FrozenScythe;
 import net.hypixel.skyblock.item.weapon.GiantSword;
+import net.hypixel.skyblock.item.weapon.GyrokineticWand;
 import net.hypixel.skyblock.item.weapon.Hyperion;
 import net.hypixel.skyblock.item.weapon.IceSprayWand;
 import net.hypixel.skyblock.item.weapon.JerryChineGun;
@@ -353,6 +383,7 @@ import net.hypixel.skyblock.item.weapon.RevantusSword;
 import net.hypixel.skyblock.item.weapon.RogueSword;
 import net.hypixel.skyblock.item.weapon.Scylla;
 import net.hypixel.skyblock.item.weapon.ShadowFury;
+import net.hypixel.skyblock.item.weapon.SoulWhip;
 import net.hypixel.skyblock.item.weapon.SpiritSceptre;
 import net.hypixel.skyblock.item.weapon.Valkyrie;
 import net.hypixel.skyblock.item.weapon.VoidedgeKatana;
@@ -377,11 +408,24 @@ public enum SMaterial {
     HIDDEN_ETHERWARP_TRANSCODER(Material.SKULL_ITEM, EtherwarpTranscoder.class),
     HIDDEN_USSR_HELMET(Material.STAINED_GLASS, BlyatHelmet.class, 14),
     HIDDEN_DONATOR_HELMET(Material.STAINED_GLASS, DonatorHelmet.class, 14),
+    HIDDEN_GYROKINETIC_WAND(Material.BLAZE_ROD, GyrokineticWand.class),
     HIDDEN_GOLDEN_TIGER_2022(Material.SKULL_ITEM, GoldenTigerPet.class),
+    HIDDEN_ARCHIVY(Material.SKULL_ITEM, ArchivyPet.class),
+    HIDDEN_ARAGORN_PET(Material.SKULL_ITEM, AragornPet.class),
     HIDDEN_MAGICIVY(Material.SKULL_ITEM, MagicivyPet.class),
     HIDDEN_USSR_T34_TANK_PET(Material.SKULL_ITEM, TankPet.class),
     HIDDEN_REFINED_POWDER(Material.SULPHUR, RefinedPowder.class),
+    HIDDEN_COMPRESSED_BITS(Material.DIAMOND, CompressedBits.class),
+    HIDDEN_GYRO_EYE(Material.EYE_OF_ENDER, GyrokineticEye.class),
+    HIDDEN_SOUL_WHIP(Material.FISHING_ROD, SoulWhip.class),
+    HIDDEN_VOIDLINGS_WARDEN_HELMET(Material.SKULL_ITEM, VoidlingsWardenHelmet.class),
     HIDDEN_VOID_FRAGMENT(Material.EYE_OF_ENDER, VoidFragment.class),
+    HIDDEN_DEMONS_PEARL(Material.SKULL_ITEM, DemonsPearl.class),
+    HIDDEN_COMPRESSED_VOID_FRAG(Material.SKULL_ITEM, CompressedVoidFrag.class),
+    HIDDEN_VOIDLINGS_PET(Material.SKULL_ITEM, VoidlingsPet.class),
+    HIDDEN_DIMOONIZARY_DAGGER(Material.DIAMOND_SWORD, DimoonizaryDagger.class),
+    HIDDEN_DIMOON_GEM(Material.SKULL_ITEM, DimoonCatalyst.class),
+    HIDDEN_DIMOON_FRAG(Material.SKULL_ITEM, DimoonFragment.class),
     DAGGER(Material.IRON_SWORD, Dagger.class),
     ASPECT_OF_THE_END(Material.DIAMOND_SWORD, AspectOfTheEnd.class),
     LEAPING_SWORD(Material.GOLD_SWORD, LeapingSword.class),
@@ -412,11 +456,24 @@ public enum SMaterial {
     ZOMBIE_SWORD_T3(Material.GOLD_SWORD, FloridZombieSword.class),
     PRISMARINE_BLADE(Material.PRISMARINE_SHARD, PrismarineBlade.class),
     HIDDEN_EXCRARION(Material.GOLD_SWORD, Excrarion.class),
+    HIDDEN_GIGACHAD_HELMET(Material.SKULL_ITEM, GigachadHelmet.class),
+    HIDDEN_GIGACHAD_CHESTPLATE(Material.LEATHER_CHESTPLATE, GigachadChestplate.class),
+    HIDDEN_GIGACHAD_LEGGINGS(Material.LEATHER_LEGGINGS, GigachadLeggings.class),
+    HIDDEN_GIGACHAD_BOOTS(Material.LEATHER_BOOTS, GigachadBoots.class),
+    HIDDEN_MINICHAD_HELMET(Material.SKULL_ITEM, MinichadHelmet.class),
+    HIDDEN_MINICHAD_CHESTPLATE(Material.LEATHER_CHESTPLATE, MinichadChestplate.class),
+    HIDDEN_MINICHAD_LEGGINGS(Material.LEATHER_LEGGINGS, MinichadLeggings.class),
+    HIDDEN_MINICHAD_BOOTS(Material.LEATHER_BOOTS, MinichadBoots.class),
     HIDDEN_SHARD_DIAMOND(Material.SKULL_ITEM, ShardoftheDiamondOrb.class),
+    HIDDEN_SHARD_VOID(Material.SKULL_ITEM, ShardOftheVoidOrb.class),
     HIDDEN_REVANTUS_SWORD(Material.IRON_SWORD, RevantusSword.class),
     WARDEN_HELMET(Material.SKULL_ITEM, WardenHelmet.class),
     CROWN_OF_GREED(Material.GOLD_HELMET, CrownOfGreed.class),
     PRECURSOR_EYE(Material.SKULL_ITEM, PrecursorEye.class),
+    GOOGLE_HELMET(Material.SKULL_ITEM, GoogleHelmet.class),
+    GOOGLE_CHESTPLATE(Material.LEATHER_CHESTPLATE, GoogleChestplate.class),
+    GOOGLE_LEGGINGS(Material.LEATHER_LEGGINGS, GoogleLeggings.class),
+    GOOGLE_BOOTS(Material.LEATHER_BOOTS, GoogleBoots.class),
     NECRON_HELMET(Material.SKULL_ITEM, NecronHelmet.class),
     NECRON_CHESTPLATE(Material.LEATHER_CHESTPLATE, NecronChestplate.class),
     NECRON_LEGGINGS(Material.LEATHER_LEGGINGS, NecronLeggings.class),
@@ -452,12 +509,14 @@ public enum SMaterial {
     MANA_FLUX_POWER_ORB(Material.SKULL_ITEM, ManaFluxPowerOrb.class),
     OVERFLUX_POWER_ORB(Material.SKULL_ITEM, OverfluxPowerOrb.class),
     PLASMAFLUX_POWER_ORB(Material.SKULL_ITEM, PlasmafluxPowerOrb.class),
+    HIDDEN_QUANTUMFLUX_POWER_ORB(Material.SKULL_ITEM, QuantumfluxPowerOrb.class),
     HOT_POTATO_BOOK(Material.BOOK, HotPotatoBook.class),
     DEAD_BUSH_OF_LOVE(Material.DEAD_BUSH, DeadBushOfLove.class),
     GAME_BREAKER(Material.TNT, GameBreaker.class),
     GAME_ANNIHILATOR(Material.SKULL_ITEM, GameAnnihilator.class),
     CREATIVE_MIND(Material.PAINTING, CreativeMind.class),
     GOLDEN_TROPHY_SADAN(Material.SKULL_ITEM, GoldSadanTrophy.class),
+    DIAMOND_TROPHY_SADAN(Material.SKULL_ITEM, DiamondSadanTrophy.class),
     SUMMONING_EYE(Material.SKULL_ITEM, SummoningEye.class),
     REMNANT_OF_THE_EYE(Material.SKULL_ITEM, RemnantOfTheEye.class),
     WITHER_GOGGLES(Material.SKULL_ITEM, WitherGoggles.class),
@@ -598,6 +657,7 @@ public enum SMaterial {
     SPIRIT_RUNE(Material.SKULL_ITEM, SpiritRune.class),
     COUTURE_RUNE(Material.SKULL_ITEM, CoutureRune.class),
     ENDERMAN_PET(Material.SKULL_ITEM, EndermanPet.class),
+    BABY_GHAST(Material.SKULL_ITEM, BabyGhast.class),
     SLEEPING_EYE(Material.SKULL_ITEM, SleepingEye.class),
     SUMMONING_FRAME(Material.ENDER_PORTAL_FRAME, SummoningFrame.class),
     WARDEN_SUMMONING_EYE(Material.SKULL_ITEM, WardenSummoningEye.class),
@@ -1228,6 +1288,8 @@ public enum SMaterial {
     public static NecronFullSet NECRONS_SET;
     public static StormFullSet STORMS_SET;
     public static SorrowArmorSet SORROW_SET;
+    public static GigachadSet GIGACHAD_SET;
+    public static MinichadSet MINICHAD_SET;
     private final Material craftMaterial;
     private final short data;
     private final Class<?> clazz;
@@ -1282,7 +1344,7 @@ public enum SMaterial {
         if (Material.LOG == material || Material.LOG_2 == material || Material.LEAVES == material || Material.LEAVES_2 == material) {
             data = (short)(data % 4);
         }
-        List results = Arrays.stream(SMaterial.values()).filter(m2 -> m2.craft && m2.getCraftMaterial() == material).collect(Collectors.toList());
+        List results = Arrays.stream(SMaterial.values()).filter(m -> m.craft && m.getCraftMaterial() == material).collect(Collectors.toList());
         for (SMaterial result : results) {
             if (result.data != data) continue;
             return result;
@@ -1295,17 +1357,17 @@ public enum SMaterial {
 
     public static <T extends ArmorSet> T registerArmorSet(Class<? extends ArmorSet> set) {
         try {
-            ArmorSet s2 = set.newInstance();
-            CACHED_SETS.add(s2);
-            return (T)s2;
-        } catch (IllegalAccessException | InstantiationException e2) {
-            e2.printStackTrace();
+            ArmorSet s = set.newInstance();
+            CACHED_SETS.add(s);
+            return (T)s;
+        } catch (IllegalAccessException | InstantiationException e) {
+            e.printStackTrace();
             return null;
         }
     }
 
     public static ArmorSet findArmorSet(SMaterial helmet, SMaterial chestplate, SMaterial leggings, SMaterial boots) {
-        List subList = CACHED_SETS.stream().filter(s2 -> s2.getHelmet().equals(helmet.getStatistics().getClass()) && s2.getChestplate().equals(chestplate.getStatistics().getClass()) && s2.getLeggings().equals(leggings.getStatistics().getClass()) && s2.getBoots().equals(boots.getStatistics().getClass())).collect(Collectors.toList());
+        List subList = CACHED_SETS.stream().filter(s -> s.getHelmet().equals(helmet.getStatistics().getClass()) && s.getChestplate().equals(chestplate.getStatistics().getClass()) && s.getLeggings().equals(leggings.getStatistics().getClass()) && s.getBoots().equals(boots.getStatistics().getClass())).collect(Collectors.toList());
         if (0 == subList.size()) {
             return null;
         }
@@ -1313,7 +1375,7 @@ public enum SMaterial {
     }
 
     public static ArmorSet findArmorSet(SMaterial piece) {
-        List subList = CACHED_SETS.stream().filter(s2 -> s2.getHelmet().equals(piece.getStatistics().getClass()) || s2.getChestplate().equals(piece.getStatistics().getClass()) || s2.getLeggings().equals(piece.getStatistics().getClass()) || s2.getBoots().equals(piece.getStatistics().getClass())).collect(Collectors.toList());
+        List subList = CACHED_SETS.stream().filter(s -> s.getHelmet().equals(piece.getStatistics().getClass()) || s.getChestplate().equals(piece.getStatistics().getClass()) || s.getLeggings().equals(piece.getStatistics().getClass()) || s.getBoots().equals(piece.getStatistics().getClass())).collect(Collectors.toList());
         if (0 == subList.size()) {
             return null;
         }
@@ -1497,6 +1559,8 @@ public enum SMaterial {
         NECRONS_SET = (NecronFullSet)SMaterial.registerArmorSet(NecronFullSet.class);
         STORMS_SET = (StormFullSet)SMaterial.registerArmorSet(StormFullSet.class);
         SORROW_SET = (SorrowArmorSet)SMaterial.registerArmorSet(SorrowArmorSet.class);
+        GIGACHAD_SET = (GigachadSet)SMaterial.registerArmorSet(GigachadSet.class);
+        MINICHAD_SET = (MinichadSet)SMaterial.registerArmorSet(MinichadSet.class);
     }
 
     public static enum VagueEntityMaterial {

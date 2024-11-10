@@ -164,8 +164,8 @@ SlayerBoss {
         ((ArmorStand)this.hologram.getEntity()).setGravity(false);
         this.hologram.getEntity().setCustomNameVisible(true);
         entity.setMetadata("notDisplay", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
-        Entity e2 = this.getBukkitEntity().getHandle();
-        double height = e2.getBoundingBox().e - e2.getBoundingBox().b;
+        Entity e = this.getBukkitEntity().getHandle();
+        double height = e.getBoundingBox().e - e.getBoundingBox().b;
         this.hologram_name = new SEntity(entity.getLocation().add(0.0, height, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND, new Object[0]);
         ((ArmorStand)this.hologram_name.getEntity()).setVisible(false);
         ((ArmorStand)this.hologram_name.getEntity()).setGravity(false);
@@ -215,11 +215,11 @@ SlayerBoss {
     }
 
     @Override
-    public void onAttack(EntityDamageByEntityEvent e2) {
-        if (!(e2.getEntity() instanceof Player)) {
+    public void onAttack(EntityDamageByEntityEvent e) {
+        if (!(e.getEntity() instanceof Player)) {
             return;
         }
-        Player player = (Player)e2.getEntity();
+        Player player = (Player)e.getEntity();
         User.getUser(player.getUniqueId()).damage(TRUE_DAMAGE_VALUES.getByNumber(this.tier), EntityDamageEvent.DamageCause.ENTITY_ATTACK, (org.bukkit.entity.Entity)this.getBukkitEntity());
         if (player.getUniqueId().equals(this.spawnerUUID)) {
             this.lastDamage = System.currentTimeMillis() + 15000L;
@@ -235,9 +235,9 @@ SlayerBoss {
     }
 
     @Override
-    public void onDamage(SEntity sEntity, org.bukkit.entity.Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
-        if (e2.getDamager() instanceof Arrow) {
-            e2.setCancelled(true);
+    public void onDamage(SEntity sEntity, org.bukkit.entity.Entity damager, EntityDamageByEntityEvent e, AtomicDouble damage) {
+        if (e.getDamager() instanceof Arrow) {
+            e.setCancelled(true);
             return;
         }
         Player player = Bukkit.getPlayer((UUID)this.spawnerUUID);
@@ -254,14 +254,14 @@ SlayerBoss {
                 this.isActive = false;
             }, 120L);
             this.pupsSpawned = true;
-            for (int i2 = 0; 10 > i2; ++i2) {
+            for (int i = 0; 10 > i; ++i) {
                 SUtil.delay(() -> {
                     if (!this.bukkitEntity.isDead()) {
                         List<SEntity> pups = this.pups;
                         SEntity sEntity2 = new SEntity((org.bukkit.entity.Entity)sEntity.getEntity(), SEntityType.SVEN_PUP, this.getEntityMaxHealth() * 0.1, this.getDamageDealt() * 0.5, player, this);
                         pups.add(sEntity2);
                     }
-                }, i2 * 20);
+                }, i * 20);
             }
         }
     }

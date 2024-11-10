@@ -67,8 +67,8 @@ extends GUI {
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
-                    new HexUltimateEnchantments(item, finalPage - 1).open((Player)e2.getWhoClicked());
+                public void run(InventoryClickEvent e) {
+                    new HexUltimateEnchantments(item, finalPage - 1).open((Player)e.getWhoClicked());
                     HexUltimateEnchantments.this.upgradeableItem = null;
                 }
 
@@ -87,8 +87,8 @@ extends GUI {
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
-                    new HexUltimateEnchantments(item, finalPage + 1).open((Player)e2.getWhoClicked());
+                public void run(InventoryClickEvent e) {
+                    new HexUltimateEnchantments(item, finalPage + 1).open((Player)e.getWhoClicked());
                     HexUltimateEnchantments.this.upgradeableItem = null;
                 }
 
@@ -103,15 +103,15 @@ extends GUI {
                 }
             });
         }
-        int i2 = 0;
-        while (i2 < items.size()) {
-            final int slot = INTERIOR[i2];
-            final int finalI = i2++;
+        int i = 0;
+        while (i < items.size()) {
+            final int slot = INTERIOR[i];
+            final int finalI = i++;
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
-                    Player player = (Player)e2.getWhoClicked();
+                public void run(InventoryClickEvent e) {
+                    Player player = (Player)e.getWhoClicked();
                     player.playSound(player.getLocation(), Sound.ORB_PICKUP, 10.0f, 2.0f);
                     for (Enchantment enchantment : ((SItem)items.get(finalI)).getEnchantments()) {
                         EnchantmentType type = enchantment.getType();
@@ -143,7 +143,7 @@ extends GUI {
                                 HexUltimateEnchantments.this.selected.remove(selectedEnchantments);
                             }
                             player.sendMessage(ChatColor.RED + "You may not apply multiple ultimate enchantments on your item!");
-                            e2.setCancelled(true);
+                            e.setCancelled(true);
                             return;
                         }
                         player.sendMessage(ChatColor.GREEN + "You added the Enchantment " + type.getName() + " to your selection but your old Ultimate Enchantment was removed!");
@@ -167,15 +167,15 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 for (EnchantmentType type : HexUltimateEnchantments.this.selected) {
                     item.addEnchantment(type, type.maxLvl);
                 }
-                e2.getWhoClicked().sendMessage(SUtil.color("&aYou applied an Ultimate Enchantment to your " + item.getFullName()));
+                e.getWhoClicked().sendMessage(SUtil.color("&aYou applied an Ultimate Enchantment to your " + item.getFullName()));
                 HexUltimateEnchantments.this.forceclose = true;
-                Player p2 = (Player)e2.getWhoClicked();
-                p2.playSound(p2.getLocation(), Sound.ANVIL_USE, 10.0f, 1.0f);
-                new HexGUI(p2.getPlayer(), item).open(p2);
+                Player p = (Player)e.getWhoClicked();
+                p.playSound(p.getLocation(), Sound.ANVIL_USE, 10.0f, 1.0f);
+                new HexGUI(p.getPlayer(), item).open(p);
                 HexUltimateEnchantments.this.upgradeableItem = null;
             }
 
@@ -192,9 +192,9 @@ extends GUI {
     }
 
     @Override
-    public void onClose(InventoryCloseEvent e2) {
+    public void onClose(InventoryCloseEvent e) {
         if (!this.forceclose && this.upgradeableItem != null) {
-            e2.getPlayer().getInventory().addItem(new ItemStack[]{this.upgradeableItem.getStack()});
+            e.getPlayer().getInventory().addItem(new ItemStack[]{this.upgradeableItem.getStack()});
         }
     }
 }

@@ -50,7 +50,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 if (HexGUI.this.upgradeableItem == null) {
                     player.sendMessage(ChatColor.RED + "You must put an item into the hex to use this menu!");
                     player.playSound(player.getLocation(), Sound.VILLAGER_NO, 10.0f, 1.0f);
@@ -74,7 +74,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 if (HexGUI.this.upgradeableItem == null) {
                     player.sendMessage(ChatColor.RED + "You must put an item into the hex to use this menu!");
                     player.playSound(player.getLocation(), Sound.VILLAGER_NO, 10.0f, 1.0f);
@@ -98,7 +98,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 if (HexGUI.this.upgradeableItem == null) {
                     player.sendMessage(ChatColor.RED + "You must put an item into the hex to use this menu!");
                     player.playSound(player.getLocation(), Sound.VILLAGER_NO, 10.0f, 1.0f);
@@ -122,7 +122,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 if (HexGUI.this.upgradeableItem == null) {
                     player.sendMessage(ChatColor.RED + "You must put an item into the hex to use this menu!");
                     player.playSound(player.getLocation(), Sound.VILLAGER_NO, 10.0f, 1.0f);
@@ -146,7 +146,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 if (HexGUI.this.upgradeableItem == null) {
                     player.sendMessage(ChatColor.RED + "You must put an item into the hex to use this menu!");
                     player.playSound(player.getLocation(), Sound.VILLAGER_NO, 10.0f, 1.0f);
@@ -286,20 +286,20 @@ extends GUI {
     }
 
     @Override
-    public void onClose(InventoryCloseEvent e2) {
+    public void onClose(InventoryCloseEvent e) {
         if (!this.forceclose && this.upgradeableItem != null) {
-            e2.getPlayer().getInventory().addItem(new ItemStack[]{this.upgradeableItem.getStack()});
+            e.getPlayer().getInventory().addItem(new ItemStack[]{this.upgradeableItem.getStack()});
         }
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e2) throws IOException {
-        this.inventory = e2.getInventory();
+    public void onOpen(GUIOpenEvent e) throws IOException {
+        this.inventory = e.getInventory();
     }
 
     @Override
-    public void onBottomClick(InventoryClickEvent e2) {
-        ItemStack selected = e2.getCurrentItem();
+    public void onBottomClick(InventoryClickEvent e) {
+        ItemStack selected = e.getCurrentItem();
         if (selected == null || selected.getType() == Material.AIR) {
             return;
         }
@@ -307,7 +307,7 @@ extends GUI {
         if (item == null) {
             item = SItem.convert(selected);
         }
-        PlayerInventory playerInventory = e2.getWhoClicked().getInventory();
+        PlayerInventory playerInventory = e.getWhoClicked().getInventory();
         this.upgradeableItem = item;
         playerInventory.remove(selected);
         this.inventory.setItem(22, this.upgradeableItem.getStack());

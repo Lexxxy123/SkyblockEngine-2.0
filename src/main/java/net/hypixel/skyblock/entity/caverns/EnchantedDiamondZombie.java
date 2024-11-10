@@ -39,6 +39,11 @@ extends BaseZombie {
     }
 
     @Override
+    public int mobLevel() {
+        return 20;
+    }
+
+    @Override
     public SEntityEquipment getEntityEquipment() {
         return new SEntityEquipment(SUtil.enchant(new ItemStack(Material.DIAMOND_SWORD)), SUtil.enchant(new ItemStack(Material.DIAMOND_BLOCK)), SUtil.enchant(new ItemStack(Material.DIAMOND_CHESTPLATE)), SUtil.enchant(new ItemStack(Material.DIAMOND_LEGGINGS)), SUtil.enchant(new ItemStack(Material.DIAMOND_BOOTS)));
     }

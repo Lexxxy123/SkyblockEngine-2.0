@@ -132,13 +132,13 @@ Ability {
     }
 
     @Override
-    public void onInteraction(PlayerInteractEvent e2) {
-        Player shooter = e2.getPlayer();
+    public void onInteraction(PlayerInteractEvent e) {
+        Player shooter = e.getPlayer();
         if (!CountTerm.containsKey(shooter.getUniqueId())) {
             CountTerm.put(shooter.getUniqueId(), 0);
         }
         if (shooter.getPlayer().getInventory().contains(Material.ARROW) || shooter.getPlayer().getGameMode() == GameMode.CREATIVE) {
-            if ((e2.getAction() == Action.RIGHT_CLICK_AIR || e2.getAction() == Action.RIGHT_CLICK_BLOCK) && CountTerm.get(shooter.getUniqueId()) < 3) {
+            if ((e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) && CountTerm.get(shooter.getUniqueId()) < 3) {
                 shooter.updateInventory();
                 if (USABLE_TERM.containsKey(shooter.getUniqueId()) && !USABLE_TERM.get(shooter.getUniqueId()).booleanValue()) {
                     return;
@@ -148,19 +148,19 @@ Ability {
                 }
                 shooter.playSound(shooter.getLocation(), Sound.SHOOT_ARROW, 1.0f, 1.0f);
                 Location location = shooter.getEyeLocation().add(shooter.getEyeLocation().getDirection().toLocation(shooter.getWorld()));
-                Location l2 = location.clone();
-                l2.setYaw(location.getYaw());
-                Arrow a2 = shooter.getWorld().spawnArrow(l2, l2.getDirection(), 2.1f, 1.6f);
-                a2.setShooter((ProjectileSource)shooter);
-                l2.setYaw(location.getYaw() - 13.5f);
-                shooter.getWorld().spawnArrow(l2, l2.getDirection(), 2.1f, 1.6f).setShooter((ProjectileSource)shooter);
-                l2.setYaw(location.getYaw() + 13.5f);
-                shooter.getWorld().spawnArrow(l2, l2.getDirection(), 2.1f, 1.6f).setShooter((ProjectileSource)shooter);
+                Location l = location.clone();
+                l.setYaw(location.getYaw());
+                Arrow a = shooter.getWorld().spawnArrow(l, l.getDirection(), 2.1f, 1.6f);
+                a.setShooter((ProjectileSource)shooter);
+                l.setYaw(location.getYaw() - 13.5f);
+                shooter.getWorld().spawnArrow(l, l.getDirection(), 2.1f, 1.6f).setShooter((ProjectileSource)shooter);
+                l.setYaw(location.getYaw() + 13.5f);
+                shooter.getWorld().spawnArrow(l, l.getDirection(), 2.1f, 1.6f).setShooter((ProjectileSource)shooter);
                 USABLE_TERM.put(shooter.getUniqueId(), false);
                 PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(shooter.getUniqueId());
                 double atkSpeed = Math.min(100L, Math.round(statistics.getAttackSpeed().addAll()));
                 SUtil.delay(() -> USABLE_TERM.put(shooter.getUniqueId(), true), (long)(14.0 / (1.0 + atkSpeed / 100.0)));
-            } else if (e2.getAction() == Action.LEFT_CLICK_AIR || e2.getAction() == Action.LEFT_CLICK_BLOCK) {
+            } else if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
                 shooter.updateInventory();
                 if (USABLE_TERM.containsKey(shooter.getUniqueId()) && !USABLE_TERM.get(shooter.getUniqueId()).booleanValue()) {
                     return;
@@ -170,14 +170,14 @@ Ability {
                 }
                 shooter.playSound(shooter.getLocation(), Sound.SHOOT_ARROW, 1.0f, 1.0f);
                 Location location = shooter.getEyeLocation().add(shooter.getEyeLocation().getDirection().toLocation(shooter.getWorld()));
-                Location l3 = location.clone();
-                l3.setYaw(location.getYaw());
-                Arrow a2 = shooter.getWorld().spawnArrow(l3, l3.getDirection(), 2.2f, 1.7f);
+                Location l = location.clone();
+                l.setYaw(location.getYaw());
+                Arrow a2 = shooter.getWorld().spawnArrow(l, l.getDirection(), 2.2f, 1.7f);
                 a2.setShooter((ProjectileSource)shooter);
-                l3.setYaw(location.getYaw() - 13.5f);
-                shooter.getWorld().spawnArrow(l3, l3.getDirection(), 2.2f, 1.7f).setShooter((ProjectileSource)shooter);
-                l3.setYaw(location.getYaw() + 13.5f);
-                shooter.getWorld().spawnArrow(l3, l3.getDirection(), 2.2f, 1.7f).setShooter((ProjectileSource)shooter);
+                l.setYaw(location.getYaw() - 13.5f);
+                shooter.getWorld().spawnArrow(l, l.getDirection(), 2.2f, 1.7f).setShooter((ProjectileSource)shooter);
+                l.setYaw(location.getYaw() + 13.5f);
+                shooter.getWorld().spawnArrow(l, l.getDirection(), 2.2f, 1.7f).setShooter((ProjectileSource)shooter);
                 USABLE_TERM.put(shooter.getUniqueId(), false);
                 PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(shooter.getUniqueId());
                 double atkSpeed = Math.min(100L, Math.round(statistics.getAttackSpeed().addAll()));
@@ -187,9 +187,9 @@ Ability {
     }
 
     @Override
-    public void onBowShoot(SItem bow, EntityShootBowEvent e2) {
-        Player player = (Player)e2.getEntity();
-        e2.setCancelled(true);
+    public void onBowShoot(SItem bow, EntityShootBowEvent e) {
+        Player player = (Player)e.getEntity();
+        e.setCancelled(true);
         player.updateInventory();
     }
 
@@ -224,7 +224,7 @@ Ability {
             boolean take = PlayerUtils.takeMana(player, cost);
             if (!take) {
                 player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
-                final long c2 = System.currentTimeMillis();
+                final long c = System.currentTimeMillis();
                 Repeater.MANA_REPLACEMENT_MAP.put(player.getUniqueId(), new ManaReplacement(){
 
                     @Override
@@ -234,15 +234,15 @@ Ability {
 
                     @Override
                     public long getEnd() {
-                        return c2 + 1500L;
+                        return c + 1500L;
                     }
                 });
                 return;
             }
             CountTerm.put(player.getUniqueId(), 0);
             player.getWorld().playSound(player.getLocation(), Sound.GHAST_FIREBALL, 1.0f, 1.0f);
-            for (int i2 = 1; i2 <= 40; ++i2) {
-                for (Entity entity : player.getWorld().getNearbyEntities(crystalLocation.clone().add(vector.clone().multiply((double)i2 / 40.0)), 0.7, 1.0, 0.7)) {
+            for (int i = 1; i <= 40; ++i) {
+                for (Entity entity : player.getWorld().getNearbyEntities(crystalLocation.clone().add(vector.clone().multiply((double)i / 40.0)), 0.7, 1.0, 0.7)) {
                     if (ACT == "false") {
                         return;
                     }
@@ -259,8 +259,12 @@ Ability {
                     double realSpeedDIVC = realSpeedDIV / 25.0;
                     PlayerInventory inv = player.getInventory();
                     SItem helmet = SItem.find(inv.getHelmet());
-                    if (helmet != null && helmet.getType() == SMaterial.WARDEN_HELMET) {
-                        enchantBonus += (100.0 + 20.0 * realSpeedDIVC) / 100.0;
+                    if (helmet != null) {
+                        if (helmet.getType() == SMaterial.WARDEN_HELMET) {
+                            enchantBonus += (100.0 + 20.0 * realSpeedDIVC) / 100.0;
+                        } else if (helmet.getType() == SMaterial.HIDDEN_VOIDLINGS_WARDEN_HELMET) {
+                            enchantBonus += (100.0 + 30.0 * realSpeedDIVC) / 100.0;
+                        }
                     }
                     for (Enchantment enchantment : sItem.getEnchantments()) {
                         EnchantmentType type1 = enchantment.getType();
@@ -322,8 +326,8 @@ Ability {
                     PlayerListener.spawnDamageInd(entity, finalDamage * 1.2, true);
                     ACT = "false";
                 }
-                player.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply((double)i2 / 40.0)), Effect.COLOURED_DUST, 0, 1, 0.5882353f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
-                player.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply((double)i2 / 40.0)), Effect.COLOURED_DUST, 0, 1, 0.84313726f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
+                player.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply((double)i / 40.0)), Effect.COLOURED_DUST, 0, 1, 0.5882353f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
+                player.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply((double)i / 40.0)), Effect.COLOURED_DUST, 0, 1, 0.84313726f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
             }
         }
     }

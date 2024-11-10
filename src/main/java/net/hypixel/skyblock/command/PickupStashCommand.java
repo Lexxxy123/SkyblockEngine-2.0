@@ -19,9 +19,9 @@ extends SCommand {
             this.send("&cPoor you, but console can't stash items away, do they even... exist?");
             return;
         }
-        User u2 = User.getUser(sender.getPlayer().getUniqueId());
-        if (u2 != null) {
-            UserStash us = UserStash.getStash(u2.getUuid());
+        User u = User.getUser(sender.getPlayer().getUniqueId());
+        if (u != null) {
+            UserStash us = UserStash.getStash(u.getUuid());
             us.pickUpStash();
         }
     }

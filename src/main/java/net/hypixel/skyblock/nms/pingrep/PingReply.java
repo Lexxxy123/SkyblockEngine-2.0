@@ -32,68 +32,68 @@ public class PingReply {
         this.playerSample = playerSample;
     }
 
-    public int getOnlinePlayers() {
-        return this.onlinePlayers;
-    }
-
-    public int getMaxPlayers() {
-        return this.maxPlayers;
-    }
-
     public String getMOTD() {
         return this.motd;
-    }
-
-    public int getProtocolVersion() {
-        return this.protocolVersion;
-    }
-
-    public String getProtocolName() {
-        return this.protocolName;
-    }
-
-    public List<String> getPlayerSample() {
-        return this.playerSample;
     }
 
     public boolean isPlayerSampleHidden() {
         return this.hidePlayerSample;
     }
 
-    public CachedServerIcon getIcon() {
-        return this.icon;
-    }
-
-    public void setOnlinePlayers(int onlinePlayers) {
-        this.onlinePlayers = onlinePlayers;
-    }
-
-    public void setMaxPlayers(int maxPlayers) {
-        this.maxPlayers = maxPlayers;
-    }
-
     public void setMOTD(String motd) {
         this.motd = motd;
-    }
-
-    public void setProtocolVersion(int protocolVersion) {
-        this.protocolVersion = protocolVersion;
-    }
-
-    public void setProtocolName(String protocolName) {
-        this.protocolName = protocolName;
-    }
-
-    public void setPlayerSample(List<String> playerSample) {
-        this.playerSample = playerSample;
     }
 
     public void hidePlayerSample(boolean hidePlayerSample) {
         this.hidePlayerSample = hidePlayerSample;
     }
 
+    public void setOnlinePlayers(int onlinePlayers) {
+        this.onlinePlayers = onlinePlayers;
+    }
+
+    public int getOnlinePlayers() {
+        return this.onlinePlayers;
+    }
+
+    public void setMaxPlayers(int maxPlayers) {
+        this.maxPlayers = maxPlayers;
+    }
+
+    public int getMaxPlayers() {
+        return this.maxPlayers;
+    }
+
+    public void setProtocolVersion(int protocolVersion) {
+        this.protocolVersion = protocolVersion;
+    }
+
+    public int getProtocolVersion() {
+        return this.protocolVersion;
+    }
+
+    public void setProtocolName(String protocolName) {
+        this.protocolName = protocolName;
+    }
+
+    public String getProtocolName() {
+        return this.protocolName;
+    }
+
+    public void setPlayerSample(List<String> playerSample) {
+        this.playerSample = playerSample;
+    }
+
+    public List<String> getPlayerSample() {
+        return this.playerSample;
+    }
+
     public void setIcon(CachedServerIcon icon) {
         this.icon = icon;
+    }
+
+    public CachedServerIcon getIcon() {
+        return this.icon;
     }
 }
 

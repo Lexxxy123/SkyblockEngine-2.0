@@ -114,11 +114,11 @@ implements ConfigurationSerializable {
         return enchantment.type.equals(this.type);
     }
 
-    public boolean equals(Object o2) {
-        if (!(o2 instanceof Enchantment)) {
+    public boolean equals(Object o) {
+        if (!(o instanceof Enchantment)) {
             return false;
         }
-        Enchantment enchantment = (Enchantment)o2;
+        Enchantment enchantment = (Enchantment)o;
         return enchantment.level == this.level && enchantment.type.equals(this.type);
     }
 

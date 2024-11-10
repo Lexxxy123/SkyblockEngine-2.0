@@ -129,6 +129,7 @@ import net.hypixel.skyblock.item.MaterialStatistics;
 import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.SItem;
 import net.hypixel.skyblock.item.SMaterial;
+import net.hypixel.skyblock.module.ConfigModule;
 import net.hypixel.skyblock.util.Groups;
 import net.hypixel.skyblock.util.SLog;
 import net.hypixel.skyblock.util.Sputnik;
@@ -189,16 +190,16 @@ public class SUtil {
     private static final List<ChatColor> VISIBLE_COLOR_SPECTRUM;
     public static final String[] numToStr;
 
-    public static String commaify(int i2) {
-        return COMMA_FORMAT.format(i2);
+    public static String commaify(int i) {
+        return COMMA_FORMAT.format(i);
     }
 
-    public static String commaify(double d2) {
-        return COMMA_FORMAT.format(d2);
+    public static String commaify(double d) {
+        return COMMA_FORMAT.format(d);
     }
 
-    public static String commaify(long l2) {
-        return COMMA_FORMAT.format(l2);
+    public static String commaify(long l) {
+        return COMMA_FORMAT.format(l);
     }
 
     public static List<String> getPlayerNameList() {
@@ -254,11 +255,11 @@ public class SUtil {
         SkullMeta meta = (SkullMeta)stack.getItemMeta();
         SkyBlock plugin = SkyBlock.getPlugin();
         if (material != null) {
-            if (!plugin.heads.contains(material.name().toLowerCase())) {
-                plugin.heads.set(material.name().toLowerCase(), UUID.randomUUID().toString());
-                plugin.heads.save();
+            if (!ConfigModule.getHeads().contains(material.name().toLowerCase())) {
+                ConfigModule.getHeads().set(material.name().toLowerCase(), UUID.randomUUID().toString());
+                ConfigModule.getHeads().save();
             }
-            stringUUID = plugin.heads.getString(material.name().toLowerCase());
+            stringUUID = ConfigModule.getHeads().getString(material.name().toLowerCase());
         } else {
             stringUUID = UUID.randomUUID().toString();
         }
@@ -266,9 +267,9 @@ public class SUtil {
         byte[] ed = java.util.Base64.getEncoder().encode(String.format("{textures:{SKIN:{url:\"http://textures.minecraft.net/texture/%s\"}}}", texture).getBytes());
         profile.getProperties().put((Object)"textures", (Object)new Property("textures", new String(ed)));
         try {
-            Field f2 = meta.getClass().getDeclaredField("profile");
-            f2.setAccessible(true);
-            f2.set(meta, profile);
+            Field f = meta.getClass().getDeclaredField("profile");
+            f.setAccessible(true);
+            f.set(meta, profile);
         } catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException exception) {
             // empty catch block
         }
@@ -330,11 +331,11 @@ public class SUtil {
         StringBuilder sb = new StringBuilder();
         String[] romans = new String[]{"I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M"};
         int[] ints = new int[]{1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000};
-        for (int i2 = ints.length - 1; i2 >= 0; --i2) {
-            int times = num / ints[i2];
-            num %= ints[i2];
+        for (int i = ints.length - 1; i >= 0; --i) {
+            int times = num / ints[i];
+            num %= ints[i];
             while (times > 0) {
-                sb.append(romans[i2]);
+                sb.append(romans[i]);
                 --times;
             }
         }
@@ -343,13 +344,13 @@ public class SUtil {
 
     public static String rainbowize(String string) {
         StringBuilder builder = new StringBuilder();
-        int i2 = 0;
-        for (String c2 : string.split("")) {
-            if (i2 > CRIT_SPECTRUM.size() - 1) {
-                i2 = 0;
+        int i = 0;
+        for (String c : string.split("")) {
+            if (i > CRIT_SPECTRUM.size() - 1) {
+                i = 0;
             }
-            builder.append(CRIT_SPECTRUM.get(i2)).append(c2);
-            ++i2;
+            builder.append(CRIT_SPECTRUM.get(i)).append(c);
+            ++i;
         }
         return builder.toString();
     }
@@ -429,17 +430,17 @@ public class SUtil {
         }
         topRight += 9;
         bottomLeft -= 9;
-        for (int y2 = topLeft; y2 <= bottomLeft; y2 += 9) {
-            for (int x2 = y2; x2 <= topRight - topLeft + y2; ++x2) {
-                int f2 = x2;
-                if (gui.getItems().stream().filter(item -> item.getSlot() == f2).toArray().length != 0 && !overwrite) continue;
-                if (y2 == topLeft || y2 == bottomLeft) {
-                    gui.set(x2, stack, pickup);
-                    inventory.setItem(x2, stack);
+        for (int y = topLeft; y <= bottomLeft; y += 9) {
+            for (int x = y; x <= topRight - topLeft + y; ++x) {
+                int f = x;
+                if (gui.getItems().stream().filter(item -> item.getSlot() == f).toArray().length != 0 && !overwrite) continue;
+                if (y == topLeft || y == bottomLeft) {
+                    gui.set(x, stack, pickup);
+                    inventory.setItem(x, stack);
                 }
-                if (x2 != y2 && x2 != topRight - topLeft + y2) continue;
-                gui.set(x2, stack, pickup);
-                inventory.setItem(x2, stack);
+                if (x != y && x != topRight - topLeft + y) continue;
+                gui.set(x, stack, pickup);
+                inventory.setItem(x, stack);
             }
         }
     }
@@ -472,21 +473,21 @@ public class SUtil {
             byte[] blocks = (byte[])getByteArray.invoke(nbtData, "Blocks");
             byte[] data = (byte[])getByteArray.invoke(nbtData, "Data");
             fis.close();
-            for (int x2 = 0; x2 < width; ++x2) {
-                for (int y2 = 0; y2 < height; ++y2) {
-                    for (int z2 = 0; z2 < length; ++z2) {
-                        int index = y2 * width * length + z2 * width + x2;
-                        int b2 = blocks[index] & 0xFF;
-                        Material m2 = Material.getMaterial((int)b2);
-                        if (m2 == Material.AIR) continue;
-                        Block block = new Location(loc.getWorld(), (double)(loc.getBlockX() - width / 2 + x2), (double)(loc.getBlockY() + y2 - 19), (double)(loc.getBlockZ() - length / 2 + z2 + 14)).getBlock();
-                        block.setType(m2, true);
+            for (int x = 0; x < width; ++x) {
+                for (int y = 0; y < height; ++y) {
+                    for (int z = 0; z < length; ++z) {
+                        int index = y * width * length + z * width + x;
+                        int b = blocks[index] & 0xFF;
+                        Material m = Material.getMaterial((int)b);
+                        if (m == Material.AIR) continue;
+                        Block block = new Location(loc.getWorld(), (double)(loc.getBlockX() - width / 2 + x), (double)(loc.getBlockY() + y - 19), (double)(loc.getBlockZ() - length / 2 + z + 14)).getBlock();
+                        block.setType(m, true);
                         block.setData(data[index]);
                     }
                 }
             }
-        } catch (Exception e2) {
-            e2.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -543,9 +544,9 @@ public class SUtil {
         return result;
     }
 
-    public static <T> boolean addIf(T t2, List<T> list, boolean test) {
+    public static <T> boolean addIf(T t, List<T> list, boolean test) {
         if (test) {
-            list.add(t2);
+            list.add(t);
         }
         return test;
     }
@@ -560,17 +561,17 @@ public class SUtil {
         return item;
     }
 
-    public static double roundTo(double d2, int decimalPlaces) {
+    public static double roundTo(double d, int decimalPlaces) {
         if (decimalPlaces < 1) {
             throw new IllegalArgumentException();
         }
         StringBuilder builder = new StringBuilder().append("#.");
-        for (int i2 = 0; i2 < decimalPlaces; ++i2) {
+        for (int i = 0; i < decimalPlaces; ++i) {
             builder.append("#");
         }
         DecimalFormat df = new DecimalFormat(builder.toString());
         df.setRoundingMode(RoundingMode.CEILING);
-        return Double.parseDouble(df.format(d2));
+        return Double.parseDouble(df.format(d));
     }
 
     public static void toggleAllowFlightNoCreative(UUID uuid, boolean flight) {
@@ -587,10 +588,10 @@ public class SUtil {
 
     public static List<Block> getNearbyBlocks(Location location, int radius, Material type) {
         ArrayList<Block> blocks = new ArrayList<Block>();
-        for (int x2 = location.getBlockX() - radius; x2 <= location.getBlockX() + radius; ++x2) {
-            for (int y2 = location.getBlockY() - radius; y2 <= location.getBlockY() + radius; ++y2) {
-                for (int z2 = location.getBlockZ() - radius; z2 <= location.getBlockZ() + radius; ++z2) {
-                    Block block = location.getWorld().getBlockAt(x2, y2, z2);
+        for (int x = location.getBlockX() - radius; x <= location.getBlockX() + radius; ++x) {
+            for (int y = location.getBlockY() - radius; y <= location.getBlockY() + radius; ++y) {
+                for (int z = location.getBlockZ() - radius; z <= location.getBlockZ() + radius; ++z) {
+                    Block block = location.getWorld().getBlockAt(x, y, z);
                     if (block.getType() != type && type != null) continue;
                     blocks.add(block);
                 }
@@ -738,11 +739,11 @@ public class SUtil {
     }
 
     public static ItemStack getSingleLoreStack(String name, Material material, short data, int amount, String lore) {
-        ArrayList<String> l2 = new ArrayList<String>();
+        ArrayList<String> l = new ArrayList<String>();
         for (String line : SUtil.splitByWordAndLength(lore, 30, "\\s")) {
-            l2.add(ChatColor.GRAY + line);
+            l.add(ChatColor.GRAY + line);
         }
-        return SUtil.getStack(name, material, data, amount, l2.toArray(new String[0]));
+        return SUtil.getStack(name, material, data, amount, l.toArray(new String[0]));
     }
 
     public static boolean isEnchantable(SItem sItem) {
@@ -768,15 +769,15 @@ public class SUtil {
     }
 
     public static List<String> combineElements(List<String> list, String separator, int perElement) {
-        ArrayList<String> n2 = new ArrayList<String>();
-        for (int i2 = 0; i2 < list.size(); i2 += perElement) {
+        ArrayList<String> n = new ArrayList<String>();
+        for (int i = 0; i < list.size(); i += perElement) {
             StringBuilder builder = new StringBuilder();
-            for (int j2 = 0; j2 < perElement && i2 + j2 <= list.size() - 1; ++j2) {
-                builder.append(j2 != 0 ? separator : "").append(list.get(i2 + j2));
+            for (int j = 0; j < perElement && i + j <= list.size() - 1; ++j) {
+                builder.append(j != 0 ? separator : "").append(list.get(i + j));
             }
-            n2.add(builder.toString());
+            n.add(builder.toString());
         }
-        return n2;
+        return n;
     }
 
     public static boolean pasteSchematic(File schematicFile, Location location, boolean withAir) {
@@ -807,10 +808,10 @@ public class SUtil {
         int sz = Math.min(c1.getBlockZ(), c2.getBlockZ());
         int ez = Math.max(c1.getBlockZ(), c2.getBlockZ());
         World world = c1.getWorld();
-        for (int y2 = sy; y2 <= ey; ++y2) {
-            for (int x2 = sx; x2 <= ex; ++x2) {
-                for (int z2 = sz; z2 <= ez; ++z2) {
-                    world.getBlockAt(x2, y2, z2).setType(material, applyPhysics);
+        for (int y = sy; y <= ey; ++y) {
+            for (int x = sx; x <= ex; ++x) {
+                for (int z = sz; z <= ez; ++z) {
+                    world.getBlockAt(x, y, z).setType(material, applyPhysics);
                 }
             }
         }
@@ -818,8 +819,8 @@ public class SUtil {
 
     public static <T> T instance(Class<T> clazz, Object ... params) {
         Class[] paramClasses = new Class[params.length];
-        for (int i2 = 0; i2 < paramClasses.length; ++i2) {
-            paramClasses[i2] = params[i2].getClass();
+        for (int i = 0; i < paramClasses.length; ++i) {
+            paramClasses[i] = params[i].getClass();
         }
         try {
             Constructor<T> constructor = clazz.getConstructor(paramClasses);
@@ -832,81 +833,81 @@ public class SUtil {
 
     public static <C, T> T getDeclaredField(C instance, String name, Class<T> type) {
         try {
-            Field f2 = instance.getClass().getDeclaredField(name);
-            f2.setAccessible(true);
-            return type.cast(f2.get(instance));
+            Field f = instance.getClass().getDeclaredField(name);
+            f.setAccessible(true);
+            return type.cast(f.get(instance));
         } catch (IllegalAccessException | NoSuchFieldException ex) {
             return null;
         }
     }
 
     public static Object getObjectFromCompound(NBTTagCompound compound, String key) {
-        Object o2 = null;
+        Object o = null;
         switch (compound.get(key).getTypeId()) {
             case 1: {
-                o2 = compound.getByte(key);
+                o = compound.getByte(key);
                 break;
             }
             case 2: {
-                o2 = compound.getShort(key);
+                o = compound.getShort(key);
                 break;
             }
             case 3: {
-                o2 = compound.getInt(key);
+                o = compound.getInt(key);
                 break;
             }
             case 4: {
-                o2 = compound.getLong(key);
+                o = compound.getLong(key);
                 break;
             }
             case 5: {
-                o2 = Float.valueOf(compound.getFloat(key));
+                o = Float.valueOf(compound.getFloat(key));
                 break;
             }
             case 6: {
-                o2 = compound.getDouble(key);
+                o = compound.getDouble(key);
                 break;
             }
             case 7: {
-                o2 = compound.getByteArray(key);
+                o = compound.getByteArray(key);
                 break;
             }
             case 10: {
-                o2 = compound.getCompound(key);
+                o = compound.getCompound(key);
                 break;
             }
             case 11: {
-                o2 = compound.getIntArray(key);
+                o = compound.getIntArray(key);
                 break;
             }
             default: {
-                o2 = compound.getString(key);
+                o = compound.getString(key);
             }
         }
-        return o2;
+        return o;
     }
 
-    public static NBTBase getBaseFromObject(Object o2) {
-        if (o2 instanceof Byte) {
-            return new NBTTagByte(((Byte)o2).byteValue());
+    public static NBTBase getBaseFromObject(Object o) {
+        if (o instanceof Byte) {
+            return new NBTTagByte(((Byte)o).byteValue());
         }
-        if (o2 instanceof Short) {
-            return new NBTTagShort(((Short)o2).shortValue());
+        if (o instanceof Short) {
+            return new NBTTagShort(((Short)o).shortValue());
         }
-        if (o2 instanceof Integer) {
-            return new NBTTagInt(((Integer)o2).intValue());
+        if (o instanceof Integer) {
+            return new NBTTagInt(((Integer)o).intValue());
         }
-        if (o2 instanceof Long) {
-            return new NBTTagLong(((Long)o2).longValue());
+        if (o instanceof Long) {
+            return new NBTTagLong(((Long)o).longValue());
         }
-        if (o2 instanceof Float) {
-            return new NBTTagFloat(((Float)o2).floatValue());
+        if (o instanceof Float) {
+            return new NBTTagFloat(((Float)o).floatValue());
         }
-        if (o2 instanceof Double) {
-            return new NBTTagDouble(((Double)o2).doubleValue());
+        if (o instanceof Double) {
+            return new NBTTagDouble(((Double)o).doubleValue());
         }
-        if (o2 instanceof String) {
-            return new NBTTagString((String)o2);
+        if (o instanceof String) {
+            return new NBTTagString((String)o);
         }
         return null;
     }
@@ -927,30 +928,30 @@ public class SUtil {
     }
 
     public static void broadcastExcept(String message, Player player) {
-        for (Player p2 : player.getWorld().getPlayers()) {
-            if (p2.getUniqueId().equals(player.getUniqueId())) continue;
-            p2.sendMessage(message);
+        for (Player p : player.getWorld().getPlayers()) {
+            if (p.getUniqueId().equals(player.getUniqueId())) continue;
+            p.sendMessage(message);
         }
         SLog.info(message);
     }
 
     public static void broadcast(String message, Player player) {
-        for (Player p2 : player.getWorld().getPlayers()) {
-            p2.sendMessage(message);
+        for (Player p : player.getWorld().getPlayers()) {
+            p.sendMessage(message);
         }
         SLog.info("[SYSTEM LOG] " + message);
     }
 
     public static void globalBroadcast(String message) {
-        for (Player p2 : Bukkit.getOnlinePlayers()) {
-            p2.sendMessage(message);
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            p.sendMessage(message);
         }
         SLog.info("[SYSTEM LOG] " + message);
     }
 
-    public static void broadcastWorld(String message, World w2) {
-        for (Player p2 : w2.getPlayers()) {
-            p2.sendMessage(message);
+    public static void broadcastWorld(String message, World w) {
+        for (Player p : w.getPlayers()) {
+            p.sendMessage(message);
         }
     }
 
@@ -998,24 +999,24 @@ public class SUtil {
         return result;
     }
 
-    public static double midpoint(int x2, int y2) {
-        return (double)(x2 + y2) / 2.0;
+    public static double midpoint(int x, int y) {
+        return (double)(x + y) / 2.0;
     }
 
-    public static double midpoint(double x2, double y2) {
-        return (x2 + y2) / 2.0;
+    public static double midpoint(double x, double y) {
+        return (x + y) / 2.0;
     }
 
     public static void clearGoalSelector(PathfinderGoalSelector goalSelector) {
         try {
-            Field b2 = PathfinderGoalSelector.class.getDeclaredField("b");
-            Field c2 = PathfinderGoalSelector.class.getDeclaredField("c");
-            b2.setAccessible(true);
-            c2.setAccessible(true);
-            ((UnsafeList)b2.get(goalSelector)).clear();
-            ((UnsafeList)c2.get(goalSelector)).clear();
-        } catch (IllegalAccessException | NoSuchFieldException e2) {
-            e2.printStackTrace();
+            Field b = PathfinderGoalSelector.class.getDeclaredField("b");
+            Field c = PathfinderGoalSelector.class.getDeclaredField("c");
+            b.setAccessible(true);
+            c.setAccessible(true);
+            ((UnsafeList)b.get(goalSelector)).clear();
+            ((UnsafeList)c.get(goalSelector)).clear();
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            e.printStackTrace();
         }
     }
 
@@ -1033,19 +1034,19 @@ public class SUtil {
         return array[index];
     }
 
-    public static String zeroed(long l2) {
-        return l2 > 9L ? "" + l2 : "0" + l2;
+    public static String zeroed(long l) {
+        return l > 9L ? "" + l : "0" + l;
     }
 
-    public static String getFormattedTime(long t2, int div) {
-        long seconds = t2 / (long)div;
+    public static String getFormattedTime(long t, int div) {
+        long seconds = t / (long)div;
         long hours = seconds / 3600L;
         long minutes = (seconds -= hours * 3600L) / 60L;
         return (hours != 0L ? hours + ":" : "") + SUtil.zeroed(minutes) + ":" + SUtil.zeroed(seconds -= minutes * 60L);
     }
 
-    public static String getFormattedTimeToDay(long l2) {
-        long seconds = Math.round(l2 / 20L);
+    public static String getFormattedTimeToDay(long l) {
+        long seconds = Math.round(l / 20L);
         int day = (int)TimeUnit.SECONDS.toDays(seconds);
         int hours = (int)(TimeUnit.SECONDS.toHours(seconds) - TimeUnit.DAYS.toHours(day));
         int minute = (int)(TimeUnit.SECONDS.toMinutes(seconds) - TimeUnit.DAYS.toMinutes(day) - TimeUnit.HOURS.toMinutes(hours));
@@ -1064,8 +1065,8 @@ public class SUtil {
         return (hours != 0L ? SUtil.zeroed(hours) + "h" : "") + SUtil.zeroed(minutes) + "m" + SUtil.zeroed(seconds -= minutes * 60L) + "s";
     }
 
-    public static double quadrt(double d2) {
-        return Math.pow(d2, 0.25);
+    public static double quadrt(double d) {
+        return Math.pow(d, 0.25);
     }
 
     public static void delay(final Runnable runnable, long delay) {
@@ -1110,58 +1111,58 @@ public class SUtil {
         return (float)(-yaw * 180.0 / Math.PI - 90.0);
     }
 
-    public static String ntify(int i2) {
-        if (i2 == 11 || i2 == 12 || i2 == 13) {
-            return i2 + "th";
+    public static String ntify(int i) {
+        if (i == 11 || i == 12 || i == 13) {
+            return i + "th";
         }
-        String s2 = String.valueOf(i2);
-        char last = s2.charAt(s2.length() - 1);
+        String s = String.valueOf(i);
+        char last = s.charAt(s.length() - 1);
         switch (last) {
             case '1': {
-                return i2 + "st";
+                return i + "st";
             }
             case '2': {
-                return i2 + "nd";
+                return i + "nd";
             }
             case '3': {
-                return i2 + "rd";
+                return i + "rd";
             }
         }
-        return i2 + "th";
+        return i + "th";
     }
 
-    public static String pad(String s2, int length) {
-        return String.format("%-" + length + "s", s2);
+    public static String pad(String s, int length) {
+        return String.format("%-" + length + "s", s);
     }
 
     public static <T> List<T> shuffle(List<T> list) {
         ThreadLocalRandom rnd = ThreadLocalRandom.current();
-        for (int i2 = list.size() - 1; i2 > 0; --i2) {
-            int index = ((Random)rnd).nextInt(i2 + 1);
-            T t2 = list.get(index);
-            list.set(index, list.get(i2));
-            list.set(i2, t2);
+        for (int i = list.size() - 1; i > 0; --i) {
+            int index = ((Random)rnd).nextInt(i + 1);
+            T t = list.get(index);
+            list.set(index, list.get(i));
+            list.set(i, t);
         }
         return list;
     }
 
     public static <T> int deepLength(T[][] array2d) {
-        int c2 = 0;
+        int c = 0;
         for (T[] array : array2d) {
-            c2 += array.length;
+            c += array.length;
         }
-        return c2;
+        return c;
     }
 
     public static <T> T[] unnest(T[][] array2d, Class<T> clazz) {
         Object[] array = (Object[])Array.newInstance(clazz, SUtil.deepLength(array2d));
-        int c2 = 0;
-        for (int i2 = 0; i2 < array2d.length; ++i2) {
-            int j2 = 0;
-            while (j2 < array2d[i2].length) {
-                array[c2] = array2d[i2][j2];
-                ++j2;
-                ++c2;
+        int c = 0;
+        for (int i = 0; i < array2d.length; ++i) {
+            int j = 0;
+            while (j < array2d[i].length) {
+                array[c] = array2d[i][j];
+                ++j;
+                ++c;
             }
         }
         return array;
@@ -1182,8 +1183,8 @@ public class SUtil {
 
     public static ItemStack idToSkull(ItemStack head, String id) {
         JsonParser parser = new JsonParser();
-        JsonObject o2 = parser.parse(new String(Base64.decodeBase64(id))).getAsJsonObject();
-        String skinUrl = o2.get("textures").getAsJsonObject().get("SKIN").getAsJsonObject().get("url").getAsString();
+        JsonObject o = parser.parse(new String(Base64.decodeBase64(id))).getAsJsonObject();
+        String skinUrl = o.get("textures").getAsJsonObject().get("SKIN").getAsJsonObject().get("url").getAsString();
         SkullMeta headMeta = (SkullMeta)head.getItemMeta();
         GameProfile profile = new GameProfile(UUID.randomUUID(), null);
         byte[] encodedData = Base64.encodeBase64(("{textures:{SKIN:{url:\"" + skinUrl + "\"}}}").getBytes());
@@ -1192,8 +1193,8 @@ public class SUtil {
             Field profileField = headMeta.getClass().getDeclaredField("profile");
             profileField.setAccessible(true);
             profileField.set(headMeta, profile);
-        } catch (Exception e2) {
-            e2.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         head.setItemMeta((ItemMeta)headMeta);
         return head;
@@ -1215,16 +1216,16 @@ public class SUtil {
         double percent = Math.min((double)current, (double)max) / (double)max;
         long completed = Math.round((double)length * percent);
         StringBuilder builder = new StringBuilder().append(progressColor);
-        int i2 = 0;
-        while ((long)i2 < completed) {
+        int i = 0;
+        while ((long)i < completed) {
             builder.append("-");
-            ++i2;
+            ++i;
         }
         builder.append(ChatColor.WHITE);
-        i2 = 0;
-        while ((long)i2 < (long)length - completed) {
+        i = 0;
+        while ((long)i < (long)length - completed) {
             builder.append("-");
-            ++i2;
+            ++i;
         }
         builder.append(" ").append(ChatColor.YELLOW).append(SUtil.commaify(current)).append(ChatColor.GOLD).append("/").append(ChatColor.YELLOW).append(SUtil.commaify(max));
         return builder.toString();
@@ -1234,16 +1235,16 @@ public class SUtil {
         double percent = Math.min(current, max) / max;
         long completed = Math.round((double)length * percent);
         StringBuilder builder = new StringBuilder().append(progressColor);
-        int i2 = 0;
-        while ((long)i2 < completed) {
+        int i = 0;
+        while ((long)i < completed) {
             builder.append("-");
-            ++i2;
+            ++i;
         }
         builder.append(ChatColor.WHITE);
-        i2 = 0;
-        while ((long)i2 < (long)length - completed) {
+        i = 0;
+        while ((long)i < (long)length - completed) {
             builder.append("-");
-            ++i2;
+            ++i;
         }
         builder.append(" ").append(ChatColor.YELLOW).append(SUtil.commaify(current)).append(ChatColor.GOLD).append("/").append(ChatColor.YELLOW).append(Sputnik.formatFull((float)max));
         return builder.toString();
@@ -1253,16 +1254,16 @@ public class SUtil {
         double percent = Math.min(current, max) / max;
         long completed = Math.round((double)length * percent);
         StringBuilder builder = new StringBuilder().append(progressColor);
-        int i2 = 0;
-        while ((long)i2 < completed) {
+        int i = 0;
+        while ((long)i < completed) {
             builder.append("-");
-            ++i2;
+            ++i;
         }
         builder.append(ChatColor.WHITE);
-        i2 = 0;
-        while ((long)i2 < (long)length - completed) {
+        i = 0;
+        while ((long)i < (long)length - completed) {
             builder.append("-");
-            ++i2;
+            ++i;
         }
         builder.append(" ").append(ChatColor.YELLOW).append(SUtil.commaify(current)).append(ChatColor.GOLD).append("/").append(ChatColor.YELLOW).append(SUtil.commaify(max));
         return builder.toString();
@@ -1270,8 +1271,8 @@ public class SUtil {
 
     public static <T> T[] toArray(List<T> list, Class<T> clazz) {
         Object[] array = (Object[])Array.newInstance(clazz, list.size());
-        for (int i2 = 0; i2 < list.size(); ++i2) {
-            array[i2] = list.get(i2);
+        for (int i = 0; i < list.size(); ++i) {
+            array[i] = list.get(i);
         }
         return array;
     }
@@ -1346,8 +1347,8 @@ public class SUtil {
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), delay, interval);
     }
 
-    public static int blackMagic(double d2) {
-        return (int)d2;
+    public static int blackMagic(double d) {
+        return (int)d;
     }
 
     public static String prettify(Object obj) {
@@ -1362,10 +1363,10 @@ public class SUtil {
     public static String toNormalCase(String string) {
         string = string.replaceAll("_", " ");
         Object[] spl = string.split(" ");
-        for (int i2 = 0; i2 < spl.length; ++i2) {
-            String s2 = spl[i2];
-            if (s2.length() == 0) continue;
-            spl[i2] = s2.length() == 1 ? s2.toUpperCase() : s2.substring(0, 1).toUpperCase() + s2.substring(1).toLowerCase();
+        for (int i = 0; i < spl.length; ++i) {
+            String s = spl[i];
+            if (s.length() == 0) continue;
+            spl[i] = s.length() == 1 ? s.toUpperCase() : s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
         }
         return StringUtils.join(spl, " ");
     }

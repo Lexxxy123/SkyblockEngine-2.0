@@ -15,6 +15,8 @@ public enum RegionType {
     FOREST("Forest"),
     F6("Catacombs (F6)", ChatColor.RED),
     FARM("Farm"),
+    WHEAT_FARM("Wheat Farm", ChatColor.GREEN),
+    GHOUL_CAVE("Ghoul Cave", ChatColor.RED),
     RUINS("Ruins"),
     DWARVEN_THE_LIFT("Dwarven Mines"),
     DWARVEN_MINES_VILLAGE("Dwarven Village"),

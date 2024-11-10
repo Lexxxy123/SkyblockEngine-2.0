@@ -7,7 +7,6 @@
  */
 package net.hypixel.skyblock.command;
 
-import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.command.CommandFailException;
 import net.hypixel.skyblock.command.CommandParameters;
 import net.hypixel.skyblock.command.CommandSource;
@@ -27,11 +26,7 @@ extends SCommand {
         }
         Player player = sender.getPlayer();
         User.getUser(player).setIslandLocation(0.0, 0.0);
-        if (SkyBlock.getPlugin().config.getBoolean("Config")) {
-            User.getUser(player).configsave();
-        } else {
-            User.getUser(player).save();
-        }
+        User.getUser(player).save();
     }
 }
 

@@ -22,6 +22,7 @@ import net.hypixel.skyblock.command.CommandPermissionException;
 import net.hypixel.skyblock.command.CommandSource;
 import net.hypixel.skyblock.command.PlayerNotFoundException;
 import net.hypixel.skyblock.features.ranks.PlayerRank;
+import net.hypixel.skyblock.module.CommandModule;
 import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.SUtil;
 import org.bukkit.Bukkit;
@@ -60,7 +61,7 @@ TabCompleter {
     }
 
     public void register() {
-        SCommand.plugin.commandMap.register("", (Command)this.command);
+        CommandModule.getCommandMap().register("", (Command)this.command);
     }
 
     public void send(String message, CommandSource sender) {

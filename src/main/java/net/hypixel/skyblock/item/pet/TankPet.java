@@ -88,14 +88,14 @@ extends Pet {
             }
 
             @Override
-            public void onDamage(EntityDamageByEntityEvent e2) {
-                double c2;
-                double r2 = SUtil.random(0.0, 1.0);
-                if (r2 < (c2 = 0.3 * (double)level / 100.0)) {
-                    if (e2.getDamager() instanceof Arrow) {
-                        TankPet.this.spawnBullet((Player)((Arrow)e2.getDamager()).getShooter());
+            public void onDamage(EntityDamageByEntityEvent e) {
+                double c;
+                double r = SUtil.random(0.0, 1.0);
+                if (r < (c = 0.3 * (double)level / 100.0)) {
+                    if (e.getDamager() instanceof Arrow) {
+                        TankPet.this.spawnBullet((Player)((Arrow)e.getDamager()).getShooter());
                     } else {
-                        TankPet.this.spawnBullet((Player)e2.getDamager());
+                        TankPet.this.spawnBullet((Player)e.getDamager());
                     }
                 }
             }
@@ -114,14 +114,14 @@ extends Pet {
                 }
 
                 @Override
-                public void onHurt(EntityDamageByEntityEvent e2, Entity damager) {
-                    double c2;
-                    double r2 = SUtil.random(0.0, 1.0);
-                    if (r2 < (c2 = 0.1 * (double)level / 100.0)) {
-                        BigDecimal dmgabs = BigDecimal.valueOf(e2.getDamage()).setScale(1, RoundingMode.HALF_EVEN);
-                        ((Player)e2.getEntity()).playSound(e2.getEntity().getLocation(), Sound.ITEM_BREAK, 1.0f, 1.0f);
-                        e2.getEntity().sendMessage(Sputnik.trans("&eTank of the Motherland ability has absorbed &c" + SUtil.commaify(dmgabs.doubleValue()) + " &edamage for you!"));
-                        e2.setDamage(0.0);
+                public void onHurt(EntityDamageByEntityEvent e, Entity damager) {
+                    double c;
+                    double r = SUtil.random(0.0, 1.0);
+                    if (r < (c = 0.1 * (double)level / 100.0)) {
+                        BigDecimal dmgabs = BigDecimal.valueOf(e.getDamage()).setScale(1, RoundingMode.HALF_EVEN);
+                        ((Player)e.getEntity()).playSound(e.getEntity().getLocation(), Sound.ITEM_BREAK, 1.0f, 1.0f);
+                        e.getEntity().sendMessage(Sputnik.trans("&eTank of the Motherland ability has absorbed &c" + SUtil.commaify(dmgabs.doubleValue()) + " &edamage for you!"));
+                        e.setDamage(0.0);
                     }
                 }
             });
@@ -140,10 +140,10 @@ extends Pet {
                 }
 
                 @Override
-                public void onHurt(EntityDamageByEntityEvent e2, Entity damager) {
-                    Entity en = e2.getEntity();
-                    Vector v2 = new Vector(0, 0, 0);
-                    SUtil.delay(() -> en.setVelocity(v2), 0L);
+                public void onHurt(EntityDamageByEntityEvent e, Entity damager) {
+                    Entity en = e.getEntity();
+                    Vector v = new Vector(0, 0, 0);
+                    SUtil.delay(() -> en.setVelocity(v), 0L);
                 }
             });
             abilities.add(new PetAbility(){
@@ -218,12 +218,12 @@ extends Pet {
     }
 
     @Override
-    public void particleBelowA(Player p2, Location l2) {
-        p2.spigot().playEffect(l2, Effect.SMALL_SMOKE, 21, 0, 0.1f, 0.0f, 0.1f, 0.01f, 1, 30);
-        p2.spigot().playEffect(l2, Effect.COLOURED_DUST, 0, 1, 0.003921569f, 0.003921569f, 0.003921569f, 1.0f, 0, 64);
-        p2.spigot().playEffect(l2, Effect.COLOURED_DUST, 0, 1, 0.45882353f, 0.45882353f, 0.45882353f, 1.0f, 0, 64);
-        p2.spigot().playEffect(l2, Effect.COLOURED_DUST, 0, 1, 0.003921569f, 0.003921569f, 0.003921569f, 1.0f, 0, 64);
-        p2.spigot().playEffect(l2, Effect.COLOURED_DUST, 0, 1, 0.45882353f, 0.45882353f, 0.45882353f, 1.0f, 0, 64);
+    public void particleBelowA(Player p, Location l) {
+        p.spigot().playEffect(l, Effect.SMALL_SMOKE, 21, 0, 0.1f, 0.0f, 0.1f, 0.01f, 1, 30);
+        p.spigot().playEffect(l, Effect.COLOURED_DUST, 0, 1, 0.003921569f, 0.003921569f, 0.003921569f, 1.0f, 0, 64);
+        p.spigot().playEffect(l, Effect.COLOURED_DUST, 0, 1, 0.45882353f, 0.45882353f, 0.45882353f, 1.0f, 0, 64);
+        p.spigot().playEffect(l, Effect.COLOURED_DUST, 0, 1, 0.003921569f, 0.003921569f, 0.003921569f, 1.0f, 0, 64);
+        p.spigot().playEffect(l, Effect.COLOURED_DUST, 0, 1, 0.45882353f, 0.45882353f, 0.45882353f, 1.0f, 0, 64);
     }
 
     public void spawnBullet(final Player player) {
@@ -287,10 +287,10 @@ extends Pet {
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
     }
 
-    public void dmgEntityInRange(Entity e2, Player owner, double damage) {
+    public void dmgEntityInRange(Entity e, Player owner, double damage) {
         ArrayList<Entity> le = new ArrayList<Entity>();
         int td = 0;
-        for (Entity entity1 : e2.getNearbyEntities(4.0, 4.0, 4.0)) {
+        for (Entity entity1 : e.getNearbyEntities(4.0, 4.0, 4.0)) {
             if (entity1.isDead() || !(entity1 instanceof LivingEntity) || entity1 instanceof Player || entity1 instanceof EnderDragonPart || entity1 instanceof Villager || entity1 instanceof ArmorStand || entity1 instanceof Item || entity1 instanceof ItemFrame || entity1.hasMetadata("GiantSword")) continue;
             if (EntityManager.DEFENSE_PERCENTAGE.containsKey(entity1)) {
                 int defensepercent = EntityManager.DEFENSE_PERCENTAGE.get(entity1);
@@ -315,18 +315,18 @@ extends Pet {
         }
     }
 
-    public static List<Entity> scanEntityNear(Entity e2, int arg0, int arg1, int arg2) {
+    public static List<Entity> scanEntityNear(Entity e, int arg0, int arg1, int arg2) {
         ArrayList<Entity> re = new ArrayList<Entity>();
-        for (Entity entity1 : e2.getNearbyEntities((double)arg0, (double)arg1, (double)arg2)) {
+        for (Entity entity1 : e.getNearbyEntities((double)arg0, (double)arg1, (double)arg2)) {
             if (entity1.isDead() || !(entity1 instanceof LivingEntity) || entity1 instanceof Player || entity1 instanceof EnderDragonPart || entity1 instanceof Villager || entity1 instanceof ArmorStand || entity1 instanceof Item || entity1 instanceof ItemFrame || entity1.hasMetadata("GiantSword") || entity1.hasMetadata("NoAffect")) continue;
             re.add(entity1);
         }
         return re;
     }
 
-    public void playParticleAndSound(Entity e2) {
-        e2.getLocation().getWorld().playSound(e2.getLocation(), Sound.EXPLODE, 2.0f, 1.3f);
-        e2.getWorld().playEffect(e2.getLocation(), Effect.EXPLOSION_HUGE, 0);
+    public void playParticleAndSound(Entity e) {
+        e.getLocation().getWorld().playSound(e.getLocation(), Sound.EXPLODE, 2.0f, 1.3f);
+        e.getWorld().playEffect(e.getLocation(), Effect.EXPLOSION_HUGE, 0);
     }
 }
 

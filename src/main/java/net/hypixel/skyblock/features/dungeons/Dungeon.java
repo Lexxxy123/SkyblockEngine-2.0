@@ -56,8 +56,8 @@ public class Dungeon {
         return this.bloodkey;
     }
 
-    public void setBloodKey(boolean bk2) {
-        this.bloodkey = bk2;
+    public void setBloodKey(boolean bk) {
+        this.bloodkey = bk;
     }
 
     public int getDungeonCompletePercent() {
@@ -88,22 +88,22 @@ public class Dungeon {
         return this.deaths;
     }
 
-    public void setDeaths(int d2) {
-        this.deaths = d2;
+    public void setDeaths(int d) {
+        this.deaths = d;
     }
 
     public ArrayList<Player> getAllDungeonsMembers() {
         return this.dungeonsmate;
     }
 
-    public void addPlayer(Player p2) {
-        this.dungeonsmate.add(p2);
+    public void addPlayer(Player p) {
+        this.dungeonsmate.add(p);
     }
 
-    public boolean removePlayer(Player p2) {
+    public boolean removePlayer(Player p) {
         boolean success = false;
-        if (this.dungeonsmate.contains(p2)) {
-            this.dungeonsmate.remove(p2);
+        if (this.dungeonsmate.contains(p)) {
+            this.dungeonsmate.remove(p);
             success = true;
         }
         return success;

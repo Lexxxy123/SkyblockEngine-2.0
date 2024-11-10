@@ -168,15 +168,15 @@ ConfigurationSerializable {
 
     public Block[] corners() {
         Block[] res = new Block[8];
-        World w2 = this.getWorld();
-        res[0] = w2.getBlockAt(this.x1, this.y1, this.z1);
-        res[1] = w2.getBlockAt(this.x1, this.y1, this.z2);
-        res[2] = w2.getBlockAt(this.x1, this.y2, this.z1);
-        res[3] = w2.getBlockAt(this.x1, this.y2, this.z2);
-        res[4] = w2.getBlockAt(this.x2, this.y1, this.z1);
-        res[5] = w2.getBlockAt(this.x2, this.y1, this.z2);
-        res[6] = w2.getBlockAt(this.x2, this.y2, this.z1);
-        res[7] = w2.getBlockAt(this.x2, this.y2, this.z2);
+        World w = this.getWorld();
+        res[0] = w.getBlockAt(this.x1, this.y1, this.z1);
+        res[1] = w.getBlockAt(this.x1, this.y1, this.z2);
+        res[2] = w.getBlockAt(this.x1, this.y2, this.z1);
+        res[3] = w.getBlockAt(this.x1, this.y2, this.z2);
+        res[4] = w.getBlockAt(this.x2, this.y1, this.z1);
+        res[5] = w.getBlockAt(this.x2, this.y1, this.z2);
+        res[6] = w.getBlockAt(this.x2, this.y2, this.z1);
+        res[7] = w.getBlockAt(this.x2, this.y2, this.z2);
         return res;
     }
 
@@ -209,41 +209,41 @@ ConfigurationSerializable {
     }
 
     public Cuboid outset(CuboidDirection dir, int amount) {
-        Cuboid c2 = null;
+        Cuboid c = null;
         switch (dir) {
             case Horizontal: {
-                c2 = this.expand(CuboidDirection.North, amount).expand(CuboidDirection.South, amount).expand(CuboidDirection.East, amount).expand(CuboidDirection.West, amount);
+                c = this.expand(CuboidDirection.North, amount).expand(CuboidDirection.South, amount).expand(CuboidDirection.East, amount).expand(CuboidDirection.West, amount);
                 break;
             }
             case Vertical: {
-                c2 = this.expand(CuboidDirection.Down, amount).expand(CuboidDirection.Up, amount);
+                c = this.expand(CuboidDirection.Down, amount).expand(CuboidDirection.Up, amount);
                 break;
             }
             case Both: {
-                c2 = this.outset(CuboidDirection.Horizontal, amount).outset(CuboidDirection.Vertical, amount);
+                c = this.outset(CuboidDirection.Horizontal, amount).outset(CuboidDirection.Vertical, amount);
                 break;
             }
             default: {
                 throw new IllegalArgumentException("Invalid direction " + (Object)((Object)dir));
             }
         }
-        return c2;
+        return c;
     }
 
     public Cuboid inset(CuboidDirection dir, int amount) {
         return this.outset(dir, -amount);
     }
 
-    public boolean contains(int x2, int y2, int z2) {
-        return x2 >= this.x1 && x2 <= this.x2 && y2 >= this.y1 && y2 <= this.y2 && z2 >= this.z1 && z2 <= this.z2;
+    public boolean contains(int x, int y, int z) {
+        return x >= this.x1 && x <= this.x2 && y >= this.y1 && y <= this.y2 && z >= this.z1 && z <= this.z2;
     }
 
-    public boolean contains(Block b2) {
-        return this.contains(b2.getLocation());
+    public boolean contains(Block b) {
+        return this.contains(b.getLocation());
     }
 
-    public boolean contains(Location l2) {
-        return this.worldName.equals(l2.getWorld().getName()) && this.contains(l2.getBlockX(), l2.getBlockY(), l2.getBlockZ());
+    public boolean contains(Location l) {
+        return this.worldName.equals(l.getWorld().getName()) && this.contains(l.getBlockX(), l.getBlockY(), l.getBlockZ());
     }
 
     public int getVolume() {
@@ -252,13 +252,13 @@ ConfigurationSerializable {
 
     public byte getAverageLightLevel() {
         long total = 0L;
-        int n2 = 0;
-        for (Block b2 : this) {
-            if (!b2.isEmpty()) continue;
-            total += (long)b2.getLightLevel();
-            ++n2;
+        int n = 0;
+        for (Block b : this) {
+            if (!b.isEmpty()) continue;
+            total += (long)b.getLightLevel();
+            ++n;
         }
-        return n2 > 0 ? (byte)(total / (long)n2) : (byte)0;
+        return n > 0 ? (byte)(total / (long)n) : (byte)0;
     }
 
     public Cuboid contract() {
@@ -333,8 +333,8 @@ ConfigurationSerializable {
     }
 
     public boolean containsOnly(int blockId) {
-        for (Block b2 : this) {
-            if (b2.getTypeId() == blockId) continue;
+        for (Block b : this) {
+            if (b.getTypeId() == blockId) continue;
             return false;
         }
         return true;
@@ -353,24 +353,24 @@ ConfigurationSerializable {
         return new Cuboid(this.worldName, xMin, yMin, zMin, xMax, yMax, zMax);
     }
 
-    public Block getRelativeBlock(int x2, int y2, int z2) {
-        return this.getWorld().getBlockAt(this.x1 + x2, this.y1 + y2, this.z1 + z2);
+    public Block getRelativeBlock(int x, int y, int z) {
+        return this.getWorld().getBlockAt(this.x1 + x, this.y1 + y, this.z1 + z);
     }
 
-    public Block getRelativeBlock(World w2, int x2, int y2, int z2) {
-        return w2.getBlockAt(this.x1 + x2, this.y1 + y2, this.z1 + z2);
+    public Block getRelativeBlock(World w, int x, int y, int z) {
+        return w.getBlockAt(this.x1 + x, this.y1 + y, this.z1 + z);
     }
 
     public List<Chunk> getChunks() {
         ArrayList<Chunk> res = new ArrayList<Chunk>();
-        World w2 = this.getWorld();
+        World w = this.getWorld();
         int x1 = this.getLowerX() & 0xFFFFFFF0;
         int x2 = this.getUpperX() & 0xFFFFFFF0;
         int z1 = this.getLowerZ() & 0xFFFFFFF0;
         int z2 = this.getUpperZ() & 0xFFFFFFF0;
         for (int x3 = x1; x3 <= x2; x3 += 16) {
             for (int z3 = z1; z3 <= z2; z3 += 16) {
-                res.add(w2.getChunkAt(x3 >> 4, z3 >> 4));
+                res.add(w.getChunkAt(x3 >> 4, z3 >> 4));
             }
         }
         return res;
@@ -449,8 +449,8 @@ ConfigurationSerializable {
         private final int sizeY;
         private final int sizeZ;
 
-        public CuboidIterator(World w2, int x1, int y1, int z1, int x2, int y2, int z2) {
-            this.w = w2;
+        public CuboidIterator(World w, int x1, int y1, int z1, int x2, int y2, int z2) {
+            this.w = w;
             this.baseX = x1;
             this.baseY = y1;
             this.baseZ = z1;
@@ -470,7 +470,7 @@ ConfigurationSerializable {
 
         @Override
         public Block next() {
-            Block b2 = this.w.getBlockAt(this.baseX + this.x, this.baseY + this.y, this.baseZ + this.z);
+            Block b = this.w.getBlockAt(this.baseX + this.x, this.baseY + this.y, this.baseZ + this.z);
             if (++this.x >= this.sizeX) {
                 this.x = 0;
                 if (++this.y >= this.sizeY) {
@@ -478,7 +478,7 @@ ConfigurationSerializable {
                     ++this.z;
                 }
             }
-            return b2;
+            return b;
         }
 
         @Override

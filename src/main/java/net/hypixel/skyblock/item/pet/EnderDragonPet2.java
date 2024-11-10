@@ -123,9 +123,9 @@ extends Pet {
     }
 
     @Override
-    public void particleBelowA(Player p2, Location l2) {
-        p2.spigot().playEffect(l2, Effect.LARGE_SMOKE, 21, 0, 0.1f, 0.0f, 0.1f, 0.01f, 1, 30);
-        p2.spigot().playEffect(l2, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+    public void particleBelowA(Player p, Location l) {
+        p.spigot().playEffect(l, Effect.LARGE_SMOKE, 21, 0, 0.1f, 0.0f, 0.1f, 0.01f, 1, 30);
+        p.spigot().playEffect(l, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
     }
 }
 

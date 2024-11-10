@@ -9,22 +9,23 @@ package net.hypixel.skyblock.npc.hub;
 import net.hypixel.skyblock.gui.GUIType;
 import net.hypixel.skyblock.npc.impl.NPCParameters;
 import net.hypixel.skyblock.npc.impl.NPCSkin;
-import net.hypixel.skyblock.npc.impl.SkyBlockNPC;
+import net.hypixel.skyblock.npc.impl.SkyblockNPC;
+import net.hypixel.skyblock.npc.impl.enums.NPCType;
 import org.bukkit.entity.Player;
 
 public class NPCMort
-extends SkyBlockNPC {
+extends SkyblockNPC {
     public NPCMort() {
         super(new NPCParameters(){
 
             @Override
-            public String id() {
-                return "MORT";
+            public String name() {
+                return "Mort";
             }
 
             @Override
-            public String name() {
-                return "&5Mort";
+            public String[] holograms() {
+                return new String[]{"&5Mort", "&e&lCLICK"};
             }
 
             @Override
@@ -53,7 +54,12 @@ extends SkyBlockNPC {
             }
 
             @Override
-            public void onInteract(Player player, SkyBlockNPC npc) {
+            public NPCType type() {
+                return NPCType.PLAYER;
+            }
+
+            @Override
+            public void onInteract(Player player, SkyblockNPC npc) {
                 GUIType.CATACOMBS_BOSS.getGUI().open(player);
             }
         });

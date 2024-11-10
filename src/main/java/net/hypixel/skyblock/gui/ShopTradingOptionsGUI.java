@@ -40,8 +40,8 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e2) {
-        Player player = e2.getPlayer();
+    public void onOpen(GUIOpenEvent e) {
+        Player player = e.getPlayer();
         this.fill(BLACK_STAINED_GLASS_PANE);
         this.set(ShopTradingOptionsGUI.createTrade(this.item, 20, 1, player));
         this.set(ShopTradingOptionsGUI.createTrade(this.item, 21, 5, player));
@@ -75,13 +75,13 @@ extends GUI {
         return new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 if (price > user.getCoins()) {
                     player.sendMessage(ChatColor.RED + "You don't have enough coins!");
                     return;
                 }
-                HashMap m2 = player.getInventory().addItem(new ItemStack[]{SUtil.setSItemAmount(item.clone(), amount).getStack()});
-                if (m2.size() != 0) {
+                HashMap m = player.getInventory().addItem(new ItemStack[]{SUtil.setSItemAmount(item.clone(), amount).getStack()});
+                if (m.size() != 0) {
                     player.sendMessage(ChatColor.RED + "Free up inventory space to purchase this!");
                     return;
                 }

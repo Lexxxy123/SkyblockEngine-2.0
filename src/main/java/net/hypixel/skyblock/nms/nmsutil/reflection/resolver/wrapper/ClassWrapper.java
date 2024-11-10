@@ -30,15 +30,15 @@ extends WrapperAbstract {
     public R newInstance() {
         try {
             return this.clazz.newInstance();
-        } catch (Exception e2) {
-            throw new RuntimeException(e2);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
     public R newInstanceSilent() {
         try {
             return this.clazz.newInstance();
-        } catch (Exception e2) {
+        } catch (Exception e) {
             return null;
         }
     }

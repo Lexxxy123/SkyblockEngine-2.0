@@ -53,35 +53,35 @@ extends GUI {
         this.fill(BLACK_STAINED_GLASS_PANE);
         this.fill(RED_STAINED_GLASS_PANE, 45, 53);
         this.set(GUIClickableItem.getCloseItem(49));
-        for (int i2 : Arrays.asList(11, 12, 20)) {
-            this.set(i2, SUtil.getSingleLoreStack(ChatColor.GOLD + "Item to Upgrade", Material.STAINED_GLASS_PANE, (short)14, 1, "The item you want to upgrade should be placed in the slot on this side."));
+        for (int i : Arrays.asList(11, 12, 20)) {
+            this.set(i, SUtil.getSingleLoreStack(ChatColor.GOLD + "Item to Upgrade", Material.STAINED_GLASS_PANE, (short)14, 1, "The item you want to upgrade should be placed in the slot on this side."));
         }
-        for (int i2 : Arrays.asList(14, 15, 24)) {
-            this.set(i2, SUtil.getSingleLoreStack(ChatColor.GOLD + "Item to Sacrifice", Material.STAINED_GLASS_PANE, (short)14, 1, "The item you are sacrificing in order to upgrade the item on the left should be placed in the slot on this side."));
+        for (int i : Arrays.asList(14, 15, 24)) {
+            this.set(i, SUtil.getSingleLoreStack(ChatColor.GOLD + "Item to Sacrifice", Material.STAINED_GLASS_PANE, (short)14, 1, "The item you are sacrificing in order to upgrade the item on the left should be placed in the slot on this side."));
         }
         this.set(29, null);
         this.set(33, null);
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(final InventoryClickEvent e2) {
-                ItemStack current = e2.getCurrentItem();
+            public void run(final InventoryClickEvent e) {
+                ItemStack current = e.getCurrentItem();
                 if (current == null) {
                     return;
                 }
-                if (e2.getCurrentItem().getType() == Material.BARRIER) {
-                    e2.setCancelled(true);
+                if (e.getCurrentItem().getType() == Material.BARRIER) {
+                    e.setCancelled(true);
                     return;
                 }
-                final Inventory inventory = e2.getClickedInventory();
+                final Inventory inventory = e.getClickedInventory();
                 if (!SUtil.isAir(inventory.getItem(29)) || !SUtil.isAir(inventory.getItem(33))) {
-                    e2.setCancelled(true);
+                    e.setCancelled(true);
                     return;
                 }
                 new BukkitRunnable(){
 
                     public void run() {
-                        inventory.setItem(e2.getSlot(), ANVIL_BARRIER);
+                        inventory.setItem(e.getSlot(), ANVIL_BARRIER);
                     }
                 }.runTaskLater((Plugin)SkyBlock.getPlugin(), 1L);
             }
@@ -104,9 +104,9 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                HumanEntity entity = e2.getWhoClicked();
-                Inventory inventory = e2.getClickedInventory();
+            public void run(InventoryClickEvent e) {
+                HumanEntity entity = e.getWhoClicked();
+                Inventory inventory = e.getClickedInventory();
                 ItemStack upgrade = inventory.getItem(29);
                 ItemStack sacrifice = inventory.getItem(33);
                 if (upgrade == null || sacrifice == null) {
@@ -124,7 +124,7 @@ extends GUI {
                 }
                 if (specSacrifice.getType() == SMaterial.ENCHANTED_BOOK) {
                     for (Enchantment enchantment : specSacrifice.getEnchantments()) {
-                        Skill.reward(EnchantingSkill.INSTANCE, enchantment.getLevel() * 2, (Player)e2.getWhoClicked());
+                        Skill.reward(EnchantingSkill.INSTANCE, enchantment.getLevel() * 2, (Player)e.getWhoClicked());
                     }
                 }
                 inventory.setItem(22, DEFAULT_COMBINE_ITEMS);
@@ -149,16 +149,16 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(final GUIOpenEvent e2) {
+    public void onOpen(final GUIOpenEvent e) {
         new BukkitRunnable(){
 
             public void run() {
-                Player player = e2.getPlayer();
+                Player player = e.getPlayer();
                 if (AnvilReforgeGUI.this != GUI.GUI_MAP.get(player.getUniqueId())) {
                     this.cancel();
                     return;
                 }
-                Inventory inventory = e2.getInventory();
+                Inventory inventory = e.getInventory();
                 AnvilReforgeGUI.this.update(inventory);
                 if (inventory.getItem(11).getData().getData() == 14 || inventory.getItem(14).getData().getData() == 14) {
                     SUtil.border(inventory, AnvilReforgeGUI.this, SUtil.createColoredStainedGlassPane((short)14, ChatColor.RESET + " "), 45, 48, true, false);
@@ -316,8 +316,8 @@ extends GUI {
                         }
                     }
                     if (display.getType() != SMaterial.ENCHANTED_BOOK && display.getEnchantments() != null && (list = Enchantment.ultimateEnchantsListFromList(display.getEnchantments())).size() > 1) {
-                        for (int i2 = 1; i2 < list.size(); ++i2) {
-                            display.removeEnchantment(list.get(i2).getType());
+                        for (int i = 1; i < list.size(); ++i) {
+                            display.removeEnchantment(list.get(i).getType());
                         }
                     }
                 } else if (specSacrifice.getType() == SMaterial.HOT_POTATO_BOOK) {
@@ -334,8 +334,8 @@ extends GUI {
     }
 
     private static void setItemTo(boolean upgrade, boolean green, Inventory inventory) {
-        for (int i2 : upgrade ? Arrays.asList(11, 12, 20) : Arrays.asList(14, 15, 24)) {
-            inventory.setItem(i2, SUtil.getSingleLoreStack(ChatColor.GOLD + "Item to " + (upgrade ? "Upgrade" : "Sacrifice"), Material.STAINED_GLASS_PANE, (short)(green ? 5 : 14), 1, upgrade ? "The item you want to upgrade should be placed in the slot on this side." : "The item you are sacrificing in order to upgrade the item on the left should be placed in the slot on this side."));
+        for (int i : upgrade ? Arrays.asList(11, 12, 20) : Arrays.asList(14, 15, 24)) {
+            inventory.setItem(i, SUtil.getSingleLoreStack(ChatColor.GOLD + "Item to " + (upgrade ? "Upgrade" : "Sacrifice"), Material.STAINED_GLASS_PANE, (short)(green ? 5 : 14), 1, upgrade ? "The item you want to upgrade should be placed in the slot on this side." : "The item you are sacrificing in order to upgrade the item on the left should be placed in the slot on this side."));
         }
     }
 

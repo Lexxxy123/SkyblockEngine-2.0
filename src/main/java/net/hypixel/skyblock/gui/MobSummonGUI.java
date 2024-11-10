@@ -66,9 +66,9 @@ extends GUI {
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
-                    new MobSummonGUI(finalPage - 1).open((Player)e2.getWhoClicked());
-                    ((Player)e2.getWhoClicked()).playSound(e2.getWhoClicked().getLocation(), Sound.NOTE_PIANO, 1.0f, 1.0f);
+                public void run(InventoryClickEvent e) {
+                    new MobSummonGUI(finalPage - 1).open((Player)e.getWhoClicked());
+                    ((Player)e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.NOTE_PIANO, 1.0f, 1.0f);
                 }
 
                 @Override
@@ -87,9 +87,9 @@ extends GUI {
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
-                    new MobSummonGUI(finalPage1 + 1).open((Player)e2.getWhoClicked());
-                    ((Player)e2.getWhoClicked()).playSound(e2.getWhoClicked().getLocation(), Sound.NOTE_PIANO, 1.0f, 1.0f);
+                public void run(InventoryClickEvent e) {
+                    new MobSummonGUI(finalPage1 + 1).open((Player)e.getWhoClicked());
+                    ((Player)e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.NOTE_PIANO, 1.0f, 1.0f);
                 }
 
                 @Override
@@ -110,7 +110,7 @@ extends GUI {
                 }
 
                 @Override
-                public void run(InventoryClickEvent e2) {
+                public void run(InventoryClickEvent e) {
                 }
 
                 @Override
@@ -123,22 +123,22 @@ extends GUI {
                     return SUtil.createNamedItemStack(Material.SIGN, ChatColor.GREEN + "Search");
                 }
             });
-            List p2 = pagedMaterials.getPage(page);
-            if (p2 == null) {
+            List p = pagedMaterials.getPage(page);
+            if (p == null) {
                 return;
             }
-            for (int i2 = 0; i2 < p2.size(); ++i2) {
-                final int slot = INTERIOR[i2];
-                final ItemStack stack = (ItemStack)p2.get(i2);
+            for (int i = 0; i < p.size(); ++i) {
+                final int slot = INTERIOR[i];
+                final ItemStack stack = (ItemStack)p.get(i);
                 this.set(new GUIClickableItem(){
 
                     @Override
-                    public void run(InventoryClickEvent e2) {
-                        ItemStack stack2 = e2.getCurrentItem();
+                    public void run(InventoryClickEvent e) {
+                        ItemStack stack2 = e.getCurrentItem();
                         String name = MobSummonGUI.this.deserilize(stack2.getItemMeta().getDisplayName());
                         SEntityType type = SEntityType.getEntityType(name);
-                        SEntity entity = new SEntity((Entity)e2.getWhoClicked(), type, new Object[0]);
-                        e2.getWhoClicked().closeInventory();
+                        SEntity entity = new SEntity((Entity)e.getWhoClicked(), type, new Object[0]);
+                        e.getWhoClicked().closeInventory();
                     }
 
                     @Override
@@ -214,8 +214,8 @@ extends GUI {
             Field profileField = skullMeta.getClass().getDeclaredField("profile");
             profileField.setAccessible(true);
             profileField.set(skullMeta, profile);
-        } catch (IllegalAccessException | NoSuchFieldException e2) {
-            e2.printStackTrace();
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            e.printStackTrace();
         }
         skullItem.setItemMeta((ItemMeta)skullMeta);
         return skullItem;

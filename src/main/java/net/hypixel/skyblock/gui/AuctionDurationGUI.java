@@ -33,8 +33,8 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(final GUIOpenEvent e2) {
-        final User user = User.getUser(e2.getPlayer().getUniqueId());
+    public void onOpen(final GUIOpenEvent e) {
+        final User user = User.getUser(e.getPlayer().getUniqueId());
         this.set(AuctionDurationGUI.createTime((short)14, 1, 10, user));
         this.set(AuctionDurationGUI.createTime((short)6, 6, 11, user));
         this.set(AuctionDurationGUI.createTime((short)1, 12, 12, user));
@@ -45,32 +45,32 @@ extends GUI {
 
             @Override
             public GUI onQueryFinish(String query) {
-                long l2;
+                long l;
                 try {
-                    l2 = Long.parseLong(query);
-                    if (l2 <= 0L) {
-                        e2.getPlayer().sendMessage(ChatColor.RED + "Could not read this number!");
+                    l = Long.parseLong(query);
+                    if (l <= 0L) {
+                        e.getPlayer().sendMessage(ChatColor.RED + "Could not read this number!");
                         return null;
                     }
-                    if (right.get() && l2 >= 0L && l2 > 1728L) {
-                        e2.getPlayer().sendMessage(ChatColor.RED + "You cannot put up an auction for more than 3 days!");
+                    if (right.get() && l >= 0L && l > 1728L) {
+                        e.getPlayer().sendMessage(ChatColor.RED + "You cannot put up an auction for more than 3 days!");
                         return null;
                     }
-                    if (!right.get() && l2 >= 0L && l2 > 72L) {
-                        e2.getPlayer().sendMessage(ChatColor.RED + "You cannot put up an auction for more than 3 days!");
+                    if (!right.get() && l >= 0L && l > 72L) {
+                        e.getPlayer().sendMessage(ChatColor.RED + "You cannot put up an auction for more than 3 days!");
                         return null;
                     }
                 } catch (NumberFormatException ex) {
-                    e2.getPlayer().sendMessage(ChatColor.RED + "Could not read this number!");
+                    e.getPlayer().sendMessage(ChatColor.RED + "Could not read this number!");
                     return null;
                 }
-                user.getAuctionEscrow().setDuration(l2 * (long)(right.get() ? 60000 : 3600000));
+                user.getAuctionEscrow().setDuration(l * (long)(right.get() ? 60000 : 3600000));
                 return new CreateAuctionGUI();
             }
 
             @Override
-            public void run(InventoryClickEvent e22) {
-                if (e22.isRightClick()) {
+            public void run(InventoryClickEvent e2) {
+                if (e2.isRightClick()) {
                     right.set(true);
                 }
             }
@@ -85,7 +85,7 @@ extends GUI {
                 return SUtil.getStack(ChatColor.GREEN + "Custom Duration", Material.WATCH, (short)0, 1, ChatColor.GRAY + "Specify how long you want", ChatColor.GRAY + "the auction to last.", " ", ChatColor.AQUA + "Right-click for minutes!", ChatColor.YELLOW + "Click to set hours!");
             }
         });
-        this.set(GUIClickableItem.createGUIOpenerItem(GUIType.CREATE_AUCTION, e2.getPlayer(), ChatColor.GREEN + "Go Back", 31, Material.ARROW, (short)0, ChatColor.GRAY + "To Create " + (user.isAuctionCreationBIN() ? "BIN " : "") + "Auction"));
+        this.set(GUIClickableItem.createGUIOpenerItem(GUIType.CREATE_AUCTION, e.getPlayer(), ChatColor.GREEN + "Go Back", 31, Material.ARROW, (short)0, ChatColor.GRAY + "To Create " + (user.isAuctionCreationBIN() ? "BIN " : "") + "Auction"));
     }
 
     private static GUIClickableItem createTime(final short color, int hours, final int slot, final User user) {
@@ -93,9 +93,9 @@ extends GUI {
         return new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 user.getAuctionEscrow().setDuration(millis);
-                new AuctionDurationGUI().open((Player)e2.getWhoClicked());
+                new AuctionDurationGUI().open((Player)e.getWhoClicked());
             }
 
             @Override

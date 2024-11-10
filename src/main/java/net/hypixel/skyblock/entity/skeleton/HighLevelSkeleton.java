@@ -46,6 +46,11 @@ EntityFunction {
     }
 
     @Override
+    public int mobLevel() {
+        return 6;
+    }
+
+    @Override
     public double getXPDropped() {
         return 6.0;
     }
@@ -60,7 +65,7 @@ EntityFunction {
                     return;
                 }
                 Location spawn = item.getLocation().clone().add(0.0, 1.0, 0.0);
-                for (int i2 = 0; i2 < 5; ++i2) {
+                for (int i = 0; i < 5; ++i) {
                     item.getWorld().spigot().playEffect(spawn, Effect.PARTICLE_SMOKE, 0, 1, 0.0f, 0.0f, 0.0f, 0.0f, 1, 20);
                 }
                 new SEntity(spawn, SEntityType.HIGH_LEVEL_SKELETON, new Object[0]);

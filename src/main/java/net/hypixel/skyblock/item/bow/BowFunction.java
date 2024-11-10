@@ -19,7 +19,7 @@ import org.bukkit.event.entity.EntityShootBowEvent;
 
 public interface BowFunction
 extends MaterialFunction {
-    default public void onBowShoot(SItem bow, EntityShootBowEvent e2) {
+    default public void onBowShoot(SItem bow, EntityShootBowEvent e) {
     }
 
     default public void onBowHit(Entity hit, Player shooter, Arrow arrow, SItem weapon, AtomicDouble damage) {

@@ -32,13 +32,13 @@ implements PlayerStatistic<Double> {
     }
 
     @Override
-    public void add(int slot, Double d2) {
-        this.set(slot, this.safeGet(slot) + d2);
+    public void add(int slot, Double d) {
+        this.set(slot, this.safeGet(slot) + d);
     }
 
     @Override
-    public void sub(int slot, Double d2) {
-        this.set(slot, this.safeGet(slot) - d2);
+    public void sub(int slot, Double d) {
+        this.set(slot, this.safeGet(slot) - d);
     }
 
     @Override
@@ -60,12 +60,12 @@ implements PlayerStatistic<Double> {
     }
 
     @Override
-    public void set(int slot, Double d2) {
+    public void set(int slot, Double d) {
         this.values.ensureCapacity(slot + 1);
         while (this.values.size() < slot + 1) {
             this.values.add(0.0);
         }
-        this.values.set(slot, d2);
+        this.values.set(slot, d);
     }
 
     @Override
@@ -80,8 +80,8 @@ implements PlayerStatistic<Double> {
 
     public ArrayList<Double> forInventory() {
         ArrayList<Double> list = new ArrayList<Double>();
-        for (int i2 = 6; i2 < this.values.size(); ++i2) {
-            list.add(this.safeGet(i2));
+        for (int i = 6; i < this.values.size(); ++i) {
+            list.add(this.safeGet(i));
         }
         return list;
     }

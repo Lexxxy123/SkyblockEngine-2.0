@@ -37,13 +37,13 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e2) {
-        final Player player = e2.getPlayer();
+    public void onOpen(GUIOpenEvent e) {
+        final Player player = e.getPlayer();
         final User user = User.getUser(player.getUniqueId());
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 new AuctionsBrowserGUI().open(player);
             }
 
@@ -61,7 +61,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 if (bids.size() == 0) {
                     return;
                 }
@@ -113,7 +113,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 if (auctions.size() == 0) {
                     new CreateAuctionGUI().open(player);
                 } else {
@@ -152,7 +152,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
             }
 
             @Override

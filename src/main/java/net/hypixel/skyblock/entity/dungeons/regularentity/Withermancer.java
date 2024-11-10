@@ -99,8 +99,8 @@ EntityFunction {
         return 1500000.0;
     }
 
-    public static ItemStack b(int hexcolor, Material m2) {
-        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m2), Color.fromRGB((int)hexcolor));
+    public static ItemStack b(int hexcolor, Material m) {
+        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB((int)hexcolor));
         ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
@@ -127,7 +127,7 @@ EntityFunction {
                     this.cancel();
                     return;
                 }
-                for (int i2 = 0; i2 < 20; ++i2) {
+                for (int i = 0; i < 20; ++i) {
                     entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 0.25, 0.0), Effect.MAGIC_CRIT, 0, 1, (float)SUtil.random(-0.5, 0.5), (float)SUtil.random(0.0, 0.6), (float)SUtil.random(-0.5, 0.5), 0.0f, 1, 20);
                 }
             }
@@ -191,7 +191,7 @@ EntityFunction {
     }
 
     @Override
-    public void onDamage(SEntity sEntity, org.bukkit.entity.Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
+    public void onDamage(SEntity sEntity, org.bukkit.entity.Entity damager, EntityDamageByEntityEvent e, AtomicDouble damage) {
     }
 
     @Override
@@ -204,24 +204,24 @@ EntityFunction {
         return 0.2;
     }
 
-    public void throwThickAssBone(final org.bukkit.entity.Entity e2) {
-        final Vector throwVec = e2.getLocation().add(e2.getLocation().getDirection().multiply(10)).toVector().subtract(e2.getLocation().toVector()).normalize().multiply(1.2);
-        Location throwLoc = e2.getLocation().add(0.0, 0.5, 0.0);
-        final ArmorStand armorStand1 = (ArmorStand)e2.getWorld().spawnEntity(throwLoc, EntityType.ARMOR_STAND);
+    public void throwThickAssBone(final org.bukkit.entity.Entity e) {
+        final Vector throwVec = e.getLocation().add(e.getLocation().getDirection().multiply(10)).toVector().subtract(e.getLocation().toVector()).normalize().multiply(1.2);
+        Location throwLoc = e.getLocation().add(0.0, 0.5, 0.0);
+        final ArmorStand armorStand1 = (ArmorStand)e.getWorld().spawnEntity(throwLoc, EntityType.ARMOR_STAND);
         armorStand1.getEquipment().setItemInHand(SItem.of(SMaterial.STONE_SWORD).getStack());
         armorStand1.setGravity(false);
         armorStand1.setVisible(false);
         armorStand1.setMarker(true);
-        final Vector teleportTo = e2.getLocation().getDirection().normalize().multiply(1);
+        final Vector teleportTo = e.getLocation().getDirection().normalize().multiply(1);
         final Vector[] previousVector = new Vector[]{throwVec};
         new BukkitRunnable(){
             private int run = -1;
 
             public void run() {
-                boolean bl2;
+                boolean bl;
                 int angle;
                 Vector newVector;
-                int i2 = 0;
+                int i = 0;
                 int ran = 0;
                 int num = 90;
                 Object loc = null;
@@ -241,34 +241,34 @@ EntityFunction {
                 armorStand1.setRightArmPose(new EulerAngle(xPos + 0.7, 0.0, 0.0));
                 previousVector[0] = newVector = new Vector(throwVec.getX(), previousVector[0].getY() - 0.03, throwVec.getZ());
                 armorStand1.setVelocity(newVector);
-                if (i2 < 13) {
-                    angle = i2 * 20 + 90;
-                    bl2 = false;
+                if (i < 13) {
+                    angle = i * 20 + 90;
+                    bl = false;
                 } else {
-                    angle = i2 * 20 - 90;
-                    bl2 = true;
+                    angle = i * 20 - 90;
+                    bl = true;
                 }
                 if (locof.getBlock().getType() != Material.AIR && locof.getBlock().getType() != Material.WATER) {
                     armorStand1.remove();
                     this.cancel();
                     return;
                 }
-                if (i2 % 2 == 0 && i2 < 13) {
+                if (i % 2 == 0 && i < 13) {
                     armorStand1.teleport(armorStand1.getLocation().add(teleportTo).multiply(1.0));
                     armorStand1.teleport(armorStand1.getLocation().add(teleportTo).multiply(1.0));
-                } else if (i2 % 2 == 0) {
+                } else if (i % 2 == 0) {
                     armorStand1.teleport(armorStand1.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                     armorStand1.teleport(armorStand1.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                 }
-                for (int j2 = 0; j2 < 20; ++j2) {
+                for (int j = 0; j < 20; ++j) {
                     armorStand1.getWorld().spigot().playEffect(armorStand1.getLocation().clone().add(0.0, 1.75, 0.0), Effect.CRIT, 0, 1, (float)SUtil.random(-0.5, 0.5), (float)SUtil.random(0.0, 0.5), (float)SUtil.random(-0.5, 0.5), 0.0f, 1, 20);
                 }
                 for (org.bukkit.entity.Entity en : armorStand1.getNearbyEntities(1.0, 1.0, 1.0)) {
                     if (!(en instanceof Player)) continue;
-                    Player p2 = (Player)en;
-                    p2.getWorld().playSound(p2.getLocation(), Sound.ITEM_BREAK, 1.0f, 1.0f);
-                    User.getUser(p2.getUniqueId()).damage(p2.getMaxHealth() * 50.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, e2);
-                    p2.damage(1.0E-5);
+                    Player p = (Player)en;
+                    p.getWorld().playSound(p.getLocation(), Sound.ITEM_BREAK, 1.0f, 1.0f);
+                    User.getUser(p.getUniqueId()).damage(p.getMaxHealth() * 50.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, e);
+                    p.damage(1.0E-5);
                     armorStand1.remove();
                     this.cancel();
                     break;

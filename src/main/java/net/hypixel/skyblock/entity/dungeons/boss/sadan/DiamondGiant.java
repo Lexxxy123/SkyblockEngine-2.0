@@ -107,9 +107,9 @@ extends BaseZombie {
         }
         e = entity;
         ((CraftZombie)entity).setBaby(false);
-        Player p2 = (Player)entity.getWorld().getPlayers().get(SUtil.random(0, entity.getWorld().getPlayers().size() - 1));
-        if (p2 != null && p2.getGameMode() != GameMode.SPECTATOR && p2.getGameMode() != GameMode.CREATIVE) {
-            ((CraftZombie)entity).setTarget((LivingEntity)p2);
+        Player p = (Player)entity.getWorld().getPlayers().get(SUtil.random(0, entity.getWorld().getPlayers().size() - 1));
+        if (p != null && p.getGameMode() != GameMode.SPECTATOR && p.getGameMode() != GameMode.CREATIVE) {
+            ((CraftZombie)entity).setTarget((LivingEntity)p);
         }
         AttributeInstance followRange = ((CraftLivingEntity)entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
         followRange.setValue(500.0);
@@ -206,37 +206,37 @@ extends BaseZombie {
         return stack;
     }
 
-    public static ItemStack b(int hexcolor, Material m2) {
-        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m2), Color.fromRGB((int)hexcolor));
+    public static ItemStack b(int hexcolor, Material m) {
+        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB((int)hexcolor));
         ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
         return stack;
     }
 
-    public static ItemStack c(Material m2) {
-        ItemStack stack = new ItemStack(m2);
+    public static ItemStack c(Material m) {
+        ItemStack stack = new ItemStack(m);
         ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
         return stack;
     }
 
-    public static void applyEffect(PotionEffectType e2, Entity en, int ticks, int amp) {
-        ((LivingEntity)en).addPotionEffect(new PotionEffect(e2, ticks, amp));
+    public static void applyEffect(PotionEffectType e, Entity en, int ticks, int amp) {
+        ((LivingEntity)en).addPotionEffect(new PotionEffect(e, ticks, amp));
     }
 
-    public void swordSlamAC(LivingEntity e2, LivingEntity tar) {
-        SUtil.delay(() -> this.swordSlamF(e2, tar), 60L);
+    public void swordSlamAC(LivingEntity e, LivingEntity tar) {
+        SUtil.delay(() -> this.swordSlamF(e, tar), 60L);
     }
 
-    public void swordSlamF(LivingEntity e2, LivingEntity tar) {
-        this.swordSlam(e2, tar);
+    public void swordSlamF(LivingEntity e, LivingEntity tar) {
+        this.swordSlam(e, tar);
     }
 
-    public void swordSlam(final LivingEntity e2, final LivingEntity player) {
-        e2.getEquipment().setItemInHand(null);
-        final Giant armorStand = (Giant)player.getWorld().spawn(e2.getLocation().add(0.0, 12.0, 0.0), Giant.class);
+    public void swordSlam(final LivingEntity e, final LivingEntity player) {
+        e.getEquipment().setItemInHand(null);
+        final Giant armorStand = (Giant)player.getWorld().spawn(e.getLocation().add(0.0, 12.0, 0.0), Giant.class);
         armorStand.getEquipment().setItemInHand(SUtil.enchant(new ItemStack(Material.DIAMOND_SWORD)));
         Sputnik.applyPacketGiant((Entity)armorStand);
         armorStand.setCustomName("Dinnerbone");
@@ -245,12 +245,12 @@ extends BaseZombie {
         EntityManager.Woosh((LivingEntity)armorStand);
         EntityManager.noHit((Entity)armorStand);
         EntityManager.shutTheFuckUp((Entity)armorStand);
-        Location firstLocation = e2.getLocation().add(0.0, 12.0, 0.0);
-        EntityLiving nms = ((CraftLivingEntity)e2).getHandle();
+        Location firstLocation = e.getLocation().add(0.0, 12.0, 0.0);
+        EntityLiving nms = ((CraftLivingEntity)e).getHandle();
         for (Player players : Bukkit.getOnlinePlayers()) {
-            ((CraftPlayer)players).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)e2).getHandle(), 0));
+            ((CraftPlayer)players).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)e).getHandle(), 0));
         }
-        nms.r(((CraftEntity)e2).getHandle());
+        nms.r(((CraftEntity)e).getHandle());
         Location secondLocation = player.getLocation();
         Vector mobsVector = firstLocation.toVector();
         Vector vectorBetween = secondLocation.toVector().subtract(mobsVector);
@@ -269,7 +269,7 @@ extends BaseZombie {
                     DiamondGiant.this.swordActiv = false;
                     SUtil.delay(() -> DiamondGiant.this.swordSlamCD = false, 300L);
                     armorStand.remove();
-                    Giant sword = (Giant)e2.getWorld().spawnEntity(armorStand.getLocation(), EntityType.GIANT);
+                    Giant sword = (Giant)e.getWorld().spawnEntity(armorStand.getLocation(), EntityType.GIANT);
                     Sputnik.applyPacketGiant((Entity)sword);
                     sword.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 100000, 1));
                     EntityManager.noAI((Entity)sword);
@@ -283,24 +283,24 @@ extends BaseZombie {
                     stand.setGravity(true);
                     stand.setPassenger((Entity)sword);
                     sword.getEquipment().setItemInHand(SUtil.enchant(new ItemStack(Material.DIAMOND_SWORD)));
-                    e2.getWorld().playSound(player.getLocation(), Sound.ANVIL_LAND, 1.0f, 0.0f);
-                    e2.getWorld().playSound(player.getLocation(), Sound.AMBIENCE_THUNDER, 1.0f, 0.35f);
+                    e.getWorld().playSound(player.getLocation(), Sound.ANVIL_LAND, 1.0f, 0.0f);
+                    e.getWorld().playSound(player.getLocation(), Sound.AMBIENCE_THUNDER, 1.0f, 0.35f);
                     for (Entity entities : sword.getWorld().getNearbyEntities(sword.getLocation().add(sword.getLocation().getDirection().multiply(3)), 7.0, 7.0, 7.0)) {
-                        Player p2;
+                        Player p;
                         if (entities.hasMetadata("NPC") || entities instanceof ArmorStand || entities instanceof Giant || !(entities instanceof Player)) continue;
                         if (entities.getLocation().add(sword.getLocation().getDirection().multiply(3)).distance(sword.getLocation()) > 2.0) {
-                            p2 = (Player)entities;
-                            p2.sendMessage(Sputnik.trans("&3&lThe Diamond Giant &chit you with &eSword of 10,000 Truths &cfor " + SUtil.commaify(SadanFunction.dmgc(50000, p2, (Entity)e2)) + " &cdamage."));
+                            p = (Player)entities;
+                            p.sendMessage(Sputnik.trans("&3&lThe Diamond Giant &chit you with &eSword of 10,000 Truths &cfor " + SUtil.commaify(SadanFunction.dmgc(50000, p, (Entity)e)) + " &cdamage."));
                             continue;
                         }
-                        p2 = (Player)entities;
-                        p2.sendMessage(Sputnik.trans("&3&lThe Diamond Giant &chit you with &eSword of 10,000 Truths &cfor " + SUtil.commaify(SadanFunction.dmgc(55000, p2, (Entity)e2)) + " &cdamage."));
+                        p = (Player)entities;
+                        p.sendMessage(Sputnik.trans("&3&lThe Diamond Giant &chit you with &eSword of 10,000 Truths &cfor " + SUtil.commaify(SadanFunction.dmgc(55000, p, (Entity)e)) + " &cdamage."));
                     }
                     SUtil.delay(() -> sword.remove(), 35L);
                     SUtil.delay(() -> stand.remove(), 35L);
                     SUtil.delay(() -> {
-                        LivingEntity val$e = e2;
-                        e2.getEquipment().setItemInHand(SUtil.enchant(new ItemStack(Material.DIAMOND_SWORD)));
+                        LivingEntity val$e = e;
+                        e.getEquipment().setItemInHand(SUtil.enchant(new ItemStack(Material.DIAMOND_SWORD)));
                     }, 35L);
                 }
             }
@@ -308,8 +308,8 @@ extends BaseZombie {
     }
 
     @Override
-    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
-        e2.getEntity().getWorld().playSound(e2.getEntity().getLocation(), Sound.ZOMBIE_HURT, 1.0f, 0.0f);
+    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e, AtomicDouble damage) {
+        e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ZOMBIE_HURT, 1.0f, 0.0f);
     }
 }
 

@@ -29,6 +29,11 @@ extends BaseSpider {
     }
 
     @Override
+    public int mobLevel() {
+        return 3;
+    }
+
+    @Override
     public double getXPDropped() {
         return 9.7;
     }
@@ -36,7 +41,7 @@ extends BaseSpider {
     @Override
     public void onDeath(SEntity sEntity, Entity killed, Entity damager) {
         super.onDeath(sEntity, killed, damager);
-        for (int i2 = 0; i2 < 2; ++i2) {
+        for (int i = 0; i < 2; ++i) {
             new SEntity((Entity)sEntity.getEntity(), SEntityType.SILVERFISH, new Object[0]);
         }
     }

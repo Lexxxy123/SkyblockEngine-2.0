@@ -36,6 +36,11 @@ EntityFunction {
     }
 
     @Override
+    public int mobLevel() {
+        return 10;
+    }
+
+    @Override
     public boolean isWither() {
         return true;
     }

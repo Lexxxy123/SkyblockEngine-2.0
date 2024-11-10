@@ -38,7 +38,7 @@ public class Minecraft {
         Method method;
         try {
             method = AccessUtil.setAccessible(object.getClass().getDeclaredMethod("getHandle", new Class[0]));
-        } catch (ReflectiveOperationException e2) {
+        } catch (ReflectiveOperationException e) {
             method = AccessUtil.setAccessible(CraftEntity.getDeclaredMethod("getHandle", new Class[0]));
         }
         return method.invoke(object, new Object[0]);
@@ -48,7 +48,7 @@ public class Minecraft {
         Method method;
         try {
             method = AccessUtil.setAccessible(NmsEntity.getDeclaredMethod("getBukkitEntity", new Class[0]));
-        } catch (ReflectiveOperationException e2) {
+        } catch (ReflectiveOperationException e) {
             method = AccessUtil.setAccessible(CraftEntity.getDeclaredMethod("getHandle", new Class[0]));
         }
         return (Entity)method.invoke(object, new Object[0]);
@@ -57,7 +57,7 @@ public class Minecraft {
     public static Object getHandleSilent(Object object) {
         try {
             return Minecraft.getHandle(object);
-        } catch (Exception e2) {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -81,8 +81,8 @@ public class Minecraft {
         try {
             NmsEntity = nmsClassResolver.resolve("Entity");
             CraftEntity = obcClassResolver.resolve("entity.CraftEntity");
-        } catch (ReflectiveOperationException e2) {
-            throw new RuntimeException(e2);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -170,8 +170,8 @@ public class Minecraft {
                     System.out.println("[SkyBlock Reflection Injector] Injected dynamic version " + packge + " (#" + numVersion + ").");
                     System.out.println("[SkyBlock Reflection Injector] Please inform inventivetalent about the outdated version, as this is not guaranteed to work.");
                     return dynamicVersion;
-                } catch (ReflectiveOperationException e2) {
-                    e2.printStackTrace();
+                } catch (ReflectiveOperationException e) {
+                    e.printStackTrace();
                 }
             }
             return UNKNOWN;

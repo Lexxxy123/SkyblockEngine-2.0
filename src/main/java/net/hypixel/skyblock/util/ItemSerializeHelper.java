@@ -53,13 +53,13 @@ public class ItemSerializeHelper {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream((OutputStream)outputStream);
             dataOutput.writeInt(items.length);
-            for (int i2 = 0; i2 < items.length; ++i2) {
-                dataOutput.writeObject((Object)items[i2]);
+            for (int i = 0; i < items.length; ++i) {
+                dataOutput.writeObject((Object)items[i]);
             }
             dataOutput.close();
             return Base64Coder.encodeLines((byte[])outputStream.toByteArray());
-        } catch (Exception e2) {
-            throw new IllegalStateException("Unable to save item stacks.", e2);
+        } catch (Exception e) {
+            throw new IllegalStateException("Unable to save item stacks.", e);
         }
     }
 }

@@ -8,22 +8,28 @@ package net.hypixel.skyblock.npc.hub;
 
 import net.hypixel.skyblock.gui.GUIType;
 import net.hypixel.skyblock.npc.impl.NPCParameters;
-import net.hypixel.skyblock.npc.impl.SkyBlockNPC;
+import net.hypixel.skyblock.npc.impl.SkyblockNPC;
+import net.hypixel.skyblock.npc.impl.enums.NPCType;
 import org.bukkit.entity.Player;
 
 public class NPCMaddox
-extends SkyBlockNPC {
+extends SkyblockNPC {
     public NPCMaddox() {
         super(new NPCParameters(){
 
             @Override
-            public String id() {
-                return "MADDOX_SLAYER";
+            public String name() {
+                return "Maddox";
             }
 
             @Override
-            public String name() {
-                return "&5Maddox the slayer";
+            public String[] holograms() {
+                return new String[]{"&5Maddox the slayer", "&e&lCLICK"};
+            }
+
+            @Override
+            public NPCType type() {
+                return NPCType.PLAYER;
             }
 
             @Override
@@ -47,7 +53,7 @@ extends SkyBlockNPC {
             }
 
             @Override
-            public void onInteract(Player player, SkyBlockNPC npc) {
+            public void onInteract(Player player, SkyblockNPC npc) {
                 GUIType.SLAYER.getGUI().open(player);
             }
         });

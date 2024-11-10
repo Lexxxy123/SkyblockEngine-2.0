@@ -53,14 +53,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class SkyBlockNPC {
+public class SkyblockNPC {
     private final Set<UUID> viewers = new HashSet<UUID>();
     private static final Set<UUID> ALREADY_TALKING = new HashSet<UUID>();
     private final List<EntityArmorStand> holograms = new ArrayList<EntityArmorStand>();
     protected double cosFOV = Math.cos(Math.toRadians(60.0));
     private final String[] messages;
     private final UUID uuid = UUID.randomUUID();
-    private final String id;
+    private final String name;
     private final NPCType type;
     private final World world;
     private final Location location;
@@ -69,17 +69,17 @@ public class SkyBlockNPC {
     private final GameProfile gameProfile;
     private final NPCParameters parameters;
 
-    public SkyBlockNPC(NPCParameters npcParameters) {
-        this.id = npcParameters.id();
+    public SkyblockNPC(NPCParameters npcParameters) {
+        this.name = npcParameters.name();
         this.type = npcParameters.type();
         this.world = Bukkit.getWorld((String)npcParameters.world());
         this.messages = npcParameters.messages();
         if (this.world == null) {
-            throw new NullPointerException("World cannot be null for npc : " + this.id);
+            throw new NullPointerException("World cannot be null for npc : " + this.name);
         }
         this.location = new Location(this.world, npcParameters.x(), npcParameters.y(), npcParameters.z(), npcParameters.yaw(), npcParameters.pitch());
         this.skin = npcParameters.skin();
-        this.gameProfile = new GameProfile(this.uuid, this.id);
+        this.gameProfile = new GameProfile(this.uuid, this.name);
         if (this.type == NPCType.VILLAGER) {
             this.npcBase = new NPCVillagerImpl(this.location);
         } else {
@@ -104,12 +104,12 @@ public class SkyBlockNPC {
         new BukkitRunnable(){
 
             public void run() {
-                if (!player.isOnline() || !SkyBlockNPC.this.viewers.contains(player.getUniqueId())) {
+                if (!player.isOnline() || !SkyblockNPC.this.viewers.contains(player.getUniqueId())) {
                     this.cancel();
                     return;
                 }
-                if (SkyBlockNPC.this.inRangeOf(player)) {
-                    SkyBlockNPC.this.sendHeadRotationPacket(player);
+                if (SkyblockNPC.this.isPlayerNearby(player)) {
+                    SkyblockNPC.this.sendHeadRotationPacket(player);
                 }
             }
         }.runTaskTimerAsynchronously((Plugin)SkyBlock.getPlugin(), 0L, 2L);
@@ -130,6 +130,13 @@ public class SkyBlockNPC {
 
     public int getEntityID() {
         return this.npcBase.entityId();
+    }
+
+    public boolean isPlayerNearby(Player player) {
+        Location playerLocation;
+        Location npcLocation = this.getLocation();
+        double distanceSquared = npcLocation.distanceSquared(playerLocation = player.getLocation());
+        return distanceSquared <= 35.0;
     }
 
     public boolean isShown(Player player) {
@@ -163,11 +170,11 @@ public class SkyBlockNPC {
         if (ALREADY_TALKING.contains(user.getUuid())) {
             return false;
         }
-        return !user.getTalkedNPCs().contains(this.getId());
+        return !user.getTalkedNPCs().contains(this.getName());
     }
 
     public void sendHologram(Player player, String[] lines) {
-        double yOffset = this.type == NPCType.PLAYER ? 0.0 : 0.2;
+        double yOffset = 0.0;
         double DELTA = 0.3;
         for (String text : lines) {
             EntityArmorStand armorStand = new EntityArmorStand(((CraftPlayer)player).getHandle().getWorld());
@@ -177,7 +184,7 @@ public class SkyBlockNPC {
             armorStand.setCustomNameVisible(true);
             armorStand.setInvisible(true);
             PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving((EntityLiving)armorStand);
-            SkyBlockNPC.sendPacket(player, packet);
+            SkyblockNPC.sendPacket(player, packet);
             this.holograms.add(armorStand);
             yOffset -= DELTA;
         }
@@ -198,24 +205,24 @@ public class SkyBlockNPC {
             return future;
         }
         ALREADY_TALKING.add(player.getUniqueId());
-        int i2 = 0;
+        int i = 0;
         for (String message : this.messages) {
-            SUtil.delay(() -> this.sendMessage(player, message), (long)i2 * 20L);
-            ++i2;
+            SUtil.delay(() -> this.sendMessage(player, message), (long)i * 20L);
+            ++i;
         }
         SUtil.delay(() -> {
             ALREADY_TALKING.remove(player.getUniqueId());
-            if (Objects.equals(this.id, "JERRY")) {
+            if (Objects.equals(this.name, "Jerry")) {
                 return;
             }
-            User.getUser(player.getUniqueId()).addTalkedNPC(this.id);
+            User.getUser(player.getUniqueId()).addTalkedNPC(this.name);
             future.complete(null);
         }, (long)this.messages.length * 20L);
         return future;
     }
 
     public void sendMessage(Player player, String message) {
-        player.sendMessage(ChatColor.YELLOW + "[NPC] " + this.parameters.name().replace("&f", "") + ChatColor.WHITE + ": " + message);
+        player.sendMessage(ChatColor.YELLOW + "[NPC] " + this.name + ChatColor.WHITE + ": " + message);
     }
 
     public Set<UUID> getViewers() {
@@ -238,8 +245,8 @@ public class SkyBlockNPC {
         return this.uuid;
     }
 
-    public String getId() {
-        return this.id;
+    public String getName() {
+        return this.name;
     }
 
     public NPCType getType() {

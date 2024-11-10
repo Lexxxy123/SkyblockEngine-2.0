@@ -40,15 +40,15 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e2) {
+    public void onOpen(GUIOpenEvent e) {
         this.fill(BLACK_STAINED_GLASS_PANE);
-        final Player player = e2.getPlayer();
-        User user = User.getUser(e2.getPlayer().getUniqueId());
+        final Player player = e.getPlayer();
+        User user = User.getUser(e.getPlayer().getUniqueId());
         this.set(GUIClickableItem.getCloseItem(49));
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 GUIType.SKYBLOCK_MENU.getGUI().open(player);
             }
 
@@ -65,7 +65,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 player.sendMessage(ChatColor.RED + "Private islands are temporarily unavailable at the moment.");
                 if (player.getOpenInventory() != null) {
                     player.closeInventory();
@@ -85,7 +85,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 World hub = Bukkit.getWorld((String)"world");
                 player.teleport(new Location(Bukkit.getWorld((String)"world"), -2.5, 70.0, -68.5, 180.0f, 0.0f));
             }
@@ -103,7 +103,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 player.sendMessage(ChatColor.YELLOW + "The Dungeon hub has not been added yet. Stay tuned for updates!");
             }
 
@@ -120,8 +120,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                Player player1 = (Player)e2.getWhoClicked();
+            public void run(InventoryClickEvent e) {
+                Player player1 = (Player)e.getWhoClicked();
                 World the_barn = Bukkit.getWorld((String)"world");
                 player1.teleport(new Location(the_barn, 114.0, 71.0, -207.0));
             }
@@ -139,8 +139,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                Player player1 = (Player)e2.getWhoClicked();
+            public void run(InventoryClickEvent e) {
+                Player player1 = (Player)e.getWhoClicked();
                 World park = Bukkit.getWorld((String)"world");
                 player1.teleport(new Location(park, -276.0, 82.0, -12.0));
             }
@@ -158,8 +158,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                Player player1 = (Player)e2.getWhoClicked();
+            public void run(InventoryClickEvent e) {
+                Player player1 = (Player)e.getWhoClicked();
                 World gold_mine = Bukkit.getWorld((String)"world");
                 player1.teleport(new Location(gold_mine, -4.0, 74.0, -273.0));
             }
@@ -177,8 +177,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                Player player1 = (Player)e2.getWhoClicked();
+            public void run(InventoryClickEvent e) {
+                Player player1 = (Player)e.getWhoClicked();
                 World deep_caverns = Bukkit.getWorld((String)"world");
                 player1.teleport(new Location(deep_caverns, -2.0, 178.0, -458.0));
             }
@@ -196,8 +196,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                Player player1 = (Player)e2.getWhoClicked();
+            public void run(InventoryClickEvent e) {
+                Player player1 = (Player)e.getWhoClicked();
                 player1.playSound(player1.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 0.0f);
                 player1.sendMessage("Comming Soon!");
             }
@@ -215,8 +215,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                Player player1 = (Player)e2.getWhoClicked();
+            public void run(InventoryClickEvent e) {
+                Player player1 = (Player)e.getWhoClicked();
                 player1.playSound(player1.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 0.0f);
                 player1.sendMessage("Comming Soon!");
             }
@@ -234,8 +234,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                Player player1 = (Player)e2.getWhoClicked();
+            public void run(InventoryClickEvent e) {
+                Player player1 = (Player)e.getWhoClicked();
                 World spider_mine = Bukkit.getWorld((String)"world");
                 player1.teleport(new Location(spider_mine, -201.0, 84.0, -232.0));
             }
@@ -253,8 +253,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                Player player1 = (Player)e2.getWhoClicked();
+            public void run(InventoryClickEvent e) {
+                Player player1 = (Player)e.getWhoClicked();
                 World the_end = Bukkit.getWorld((String)"world");
                 player1.teleport(new Location(the_end, -499.0, 101.0, -275.0));
             }
@@ -272,8 +272,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                Player player1 = (Player)e2.getWhoClicked();
+            public void run(InventoryClickEvent e) {
+                Player player1 = (Player)e.getWhoClicked();
                 World nether = Bukkit.getWorld((String)"world");
                 player1.teleport(new Location(nether, -310.0, 83.0, -381.0));
             }
@@ -291,8 +291,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                Player player1 = (Player)e2.getWhoClicked();
+            public void run(InventoryClickEvent e) {
+                Player player1 = (Player)e.getWhoClicked();
                 player1.playSound(player1.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 0.0f);
                 player1.sendMessage("Comming Soon!");
             }
@@ -310,8 +310,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                Player player1 = (Player)e2.getWhoClicked();
+            public void run(InventoryClickEvent e) {
+                Player player1 = (Player)e.getWhoClicked();
                 player1.playSound(player1.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 0.0f);
                 player1.sendMessage("Comming Soon!");
             }
@@ -329,8 +329,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                Player player1 = (Player)e2.getWhoClicked();
+            public void run(InventoryClickEvent e) {
+                Player player1 = (Player)e.getWhoClicked();
                 player1.playSound(player1.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 0.0f);
                 player1.sendMessage("Comming Soon!");
             }
@@ -348,8 +348,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                Player player1 = (Player)e2.getWhoClicked();
+            public void run(InventoryClickEvent e) {
+                Player player1 = (Player)e.getWhoClicked();
                 player1.playSound(player1.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 0.0f);
                 player1.sendMessage("Comming Soon!");
             }
@@ -367,7 +367,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 player.sendMessage("Gui not added yet");
             }
 

@@ -207,19 +207,19 @@ public class PlayerDisguise {
                 PacketPlayOutEntityTeleport entityTeleportPacket = new PacketPlayOutEntityTeleport(this.fakePlayer.getId(), MathHelper.floor((double)(location.getX() * 32.0)), MathHelper.floor((double)(location.getY() * 32.0)), MathHelper.floor((double)(location.getZ() * 32.0)), (byte)(location.getYaw() * 256.0f / 360.0f), (byte)(location.getPitch() * 256.0f / 360.0f), this.entity.isOnGround());
                 player.sendPacket((Packet<?>)entityTeleportPacket);
                 player.sendPacket((Packet<?>)new PacketPlayOutEntityDestroy(new int[]{this.entity.getEntityId()}));
-                String s2 = "99n" + this.fakePlayer.getUniqueID().toString().substring(1, 5);
+                String s = "99n" + this.fakePlayer.getUniqueID().toString().substring(1, 5);
                 CraftScoreboardManager scoreboardManager = ((CraftServer)Bukkit.getServer()).getScoreboardManager();
                 CraftScoreboard craftScoreboard = scoreboardManager.getMainScoreboard();
                 Scoreboard scoreboard = craftScoreboard.getHandle();
-                ScoreboardTeam scoreboardTeam = scoreboard.getTeam(s2);
+                ScoreboardTeam scoreboardTeam = scoreboard.getTeam(s);
                 if (scoreboardTeam == null) {
-                    scoreboardTeam = new ScoreboardTeam(scoreboard, s2);
+                    scoreboardTeam = new ScoreboardTeam(scoreboard, s);
                 }
                 scoreboardTeam.setNameTagVisibility(ScoreboardTeamBase.EnumNameTagVisibility.NEVER);
                 scoreboardTeam.setPrefix("[NPC] ");
                 player.sendPacket((Packet<?>)new PacketPlayOutScoreboardTeam(scoreboardTeam, 1));
                 player.sendPacket((Packet<?>)new PacketPlayOutScoreboardTeam(scoreboardTeam, 0));
-                player.sendPacket((Packet<?>)new PacketPlayOutScoreboardTeam(scoreboardTeam, Collections.singletonList(s2), 3));
+                player.sendPacket((Packet<?>)new PacketPlayOutScoreboardTeam(scoreboardTeam, Collections.singletonList(s), 3));
             }
         } else if (!this.inRangeOf(player.toBukkitPlayer(), this.entity.getLocation())) {
             this.shown.remove(player);
@@ -276,8 +276,8 @@ public class PlayerDisguise {
     public void kill(User player) {
         if (player != null) {
             Vector vec = this.entity.getLocation().toVector().subtract(player.toBukkitPlayer().getLocation().toVector()).normalize().setY(0.3);
-            PacketPlayOutEntityVelocity p2 = new PacketPlayOutEntityVelocity(this.fakePlayer.getId(), vec.getX(), vec.getY(), vec.getZ());
-            this.sendPacket((Packet<?>)p2);
+            PacketPlayOutEntityVelocity p = new PacketPlayOutEntityVelocity(this.fakePlayer.getId(), vec.getX(), vec.getY(), vec.getZ());
+            this.sendPacket((Packet<?>)p);
         }
         Bukkit.getScheduler().runTaskLater((Plugin)SkyBlock.getPlugin(), () -> {
             this.entity.setHealth(0.0);
@@ -297,8 +297,8 @@ public class PlayerDisguise {
         return ((CraftLivingEntity)entity).getHandle().getAttributeInstance(iAttribute);
     }
 
-    public void status(byte b2) {
-        this.sendPacket((Packet<?>)new PacketPlayOutEntityStatus((Entity)this.fakePlayer, b2));
+    public void status(byte b) {
+        this.sendPacket((Packet<?>)new PacketPlayOutEntityStatus((Entity)this.fakePlayer, b));
     }
 
     public EntityPlayer getFakePlayer() {

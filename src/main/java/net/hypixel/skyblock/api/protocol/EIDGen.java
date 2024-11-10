@@ -7,8 +7,8 @@ public class EIDGen {
     private static int lastIssuedEID = 2000000000;
 
     public static int generateEID() {
-        int i2 = lastIssuedEID++;
-        return i2;
+        int i = lastIssuedEID++;
+        return i;
     }
 }
 

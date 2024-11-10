@@ -122,7 +122,7 @@ SlayerBoss {
         if (((Skeleton)this.bukkitEntity).getWorld() == player.getWorld() && 20.0 <= this.getBukkitEntity().getLocation().distance(player.getLocation()) && 0 == SUtil.random(0, 10)) {
             this.getBukkitEntity().teleport(player.getLocation());
         }
-        final LivingEntity e2 = (LivingEntity)this.getBukkitEntity();
+        final LivingEntity e = (LivingEntity)this.getBukkitEntity();
         if (System.currentTimeMillis() > this.end) {
             User.getUser(player.getUniqueId()).failSlayerQuest();
             ((Skeleton)this.bukkitEntity).remove();
@@ -158,15 +158,15 @@ SlayerBoss {
         if (3 <= this.tier && !this.raged && 0 == SUtil.random(0, 200) && !this.Cooldown) {
             this.raged = true;
             this.Cooldown = true;
-            e2.getEquipment().setChestplate(SUtil.enchant(SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_CHESTPLATE), Color.fromRGB((int)0xBE0000))));
-            e2.getEquipment().setHelmet(SItem.of(SMaterial.REV_HORROR_2).getStack());
+            e.getEquipment().setChestplate(SUtil.enchant(SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_CHESTPLATE), Color.fromRGB((int)0xBE0000))));
+            e.getEquipment().setHelmet(SItem.of(SMaterial.REV_HORROR_2).getStack());
             this.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).setValue(this.getMovementSpeed() + 0.02);
             this.hologram.getEntity().setCustomName(ChatColor.DARK_RED + "ENRAGED " + ChatColor.RED + SUtil.getFormattedTime(this.end - System.currentTimeMillis(), 1000));
             new BukkitRunnable(){
 
                 public void run() {
-                    e2.getEquipment().setChestplate(SUtil.enchant(new ItemStack(Material.DIAMOND_CHESTPLATE)));
-                    e2.getEquipment().setHelmet(SItem.of(SMaterial.REVENANT_HORROR_HEAD).getStack());
+                    e.getEquipment().setChestplate(SUtil.enchant(new ItemStack(Material.DIAMOND_CHESTPLATE)));
+                    e.getEquipment().setHelmet(SItem.of(SMaterial.REVENANT_HORROR_HEAD).getStack());
                     CrimsonSathanas.this.raged = false;
                     CrimsonSathanas.this.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).setValue(CrimsonSathanas.this.getMovementSpeed());
                     CrimsonSathanas.this.hologram.getEntity().setCustomName(ChatColor.RED + SUtil.getFormattedTime(CrimsonSathanas.this.end - System.currentTimeMillis(), 1000));
@@ -191,8 +191,8 @@ SlayerBoss {
         entity.setMetadata("notDisplay", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
         this.hologram_name = new SEntity(entity.getLocation().add(0.0, 2.0, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND, new Object[0]);
         ((ArmorStand)this.hologram_name.getEntity()).setVisible(false);
-        Entity e2 = this.getBukkitEntity().getHandle();
-        double height = e2.getBoundingBox().e - e2.getBoundingBox().b;
+        Entity e = this.getBukkitEntity().getHandle();
+        double height = e.getBoundingBox().e - e.getBoundingBox().b;
         ((ArmorStand)this.hologram_name.getEntity()).setGravity(false);
         this.hologram_name.getEntity().setCustomNameVisible(true);
         new BukkitRunnable(){
@@ -324,34 +324,34 @@ SlayerBoss {
         return drops;
     }
 
-    public void startLoop(final org.bukkit.entity.Entity e2) {
+    public void startLoop(final org.bukkit.entity.Entity e) {
         new BukkitRunnable(){
             float cout;
             final int i = 0;
             {
-                this.cout = e2.getLocation().getYaw();
+                this.cout = e.getLocation().getYaw();
                 this.i = 0;
             }
 
             public void run() {
-                if (e2.isDead()) {
+                if (e.isDead()) {
                     this.cancel();
                     return;
                 }
-                Location loc = e2.getLocation();
+                Location loc = e.getLocation();
                 loc.setYaw(this.cout);
                 loc.setPitch(0.0f);
                 loc.add(loc.getDirection().normalize().multiply(0.6));
                 int hitshield = 100;
                 int hitshieldmax = 100;
                 int stage = 3;
-                e2.getWorld().spigot().playEffect(loc, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
-                e2.getWorld().spigot().playEffect(loc.clone().add(0.0, 0.6, 0.0), Effect.MAGIC_CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                e.getWorld().spigot().playEffect(loc, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                e.getWorld().spigot().playEffect(loc.clone().add(0.0, 0.6, 0.0), Effect.MAGIC_CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                 if (2 <= stage) {
-                    e2.getWorld().spigot().playEffect(loc.clone().add(0.0, 1.2, 0.0), Effect.MAGIC_CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                    e.getWorld().spigot().playEffect(loc.clone().add(0.0, 1.2, 0.0), Effect.MAGIC_CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                 }
                 if (3 == stage) {
-                    e2.getWorld().spigot().playEffect(loc.clone().add(0.0, 1.8, 0.0), Effect.MAGIC_CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                    e.getWorld().spigot().playEffect(loc.clone().add(0.0, 1.8, 0.0), Effect.MAGIC_CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                 }
                 this.cout += 18.0f;
             }

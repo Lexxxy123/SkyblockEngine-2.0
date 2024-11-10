@@ -47,8 +47,8 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e2) {
-        final Player player = e2.getPlayer();
+    public void onOpen(GUIOpenEvent e) {
+        final Player player = e.getPlayer();
         User user = User.getUser(player.getUniqueId());
         this.border(BLACK_STAINED_GLASS_PANE);
         PaginationList paged = new PaginationList(28);
@@ -62,8 +62,8 @@ extends GUI {
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
-                    new ActiveEffectsGUI(finalPage - 1).open((Player)e2.getWhoClicked());
+                public void run(InventoryClickEvent e) {
+                    new ActiveEffectsGUI(finalPage - 1).open((Player)e.getWhoClicked());
                 }
 
                 @Override
@@ -81,8 +81,8 @@ extends GUI {
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
-                    new ActiveEffectsGUI(finalPage + 1).open((Player)e2.getWhoClicked());
+                public void run(InventoryClickEvent e) {
+                    new ActiveEffectsGUI(finalPage + 1).open((Player)e.getWhoClicked());
                 }
 
                 @Override
@@ -99,13 +99,13 @@ extends GUI {
         this.set(4, SUtil.getStack(ChatColor.GREEN + "Active Effects", Material.POTION, (short)0, 1, ChatColor.GRAY + "View and manage all of your", ChatColor.GRAY + "active potion effects.", " ", ChatColor.GRAY + "Drink Potions or splash them", ChatColor.GRAY + "on the ground to buff yourself!", " ", ChatColor.GRAY + "Currently Active: " + ChatColor.YELLOW + user.getEffects().size()));
         this.set(GUIClickableItem.createGUIOpenerItem(GUIType.SKYBLOCK_MENU, player, ChatColor.GREEN + "Go Back", 48, Material.ARROW, ChatColor.GRAY + "To SkyBlock Menu"));
         this.set(GUIClickableItem.getCloseItem(49));
-        List p2 = paged.getPage(this.page);
-        if (p2 == null) {
+        List p = paged.getPage(this.page);
+        if (p == null) {
             return;
         }
-        for (int i2 = 0; i2 < p2.size(); ++i2) {
-            int slot = INTERIOR[i2];
-            ActivePotionEffect effect = (ActivePotionEffect)p2.get(i2);
+        for (int i = 0; i < p.size(); ++i) {
+            int slot = INTERIOR[i];
+            ActivePotionEffect effect = (ActivePotionEffect)p.get(i);
             ArrayList<String> lore = new ArrayList<String>(Collections.singletonList(" "));
             for (String line : SUtil.splitByWordAndLength(effect.getEffect().getDescription(), 20, "\\s")) {
                 lore.add(ChatColor.GRAY + line);

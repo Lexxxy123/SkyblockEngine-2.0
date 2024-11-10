@@ -97,15 +97,15 @@ extends Recipe<ShapelessRecipe> {
 
     private static boolean contains(boolean usesExchangeables, MaterialQuantifiable[] grid, MaterialQuantifiable test) {
         List<SMaterial> exchangeables = Recipe.getExchangeablesOf(test.getMaterial());
-        for (int i2 = 0; i2 < grid.length; ++i2) {
-            MaterialQuantifiable material = grid[i2];
+        for (int i = 0; i < grid.length; ++i) {
+            MaterialQuantifiable material = grid[i];
             if (null == material) continue;
             if (usesExchangeables && null != exchangeables && exchangeables.contains((Object)material.getMaterial()) && material.getAmount() >= test.getAmount()) {
-                grid[i2] = null;
+                grid[i] = null;
                 return true;
             }
             if (material.getMaterial() != test.getMaterial() || material.getAmount() < test.getAmount()) continue;
-            grid[i2] = null;
+            grid[i] = null;
             return true;
         }
         return false;

@@ -115,8 +115,8 @@ public class ItemBuilder {
 
     public ItemBuilder setLore(String ... lore) {
         ArrayList<String> ls = new ArrayList<String>();
-        for (String s2 : lore) {
-            ls.add(ChatColor.translateAlternateColorCodes((char)'&', (String)s2));
+        for (String s : lore) {
+            ls.add(ChatColor.translateAlternateColorCodes((char)'&', (String)s));
         }
         this.meta.setLore(ls);
         this.item.setItemMeta(this.meta);
@@ -141,8 +141,8 @@ public class ItemBuilder {
 
     public ItemBuilder addLore(String ... lore) {
         ArrayList<String> ls = this.meta.getLore() != null ? this.meta.getLore() : new ArrayList<String>();
-        for (String s2 : lore) {
-            ls.add(ChatColor.translateAlternateColorCodes((char)'&', (String)s2));
+        for (String s : lore) {
+            ls.add(ChatColor.translateAlternateColorCodes((char)'&', (String)s));
         }
         this.meta.setLore(ls);
         this.item.setItemMeta(this.meta);

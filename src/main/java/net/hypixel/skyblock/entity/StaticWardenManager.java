@@ -32,11 +32,11 @@ public final class StaticWardenManager {
         ACTIVE = false;
         for (List<Location> locations : EYES.values()) {
             for (Location location : locations) {
-                Block b2 = location.getBlock();
-                BlockState s2 = b2.getState();
-                s2.setRawData((byte)0);
-                s2.update();
-                b2.removeMetadata("placer", (Plugin)SkyBlock.getPlugin());
+                Block b = location.getBlock();
+                BlockState s = b.getState();
+                s.setRawData((byte)0);
+                s.update();
+                b.removeMetadata("placer", (Plugin)SkyBlock.getPlugin());
             }
         }
         EYES.clear();

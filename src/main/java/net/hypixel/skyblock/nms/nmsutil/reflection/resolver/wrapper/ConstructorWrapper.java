@@ -23,15 +23,15 @@ extends WrapperAbstract {
     public R newInstance(Object ... args) {
         try {
             return this.constructor.newInstance(args);
-        } catch (Exception e2) {
-            throw new RuntimeException(e2);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
     public R newInstanceSilent(Object ... args) {
         try {
             return this.constructor.newInstance(args);
-        } catch (Exception e2) {
+        } catch (Exception e) {
             return null;
         }
     }

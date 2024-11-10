@@ -106,9 +106,9 @@ extends BaseZombie {
         AttributeInstance followRange = ((CraftLivingEntity)entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
         followRange.setValue(500.0);
         ((CraftZombie)entity).setBaby(false);
-        Player p2 = (Player)entity.getWorld().getPlayers().get(SUtil.random(0, entity.getWorld().getPlayers().size() - 1));
-        if (p2 != null && p2.getGameMode() != GameMode.SPECTATOR && p2.getGameMode() != GameMode.CREATIVE) {
-            ((CraftZombie)entity).setTarget((LivingEntity)p2);
+        Player p = (Player)entity.getWorld().getPlayers().get(SUtil.random(0, entity.getWorld().getPlayers().size() - 1));
+        if (p != null && p.getGameMode() != GameMode.SPECTATOR && p.getGameMode() != GameMode.CREATIVE) {
+            ((CraftZombie)entity).setTarget((LivingEntity)p);
         }
         SUtil.delay(() -> {
             this.terTossCD = false;
@@ -194,11 +194,11 @@ extends BaseZombie {
         return 0.3;
     }
 
-    public void launchTerrain(final LivingEntity e2) {
+    public void launchTerrain(final LivingEntity e) {
         new BukkitRunnable(){
 
             public void run() {
-                if (e2.isDead()) {
+                if (e.isDead()) {
                     this.cancel();
                     return;
                 }
@@ -207,9 +207,9 @@ extends BaseZombie {
                     this.cancel();
                     return;
                 }
-                CraftLivingEntity t2 = ((CraftZombie)e2).getTarget();
-                if (t2 != null) {
-                    JollyPinkGiant.this.throwTerrain(e2, (Entity)t2);
+                CraftLivingEntity t = ((CraftZombie)e).getTarget();
+                if (t != null) {
+                    JollyPinkGiant.this.throwTerrain(e, (Entity)t);
                 }
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 30L);
@@ -223,34 +223,34 @@ extends BaseZombie {
         return stack;
     }
 
-    public static ItemStack b(int hexcolor, Material m2) {
-        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m2), Color.fromRGB((int)hexcolor));
+    public static ItemStack b(int hexcolor, Material m) {
+        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB((int)hexcolor));
         ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
         return stack;
     }
 
-    public static ItemStack c(Material m2) {
-        ItemStack stack = new ItemStack(m2);
+    public static ItemStack c(Material m) {
+        ItemStack stack = new ItemStack(m);
         ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
         return stack;
     }
 
-    public static void applyEffect(PotionEffectType e2, Entity en, int ticks, int amp) {
-        ((LivingEntity)en).addPotionEffect(new PotionEffect(e2, ticks, amp));
+    public static void applyEffect(PotionEffectType e, Entity en, int ticks, int amp) {
+        ((LivingEntity)en).addPotionEffect(new PotionEffect(e, ticks, amp));
     }
 
-    public static void damagePlayer(Player p2) {
-        p2.sendMessage(Sputnik.trans("&d&lJolly Pink Giant &chit you with &eBoulder Toss &cfor " + SUtil.commaify(SadanFunction.dmgc(30000, p2, (Entity)e)) + " &cdamage."));
+    public static void damagePlayer(Player p) {
+        p.sendMessage(Sputnik.trans("&d&lJolly Pink Giant &chit you with &eBoulder Toss &cfor " + SUtil.commaify(SadanFunction.dmgc(30000, p, (Entity)e)) + " &cdamage."));
     }
 
-    public void throwTerrain(LivingEntity e2, Entity target) {
-        Block b2 = target.getLocation().getBlock();
-        World world = e2.getWorld();
-        Location startBlock = e2.getLocation().add(e2.getLocation().getDirection().multiply(2));
+    public void throwTerrain(LivingEntity e, Entity target) {
+        Block b = target.getLocation().getBlock();
+        World world = e.getWorld();
+        Location startBlock = e.getLocation().add(e.getLocation().getDirection().multiply(2));
         ArrayList<Location> locationList = new ArrayList<Location>();
         ArrayList<Location> endList = new ArrayList<Location>();
         ArrayList blockTypes = new ArrayList();
@@ -258,7 +258,7 @@ extends BaseZombie {
         for (int length = -1; length < 2; ++length) {
             for (int height = -1; height < 2; ++height) {
                 Location loc = startBlock.clone().add((double)length, 0.0, (double)height);
-                Location end = b2.getLocation().clone().add((double)length, 0.0, (double)height);
+                Location end = b.getLocation().clone().add((double)length, 0.0, (double)height);
                 locationList.add(loc);
                 endList.add(end);
             }
@@ -267,20 +267,20 @@ extends BaseZombie {
         locationList.add(startBlock.clone().add(0.0, 0.0, -2.0));
         locationList.add(startBlock.clone().add(2.0, 0.0, 0.0));
         locationList.add(startBlock.clone().add(-2.0, 0.0, 0.0));
-        endList.add(b2.getLocation().clone().add(0.0, 0.0, 2.0));
-        endList.add(b2.getLocation().clone().add(0.0, 0.0, -2.0));
-        endList.add(b2.getLocation().clone().add(2.0, 0.0, 0.0));
-        endList.add(b2.getLocation().clone().add(-2.0, 0.0, 0.0));
+        endList.add(b.getLocation().clone().add(0.0, 0.0, 2.0));
+        endList.add(b.getLocation().clone().add(0.0, 0.0, -2.0));
+        endList.add(b.getLocation().clone().add(2.0, 0.0, 0.0));
+        endList.add(b.getLocation().clone().add(-2.0, 0.0, 0.0));
         locationList.add(startBlock.clone().add(0.0, -1.0, 0.0));
         locationList.add(startBlock.clone().add(1.0, -1.0, 0.0));
         locationList.add(startBlock.clone().add(-1.0, -1.0, 0.0));
         locationList.add(startBlock.clone().add(0.0, -1.0, 1.0));
         locationList.add(startBlock.clone().add(0.0, -1.0, -1.0));
-        endList.add(b2.getLocation().clone().add(0.0, -1.0, 0.0));
-        endList.add(b2.getLocation().clone().add(1.0, -1.0, 0.0));
-        endList.add(b2.getLocation().clone().add(-1.0, -1.0, 0.0));
-        endList.add(b2.getLocation().clone().add(0.0, -1.0, 1.0));
-        endList.add(b2.getLocation().clone().add(0.0, -1.0, -1.0));
+        endList.add(b.getLocation().clone().add(0.0, -1.0, 0.0));
+        endList.add(b.getLocation().clone().add(1.0, -1.0, 0.0));
+        endList.add(b.getLocation().clone().add(-1.0, -1.0, 0.0));
+        endList.add(b.getLocation().clone().add(0.0, -1.0, 1.0));
+        endList.add(b.getLocation().clone().add(0.0, -1.0, -1.0));
         Byte blockData = 0;
         locationList.forEach(block -> {
             Location loc2 = block.getBlock().getLocation().clone().subtract(0.0, 1.0, 0.0);
@@ -304,8 +304,8 @@ extends BaseZombie {
     }
 
     @Override
-    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
-        e2.getEntity().getWorld().playSound(e2.getEntity().getLocation(), Sound.ZOMBIE_HURT, 1.0f, 0.0f);
+    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e, AtomicDouble damage) {
+        e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ZOMBIE_HURT, 1.0f, 0.0f);
     }
 }
 

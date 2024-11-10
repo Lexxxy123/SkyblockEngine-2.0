@@ -110,7 +110,7 @@ Ability {
     @Override
     public void onAbilityUse(Player player, SItem sItem) {
         double entityTotal = 0.0;
-        int j2 = 0;
+        int j = 0;
         try {
             int f_ = 10;
             for (int range = 1; range < 10; ++range) {
@@ -134,7 +134,7 @@ Ability {
             Sputnik.witherShieldActive(player);
             for (Entity entity : player.getWorld().getNearbyEntities(player.getLocation(), 10.0, 10.0, 10.0)) {
                 if (entity.isDead() || !(entity instanceof LivingEntity) || entity.hasMetadata("GiantSword") || entity.hasMetadata("NoAffect") || entity instanceof Player || entity instanceof EnderDragonPart || entity instanceof Villager || entity instanceof ArmorStand) continue;
-                ++j2;
+                ++j;
                 double baseDamage = Sputnik.calMagicDamage(player, 10000, 0.3);
                 User user = User.getUser(player.getUniqueId());
                 if (EntityManager.DEFENSE_PERCENTAGE.containsKey(entity)) {
@@ -156,11 +156,11 @@ Ability {
         for (Player online : player.getWorld().getPlayers()) {
             ((CraftPlayer)online).getHandle().playerConnection.sendPacket((Packet)packet);
         }
-        if (j2 > 0) {
-            if (j2 == 1) {
-                player.sendMessage(ChatColor.GRAY + "Your Implosion hit " + ChatColor.RED + j2 + ChatColor.GRAY + " enemy for " + ChatColor.RED + SUtil.commaify(entityTotal) + ChatColor.GRAY + " damage.");
+        if (j > 0) {
+            if (j == 1) {
+                player.sendMessage(ChatColor.GRAY + "Your Implosion hit " + ChatColor.RED + j + ChatColor.GRAY + " enemy for " + ChatColor.RED + SUtil.commaify(entityTotal) + ChatColor.GRAY + " damage.");
             } else {
-                player.sendMessage(ChatColor.GRAY + "Your Implosion hit " + ChatColor.RED + j2 + ChatColor.GRAY + " enemies for " + ChatColor.RED + SUtil.commaify(entityTotal) + ChatColor.GRAY + " damage.");
+                player.sendMessage(ChatColor.GRAY + "Your Implosion hit " + ChatColor.RED + j + ChatColor.GRAY + " enemies for " + ChatColor.RED + SUtil.commaify(entityTotal) + ChatColor.GRAY + " damage.");
             }
         }
     }
@@ -179,34 +179,34 @@ Ability {
         Vector dist = player.getEyeLocation().getDirection().multiply(distance);
         Location mid = player.getEyeLocation().add(dist);
         int particles = 18;
-        for (int i2 = 0; i2 < particles; ++i2) {
-            double angle = Math.PI * 2 * (double)i2 / (double)particles;
-            double x2 = Math.cos(angle) * radius;
-            double y2 = Math.sin(angle) * radius;
-            Vector v2 = this.rotateAroundAxisX(new Vector(x2, y2, 0.0), player.getEyeLocation().getPitch());
-            v2 = this.rotateAroundAxisY(v2, player.getEyeLocation().getYaw());
-            Location temp = mid.clone().add(v2);
+        for (int i = 0; i < particles; ++i) {
+            double angle = Math.PI * 2 * (double)i / (double)particles;
+            double x = Math.cos(angle) * radius;
+            double y = Math.sin(angle) * radius;
+            Vector v = this.rotateAroundAxisX(new Vector(x, y, 0.0), player.getEyeLocation().getPitch());
+            v = this.rotateAroundAxisY(v, player.getEyeLocation().getYaw());
+            Location temp = mid.clone().add(v);
             player.getWorld().spigot().playEffect(temp, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
         }
     }
 
-    private Vector rotateAroundAxisX(Vector v2, double angle) {
+    private Vector rotateAroundAxisX(Vector v, double angle) {
         angle = Math.toRadians(angle);
         double cos = Math.cos(angle);
         double sin = Math.sin(angle);
-        double y2 = v2.getY() * cos - v2.getZ() * sin;
-        double z2 = v2.getY() * sin + v2.getZ() * cos;
-        return v2.setY(y2).setZ(z2);
+        double y = v.getY() * cos - v.getZ() * sin;
+        double z = v.getY() * sin + v.getZ() * cos;
+        return v.setY(y).setZ(z);
     }
 
-    private Vector rotateAroundAxisY(Vector v2, double angle) {
+    private Vector rotateAroundAxisY(Vector v, double angle) {
         angle = -angle;
         angle = Math.toRadians(angle);
         double cos = Math.cos(angle);
         double sin = Math.sin(angle);
-        double x2 = v2.getX() * cos + v2.getZ() * sin;
-        double z2 = v2.getX() * -sin + v2.getZ() * cos;
-        return v2.setX(x2).setZ(z2);
+        double x = v.getX() * cos + v.getZ() * sin;
+        double z = v.getX() * -sin + v.getZ() * cos;
+        return v.setX(x).setZ(z);
     }
 }
 

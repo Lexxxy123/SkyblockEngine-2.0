@@ -54,8 +54,8 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e2) {
-        Player player = e2.getPlayer();
+    public void onOpen(GUIOpenEvent e) {
+        Player player = e.getPlayer();
         User user = User.getUser(player.getUniqueId());
         boolean personal = this.item.getOwner().getUuid().equals(user.getUuid());
         this.set(13, this.item.getDisplayItem(false, user.getUuid().equals(this.item.getOwner().getUuid())));
@@ -84,7 +84,7 @@ extends GUI {
             items.add(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
+                public void run(InventoryClickEvent e) {
                     AuctionViewGUI.this.item.claim(player);
                     player.closeInventory();
                 }
@@ -120,7 +120,7 @@ extends GUI {
             items.add(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
+                public void run(InventoryClickEvent e) {
                     if (personal) {
                         player.sendMessage(ChatColor.RED + "This is your own auction!");
                         return;
@@ -184,7 +184,7 @@ extends GUI {
             items.add(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
+                public void run(InventoryClickEvent e) {
                     if (AuctionViewGUI.this.item.isExpired()) {
                         player.sendMessage(ChatColor.RED + "The auction you are trying to cancel has already expired!");
                         player.closeInventory();
@@ -223,7 +223,7 @@ extends GUI {
             items.add(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
+                public void run(InventoryClickEvent e) {
                     AuctionViewGUI.this.item.claim(player);
                     player.closeInventory();
                 }
@@ -259,7 +259,7 @@ extends GUI {
             items.add(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
+                public void run(InventoryClickEvent e) {
                     if (personal) {
                         player.sendMessage(ChatColor.RED + "This is your own auction!");
                         return;
@@ -311,7 +311,7 @@ extends GUI {
             items.add(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
+                public void run(InventoryClickEvent e) {
                     if (AuctionViewGUI.this.item.isExpired()) {
                         player.sendMessage(ChatColor.RED + "The auction you are trying to cancel has already expired!");
                         player.closeInventory();
@@ -343,14 +343,14 @@ extends GUI {
 
                 @Override
                 public GUI onQueryFinish(String query) {
-                    long l2;
+                    long l;
                     if (AuctionViewGUI.this.item.isExpired()) {
                         player.sendMessage(ChatColor.RED + "The auction you are trying to bid on has already expired!");
                         player.closeInventory();
                     }
                     try {
-                        l2 = Long.parseLong(query);
-                        if (l2 <= 0L) {
+                        l = Long.parseLong(query);
+                        if (l <= 0L) {
                             player.sendMessage(ChatColor.RED + "Could not read this number!");
                             return null;
                         }
@@ -358,7 +358,7 @@ extends GUI {
                         player.sendMessage(ChatColor.RED + "Could not read this number!");
                         return null;
                     }
-                    if (l2 < AuctionViewGUI.this.item.nextBid()) {
+                    if (l < AuctionViewGUI.this.item.nextBid()) {
                         player.sendMessage(ChatColor.RED + "That bid is less than the minimum!");
                         return new AuctionViewGUI(AuctionViewGUI.this.item, AuctionViewGUI.this.ret, AuctionViewGUI.this.bid);
                     }
@@ -366,11 +366,11 @@ extends GUI {
                         player.sendMessage(ChatColor.RED + "You cannot afford that bid!");
                         return new AuctionViewGUI(AuctionViewGUI.this.item, AuctionViewGUI.this.ret, AuctionViewGUI.this.bid);
                     }
-                    return new AuctionViewGUI(AuctionViewGUI.this.item, AuctionViewGUI.this.ret, l2);
+                    return new AuctionViewGUI(AuctionViewGUI.this.item, AuctionViewGUI.this.ret, l);
                 }
 
                 @Override
-                public void run(InventoryClickEvent e2) {
+                public void run(InventoryClickEvent e) {
                 }
 
                 @Override
@@ -388,8 +388,8 @@ extends GUI {
         final ArrayList<String> lore = new ArrayList<String>();
         if (this.item.getBids().size() > 0) {
             lore.add(ChatColor.GRAY + "Total bids: " + ChatColor.GREEN + this.item.getBids().size() + " bid" + (this.item.getBids().size() != 1 ? "s" : ""));
-            for (int i2 = this.item.getBids().size() - 1; i2 >= 0; --i2) {
-                AuctionBid bid = this.item.getBids().get(i2);
+            for (int i = this.item.getBids().size() - 1; i >= 0; --i) {
+                AuctionBid bid = this.item.getBids().get(i);
                 lore.add(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "------------");
                 lore.add(ChatColor.GRAY + "Bid: " + ChatColor.GOLD + bid.getAmount() + " coin" + (bid.getAmount() != 1L ? "s" : ""));
                 lore.add(ChatColor.GRAY + "By: " + ChatColor.GREEN + Bukkit.getOfflinePlayer((UUID)bid.getBidder()).getName());

@@ -23,11 +23,11 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.inventory.ItemStack;
 
 public class MagicFlowerPot {
-    public static final boolean changePot(Block flowerPot, boolean refreshChunk, ArmorStand s2) {
-        if (s2.isDead()) {
+    public static final boolean changePot(Block flowerPot, boolean refreshChunk, ArmorStand s) {
+        if (s.isDead()) {
             return false;
         }
-        if (!s2.isDead() && flowerPot.getType() == Material.FLOWER_POT) {
+        if (!s.isDead() && flowerPot.getType() == Material.FLOWER_POT) {
             try {
                 ItemStack is = new ItemStack(Material.RED_ROSE);
                 TileEntityFlowerPot tefp = (TileEntityFlowerPot)((CraftWorld)flowerPot.getWorld()).getHandle().getTileEntity(new BlockPosition(flowerPot.getX(), flowerPot.getY(), flowerPot.getZ()));

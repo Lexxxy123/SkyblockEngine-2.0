@@ -40,15 +40,15 @@ extends GUI {
             stone.setDisplayName("Reforge");
             stones.add(stone);
         }
-        for (int i2 = 0; i2 < stones.size(); ++i2) {
-            final int slot = INTERIOR[i2];
-            final SItem sItem = (SItem)stones.get(i2);
-            final ItemStack item = ((SItem)stones.get(i2)).getStack();
+        for (int i = 0; i < stones.size(); ++i) {
+            final int slot = INTERIOR[i];
+            final SItem sItem = (SItem)stones.get(i);
+            final ItemStack item = ((SItem)stones.get(i)).getStack();
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) throws IOException {
-                    Player player = (Player)e2.getWhoClicked();
+                public void run(InventoryClickEvent e) throws IOException {
+                    Player player = (Player)e.getWhoClicked();
                     List<SItem> accessories = PlayerUtils.getAccessories(player);
                     if (accessories == null) {
                         player.sendMessage(SUtil.color("&cYou do not have any accessories in your bag!"));

@@ -65,8 +65,8 @@ public class EntityPopulator {
                     return;
                 }
                 if (Region.getPlayersWithinRegionType(EntityPopulator.this.regionType).isEmpty()) {
-                    for (SEntity s2 : EntityPopulator.this.spawned) {
-                        s2.remove();
+                    for (SEntity s : EntityPopulator.this.spawned) {
+                        s.remove();
                     }
                     EntityPopulator.this.spawned.clear();
                     return;
@@ -77,7 +77,7 @@ public class EntityPopulator {
                 if (EntityPopulator.this.spawned.size() >= EntityPopulator.this.max) {
                     return;
                 }
-                for (int i2 = 0; i2 < EntityPopulator.this.amount; ++i2) {
+                for (int i = 0; i < EntityPopulator.this.amount; ++i) {
                     Location available;
                     int attempts = 0;
                     while ((available = SUtil.getRandom(regions).getRandomAvailableLocation()) == null && ++attempts <= 150) {
@@ -95,8 +95,8 @@ public class EntityPopulator {
                     return;
                 }
                 if (Region.getPlayersWithinRegionType(EntityPopulator.this.regionType).isEmpty()) {
-                    for (SEntity s2 : EntityPopulator.this.spawned) {
-                        s2.remove();
+                    for (SEntity s : EntityPopulator.this.spawned) {
+                        s.remove();
                     }
                     EntityPopulator.this.spawned.clear();
                 }

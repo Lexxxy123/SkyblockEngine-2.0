@@ -12,7 +12,7 @@ public class SkySimBrainCell {
     public void accessAIFrom(BrainCellFor bcf) {
     }
 
-    public static void applyAIToNMSPlayer(Object p2, int limit, SkySimBrainCell sbc) {
+    public static void applyAIToNMSPlayer(Object p, int limit, SkySimBrainCell sbc) {
     }
 
     public void getModules() {

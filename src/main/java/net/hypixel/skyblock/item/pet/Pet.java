@@ -91,9 +91,9 @@ ItemData {
             return -1;
         }
         List<Integer> goals = Pet.getGoalsForRarity(rarity);
-        for (int i2 = 0; i2 < goals.size(); ++i2) {
-            if (!((double)goals.get(i2).intValue() > xp)) continue;
-            return i2;
+        for (int i = 0; i < goals.size(); ++i) {
+            if (!((double)goals.get(i).intValue() > xp)) continue;
+            return i;
         }
         return 100;
     }
@@ -183,13 +183,13 @@ ItemData {
     }
 
     @Override
-    public void onInteraction(PlayerInteractEvent e2) {
-        if (e2.getAction() != Action.RIGHT_CLICK_AIR && e2.getAction() != Action.RIGHT_CLICK_BLOCK) {
+    public void onInteraction(PlayerInteractEvent e) {
+        if (e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return;
         }
-        Player player = e2.getPlayer();
+        Player player = e.getPlayer();
         User user = User.getUser(player.getUniqueId());
-        SItem item = SItem.find(e2.getItem());
+        SItem item = SItem.find(e.getItem());
         user.addPet(item);
         player.setItemInHand(null);
         player.playSound(player.getLocation(), Sound.ORB_PICKUP, 1.0f, 1.0f);
@@ -268,7 +268,7 @@ ItemData {
         return this.getPerHealth() != 0.0 || this.getPerDefense() != 0.0 || this.getPerStrength() != 0.0 || this.getPerIntelligence() != 0.0 || this.getPerSpeed() != 0.0 || this.getPerCritChance() != 0.0 || this.getPerCritDamage() != 0.0 || this.getPerMagicFind() != 0.0 || this.getPerTrueDefense() != 0.0;
     }
 
-    public void particleBelowA(Player p2, Location l2) {
+    public void particleBelowA(Player p, Location l) {
     }
 
     public static class PetItem
@@ -307,11 +307,11 @@ ItemData {
             return document;
         }
 
-        public boolean equals(Object o2) {
-            if (!(o2 instanceof PetItem)) {
+        public boolean equals(Object o) {
+            if (!(o instanceof PetItem)) {
                 return false;
             }
-            PetItem pet = (PetItem)o2;
+            PetItem pet = (PetItem)o;
             return this.type == pet.type && this.rarity == pet.rarity && this.xp == pet.xp && this.active == pet.active;
         }
 

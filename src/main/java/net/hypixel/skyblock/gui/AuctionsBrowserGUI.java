@@ -49,9 +49,9 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e2) {
+    public void onOpen(GUIOpenEvent e) {
         PaginationList result;
-        final Player player = e2.getPlayer();
+        final Player player = e.getPlayer();
         final User user = User.getUser(player.getUniqueId());
         final AuctionSettings settings = user.getAuctionSettings();
         final ItemCategory category = settings.getCategory();
@@ -75,7 +75,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 settings.setCategory(ItemCategory.WEAPONS);
                 new AuctionsBrowserGUI().open(player);
             }
@@ -93,7 +93,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 settings.setCategory(ItemCategory.ARMOR);
                 new AuctionsBrowserGUI().open(player);
             }
@@ -111,7 +111,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 settings.setCategory(ItemCategory.ACCESSORIES);
                 new AuctionsBrowserGUI().open(player);
             }
@@ -129,7 +129,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 settings.setCategory(ItemCategory.CONSUMABLES);
                 new AuctionsBrowserGUI().open(player);
             }
@@ -147,7 +147,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 settings.setCategory(ItemCategory.BLOCKS);
                 new AuctionsBrowserGUI().open(player);
             }
@@ -165,7 +165,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 settings.setCategory(ItemCategory.TOOLS_MISC);
                 new AuctionsBrowserGUI().open(player);
             }
@@ -185,8 +185,8 @@ extends GUI {
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
-                    if (e2.isRightClick()) {
+                public void run(InventoryClickEvent e) {
+                    if (e.isRightClick()) {
                         new AuctionsBrowserGUI(0).open(player);
                     } else {
                         new AuctionsBrowserGUI(finalPage - 1).open(player);
@@ -208,8 +208,8 @@ extends GUI {
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
-                    if (e2.isRightClick()) {
+                public void run(InventoryClickEvent e) {
+                    if (e.isRightClick()) {
                         new AuctionsBrowserGUI(result.getPageCount()).open(player);
                     } else {
                         new AuctionsBrowserGUI(finalPage + 1).open(player);
@@ -230,7 +230,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 settings.setQuery(null);
                 settings.setSort(AuctionSettings.Sort.HIGHEST_BID);
                 settings.setTier(null);
@@ -250,7 +250,7 @@ extends GUI {
         this.set(new GUIQueryItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
             }
 
             @Override
@@ -272,8 +272,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                if (e2.isRightClick()) {
+            public void run(InventoryClickEvent e) {
+                if (e.isRightClick()) {
                     settings.setSort(settings.getSort().previous());
                 } else {
                     settings.setSort(settings.getSort().next());
@@ -289,12 +289,12 @@ extends GUI {
             @Override
             public ItemStack getItem() {
                 ArrayList<String> lore = new ArrayList<String>(Collections.singletonList(" "));
-                for (AuctionSettings.Sort s2 : AuctionSettings.Sort.values()) {
-                    if (settings.getSort() == s2) {
-                        lore.add(ChatColor.AQUA + "\u25b6 " + s2.getDisplay());
+                for (AuctionSettings.Sort s : AuctionSettings.Sort.values()) {
+                    if (settings.getSort() == s) {
+                        lore.add(ChatColor.AQUA + "\u25b6 " + s.getDisplay());
                         continue;
                     }
-                    lore.add(ChatColor.GRAY + s2.getDisplay());
+                    lore.add(ChatColor.GRAY + s.getDisplay());
                 }
                 lore.add(" ");
                 lore.add(ChatColor.AQUA + "Right-Click to go backwards!");
@@ -305,9 +305,9 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 Rarity tier = settings.getTier();
-                if (e2.isRightClick()) {
+                if (e.isRightClick()) {
                     if (tier == null) {
                         settings.setTier(Rarity.values()[Rarity.values().length - 1]);
                     } else if (tier.ordinal() == 0) {
@@ -355,8 +355,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                if (e2.isRightClick()) {
+            public void run(InventoryClickEvent e) {
+                if (e.isRightClick()) {
                     settings.setType(settings.getType().previous());
                 } else {
                     settings.setType(settings.getType().next());
@@ -372,12 +372,12 @@ extends GUI {
             @Override
             public ItemStack getItem() {
                 ArrayList<String> lore = new ArrayList<String>(Collections.singletonList(" "));
-                for (AuctionSettings.Type t2 : AuctionSettings.Type.values()) {
-                    if (settings.getType() == t2) {
-                        lore.add(ChatColor.DARK_AQUA + "\u25b6 " + t2.getDisplay());
+                for (AuctionSettings.Type t : AuctionSettings.Type.values()) {
+                    if (settings.getType() == t) {
+                        lore.add(ChatColor.DARK_AQUA + "\u25b6 " + t.getDisplay());
                         continue;
                     }
-                    lore.add(ChatColor.GRAY + t2.getDisplay());
+                    lore.add(ChatColor.GRAY + t.getDisplay());
                 }
                 lore.add(" ");
                 lore.add(ChatColor.AQUA + "Right-Click to go backwards!");
@@ -386,13 +386,13 @@ extends GUI {
             }
         });
         this.set(GUIClickableItem.createGUIOpenerItem(GUIType.AUCTION_HOUSE, player, ChatColor.GREEN + "Go Back", 49, Material.ARROW, ChatColor.GRAY + "To Auction House"));
-        for (int i2 = 0; i2 < items.size(); ++i2) {
-            final int slot = INTERIOR[i2];
-            final AuctionItem item = (AuctionItem)items.get(i2);
+        for (int i = 0; i < items.size(); ++i) {
+            final int slot = INTERIOR[i];
+            final AuctionItem item = (AuctionItem)items.get(i);
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
+                public void run(InventoryClickEvent e) {
                     new AuctionViewGUI(item, AuctionsBrowserGUI.this).open(player);
                 }
 

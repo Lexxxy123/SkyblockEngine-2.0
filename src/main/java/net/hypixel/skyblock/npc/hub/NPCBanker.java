@@ -9,27 +9,33 @@ package net.hypixel.skyblock.npc.hub;
 import net.hypixel.skyblock.gui.GUIType;
 import net.hypixel.skyblock.npc.impl.NPCParameters;
 import net.hypixel.skyblock.npc.impl.NPCSkin;
-import net.hypixel.skyblock.npc.impl.SkyBlockNPC;
+import net.hypixel.skyblock.npc.impl.SkyblockNPC;
+import net.hypixel.skyblock.npc.impl.enums.NPCType;
 import org.bukkit.entity.Player;
 
 public class NPCBanker
-extends SkyBlockNPC {
+extends SkyblockNPC {
     public NPCBanker() {
         super(new NPCParameters(){
 
             @Override
-            public String id() {
-                return "BANKER";
+            public NPCType type() {
+                return NPCType.PLAYER;
             }
 
             @Override
             public String name() {
-                return "&fBanker";
+                return "Banker";
             }
 
             @Override
             public String[] messages() {
                 return new String[]{"Hello", "I am a banker", "you can deposit money to me"};
+            }
+
+            @Override
+            public String[] holograms() {
+                return new String[]{"&fBanker", "&e&lCLICK"};
             }
 
             @Override
@@ -58,7 +64,7 @@ extends SkyBlockNPC {
             }
 
             @Override
-            public void onInteract(Player player, SkyBlockNPC npc) {
+            public void onInteract(Player player, SkyblockNPC npc) {
                 GUIType.BANKER.getGUI().open(player);
             }
         });

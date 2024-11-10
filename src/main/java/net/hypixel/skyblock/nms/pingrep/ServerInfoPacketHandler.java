@@ -49,16 +49,16 @@ extends ServerInfoPacket {
             Method writeAndFlush = ctx.getClass().getMethod("writeAndFlush", Object.class);
             writeAndFlush.setAccessible(true);
             writeAndFlush.invoke(ctx, ServerInfoPacketHandler.constructPacket(this.getReply()));
-        } catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException | NoSuchMethodException | SecurityException | InvocationTargetException e2) {
-            e2.printStackTrace();
+        } catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException | NoSuchMethodException | SecurityException | InvocationTargetException e) {
+            e.printStackTrace();
         }
     }
 
     public static PacketStatusOutServerInfo constructPacket(PingReply reply) {
         GameProfile[] sample = new GameProfile[reply.getPlayerSample().size()];
         List<String> list = reply.getPlayerSample();
-        for (int i2 = 0; i2 < list.size(); ++i2) {
-            sample[i2] = new GameProfile(UUID.randomUUID(), list.get(i2));
+        for (int i = 0; i < list.size(); ++i) {
+            sample[i] = new GameProfile(UUID.randomUUID(), list.get(i));
         }
         ServerPing.ServerPingPlayerSample playerSample = new ServerPing.ServerPingPlayerSample(reply.getMaxPlayers(), reply.getOnlinePlayers());
         playerSample.a(sample);
@@ -80,13 +80,13 @@ extends ServerInfoPacket {
             String protocolName = ping.c().a();
             GameProfile[] profiles = ping.b().c();
             ArrayList<String> list = new ArrayList<String>();
-            for (int i2 = 0; i2 < profiles.length; ++i2) {
-                list.add(profiles[i2].getName());
+            for (int i = 0; i < profiles.length; ++i) {
+                list.add(profiles[i].getName());
             }
             PingReply reply = new PingReply(ctx, motd, online, max, protocolVersion, protocolName, list);
             return reply;
-        } catch (IllegalAccessException e2) {
-            e2.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
             return null;
         }
     }

@@ -35,9 +35,9 @@ extends EntityFireworks {
     Player[] players = null;
     boolean gone = false;
 
-    public SSU(World world, Player ... p2) {
+    public SSU(World world, Player ... p) {
         super(world);
-        this.players = p2;
+        this.players = p;
         this.a(new float[]{0.25f, 0.25f});
     }
 
@@ -70,8 +70,8 @@ extends EntityFireworks {
             if (((CraftWorld)location.getWorld()).getHandle().addEntity((Entity)firework)) {
                 firework.setInvisible(true);
             }
-        } catch (Exception e2) {
-            e2.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

@@ -101,8 +101,8 @@ extends BaseZombie {
         hologram.setMarker(true);
         hologram.setBasePlate(false);
         hologram.setCustomNameVisible(true);
-        for (Entity e2 : entity.getNearbyEntities(10.0, 10.0, 10.0)) {
-            Sputnik.moveTo(entity, e2.getLocation(), 0.2f);
+        for (Entity e : entity.getNearbyEntities(10.0, 10.0, 10.0)) {
+            Sputnik.moveTo(entity, e.getLocation(), 0.2f);
         }
         new BukkitRunnable(){
 

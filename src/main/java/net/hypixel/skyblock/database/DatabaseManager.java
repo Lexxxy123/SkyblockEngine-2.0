@@ -14,9 +14,9 @@ public class DatabaseManager {
     private static MongoClient mongoClient;
     private static MongoDatabase database;
 
-    public static CompletableFuture<Void> connectToDatabase(String connectionString, String databaseName) {
+    public static void connectToDatabase(String connectionString, String databaseName) {
         CompletableFuture<MongoClient> clientFuture = CompletableFuture.supplyAsync(() -> MongoClients.create(connectionString));
-        return clientFuture.thenAccept(client -> {
+        clientFuture.thenAccept(client -> {
             mongoClient = client;
             database = client.getDatabase(databaseName);
         });

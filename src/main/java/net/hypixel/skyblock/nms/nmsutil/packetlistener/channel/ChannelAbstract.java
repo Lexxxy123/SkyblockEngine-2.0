@@ -73,12 +73,12 @@ public abstract class ChannelAbstract {
                 return;
             }
             List newList = Collections.synchronizedList(this.newListenerList());
-            for (Object o2 : currentList) {
-                newList.add(o2);
+            for (Object o : currentList) {
+                newList.add(o);
             }
             connectionList.set(serverConnection, newList);
-        } catch (Exception e2) {
-            e2.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

@@ -13,11 +13,9 @@ package net.hypixel.skyblock.gui;
 import net.hypixel.skyblock.gui.GUI;
 import net.hypixel.skyblock.gui.GUIClickableItem;
 import net.hypixel.skyblock.gui.GUIOpenEvent;
-import net.hypixel.skyblock.item.SItem;
-import net.hypixel.skyblock.item.SMaterial;
+import net.hypixel.skyblock.gui.GUIType;
 import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.SUtil;
-import net.hypixel.skyblock.util.Sputnik;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -31,14 +29,14 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e2) {
+    public void onOpen(GUIOpenEvent e) {
         this.fill(BLACK_STAINED_GLASS_PANE);
-        final Player player = e2.getPlayer();
+        final Player player = e.getPlayer();
         User user = User.getUser(player.getUniqueId());
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
             }
 
             @Override
@@ -54,7 +52,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
             }
 
             @Override
@@ -70,7 +68,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
             }
 
             @Override
@@ -86,7 +84,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
+                GUIType.BIT_SHOP.getGUI().open(player);
             }
 
             @Override
@@ -96,13 +95,14 @@ extends GUI {
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.AQUA + "Bits Shop", Material.DIAMOND, (short)0, 1, ChatColor.GRAY + "Spend" + ChatColor.AQUA + "bits" + ChatColor.GRAY + "on a variety of", ChatColor.GRAY + "powerful items.", "", ChatColor.GRAY + "Earn bits from " + ChatColor.GOLD + "Booster Cookie.", " ", ChatColor.YELLOW + "Click to view!");
+                return SUtil.getStack(ChatColor.AQUA + "Bits Shop", Material.DIAMOND, (short)0, 1, ChatColor.GRAY + "Spend " + ChatColor.AQUA + "bits" + ChatColor.GRAY + " on a variety of", ChatColor.GRAY + "powerful items.", "", ChatColor.GRAY + "Earn bits from " + ChatColor.GOLD + "Booster Cookie.", " ", ChatColor.YELLOW + "Click to view!");
             }
         });
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
+                GUIType.FIRE_SALE.getGUI().open(player);
             }
 
             @Override
@@ -118,7 +118,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
             }
 
             @Override
@@ -128,13 +128,13 @@ extends GUI {
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.YELLOW + "GodSpunky Ranks", Material.EMERALD, (short)0, 1, ChatColor.GRAY + "Browse the SkyBlock perks of", ChatColor.GRAY + "our " + ChatColor.YELLOW + "server-wide" + ChatColor.GRAY + "ranks such", ChatColor.GRAY + "as the " + ChatColor.GOLD + "[MVP" + ChatColor.RED + "++" + ChatColor.GOLD + "]" + ChatColor.GRAY + " rank.", ChatColor.GRAY + "of SkyBlock", " ", ChatColor.YELLOW + "Click to view!");
+                return SUtil.getStack(ChatColor.YELLOW + "Funpixel Ranks", Material.EMERALD, (short)0, 1, ChatColor.GRAY + "Browse the SkyBlock perks of", ChatColor.GRAY + "our " + ChatColor.YELLOW + "server-wide" + ChatColor.GRAY + "ranks such", ChatColor.GRAY + "as the " + ChatColor.GOLD + "[MVP" + ChatColor.RED + "++" + ChatColor.GOLD + "]" + ChatColor.GRAY + " rank.", ChatColor.GRAY + "of SkyBlock", " ", ChatColor.YELLOW + "Click to view!");
             }
         });
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
             }
 
             @Override
@@ -150,7 +150,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
             }
 
             @Override
@@ -166,7 +166,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
             }
 
             @Override
@@ -182,7 +182,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
             }
 
             @Override
@@ -198,7 +198,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
             }
 
             @Override
@@ -214,7 +214,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
             }
 
             @Override
@@ -230,9 +230,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                ItemStack stack = SItem.of(SMaterial.HIDDEN_BOOSTER_COOKIE).getStack();
-                Sputnik.smartGiveItem(stack, player);
+            public void run(InventoryClickEvent e) {
             }
 
             @Override
@@ -242,13 +240,13 @@ extends GUI {
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.GOLD + "Single Cookie", Material.COOKIE, (short)0, 1, "", ChatColor.GOLD + "Booster Cookie " + ChatColor.DARK_GRAY + "x1", ChatColor.translateAlternateColorCodes((char)'&', (String)"&7Consume to gain the &dCookie Buff"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&7for &b5 &7days:"), " ", ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Ability to gain &bBis&7!"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &b+20% &7 Skill XP"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &b+15 &7Magic Find"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Keep &6coins &7and &beffects &7on death"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &ePermafly &7 on private islands"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Access &6/ah &7and &6/bazaar &7 anywhere"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Sell items directly to the trades menu"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7AFK &aimmunity &7on your island"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Toggle specific &dpotion effects"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Access to &6/anvil &7and &6/etable"), "", ChatColor.GOLD + "" + ChatColor.BOLD + "LEGENDARY", "", ChatColor.GRAY + "Cost", ChatColor.GREEN + "FREE", "", ChatColor.GRAY + "You have: ");
+                return SUtil.getStack(ChatColor.GOLD + "Single Cookie", Material.COOKIE, (short)0, 1, "", ChatColor.GOLD + "Booster Cookie " + ChatColor.DARK_GRAY + "x1", ChatColor.translateAlternateColorCodes((char)'&', (String)"&7Consume to gain the &dCookie Buff"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&7for &b5 &7days:"), " ", ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Ability to gain &bBis&7!"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &b+20% &7 Skill XP"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &b+15 &7Magic Find"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Keep &6coins &7and &beffects &7on death"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &ePermafly &7 on private islands"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Access &6/ah &7and &6/bazaar &7 anywhere"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Sell items directly to the trades menu"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7AFK &aimmunity &7on your island"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Toggle specific &dpotion effects"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Access to &6/anvil &7and &6/etable"), "", ChatColor.GOLD + "" + ChatColor.BOLD + "LEGENDARY", "", ChatColor.GRAY + "Cost", ChatColor.GREEN + "325 Skyblock Gems", "", ChatColor.GRAY + "You have: 0");
             }
         });
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
             }
 
             @Override
@@ -258,13 +256,13 @@ extends GUI {
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.GOLD + "Hafl-Dozen Cookie", Material.COOKIE, (short)0, 1, "", ChatColor.GOLD + "Booster Cookie " + ChatColor.DARK_GRAY + "x6", ChatColor.translateAlternateColorCodes((char)'&', (String)"&7Consume to gain the &dCookie Buff"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&7for &b5 &7days:"), " ", ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Ability to gain &bBis&7!"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &b+20% &7 Skill XP"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &b+15 &7Magic Find"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Keep &6coins &7and &beffects &7on death"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &ePermafly &7 on private islands"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Access &6/ah &7and &6/bazaar &7 anywhere"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Sell items directly to the trades menu"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7AFK &aimmunity &7on your island"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Toggle specific &dpotion effects"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Access to &6/anvil &7and &6/etable"), "", ChatColor.GOLD + "" + ChatColor.BOLD + "LEGENDARY", "", ChatColor.GRAY + "Cost", ChatColor.GREEN + "FREE", "", ChatColor.GRAY + "You have: 0", ChatColor.RED + "Coming Soon!");
+                return SUtil.getStack(ChatColor.GOLD + "Hafl-Dozen Cookie", Material.COOKIE, (short)0, 1, "", ChatColor.GOLD + "Booster Cookie " + ChatColor.DARK_GRAY + "x6", ChatColor.translateAlternateColorCodes((char)'&', (String)"&7Consume to gain the &dCookie Buff"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&7for &b5 &7days:"), " ", ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Ability to gain &bBis&7!"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &b+20% &7 Skill XP"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &b+15 &7Magic Find"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Keep &6coins &7and &beffects &7on death"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &ePermafly &7 on private islands"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Access &6/ah &7and &6/bazaar &7 anywhere"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Sell items directly to the trades menu"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7AFK &aimmunity &7on your island"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Toggle specific &dpotion effects"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Access to &6/anvil &7and &6/etable"), "", ChatColor.GOLD + "" + ChatColor.BOLD + "LEGENDARY", "", ChatColor.GRAY + "Cost", ChatColor.GREEN + "1,375 Skyblock Gems", "", ChatColor.GRAY + "You have: 0");
             }
         });
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
             }
 
             @Override
@@ -274,14 +272,14 @@ extends GUI {
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.GOLD + "A Dozen Cookie", Material.COOKIE, (short)0, 1, "", ChatColor.GOLD + "Booster Cookie " + ChatColor.DARK_GRAY + "x12", ChatColor.translateAlternateColorCodes((char)'&', (String)"&7Consume to gain the &dCookie Buff"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&7for &b5 &7days:"), " ", ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Ability to gain &bBis&7!"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &b+20% &7 Skill XP"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &b+15 &7Magic Find"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Keep &6coins &7and &beffects &7on death"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &ePermafly &7 on private islands"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Access &6/ah &7and &6/bazaar &7 anywhere"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Sell items directly to the trades menu"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7AFK &aimmunity &7on your island"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Toggle specific &dpotion effects"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Access to &6/anvil &7and &6/etable"), "", ChatColor.GOLD + "" + ChatColor.BOLD + "LEGENDARY", "", ChatColor.GRAY + "Cost", ChatColor.GREEN + "3,900 SkyBlock Gems", "", ChatColor.GRAY + "You have: 0", ChatColor.RED + "Coming Soon!");
+                return SUtil.getStack(ChatColor.GOLD + "A Dozen Cookie", Material.COOKIE, (short)0, 1, "", ChatColor.GOLD + "Booster Cookie " + ChatColor.DARK_GRAY + "x12", ChatColor.translateAlternateColorCodes((char)'&', (String)"&7Consume to gain the &dCookie Buff"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&7for &b5 &7days:"), " ", ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Ability to gain &bBis&7!"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &b+20% &7 Skill XP"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &b+15 &7Magic Find"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Keep &6coins &7and &beffects &7on death"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &ePermafly &7 on private islands"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Access &6/ah &7and &6/bazaar &7 anywhere"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Sell items directly to the trades menu"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7AFK &aimmunity &7on your island"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Toggle specific &dpotion effects"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8\u25ba &7Access to &6/anvil &7and &6/etable"), "", ChatColor.GOLD + "" + ChatColor.BOLD + "LEGENDARY", "", ChatColor.GRAY + "Cost", ChatColor.GREEN + "3,900 SkyBlock Gems", "", ChatColor.GRAY + "You have: 0");
             }
         });
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                player.sendMessage(ChatColor.AQUA + "https://godspunky.store/");
+            public void run(InventoryClickEvent e) {
+                player.sendMessage(ChatColor.AQUA + "https://store.funpixel.xyz/");
             }
 
             @Override
@@ -291,7 +289,7 @@ extends GUI {
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.GREEN + "Community Shop", Material.EMERALD, (short)0, 1, "", ChatColor.DARK_GRAY + "Elizabeth", "", ChatColor.translateAlternateColorCodes((char)'&', (String)"&7Gems: "), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8Purchase on godspunky.store"), " ", ChatColor.translateAlternateColorCodes((char)'&', (String)"&7Bits: &bN/A"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8Earn from Booster Cookies!"), "", ChatColor.translateAlternateColorCodes((char)'&', (String)"&7Fame Rank: &eNew player"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8rank up by spending gems &"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8bits!"), "", ChatColor.GRAY + "Store: " + ChatColor.AQUA + "godspunky.store", ChatColor.YELLOW + "Click to get link!");
+                return SUtil.getStack(ChatColor.GREEN + "Community Shop", Material.EMERALD, (short)0, 1, "", ChatColor.DARK_GRAY + "Elizabeth", "", ChatColor.translateAlternateColorCodes((char)'&', (String)"&7Gems: "), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8Purchase on store.funpixel.xyz"), " ", ChatColor.translateAlternateColorCodes((char)'&', (String)"&7Bits: &bN/A"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8Earn from Booster Cookies!"), "", ChatColor.translateAlternateColorCodes((char)'&', (String)"&7Fame Rank: &eNew player"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8rank up by spending gems &"), ChatColor.translateAlternateColorCodes((char)'&', (String)"&8bits!"), "", ChatColor.GRAY + "Store: " + ChatColor.AQUA + "store.funpixel.xyz", ChatColor.YELLOW + "Click to get link!");
             }
         });
     }

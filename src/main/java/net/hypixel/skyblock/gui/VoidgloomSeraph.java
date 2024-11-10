@@ -34,14 +34,14 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e2) {
+    public void onOpen(GUIOpenEvent e) {
         this.fill(BLACK_STAINED_GLASS_PANE);
-        final Player player = e2.getPlayer();
+        final Player player = e.getPlayer();
         this.set(GUIClickableItem.createGUIOpenerItem(GUIType.SLAYER, player, ChatColor.GREEN + "Go Back", 49, Material.ARROW, ChatColor.GRAY + "To Slayer"));
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 new SlayerConfirmGUI(SlayerBossType.VOIDGLOOM_SERAPH_I, () -> User.getUser(player.getUniqueId()).startSlayerQuest(SlayerBossType.VOIDGLOOM_SERAPH_I)).open(player);
             }
 
@@ -58,7 +58,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 new SlayerConfirmGUI(SlayerBossType.VOIDGLOOM_SERAPH_II, () -> User.getUser(player.getUniqueId()).startSlayerQuest(SlayerBossType.VOIDGLOOM_SERAPH_II)).open(player);
             }
 
@@ -75,7 +75,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 new SlayerConfirmGUI(SlayerBossType.VOIDGLOOM_SERAPH_III, () -> User.getUser(player.getUniqueId()).startSlayerQuest(SlayerBossType.VOIDGLOOM_SERAPH_III)).open(player);
             }
 
@@ -92,7 +92,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 new SlayerConfirmGUI(SlayerBossType.VOIDGLOOM_SERAPH_IV, () -> User.getUser(player.getUniqueId()).startSlayerQuest(SlayerBossType.VOIDGLOOM_SERAPH_IV)).open(player);
             }
 
@@ -119,7 +119,7 @@ extends GUI {
             }
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
             }
         });
         this.set(new GUIClickableItem(){
@@ -135,7 +135,7 @@ extends GUI {
             }
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
             }
         });
         this.set(new GUIClickableItem(){
@@ -151,7 +151,7 @@ extends GUI {
             }
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
             }
         });
         this.set(new GUIClickableItem(){
@@ -167,7 +167,7 @@ extends GUI {
             }
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
             }
         });
     }

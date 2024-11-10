@@ -41,6 +41,11 @@ EntityStatistics {
     }
 
     @Override
+    public int mobLevel() {
+        return 55;
+    }
+
+    @Override
     public double getXPDropped() {
         return 40.0;
     }
@@ -53,11 +58,6 @@ EntityStatistics {
     @Override
     public SEntityEquipment getEntityEquipment() {
         return new SEntityEquipment(SItem.of(SMaterial.END_STONE_BOW).getStack(), SItem.of(SMaterial.SUMMONING_EYE).getStack(), SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_CHESTPLATE), Color.fromRGB((int)0)), SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_LEGGINGS), Color.fromRGB((int)0)), SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_BOOTS), Color.fromRGB((int)0)));
-    }
-
-    @Override
-    public int mobLevel() {
-        return 55;
     }
 }
 

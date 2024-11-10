@@ -96,31 +96,31 @@ Ability {
     }
 
     @Override
-    public void onBowShoot(SItem bow, EntityShootBowEvent e2) {
-        Location l2;
-        Player shooter = (Player)e2.getEntity();
+    public void onBowShoot(SItem bow, EntityShootBowEvent e) {
+        Location l;
+        Player shooter = (Player)e.getEntity();
         int kills = bow.getDataInt("kills");
         Location location = shooter.getEyeLocation().add(shooter.getEyeLocation().getDirection().toLocation(shooter.getWorld()));
-        float speed = e2.getForce() * 3.0f;
+        float speed = e.getForce() * 3.0f;
         if (kills >= 20) {
-            l2 = location.clone();
-            l2.setYaw(location.getYaw() - 15.0f);
-            shooter.getWorld().spawnArrow(l2, l2.getDirection(), speed, 1.0f).setShooter((ProjectileSource)shooter);
+            l = location.clone();
+            l.setYaw(location.getYaw() - 15.0f);
+            shooter.getWorld().spawnArrow(l, l.getDirection(), speed, 1.0f).setShooter((ProjectileSource)shooter);
         }
         if (kills >= 50) {
-            l2 = location.clone();
-            l2.setYaw(location.getYaw() + 15.0f);
-            shooter.getWorld().spawnArrow(l2, l2.getDirection(), speed, 1.0f).setShooter((ProjectileSource)shooter);
+            l = location.clone();
+            l.setYaw(location.getYaw() + 15.0f);
+            shooter.getWorld().spawnArrow(l, l.getDirection(), speed, 1.0f).setShooter((ProjectileSource)shooter);
         }
         if (kills >= 100) {
-            l2 = location.clone();
-            l2.setYaw(location.getYaw() - 30.0f);
-            shooter.getWorld().spawnArrow(l2, l2.getDirection(), speed, 1.0f).setShooter((ProjectileSource)shooter);
+            l = location.clone();
+            l.setYaw(location.getYaw() - 30.0f);
+            shooter.getWorld().spawnArrow(l, l.getDirection(), speed, 1.0f).setShooter((ProjectileSource)shooter);
         }
         if (kills >= 250) {
-            l2 = location.clone();
-            l2.setYaw(location.getYaw() + 30.0f);
-            shooter.getWorld().spawnArrow(l2, l2.getDirection(), speed, 1.0f).setShooter((ProjectileSource)shooter);
+            l = location.clone();
+            l.setYaw(location.getYaw() + 30.0f);
+            shooter.getWorld().spawnArrow(l, l.getDirection(), speed, 1.0f).setShooter((ProjectileSource)shooter);
         }
     }
 

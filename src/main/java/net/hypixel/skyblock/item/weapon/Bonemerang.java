@@ -169,14 +169,14 @@ Ability {
                         this.cancel();
                         return;
                     }
-                    int i2 = this.ran;
+                    int i = this.ran;
                     int num = 120;
                     Location loc = null;
-                    if (13 > i2) {
-                        angle = i2 * 20 + 120;
+                    if (13 > i) {
+                        angle = i * 20 + 120;
                         back = false;
                     } else {
-                        angle = i2 * 20 - 120;
+                        angle = i * 20 - 120;
                         back = true;
                         loc = player.getLocation();
                         loc.setDirection(teleportTo);
@@ -203,18 +203,18 @@ Ability {
                         return;
                     }
                     stand.setRightArmPose(new EulerAngle(Math.toRadians(0.0), Math.toRadians(angle), Math.toRadians(350.0)));
-                    if (0 == i2 % 2 && 13 > i2) {
+                    if (0 == i % 2 && 13 > i) {
                         stand.teleport(stand.getLocation().add(teleportTo).multiply(1.0));
                         stand.teleport(stand.getLocation().add(teleportTo).multiply(1.0));
-                    } else if (0 == i2 % 2) {
+                    } else if (0 == i % 2) {
                         stand.getWorld().spigot().playEffect(stand.getEyeLocation().add(0.0, 1.0, 0.0).clone().add(SUtil.random(-0.5, 0.5), 0.0, SUtil.random(-0.5, 0.5)), Effect.FLYING_GLYPH, 24, 1, 0.0f, 0.0f, 0.0f, 1.0f, 0, 64);
                         stand.teleport(stand.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                         stand.teleport(stand.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                     }
-                    for (Entity e2 : stand.getNearbyEntities(1.0, 1.0, 1.0)) {
-                        if (!(e2 instanceof LivingEntity) || e2 == player.getPlayer()) continue;
-                        Damageable entity = (Damageable)e2;
-                        if (!back && goBone.contains(e2) || back && backBone.contains(e2) || entity.isDead()) continue;
+                    for (Entity e : stand.getNearbyEntities(1.0, 1.0, 1.0)) {
+                        if (!(e instanceof LivingEntity) || e == player.getPlayer()) continue;
+                        Damageable entity = (Damageable)e;
+                        if (!back && goBone.contains(e) || back && backBone.contains(e) || entity.isDead()) continue;
                         if (entity.hasMetadata("VWE")) {
                             stand.remove();
                             stand.getWorld().playEffect(stand.getLocation(), Effect.EXPLOSION, 1);
@@ -238,9 +238,9 @@ Ability {
                         }
                         finalDamage1 = finalDamage1 * rm / 100.0;
                         if (!back) {
-                            goBone.add(e2);
+                            goBone.add(e);
                         } else {
-                            backBone.add(e2);
+                            backBone.add(e);
                         }
                         PlayerListener.spawnDamageInd((Entity)entity, (double)(((Float)atp[2]).floatValue() * (float)(back ? 2 : 1)) * 1.0 * rm / 100.0, (Boolean)atp[1]);
                         FerocityCalculation.activeFerocityTimes(player, (LivingEntity)entity, (int)finalDamage1, (Boolean)atp[1]);

@@ -49,7 +49,7 @@ public interface EntityFunction {
     default public void onDeath(SEntity sEntity, Entity killed, Entity damager) {
     }
 
-    default public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
+    default public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e, AtomicDouble damage) {
     }
 
     default public List<EntityDrop> drops() {
@@ -86,8 +86,8 @@ public interface EntityFunction {
         if (entity.getType() == EntityType.ENDER_CRYSTAL) {
             return;
         }
-        net.minecraft.server.v1_8_R3.Entity e2 = ((CraftEntity)entity).getHandle();
-        double height_ = e2.getBoundingBox().e - e2.getBoundingBox().b;
+        net.minecraft.server.v1_8_R3.Entity e = ((CraftEntity)entity).getHandle();
+        double height_ = e.getBoundingBox().e - e.getBoundingBox().b;
         Object instance = specType.instance(params);
         final EntityStatistics statistics = (EntityStatistics)instance;
         if (entity.getType() == EntityType.SKELETON || entity.hasMetadata("SKEL")) {
@@ -170,10 +170,10 @@ public interface EntityFunction {
     default public void onSpawn(LivingEntity entity, SEntity sEntity) {
     }
 
-    default public void onAttack(EntityDamageByEntityEvent e2) {
+    default public void onAttack(EntityDamageByEntityEvent e) {
     }
 
-    default public void onTarget(SEntity sEntity, EntityTargetLivingEntityEvent e2) {
+    default public void onTarget(SEntity sEntity, EntityTargetLivingEntityEvent e) {
     }
 
     default public void onSpawnNameTag(LivingEntity entity, SEntityType specType, Object ... params) {

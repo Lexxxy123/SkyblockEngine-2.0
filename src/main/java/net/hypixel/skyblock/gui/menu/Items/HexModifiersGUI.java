@@ -39,12 +39,12 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 HexModifiersGUI.this.upgradeableItem = item;
                 item.setRecombobulated(true);
-                Player player = (Player)e2.getWhoClicked();
+                Player player = (Player)e.getWhoClicked();
                 player.playSound(player.getLocation(), Sound.ORB_PICKUP, 10.0f, 2.0f);
-                e2.getWhoClicked().sendMessage(ChatColor.translateAlternateColorCodes((char)'&', (String)("&aYou recombobulated your " + item.getFullName() + "!")));
+                e.getWhoClicked().sendMessage(ChatColor.translateAlternateColorCodes((char)'&', (String)("&aYou recombobulated your " + item.getFullName() + "!")));
             }
 
             @Override
@@ -60,12 +60,12 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                e2.getWhoClicked().sendMessage(ChatColor.translateAlternateColorCodes((char)'&', (String)("&d&lSUCCESS! &r&dYou modified your " + item.getFullName() + "!")));
+            public void run(InventoryClickEvent e) {
+                e.getWhoClicked().sendMessage(ChatColor.translateAlternateColorCodes((char)'&', (String)("&d&lSUCCESS! &r&dYou modified your " + item.getFullName() + "!")));
                 HexModifiersGUI.this.forceclose = true;
-                Player p2 = (Player)e2.getWhoClicked();
-                p2.playSound(p2.getLocation(), Sound.ANVIL_USE, 10.0f, 1.0f);
-                new HexGUI(p2.getPlayer(), item).open(p2);
+                Player p = (Player)e.getWhoClicked();
+                p.playSound(p.getLocation(), Sound.ANVIL_USE, 10.0f, 1.0f);
+                new HexGUI(p.getPlayer(), item).open(p);
                 HexModifiersGUI.this.upgradeableItem = null;
             }
 
@@ -84,9 +84,9 @@ extends GUI {
     }
 
     @Override
-    public void onClose(InventoryCloseEvent e2) {
+    public void onClose(InventoryCloseEvent e) {
         if (!this.forceclose && this.upgradeableItem != null) {
-            e2.getPlayer().getInventory().addItem(new ItemStack[]{this.upgradeableItem.getStack()});
+            e.getPlayer().getInventory().addItem(new ItemStack[]{this.upgradeableItem.getStack()});
         }
     }
 }

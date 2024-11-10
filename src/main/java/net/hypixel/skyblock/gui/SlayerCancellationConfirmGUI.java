@@ -28,10 +28,10 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 user.setSlayerQuest(null);
-                e2.getWhoClicked().sendMessage(ChatColor.GREEN + "Your Slayer Quest has been cancelled!");
-                GUIType.SLAYER.getGUI().open((Player)e2.getWhoClicked());
+                e.getWhoClicked().sendMessage(ChatColor.GREEN + "Your Slayer Quest has been cancelled!");
+                GUIType.SLAYER.getGUI().open((Player)e.getWhoClicked());
                 user.removeAllSlayerBosses();
             }
 
@@ -48,8 +48,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                e2.getWhoClicked().closeInventory();
+            public void run(InventoryClickEvent e) {
+                e.getWhoClicked().closeInventory();
             }
 
             @Override

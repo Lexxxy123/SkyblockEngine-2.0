@@ -38,6 +38,11 @@ extends BaseZombie {
     }
 
     @Override
+    public int mobLevel() {
+        return 60;
+    }
+
+    @Override
     public SEntityEquipment getEntityEquipment() {
         return new SEntityEquipment(new ItemStack(Material.GOLD_SWORD), null, new ItemStack(Material.GOLD_CHESTPLATE), new ItemStack(Material.GOLD_LEGGINGS), new ItemStack(Material.GOLD_BOOTS));
     }
@@ -60,11 +65,6 @@ extends BaseZombie {
     @Override
     public boolean isVillager() {
         return false;
-    }
-
-    @Override
-    public int mobLevel() {
-        return 60;
     }
 }
 

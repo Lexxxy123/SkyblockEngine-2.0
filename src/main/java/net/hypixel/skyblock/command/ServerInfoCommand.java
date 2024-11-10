@@ -16,10 +16,10 @@ extends SCommand {
         this.send("&aYou're playing on &cSkyBlock Network &bBeta 2");
         try {
             this.send("&7Server Version: &a1.8.9");
-        } catch (Exception e2) {
-            e2.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        this.send("&7Developed by: &cEpicportal &7and &cHamza&7.");
+        this.send("&7Developed by: &cLexxxy&7.");
         this.send("&7Server API information: &aMC1_8_R3 &7by &eMojang");
     }
 }

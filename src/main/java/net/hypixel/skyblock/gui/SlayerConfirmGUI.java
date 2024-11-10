@@ -25,9 +25,9 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 onConfirm.run();
-                e2.getWhoClicked().closeInventory();
+                e.getWhoClicked().closeInventory();
             }
 
             @Override
@@ -43,8 +43,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                e2.getWhoClicked().closeInventory();
+            public void run(InventoryClickEvent e) {
+                e.getWhoClicked().closeInventory();
             }
 
             @Override

@@ -89,8 +89,8 @@ OrbBuff {
         this.r(player, sloc);
         if (POWER_ORB_MAP.containsKey(player.getUniqueId())) {
             PowerOrbInstance instance = POWER_ORB_MAP.get(player.getUniqueId());
-            ArmorStand s2 = instance.getArmorStand();
-            s2.remove();
+            ArmorStand s = instance.getArmorStand();
+            s.remove();
             player.sendMessage(ChatColor.YELLOW + "Your previous " + instance.getColoredName() + ChatColor.YELLOW + " was removed!");
         }
         SEntity sEntity = new SEntity(sloc, SEntityType.VELOCITY_ARMOR_STAND, new Object[0]);
@@ -145,23 +145,23 @@ OrbBuff {
                     this.cancel();
                     return;
                 }
-                int c2 = 0;
+                int c = 0;
                 for (Entity entity : stand.getNearbyEntities(18.0, 18.0, 18.0)) {
                     if (!(entity instanceof Player)) continue;
-                    final Player p2 = (Player)entity;
-                    if (c2 >= 5) break;
-                    ++c2;
-                    if (USING_POWER_ORB_MAP.containsKey(p2.getUniqueId()) && !((ArmorStand)USING_POWER_ORB_MAP.get(p2.getUniqueId())).equals(stand)) continue;
-                    USING_POWER_ORB_MAP.put(p2.getUniqueId(), stand);
+                    final Player p = (Player)entity;
+                    if (c >= 5) break;
+                    ++c;
+                    if (USING_POWER_ORB_MAP.containsKey(p.getUniqueId()) && !((ArmorStand)USING_POWER_ORB_MAP.get(p.getUniqueId())).equals(stand)) continue;
+                    USING_POWER_ORB_MAP.put(p.getUniqueId(), stand);
                     new BukkitRunnable(){
 
                         public void run() {
-                            USING_POWER_ORB_MAP.remove(p2.getUniqueId());
+                            USING_POWER_ORB_MAP.remove(p.getUniqueId());
                         }
                     }.runTaskLater((Plugin)SkyBlock.getPlugin(), 20L);
-                    PowerOrb.this.buff(p2);
-                    for (int i2 = 0; i2 < 8; ++i2) {
-                        PowerOrb.this.playEffect(p2.getLocation().add(SUtil.random(-0.5, 0.5), 0.1, SUtil.random(-0.5, 0.5)));
+                    PowerOrb.this.buff(p);
+                    for (int i = 0; i < 8; ++i) {
+                        PowerOrb.this.playEffect(p.getLocation().add(SUtil.random(-0.5, 0.5), 0.1, SUtil.random(-0.5, 0.5)));
                     }
                 }
                 stand.setCustomName(sItem.getRarity().getColor() + (PowerOrb.this.getCustomOrbName() == null ? PowerOrb.this.getBuffName() : PowerOrb.this.getCustomOrbName()) + " " + ChatColor.YELLOW + Math.max(0, seconds.decrementAndGet()) + "s");
@@ -182,11 +182,11 @@ OrbBuff {
 
     protected abstract void playEffect(Location var1);
 
-    public void destroyArmorStandWithUUID(UUID uuid, World w2) {
+    public void destroyArmorStandWithUUID(UUID uuid, World w) {
         String uuidString = uuid.toString() + "_powerorb";
-        for (Entity e2 : w2.getEntities()) {
-            if (!e2.hasMetadata(uuidString)) continue;
-            e2.remove();
+        for (Entity e : w.getEntities()) {
+            if (!e.hasMetadata(uuidString)) continue;
+            e.remove();
         }
     }
 

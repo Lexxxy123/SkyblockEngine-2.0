@@ -82,9 +82,9 @@ extends VelocityArmorStand {
                 }
                 ArrayList<Block> possible = new ArrayList<Block>();
                 for (Block block : farmland) {
-                    Block a2 = block.getLocation().clone().add(0.0, 1.0, 0.0).getBlock();
-                    if (a2.getType() != Material.AIR) continue;
-                    possible.add(a2);
+                    Block a = block.getLocation().clone().add(0.0, 1.0, 0.0).getBlock();
+                    if (a.getType() != Material.AIR) continue;
+                    possible.add(a);
                 }
                 if (possible.size() == 0) {
                     return;
@@ -101,8 +101,8 @@ extends VelocityArmorStand {
                 Location crystalLocation = stand.getEyeLocation();
                 Vector vector = blockLocation.clone().add(0.5, 0.0, 0.5).toVector().subtract(crystalLocation.clone().toVector());
                 double count = 25.0;
-                for (int i2 = 1; i2 <= 25; ++i2) {
-                    stand.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply((double)i2 / 25.0)), Effect.FIREWORKS_SPARK, 24, 1, 0.0f, 0.0f, 0.0f, 1.0f, 0, 64);
+                for (int i = 1; i <= 25; ++i) {
+                    stand.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply((double)i / 25.0)), Effect.FIREWORKS_SPARK, 24, 1, 0.0f, 0.0f, 0.0f, 1.0f, 0, 64);
                 }
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 20L, 20L);

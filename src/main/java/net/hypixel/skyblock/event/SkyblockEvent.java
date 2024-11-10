@@ -38,8 +38,8 @@ implements Cancellable {
         return this.isCancelled;
     }
 
-    public void setCancelled(boolean b2) {
-        this.isCancelled = b2;
+    public void setCancelled(boolean b) {
+        this.isCancelled = b;
     }
 }
 

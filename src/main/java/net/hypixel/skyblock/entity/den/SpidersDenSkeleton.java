@@ -36,6 +36,11 @@ EntityFunction {
     }
 
     @Override
+    public int mobLevel() {
+        return 2;
+    }
+
+    @Override
     public double getXPDropped() {
         return 6.0;
     }

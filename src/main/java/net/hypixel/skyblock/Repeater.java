@@ -39,7 +39,6 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.command.RebootServerCommand;
-import net.hypixel.skyblock.config.Config;
 import net.hypixel.skyblock.entity.StaticDragonManager;
 import net.hypixel.skyblock.entity.dungeons.boss.sadan.SadanBossManager;
 import net.hypixel.skyblock.entity.dungeons.boss.sadan.SadanHuman;
@@ -60,6 +59,7 @@ import net.hypixel.skyblock.item.SMaterial;
 import net.hypixel.skyblock.item.SpecificItemType;
 import net.hypixel.skyblock.item.armor.ArmorSet;
 import net.hypixel.skyblock.item.armor.TickingSet;
+import net.hypixel.skyblock.item.armor.VoidlingsWardenHelmet;
 import net.hypixel.skyblock.item.bow.Terminator;
 import net.hypixel.skyblock.user.PlayerStatistics;
 import net.hypixel.skyblock.user.PlayerUtils;
@@ -108,16 +108,15 @@ public class Repeater {
     private final List<BukkitTask> tasks = new ArrayList<BukkitTask>();
     public static int EFFECT_COUNTING = 0;
     public static final Map<UUID, Integer> FloorLivingSec = new HashMap<UUID, Integer>();
-    public static Config config = SkyBlock.getPlugin().config;
 
-    public static void cRun(User u2) {
-        List<ActivePotionEffect> apt = u2.getEffects();
-        if (PTN_CACHE.containsKey(u2.getUuid())) {
-            if (PTN_CACHE.get(u2.getUuid()) >= apt.size()) {
-                PTN_CACHE.put(u2.getUuid(), 0);
+    public static void cRun(User u) {
+        List<ActivePotionEffect> apt = u.getEffects();
+        if (PTN_CACHE.containsKey(u.getUuid())) {
+            if (PTN_CACHE.get(u.getUuid()) >= apt.size()) {
+                PTN_CACHE.put(u.getUuid(), 0);
             }
         } else {
-            PTN_CACHE.put(u2.getUuid(), 0);
+            PTN_CACHE.put(u.getUuid(), 0);
         }
     }
 
@@ -159,8 +158,8 @@ public class Repeater {
                     Vector vector = blockLocation.clone().add(0.1, 0.0, 0.1).toVector().subtract(crystalLocation.clone().toVector());
                     double count = 10.0;
                     double length = 0.0;
-                    for (int i2 = 1; i2 <= 10; ++i2) {
-                        for (Entity entity : player.getWorld().getNearbyEntities(crystalLocation.clone().add(vector.clone().multiply((double)i2 / 10.0)), 0.25, 0.2, 0.25)) {
+                    for (int i = 1; i <= 10; ++i) {
+                        for (Entity entity : player.getWorld().getNearbyEntities(crystalLocation.clone().add(vector.clone().multiply((double)i / 10.0)), 0.25, 0.2, 0.25)) {
                             if (!entity.hasMetadata("Nukekubi") || !VoidgloomSeraph.NUKEKUBI_TARGET.containsKey(entity) || VoidgloomSeraph.NUKEKUBI_TARGET.get(entity) != player) continue;
                             entity.remove();
                             player.playSound(player.getLocation(), Sound.SILVERFISH_HIT, 1.0f, 0.0f);
@@ -173,9 +172,9 @@ public class Repeater {
                 }
                 for (World world : Bukkit.getWorlds()) {
                     if (!world.getName().toLowerCase().contains("f6")) continue;
-                    for (Entity e2 : world.getEntities()) {
-                        if (e2.hasMetadata("Giant_")) {
-                            for (Entity entity2 : e2.getNearbyEntities(3.0, 11.0, 3.0)) {
+                    for (Entity e : world.getEntities()) {
+                        if (e.hasMetadata("Giant_")) {
+                            for (Entity entity2 : e.getNearbyEntities(3.0, 11.0, 3.0)) {
                                 if (!(entity2 instanceof Arrow)) continue;
                                 Projectile arr = (Projectile)entity2;
                                 if (!(arr.getShooter() instanceof Player)) {
@@ -184,20 +183,20 @@ public class Repeater {
                                 SUtil.giantsHitboxFix(arr);
                             }
                         }
-                        if (e2 instanceof Item) {
-                            if (((Item)e2).getItemStack().getType() == Material.FLOWER_POT_ITEM) {
-                                e2.remove();
+                        if (e instanceof Item) {
+                            if (((Item)e).getItemStack().getType() == Material.FLOWER_POT_ITEM) {
+                                e.remove();
                             }
-                            if (((Item)e2).getItemStack().getType() == Material.IRON_TRAPDOOR) {
-                                e2.remove();
+                            if (((Item)e).getItemStack().getType() == Material.IRON_TRAPDOOR) {
+                                e.remove();
                             }
                         }
-                        if (!(e2 instanceof Chicken)) continue;
-                        e2.remove();
+                        if (!(e instanceof Chicken)) continue;
+                        e.remove();
                     }
-                    for (Entity e2 : world.getNearbyEntities(new Location(world, 191.0, 54.0, 266.0), 4.0, 11.0, 4.0)) {
-                        if (!(e2 instanceof Player)) continue;
-                        Player player2 = (Player)e2;
+                    for (Entity e : world.getNearbyEntities(new Location(world, 191.0, 54.0, 266.0), 4.0, 11.0, 4.0)) {
+                        if (!(e instanceof Player)) continue;
+                        Player player2 = (Player)e;
                         User.getUser(player2.getUniqueId()).kill(EntityDamageEvent.DamageCause.VOID, null);
                     }
                 }
@@ -213,10 +212,10 @@ public class Repeater {
                     }
                     PTN_CACHE.put(User.getUser(player.getUniqueId()).getUuid(), 0);
                 }
-                for (World w2 : Bukkit.getWorlds()) {
-                    if (!w2.getName().contains("f6") || w2.getName().equals("f6") || w2.getPlayers().size() != 0) continue;
-                    SadanBossManager.endFloor(w2);
-                    SLog.warn("[WORLD CLEARER] Cleared F6 Bossroom world " + w2.getName() + ". Reason: No player inside");
+                for (World w : Bukkit.getWorlds()) {
+                    if (!w.getName().contains("f6") || w.getName().equals("f6") || w.getPlayers().size() != 0) continue;
+                    SadanBossManager.endFloor(w);
+                    SLog.warn("[WORLD CLEARER] Cleared F6 Bossroom world " + w.getName() + ". Reason: No player inside");
                 }
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 45L));
@@ -224,9 +223,9 @@ public class Repeater {
 
             public void run() {
                 SkyBlockCalendar.ELAPSED += 20L;
-                for (World w2 : Bukkit.getWorlds()) {
-                    if (!SadanHuman.BossRun.containsKey(w2.getUID()) || !w2.getName().contains("f6") || !SadanHuman.BossRun.containsKey(w2.getUID()) || !SadanHuman.BossRun.get(w2.getUID()).booleanValue()) continue;
-                    FloorLivingSec.put(w2.getUID(), FloorLivingSec.get(w2.getUID()) + 1);
+                for (World w : Bukkit.getWorlds()) {
+                    if (!SadanHuman.BossRun.containsKey(w.getUID()) || !w.getName().contains("f6") || !SadanHuman.BossRun.containsKey(w.getUID()) || !SadanHuman.BossRun.get(w.getUID()).booleanValue()) continue;
+                    FloorLivingSec.put(w.getUID(), FloorLivingSec.get(w.getUID()) + 1);
                 }
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 20L));
@@ -296,10 +295,10 @@ public class Repeater {
             }
         }
         PlayerStatistics statistics1 = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
-        for (int i2 = 0; i2 <= inventory.getSize(); ++i2) {
-            ItemStack stack = inventory.getItem(i2);
+        for (int i = 0; i <= inventory.getSize(); ++i) {
+            ItemStack stack = inventory.getItem(i);
             SItem sItem = SItem.find(stack);
-            int slot = 15 + i2;
+            int slot = 15 + i;
             if (sItem != null && sItem.getType().getStatistics().getType() != GenericItemType.ACCESSORY) {
                 statistics1.zeroAll(slot);
             }
@@ -433,7 +432,7 @@ public class Repeater {
             ((TickingSet)set).tick(player, SItem.find(inventory.getHelmet()), SItem.find(inventory.getChestplate()), SItem.find(inventory.getLeggings()), SItem.find(inventory.getBoots()), counters2);
         }
         SUtil.runSync(() -> {
-            Sidebar sidebar = new Sidebar(Sputnik.trans("&e&lSKYBLOCK &c&lSANDBOX"), "SKYBLOCK");
+            Sidebar sidebar = new Sidebar(Sputnik.trans("&e&lSKYBLOCK"), "SKYBLOCK");
             SUtil.runAsync(() -> {
                 String strd = SUtil.getDate();
                 if (RebootServerCommand.secondMap.containsKey(Bukkit.getServer())) {
@@ -556,7 +555,7 @@ public class Repeater {
                     }
                     sidebar.add(ChatColor.AQUA + "     ");
                 }
-                sidebar.add(ChatColor.YELLOW + config.getString("ip"));
+                sidebar.add(ChatColor.YELLOW + "funpixel.xyz");
                 if (!player.getWorld().getName().equalsIgnoreCase("dungeon")) {
                     sidebar.apply(player);
                 }
@@ -570,7 +569,10 @@ public class Repeater {
         return " &" + colorCode + (int)dungeonMate.getHealth() + "&c\u2764";
     }
 
-    public static String get(Player p2) {
+    public static String get(Player p) {
+        if (!Objects.equals(VoidlingsWardenHelmet.getDisplay(p), "")) {
+            return " " + VoidlingsWardenHelmet.getDisplay(p);
+        }
         return "";
     }
 }

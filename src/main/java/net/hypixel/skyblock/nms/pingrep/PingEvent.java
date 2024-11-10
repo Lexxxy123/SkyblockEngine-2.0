@@ -49,8 +49,8 @@ public class PingEvent {
             Class<?> packet = Class.forName("net.hypixel.skyblock.nms.pingrep." + version + ".ServerInfoPacketHandler");
             Constructor<?> constructor = packet.getDeclaredConstructor(reply.getClass());
             return (ServerInfoPacket)constructor.newInstance(reply);
-        } catch (ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchMethodException | SecurityException | InvocationTargetException e2) {
-            e2.printStackTrace();
+        } catch (ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchMethodException | SecurityException | InvocationTargetException e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -63,8 +63,8 @@ public class PingEvent {
             Constructor<?> constructor = packet.getDeclaredConstructor(this.getClass());
             PongPacket pong = (PongPacket)constructor.newInstance(this);
             pong.send();
-        } catch (ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchMethodException | SecurityException | InvocationTargetException e2) {
-            e2.printStackTrace();
+        } catch (ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InstantiationException | NoSuchMethodException | SecurityException | InvocationTargetException e) {
+            e.printStackTrace();
         }
     }
 }

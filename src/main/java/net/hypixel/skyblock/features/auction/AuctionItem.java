@@ -129,33 +129,33 @@ public class AuctionItem {
 
     public User getTopBidder() {
         UUID uuid = null;
-        long b2 = 0L;
+        long b = 0L;
         for (AuctionBid bid : this.bids) {
-            if (bid.getAmount() <= b2) continue;
+            if (bid.getAmount() <= b) continue;
             uuid = bid.getBidder();
-            b2 = bid.getAmount();
+            b = bid.getAmount();
         }
         return User.getUser(uuid);
     }
 
     public AuctionBid getTopBid() {
-        AuctionBid b2 = null;
-        long l2 = 0L;
+        AuctionBid b = null;
+        long l = 0L;
         for (AuctionBid bid : this.bids) {
-            if (bid.getAmount() <= l2) continue;
-            l2 = bid.getAmount();
-            b2 = bid;
+            if (bid.getAmount() <= l) continue;
+            l = bid.getAmount();
+            b = bid;
         }
-        return b2;
+        return b;
     }
 
     public long getTopBidAmount() {
-        long b2 = 0L;
+        long b = 0L;
         for (AuctionBid bid : this.bids) {
-            if (bid.getAmount() <= b2) continue;
-            b2 = bid.getAmount();
+            if (bid.getAmount() <= b) continue;
+            b = bid.getAmount();
         }
-        return b2;
+        return b;
     }
 
     public AuctionBid getRecentBid() {
@@ -171,8 +171,8 @@ public class AuctionItem {
     }
 
     public AuctionBid getBid(UUID uuid) {
-        for (int i2 = this.bids.size() - 1; i2 >= 0; --i2) {
-            AuctionBid bid = this.bids.get(i2);
+        for (int i = this.bids.size() - 1; i >= 0; --i) {
+            AuctionBid bid = this.bids.get(i);
             if (!bid.getBidder().equals(uuid)) continue;
             return bid;
         }
@@ -390,9 +390,9 @@ public class AuctionItem {
         if (!AUCTION_ITEM_FOLDER.exists()) {
             return;
         }
-        for (File f2 : Objects.requireNonNull(AUCTION_ITEM_FOLDER.listFiles())) {
+        for (File f : Objects.requireNonNull(AUCTION_ITEM_FOLDER.listFiles())) {
             UUID uuid;
-            String name = f2.getName();
+            String name = f.getName();
             if (!name.endsWith(".yml")) continue;
             name = name.substring(0, name.length() - 4);
             try {

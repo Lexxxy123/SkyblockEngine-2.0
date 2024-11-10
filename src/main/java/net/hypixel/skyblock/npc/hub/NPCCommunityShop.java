@@ -8,22 +8,28 @@ package net.hypixel.skyblock.npc.hub;
 
 import net.hypixel.skyblock.gui.GUIType;
 import net.hypixel.skyblock.npc.impl.NPCParameters;
-import net.hypixel.skyblock.npc.impl.SkyBlockNPC;
+import net.hypixel.skyblock.npc.impl.SkyblockNPC;
+import net.hypixel.skyblock.npc.impl.enums.NPCType;
 import org.bukkit.entity.Player;
 
 public class NPCCommunityShop
-extends SkyBlockNPC {
+extends SkyblockNPC {
     public NPCCommunityShop() {
         super(new NPCParameters(){
 
             @Override
-            public String id() {
-                return "COMMUNITY_SHOP";
+            public String name() {
+                return "community";
             }
 
             @Override
-            public String name() {
-                return "&fCommunity Shop";
+            public NPCType type() {
+                return NPCType.PLAYER;
+            }
+
+            @Override
+            public String[] holograms() {
+                return new String[]{"&fCommunity Shop", "&e&lCLICK"};
             }
 
             @Override
@@ -47,7 +53,7 @@ extends SkyBlockNPC {
             }
 
             @Override
-            public void onInteract(Player player, SkyBlockNPC npc) {
+            public void onInteract(Player player, SkyblockNPC npc) {
                 GUIType.BOOSTER_COOKIE_SHOP.getGUI().open(player);
             }
         });

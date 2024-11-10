@@ -123,13 +123,13 @@ public final class DeadBodyMaker {
         }
         scoreboardTeam.setNameTagVisibility(ScoreboardTeamBase.EnumNameTagVisibility.NEVER);
         scoreboardTeam.setPrefix(ChatColor.DARK_GRAY + "[NPC] ");
-        for (Player p2 : location.getWorld().getPlayers()) {
-            PlayerConnection conn = ((CraftPlayer)p2).getHandle().playerConnection;
+        for (Player p : location.getWorld().getPlayers()) {
+            PlayerConnection conn = ((CraftPlayer)p).getHandle().playerConnection;
             conn.sendPacket((Packet)astp);
             conn.sendPacket((Packet)new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.ADD_PLAYER, new EntityPlayer[]{botPlayer}));
             conn.sendPacket((Packet)new PacketPlayOutNamedEntitySpawn((EntityHuman)botPlayer));
             conn.sendPacket((Packet)packet);
-            DeadBodyMaker.sendPacketBundle(p2, new Packet[]{new PacketPlayOutScoreboardTeam(scoreboardTeam, 1), new PacketPlayOutScoreboardTeam(scoreboardTeam, 0), new PacketPlayOutScoreboardTeam(scoreboardTeam, Collections.singletonList(name), 3)});
+            DeadBodyMaker.sendPacketBundle(p, new Packet[]{new PacketPlayOutScoreboardTeam(scoreboardTeam, 1), new PacketPlayOutScoreboardTeam(scoreboardTeam, 0), new PacketPlayOutScoreboardTeam(scoreboardTeam, Collections.singletonList(name), 3)});
             conn.sendPacket((Packet)new PacketPlayOutBed((EntityHuman)botPlayer, deathBlockPosition));
             SUtil.delay(() -> conn.sendPacket((Packet)pack), 10L);
             conn.sendPacket((Packet)new PacketPlayOutEntity.PacketPlayOutRelEntityMove(botPlayer.getId(), 0, 1, 0, true));
@@ -137,9 +137,9 @@ public final class DeadBodyMaker {
         return botPlayer;
     }
 
-    private static void sendPacketBundle(Player p2, Packet[] pk) {
-        for (int i2 = 0; i2 < pk.length; ++i2) {
-            ((CraftPlayer)p2).getHandle().playerConnection.sendPacket(pk[i2]);
+    private static void sendPacketBundle(Player p, Packet[] pk) {
+        for (int i = 0; i < pk.length; ++i) {
+            ((CraftPlayer)p).getHandle().playerConnection.sendPacket(pk[i]);
         }
     }
 }

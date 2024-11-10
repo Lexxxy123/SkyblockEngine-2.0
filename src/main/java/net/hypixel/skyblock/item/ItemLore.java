@@ -48,10 +48,9 @@ public class ItemLore {
 
     public List<String> asBukkitLore() {
         List<String> ll;
-        String bf2;
-        Object a2;
-        String p2;
-        String l2;
+        String bf;
+        Object a;
+        String p;
         OrbBuff buff;
         Ability ability;
         ArmorSet set;
@@ -94,8 +93,8 @@ public class ItemLore {
                 }
             }
             if (this.parent.getType().getStatistics().getType() == GenericItemType.WEAPON && this.parent.getEnchantment(EnchantmentType.ONE_FOR_ALL) != null) {
-                Enchantment e2 = this.parent.getEnchantment(EnchantmentType.ONE_FOR_ALL);
-                grantedATKDmg = (long)playerBoostStatistics.getBaseDamage() * ((long)e2.getLevel() * 210L) / 100L;
+                Enchantment e = this.parent.getEnchantment(EnchantmentType.ONE_FOR_ALL);
+                grantedATKDmg = (long)playerBoostStatistics.getBaseDamage() * ((long)e.getLevel() * 210L) / 100L;
             }
             if (this.parent.getType().getStatistics().getType() == GenericItemType.ARMOR) {
                 Enchantment growth = this.parent.getEnchantment(EnchantmentType.GROWTH);
@@ -283,6 +282,13 @@ public class ItemLore {
                 lore.add(ChatColor.DARK_GRAY + "Debuff doesn't stack.");
                 lore.add(ChatColor.DARK_GRAY + "Mana Cost: " + ChatColor.DARK_AQUA + "100");
             }
+            if (this.parent.getType() == SMaterial.HIDDEN_GYROKINETIC_WAND) {
+                lore.add(ChatColor.DARK_GRAY + "Regen mana 10x slower for 3s after cast.");
+            }
+            if (this.parent.getType() == SMaterial.HIDDEN_VOIDLINGS_WARDEN_HELMET) {
+                lore.add(ChatColor.DARK_GRAY + "Mana Cost: " + ChatColor.DARK_AQUA + "All");
+                lore.add(ChatColor.DARK_GRAY + "Cooldown: " + ChatColor.GREEN + "30s");
+            }
             if (this.parent.getType() == SMaterial.ZOMBIE_SWORD_T2) {
                 lore.add(ChatColor.DARK_GRAY + "Mana Cost: " + ChatColor.DARK_AQUA + "70");
                 lore.add(ChatColor.translateAlternateColorCodes((char)'&', (String)"&8Charges: &e5 &8/ &a15s"));
@@ -301,6 +307,9 @@ public class ItemLore {
             }
             if (this.parent.getType() == SMaterial.AXE_OF_THE_SHREDDED) {
                 lore.add(ChatColor.DARK_GRAY + "Mana Cost: " + ChatColor.DARK_AQUA + "20");
+            }
+            if (this.parent.getType() == SMaterial.HIDDEN_DIMOONIZARY_DAGGER) {
+                lore.add(ChatColor.DARK_GRAY + "Mana Cost: " + ChatColor.DARK_AQUA + "160");
             }
             if (ability.getManaCost() > 0) {
                 lore.add(ChatColor.DARK_GRAY + "Mana Cost: " + ChatColor.DARK_AQUA + ability.getManaCost());
@@ -347,26 +356,30 @@ public class ItemLore {
             lore.add(Sputnik.trans("&cEnchantment on an item!"));
             lore.add(" ");
         }
-        if ((l2 = this.parent.getType().getStatistics().getLore()) != null) {
-            for (String string : SUtil.splitByWordAndLength(l2, 30, "\\s")) {
+        String l = this.parent.getType().getStatistics().getLore();
+        if (this.parent.getType() == SMaterial.HIDDEN_VOIDLINGS_WARDEN_HELMET) {
+            lore.add(Sputnik.trans("&6Ability: Extra Brute Force"));
+        }
+        if (l != null) {
+            for (String string : SUtil.splitByWordAndLength(l, 30, "\\s")) {
                 lore.add(ChatColor.GRAY + string);
             }
-            if (l2.length() != 0) {
+            if (l.length() != 0) {
                 lore.add("");
             }
         }
-        if (this.parent.getType() == SMaterial.HIDDEN_DONATOR_HELMET && Bukkit.getPlayer((String)(p2 = this.parent.getDataString("p_given"))) != null) {
-            lore.add(Sputnik.trans("&7From: ") + Bukkit.getPlayer((String)p2).getDisplayName());
+        if (this.parent.getType() == SMaterial.HIDDEN_DONATOR_HELMET && Bukkit.getPlayer((String)(p = this.parent.getDataString("p_given"))) != null) {
+            lore.add(Sputnik.trans("&7From: ") + Bukkit.getPlayer((String)p).getDisplayName());
         }
         if (this.parent.getType() == SMaterial.HIDDEN_DONATOR_HELMET && Bukkit.getPlayer((String)(p = this.parent.getDataString("p_rcv"))) != null) {
             lore.add(Sputnik.trans("&7To: ") + Bukkit.getPlayer((String)p).getDisplayName());
         }
-        if (this.parent.getType() == SMaterial.HIDDEN_DONATOR_HELMET && (a2 = (bf2 = this.parent.getDataString("lore_d")).replaceAll("<>", " ")) != null && a2 != "null") {
+        if (this.parent.getType() == SMaterial.HIDDEN_DONATOR_HELMET && (a = (bf = this.parent.getDataString("lore_d")).replaceAll("<>", " ")) != null && a != "null") {
             lore.add("");
-            for (String string2 : SUtil.splitByWordAndLength((String)a2, 25, "\\s")) {
+            for (String string2 : SUtil.splitByWordAndLength((String)a, 25, "\\s")) {
                 lore.add(Sputnik.trans("&7" + string2));
             }
-            if (l2.length() != 0) {
+            if (l.length() != 0) {
                 lore.add("");
             }
         }
@@ -402,56 +415,64 @@ public class ItemLore {
         if (this.parent.isReforgable() && !this.parent.isReforged()) {
             lore.add(Sputnik.trans("&8This item can be reforged!"));
         }
-        if (this.user != null && SlayerBossType.SlayerMobType.ENDERMAN.getLevelForXP(this.user.getEndermanSlayerXP()) < 6) {
-            lore.add(Sputnik.trans("&4\u2620 &cRequires &5Enderman Slayer 6."));
+        if (this.user != null) {
+            if (this.user.getBCollection() < 100L && this.parent.getType() == SMaterial.GOLDEN_TROPHY_SADAN) {
+                lore.add(Sputnik.trans("&c\u2763 &aRequires &6100 Sadan Kills"));
+            } else if (this.user.getBCollection() < 1000L && this.parent.getType() == SMaterial.DIAMOND_TROPHY_SADAN) {
+                lore.add(Sputnik.trans("&c\u2763 &aRequires &61,000 Sadan Kills"));
+            } else if (SlayerBossType.SlayerMobType.ENDERMAN.getLevelForXP(this.user.getEndermanSlayerXP()) < 6 && this.parent.getType() == SMaterial.HIDDEN_GYROKINETIC_WAND) {
+                lore.add(Sputnik.trans("&4\u2620 &cRequires &5Enderman Slayer 6."));
+            } else if (this.user.getBCollection() < 25L && this.parent.getType() == SMaterial.HIDDEN_SOUL_WHIP) {
+                lore.add(Sputnik.trans("&c\u2763 &aRequires &625 Sadan Kills"));
+            }
         }
         SpecificItemType type = statistics.getSpecificType();
         if (statistics.displayRarity()) {
-            String s2 = "";
+            String s = "";
             if (this.parent.getDataBoolean("dungeons_item")) {
-                s2 = "DUNGEON ";
+                s = "DUNGEON ";
             }
-            lore.add((this.parent.isRecombobulated() ? this.parent.getRarity().getBoldedColor() + ChatColor.MAGIC + "D" + ChatColor.RESET + " " : "") + this.parent.getRarity().getDisplay() + (type != SpecificItemType.NONE ? " " + s2 + type.getName() : "") + (this.parent.isRecombobulated() ? this.parent.getRarity().getBoldedColor() + " " + ChatColor.MAGIC + "D" + ChatColor.RESET : ""));
+            lore.add((this.parent.isRecombobulated() ? this.parent.getRarity().getBoldedColor() + ChatColor.MAGIC + "D" + ChatColor.RESET + " " : "") + this.parent.getRarity().getDisplay() + (type != SpecificItemType.NONE ? " " + s + type.getName() : "") + (this.parent.isRecombobulated() ? this.parent.getRarity().getBoldedColor() + " " + ChatColor.MAGIC + "D" + ChatColor.RESET : ""));
         }
         return lore;
     }
 
-    private boolean addPossiblePropertyInt(String name, double i2, int r2, String succeeding, boolean green, List<String> list) {
+    private boolean addPossiblePropertyInt(String name, double i, int r, String succeeding, boolean green, List<String> list) {
         if (this.player == null) {
-            i2 += (double)r2;
-            if ((i2 += this.getBoostStats(this.parent, name)) == 0.0) {
+            i += (double)r;
+            if ((i += this.getBoostStats(this.parent, name)) == 0.0) {
                 return false;
             }
             StringBuilder builder = new StringBuilder();
-            builder.append(ChatColor.GRAY).append(name).append(": ").append(green ? ChatColor.GREEN : ChatColor.RED).append(i2 < 0.0 ? "" : "+").append(SUtil.commaify(Math.round(i2))).append(succeeding);
-            if (r2 != 0) {
-                builder.append(ChatColor.BLUE).append(" (").append(r2 < 0 ? "" : "+").append(r2).append(")");
+            builder.append(ChatColor.GRAY).append(name).append(": ").append(green ? ChatColor.GREEN : ChatColor.RED).append(i < 0.0 ? "" : "+").append(SUtil.commaify(Math.round(i))).append(succeeding);
+            if (r != 0) {
+                builder.append(ChatColor.BLUE).append(" (").append(r < 0 ? "" : "+").append(r).append(")");
             }
             list.add(builder.toString());
             return true;
         }
         if (this.player.getWorld().getName().contains("f6") || this.player.getWorld().getName().contains("dungeon")) {
-            i2 += (double)r2;
-            if ((i2 += this.getBoostStats(this.parent, name)) == 0.0) {
+            i += (double)r;
+            if ((i += this.getBoostStats(this.parent, name)) == 0.0) {
                 return false;
             }
             StringBuilder builder = new StringBuilder();
-            builder.append(ChatColor.GRAY).append(name).append(": ").append(green ? ChatColor.GREEN : ChatColor.RED).append(i2 < 0.0 ? "" : "+").append(SUtil.commaify(Math.round(i2))).append(succeeding);
-            if (r2 != 0) {
-                builder.append(ChatColor.BLUE).append(" (").append(r2 < 0 ? "" : "+").append(r2).append(")");
+            builder.append(ChatColor.GRAY).append(name).append(": ").append(green ? ChatColor.GREEN : ChatColor.RED).append(i < 0.0 ? "" : "+").append(SUtil.commaify(Math.round(i))).append(succeeding);
+            if (r != 0) {
+                builder.append(ChatColor.BLUE).append(" (").append(r < 0 ? "" : "+").append(r).append(")");
             }
             list.add(builder.toString());
             return true;
         }
-        if ((i2 += (double)r2) == 0.0) {
+        if ((i += (double)r) == 0.0) {
             return false;
         }
         StringBuilder builder = new StringBuilder();
-        builder.append(ChatColor.GRAY).append(name).append(": ").append(green ? ChatColor.GREEN : ChatColor.RED).append(i2 < 0.0 ? "" : "+").append(SUtil.commaify(Math.round(i2))).append(succeeding);
-        if (r2 != 0) {
-            builder.append(ChatColor.BLUE).append(" (").append(r2 < 0 ? "" : "+").append(r2).append(")");
+        builder.append(ChatColor.GRAY).append(name).append(": ").append(green ? ChatColor.GREEN : ChatColor.RED).append(i < 0.0 ? "" : "+").append(SUtil.commaify(Math.round(i))).append(succeeding);
+        if (r != 0) {
+            builder.append(ChatColor.BLUE).append(" (").append(r < 0 ? "" : "+").append(r).append(")");
         }
-        builder.append(" " + this.getBoostLore(this.parent, i2, name));
+        builder.append(" " + this.getBoostLore(this.parent, i, name));
         list.add(builder.toString());
         return true;
     }
@@ -536,58 +557,58 @@ public class ItemLore {
         return 0.0;
     }
 
-    private boolean addPossiblePropertyIntAtkSpeed(String name, double i2, int r2, String succeeding, boolean green, List<String> list) {
+    private boolean addPossiblePropertyIntAtkSpeed(String name, double i, int r, String succeeding, boolean green, List<String> list) {
         if (this.player == null) {
-            if ((i2 += (double)r2) == 0.0) {
+            if ((i += (double)r) == 0.0) {
                 return false;
             }
             StringBuilder builder = new StringBuilder();
-            builder.append(ChatColor.GRAY).append(name).append(": ").append(green ? ChatColor.GREEN : ChatColor.RED).append(i2 < 0.0 ? "" : "+").append(SUtil.commaify(Math.round(Math.min(100.0, i2)))).append(succeeding);
-            if (r2 != 0) {
-                builder.append(ChatColor.BLUE).append(" (").append(r2 < 0 ? "" : "+").append(r2).append(succeeding).append(")");
+            builder.append(ChatColor.GRAY).append(name).append(": ").append(green ? ChatColor.GREEN : ChatColor.RED).append(i < 0.0 ? "" : "+").append(SUtil.commaify(Math.round(Math.min(100.0, i)))).append(succeeding);
+            if (r != 0) {
+                builder.append(ChatColor.BLUE).append(" (").append(r < 0 ? "" : "+").append(r).append(succeeding).append(")");
             }
-            builder.append(" " + this.getBoostLore(this.parent, i2, name));
+            builder.append(" " + this.getBoostLore(this.parent, i, name));
             list.add(builder.toString());
             return true;
         }
         if (this.player.getWorld().getName().contains("f6") || this.player.getWorld().getName().contains("dungeon")) {
-            i2 += (double)r2;
-            if ((i2 += this.getBoostStats(this.parent, name)) == 0.0) {
+            i += (double)r;
+            if ((i += this.getBoostStats(this.parent, name)) == 0.0) {
                 return false;
             }
             StringBuilder builder = new StringBuilder();
-            builder.append(ChatColor.GRAY).append(name).append(": ").append(green ? ChatColor.GREEN : ChatColor.RED).append(i2 < 0.0 ? "" : "+").append(SUtil.commaify(Math.round(Math.min(100.0, i2)))).append(succeeding);
-            if (r2 != 0) {
-                builder.append(ChatColor.BLUE).append(" (").append(r2 < 0 ? "" : "+").append(r2).append(succeeding).append(")");
+            builder.append(ChatColor.GRAY).append(name).append(": ").append(green ? ChatColor.GREEN : ChatColor.RED).append(i < 0.0 ? "" : "+").append(SUtil.commaify(Math.round(Math.min(100.0, i)))).append(succeeding);
+            if (r != 0) {
+                builder.append(ChatColor.BLUE).append(" (").append(r < 0 ? "" : "+").append(r).append(succeeding).append(")");
             }
             list.add(builder.toString());
             return true;
         }
-        if ((i2 += (double)r2) == 0.0) {
+        if ((i += (double)r) == 0.0) {
             return false;
         }
         StringBuilder builder = new StringBuilder();
-        builder.append(ChatColor.GRAY).append(name).append(": ").append(green ? ChatColor.GREEN : ChatColor.RED).append(i2 < 0.0 ? "" : "+").append(SUtil.commaify(Math.round(Math.min(100.0, i2)))).append(succeeding);
-        if (r2 != 0) {
-            builder.append(ChatColor.BLUE).append(" (").append(r2 < 0 ? "" : "+").append(r2).append(succeeding).append(")");
+        builder.append(ChatColor.GRAY).append(name).append(": ").append(green ? ChatColor.GREEN : ChatColor.RED).append(i < 0.0 ? "" : "+").append(SUtil.commaify(Math.round(Math.min(100.0, i)))).append(succeeding);
+        if (r != 0) {
+            builder.append(ChatColor.BLUE).append(" (").append(r < 0 ? "" : "+").append(r).append(succeeding).append(")");
         }
-        builder.append(" " + this.getBoostLore(this.parent, i2, name));
+        builder.append(" " + this.getBoostLore(this.parent, i, name));
         list.add(builder.toString());
         return true;
     }
 
-    private boolean addPossiblePropertyInt(String name, double i2, String succeeding, boolean green, List<String> list) {
-        return this.addPossiblePropertyInt(name, i2, 0, succeeding, green, list);
+    private boolean addPossiblePropertyInt(String name, double i, String succeeding, boolean green, List<String> list) {
+        return this.addPossiblePropertyInt(name, i, 0, succeeding, green, list);
     }
 
-    private boolean addPossiblePropertyDouble(String name, double d2, int r2, String succeeding, boolean green, List<String> list) {
-        if ((d2 += (double)r2) == 0.0) {
+    private boolean addPossiblePropertyDouble(String name, double d, int r, String succeeding, boolean green, List<String> list) {
+        if ((d += (double)r) == 0.0) {
             return false;
         }
         StringBuilder builder = new StringBuilder();
-        builder.append(ChatColor.GRAY).append(name).append(": ").append(green ? ChatColor.GREEN : ChatColor.RED).append(d2 < 0.0 ? "" : "+").append(d2).append(succeeding);
-        if (r2 != 0) {
-            builder.append(ChatColor.BLUE).append(" (").append(this.parent.getReforge().getName()).append(" ").append(r2 < 0 ? "" : "+").append(r2).append(succeeding).append(")");
+        builder.append(ChatColor.GRAY).append(name).append(": ").append(green ? ChatColor.GREEN : ChatColor.RED).append(d < 0.0 ? "" : "+").append(d).append(succeeding);
+        if (r != 0) {
+            builder.append(ChatColor.BLUE).append(" (").append(this.parent.getReforge().getName()).append(" ").append(r < 0 ? "" : "+").append(r).append(succeeding).append(")");
         }
         list.add(builder.toString());
         return true;

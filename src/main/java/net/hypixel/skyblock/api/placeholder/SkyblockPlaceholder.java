@@ -41,7 +41,7 @@ extends PlaceholderExpansion {
     }
 
     public String getAuthor() {
-        return "Hamza , Adarsh , EpicPortal";
+        return "Lexxxy";
     }
 
     public String getIdentifier() {
@@ -106,8 +106,8 @@ extends PlaceholderExpansion {
                 item.getData().setBoolean("equipped", true);
                 item.update();
                 ItemStack stacc = item.getStack();
-                for (String s2 : stacc.getItemMeta().getLore()) {
-                    sb.append(s2 + "\n");
+                for (String s : stacc.getItemMeta().getLore()) {
+                    sb.append(s + "\n");
                 }
                 sb.append(item.getRarity().getBoldedColor() + item.getRarity().getDisplay());
                 return sb.toString();
@@ -158,7 +158,7 @@ extends PlaceholderExpansion {
                 int level;
                 CombatSkill skill = CombatSkill.INSTANCE;
                 double xp = skill != null ? user.getSkillXP(skill) : 0.0;
-                int n2 = level = skill != null ? Skill.getLevel(xp, ((Skill)skill).hasSixtyLevels()) : 0;
+                int n = level = skill != null ? Skill.getLevel(xp, ((Skill)skill).hasSixtyLevels()) : 0;
                 if (level >= 5) {
                     return "true";
                 }
@@ -168,7 +168,7 @@ extends PlaceholderExpansion {
                 int level;
                 CombatSkill skill = CombatSkill.INSTANCE;
                 double xp = skill != null ? user.getSkillXP(skill) : 0.0;
-                int n3 = level = skill != null ? Skill.getLevel(xp, ((Skill)skill).hasSixtyLevels()) : 0;
+                int n = level = skill != null ? Skill.getLevel(xp, ((Skill)skill).hasSixtyLevels()) : 0;
                 if (level >= 6) {
                     return "true";
                 }

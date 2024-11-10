@@ -14,8 +14,8 @@ implements org.bukkit.event.Cancellable {
         return this.cancelled;
     }
 
-    public void setCancelled(boolean b2) {
-        this.cancelled = b2;
+    public void setCancelled(boolean b) {
+        this.cancelled = b;
     }
 }
 

@@ -228,8 +228,8 @@ EndermanStatistics {
             Sputnik.RemoveEntityArray(this.Ar1);
             Sputnik.RemoveEntityArray(this.Ar2);
             if (LivingSkulls.containsKey(this.spawnerUUID)) {
-                List<org.bukkit.entity.Entity> a2 = LivingSkulls.get(this.spawnerUUID);
-                Sputnik.RemoveEntityArray(a2);
+                List<org.bukkit.entity.Entity> a = LivingSkulls.get(this.spawnerUUID);
+                Sputnik.RemoveEntityArray(a);
             }
             if (null != stand) {
                 stand.remove();
@@ -409,13 +409,13 @@ EndermanStatistics {
             EntityManager.DEFENSE_PERCENTAGE.put((org.bukkit.entity.Entity)entity, 100);
             this.HeartRadi = true;
             this.CooldownSkill3 = true;
-            double x2 = entity.getLocation().getX();
-            double y2 = entity.getLocation().getY();
-            double z2 = entity.getLocation().getZ();
-            Location l2 = new Location(entity.getWorld(), x2, y2, z2);
+            double x = entity.getLocation().getX();
+            double y = entity.getLocation().getY();
+            double z = entity.getLocation().getZ();
+            Location l = new Location(entity.getWorld(), x, y, z);
             entity.getWorld().playEffect(entity.getLocation(), Effect.EXPLOSION_HUGE, 3);
             entity.getWorld().playEffect(entity.getLocation(), Effect.EXPLOSION_HUGE, 3);
-            final ArmorStand stand_sit = (ArmorStand)entity.getWorld().spawn(l2, ArmorStand.class);
+            final ArmorStand stand_sit = (ArmorStand)entity.getWorld().spawn(l, ArmorStand.class);
             stand_sit.setVisible(false);
             stand_sit.setGravity(true);
             stand_sit.setMarker(true);
@@ -457,9 +457,9 @@ EndermanStatistics {
             this.Ar1.add((org.bukkit.entity.Entity)stand5);
             this.Ar2.add((org.bukkit.entity.Entity)stand5);
             stand5.setMetadata("HeartRadiAS", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
-            Location l22 = l2;
-            l22.setYaw(l2.getYaw() + 90.0f);
-            ArmorStand stand1_ = (ArmorStand)stand_sit.getWorld().spawn(l22, ArmorStand.class);
+            Location l2 = l;
+            l2.setYaw(l.getYaw() + 90.0f);
+            ArmorStand stand1_ = (ArmorStand)stand_sit.getWorld().spawn(l2, ArmorStand.class);
             stand1_.setVisible(false);
             stand1_.setGravity(false);
             stand1_.setMarker(true);
@@ -574,7 +574,7 @@ EndermanStatistics {
             }
         }
         if (LivingSkulls.containsKey(player.getUniqueId()) && this.activeskull) {
-            boolean bl2 = this.activeskull = 0 < LivingSkulls.get(player.getUniqueId()).size();
+            boolean bl = this.activeskull = 0 < LivingSkulls.get(player.getUniqueId()).size();
         }
         if (!(3 > this.tier || this.CooldownSkill4 || 2 != SUtil.random(0, 100) || this.activehs || this.activeskull)) {
             LivingSkulls.remove(player.getUniqueId());
@@ -664,8 +664,8 @@ EndermanStatistics {
         ((ArmorStand)this.hologram.getEntity()).setGravity(false);
         this.hologram.getEntity().setCustomNameVisible(true);
         entity.setMetadata("notDisplay", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
-        Entity e2 = this.getBukkitEntity().getHandle();
-        double height_ = e2.getBoundingBox().e - e2.getBoundingBox().b;
+        Entity e = this.getBukkitEntity().getHandle();
+        double height_ = e.getBoundingBox().e - e.getBoundingBox().b;
         this.hologram_name = new SEntity(entity.getLocation().add(0.0, height_, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND, new Object[0]);
         ((ArmorStand)this.hologram_name.getEntity()).setVisible(false);
         ((ArmorStand)this.hologram_name.getEntity()).setGravity(false);
@@ -697,8 +697,8 @@ EndermanStatistics {
                     this.cancel();
                     Sputnik.RemoveEntityArray(VoidgloomSeraph.this.Ar2);
                     if (LivingSkulls.containsKey(VoidgloomSeraph.this.getSpawnerUUID())) {
-                        List<org.bukkit.entity.Entity> a2 = LivingSkulls.get(VoidgloomSeraph.this.getSpawnerUUID());
-                        Sputnik.RemoveEntityArray(a2);
+                        List<org.bukkit.entity.Entity> a = LivingSkulls.get(VoidgloomSeraph.this.getSpawnerUUID());
+                        Sputnik.RemoveEntityArray(a);
                     }
                 }
             }
@@ -723,10 +723,10 @@ EndermanStatistics {
     }
 
     @Override
-    public void onDamage(SEntity sEntity, org.bukkit.entity.Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
+    public void onDamage(SEntity sEntity, org.bukkit.entity.Entity damager, EntityDamageByEntityEvent e, AtomicDouble damage) {
         LivingEntity en = sEntity.getEntity();
-        Vector v2 = new Vector(0, 0, 0);
-        SUtil.delay(() -> VoidgloomSeraph.lambda$onDamage$8((org.bukkit.entity.Entity)en, v2), 1L);
+        Vector v = new Vector(0, 0, 0);
+        SUtil.delay(() -> VoidgloomSeraph.lambda$onDamage$8((org.bukkit.entity.Entity)en, v), 1L);
     }
 
     @Override
@@ -738,8 +738,8 @@ EndermanStatistics {
         Sputnik.RemoveEntityArray(this.Ar1);
         Sputnik.RemoveEntityArray(this.Ar2);
         if (LivingSkulls.containsKey(this.spawnerUUID)) {
-            List<org.bukkit.entity.Entity> a2 = LivingSkulls.get(this.spawnerUUID);
-            Sputnik.RemoveEntityArray(a2);
+            List<org.bukkit.entity.Entity> a = LivingSkulls.get(this.spawnerUUID);
+            Sputnik.RemoveEntityArray(a);
         }
         if (null != stand) {
             stand.remove();
@@ -796,8 +796,10 @@ EndermanStatistics {
         }
         if (3 <= this.tier) {
             drops.add(new EntityDrop(SMaterial.HIDDEN_ETHERWARP_MERGER, EntityDropType.EXTRAORDINARILY_RARE, 5.0E-4, Bukkit.getPlayer((UUID)this.getSpawnerUUID())));
+            drops.add(new EntityDrop(SMaterial.HIDDEN_DEMONS_PEARL, EntityDropType.RARE, 0.5));
         }
         if (4 <= this.tier) {
+            drops.add(new EntityDrop(SMaterial.HIDDEN_DEMONS_PEARL, EntityDropType.RARE, 0.5));
             SItem endBook = SItem.of(SMaterial.ENCHANTED_BOOK);
             endBook.addEnchantment(EnchantmentType.ENDER_SLAYER, 15);
             drops.add(new EntityDrop(endBook.getStack(), EntityDropType.CRAZY_RARE, 0.002, Bukkit.getPlayer((UUID)this.getSpawnerUUID())));
@@ -809,6 +811,8 @@ EndermanStatistics {
             drops.add(new EntityDrop(fatalBook.getStack(), EntityDropType.CRAZY_RARE, 4.0E-4, Bukkit.getPlayer((UUID)this.getSpawnerUUID())));
             drops.add(new EntityDrop(SMaterial.HIDDEN_ETHERWARP_CONDUIT, EntityDropType.CRAZY_RARE, 0.002, Bukkit.getPlayer((UUID)this.getSpawnerUUID())));
             drops.add(new EntityDrop(SMaterial.JUDGEMENT_CORE, EntityDropType.CRAZY_RARE, 0.001, Bukkit.getPlayer((UUID)this.getSpawnerUUID())));
+            drops.add(new EntityDrop(SMaterial.HIDDEN_GYRO_EYE, EntityDropType.CRAZY_RARE, 0.001, Bukkit.getPlayer((UUID)this.getSpawnerUUID())));
+            drops.add(new EntityDrop(SMaterial.HIDDEN_REFINED_POWDER, EntityDropType.EXTRAORDINARILY_RARE, 0.001, Bukkit.getPlayer((UUID)this.getSpawnerUUID())));
         }
         return drops;
     }
@@ -831,53 +835,53 @@ EndermanStatistics {
         return this.spawnerUUID;
     }
 
-    public static void spawnNukekubi(org.bukkit.entity.Entity e2, Player p2, Integer damage, Integer spawnCouples) {
+    public static void spawnNukekubi(org.bukkit.entity.Entity e, Player p, Integer damage, Integer spawnCouples) {
         if (2 >= spawnCouples) {
-            Location loc1_ = p2.getLocation();
+            Location loc1_ = p.getLocation();
             loc1_.setYaw(loc1_.getYaw() + (float)SUtil.random(0, 360));
-            Location loc2_ = p2.getLocation();
+            Location loc2_ = p.getLocation();
             loc2_.setYaw(loc1_.getYaw() + (float)SUtil.random(0, 360));
             Location loc1 = loc1_.add(loc1_.getDirection().multiply(5));
             Location loc2 = loc2_.add(loc2_.getDirection().multiply(-5));
-            VoidgloomSeraph.moveHeadAround((org.bukkit.entity.Entity)VoidgloomSeraph.spawnHeads(e2, loc1, p2), p2, damage);
-            VoidgloomSeraph.moveHeadAround((org.bukkit.entity.Entity)VoidgloomSeraph.spawnHeads(e2, loc2, p2), p2, damage);
+            VoidgloomSeraph.moveHeadAround((org.bukkit.entity.Entity)VoidgloomSeraph.spawnHeads(e, loc1, p), p, damage);
+            VoidgloomSeraph.moveHeadAround((org.bukkit.entity.Entity)VoidgloomSeraph.spawnHeads(e, loc2, p), p, damage);
         } else {
-            for (int i2 = 0; i2 < spawnCouples; ++i2) {
+            for (int i = 0; i < spawnCouples; ++i) {
                 Location loc4;
                 Location loc3;
                 Location loc2_2;
                 Location loc1_2;
                 if (1 == SUtil.random(1, 2)) {
-                    loc1_2 = p2.getLocation();
+                    loc1_2 = p.getLocation();
                     loc1_2.setYaw(loc1_2.getYaw() + (float)SUtil.random(0, 360));
-                    loc2_2 = p2.getLocation();
+                    loc2_2 = p.getLocation();
                     loc2_2.setYaw(loc1_2.getYaw() + (float)SUtil.random(0, 360));
                     loc3 = loc1_2.add(loc1_2.getDirection().multiply(5));
                     loc4 = loc2_2.add(loc2_2.getDirection().multiply(-5));
-                    VoidgloomSeraph.moveHeadAround((org.bukkit.entity.Entity)VoidgloomSeraph.spawnHeads(e2, loc3, p2), p2, damage);
+                    VoidgloomSeraph.moveHeadAround((org.bukkit.entity.Entity)VoidgloomSeraph.spawnHeads(e, loc3, p), p, damage);
                     continue;
                 }
-                loc1_2 = p2.getLocation();
+                loc1_2 = p.getLocation();
                 loc1_2.setYaw(loc1_2.getYaw() + (float)SUtil.random(0, 360));
-                loc2_2 = p2.getLocation();
+                loc2_2 = p.getLocation();
                 loc2_2.setYaw(loc1_2.getYaw() + (float)SUtil.random(0, 360));
                 loc3 = loc1_2.add(loc1_2.getDirection().multiply(5));
                 loc4 = loc2_2.add(loc2_2.getDirection().multiply(-5));
-                VoidgloomSeraph.moveHeadAround((org.bukkit.entity.Entity)VoidgloomSeraph.spawnHeads(e2, loc4, p2), p2, damage);
+                VoidgloomSeraph.moveHeadAround((org.bukkit.entity.Entity)VoidgloomSeraph.spawnHeads(e, loc4, p), p, damage);
             }
         }
     }
 
-    public static void destroyArmorStandWithUUID(UUID uuid, org.bukkit.World w2) {
+    public static void destroyArmorStandWithUUID(UUID uuid, org.bukkit.World w) {
         String uuidString = uuid.toString() + "_NUKEKUBI";
-        for (org.bukkit.entity.Entity e2 : w2.getEntities()) {
-            if (!e2.hasMetadata(uuidString)) continue;
-            e2.remove();
+        for (org.bukkit.entity.Entity e : w.getEntities()) {
+            if (!e.hasMetadata(uuidString)) continue;
+            e.remove();
         }
     }
 
-    public static LivingEntity spawnHeads(org.bukkit.entity.Entity e2, Location loc, final Player p2) {
-        final ArmorStand entity = (ArmorStand)loc.getWorld().spawnEntity(e2.getLocation().add(e2.getLocation().getDirection().normalize().multiply(-1)), EntityType.ARMOR_STAND);
+    public static LivingEntity spawnHeads(org.bukkit.entity.Entity e, Location loc, final Player p) {
+        final ArmorStand entity = (ArmorStand)loc.getWorld().spawnEntity(e.getLocation().add(e.getLocation().getDirection().normalize().multiply(-1)), EntityType.ARMOR_STAND);
         loc.setY(loc.getY() + SUtil.random(0.0, 0.6));
         entity.setCustomName(Sputnik.trans("&c\u2620 &bVoidgloom Seraph"));
         entity.setVisible(false);
@@ -885,12 +889,12 @@ EndermanStatistics {
         entity.getEquipment().setHelmet(SItem.of(SMaterial.NUKEKUBI).getStack());
         entity.getEquipment().setItemInHand(new ItemStack(Material.AIR));
         entity.setMetadata("Nukekubi", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
-        entity.setMetadata(p2.getUniqueId().toString() + "_NUKEKUBI", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
-        NUKEKUBI_TARGET.put((org.bukkit.entity.Entity)entity, p2);
-        if (!LivingSkulls.containsKey(p2.getUniqueId())) {
-            LivingSkulls.put(p2.getUniqueId(), new ArrayList());
+        entity.setMetadata(p.getUniqueId().toString() + "_NUKEKUBI", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        NUKEKUBI_TARGET.put((org.bukkit.entity.Entity)entity, p);
+        if (!LivingSkulls.containsKey(p.getUniqueId())) {
+            LivingSkulls.put(p.getUniqueId(), new ArrayList());
         }
-        LivingSkulls.get(p2.getUniqueId()).add((org.bukkit.entity.Entity)entity);
+        LivingSkulls.get(p.getUniqueId()).add((org.bukkit.entity.Entity)entity);
         VoidgloomSeraph.moveToLoc((org.bukkit.entity.Entity)entity, loc, 3, 0, 1.0);
         new BukkitRunnable(){
 
@@ -900,13 +904,13 @@ EndermanStatistics {
                     return;
                 }
                 if (entity.hasMetadata("Nukekubi")) {
-                    Location l2 = entity.getLocation().setDirection(p2.getLocation().toVector().subtract(entity.getLocation().toVector()));
-                    entity.teleport(l2);
-                    double x2 = 0.0;
-                    double y2 = 0.0;
-                    double z2 = 0.0;
-                    x2 = Math.toRadians(l2.getPitch());
-                    entity.setHeadPose(new EulerAngle(x2, 0.0, 0.0));
+                    Location l = entity.getLocation().setDirection(p.getLocation().toVector().subtract(entity.getLocation().toVector()));
+                    entity.teleport(l);
+                    double x = 0.0;
+                    double y = 0.0;
+                    double z = 0.0;
+                    x = Math.toRadians(l.getPitch());
+                    entity.setHeadPose(new EulerAngle(x, 0.0, 0.0));
                     entity.getWorld().playEffect(entity.getLocation().add(0.0, 1.1, 0.0), Effect.WITCH_MAGIC, 1);
                     entity.getWorld().playEffect(entity.getLocation().add(0.0, 1.2, 0.0), Effect.WITCH_MAGIC, 1);
                     entity.getWorld().playEffect(entity.getLocation().add(0.0, 1.2, 0.0), Effect.WITCH_MAGIC, 1);
@@ -918,29 +922,29 @@ EndermanStatistics {
         return entity;
     }
 
-    public static void moveToLoc(final org.bukkit.entity.Entity e2, final Location target, int tickingRad, int firstTickRad, final double jump) {
-        final Location l2 = e2.getLocation().setDirection(target.toVector().subtract(e2.getLocation().toVector()));
+    public static void moveToLoc(final org.bukkit.entity.Entity e, final Location target, int tickingRad, int firstTickRad, final double jump) {
+        final Location l = e.getLocation().setDirection(target.toVector().subtract(e.getLocation().toVector()));
         new BukkitRunnable(){
 
             public void run() {
-                Vector teleportTo = l2.getDirection().normalize().multiply(jump);
-                if (e2.isDead()) {
+                Vector teleportTo = l.getDirection().normalize().multiply(jump);
+                if (e.isDead()) {
                     this.cancel();
                     return;
                 }
-                if (e2.getWorld().getNearbyEntities(target, 1.5, 1.5, 1.5).contains(e2)) {
+                if (e.getWorld().getNearbyEntities(target, 1.5, 1.5, 1.5).contains(e)) {
                     this.cancel();
                     return;
                 }
-                e2.teleport(e2.getLocation().add(teleportTo).multiply(jump));
-                e2.getWorld().spigot().playEffect(e2.getLocation().add(0.0, 1.1, 0.0), Effect.FLAME, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
-                e2.getWorld().spigot().playEffect(e2.getLocation().add(0.0, 1.0, 0.0), Effect.FLAME, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
-                e2.getWorld().spigot().playEffect(e2.getLocation().add(0.0, 1.0, 0.0), Effect.FLAME, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                e.teleport(e.getLocation().add(teleportTo).multiply(jump));
+                e.getWorld().spigot().playEffect(e.getLocation().add(0.0, 1.1, 0.0), Effect.FLAME, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                e.getWorld().spigot().playEffect(e.getLocation().add(0.0, 1.0, 0.0), Effect.FLAME, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                e.getWorld().spigot().playEffect(e.getLocation().add(0.0, 1.0, 0.0), Effect.FLAME, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), (long)firstTickRad, (long)tickingRad);
     }
 
-    public static void moveHeadAround(final org.bukkit.entity.Entity head, final Player p2, final Integer damage) {
+    public static void moveHeadAround(final org.bukkit.entity.Entity head, final Player p, final Integer damage) {
         new BukkitRunnable(){
 
             public void run() {
@@ -949,12 +953,12 @@ EndermanStatistics {
                     return;
                 }
                 int i1 = 0;
-                if (NUKEKUBI_DAMAGE.containsKey(p2)) {
-                    i1 = NUKEKUBI_DAMAGE.get(p2);
+                if (NUKEKUBI_DAMAGE.containsKey(p)) {
+                    i1 = NUKEKUBI_DAMAGE.get(p);
                 }
-                if (head.getWorld().equals(p2.getWorld())) {
-                    Sputnik.drawLineforMovingPoints(head.getLocation().add(head.getLocation().getDirection().multiply(0.1)).add(0.0, 2.0, 0.0), p2.getLocation().add(0.0, 1.8, 0.0), 20.0, p2, damage, head);
-                    Sputnik.dmgc(i1, p2, head);
+                if (head.getWorld().equals(p.getWorld())) {
+                    Sputnik.drawLineforMovingPoints(head.getLocation().add(head.getLocation().getDirection().multiply(0.1)).add(0.0, 2.0, 0.0), p.getLocation().add(0.0, 1.8, 0.0), 20.0, p, damage, head);
+                    Sputnik.dmgc(i1, p, head);
                 } else {
                     head.remove();
                 }
@@ -974,8 +978,8 @@ EndermanStatistics {
     }
 
     public static void updateSkill(List<org.bukkit.entity.Entity> list) {
-        for (org.bukkit.entity.Entity e2 : list) {
-            NUKEKUBI_TARGET.remove(e2);
+        for (org.bukkit.entity.Entity e : list) {
+            NUKEKUBI_TARGET.remove(e);
         }
     }
 
@@ -1036,29 +1040,29 @@ EndermanStatistics {
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
     }
 
-    public void teleportSkill(final org.bukkit.entity.Entity e2, final Player p2) {
+    public void teleportSkill(final org.bukkit.entity.Entity e, final Player p) {
         final int LOR = SUtil.random(0, 1);
         new BukkitRunnable(){
             int cout = 0;
-            float addedYaw = p2.getLocation().getYaw();
+            float addedYaw = p.getLocation().getYaw();
 
             public void run() {
                 if (7 <= this.cout) {
-                    p2.getLocation().getWorld().playSound(p2.getLocation(), Sound.ENDERDRAGON_HIT, 1.0f, 1.0f);
+                    p.getLocation().getWorld().playSound(p.getLocation(), Sound.ENDERDRAGON_HIT, 1.0f, 1.0f);
                     this.cancel();
                     return;
                 }
-                Location a2 = p2.getLocation();
+                Location a = p.getLocation();
                 this.addedYaw = 0 == LOR ? (this.addedYaw += 19.0f) : (this.addedYaw -= 19.0f);
-                a2.setPitch(0.0f);
-                a2.setYaw(this.addedYaw);
-                a2.add(a2.getDirection().normalize().multiply(1.7));
-                a2.setY(e2.getLocation().getY());
-                Location tpl = a2.clone();
-                tpl.setYaw(e2.getLocation().getYaw());
-                e2.teleport(tpl);
-                VoidgloomSeraph.this.dP(a2);
-                a2.getWorld().playSound(a2, Sound.ENDERMAN_TELEPORT, 0.2f, 1.0f);
+                a.setPitch(0.0f);
+                a.setYaw(this.addedYaw);
+                a.add(a.getDirection().normalize().multiply(1.7));
+                a.setY(e.getLocation().getY());
+                Location tpl = a.clone();
+                tpl.setYaw(e.getLocation().getYaw());
+                e.teleport(tpl);
+                VoidgloomSeraph.this.dP(a);
+                a.getWorld().playSound(a, Sound.ENDERMAN_TELEPORT, 0.2f, 1.0f);
                 ++this.cout;
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
@@ -1076,25 +1080,25 @@ EndermanStatistics {
         this.drawPointerAt(loc.clone().add(0.0, 1.5, 0.0));
     }
 
-    public void playShieldParticle(final org.bukkit.entity.Entity e2) {
+    public void playShieldParticle(final org.bukkit.entity.Entity e) {
         new BukkitRunnable(){
             float cout;
             {
-                this.cout = e2.getLocation().getYaw();
+                this.cout = e.getLocation().getYaw();
             }
 
             public void run() {
-                if (e2.isDead()) {
+                if (e.isDead()) {
                     this.cancel();
                     return;
                 }
-                Location loc = e2.getLocation();
+                Location loc = e.getLocation();
                 loc.setYaw(this.cout);
                 loc.setPitch(0.0f);
                 loc.add(loc.getDirection().normalize().multiply(0.8));
-                if (HIT_SHIELD.containsKey(e2)) {
-                    int hitshield = HIT_SHIELD.get(e2);
-                    int hitshieldmax = HIT_SHIELD_MAX.get(e2);
+                if (HIT_SHIELD.containsKey(e)) {
+                    int hitshield = HIT_SHIELD.get(e);
+                    int hitshieldmax = HIT_SHIELD_MAX.get(e);
                     int stage = 3;
                     if (hitshield <= hitshieldmax / 2 && hitshield > hitshieldmax * 25 / 100) {
                         stage = 2;
@@ -1103,20 +1107,20 @@ EndermanStatistics {
                     } else if (1 == hitshield) {
                         stage = 1;
                     }
-                    if (0 < HIT_SHIELD.get(e2)) {
-                        e2.getWorld().spigot().playEffect(loc, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
-                        e2.getWorld().spigot().playEffect(loc.clone().add(0.0, 0.6, 0.0), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
-                        e2.getWorld().spigot().playEffect(loc, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
-                        e2.getWorld().spigot().playEffect(loc.clone().add(0.0, 0.6, 0.0), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                    if (0 < HIT_SHIELD.get(e)) {
+                        e.getWorld().spigot().playEffect(loc, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                        e.getWorld().spigot().playEffect(loc.clone().add(0.0, 0.6, 0.0), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                        e.getWorld().spigot().playEffect(loc, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                        e.getWorld().spigot().playEffect(loc.clone().add(0.0, 0.6, 0.0), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                         if (2 <= stage) {
-                            e2.getWorld().spigot().playEffect(loc.clone().add(0.0, 1.2, 0.0), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
-                            e2.getWorld().spigot().playEffect(loc.clone().add(0.0, 1.2, 0.0), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                            e.getWorld().spigot().playEffect(loc.clone().add(0.0, 1.2, 0.0), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                            e.getWorld().spigot().playEffect(loc.clone().add(0.0, 1.2, 0.0), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                         }
                         if (3 == stage) {
-                            e2.getWorld().spigot().playEffect(loc.clone().add(0.0, 2.4, 0.0), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
-                            e2.getWorld().spigot().playEffect(loc.clone().add(0.0, 2.4, 0.0), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
-                            e2.getWorld().spigot().playEffect(loc.clone().add(0.0, 1.8, 0.0), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
-                            e2.getWorld().spigot().playEffect(loc.clone().add(0.0, 1.8, 0.0), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                            e.getWorld().spigot().playEffect(loc.clone().add(0.0, 2.4, 0.0), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                            e.getWorld().spigot().playEffect(loc.clone().add(0.0, 2.4, 0.0), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                            e.getWorld().spigot().playEffect(loc.clone().add(0.0, 1.8, 0.0), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                            e.getWorld().spigot().playEffect(loc.clone().add(0.0, 1.8, 0.0), Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                         }
                     }
                 }
@@ -1125,47 +1129,47 @@ EndermanStatistics {
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
     }
 
-    public void playBossParticle_1(final org.bukkit.entity.Entity e2) {
+    public void playBossParticle_1(final org.bukkit.entity.Entity e) {
         new BukkitRunnable(){
             float cout;
             {
-                this.cout = e2.getLocation().getYaw();
+                this.cout = e.getLocation().getYaw();
             }
 
             public void run() {
-                if (e2.isDead()) {
+                if (e.isDead()) {
                     this.cancel();
                     return;
                 }
-                Location loc = e2.getLocation().clone().add(0.0, 0.3, 0.0);
+                Location loc = e.getLocation().clone().add(0.0, 0.3, 0.0);
                 loc.setYaw(this.cout);
                 loc.setPitch(0.0f);
                 loc.add(loc.getDirection().normalize().multiply(0.4));
-                e2.getWorld().spigot().playEffect(loc, Effect.CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
-                e2.getWorld().spigot().playEffect(loc, Effect.CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                e.getWorld().spigot().playEffect(loc, Effect.CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                e.getWorld().spigot().playEffect(loc, Effect.CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                 this.cout += 9.0f;
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
     }
 
-    public void playBossParticle_2(final org.bukkit.entity.Entity e2) {
+    public void playBossParticle_2(final org.bukkit.entity.Entity e) {
         new BukkitRunnable(){
             float cout;
             {
-                this.cout = e2.getLocation().getYaw();
+                this.cout = e.getLocation().getYaw();
             }
 
             public void run() {
-                if (e2.isDead()) {
+                if (e.isDead()) {
                     this.cancel();
                     return;
                 }
-                Location loc = e2.getLocation().clone().add(0.0, 0.3, 0.0);
+                Location loc = e.getLocation().clone().add(0.0, 0.3, 0.0);
                 loc.setYaw(this.cout);
                 loc.setPitch(0.0f);
                 loc.add(loc.getDirection().normalize().multiply(0.4));
-                e2.getWorld().spigot().playEffect(loc.clone().add(0.0, 0.6, 0.0), Effect.CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
-                e2.getWorld().spigot().playEffect(loc.clone().add(0.0, 0.6, 0.0), Effect.CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                e.getWorld().spigot().playEffect(loc.clone().add(0.0, 0.6, 0.0), Effect.CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                e.getWorld().spigot().playEffect(loc.clone().add(0.0, 0.6, 0.0), Effect.CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
                 this.cout -= 9.0f;
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
@@ -1176,8 +1180,8 @@ EndermanStatistics {
         return this.tier;
     }
 
-    private static /* synthetic */ void lambda$onDamage$8(org.bukkit.entity.Entity en, Vector v2) {
-        en.setVelocity(v2);
+    private static /* synthetic */ void lambda$onDamage$8(org.bukkit.entity.Entity en, Vector v) {
+        en.setVelocity(v);
     }
 
     private static /* synthetic */ void lambda$t_$1(org.bukkit.entity.Entity stand, org.bukkit.entity.Entity entity) {

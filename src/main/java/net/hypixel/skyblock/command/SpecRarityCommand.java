@@ -27,7 +27,7 @@ public class SpecRarityCommand
 extends SCommand {
     @Override
     public void run(CommandSource sender, String[] args) {
-        String s2;
+        String s;
         if (args.length > 1) {
             throw new CommandArgumentException();
         }
@@ -51,7 +51,7 @@ extends SCommand {
             return;
         }
         Rarity prev = sItem.getRarity();
-        switch (s2 = args[0]) {
+        switch (s = args[0]) {
             case "up": 
             case "upgrade": {
                 sItem.upgradeRarity();

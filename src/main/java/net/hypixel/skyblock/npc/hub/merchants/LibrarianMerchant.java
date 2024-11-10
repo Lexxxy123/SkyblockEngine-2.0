@@ -8,23 +8,28 @@ package net.hypixel.skyblock.npc.hub.merchants;
 
 import net.hypixel.skyblock.features.merchant.LibrarianMerchantGUI;
 import net.hypixel.skyblock.npc.impl.NPCParameters;
-import net.hypixel.skyblock.npc.impl.SkyBlockNPC;
+import net.hypixel.skyblock.npc.impl.SkyblockNPC;
 import net.hypixel.skyblock.npc.impl.enums.NPCType;
 import org.bukkit.entity.Player;
 
 public class LibrarianMerchant
-extends SkyBlockNPC {
+extends SkyblockNPC {
     public LibrarianMerchant() {
         super(new NPCParameters(){
 
             @Override
-            public String id() {
-                return "LIBRARIAN";
+            public String name() {
+                return "Librarian";
             }
 
             @Override
-            public String name() {
-                return "&fLibrarian";
+            public String[] messages() {
+                return new String[]{""};
+            }
+
+            @Override
+            public String[] holograms() {
+                return new String[]{"&fLibrarian", "&e&lCLICK"};
             }
 
             @Override
@@ -58,7 +63,7 @@ extends SkyBlockNPC {
             }
 
             @Override
-            public void onInteract(Player player, SkyBlockNPC npc) {
+            public void onInteract(Player player, SkyblockNPC npc) {
                 LibrarianMerchantGUI gui = new LibrarianMerchantGUI();
                 gui.open(player);
             }

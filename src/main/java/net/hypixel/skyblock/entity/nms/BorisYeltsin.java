@@ -98,8 +98,8 @@ extends BaseZombie {
     @Override
     public void onSpawn(final LivingEntity entity, SEntity sEntity) {
         double height;
-        net.minecraft.server.v1_8_R3.Entity e2 = ((CraftEntity)entity).getHandle();
-        double height_ = height = e2.getBoundingBox().e - e2.getBoundingBox().b;
+        net.minecraft.server.v1_8_R3.Entity e = ((CraftEntity)entity).getHandle();
+        double height_ = height = e.getBoundingBox().e - e.getBoundingBox().b;
         final ArmorStand hologram_d = (ArmorStand)entity.getWorld().spawn(entity.getLocation().add(0.0, height + 0.22, 0.0), ArmorStand.class);
         hologram_d.setVisible(false);
         hologram_d.setGravity(false);
@@ -156,10 +156,10 @@ extends BaseZombie {
     }
 
     @Override
-    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
+    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e, AtomicDouble damage) {
         LivingEntity en = sEntity.getEntity();
-        Vector v2 = new Vector(0, 0, 0);
-        SUtil.delay(() -> BorisYeltsin.lambda$onDamage$0((Entity)en, v2), 1L);
+        Vector v = new Vector(0, 0, 0);
+        SUtil.delay(() -> BorisYeltsin.lambda$onDamage$0((Entity)en, v), 1L);
     }
 
     @Override
@@ -192,9 +192,9 @@ extends BaseZombie {
         return 0.35;
     }
 
-    public void playPar(Location l2) {
+    public void playPar(Location l) {
         ConeEffect Effect2 = new ConeEffect(SkyBlock.effectManager);
-        Effect2.setLocation(l2.clone().add(l2.getDirection().normalize().multiply(-0.25)).add(0.0, -0.1, 0.0));
+        Effect2.setLocation(l.clone().add(l.getDirection().normalize().multiply(-0.25)).add(0.0, -0.1, 0.0));
         Effect2.particle = ParticleEffect.FLAME;
         Effect2.angularVelocity = 0.39269908169872414;
         Effect2.lengthGrow = 0.025f;
@@ -204,29 +204,29 @@ extends BaseZombie {
         Effect2.start();
     }
 
-    public void sd_(String message, Entity e2, int delay) {
-        if (e2.isDead()) {
+    public void sd_(String message, Entity e, int delay) {
+        if (e.isDead()) {
             return;
         }
-        SUtil.delay(() -> this.say(message, e2), delay);
+        SUtil.delay(() -> this.say(message, e), delay);
     }
 
-    public void say(String message, Entity e2) {
-        if (e2.isDead()) {
+    public void say(String message, Entity e) {
+        if (e.isDead()) {
             return;
         }
-        DIALOUGE_BOSS.put(e2, message);
-        for (Player p2 : e2.getWorld().getPlayers()) {
-            p2.sendMessage(Sputnik.trans("&4[BOSS] Boris Yeltsin&f: " + message));
+        DIALOUGE_BOSS.put(e, message);
+        for (Player p : e.getWorld().getPlayers()) {
+            p.sendMessage(Sputnik.trans("&4[BOSS] Boris Yeltsin&f: " + message));
         }
     }
 
-    public void cd_(Entity e2) {
-        DIALOUGE_BOSS.remove(e2);
+    public void cd_(Entity e) {
+        DIALOUGE_BOSS.remove(e);
     }
 
-    private static /* synthetic */ void lambda$onDamage$0(Entity en, Vector v2) {
-        en.setVelocity(v2);
+    private static /* synthetic */ void lambda$onDamage$0(Entity en, Vector v) {
+        en.setVelocity(v);
     }
 }
 

@@ -45,7 +45,7 @@ extends MemberResolver<Constructor> {
     public Constructor resolveSilent(Class<?>[] ... types) {
         try {
             return this.resolve(types);
-        } catch (Exception e2) {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -57,8 +57,8 @@ extends MemberResolver<Constructor> {
         }
         try {
             return (Constructor)super.resolve(builder.build());
-        } catch (ReflectiveOperationException e2) {
-            throw (NoSuchMethodException)e2;
+        } catch (ReflectiveOperationException e) {
+            throw (NoSuchMethodException)e;
         }
     }
 
@@ -70,7 +70,7 @@ extends MemberResolver<Constructor> {
     public Constructor resolveFirstConstructor() throws ReflectiveOperationException {
         Constructor<?>[] declaredConstructors = this.clazz.getDeclaredConstructors();
         int length = declaredConstructors.length;
-        boolean n2 = false;
+        boolean n = false;
         if (0 < length) {
             Constructor<?> constructor = declaredConstructors[0];
             return AccessUtil.setAccessible(constructor);
@@ -81,7 +81,7 @@ extends MemberResolver<Constructor> {
     public Constructor resolveFirstConstructorSilent() {
         try {
             return this.resolveFirstConstructor();
-        } catch (Exception e2) {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -99,7 +99,7 @@ extends MemberResolver<Constructor> {
     public Constructor resolveLastConstructorSilent() {
         try {
             return this.resolveLastConstructor();
-        } catch (Exception e2) {
+        } catch (Exception e) {
             return null;
         }
     }

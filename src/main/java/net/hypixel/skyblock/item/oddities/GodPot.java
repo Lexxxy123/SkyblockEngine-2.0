@@ -119,9 +119,9 @@ Ability {
                     this.cancel();
                     return;
                 }
-                for (int i2 = 0; i2 < 100; ++i2) {
-                    double r2 = SUtil.random(0.0, 1.0);
-                    player.getWorld().playEffect(player.getLocation().add(0.0, r2, 0.0), Effect.POTION_SWIRL, 0);
+                for (int i = 0; i < 100; ++i) {
+                    double r = SUtil.random(0.0, 1.0);
+                    player.getWorld().playEffect(player.getLocation().add(0.0, r, 0.0), Effect.POTION_SWIRL, 0);
                 }
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);

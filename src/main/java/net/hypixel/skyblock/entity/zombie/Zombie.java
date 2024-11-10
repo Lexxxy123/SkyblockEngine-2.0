@@ -28,6 +28,11 @@ extends BaseZombie {
     }
 
     @Override
+    public int mobLevel() {
+        return 1;
+    }
+
+    @Override
     public List<EntityDrop> drops() {
         return Arrays.asList(new EntityDrop(SMaterial.ROTTEN_FLESH, EntityDropType.GUARANTEED, 1.0), new EntityDrop(SMaterial.POISONOUS_POTATO, EntityDropType.OCCASIONAL, 0.05), new EntityDrop(SMaterial.POTATO_ITEM, EntityDropType.OCCASIONAL, 0.05), new EntityDrop(SMaterial.CARROT_ITEM, EntityDropType.OCCASIONAL, 0.05));
     }
@@ -45,11 +50,6 @@ extends BaseZombie {
     @Override
     public double getXPDropped() {
         return 6.0;
-    }
-
-    @Override
-    public int mobLevel() {
-        return 1;
     }
 }
 

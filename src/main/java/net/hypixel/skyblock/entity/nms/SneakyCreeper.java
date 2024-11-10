@@ -72,9 +72,9 @@ CreeperFunction {
 
     public void t_() {
         try {
-            Field f2 = EntityCreeper.class.getDeclaredField("fuseTicks");
-            f2.setAccessible(true);
-            int fuseTicks = (Integer)f2.get(this);
+            Field f = EntityCreeper.class.getDeclaredField("fuseTicks");
+            f.setAccessible(true);
+            int fuseTicks = (Integer)f.get(this);
             if (this.cm() > 0 && fuseTicks == 0) {
                 CreeperIgniteEvent ignite = new CreeperIgniteEvent((Creeper)this.getBukkitEntity());
                 SkyBlock.getPlugin().getServer().getPluginManager().callEvent((Event)ignite);
@@ -89,12 +89,12 @@ CreeperFunction {
     }
 
     @Override
-    public void onCreeperIgnite(final CreeperIgniteEvent e2, final SEntity sEntity) {
+    public void onCreeperIgnite(final CreeperIgniteEvent e, final SEntity sEntity) {
         sEntity.setVisible(true);
         new BukkitRunnable(){
 
             public void run() {
-                if (e2.getEntity().isDead()) {
+                if (e.getEntity().isDead()) {
                     return;
                 }
                 sEntity.setVisible(false);

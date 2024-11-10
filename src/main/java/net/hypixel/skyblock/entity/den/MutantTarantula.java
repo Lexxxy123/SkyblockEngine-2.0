@@ -46,6 +46,11 @@ extends BaseSpider {
     }
 
     @Override
+    public int mobLevel() {
+        return 370;
+    }
+
+    @Override
     public double getXPDropped() {
         return 500.0;
     }
@@ -59,11 +64,11 @@ extends BaseSpider {
                     this.cancel();
                     return;
                 }
-                for (Entity e2 : entity.getNearbyEntities(1.0, 1.0, 1.0)) {
-                    if (!(e2 instanceof Player)) {
+                for (Entity e : entity.getNearbyEntities(1.0, 1.0, 1.0)) {
+                    if (!(e instanceof Player)) {
                         return;
                     }
-                    ((Player)e2).damage(MutantTarantula.this.getDamageDealt() * 0.5, (Entity)entity);
+                    ((Player)e).damage(MutantTarantula.this.getDamageDealt() * 0.5, (Entity)entity);
                 }
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 20L, 20L);

@@ -9,9 +9,9 @@ public class FieldAccessor<T, K> {
     private Field field = null;
 
     public FieldAccessor(Class<T> instanceClass, Class<K> fieldClass) {
-        for (Field f2 : instanceClass.getFields()) {
-            if (!f2.getDeclaringClass().equals(fieldClass)) continue;
-            this.field = f2;
+        for (Field f : instanceClass.getFields()) {
+            if (!f.getDeclaringClass().equals(fieldClass)) continue;
+            this.field = f;
             break;
         }
         if (this.field == null) {
@@ -23,15 +23,15 @@ public class FieldAccessor<T, K> {
         try {
             this.field.setAccessible(true);
             return this.field.get(object);
-        } catch (Exception e2) {
+        } catch (Exception e) {
             throw new RuntimeException();
         }
     }
 
     public static class FiledNotFoundException
     extends RuntimeException {
-        public FiledNotFoundException(String s2) {
-            super(s2);
+        public FiledNotFoundException(String s) {
+            super(s);
         }
     }
 }

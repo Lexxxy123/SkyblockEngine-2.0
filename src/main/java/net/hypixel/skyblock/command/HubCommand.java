@@ -28,9 +28,9 @@ extends SCommand {
     @Override
     public void run(CommandSource sender, String[] args) {
         this.send(Sputnik.trans("&7Sending you to the Hub..."));
-        Location l2 = new Location(Bukkit.getWorld((String)"world"), -2.5, 70.0, -68.5, 180.0f, 0.0f);
+        Location l = new Location(Bukkit.getWorld((String)"world"), -2.5, 70.0, -68.5, 180.0f, 0.0f);
         if (null != sender.getPlayer()) {
-            sender.getPlayer().teleport(l2);
+            sender.getPlayer().teleport(l);
         }
     }
 }

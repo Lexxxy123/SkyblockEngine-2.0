@@ -76,9 +76,11 @@ import java.util.Set;
 import java.util.UUID;
 import net.hypixel.skyblock.Repeater;
 import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.api.protocol.PacketInvoker;
 import net.hypixel.skyblock.entity.SEntity;
 import net.hypixel.skyblock.entity.SEntityType;
 import net.hypixel.skyblock.entity.StaticDragonManager;
+import net.hypixel.skyblock.entity.StaticWardenManager;
 import net.hypixel.skyblock.entity.dungeons.boss.sadan.JollyPinkGiant;
 import net.hypixel.skyblock.entity.dungeons.boss.sadan.SadanGiant;
 import net.hypixel.skyblock.features.collection.ItemCollection;
@@ -178,19 +180,19 @@ extends PListener {
     public static final Map<Player, Boolean> IsDead = new HashMap<Player, Boolean>();
 
     @EventHandler
-    public void useEtherWarp(PlayerInteractEvent e2) {
-        if (!SItem.isSpecItem(e2.getItem())) {
+    public void useEtherWarp(PlayerInteractEvent e) {
+        if (!SItem.isSpecItem(e.getItem())) {
             return;
         }
-        SItem sItem = SItem.find(e2.getItem());
+        SItem sItem = SItem.find(e.getItem());
         if (null == sItem) {
             return;
         }
-        Player player = e2.getPlayer();
+        Player player = e.getPlayer();
         UUID uuid = player.getUniqueId();
-        ItemListener.updateStatistics(e2.getPlayer());
-        Action action = e2.getAction();
-        if (sItem.getDataString("etherwarp_trans").equals("true") && (Action.RIGHT_CLICK_AIR == action || Action.RIGHT_CLICK_BLOCK == action) && e2.getPlayer().isSneaking()) {
+        ItemListener.updateStatistics(e.getPlayer());
+        Action action = e.getAction();
+        if (sItem.getDataString("etherwarp_trans").equals("true") && (Action.RIGHT_CLICK_AIR == action || Action.RIGHT_CLICK_BLOCK == action) && e.getPlayer().isSneaking()) {
             int cost;
             if (!SItem.isAbleToDoEtherWarpTeleportation(player, sItem)) {
                 AbilityActivation activation;
@@ -208,7 +210,7 @@ extends PListener {
             if (0 <= resMana) {
                 Repeater.MANA_MAP.remove(uuid);
                 Repeater.MANA_MAP.put(uuid, resMana);
-                final long c2 = System.currentTimeMillis();
+                final long c = System.currentTimeMillis();
                 Repeater.DEFENSE_REPLACEMENT_MAP.put(player.getUniqueId(), new DefenseReplacement(){
 
                     @Override
@@ -218,13 +220,13 @@ extends PListener {
 
                     @Override
                     public long getEnd() {
-                        return c2 + 2000L;
+                        return c + 2000L;
                     }
                 });
-                SItem.etherWarpTeleportation(e2.getPlayer(), sItem);
+                SItem.etherWarpTeleportation(e.getPlayer(), sItem);
             } else {
                 player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
-                final long c3 = System.currentTimeMillis();
+                final long c = System.currentTimeMillis();
                 Repeater.MANA_REPLACEMENT_MAP.put(player.getUniqueId(), new ManaReplacement(){
 
                     @Override
@@ -234,7 +236,7 @@ extends PListener {
 
                     @Override
                     public long getEnd() {
-                        return c3 + 1500L;
+                        return c + 1500L;
                     }
                 });
             }
@@ -242,27 +244,27 @@ extends PListener {
     }
 
     @EventHandler
-    public void onPlayerInteracting(PlayerInteractEvent e2) {
+    public void onPlayerInteracting(PlayerInteractEvent e) {
     }
 
     @EventHandler
-    public void PotionsSplash(PotionSplashEvent e2) {
-        for (Entity ef : e2.getAffectedEntities()) {
+    public void PotionsSplash(PotionSplashEvent e) {
+        for (Entity ef : e.getAffectedEntities()) {
             if (!ef.hasMetadata("LD")) continue;
-            for (org.bukkit.potion.PotionEffect pe : e2.getEntity().getEffects()) {
+            for (org.bukkit.potion.PotionEffect pe : e.getEntity().getEffects()) {
                 if (pe.getType() == PotionEffectType.HEAL) {
-                    e2.setCancelled(true);
+                    e.setCancelled(true);
                     continue;
                 }
                 if (pe.getType() != PotionEffectType.HARM) continue;
-                e2.setCancelled(true);
+                e.setCancelled(true);
                 ((LivingEntity)ef).damage(1.0E-4);
             }
         }
-        if (e2.getEntity().getShooter() instanceof LivingEntity && ((LivingEntity)e2.getEntity().getShooter()).hasMetadata("LD")) {
-            for (Entity ef : e2.getAffectedEntities()) {
+        if (e.getEntity().getShooter() instanceof LivingEntity && ((LivingEntity)e.getEntity().getShooter()).hasMetadata("LD")) {
+            for (Entity ef : e.getAffectedEntities()) {
                 if (ef.hasMetadata("LD")) {
-                    e2.setCancelled(true);
+                    e.setCancelled(true);
                     if (ef.isDead()) {
                         return;
                     }
@@ -270,7 +272,7 @@ extends PListener {
                     continue;
                 }
                 if (!(ef instanceof Player)) continue;
-                e2.setCancelled(true);
+                e.setCancelled(true);
                 ((LivingEntity)ef).setHealth(Math.min(((LivingEntity)ef).getMaxHealth(), ((LivingEntity)ef).getHealth() + 500.0));
                 ef.sendMessage(Sputnik.trans("&a&lBUFF! &fYou were splashed with &cHealing V&f!"));
             }
@@ -278,32 +280,38 @@ extends PListener {
     }
 
     @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent e2) {
+    public void onPlayerInteract(PlayerInteractEvent e) {
         MaterialFunction function;
         AbilityActivation activation;
-        if (Action.RIGHT_CLICK_AIR != e2.getAction()) {
-            for (Player p2 : e2.getPlayer().getWorld().getPlayers()) {
-                if (p2 == e2.getPlayer()) continue;
-                ((CraftPlayer)p2).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)e2.getPlayer()).getHandle(), 0));
+        if (Action.RIGHT_CLICK_AIR != e.getAction()) {
+            for (Player p : e.getPlayer().getWorld().getPlayers()) {
+                if (p == e.getPlayer()) continue;
+                ((CraftPlayer)p).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)e.getPlayer()).getHandle(), 0));
             }
         }
-        if (!SItem.isSpecItem(e2.getItem())) {
+        if (!SItem.isSpecItem(e.getItem())) {
             return;
         }
-        SItem sItem = SItem.find(e2.getItem());
+        SItem sItem = SItem.find(e.getItem());
         if (null == sItem) {
             return;
         }
-        if (!(Material.MONSTER_EGG != sItem.getStack().getType() && Material.MONSTER_EGGS != sItem.getStack().getType() || e2.getPlayer().isOp())) {
-            e2.setCancelled(true);
+        if (SMaterial.HIDDEN_SOUL_WHIP == sItem.getType()) {
+            e.setCancelled(true);
         }
-        ItemListener.updateStatistics(e2.getPlayer());
-        Action action = e2.getAction();
-        if (SpecificItemType.HELMET == sItem.getType().getStatistics().getSpecificType() && Action.RIGHT_CLICK_AIR == action && ItemListener.isAir(e2.getPlayer().getInventory().getHelmet())) {
-            e2.getPlayer().getInventory().setHelmet(sItem.getStack());
-            e2.getPlayer().setItemInHand(null);
+        if (!(Material.MONSTER_EGG != sItem.getStack().getType() && Material.MONSTER_EGGS != sItem.getStack().getType() || e.getPlayer().isOp())) {
+            e.setCancelled(true);
         }
-        Player player = e2.getPlayer();
+        if (SMaterial.HIDDEN_GYRO_EYE == sItem.getType() || SMaterial.HIDDEN_VOID_FRAGMENT == sItem.getType()) {
+            e.setCancelled(true);
+        }
+        ItemListener.updateStatistics(e.getPlayer());
+        Action action = e.getAction();
+        if (SpecificItemType.HELMET == sItem.getType().getStatistics().getSpecificType() && Action.RIGHT_CLICK_AIR == action && ItemListener.isAir(e.getPlayer().getInventory().getHelmet())) {
+            e.getPlayer().getInventory().setHelmet(sItem.getStack());
+            e.getPlayer().setItemInHand(null);
+        }
+        Player player = e.getPlayer();
         Ability ability = sItem.getType().getAbility();
         if (!(null == ability || AbilityActivation.LEFT_CLICK != (activation = ability.getAbilityActivation()) && AbilityActivation.RIGHT_CLICK != activation || (AbilityActivation.LEFT_CLICK != activation ? Action.RIGHT_CLICK_AIR != action && Action.RIGHT_CLICK_BLOCK != action : Action.LEFT_CLICK_AIR != action && Action.LEFT_CLICK_BLOCK != action))) {
             if (sItem.getDataString("etherwarp_trans").equals("true")) {
@@ -315,14 +323,14 @@ extends PListener {
             }
         }
         if (null != (function = sItem.getType().getFunction())) {
-            function.onInteraction(e2);
+            function.onInteraction(e);
         }
     }
 
     @EventHandler
-    public void onPlayerMage(PlayerInteractEvent e2) {
-        Player player = e2.getPlayer();
-        Action action = e2.getAction();
+    public void onPlayerMage(PlayerInteractEvent e) {
+        Player player = e.getPlayer();
+        Action action = e.getAction();
         if (!player.getWorld().getName().equals("dungeon")) {
             return;
         }
@@ -344,8 +352,8 @@ extends PListener {
                 Location crystalLocation = player.getEyeLocation();
                 Vector vector = blockLocation.clone().add(0.1, 0.0, 0.1).toVector().subtract(crystalLocation.clone().toVector());
                 double count = 25.0;
-                for (int i2 = 1; 25 >= i2; ++i2) {
-                    for (Entity entity : player.getWorld().getNearbyEntities(crystalLocation.clone().add(vector.clone().multiply((double)i2 / 25.0)), 0.5, 0.0, 0.5)) {
+                for (int i = 1; 25 >= i; ++i) {
+                    for (Entity entity : player.getWorld().getNearbyEntities(crystalLocation.clone().add(vector.clone().multiply((double)i / 25.0)), 0.5, 0.0, 0.5)) {
                         if ("false" == ACT) {
                             return;
                         }
@@ -424,40 +432,40 @@ extends PListener {
                         }.runTaskLater((Plugin)SkyBlock.getPlugin(), 30L);
                         ACT = "false";
                     }
-                    player.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply((double)i2 / 25.0)), Effect.FIREWORKS_SPARK, 24, 1, 0.0f, 0.0f, 0.0f, 1.0f, 0, 64);
+                    player.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply((double)i / 25.0)), Effect.FIREWORKS_SPARK, 24, 1, 0.0f, 0.0f, 0.0f, 1.0f, 0, 64);
                 }
             }
         }
     }
 
     @EventHandler
-    public void onInventoryClose(InventoryCloseEvent e2) {
-        if (!(e2.getPlayer() instanceof Player)) {
+    public void onInventoryClose(InventoryCloseEvent e) {
+        if (!(e.getPlayer() instanceof Player)) {
             return;
         }
-        Player player = (Player)e2.getPlayer();
+        Player player = (Player)e.getPlayer();
         Inventory storage = Storage.getCurrentStorageOpened(player);
         if (null == storage) {
             return;
         }
-        Inventory inventory = e2.getInventory();
+        Inventory inventory = e.getInventory();
         SItem hand = SItem.find(player.getItemInHand());
         if (null == hand) {
             return;
         }
         NBTTagCompound storageData = new NBTTagCompound();
-        for (int i2 = 0; i2 < inventory.getSize(); ++i2) {
-            SItem sItem = SItem.find(inventory.getItem(i2));
+        for (int i = 0; i < inventory.getSize(); ++i) {
+            SItem sItem = SItem.find(inventory.getItem(i));
             if (null == sItem) {
-                SItem equiv = SItem.of(inventory.getItem(i2));
+                SItem equiv = SItem.of(inventory.getItem(i));
                 if (null != equiv) {
-                    storageData.setByteArray(String.valueOf(i2), SUtil.gzipCompress(equiv.toCompound().toString().getBytes()));
+                    storageData.setByteArray(String.valueOf(i), SUtil.gzipCompress(equiv.toCompound().toString().getBytes()));
                     continue;
                 }
-                storageData.remove(String.valueOf(i2));
+                storageData.remove(String.valueOf(i));
                 continue;
             }
-            storageData.setByteArray(String.valueOf(i2), SUtil.gzipCompress(sItem.toCompound().toString().getBytes()));
+            storageData.setByteArray(String.valueOf(i), SUtil.gzipCompress(sItem.toCompound().toString().getBytes()));
         }
         hand.getData().set("storage_data", (NBTBase)storageData);
         hand.update();
@@ -465,8 +473,8 @@ extends PListener {
     }
 
     @EventHandler
-    public void onPlayerFlight(PlayerToggleFlightEvent e2) {
-        Player player = e2.getPlayer();
+    public void onPlayerFlight(PlayerToggleFlightEvent e) {
+        Player player = e.getPlayer();
         GameMode gameMode = player.getGameMode();
         if (GameMode.CREATIVE == gameMode || GameMode.SPECTATOR == gameMode) {
             return;
@@ -474,15 +482,15 @@ extends PListener {
         for (ItemStack stack : player.getInventory().getArmorContents()) {
             Ability ability;
             SItem sItem = SItem.find(stack);
-            if (null == sItem || null == (ability = sItem.getType().getAbility()) || !e2.isFlying() || AbilityActivation.FLIGHT != ability.getAbilityActivation()) continue;
-            e2.setCancelled(true);
+            if (null == sItem || null == (ability = sItem.getType().getAbility()) || !e.isFlying() || AbilityActivation.FLIGHT != ability.getAbilityActivation()) continue;
+            e.setCancelled(true);
             PlayerUtils.useAbility(player, sItem);
         }
     }
 
     @EventHandler
-    public void onPlayerSneak(PlayerToggleSneakEvent e2) {
-        Player player = e2.getPlayer();
+    public void onPlayerSneak(PlayerToggleSneakEvent e) {
+        Player player = e.getPlayer();
         GameMode gameMode = player.getGameMode();
         for (ItemStack stack : player.getInventory().getArmorContents()) {
             Ability ability;
@@ -493,24 +501,24 @@ extends PListener {
     }
 
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent e2) {
-        if (InventoryType.CRAFTING != e2.getView().getTopInventory().getType()) {
+    public void onInventoryClick(InventoryClickEvent e) {
+        if (InventoryType.CRAFTING != e.getView().getTopInventory().getType()) {
             return;
         }
-        if (InventoryType.SlotType.CONTAINER != e2.getSlotType() && InventoryType.SlotType.QUICKBAR != e2.getSlotType()) {
+        if (InventoryType.SlotType.CONTAINER != e.getSlotType() && InventoryType.SlotType.QUICKBAR != e.getSlotType()) {
             return;
         }
-        if (InventoryAction.MOVE_TO_OTHER_INVENTORY != e2.getAction()) {
+        if (InventoryAction.MOVE_TO_OTHER_INVENTORY != e.getAction()) {
             return;
         }
-        Inventory inventory = e2.getClickedInventory();
+        Inventory inventory = e.getClickedInventory();
         if (null == inventory) {
             return;
         }
         if (InventoryType.PLAYER != inventory.getType()) {
             return;
         }
-        ItemStack current = e2.getCurrentItem();
+        ItemStack current = e.getCurrentItem();
         if (null == current) {
             return;
         }
@@ -518,7 +526,7 @@ extends PListener {
         if (null == sItem) {
             sItem = SItem.of(current);
         }
-        ItemListener.updateStatistics((Player)e2.getWhoClicked());
+        ItemListener.updateStatistics((Player)e.getWhoClicked());
         if (null == sItem.getType().getStatistics().getSpecificType() || SpecificItemType.HELMET != sItem.getType().getStatistics().getSpecificType()) {
             return;
         }
@@ -526,21 +534,21 @@ extends PListener {
         if (!ItemListener.isAir(playerInventory.getHelmet())) {
             return;
         }
-        e2.setCancelled(true);
-        e2.setCurrentItem(new ItemStack(Material.AIR));
+        e.setCancelled(true);
+        e.setCurrentItem(new ItemStack(Material.AIR));
         playerInventory.setHelmet(current);
     }
 
     @EventHandler
-    public void onArmorChange(InventoryClickEvent e2) {
-        Player player = (Player)e2.getWhoClicked();
-        if (null == e2.getClickedInventory()) {
+    public void onArmorChange(InventoryClickEvent e) {
+        Player player = (Player)e.getWhoClicked();
+        if (null == e.getClickedInventory()) {
             return;
         }
-        if (InventoryType.PLAYER != e2.getClickedInventory().getType() && InventoryType.CRAFTING != e2.getClickedInventory().getType()) {
+        if (InventoryType.PLAYER != e.getClickedInventory().getType() && InventoryType.CRAFTING != e.getClickedInventory().getType()) {
             return;
         }
-        ItemListener.updateStatistics((Player)e2.getWhoClicked());
+        ItemListener.updateStatistics((Player)e.getWhoClicked());
         player.getInventory().setHelmet(player.getInventory().getHelmet());
         player.getInventory().setChestplate(player.getInventory().getChestplate());
         player.getInventory().setLeggings(player.getInventory().getLeggings());
@@ -548,8 +556,8 @@ extends PListener {
     }
 
     @EventHandler
-    public void onArmorChange1(InventoryCloseEvent e2) {
-        Player player = (Player)e2.getPlayer();
+    public void onArmorChange1(InventoryCloseEvent e) {
+        Player player = (Player)e.getPlayer();
         player.getInventory().setHelmet(player.getInventory().getHelmet());
         player.getInventory().setChestplate(player.getInventory().getChestplate());
         player.getInventory().setLeggings(player.getInventory().getLeggings());
@@ -558,8 +566,8 @@ extends PListener {
     }
 
     @EventHandler
-    public void onArmorChange2(PlayerJoinEvent e2) {
-        Player player = e2.getPlayer();
+    public void onArmorChange2(PlayerJoinEvent e) {
+        Player player = e.getPlayer();
         PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
         ItemStack helmet = player.getInventory().getHelmet();
         SUtil.delay(() -> player.getInventory().setHelmet(helmet), 10L);
@@ -575,8 +583,8 @@ extends PListener {
     }
 
     @EventHandler(priority=EventPriority.HIGH)
-    public void onItemClick(InventoryClickEvent e2) {
-        ItemStack stack = e2.getCurrentItem();
+    public void onItemClick(InventoryClickEvent e) {
+        ItemStack stack = e.getCurrentItem();
         if (null == stack) {
             return;
         }
@@ -587,52 +595,52 @@ extends PListener {
         if (null == sItem.getType().getFunction()) {
             return;
         }
-        sItem.getType().getFunction().onInventoryClick(sItem, e2);
+        sItem.getType().getFunction().onInventoryClick(sItem, e);
     }
 
     @EventHandler
-    public void onItemMove(InventoryClickEvent e2) {
-        if (null == e2.getClickedInventory()) {
+    public void onItemMove(InventoryClickEvent e) {
+        if (null == e.getClickedInventory()) {
             return;
         }
-        if (InventoryType.PLAYER != e2.getClickedInventory().getType()) {
+        if (InventoryType.PLAYER != e.getClickedInventory().getType()) {
             return;
         }
-        if (8 != e2.getSlot()) {
+        if (8 != e.getSlot()) {
             return;
         }
-        e2.setCancelled(true);
+        e.setCancelled(true);
     }
 
     @EventHandler
-    public void onBlockPlace(BlockPlaceEvent e2) {
-        SItem sItem = SItem.find(e2.getItemInHand());
+    public void onBlockPlace(BlockPlaceEvent e) {
+        SItem sItem = SItem.find(e.getItemInHand());
         if (null == sItem) {
             return;
         }
-        if (SpecificItemType.HELMET == sItem.getType().getStatistics().getSpecificType() && ItemListener.isAir(e2.getPlayer().getInventory().getHelmet())) {
-            e2.setCancelled(true);
-            e2.getPlayer().getInventory().setHelmet(sItem.getStack());
-            e2.getPlayer().setItemInHand(null);
+        if (SpecificItemType.HELMET == sItem.getType().getStatistics().getSpecificType() && ItemListener.isAir(e.getPlayer().getInventory().getHelmet())) {
+            e.setCancelled(true);
+            e.getPlayer().getInventory().setHelmet(sItem.getStack());
+            e.getPlayer().setItemInHand(null);
             return;
         }
         if (!sItem.getType().isCraft()) {
             if (GenericItemType.BLOCK != sItem.getType().getStatistics().getType()) {
-                e2.setCancelled(true);
+                e.setCancelled(true);
             } else {
-                new SBlock(e2.getBlockPlaced().getLocation(), sItem.getType(), sItem.getData()).save();
+                new SBlock(e.getBlockPlaced().getLocation(), sItem.getType(), sItem.getData()).save();
             }
         }
     }
 
     @EventHandler
-    public void onFrameInteract(PlayerInteractEvent e2) {
-        if (Action.RIGHT_CLICK_BLOCK != e2.getAction()) {
+    public void onFrameInteractWarden(PlayerInteractEvent e) {
+        if (Action.RIGHT_CLICK_BLOCK != e.getAction()) {
             return;
         }
-        Player player = e2.getPlayer();
-        final Block block = e2.getClickedBlock();
-        ItemStack hand = e2.getItem();
+        final Player player = e.getPlayer();
+        final Block block = e.getClickedBlock();
+        ItemStack hand = e.getItem();
         if (null == hand) {
             return;
         }
@@ -645,11 +653,123 @@ extends PListener {
         }
         SBlock sBlock = SBlock.getBlock(block.getLocation());
         if (null == sBlock) {
-            e2.setCancelled(true);
+            e.setCancelled(true);
+            return;
+        }
+        if (SMaterial.WARDEN_SUMMONING_FRAME != sBlock.getType()) {
+            e.setCancelled(true);
+            return;
+        }
+        if (!block.hasMetadata("placer")) {
+            if (SMaterial.HIDDEN_DEMONS_PEARL != item.getType()) {
+                return;
+            }
+            block.setMetadata("placer", (MetadataValue)new FixedMetadataValue((Plugin)this.plugin, (Object)player.getUniqueId()));
+            BlockState state = block.getState();
+            state.setRawData((byte)4);
+            state.update();
+            player.getInventory().setItemInHand(SItem.of(SMaterial.SLEEPING_EYE).getStack());
+            ArrayList<Location> locations = StaticWardenManager.EYES.containsKey(player.getUniqueId()) ? StaticWardenManager.EYES.get(player.getUniqueId()) : new ArrayList<Location>();
+            locations.add(block.getLocation());
+            StaticWardenManager.EYES.remove(player.getUniqueId());
+            StaticWardenManager.EYES.put(player.getUniqueId(), locations);
+            int quantity = 0;
+            for (List<Location> ls : StaticWardenManager.EYES.values()) {
+                quantity += ls.size();
+            }
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                if (!p.getWorld().getName().equals("world")) continue;
+                p.sendMessage(ChatColor.DARK_PURPLE + "\u262c " + ChatColor.GREEN + player.getName() + ChatColor.LIGHT_PURPLE + " placed a Warden Summoning Eye! " + (5 == quantity ? "Brace yourselves! " : "") + ChatColor.GRAY + "(" + (5 == quantity ? ChatColor.GREEN : ChatColor.YELLOW) + quantity + ChatColor.GRAY + "/" + ChatColor.GREEN + "5" + ChatColor.GRAY + ")");
+            }
+            if (5 != quantity) {
+                return;
+            }
+            ArrayList<UUID> cleared = new ArrayList<UUID>();
+            for (List<Location> ls2 : StaticWardenManager.EYES.values()) {
+                for (Location location : ls2) {
+                    Block b = location.getBlock();
+                    List values = b.getMetadata("placer");
+                    Player p2 = Bukkit.getPlayer((UUID)((UUID)((MetadataValue)values.get(0)).value()));
+                    if (null == p2 || cleared.contains(p2.getUniqueId())) continue;
+                    PlayerInventory inventory = p2.getInventory();
+                    for (int i = 0; i < inventory.getSize(); ++i) {
+                        SItem si = SItem.find(inventory.getItem(i));
+                        if (null == si || SMaterial.SLEEPING_EYE != si.getType()) continue;
+                        inventory.setItem(i, SItem.of(SMaterial.REMNANT_OF_THE_EYE).getStack());
+                    }
+                    p2.sendMessage(ChatColor.DARK_PURPLE + "Your Sleeping Eyes have been awoken by the magic of the Voidlings Warden. They are now Remnants of the Eye!");
+                    cleared.add(p2.getUniqueId());
+                }
+            }
+            StaticWardenManager.ACTIVE = true;
+            new BukkitRunnable(){
+
+                public void run() {
+                    block.getWorld().playSound(block.getLocation(), Sound.ENDERDRAGON_DEATH, 50.0f, -2.0f);
+                }
+            }.runTaskLater((Plugin)this.plugin, 90L);
+            new BukkitRunnable(){
+
+                public void run() {
+                    for (int i = 0; 3 > i; ++i) {
+                        block.getWorld().playSound(block.getLocation(), Sound.EXPLODE, 50.0f, -2.0f);
+                    }
+                    Location loc = new Location(Bukkit.getWorld((String)"world"), -583.0, 26.0, -330.0);
+                    PacketInvoker.dropVoidSpawner(player, loc);
+                }
+            }.runTaskLater((Plugin)this.plugin, 180L);
+        } else {
+            List values2 = block.getMetadata("placer");
+            Player p3 = Bukkit.getPlayer((UUID)((UUID)((MetadataValue)values2.get(0)).value()));
+            if (null == p3) {
+                return;
+            }
+            if (SMaterial.SLEEPING_EYE != item.getType()) {
+                return;
+            }
+            if (!p3.getUniqueId().equals(player.getUniqueId())) {
+                player.sendMessage(ChatColor.RED + "You can only recover Warden Summoning Eyes that you placed!");
+                return;
+            }
+            if (StaticWardenManager.ACTIVE) {
+                player.sendMessage(ChatColor.RED + "You cannot recover Warden Summoning Eyes after the Voidlings Warden has been summoned!");
+                return;
+            }
+            block.removeMetadata("placer", (Plugin)this.plugin);
+            BlockState state2 = block.getState();
+            state2.setRawData((byte)0);
+            state2.update();
+            player.getInventory().setItemInHand(SItem.of(SMaterial.HIDDEN_DEMONS_PEARL).getStack());
+            StaticWardenManager.EYES.get(p3.getUniqueId()).remove(block.getLocation());
+            player.sendMessage(ChatColor.DARK_PURPLE + "You recovered a Warden Summoning Eye!");
+        }
+    }
+
+    @EventHandler
+    public void onFrameInteract(PlayerInteractEvent e) {
+        if (Action.RIGHT_CLICK_BLOCK != e.getAction()) {
+            return;
+        }
+        Player player = e.getPlayer();
+        final Block block = e.getClickedBlock();
+        ItemStack hand = e.getItem();
+        if (null == hand) {
+            return;
+        }
+        SItem item = SItem.find(hand);
+        if (null == item) {
+            return;
+        }
+        if (Material.ENDER_PORTAL_FRAME != block.getType()) {
+            return;
+        }
+        SBlock sBlock = SBlock.getBlock(block.getLocation());
+        if (null == sBlock) {
+            e.setCancelled(true);
             return;
         }
         if (SMaterial.SUMMONING_FRAME != sBlock.getType()) {
-            e2.setCancelled(true);
+            e.setCancelled(true);
             return;
         }
         if (!block.hasMetadata("placer")) {
@@ -669,9 +789,9 @@ extends PListener {
             for (List<Location> ls : StaticDragonManager.EYES.values()) {
                 quantity += ls.size();
             }
-            for (Player p2 : Bukkit.getOnlinePlayers()) {
-                if (!p2.getWorld().getName().equals("world")) continue;
-                p2.sendMessage(ChatColor.DARK_PURPLE + "\u262c " + ChatColor.GREEN + player.getName() + ChatColor.LIGHT_PURPLE + " placed a Summoning Eye! " + (8 == quantity ? "Brace yourselves! " : "") + ChatColor.GRAY + "(" + (8 == quantity ? ChatColor.GREEN : ChatColor.YELLOW) + quantity + ChatColor.GRAY + "/" + ChatColor.GREEN + "8" + ChatColor.GRAY + ")");
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                if (!p.getWorld().getName().equals("world")) continue;
+                p.sendMessage(ChatColor.DARK_PURPLE + "\u262c " + ChatColor.GREEN + player.getName() + ChatColor.LIGHT_PURPLE + " placed a Summoning Eye! " + (8 == quantity ? "Brace yourselves! " : "") + ChatColor.GRAY + "(" + (8 == quantity ? ChatColor.GREEN : ChatColor.YELLOW) + quantity + ChatColor.GRAY + "/" + ChatColor.GREEN + "8" + ChatColor.GRAY + ")");
             }
             if (8 != quantity) {
                 return;
@@ -679,15 +799,15 @@ extends PListener {
             ArrayList<UUID> cleared = new ArrayList<UUID>();
             for (List<Location> ls2 : StaticDragonManager.EYES.values()) {
                 for (Location location : ls2) {
-                    Block b2 = location.getBlock();
-                    List values = b2.getMetadata("placer");
+                    Block b = location.getBlock();
+                    List values = b.getMetadata("placer");
                     Player p2 = Bukkit.getPlayer((UUID)((UUID)((MetadataValue)values.get(0)).value()));
                     if (null == p2 || cleared.contains(p2.getUniqueId())) continue;
                     PlayerInventory inventory = p2.getInventory();
-                    for (int i2 = 0; i2 < inventory.getSize(); ++i2) {
-                        SItem si = SItem.find(inventory.getItem(i2));
+                    for (int i = 0; i < inventory.getSize(); ++i) {
+                        SItem si = SItem.find(inventory.getItem(i));
                         if (null == si || SMaterial.SLEEPING_EYE != si.getType()) continue;
-                        inventory.setItem(i2, SItem.of(SMaterial.REMNANT_OF_THE_EYE).getStack());
+                        inventory.setItem(i, SItem.of(SMaterial.REMNANT_OF_THE_EYE).getStack());
                     }
                     p2.sendMessage(ChatColor.DARK_PURPLE + "Your Sleeping Eyes have been awoken by the magic of the Dragon. They are now Remnants of the Eye!");
                     cleared.add(p2.getUniqueId());
@@ -704,7 +824,7 @@ extends PListener {
             new BukkitRunnable(){
 
                 public void run() {
-                    for (int i2 = 0; 3 > i2; ++i2) {
+                    for (int i = 0; 3 > i; ++i) {
                         block.getWorld().playSound(block.getLocation(), Sound.EXPLODE, 50.0f, -2.0f);
                     }
                     SEntityType dragonType = SEntityType.PROTECTOR_DRAGON;
@@ -738,15 +858,15 @@ extends PListener {
                     block.getWorld().spawnEntity(block.getWorld().getBlockAt(-678, 31, -287).getLocation().add(-0.5, 0.7, -0.5), EntityType.ENDER_CRYSTAL);
                     block.getWorld().spawnEntity(block.getWorld().getBlockAt(-697, 35, -249).getLocation().add(-0.5, 0.7, -0.5), EntityType.ENDER_CRYSTAL);
                     block.getWorld().spawnEntity(block.getWorld().getBlockAt(-638, 40, -309).getLocation().add(-0.5, 0.7, -0.5), EntityType.ENDER_CRYSTAL);
-                    for (Player p2 : Bukkit.getOnlinePlayers()) {
-                        if (!p2.getWorld().getName().equals("dragon")) continue;
-                        Vector vector = p2.getLocation().clone().subtract(new Vector(-670.5, 58.0, -275.5)).toVector();
-                        p2.setVelocity(vector.normalize().multiply(40.0).setY(100.0));
+                    for (Player p : Bukkit.getOnlinePlayers()) {
+                        if (!p.getWorld().getName().equals("dragon")) continue;
+                        Vector vector = p.getLocation().clone().subtract(new Vector(-670.5, 58.0, -275.5)).toVector();
+                        p.setVelocity(vector.normalize().multiply(40.0).setY(100.0));
                     }
                     StaticDragonManager.DRAGON = entity;
                     block.getWorld().playSound(block.getLocation(), Sound.ENDERDRAGON_GROWL, 50.0f, 1.0f);
-                    for (Player p2 : Bukkit.getOnlinePlayers()) {
-                        p2.sendMessage(ChatColor.DARK_PURPLE + "\u262c " + ChatColor.LIGHT_PURPLE + ChatColor.BOLD + "The " + ChatColor.RED + ChatColor.BOLD + entity.getStatistics().getEntityName() + ChatColor.LIGHT_PURPLE + ChatColor.BOLD + " has spawned!");
+                    for (Player p : Bukkit.getOnlinePlayers()) {
+                        p.sendMessage(ChatColor.DARK_PURPLE + "\u262c " + ChatColor.LIGHT_PURPLE + ChatColor.BOLD + "The " + ChatColor.RED + ChatColor.BOLD + entity.getStatistics().getEntityName() + ChatColor.LIGHT_PURPLE + ChatColor.BOLD + " has spawned!");
                     }
                 }
             }.runTaskLater((Plugin)this.plugin, 180L);
@@ -778,10 +898,10 @@ extends PListener {
     }
 
     @EventHandler
-    public void onItemPickup(PlayerPickupItemEvent e2) {
-        List o2;
-        Item item = e2.getItem();
-        Player player = e2.getPlayer();
+    public void onItemPickup(PlayerPickupItemEvent e) {
+        List o;
+        Item item = e.getItem();
+        Player player = e.getPlayer();
         ItemListener.updateStatistics(player);
         NBTTagCompound compound = CraftItemStack.asNMSCopy((ItemStack)item.getItemStack()).getTag();
         if (null == compound) {
@@ -790,8 +910,8 @@ extends PListener {
         if (!compound.hasKey("type")) {
             item.getItemStack().setItemMeta(SItem.of(item.getItemStack()).getStack().getItemMeta());
         }
-        if (item.hasMetadata("owner") && 0 != (o2 = item.getMetadata("owner")).size() && !((MetadataValue)o2.get(0)).asString().equals(e2.getPlayer().getUniqueId().toString())) {
-            e2.setCancelled(true);
+        if (item.hasMetadata("owner") && 0 != (o = item.getMetadata("owner")).size() && !((MetadataValue)o.get(0)).asString().equals(e.getPlayer().getUniqueId().toString())) {
+            e.setCancelled(true);
             return;
         }
         User user = User.getUser(player.getUniqueId());
@@ -801,13 +921,13 @@ extends PListener {
             throw new NullPointerException("Something messed up! Check again");
         }
         if (item.hasMetadata("obtained")) {
-            for (Player p2 : Bukkit.getOnlinePlayers()) {
-                if (!p2.getWorld().getName().equals("world")) continue;
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                if (!p.getWorld().getName().equals("world")) continue;
                 if (!sItem.getFullName().equals("\u00a76Ender Dragon") && !sItem.getFullName().equals("\u00a75Ender Dragon") || !sItem.getFullName().equals("\u00a76Voidling Destroyer")) {
-                    p2.sendMessage(ChatColor.GREEN + player.getName() + ChatColor.YELLOW + " has obtained " + sItem.getFullName() + ChatColor.YELLOW + "!");
+                    p.sendMessage(ChatColor.GREEN + player.getName() + ChatColor.YELLOW + " has obtained " + sItem.getFullName() + ChatColor.YELLOW + "!");
                     continue;
                 }
-                p2.sendMessage(ChatColor.GREEN + player.getName() + ChatColor.YELLOW + " has obtained " + ChatColor.GRAY + "[Lvl 1] " + sItem.getFullName() + ChatColor.YELLOW + "!");
+                p.sendMessage(ChatColor.GREEN + player.getName() + ChatColor.YELLOW + " has obtained " + ChatColor.GRAY + "[Lvl 1] " + sItem.getFullName() + ChatColor.YELLOW + "!");
             }
         }
         if (ItemOrigin.NATURAL_BLOCK == sItem.getOrigin() || ItemOrigin.MOB == sItem.getOrigin()) {
@@ -816,11 +936,7 @@ extends PListener {
             if (null != collection) {
                 int prev = user.getCollection(collection);
                 user.addToCollection(collection, stack.getAmount());
-                if (SkyBlock.getPlugin().config.getBoolean("Config")) {
-                    user.configsave();
-                } else {
-                    user.save();
-                }
+                user.save();
                 if (0 == prev) {
                     player.sendMessage(ChatColor.GOLD + "" + ChatColor.BOLD + "  COLLECTION UNLOCKED " + ChatColor.RESET + ChatColor.YELLOW + collection.getName());
                     player.playSound(player.getLocation(), Sound.LEVEL_UP, 1.0f, 2.0f);
@@ -830,66 +946,66 @@ extends PListener {
     }
 
     @EventHandler
-    public void onItemDrop(PlayerDropItemEvent e2) {
-        SItem sItem = SItem.find(e2.getItemDrop().getItemStack());
+    public void onItemDrop(PlayerDropItemEvent e) {
+        SItem sItem = SItem.find(e.getItemDrop().getItemStack());
         if (null != sItem && (SMaterial.SKYBLOCK_MENU == sItem.getType() || SMaterial.QUIVER_ARROW == sItem.getType())) {
-            e2.setCancelled(true);
+            e.setCancelled(true);
         }
-        ItemListener.updateStatistics(e2.getPlayer());
+        ItemListener.updateStatistics(e.getPlayer());
     }
 
     @EventHandler
-    public void onItemMove(PlayerDropItemEvent e2) {
-        SItem sItem = SItem.find(e2.getItemDrop().getItemStack());
+    public void onItemMove(PlayerDropItemEvent e) {
+        SItem sItem = SItem.find(e.getItemDrop().getItemStack());
         if (null != sItem && (SMaterial.SKYBLOCK_MENU == sItem.getType() || SMaterial.QUIVER_ARROW == sItem.getType())) {
-            e2.setCancelled(true);
+            e.setCancelled(true);
         }
-        ItemListener.updateStatistics(e2.getPlayer());
+        ItemListener.updateStatistics(e.getPlayer());
     }
 
     @EventHandler
-    public void onItemDrop1(PlayerDropItemEvent e2) {
-        SItem sItem = SItem.find(e2.getItemDrop().getItemStack());
-        if (null != sItem && SMaterial.BONEMERANG == sItem.getType() && e2.getItemDrop().getItemStack().toString().contains("GHAST_TEAR")) {
-            e2.setCancelled(true);
+    public void onItemDrop1(PlayerDropItemEvent e) {
+        SItem sItem = SItem.find(e.getItemDrop().getItemStack());
+        if (null != sItem && SMaterial.BONEMERANG == sItem.getType() && e.getItemDrop().getItemStack().toString().contains("GHAST_TEAR")) {
+            e.setCancelled(true);
         }
     }
 
     @EventHandler
-    public void onItemMove1(PlayerDropItemEvent e2) {
-        SItem sItem = SItem.find(e2.getItemDrop().getItemStack());
+    public void onItemMove1(PlayerDropItemEvent e) {
+        SItem sItem = SItem.find(e.getItemDrop().getItemStack());
         if (null != sItem && (SMaterial.SKYBLOCK_MENU == sItem.getType() || SMaterial.QUIVER_ARROW == sItem.getType())) {
-            e2.setCancelled(true);
+            e.setCancelled(true);
         }
     }
 
     @EventHandler
-    public void onFishingRodReel(PlayerFishEvent e2) {
-        SItem rod = SItem.find(e2.getPlayer().getItemInHand());
+    public void onFishingRodReel(PlayerFishEvent e) {
+        SItem rod = SItem.find(e.getPlayer().getItemInHand());
         if (null == rod) {
             return;
         }
-        e2.getHook().setMetadata("owner", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)e2.getPlayer()));
+        e.getHook().setMetadata("owner", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)e.getPlayer()));
         MaterialFunction function = rod.getType().getFunction();
         if (null == function) {
             return;
         }
         if (function instanceof FishingRodFunction) {
-            ((FishingRodFunction)function).onFish(rod, e2);
+            ((FishingRodFunction)function).onFish(rod, e);
         }
     }
 
     @EventHandler
-    public void onPotionSplash(PotionSplashEvent e2) {
-        SItem item = SItem.find(e2.getPotion().getItem());
+    public void onPotionSplash(PotionSplashEvent e) {
+        SItem item = SItem.find(e.getPotion().getItem());
         if (null == item) {
             return;
         }
         if (!item.isPotion()) {
             return;
         }
-        e2.setCancelled(true);
-        for (LivingEntity entity : e2.getAffectedEntities()) {
+        e.setCancelled(true);
+        for (LivingEntity entity : e.getAffectedEntities()) {
             User user;
             if (!(entity instanceof Player) || null == (user = User.getUser(entity.getUniqueId()))) continue;
             for (PotionEffect effect : item.getPotionEffects()) {
@@ -897,12 +1013,12 @@ extends PListener {
                 if (null != effect.getType().getOnDrink()) {
                     effect.getType().getOnDrink().accept(effect, (Player)entity);
                 }
-                long ticks = (long)((double)effect.getDuration() * e2.getIntensity(entity));
+                long ticks = (long)((double)effect.getDuration() * e.getIntensity(entity));
                 if (!user.hasPotionEffect(effect.getType()) || user.hasPotionEffect(effect.getType()) && ticks > user.getPotionEffect(effect.getType()).getRemaining()) {
                     user.removePotionEffect(effect.getType());
                     user.addPotionEffect(new PotionEffect(effect.getType(), effect.getLevel(), ticks));
                 }
-                entity.sendMessage((effect.getType().isBuff() ? ChatColor.GREEN + "" + ChatColor.BOLD + "BUFF!" : ChatColor.RED + "" + ChatColor.BOLD + "DEBUFF!") + ChatColor.RESET + ChatColor.WHITE + " You " + (e2.getPotion().getShooter().equals(entity) ? "splashed yourself" : "were splashed") + " with " + effect.getDisplayName() + ChatColor.WHITE + "!");
+                entity.sendMessage((effect.getType().isBuff() ? ChatColor.GREEN + "" + ChatColor.BOLD + "BUFF!" : ChatColor.RED + "" + ChatColor.BOLD + "DEBUFF!") + ChatColor.RESET + ChatColor.WHITE + " You " + (e.getPotion().getShooter().equals(entity) ? "splashed yourself" : "were splashed") + " with " + effect.getDisplayName() + ChatColor.WHITE + "!");
             }
         }
     }
@@ -951,27 +1067,27 @@ extends PListener {
         }.runTaskLater((Plugin)SkyBlock.getPlugin(), 1L);
     }
 
-    public static void checkCondition(Player p2) {
-        SItem helm = SItem.find(p2.getInventory().getHelmet());
-        SItem chest = SItem.find(p2.getInventory().getChestplate());
-        SItem leg = SItem.find(p2.getInventory().getLeggings());
-        SItem boots = SItem.find(p2.getInventory().getBoots());
+    public static void checkCondition(Player p) {
+        SItem helm = SItem.find(p.getInventory().getHelmet());
+        SItem chest = SItem.find(p.getInventory().getChestplate());
+        SItem leg = SItem.find(p.getInventory().getLeggings());
+        SItem boots = SItem.find(p.getInventory().getBoots());
         if (null != helm && null != chest && null != leg && null != boots) {
             if (Groups.WITHER_HELMETS.contains((Object)helm.getType()) && Groups.WITHER_CHESTPLATES.contains((Object)chest.getType()) && Groups.WITHER_LEGGINGS.contains((Object)leg.getType()) && Groups.WITHER_BOOTS.contains((Object)boots.getType())) {
-                if (Witherborn.WITHER_COOLDOWN.containsKey(p2.getUniqueId())) {
-                    if (!Witherborn.WITHER_COOLDOWN.get(p2.getUniqueId()).booleanValue() && !Witherborn.WITHER_MAP.containsKey(p2.getUniqueId())) {
-                        Witherborn w2 = new Witherborn(p2);
-                        w2.spawnWither();
+                if (Witherborn.WITHER_COOLDOWN.containsKey(p.getUniqueId())) {
+                    if (!Witherborn.WITHER_COOLDOWN.get(p.getUniqueId()).booleanValue() && !Witherborn.WITHER_MAP.containsKey(p.getUniqueId())) {
+                        Witherborn w = new Witherborn(p);
+                        w.spawnWither();
                     }
-                } else if (!Witherborn.WITHER_MAP.containsKey(p2.getUniqueId())) {
-                    Witherborn w3 = new Witherborn(p2);
-                    w3.spawnWither();
+                } else if (!Witherborn.WITHER_MAP.containsKey(p.getUniqueId())) {
+                    Witherborn w = new Witherborn(p);
+                    w.spawnWither();
                 }
             } else {
-                Witherborn.WITHER_MAP.remove(p2.getUniqueId());
+                Witherborn.WITHER_MAP.remove(p.getUniqueId());
             }
         } else {
-            Witherborn.WITHER_MAP.remove(p2.getUniqueId());
+            Witherborn.WITHER_MAP.remove(p.getUniqueId());
         }
     }
 
@@ -1007,33 +1123,33 @@ extends PListener {
 
     @EventHandler
     public void aAaB(ProjectileHitEvent enn) {
-        Projectile e2 = enn.getEntity();
-        if (!(e2 instanceof Arrow)) {
+        Projectile e = enn.getEntity();
+        if (!(e instanceof Arrow)) {
             return;
         }
-        if (!(((Arrow)e2).getShooter() instanceof Player)) {
+        if (!(((Arrow)e).getShooter() instanceof Player)) {
             return;
         }
-        Player player = (Player)((Arrow)e2).getShooter();
+        Player player = (Player)((Arrow)e).getShooter();
         boolean ACT = true;
-        if (e2.isOnGround()) {
+        if (e.isOnGround()) {
             return;
         }
-        for (Entity enderman_1 : e2.getWorld().getNearbyEntities(e2.getLocation(), 1.5, 1.5, 1.5)) {
-            if (!(enderman_1 instanceof Enderman) || !ACT || e2.isOnGround() || enderman_1.isDead()) continue;
+        for (Entity enderman_1 : e.getWorld().getNearbyEntities(e.getLocation(), 1.5, 1.5, 1.5)) {
+            if (!(enderman_1 instanceof Enderman) || !ACT || e.isOnGround() || enderman_1.isDead()) continue;
             if (null == SItem.find(player.getItemInHand())) {
-                e2.remove();
+                e.remove();
                 break;
             }
             if (SMaterial.TERMINATOR != SItem.find(player.getItemInHand()).getType() && SMaterial.JUJU_SHORTBOW != SItem.find(player.getItemInHand()).getType()) {
-                e2.remove();
+                e.remove();
                 return;
             }
             ACT = false;
-            EntityDamageByEntityEvent bl2 = new EntityDamageByEntityEvent((Entity)e2, enderman_1, EntityDamageEvent.DamageCause.CUSTOM, 1);
-            Bukkit.getPluginManager().callEvent((Event)bl2);
-            ((LivingEntity)enderman_1).setHealth(((LivingEntity)enderman_1).getHealth() - Math.min(((LivingEntity)enderman_1).getHealth(), bl2.getDamage()));
-            e2.remove();
+            EntityDamageByEntityEvent bl = new EntityDamageByEntityEvent((Entity)e, enderman_1, EntityDamageEvent.DamageCause.CUSTOM, 1);
+            Bukkit.getPluginManager().callEvent((Event)bl);
+            ((LivingEntity)enderman_1).setHealth(((LivingEntity)enderman_1).getHealth() - Math.min(((LivingEntity)enderman_1).getHealth(), bl.getDamage()));
+            e.remove();
         }
     }
 
@@ -1047,9 +1163,9 @@ extends PListener {
             List entityList = fallingBlock.getNearbyEntities(3.0, 3.0, 3.0);
             fallingBlock.getWorld().playSound(fallingBlock.getLocation(), Sound.EXPLODE, 2.0f, 0.0f);
             fallingBlock.getWorld().playEffect(fallingBlock.getLocation(), Effect.EXPLOSION_HUGE, 0);
-            for (Entity e2 : fallingBlock.getNearbyEntities(7.0, 7.0, 7.0)) {
-                if (!(e2 instanceof Item)) continue;
-                e2.remove();
+            for (Entity e : fallingBlock.getNearbyEntities(7.0, 7.0, 7.0)) {
+                if (!(e instanceof Item)) continue;
+                e.remove();
             }
             fallingBlock.setVelocity(new Vector(0, 0, 0));
             List fallingBlockList = fallingBlock.getNearbyEntities(7.0, 7.0, 7.0);
@@ -1060,8 +1176,8 @@ extends PListener {
             });
             entityList.forEach(entity -> {
                 if (entity instanceof Player) {
-                    Player p2 = (Player)entity;
-                    JollyPinkGiant.damagePlayer(p2);
+                    Player p = (Player)entity;
+                    JollyPinkGiant.damagePlayer(p);
                 } else if (entity instanceof LivingEntity && !(entity instanceof Player)) {
                     ((LivingEntity)entity).damage(0.0);
                 }
@@ -1080,9 +1196,9 @@ extends PListener {
             List entityList = fallingBlock.getNearbyEntities(3.0, 3.0, 3.0);
             fallingBlock.getWorld().playSound(fallingBlock.getLocation(), Sound.EXPLODE, 2.0f, 0.0f);
             fallingBlock.getWorld().playEffect(fallingBlock.getLocation(), Effect.EXPLOSION_HUGE, 0);
-            for (Entity e2 : fallingBlock.getNearbyEntities(7.0, 7.0, 7.0)) {
-                if (!(e2 instanceof Item)) continue;
-                e2.remove();
+            for (Entity e : fallingBlock.getNearbyEntities(7.0, 7.0, 7.0)) {
+                if (!(e instanceof Item)) continue;
+                e.remove();
             }
             fallingBlock.setVelocity(new Vector(0, 0, 0));
             List fallingBlockList = fallingBlock.getNearbyEntities(7.0, 7.0, 7.0);
@@ -1093,8 +1209,8 @@ extends PListener {
             });
             entityList.forEach(entity -> {
                 if (entity instanceof Player) {
-                    Player p2 = (Player)entity;
-                    SadanGiant.damagePlayer(p2);
+                    Player p = (Player)entity;
+                    SadanGiant.damagePlayer(p);
                 } else if (entity instanceof LivingEntity && !(entity instanceof Player)) {
                     ((LivingEntity)entity).damage(0.0);
                 }
@@ -1104,9 +1220,9 @@ extends PListener {
     }
 
     @EventHandler
-    public void onentityded(EntityDeathEvent e2) {
-        if (e2.getEntity().getWorld().getName().contains("f6")) {
-            e2.setDroppedExp(0);
+    public void onentityded(EntityDeathEvent e) {
+        if (e.getEntity().getWorld().getName().contains("f6")) {
+            e.setDroppedExp(0);
         }
     }
 }

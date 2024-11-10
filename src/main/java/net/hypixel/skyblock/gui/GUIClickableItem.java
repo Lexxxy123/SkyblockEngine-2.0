@@ -29,8 +29,8 @@ extends GUIItem {
         return new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                e2.getWhoClicked().closeInventory();
+            public void run(InventoryClickEvent e) {
+                e.getWhoClicked().closeInventory();
             }
 
             @Override
@@ -54,7 +54,7 @@ extends GUIItem {
             }
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 if (gui == null) {
                     return;
                 }
@@ -77,7 +77,7 @@ extends GUIItem {
             }
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 if (gui == null) {
                     return;
                 }
@@ -100,7 +100,7 @@ extends GUIItem {
             }
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 if (gui == null) {
                     return;
                 }

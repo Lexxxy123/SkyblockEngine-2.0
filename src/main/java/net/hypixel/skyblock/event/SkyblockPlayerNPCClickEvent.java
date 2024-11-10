@@ -7,23 +7,23 @@
 package net.hypixel.skyblock.event;
 
 import net.hypixel.skyblock.event.SkyblockEvent;
-import net.hypixel.skyblock.npc.impl.SkyBlockNPC;
+import net.hypixel.skyblock.npc.impl.SkyblockNPC;
 import org.bukkit.entity.Player;
 
 public class SkyblockPlayerNPCClickEvent
 extends SkyblockEvent {
     private Player player;
-    private SkyBlockNPC npc;
+    private SkyblockNPC npc;
 
     public Player getPlayer() {
         return this.player;
     }
 
-    public SkyBlockNPC getNpc() {
+    public SkyblockNPC getNpc() {
         return this.npc;
     }
 
-    public SkyblockPlayerNPCClickEvent(Player player, SkyBlockNPC npc) {
+    public SkyblockPlayerNPCClickEvent(Player player, SkyblockNPC npc) {
         this.player = player;
         this.npc = npc;
     }

@@ -45,24 +45,24 @@ Ability {
         SItem.etherWarpTeleportation(player, sItem);
     }
 
-    public void cylinder(Location loc, int r2) {
+    public void cylinder(Location loc, int r) {
         int cx = loc.getBlockX();
         int cy = loc.getBlockY();
         int cz = loc.getBlockZ();
-        World w2 = loc.getWorld();
-        int rSquared = r2 * r2;
-        for (int x2 = cx - r2; x2 <= cx + r2; ++x2) {
-            for (int z2 = cz - r2; z2 <= cz + r2; ++z2) {
-                if ((cx - x2) * (cx - x2) + (cz - z2) * (cz - z2) > rSquared) continue;
-                Location l2 = new Location(w2, (double)x2, (double)cy, (double)z2);
-                this.sendPacket(w2, l2);
+        World w = loc.getWorld();
+        int rSquared = r * r;
+        for (int x = cx - r; x <= cx + r; ++x) {
+            for (int z = cz - r; z <= cz + r; ++z) {
+                if ((cx - x) * (cx - x) + (cz - z) * (cz - z) > rSquared) continue;
+                Location l = new Location(w, (double)x, (double)cy, (double)z);
+                this.sendPacket(w, l);
             }
         }
     }
 
-    public void sendPacket(World w2, Location l2) {
-        for (Player p2 : w2.getPlayers()) {
-            p2.sendBlockChange(l2, Material.BEDROCK, (byte)0);
+    public void sendPacket(World w, Location l) {
+        for (Player p : w.getPlayers()) {
+            p.sendBlockChange(l, Material.BEDROCK, (byte)0);
         }
     }
 

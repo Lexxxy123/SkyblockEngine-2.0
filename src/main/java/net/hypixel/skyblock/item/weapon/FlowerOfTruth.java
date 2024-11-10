@@ -123,7 +123,7 @@ Ability {
         boolean take = PlayerUtils.takeMana(player1, cost);
         if (!take) {
             player1.playSound(player1.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
-            final long c2 = System.currentTimeMillis();
+            final long c = System.currentTimeMillis();
             Repeater.MANA_REPLACEMENT_MAP.put(player1.getUniqueId(), new ManaReplacement(){
 
                 @Override
@@ -133,12 +133,12 @@ Ability {
 
                 @Override
                 public long getEnd() {
-                    return c2 + 1500L;
+                    return c + 1500L;
                 }
             });
             return;
         }
-        final long c3 = System.currentTimeMillis();
+        final long c = System.currentTimeMillis();
         Repeater.DEFENSE_REPLACEMENT_MAP.put(player1.getUniqueId(), new DefenseReplacement(){
 
             @Override
@@ -148,7 +148,7 @@ Ability {
 
             @Override
             public long getEnd() {
-                return c3 + 2000L;
+                return c + 2000L;
             }
         });
         Location throwLoc = player1.getLocation().add(0.0, 0.2, 0.0);
@@ -167,18 +167,18 @@ Ability {
 
             public void run() {
                 Vector teleportTo = armorStand1.getLocation().getDirection().normalize().multiply(1);
-                int i2 = 0;
+                int i = 0;
                 int ran = 0;
-                int j2 = 0;
+                int j = 0;
                 int num = 90;
                 Object loc = null;
                 ++this.run;
-                ++j2;
+                ++j;
                 if (this.run > 100) {
                     this.cancel();
                     return;
                 }
-                if (j2 >= 40) {
+                if (j >= 40) {
                     armorStand1.remove();
                     this.cancel();
                     return;
@@ -210,9 +210,9 @@ Ability {
                         break;
                     }
                 }
-                if (i2 % 2 == 0 && i2 < 13) {
+                if (i % 2 == 0 && i < 13) {
                     armorStand1.teleport(armorStand1.getLocation().add(teleportTo).multiply(1.0));
-                } else if (i2 % 2 == 0) {
+                } else if (i % 2 == 0) {
                     armorStand1.teleport(armorStand1.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                 }
                 for (Entity e3 : armorStand1.getNearbyEntities(1.0, 1.0, 1.0)) {
@@ -227,12 +227,12 @@ Ability {
                     FerocityCalculation.activeFerocityTimes(player1, (LivingEntity)entity, (int)finalDamage1, (Boolean)atp[1]);
                     user.damageEntity(entity, finalDamage1);
                     ++this.entityhit;
-                    int k2 = 0;
+                    int k = 0;
                     for (Entity e4 : armorStand1.getNearbyEntities(20.0, 20.0, 20.0)) {
                         if (!(e4 instanceof LivingEntity) || e4.isDead() || !(e4 instanceof LivingEntity) || e4 instanceof Player || e4 instanceof EnderDragonPart || e4 instanceof Villager || e4 instanceof ArmorStand || e4 instanceof Item || e4 instanceof ItemFrame || e4.hasMetadata("GiantSword")) continue;
-                        ++k2;
+                        ++k;
                     }
-                    if (k2 > 0) continue;
+                    if (k > 0) continue;
                     armorStand1.getWorld().playEffect(armorStand1.getLocation().clone().add(0.0, 1.8, 0.0), Effect.SNOWBALL_BREAK, 10);
                     armorStand1.getWorld().playEffect(armorStand1.getLocation().clone().add(0.0, 1.8, 0.0), Effect.SNOWBALL_BREAK, 10);
                     armorStand1.getWorld().playEffect(armorStand1.getLocation().clone().add(0.0, 1.8, 0.0), Effect.SNOWBALL_BREAK, 10);

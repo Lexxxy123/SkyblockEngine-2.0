@@ -15,10 +15,10 @@ public class VelocityUtil {
         double horizDist = Math.sqrt(VelocityUtil.distanceSquared(from, to));
         int gain = heightGain;
         double maxGain = gain > endGain + gain ? (double)gain : (double)(endGain + gain);
-        double a2 = -horizDist * horizDist / (4.0 * maxGain);
-        double b2 = horizDist;
-        double c2 = -endGain;
-        double slope = -b2 / (2.0 * a2) - Math.sqrt(b2 * b2 - 4.0 * a2 * c2) / (2.0 * a2);
+        double a = -horizDist * horizDist / (4.0 * maxGain);
+        double b = horizDist;
+        double c = -endGain;
+        double slope = -b / (2.0 * a) - Math.sqrt(b * b - 4.0 * a * c) / (2.0 * a);
         double vy = Math.sqrt(maxGain * 0.115);
         double vh = vy / slope;
         int dx = to.getBlockX() - from.getBlockX();

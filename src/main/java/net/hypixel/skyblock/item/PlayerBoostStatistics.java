@@ -47,6 +47,14 @@ extends MaterialStatistics {
         return 0.0;
     }
 
+    default public double getBaseHealthRegen() {
+        return 0.0;
+    }
+
+    default public double getBaseTrueDefense() {
+        return 0.0;
+    }
+
     default public double getBaseFerocity() {
         return 0.0;
     }

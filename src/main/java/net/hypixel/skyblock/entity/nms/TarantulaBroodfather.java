@@ -133,8 +133,8 @@ SlayerBoss {
         ((ArmorStand)this.hologram.getEntity()).setVisible(false);
         ((ArmorStand)this.hologram.getEntity()).setGravity(false);
         this.hologram.getEntity().setCustomNameVisible(true);
-        Entity e2 = this.getBukkitEntity().getHandle();
-        double height = e2.getBoundingBox().e - e2.getBoundingBox().b;
+        Entity e = this.getBukkitEntity().getHandle();
+        double height = e.getBoundingBox().e - e.getBoundingBox().b;
         entity.setMetadata("notDisplay", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
         this.hologram_name = new SEntity(entity.getLocation().add(0.0, height, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND, new Object[0]);
         ((ArmorStand)this.hologram_name.getEntity()).setVisible(false);
@@ -157,8 +157,8 @@ SlayerBoss {
         new BukkitRunnable(){
 
             public void run() {
-                CraftEntity e2 = TarantulaBroodfather.this.getBukkitEntity();
-                if (e2.isDead()) {
+                CraftEntity e = TarantulaBroodfather.this.getBukkitEntity();
+                if (e.isDead()) {
                     this.cancel();
                     return;
                 }
@@ -183,18 +183,18 @@ SlayerBoss {
         new BukkitRunnable(){
 
             public void run() {
-                CraftEntity e2 = TarantulaBroodfather.this.getBukkitEntity();
-                if (e2.isDead()) {
+                CraftEntity e = TarantulaBroodfather.this.getBukkitEntity();
+                if (e.isDead()) {
                     this.cancel();
                     return;
                 }
-                if (e2.getLocation().clone().distance(player.getLocation().clone()) < 5.0) {
+                if (e.getLocation().clone().distance(player.getLocation().clone()) < 5.0) {
                     return;
                 }
-                if (e2.getLocation().clone().subtract(0.0, 1.0, 0.0).getBlock().getType() == Material.AIR) {
+                if (e.getLocation().clone().subtract(0.0, 1.0, 0.0).getBlock().getType() == Material.AIR) {
                     return;
                 }
-                Vector vector = e2.getLocation().clone().toVector().subtract(player.getLocation().clone().toVector()).multiply(-1.0).multiply(new Vector(0.1, 0.2, 0.1));
+                Vector vector = e.getLocation().clone().toVector().subtract(player.getLocation().clone().toVector()).multiply(-1.0).multiply(new Vector(0.1, 0.2, 0.1));
                 vector.setY(Math.abs(vector.getY()));
                 if (vector.getY() < 0.8) {
                     vector.setY(1.5);
@@ -202,7 +202,7 @@ SlayerBoss {
                 if (vector.getY() > 5.0) {
                     vector.setY(5.0);
                 }
-                e2.setVelocity(e2.getVelocity().add(vector));
+                e.setVelocity(e.getVelocity().add(vector));
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 40L, 40L);
     }
@@ -218,7 +218,7 @@ SlayerBoss {
     }
 
     @Override
-    public void onDamage(SEntity sEntity, org.bukkit.entity.Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
+    public void onDamage(SEntity sEntity, org.bukkit.entity.Entity damager, EntityDamageByEntityEvent e, AtomicDouble damage) {
         this.top.getEntity().damage(damage.get());
     }
 
@@ -354,8 +354,8 @@ SlayerBoss {
         }
 
         @Override
-        public void onDamage(SEntity sEntity, org.bukkit.entity.Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
-            e2.setCancelled(true);
+        public void onDamage(SEntity sEntity, org.bukkit.entity.Entity damager, EntityDamageByEntityEvent e, AtomicDouble damage) {
+            e.setCancelled(true);
             Spider taran = (Spider)this.parent.getBukkitEntity();
             taran.damage(0.0, damager);
         }

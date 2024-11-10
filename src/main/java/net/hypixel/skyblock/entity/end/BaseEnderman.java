@@ -39,20 +39,20 @@ EntityFunction {
             return;
         }
         if ("Voidgloom Seraph" == quest.getType().getName()) {
-            Location k2 = killed.getLocation().clone();
+            Location k = killed.getLocation().clone();
             if (0 == SUtil.random(0, 8) && 3 == quest.getType().getTier()) {
-                SlayerQuest.playMinibossSpawn(k2, (Entity)player);
-                SUtil.delay(() -> new SEntity(k2, SEntityType.VOIDLING_DEVOTEE, new Object[0]).setTarget((LivingEntity)player), 12L);
+                SlayerQuest.playMinibossSpawn(k, (Entity)player);
+                SUtil.delay(() -> new SEntity(k, SEntityType.VOIDLING_DEVOTEE, new Object[0]).setTarget((LivingEntity)player), 12L);
                 return;
             }
             if (0 == SUtil.random(0, 16) && 4 == quest.getType().getTier()) {
-                SlayerQuest.playMinibossSpawn(k2, (Entity)player);
-                SUtil.delay(() -> new SEntity(k2, SEntityType.VOIDLING_RADICAL, new Object[0]).setTarget((LivingEntity)player), 12L);
+                SlayerQuest.playMinibossSpawn(k, (Entity)player);
+                SUtil.delay(() -> new SEntity(k, SEntityType.VOIDLING_RADICAL, new Object[0]).setTarget((LivingEntity)player), 12L);
                 return;
             }
             if (0 == SUtil.random(0, 45) && 4 == quest.getType().getTier()) {
-                SlayerQuest.playMinibossSpawn(k2, (Entity)player);
-                SUtil.delay(() -> new SEntity(k2, SEntityType.VOIDCRAZED_MANIAC, new Object[0]).setTarget((LivingEntity)player), 12L);
+                SlayerQuest.playMinibossSpawn(k, (Entity)player);
+                SUtil.delay(() -> new SEntity(k, SEntityType.VOIDCRAZED_MANIAC, new Object[0]).setTarget((LivingEntity)player), 12L);
             }
         }
     }

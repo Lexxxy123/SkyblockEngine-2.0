@@ -24,19 +24,19 @@ extends WorldCreator {
     public ChunkGenerator generator() {
         return new ChunkGenerator(){
 
-            public ChunkGenerator.ChunkData generateChunkData(World world, Random random, int x2, int z2, ChunkGenerator.BiomeGrid biome) {
+            public ChunkGenerator.ChunkData generateChunkData(World world, Random random, int x, int z, ChunkGenerator.BiomeGrid biome) {
                 return this.createChunkData(world);
             }
 
-            public byte[] generate(World world, Random random, int x2, int z2) {
+            public byte[] generate(World world, Random random, int x, int z) {
                 return new byte[32768];
             }
 
-            public byte[][] generateBlockSections(World world, Random random, int x2, int z2, ChunkGenerator.BiomeGrid biomes) {
+            public byte[][] generateBlockSections(World world, Random random, int x, int z, ChunkGenerator.BiomeGrid biomes) {
                 return new byte[16][16];
             }
 
-            public short[][] generateExtBlockSections(World world, Random random, int x2, int z2, ChunkGenerator.BiomeGrid biomes) {
+            public short[][] generateExtBlockSections(World world, Random random, int x, int z, ChunkGenerator.BiomeGrid biomes) {
                 return new short[world.getMaxHeight() / 16][];
             }
         };

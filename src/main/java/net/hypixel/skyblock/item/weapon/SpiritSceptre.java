@@ -147,10 +147,10 @@ Ability {
             public void run() {
                 SItem helmet;
                 PlayerInventory inv;
-                boolean bl2;
+                boolean bl;
                 int angle;
                 Vector newVector;
-                int i2 = 0;
+                int i = 0;
                 int ran = 0;
                 int num = 90;
                 Object loc = null;
@@ -168,12 +168,12 @@ Ability {
                 }
                 previousVector[0] = newVector = new Vector(throwVec.getX(), previousVector[0].getY() - 0.03, throwVec.getZ());
                 armorStand1.setVelocity(newVector);
-                if (i2 < 13) {
-                    angle = i2 * 20 + 90;
-                    bl2 = false;
+                if (i < 13) {
+                    angle = i * 20 + 90;
+                    bl = false;
                 } else {
-                    angle = i2 * 20 - 90;
-                    bl2 = true;
+                    angle = i * 20 - 90;
+                    bl = true;
                 }
                 if (!armorStand1.getLocation().getBlock().getType().isTransparent()) {
                     armorStand1.getWorld().playSound(armorStand1.getLocation(), Sound.EXPLODE, 2.0f, 1.0f);
@@ -182,20 +182,20 @@ Ability {
                     this.cancel();
                     return;
                 }
-                if (i2 % 2 == 0 && i2 < 13) {
+                if (i % 2 == 0 && i < 13) {
                     armorStand1.teleport(armorStand1.getLocation().add(teleportTo).multiply(1.0));
                     armorStand1.teleport(armorStand1.getLocation().add(teleportTo).multiply(1.0));
-                } else if (i2 % 2 == 0) {
+                } else if (i % 2 == 0) {
                     armorStand1.teleport(armorStand1.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                     armorStand1.teleport(armorStand1.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                 }
                 PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player1.getUniqueId());
                 int manaPool = SUtil.blackMagic(100.0 + statistics.getIntelligence().addAll());
                 if (SpiritSceptre.this.ACT3 == "true") {
-                    block0: for (Entity e2 : armorStand1.getNearbyEntities(5.0, 5.0, 5.0)) {
+                    block0: for (Entity e : armorStand1.getNearbyEntities(5.0, 5.0, 5.0)) {
                         SpiritSceptre.this.ACT3 = "false";
-                        if (!(e2 instanceof Damageable) || e2 == player1.getPlayer()) continue;
-                        Damageable entity = (Damageable)e2;
+                        if (!(e instanceof Damageable) || e == player1.getPlayer()) continue;
+                        Damageable entity = (Damageable)e;
                         int baseMagicDmg = 2000;
                         inv = player1.getInventory();
                         helmet = SItem.find(inv.getHelmet());

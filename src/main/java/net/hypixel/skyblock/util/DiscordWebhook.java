@@ -141,7 +141,7 @@ public class DiscordWebhook {
             StringBuilder builder = new StringBuilder();
             Set<Map.Entry<String, Object>> entrySet = this.map.entrySet();
             builder.append("{");
-            int i2 = 0;
+            int i = 0;
             for (Map.Entry<String, Object> entry : entrySet) {
                 Object val = entry.getValue();
                 builder.append(this.quote(entry.getKey())).append(":");
@@ -156,12 +156,12 @@ public class DiscordWebhook {
                 } else if (val.getClass().isArray()) {
                     builder.append("[");
                     int len = Array.getLength(val);
-                    for (int j2 = 0; j2 < len; ++j2) {
-                        builder.append(Array.get(val, j2).toString()).append(j2 != len - 1 ? "," : "");
+                    for (int j = 0; j < len; ++j) {
+                        builder.append(Array.get(val, j).toString()).append(j != len - 1 ? "," : "");
                     }
                     builder.append("]");
                 }
-                builder.append(++i2 == entrySet.size() ? "}" : ",");
+                builder.append(++i == entrySet.size() ? "}" : ",");
             }
             return builder.toString();
         }

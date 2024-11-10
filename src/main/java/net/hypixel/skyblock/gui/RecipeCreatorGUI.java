@@ -42,12 +42,12 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(final GUIOpenEvent e2) {
+    public void onOpen(final GUIOpenEvent e) {
         this.fill(BLACK_STAINED_GLASS_PANE, 13, 34);
         this.border(RED_STAINED_GLASS_PANE);
         this.border(BLACK_STAINED_GLASS_PANE, 0, 44);
         this.set(24, null);
-        final Player player = e2.getPlayer();
+        final Player player = e.getPlayer();
         this.set(new GUIClickableItem(){
 
             @Override
@@ -76,7 +76,7 @@ extends GUI {
                 }
                 ShapelessRecipe recipe = new ShapelessRecipe(SItem.find(result), Groups.EXCHANGEABLE_RECIPE_RESULTS.contains(result.getType()));
                 recipe.getResult().setAmount(result.getAmount());
-                for (ItemStack stack : RecipeCreatorGUI.this.getGridItems(e2.getInventory())) {
+                for (ItemStack stack : RecipeCreatorGUI.this.getGridItems(e.getInventory())) {
                     recipe.add(SItem.find(stack).getType(), stack.getAmount());
                 }
                 SUtil.runAsync(() -> RecipeDatabase.save(recipe));
@@ -97,20 +97,20 @@ extends GUI {
     }
 
     @Override
-    public void onClose(InventoryCloseEvent e2) {
-        if (e2.getInventory().getItem(24) != null) {
-            Sputnik.smartGiveItem(e2.getInventory().getItem(24), (Player)e2.getPlayer());
+    public void onClose(InventoryCloseEvent e) {
+        if (e.getInventory().getItem(24) != null) {
+            Sputnik.smartGiveItem(e.getInventory().getItem(24), (Player)e.getPlayer());
         }
-        for (ItemStack stack : this.getGridItems(e2.getInventory())) {
-            Sputnik.smartGiveItem(stack, (Player)e2.getPlayer());
+        for (ItemStack stack : this.getGridItems(e.getInventory())) {
+            Sputnik.smartGiveItem(stack, (Player)e.getPlayer());
         }
     }
 
     @Override
-    public void onTopClick(InventoryClickEvent e2) {
+    public void onTopClick(InventoryClickEvent e) {
         for (int slot : GRID) {
-            if (slot != e2.getSlot() && e2.getSlot() != 24) continue;
-            e2.setCancelled(false);
+            if (slot != e.getSlot() && e.getSlot() != 24) continue;
+            e.setCancelled(false);
             break;
         }
     }

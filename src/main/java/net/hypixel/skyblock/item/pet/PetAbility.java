@@ -18,10 +18,10 @@ public interface PetAbility {
 
     public List<String> getDescription(SItem var1);
 
-    default public void onHurt(EntityDamageByEntityEvent e2, Entity damager) {
+    default public void onHurt(EntityDamageByEntityEvent e, Entity damager) {
     }
 
-    default public void onDamage(EntityDamageByEntityEvent e2) {
+    default public void onDamage(EntityDamageByEntityEvent e) {
     }
 
     default public void onZealotAttempt(AtomicDouble chance) {

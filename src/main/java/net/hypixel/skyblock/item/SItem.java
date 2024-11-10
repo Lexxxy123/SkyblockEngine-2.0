@@ -167,8 +167,8 @@ ConfigurationSerializable {
             this.stack.setItemMeta(meta);
         }
         NBTTagCompound es = this.data.getCompound("enchantments");
-        for (net.hypixel.skyblock.features.enchantment.Enchantment e2 : enchantments) {
-            es.setInt(e2.getType().getNamespace(), e2.getLevel());
+        for (net.hypixel.skyblock.features.enchantment.Enchantment e : enchantments) {
+            es.setInt(e.getType().getNamespace(), e.getLevel());
         }
         this.data.set("enchantments", (NBTBase)es);
         this.update();
@@ -180,7 +180,7 @@ ConfigurationSerializable {
             return false;
         }
         List<net.hypixel.skyblock.features.enchantment.Enchantment> enchantments = this.getEnchantments();
-        boolean removeIf = enchantments.removeIf(e2 -> e2.getType().equals(type));
+        boolean removeIf = enchantments.removeIf(e -> e.getType().equals(type));
         if (null != type.getVanilla()) {
             ItemMeta meta = this.stack.getItemMeta();
             meta.removeEnchant(type.getVanilla());
@@ -263,8 +263,8 @@ ConfigurationSerializable {
         this.removePotionEffect(effect.getType());
         effects.add(effect);
         NBTTagCompound es = this.data.getCompound("effects");
-        for (PotionEffect e2 : effects) {
-            es.set(e2.getType().getNamespace(), (NBTBase)e2.toCompound());
+        for (PotionEffect e : effects) {
+            es.set(e.getType().getNamespace(), (NBTBase)e.toCompound());
         }
         this.data.set("effects", (NBTBase)es);
         this.update();
@@ -276,12 +276,12 @@ ConfigurationSerializable {
             return false;
         }
         List<PotionEffect> effects = this.getPotionEffects();
-        boolean removeIf = effects.removeIf(e2 -> e2.getType().equals(type));
+        boolean removeIf = effects.removeIf(e -> e.getType().equals(type));
         PotionColor top = SUtil.getTopColor(this);
         this.stack.setDurability(null != top ? (this.isSplashPotion() ? top.getSplashData() : top.getData()) : (short)0);
         NBTTagCompound es = this.data.getCompound("effects");
-        for (PotionEffect e3 : effects) {
-            es.set(e3.getType().getNamespace(), (NBTBase)e3.toCompound());
+        for (PotionEffect e2 : effects) {
+            es.set(e2.getType().getNamespace(), (NBTBase)e2.toCompound());
         }
         this.data.set("effects", (NBTBase)es);
         this.update();
@@ -643,9 +643,9 @@ ConfigurationSerializable {
         if (null == Item.getById((int)material.getCraftMaterial().getId())) {
             return null;
         }
-        SItem n2 = SItem.of(material, stack.getDurability(), origin);
-        n2.getStack().setAmount(stack.getAmount());
-        return n2;
+        SItem n = SItem.of(material, stack.getDurability(), origin);
+        n.getStack().setAmount(stack.getAmount());
+        return n;
     }
 
     public static SItem of(ItemStack stack) {
@@ -671,11 +671,11 @@ ConfigurationSerializable {
         return new SItem(this.type, this.variant, this.stack.clone(), this.rarity, this.origin, this.recombobulated, this.data, true);
     }
 
-    public boolean equals(Object o2) {
-        if (!(o2 instanceof SItem)) {
+    public boolean equals(Object o) {
+        if (!(o instanceof SItem)) {
             return false;
         }
-        SItem item = (SItem)o2;
+        SItem item = (SItem)o;
         return this.type == item.type && this.variant == item.variant && this.stack.equals((Object)item.stack) && this.rarity == item.rarity && this.origin == item.origin && this.recombobulated == item.recombobulated && this.data.equals((Object)item.data);
     }
 
@@ -716,16 +716,16 @@ ConfigurationSerializable {
         map.put("rarity", this.rarity.name());
         map.put("origin", this.origin.name());
         map.put("recombobulated", this.recombobulated);
-        for (String k2 : this.data.c()) {
-            if (k2.equals("display")) continue;
-            if (this.data.get(k2) instanceof NBTTagCompound) {
-                SerialNBTTagCompound serial = new SerialNBTTagCompound(this.data.getCompound(k2));
+        for (String k : this.data.c()) {
+            if (k.equals("display")) continue;
+            if (this.data.get(k) instanceof NBTTagCompound) {
+                SerialNBTTagCompound serial = new SerialNBTTagCompound(this.data.getCompound(k));
                 for (Map.Entry<String, Object> entry : serial.serialize().entrySet()) {
-                    map.put(k2 + "." + entry.getKey(), entry.getValue());
+                    map.put(k + "." + entry.getKey(), entry.getValue());
                 }
                 continue;
             }
-            map.put(k2, SUtil.getObjectFromCompound(this.data, k2));
+            map.put(k, SUtil.getObjectFromCompound(this.data, k));
         }
         return map;
     }
@@ -739,11 +739,11 @@ ConfigurationSerializable {
             if (2 <= dir.length) {
                 key = dir[dir.length - 1];
                 NBTTagCompound track = data;
-                for (int i2 = 0; i2 < dir.length - 1; ++i2) {
-                    if (!track.hasKey(dir[i2])) {
-                        track.set(dir[i2], (NBTBase)new NBTTagCompound());
+                for (int i = 0; i < dir.length - 1; ++i) {
+                    if (!track.hasKey(dir[i])) {
+                        track.set(dir[i], (NBTBase)new NBTTagCompound());
                     }
-                    track = track.getCompound(dir[i2]);
+                    track = track.getCompound(dir[i]);
                 }
                 track.set(key, SUtil.getBaseFromObject(entry.getValue()));
                 continue;

@@ -46,8 +46,8 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e2) {
-        final Player player = e2.getPlayer();
+    public void onOpen(GUIOpenEvent e) {
+        final Player player = e.getPlayer();
         User user = User.getUser(player.getUniqueId());
         String text_ = "&7Status";
         if (0L < PlayerUtils.getCookieDurationTicks(player)) {
@@ -56,8 +56,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                GUIType.SKYBLOCK_MENU.getGUI().open((Player)e2.getWhoClicked());
+            public void run(InventoryClickEvent e) {
+                GUIType.SKYBLOCK_MENU.getGUI().open((Player)e.getWhoClicked());
             }
 
             @Override
@@ -73,12 +73,12 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 if (0L < PlayerUtils.getCookieDurationTicks(player)) {
-                    GUIType.ANVIL.getGUI().open((Player)e2.getWhoClicked());
+                    GUIType.ANVIL.getGUI().open((Player)e.getWhoClicked());
                 } else {
-                    ((Player)e2.getWhoClicked()).playSound(player.getLocation(), Sound.VILLAGER_NO, 1.0f, 1.0f);
-                    e2.getWhoClicked().sendMessage(Sputnik.trans("&cYou need the Cookie Buff active to use this feature!"));
+                    ((Player)e.getWhoClicked()).playSound(player.getLocation(), Sound.VILLAGER_NO, 1.0f, 1.0f);
+                    e.getWhoClicked().sendMessage(Sputnik.trans("&cYou need the Cookie Buff active to use this feature!"));
                 }
             }
 
@@ -99,12 +99,12 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 if (0L < PlayerUtils.getCookieDurationTicks(player)) {
-                    e2.getWhoClicked().sendMessage(ChatColor.RED + "Disabled bruh.");
+                    e.getWhoClicked().sendMessage(ChatColor.RED + "Disabled bruh.");
                 } else {
-                    ((Player)e2.getWhoClicked()).playSound(player.getLocation(), Sound.VILLAGER_NO, 1.0f, 1.0f);
-                    e2.getWhoClicked().sendMessage(Sputnik.trans("&cYou need the Cookie Buff active to use this feature!"));
+                    ((Player)e.getWhoClicked()).playSound(player.getLocation(), Sound.VILLAGER_NO, 1.0f, 1.0f);
+                    e.getWhoClicked().sendMessage(Sputnik.trans("&cYou need the Cookie Buff active to use this feature!"));
                 }
             }
 
@@ -125,12 +125,12 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 if (0L < PlayerUtils.getCookieDurationTicks(player)) {
-                    GUIType.TRASH.getGUI().open((Player)e2.getWhoClicked());
+                    GUIType.TRASH.getGUI().open((Player)e.getWhoClicked());
                 } else {
-                    ((Player)e2.getWhoClicked()).playSound(player.getLocation(), Sound.VILLAGER_NO, 1.0f, 1.0f);
-                    e2.getWhoClicked().sendMessage(Sputnik.trans("&cYou need the Cookie Buff active to use this feature!"));
+                    ((Player)e.getWhoClicked()).playSound(player.getLocation(), Sound.VILLAGER_NO, 1.0f, 1.0f);
+                    e.getWhoClicked().sendMessage(Sputnik.trans("&cYou need the Cookie Buff active to use this feature!"));
                 }
             }
 
@@ -151,12 +151,12 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 if (0L < PlayerUtils.getCookieDurationTicks(player)) {
-                    GUIType.FARM_MERCHANT.getGUI().open((Player)e2.getWhoClicked());
+                    GUIType.FARM_MERCHANT.getGUI().open((Player)e.getWhoClicked());
                 } else {
-                    ((Player)e2.getWhoClicked()).playSound(player.getLocation(), Sound.VILLAGER_NO, 1.0f, 1.0f);
-                    e2.getWhoClicked().sendMessage(Sputnik.trans("&cYou need the Cookie Buff active to use this feature!"));
+                    ((Player)e.getWhoClicked()).playSound(player.getLocation(), Sound.VILLAGER_NO, 1.0f, 1.0f);
+                    e.getWhoClicked().sendMessage(Sputnik.trans("&cYou need the Cookie Buff active to use this feature!"));
                 }
             }
 

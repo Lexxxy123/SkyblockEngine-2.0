@@ -100,8 +100,8 @@ extends BaseZombie {
         return 900000.0;
     }
 
-    public static ItemStack b(int hexcolor, Material m2) {
-        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m2), Color.fromRGB((int)hexcolor));
+    public static ItemStack b(int hexcolor, Material m) {
+        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB((int)hexcolor));
         ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
@@ -211,10 +211,10 @@ extends BaseZombie {
     }
 
     @Override
-    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
+    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e, AtomicDouble damage) {
         LivingEntity en = sEntity.getEntity();
-        Vector v2 = new Vector(0, 0, 0);
-        SUtil.delay(() -> ShadowAssassins.lambda$onDamage$0((Entity)en, v2), 1L);
+        Vector v = new Vector(0, 0, 0);
+        SUtil.delay(() -> ShadowAssassins.lambda$onDamage$0((Entity)en, v), 1L);
     }
 
     @Override
@@ -227,8 +227,8 @@ extends BaseZombie {
         return 0.35;
     }
 
-    private static /* synthetic */ void lambda$onDamage$0(Entity en, Vector v2) {
-        en.setVelocity(v2);
+    private static /* synthetic */ void lambda$onDamage$0(Entity en, Vector v) {
+        en.setVelocity(v);
     }
 }
 

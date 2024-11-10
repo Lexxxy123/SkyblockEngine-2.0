@@ -30,7 +30,7 @@ extends SCommand {
         if (player.isOp()) {
             int amount = Integer.parseInt(args[0]);
             PlayerInventory inv = player.getInventory();
-            for (int i2 = 0; i2 < amount; ++i2) {
+            for (int i = 0; i < amount; ++i) {
                 ItemStack stack = SItem.of(SMaterial.HIDDEN_BOOSTER_COOKIE).getStack();
                 Sputnik.smartGiveItem(stack, player);
             }

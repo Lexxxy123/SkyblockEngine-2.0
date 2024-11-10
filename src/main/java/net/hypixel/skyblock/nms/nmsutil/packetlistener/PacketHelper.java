@@ -84,13 +84,13 @@ API {
     }
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent e2) {
-        this.channelInjector.addChannel(e2.getPlayer());
+    public void onJoin(PlayerJoinEvent e) {
+        this.channelInjector.addChannel(e.getPlayer());
     }
 
     @EventHandler
-    public void onQuit(PlayerQuitEvent e2) {
-        this.channelInjector.removeChannel(e2.getPlayer());
+    public void onQuit(PlayerQuitEvent e) {
+        this.channelInjector.removeChannel(e.getPlayer());
     }
 
     @Override

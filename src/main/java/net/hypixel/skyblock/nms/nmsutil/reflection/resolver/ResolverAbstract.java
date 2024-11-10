@@ -14,7 +14,7 @@ public abstract class ResolverAbstract<T> {
     protected T resolveSilent(ResolverQuery ... queries) {
         try {
             return this.resolve(queries);
-        } catch (Exception e2) {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -24,8 +24,8 @@ public abstract class ResolverAbstract<T> {
             throw new IllegalArgumentException("Given possibilities are empty");
         }
         int length = queries.length;
-        for (int i2 = 0; i2 < length; ++i2) {
-            ResolverQuery query = queries[i2];
+        for (int i = 0; i < length; ++i) {
+            ResolverQuery query = queries[i];
             if (this.resolvedObjects.containsKey(query)) {
                 return this.resolvedObjects.get(query);
             }
@@ -33,7 +33,7 @@ public abstract class ResolverAbstract<T> {
                 T resolved = this.resolveObject(query);
                 this.resolvedObjects.put(query, resolved);
                 return resolved;
-            } catch (ReflectiveOperationException e2) {
+            } catch (ReflectiveOperationException e) {
                 continue;
             }
         }

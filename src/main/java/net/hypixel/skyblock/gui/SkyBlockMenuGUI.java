@@ -56,16 +56,16 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e2) {
+    public void onOpen(GUIOpenEvent e) {
         this.fill(BLACK_STAINED_GLASS_PANE);
-        final Player player = e2.getPlayer();
+        final Player player = e.getPlayer();
         final User user = User.getUser(player.getUniqueId());
         final PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                GUIType.SKYBLOCK_PROFILE.getGUI().open((Player)e2.getWhoClicked());
+            public void run(InventoryClickEvent e) {
+                GUIType.SKYBLOCK_PROFILE.getGUI().open((Player)e.getWhoClicked());
             }
 
             @Override
@@ -88,7 +88,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 GUIType.SKILL_MENU.getGUI().open(player);
             }
 
@@ -106,7 +106,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 GUIType.COLLECTION_MENU.getGUI().open(player);
             }
 
@@ -123,7 +123,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 player.playSound(player.getLocation(), Sound.CHEST_OPEN, 1.0f, 0.0f);
                 player.openInventory(player.getEnderChest());
             }
@@ -141,7 +141,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 player.sendMessage(ChatColor.RED + "Calender coming soon!");
             }
 
@@ -158,7 +158,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 player.sendMessage(ChatColor.RED + "Quests coming soon!");
             }
 
@@ -175,7 +175,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 player.sendMessage(ChatColor.RED + "Coming Soon!");
             }
 
@@ -192,7 +192,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 new RecipeBookListGUI(player).open(player);
             }
 
@@ -210,7 +210,7 @@ extends GUI {
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
+                public void run(InventoryClickEvent e) {
                     GUIType.ACTIVE_EFFECTS.getGUI().open(player);
                 }
 
@@ -231,7 +231,7 @@ extends GUI {
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
+                public void run(InventoryClickEvent e) {
                     GUIType.PETS.getGUI().open(player);
                 }
 
@@ -249,7 +249,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 GUIType.CRAFTING_TABLE.getGUI().open(player);
             }
 
@@ -266,7 +266,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 player.sendMessage(ChatColor.RED + "Wardrobe is being reworked due to serve performance issues! If you lost your armors set stored inside, we're sorry, you can ask staff members to re-make it for you.");
             }
 
@@ -277,8 +277,8 @@ extends GUI {
 
             @Override
             public ItemStack getItem() {
-                ItemStack i2 = new ItemStack(Material.LEATHER_CHESTPLATE);
-                LeatherArmorMeta im1 = (LeatherArmorMeta)i2.getItemMeta();
+                ItemStack i = new ItemStack(Material.LEATHER_CHESTPLATE);
+                LeatherArmorMeta im1 = (LeatherArmorMeta)i.getItemMeta();
                 im1.setDisplayName(ChatColor.GREEN + "Wardrobe");
                 im1.setColor(Color.fromRGB((int)127, (int)63, (int)178));
                 ArrayList<String> lore = new ArrayList<String>();
@@ -287,14 +287,14 @@ extends GUI {
                 lore.add(ChatColor.GRAY + "");
                 lore.add(ChatColor.RED + "Disabled!");
                 im1.setLore(lore);
-                i2.setItemMeta((ItemMeta)im1);
-                return i2;
+                i.setItemMeta((ItemMeta)im1);
+                return i;
             }
         });
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 GUIType.BANKER.getGUI().open(player);
             }
 
@@ -311,7 +311,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 GUIType.QUIVER.getGUI().open(player);
             }
 
@@ -328,8 +328,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                new AccessoryReforges().open((Player)e2.getWhoClicked());
+            public void run(InventoryClickEvent e) {
+                new AccessoryReforges().open((Player)e.getWhoClicked());
             }
 
             @Override
@@ -345,8 +345,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                Player player = (Player)e2.getWhoClicked();
+            public void run(InventoryClickEvent e) {
+                Player player = (Player)e.getWhoClicked();
                 List<SItem> accessories = PlayerUtils.getAccessories(player);
                 if (accessories == null) {
                     player.sendMessage(SUtil.color("&cYour accessory bag is empty!"));
@@ -373,7 +373,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 player.chat("/warp");
             }
 
@@ -390,8 +390,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                e2.getWhoClicked().sendMessage(ChatColor.RED + "This feature is under development!");
+            public void run(InventoryClickEvent e) {
+                e.getWhoClicked().sendMessage(ChatColor.RED + "This feature is under development!");
             }
 
             @Override
@@ -407,7 +407,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 GUIType.COOKIE_GUI.getGUI().open(player);
             }
 

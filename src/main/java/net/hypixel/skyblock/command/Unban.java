@@ -14,7 +14,6 @@ import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.command.CommandParameters;
 import net.hypixel.skyblock.command.CommandSource;
 import net.hypixel.skyblock.command.SCommand;
-import net.hypixel.skyblock.config.Config;
 import net.hypixel.skyblock.features.ranks.PlayerRank;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -23,8 +22,6 @@ import org.bukkit.entity.Player;
 @CommandParameters(description="unban player", aliases="unban", permission=PlayerRank.MOD)
 public class Unban
 extends SCommand {
-    public static Config config = SkyBlock.getInstance().config;
-
     @Override
     public void run(CommandSource sender, String[] args) {
         if (args.length >= 1) {

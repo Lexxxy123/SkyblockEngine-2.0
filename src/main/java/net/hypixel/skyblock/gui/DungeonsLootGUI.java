@@ -29,27 +29,27 @@ extends GUI {
     }
 
     @Override
-    public void onClose(InventoryCloseEvent e2) {
-        ItemStack[] se = e2.getInventory().getContents();
-        for (int i2 = 0; i2 < se.length; ++i2) {
-            if (se[i2] == null) continue;
-            this.bl.getWorld().dropItemNaturally(this.bl.getLocation().clone().add(0.5, 0.8, 0.5), se[i2]);
+    public void onClose(InventoryCloseEvent e) {
+        ItemStack[] se = e.getInventory().getContents();
+        for (int i = 0; i < se.length; ++i) {
+            if (se[i] == null) continue;
+            this.bl.getWorld().dropItemNaturally(this.bl.getLocation().clone().add(0.5, 0.8, 0.5), se[i]);
         }
     }
 
     @Override
-    public void onBottomClick(InventoryClickEvent e2) {
-        if (e2.getAction() != InventoryAction.PLACE_ALL) {
-            e2.setCancelled(true);
+    public void onBottomClick(InventoryClickEvent e) {
+        if (e.getAction() != InventoryAction.PLACE_ALL) {
+            e.setCancelled(true);
         } else {
-            SUtil.delay(() -> e2.getWhoClicked().closeInventory(), 2L);
+            SUtil.delay(() -> e.getWhoClicked().closeInventory(), 2L);
         }
     }
 
     @Override
-    public void onTopClick(InventoryClickEvent e2) {
-        if (e2.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
-            SUtil.delay(() -> e2.getWhoClicked().closeInventory(), 2L);
+    public void onTopClick(InventoryClickEvent e) {
+        if (e.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
+            SUtil.delay(() -> e.getWhoClicked().closeInventory(), 2L);
         }
     }
 }

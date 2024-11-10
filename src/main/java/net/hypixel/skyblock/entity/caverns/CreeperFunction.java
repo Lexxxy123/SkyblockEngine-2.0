@@ -9,7 +9,7 @@ import net.hypixel.skyblock.event.CreeperIgniteEvent;
 
 public interface CreeperFunction
 extends EntityFunction {
-    default public void onCreeperIgnite(CreeperIgniteEvent e2, SEntity sEntity) {
+    default public void onCreeperIgnite(CreeperIgniteEvent e, SEntity sEntity) {
     }
 }
 

@@ -40,11 +40,11 @@ EntityFunction {
     }
 
     @Override
-    public void onAttack(final EntityDamageByEntityEvent e2) {
+    public void onAttack(final EntityDamageByEntityEvent e) {
         new BukkitRunnable(){
 
             public void run() {
-                e2.getEntity().setVelocity(e2.getEntity().getVelocity().clone().setY(1.5));
+                e.getEntity().setVelocity(e.getEntity().getVelocity().clone().setY(1.5));
             }
         }.runTaskLater((Plugin)SkyBlock.getPlugin(), 1L);
     }

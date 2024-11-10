@@ -3,41 +3,39 @@
  * 
  * Could not load the following classes:
  *  org.bukkit.ChatColor
- *  org.bukkit.GameMode
  *  org.bukkit.block.Block
  *  org.bukkit.entity.Player
  *  org.bukkit.event.EventHandler
- *  org.bukkit.event.block.BlockPlaceEvent
  *  org.bukkit.event.player.PlayerInteractEvent
  */
 package net.hypixel.skyblock.listener;
 
 import net.hypixel.skyblock.command.RegionCommand;
+import net.hypixel.skyblock.command.SetLaunchPad;
+import net.hypixel.skyblock.features.launchpads.LaunchPadHandler;
+import net.hypixel.skyblock.features.launchpads.PadGenerator;
 import net.hypixel.skyblock.features.region.Region;
 import net.hypixel.skyblock.features.region.RegionGenerator;
 import net.hypixel.skyblock.listener.PListener;
-import net.hypixel.skyblock.user.User;
 import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 public class BlockListener
 extends PListener {
     @EventHandler
-    public void onBlockInteract(PlayerInteractEvent e2) {
-        Block block = e2.getClickedBlock();
+    public void onBlockInteract(PlayerInteractEvent e) {
+        Block block = e.getClickedBlock();
         if (block == null) {
             return;
         }
-        Player player = e2.getPlayer();
+        Player player = e.getPlayer();
         if (!RegionCommand.REGION_GENERATION_MAP.containsKey(player)) {
             return;
         }
-        e2.setCancelled(true);
+        e.setCancelled(true);
         RegionGenerator generator = RegionCommand.REGION_GENERATION_MAP.get(player);
         switch (generator.getPhase()) {
             case 1: {
@@ -65,11 +63,40 @@ extends PListener {
     }
 
     @EventHandler
-    public void onBlockPlace(BlockPlaceEvent event) {
-        Player player = event.getPlayer();
-        User user = User.getUser(player);
-        if (user.isOnUserIsland() && player.getGameMode() != GameMode.CREATIVE && player.getWorld().getName().equalsIgnoreCase("world")) {
-            event.setCancelled(true);
+    public void PadCreation(PlayerInteractEvent e) {
+        Block block = e.getClickedBlock();
+        if (block == null) {
+            return;
+        }
+        Player player = e.getPlayer();
+        if (!SetLaunchPad.PAD_GENERATION_MAP.containsKey(player)) {
+            return;
+        }
+        e.setCancelled(true);
+        PadGenerator generator = SetLaunchPad.PAD_GENERATION_MAP.get(player);
+        switch (generator.getPhase()) {
+            case 1: {
+                generator.setStartLocation(block.getLocation());
+                generator.setPhase(2);
+                player.sendMessage(ChatColor.GRAY + "added your clicked block as the start location!");
+                player.sendMessage(ChatColor.DARK_AQUA + "Click on the second location block!");
+                break;
+            }
+            case 2: {
+                generator.setEndLocation(block.getLocation());
+                generator.setPhase(3);
+                player.sendMessage(ChatColor.GRAY + "added your clicked block as the end location!");
+                player.sendMessage(ChatColor.DARK_AQUA + "Click on the 3rd block for teleport location!");
+                break;
+            }
+            case 3: {
+                generator.setTeleportLocation(block.getLocation().add(0.0, 1.0, 0.0));
+                LaunchPadHandler handler = new LaunchPadHandler();
+                handler.savePad(generator.getStart(), generator.getEnd(), generator.getStartLocation(), generator.getEndLocation(), generator.getTeleportLocation());
+                player.sendMessage(ChatColor.GREEN + "Created LaunchPad!");
+                SetLaunchPad.PAD_GENERATION_MAP.remove(player);
+                break;
+            }
         }
     }
 }

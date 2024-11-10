@@ -85,21 +85,21 @@ extends GUI {
     private int page;
     private final boolean pickup;
 
-    public static void setShowPets(Player p2, boolean bo2) {
-        if (p2 == null) {
+    public static void setShowPets(Player p, boolean bo) {
+        if (p == null) {
             SLog.severe("An unexpected error occured on Pets saving!");
         }
-        PET_SHOWN.put(p2.getUniqueId(), bo2);
+        PET_SHOWN.put(p.getUniqueId(), bo);
     }
 
-    public static boolean getShowPet(Player p2) {
-        if (p2 == null) {
+    public static boolean getShowPet(Player p) {
+        if (p == null) {
             return true;
         }
-        if (PET_SHOWN.containsKey(p2.getUniqueId())) {
-            return PET_SHOWN.get(p2.getUniqueId());
+        if (PET_SHOWN.containsKey(p.getUniqueId())) {
+            return PET_SHOWN.get(p.getUniqueId());
         }
-        PET_SHOWN.put(p2.getUniqueId(), true);
+        PET_SHOWN.put(p.getUniqueId(), true);
         return true;
     }
 
@@ -118,9 +118,9 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e2) {
+    public void onOpen(GUIOpenEvent e) {
         Pet.PetItem active;
-        final Player player = e2.getPlayer();
+        final Player player = e.getPlayer();
         final User user = User.getUser(player.getUniqueId());
         this.border(BLACK_STAINED_GLASS_PANE);
         PaginationList paged = new PaginationList(28);
@@ -134,8 +134,8 @@ extends GUI {
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
-                    new PetsGUI(finalPage - 1, false).open((Player)e2.getWhoClicked());
+                public void run(InventoryClickEvent e) {
+                    new PetsGUI(finalPage - 1, false).open((Player)e.getWhoClicked());
                 }
 
                 @Override
@@ -153,8 +153,8 @@ extends GUI {
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
-                    new PetsGUI(finalPage + 1, false).open((Player)e2.getWhoClicked());
+                public void run(InventoryClickEvent e) {
+                    new PetsGUI(finalPage + 1, false).open((Player)e.getWhoClicked());
                 }
 
                 @Override
@@ -176,7 +176,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
                 new PetsGUI(PetsGUI.this.page, !PetsGUI.this.pickup).open(player);
             }
 
@@ -193,9 +193,9 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                Player p2 = (Player)e2.getWhoClicked();
-                if (p2 == null) {
+            public void run(InventoryClickEvent e) {
+                Player p = (Player)e.getWhoClicked();
+                if (p == null) {
                     return;
                 }
                 if (PetsGUI.getShowPet(player)) {
@@ -222,14 +222,14 @@ extends GUI {
                 return isBuilder;
             }
         });
-        List p2 = paged.getPage(this.page);
-        if (p2 == null) {
+        List p = paged.getPage(this.page);
+        if (p == null) {
             return;
         }
-        for (int i2 = 0; i2 < p2.size(); ++i2) {
-            final int slot = INTERIOR[i2];
-            final Pet.PetItem pet = (Pet.PetItem)p2.get(i2);
-            final String n2 = pet.getRarity().getColor() + pet.getType().getDisplayName(pet.getType().getData());
+        for (int i = 0; i < p.size(); ++i) {
+            final int slot = INTERIOR[i];
+            final Pet.PetItem pet = (Pet.PetItem)p.get(i);
+            final String n = pet.getRarity().getColor() + pet.getType().getDisplayName(pet.getType().getData());
             final SItem item = SItem.of(pet.getType());
             item.setRarity(pet.getRarity());
             item.setDataDouble("xp", pet.getXp());
@@ -250,17 +250,17 @@ extends GUI {
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
+                public void run(InventoryClickEvent e) {
                     if (PetsGUI.this.pickup) {
                         if (Sputnik.isFullInv(player)) {
                             player.sendMessage(ChatColor.RED + "Your inventory is full! Clean it up!");
                             player.playSound(player.getLocation(), Sound.VILLAGER_NO, 1.0f, 1.0f);
                             return;
                         }
-                        SItem n22 = SItem.of(pet.getType());
-                        n22.setRarity(pet.getRarity());
-                        n22.setDataDouble("xp", pet.getXp());
-                        player.getInventory().addItem(new ItemStack[]{n22.getStack()});
+                        SItem n2 = SItem.of(pet.getType());
+                        n2.setRarity(pet.getRarity());
+                        n2.setDataDouble("xp", pet.getXp());
+                        player.getInventory().addItem(new ItemStack[]{n2.getStack()});
                         pet.setActive(false);
                         if (user.getActivePet() == pet) {
                             PetsGUI.destroyArmorStandWithUUID(player.getUniqueId(), player.getWorld());
@@ -273,13 +273,13 @@ extends GUI {
                             pet.setActive(false);
                             player.closeInventory();
                             PetsGUI.destroyArmorStandWithUUID(player.getUniqueId(), player.getWorld());
-                            player.sendMessage(ChatColor.GREEN + "You despawned your " + n2 + ChatColor.GREEN + "!");
+                            player.sendMessage(ChatColor.GREEN + "You despawned your " + n + ChatColor.GREEN + "!");
                             return;
                         }
                         user.equipPet(pet);
                         PetsGUI.destroyArmorStandWithUUID(player.getUniqueId(), player.getWorld());
                         player.closeInventory();
-                        player.sendMessage(ChatColor.GREEN + "You spawned your " + n2 + ChatColor.GREEN + "!");
+                        player.sendMessage(ChatColor.GREEN + "You spawned your " + n + ChatColor.GREEN + "!");
                         PetsGUI.spawnFlyingHeads(player, user.getActivePetClass(), pet.toItem().getStack());
                     }
                 }
@@ -297,15 +297,15 @@ extends GUI {
         }
     }
 
-    public static void applyThingy(ArmorStand as2, boolean a2) {
-        as2.setCustomNameVisible(a2);
-        as2.setMarker(true);
-        as2.setVisible(false);
-        as2.setGravity(false);
-        as2.setArms(true);
-        as2.setRightArmPose(new EulerAngle(0.0, 45.0, 0.0));
-        as2.setMetadata("pets", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
-        as2.setRemoveWhenFarAway(false);
+    public static void applyThingy(ArmorStand as, boolean a) {
+        as.setCustomNameVisible(a);
+        as.setMarker(true);
+        as.setVisible(false);
+        as.setGravity(false);
+        as.setArms(true);
+        as.setRightArmPose(new EulerAngle(0.0, 45.0, 0.0));
+        as.setMetadata("pets", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        as.setRemoveWhenFarAway(false);
     }
 
     public static BukkitTask spawnFlyingHeads(final Player player, final Pet petclass, final ItemStack stacc) {
@@ -374,9 +374,9 @@ extends GUI {
                     location.setY((location.getY() + target.getY()) / 2.0);
                 } else {
                     this.stat = 0;
-                    Vector v2 = target.toVector().subtract(location.toVector()).normalize().multiply(Math.min(9.0, Math.min(15.0, distance / 2.0) / 4.0 + 0.2));
-                    location.setDirection(v2);
-                    location.add(v2);
+                    Vector v = target.toVector().subtract(location.toVector()).normalize().multiply(Math.min(9.0, Math.min(15.0, distance / 2.0) / 4.0 + 0.2));
+                    location.setDirection(v);
+                    location.add(v);
                     if (this.count > 13) {
                         this.count /= 1;
                     } else if (this.count < 11) {
@@ -406,46 +406,46 @@ extends GUI {
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 3L, 3L);
     }
 
-    public static void destroyArmorStandWithUUID(UUID uuid, World w2) {
+    public static void destroyArmorStandWithUUID(UUID uuid, World w) {
         String uuidString = uuid.toString() + "_pets";
-        for (org.bukkit.entity.Entity e2 : w2.getEntities()) {
-            if (!e2.hasMetadata(uuidString)) continue;
-            e2.remove();
+        for (org.bukkit.entity.Entity e : w.getEntities()) {
+            if (!e.hasMetadata(uuidString)) continue;
+            e.remove();
         }
     }
 
-    public static void spawnParticle(Pet pet, Location l2) {
-        World w2 = l2.getWorld();
-        for (org.bukkit.entity.Entity e2 : w2.getNearbyEntities(l2, 30.0, 35.0, 30.0)) {
-            Player p2;
-            if (!(e2 instanceof Player) || !PetsGUI.getShowPet(p2 = (Player)e2)) continue;
-            pet.particleBelowA(p2, l2);
+    public static void spawnParticle(Pet pet, Location l) {
+        World w = l.getWorld();
+        for (org.bukkit.entity.Entity e : w.getNearbyEntities(l, 30.0, 35.0, 30.0)) {
+            Player p;
+            if (!(e instanceof Player) || !PetsGUI.getShowPet(p = (Player)e)) continue;
+            pet.particleBelowA(p, l);
         }
     }
 
-    public static void sendDestroyPacket(org.bukkit.entity.Entity as1, org.bukkit.entity.Entity as2, World w2, Player owner) {
+    public static void sendDestroyPacket(org.bukkit.entity.Entity as1, org.bukkit.entity.Entity as2, World w, Player owner) {
         Entity el = ((CraftEntity)as1).getHandle();
         Entity el_ = ((CraftEntity)as2).getHandle();
         PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy(new int[]{el.getId()});
         PacketPlayOutEntityDestroy packet_ = new PacketPlayOutEntityDestroy(new int[]{el_.getId()});
-        for (org.bukkit.entity.Entity e2 : w2.getNearbyEntities(as1.getLocation(), 30.0, 35.0, 30.0)) {
-            Player p2;
-            if (!(e2 instanceof Player) || PetsGUI.getShowPet(p2 = (Player)e2)) continue;
-            ((CraftPlayer)p2).getHandle().playerConnection.sendPacket((Packet)packet);
-            ((CraftPlayer)p2).getHandle().playerConnection.sendPacket((Packet)packet_);
+        for (org.bukkit.entity.Entity e : w.getNearbyEntities(as1.getLocation(), 30.0, 35.0, 30.0)) {
+            Player p;
+            if (!(e instanceof Player) || PetsGUI.getShowPet(p = (Player)e)) continue;
+            ((CraftPlayer)p).getHandle().playerConnection.sendPacket((Packet)packet);
+            ((CraftPlayer)p).getHandle().playerConnection.sendPacket((Packet)packet_);
         }
     }
 
-    public void showPetInRange(Player p2) {
-        for (org.bukkit.entity.Entity e2 : p2.getNearbyEntities(30.0, 35.0, 30.0)) {
-            if (!e2.hasMetadata("pets")) continue;
-            Entity el = ((CraftEntity)e2).getHandle();
-            net.minecraft.server.v1_8_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy((ItemStack)((LivingEntity)e2).getEquipment().getItemInHand());
+    public void showPetInRange(Player p) {
+        for (org.bukkit.entity.Entity e : p.getNearbyEntities(30.0, 35.0, 30.0)) {
+            if (!e.hasMetadata("pets")) continue;
+            Entity el = ((CraftEntity)e).getHandle();
+            net.minecraft.server.v1_8_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy((ItemStack)((LivingEntity)e).getEquipment().getItemInHand());
             el.setEquipment(0, nmsItem);
             PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving((EntityLiving)el);
             PacketPlayOutEntityEquipment packet2 = new PacketPlayOutEntityEquipment(el.getId(), 0, nmsItem);
-            ((CraftPlayer)p2).getHandle().playerConnection.sendPacket((Packet)packet);
-            ((CraftPlayer)p2).getHandle().playerConnection.sendPacket((Packet)packet2);
+            ((CraftPlayer)p).getHandle().playerConnection.sendPacket((Packet)packet);
+            ((CraftPlayer)p).getHandle().playerConnection.sendPacket((Packet)packet2);
         }
     }
 }

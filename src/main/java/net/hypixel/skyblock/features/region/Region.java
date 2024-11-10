@@ -24,6 +24,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.features.region.RegionType;
+import net.hypixel.skyblock.module.DatabaseModule;
 import net.hypixel.skyblock.util.SUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -53,12 +54,12 @@ public class Region {
     }
 
     public void save() {
-        Region.plugin.regionData.save(this);
+        DatabaseModule.getRegionData().save(this);
     }
 
     public void delete() {
         REGION_CACHE.remove(this.name);
-        Region.plugin.regionData.delete(this);
+        DatabaseModule.getRegionData().delete(this);
     }
 
     public static List<Entity> getPlayersWithinRegionType(RegionType type) {
@@ -75,7 +76,7 @@ public class Region {
             if (!region.insideRegion(entity)) continue;
             possible.add(region);
         }
-        possible.sort(Comparator.comparingInt(r2 -> r2.getType().ordinal()));
+        possible.sort(Comparator.comparingInt(r -> r.getType().ordinal()));
         Collections.reverse(possible);
         return !possible.isEmpty() ? (Region)possible.get(0) : null;
     }
@@ -88,13 +89,18 @@ public class Region {
         return null;
     }
 
+    public static boolean isPlayerInRegion(Player player, RegionType regionType) {
+        Region region = Region.getRegionOfEntity((Entity)player);
+        return region != null && region.getType() == regionType;
+    }
+
     public static Region getRegionOfBlock(Block block) {
         ArrayList<Region> possible = new ArrayList<Region>();
         for (Region region : Region.getRegions()) {
             if (!region.insideRegion(block)) continue;
             possible.add(region);
         }
-        possible.sort(Comparator.comparingInt(r2 -> r2.getType().ordinal()));
+        possible.sort(Comparator.comparingInt(r -> r.getType().ordinal()));
         Collections.reverse(possible);
         return possible.size() != 0 ? (Region)possible.get(0) : null;
     }
@@ -102,25 +108,25 @@ public class Region {
     public boolean insideRegion(Entity entity) {
         List<Integer> bounds = this.getBounds();
         Location location = entity.getLocation();
-        double x2 = location.getX();
-        double y2 = location.getY();
-        double z2 = location.getZ();
+        double x = location.getX();
+        double y = location.getY();
+        double z = location.getZ();
         if (this.firstLocation == null || this.firstLocation.getWorld() == null) {
             return false;
         }
-        return this.firstLocation.getWorld().getUID().equals(location.getWorld().getUID()) && x2 >= (double)bounds.get(0).intValue() && x2 <= (double)bounds.get(1).intValue() && y2 >= (double)bounds.get(2).intValue() && y2 <= (double)bounds.get(3).intValue() && z2 >= (double)bounds.get(4).intValue() && z2 <= (double)bounds.get(5).intValue();
+        return this.firstLocation.getWorld().getUID().equals(location.getWorld().getUID()) && x >= (double)bounds.get(0).intValue() && x <= (double)bounds.get(1).intValue() && y >= (double)bounds.get(2).intValue() && y <= (double)bounds.get(3).intValue() && z >= (double)bounds.get(4).intValue() && z <= (double)bounds.get(5).intValue();
     }
 
     public boolean insideRegion(Block block) {
         List<Integer> bounds = this.getBounds();
         Location location = block.getLocation();
-        double x2 = location.getX();
-        double y2 = location.getY();
-        double z2 = location.getZ();
+        double x = location.getX();
+        double y = location.getY();
+        double z = location.getZ();
         if (this.firstLocation == null || this.firstLocation.getWorld() == null) {
             return false;
         }
-        return this.firstLocation.getWorld().getUID().equals(location.getWorld().getUID()) && x2 >= (double)bounds.get(0).intValue() && x2 <= (double)bounds.get(1).intValue() && y2 >= (double)bounds.get(2).intValue() && y2 <= (double)bounds.get(3).intValue() && z2 >= (double)bounds.get(4).intValue() && z2 <= (double)bounds.get(5).intValue();
+        return this.firstLocation.getWorld().getUID().equals(location.getWorld().getUID()) && x >= (double)bounds.get(0).intValue() && x <= (double)bounds.get(1).intValue() && y >= (double)bounds.get(2).intValue() && y <= (double)bounds.get(3).intValue() && z >= (double)bounds.get(4).intValue() && z <= (double)bounds.get(5).intValue();
     }
 
     public List<Location> getAvailableTeleportLocations() {
@@ -143,10 +149,10 @@ public class Region {
         List<Integer> bounds = this.getBounds();
         World world = this.firstLocation.getWorld();
         ArrayList<Location> locations = new ArrayList<Location>();
-        for (int y2 = bounds.get(2).intValue(); y2 <= bounds.get(3); ++y2) {
-            for (int x2 = bounds.get(0).intValue(); x2 <= bounds.get(1); ++x2) {
-                for (int z2 = bounds.get(4).intValue(); z2 <= bounds.get(5); ++z2) {
-                    locations.add(new Location(world, (double)x2, (double)y2, (double)z2));
+        for (int y = bounds.get(2).intValue(); y <= bounds.get(3); ++y) {
+            for (int x = bounds.get(0).intValue(); x <= bounds.get(1); ++x) {
+                for (int z = bounds.get(4).intValue(); z <= bounds.get(5); ++z) {
+                    locations.add(new Location(world, (double)x, (double)y, (double)z));
                 }
             }
         }
@@ -160,10 +166,10 @@ public class Region {
         List<Integer> bounds = this.getBounds();
         World world = this.firstLocation.getWorld();
         ArrayList<BlockState> states = new ArrayList<BlockState>();
-        for (int y2 = bounds.get(2).intValue(); y2 <= bounds.get(3); ++y2) {
-            for (int x2 = bounds.get(0).intValue(); x2 <= bounds.get(1); ++x2) {
-                for (int z2 = bounds.get(4).intValue(); z2 <= bounds.get(5); ++z2) {
-                    states.add(new Location(world, (double)x2, (double)y2, (double)z2).getBlock().getState());
+        for (int y = bounds.get(2).intValue(); y <= bounds.get(3); ++y) {
+            for (int x = bounds.get(0).intValue(); x <= bounds.get(1); ++x) {
+                for (int z = bounds.get(4).intValue(); z <= bounds.get(5); ++z) {
+                    states.add(new Location(world, (double)x, (double)y, (double)z).getBlock().getState());
                 }
             }
         }
@@ -204,10 +210,10 @@ public class Region {
     }
 
     public Location getRandomAvailableLocation() {
-        Location r2 = this.getRandomLocation();
+        Location r = this.getRandomLocation();
         ArrayList<Location> possible = new ArrayList<Location>();
-        for (int y2 = this.getBounds().get(3).intValue(); y2 >= this.getBounds().get(2); --y2) {
-            Block test = this.firstLocation.getWorld().getBlockAt(r2.getBlockX(), y2, r2.getBlockZ());
+        for (int y = this.getBounds().get(3).intValue(); y >= this.getBounds().get(2); --y) {
+            Block test = this.firstLocation.getWorld().getBlockAt(r.getBlockX(), y, r.getBlockZ());
             if (test.getType() == Material.AIR || test.getLocation().clone().add(0.0, 1.0, 0.0).getBlock().getType() != Material.AIR || test.getLocation().clone().add(0.0, 2.0, 0.0).getBlock().getType() != Material.AIR) continue;
             possible.add(test.getLocation().clone().add(0.0, 1.0, 0.0));
         }
@@ -230,14 +236,14 @@ public class Region {
     }
 
     public static Region create(String name, Location firstLocation, Location secondLocation, RegionType type) {
-        return Region.plugin.regionData.create(name, firstLocation, secondLocation, type);
+        return DatabaseModule.getRegionData().create(name, firstLocation, secondLocation, type);
     }
 
     public static Region get(String name) {
         if (REGION_CACHE.containsKey(name)) {
             return REGION_CACHE.get(name);
         }
-        return Region.plugin.regionData.get(name);
+        return DatabaseModule.getRegionData().get(name);
     }
 
     public static List<Region> getRegions() {
@@ -249,7 +255,7 @@ public class Region {
     }
 
     public static void cacheRegions() {
-        for (Region region : Region.plugin.regionData.getAll()) {
+        for (Region region : DatabaseModule.getRegionData().getAll()) {
             REGION_CACHE.put(region.getName(), region);
         }
         World islandWorld = Bukkit.getWorld((String)"island");

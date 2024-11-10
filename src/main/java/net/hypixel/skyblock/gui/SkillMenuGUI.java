@@ -36,9 +36,9 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e2) {
+    public void onOpen(GUIOpenEvent e) {
         this.fill(BLACK_STAINED_GLASS_PANE);
-        Player player = e2.getPlayer();
+        Player player = e.getPlayer();
         User user = User.getUser(player.getUniqueId());
         this.set(GUIClickableItem.getCloseItem(49));
         AtomicInteger found = new AtomicInteger();
@@ -60,16 +60,16 @@ extends GUI {
 
     private static GUIClickableItem createCollectionClickable(GUI gui, Skill skill, Material icon, short data, int slot, Player player) {
         User user = User.getUser(player.getUniqueId());
-        ArrayList<String> l2 = new ArrayList<String>();
+        ArrayList<String> l = new ArrayList<String>();
         if (skill != null) {
             for (String line : skill.getDescription()) {
-                l2.add(ChatColor.GRAY + line);
+                l.add(ChatColor.GRAY + line);
             }
         }
-        if (l2.size() == 0) {
-            l2.add(ChatColor.GRAY + "Coming at a later date!");
+        if (l.size() == 0) {
+            l.add(ChatColor.GRAY + "Coming at a later date!");
         } else {
-            l2.add(" ");
+            l.add(" ");
         }
         double xp = skill != null ? user.getSkillXP(skill) : 0.0;
         int level = skill != null ? Skill.getLevel(xp, skill.hasSixtyLevels()) : 0;
@@ -79,21 +79,21 @@ extends GUI {
             int nextLevel = level + 1;
             String numeral = SUtil.toRomanNumeral(nextLevel);
             double nextXP = Skill.getNextOverallXPGoal(xp, skill.hasSixtyLevels());
-            l2.add(SUtil.createProgressText("Progress to Level " + numeral, xp, nextXP));
-            l2.add(SUtil.createSLineProgressBar(20, ChatColor.DARK_GREEN, xp, nextXP));
-            l2.add(" ");
-            l2.add(ChatColor.GRAY + "Level " + numeral + " Rewards:");
+            l.add(SUtil.createProgressText("Progress to Level " + numeral, xp, nextXP));
+            l.add(SUtil.createSLineProgressBar(20, ChatColor.DARK_GREEN, xp, nextXP));
+            l.add(" ");
+            l.add(ChatColor.GRAY + "Level " + numeral + " Rewards:");
             for (String line2 : skill.getRewardLore(nextLevel, nextLevel, false)) {
-                l2.add("  " + line2);
+                l.add("  " + line2);
             }
-            l2.add(" ");
+            l.add(" ");
         } else if (skill != null) {
             name = skill.getName();
         }
         if (skill != null) {
-            l2.add(ChatColor.YELLOW + "Click to view!");
+            l.add(ChatColor.YELLOW + "Click to view!");
         }
-        return GUIClickableItem.createGUIOpenerItem(gui, player, ChatColor.GREEN + name + (level != 0 ? " " + SUtil.toRomanNumeral(level) : ""), slot, icon, data, SUtil.toArray(l2, String.class));
+        return GUIClickableItem.createGUIOpenerItem(gui, player, ChatColor.GREEN + name + (level != 0 ? " " + SUtil.toRomanNumeral(level) : ""), slot, icon, data, SUtil.toArray(l, String.class));
     }
 
     private static GUIClickableItem createCollectionClickable(GUI gui, Skill skill, Material icon, int slot, Player player) {

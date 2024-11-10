@@ -95,8 +95,8 @@ extends BaseZombie {
     }
 
     @Override
-    public void onAttack(EntityDamageByEntityEvent e2) {
-        ((LivingEntity)e2.getDamager()).setHealth(Math.min(((LivingEntity)e2.getDamager()).getMaxHealth(), ((LivingEntity)e2.getDamager()).getHealth() + ((LivingEntity)e2.getDamager()).getMaxHealth() / 100.0));
+    public void onAttack(EntityDamageByEntityEvent e) {
+        ((LivingEntity)e.getDamager()).setHealth(Math.min(((LivingEntity)e.getDamager()).getMaxHealth(), ((LivingEntity)e.getDamager()).getHealth() + ((LivingEntity)e.getDamager()).getMaxHealth() / 100.0));
     }
 
     @Override

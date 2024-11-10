@@ -108,12 +108,12 @@ Ability {
     }
 
     @Override
-    public void onBowShoot(SItem bow, EntityShootBowEvent e2) {
-        Player player = (Player)e2.getEntity();
+    public void onBowShoot(SItem bow, EntityShootBowEvent e) {
+        Player player = (Player)e.getEntity();
         if (!player.isSneaking()) {
             return;
         }
-        if (e2.getForce() != 1.0f) {
+        if (e.getForce() != 1.0f) {
             return;
         }
         int manaPool = SUtil.blackMagic(PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId()).getIntelligence().addAll() + 100.0);
@@ -121,7 +121,7 @@ Ability {
         boolean take = PlayerUtils.takeMana(player, cost);
         if (!take) {
             player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
-            final long c2 = System.currentTimeMillis();
+            final long c = System.currentTimeMillis();
             Repeater.MANA_REPLACEMENT_MAP.put(player.getUniqueId(), new ManaReplacement(){
 
                 @Override
@@ -131,12 +131,12 @@ Ability {
 
                 @Override
                 public long getEnd() {
-                    return c2 + 1500L;
+                    return c + 1500L;
                 }
             });
             return;
         }
-        final long c3 = System.currentTimeMillis();
+        final long c = System.currentTimeMillis();
         Repeater.DEFENSE_REPLACEMENT_MAP.put(player.getUniqueId(), new DefenseReplacement(){
 
             @Override
@@ -146,11 +146,11 @@ Ability {
 
             @Override
             public long getEnd() {
-                return c3 + 2000L;
+                return c + 2000L;
             }
         });
         player.setHealth(Math.min(player.getMaxHealth(), player.getHealth() + (double)manaPool * 0.11 * 2.0));
-        e2.getProjectile().setMetadata("bite", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        e.getProjectile().setMetadata("bite", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
     }
 
     @Override

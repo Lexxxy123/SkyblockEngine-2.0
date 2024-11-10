@@ -16,8 +16,8 @@ extends Event {
     private static final HandlerList handlers = new HandlerList();
     private final WrappedPluginMessage a;
 
-    public PluginMessageReceived(WrappedPluginMessage b2) {
-        this.a = b2;
+    public PluginMessageReceived(WrappedPluginMessage b) {
+        this.a = b;
     }
 
     public WrappedPluginMessage getWrappedPluginMessage() {

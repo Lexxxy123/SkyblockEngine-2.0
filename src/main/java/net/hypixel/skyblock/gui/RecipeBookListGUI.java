@@ -54,9 +54,9 @@ extends GUI {
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
-                    new RecipeBookListGUI(finalPage - 1).open((Player)e2.getWhoClicked());
-                    ((Player)e2.getWhoClicked()).playSound(e2.getWhoClicked().getLocation(), Sound.NOTE_PIANO, 1.0f, 1.0f);
+                public void run(InventoryClickEvent e) {
+                    new RecipeBookListGUI(finalPage - 1).open((Player)e.getWhoClicked());
+                    ((Player)e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.NOTE_PIANO, 1.0f, 1.0f);
                 }
 
                 @Override
@@ -74,9 +74,9 @@ extends GUI {
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
-                    new RecipeBookListGUI(finalPage + 1).open((Player)e2.getWhoClicked());
-                    ((Player)e2.getWhoClicked()).playSound(e2.getWhoClicked().getLocation(), Sound.NOTE_PIANO, 1.0f, 1.0f);
+                public void run(InventoryClickEvent e) {
+                    new RecipeBookListGUI(finalPage + 1).open((Player)e.getWhoClicked());
+                    ((Player)e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.NOTE_PIANO, 1.0f, 1.0f);
                 }
 
                 @Override
@@ -91,18 +91,18 @@ extends GUI {
             });
         }
         this.set(GUIClickableItem.getCloseItem(49));
-        List p2 = pagedMaterials.getPage(page);
-        if (p2 == null) {
+        List p = pagedMaterials.getPage(page);
+        if (p == null) {
             return;
         }
-        for (int i2 = 0; i2 < p2.size(); ++i2) {
-            final int slot = INTERIOR[i2];
-            final SItem sItem = (SItem)p2.get(i2);
+        for (int i = 0; i < p.size(); ++i) {
+            final int slot = INTERIOR[i];
+            final SItem sItem = (SItem)p.get(i);
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
-                    Player player = (Player)e2.getWhoClicked();
+                public void run(InventoryClickEvent e) {
+                    Player player = (Player)e.getWhoClicked();
                     player.playSound(player.getLocation(), Sound.NOTE_PLING, 1.0f, 2.0f);
                     new RecipeBookGUI(sItem).open(player);
                 }
@@ -121,8 +121,8 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e2) {
-        Player player = e2.getPlayer();
+    public void onOpen(GUIOpenEvent e) {
+        Player player = e.getPlayer();
         this.set(GUIClickableItem.createGUIOpenerItem(GUIType.SKYBLOCK_MENU, player, ChatColor.GREEN + "Go Back", 48, Material.ARROW, ChatColor.GRAY + "To SkyBlock Menu"));
     }
 

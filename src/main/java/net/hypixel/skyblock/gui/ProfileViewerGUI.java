@@ -47,12 +47,12 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e2) {
+    public void onOpen(GUIOpenEvent e) {
         if (this.p == null) {
             return;
         }
         this.fill(BLACK_STAINED_GLASS_PANE);
-        final Player player = e2.getPlayer();
+        final Player player = e.getPlayer();
         final User user = User.getUser(this.p.getUniqueId());
         this.set(GUIClickableItem.getCloseItem(49));
         this.set(new GUIItem(){
@@ -211,9 +211,9 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                e2.getWhoClicked().closeInventory();
-                ((Player)e2.getWhoClicked()).chat("/trade " + ProfileViewerGUI.this.p.getName());
+            public void run(InventoryClickEvent e) {
+                e.getWhoClicked().closeInventory();
+                ((Player)e.getWhoClicked()).chat("/trade " + ProfileViewerGUI.this.p.getName());
             }
 
             @Override
@@ -229,8 +229,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                e2.getWhoClicked().sendMessage(ChatColor.RED + "Not available!");
+            public void run(InventoryClickEvent e) {
+                e.getWhoClicked().sendMessage(ChatColor.RED + "Not available!");
             }
 
             @Override
@@ -246,8 +246,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                e2.getWhoClicked().sendMessage(ChatColor.RED + "Coming at a later date.");
+            public void run(InventoryClickEvent e) {
+                e.getWhoClicked().sendMessage(ChatColor.RED + "Coming at a later date.");
             }
 
             @Override
@@ -264,8 +264,8 @@ extends GUI {
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
-                    ((Player)e2.getWhoClicked()).chat("/openinv " + ProfileViewerGUI.this.p.getName());
+                public void run(InventoryClickEvent e) {
+                    ((Player)e.getWhoClicked()).chat("/openinv " + ProfileViewerGUI.this.p.getName());
                 }
 
                 @Override

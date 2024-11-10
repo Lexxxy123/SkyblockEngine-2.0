@@ -35,11 +35,11 @@ public class MaterialQuantifiable {
         return this;
     }
 
-    public boolean equals(Object o2) {
-        if (!(o2 instanceof MaterialQuantifiable)) {
+    public boolean equals(Object o) {
+        if (!(o instanceof MaterialQuantifiable)) {
             return false;
         }
-        MaterialQuantifiable material = (MaterialQuantifiable)o2;
+        MaterialQuantifiable material = (MaterialQuantifiable)o;
         return material.material == this.material && material.amount == this.amount;
     }
 
@@ -64,8 +64,8 @@ public class MaterialQuantifiable {
 
     public static MaterialQuantifiable[] of(ItemStack[] stacks) {
         MaterialQuantifiable[] materials = new MaterialQuantifiable[stacks.length];
-        for (int i2 = 0; i2 < stacks.length; ++i2) {
-            materials[i2] = MaterialQuantifiable.of(stacks[i2]);
+        for (int i = 0; i < stacks.length; ++i) {
+            materials[i] = MaterialQuantifiable.of(stacks[i]);
         }
         return materials;
     }

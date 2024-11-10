@@ -170,11 +170,11 @@ SlayerBoss {
         }
         if (this.boomboom) {
             this.getBukkitEntity().teleport(this.flog);
-            for (int i2 = 0; i2 < 50; ++i2) {
+            for (int i = 0; i < 50; ++i) {
                 if (this.circlus < 3) {
                     return;
                 }
-                double angle = Math.PI * 2 * (double)i2 / 50.0;
+                double angle = Math.PI * 2 * (double)i / 50.0;
                 Location point = this.getBukkitEntity().getLocation().add(1.0, 0.0, 0.0).clone().add((double)this.circlus * Math.sin(angle), 0.0, (double)this.circlus * Math.cos(angle));
                 point.getWorld().spigot().playEffect(point.clone().add(0.0, 1.0, 0.0), Effect.LARGE_SMOKE, 21, 0, 0.1f, 0.0f, 0.1f, 0.01f, 1, 30);
             }
@@ -241,14 +241,14 @@ SlayerBoss {
     }
 
     @Override
-    public void onDamage(SEntity sEntity, org.bukkit.entity.Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
-        if (e2.getDamager() instanceof Arrow) {
-            e2.setCancelled(true);
+    public void onDamage(SEntity sEntity, org.bukkit.entity.Entity damager, EntityDamageByEntityEvent e, AtomicDouble damage) {
+        if (e.getDamager() instanceof Arrow) {
+            e.setCancelled(true);
             return;
         }
         LivingEntity en = sEntity.getEntity();
-        Vector v2 = new Vector(0, 0, 0);
-        SUtil.delay(() -> AtonedHorror.lambda$onDamage$27((org.bukkit.entity.Entity)en, v2), 1L);
+        Vector v = new Vector(0, 0, 0);
+        SUtil.delay(() -> AtonedHorror.lambda$onDamage$27((org.bukkit.entity.Entity)en, v), 1L);
     }
 
     @Override
@@ -267,8 +267,8 @@ SlayerBoss {
         entity.setMetadata("notDisplay", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
         this.hologram_name = new SEntity(entity.getLocation().add(0.0, 2.0, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND, new Object[0]);
         ((ArmorStand)this.hologram_name.getEntity()).setVisible(false);
-        Entity e2 = this.getBukkitEntity().getHandle();
-        double height = e2.getBoundingBox().e - e2.getBoundingBox().b;
+        Entity e = this.getBukkitEntity().getHandle();
+        double height = e.getBoundingBox().e - e.getBoundingBox().b;
         ((ArmorStand)this.hologram_name.getEntity()).setGravity(false);
         this.hologram_name.getEntity().setCustomNameVisible(true);
         new BukkitRunnable(){
@@ -327,10 +327,10 @@ SlayerBoss {
                         return;
                     }
                     if (entity.getNoDamageTicks() == 0 && !AtonedHorror.this.boomboom && entity.getHealth() != entity.getMaxHealth()) {
-                        if (entity.getHealth() + 55000.0 >= entity.getMaxHealth()) {
+                        if (entity.getHealth() + 1000000.0 >= entity.getMaxHealth()) {
                             entity.setHealth(entity.getMaxHealth());
                         } else {
-                            entity.setHealth(entity.getHealth() + 55000.0);
+                            entity.setHealth(entity.getHealth() + 1000000.0);
                         }
                     }
                 }
@@ -343,8 +343,8 @@ SlayerBoss {
         this.hologram.remove();
         SUtil.delay(() -> this.hologram_name.remove(), 20L);
         User user = User.getUser(damager.getUniqueId());
-        user.addCoins(100000L);
-        user.send(ChatColor.GOLD + "+100000 Coins");
+        user.addCoins(10000L);
+        user.send(ChatColor.GOLD + "+10000 Coins");
     }
 
     @Override
@@ -449,16 +449,16 @@ SlayerBoss {
         SUtil.lightningLater(entity.getLocation().add((double)SUtil.random(-7, 7), 0.0, (double)SUtil.random(-7, 7)), true, 2L);
         SUtil.lightningLater(entity.getLocation().add((double)SUtil.random(-7, 7), 0.0, (double)SUtil.random(-7, 7)), true, 3L);
         SUtil.lightningLater(entity.getLocation().add((double)SUtil.random(-7, 7), 0.0, (double)SUtil.random(-7, 7)), true, 4L);
-        for (org.bukkit.entity.Entity e2 : entity.getNearbyEntities(7.0, 7.0, 7.0)) {
-            if (!(e2 instanceof LivingEntity) || e2.hasMetadata("NoAffect")) continue;
-            e2.getWorld().playSound(e2.getLocation(), Sound.EXPLODE, 1.0f, 1.0f);
-            e2.getWorld().playEffect(e2.getLocation(), Effect.EXPLOSION_LARGE, 3);
-            SUtil.lightningLater(e2.getLocation(), true, 1L);
-            if (e2 instanceof Player && ((Player)e2).getGameMode() != GameMode.CREATIVE && ((Player)e2).getGameMode() != GameMode.SPECTATOR) {
-                User.getUser(e2.getUniqueId()).kill(EntityDamageEvent.DamageCause.ENTITY_ATTACK, entity);
+        for (org.bukkit.entity.Entity e : entity.getNearbyEntities(7.0, 7.0, 7.0)) {
+            if (!(e instanceof LivingEntity) || e.hasMetadata("NoAffect")) continue;
+            e.getWorld().playSound(e.getLocation(), Sound.EXPLODE, 1.0f, 1.0f);
+            e.getWorld().playEffect(e.getLocation(), Effect.EXPLOSION_LARGE, 3);
+            SUtil.lightningLater(e.getLocation(), true, 1L);
+            if (e instanceof Player && ((Player)e).getGameMode() != GameMode.CREATIVE && ((Player)e).getGameMode() != GameMode.SPECTATOR) {
+                User.getUser(e.getUniqueId()).kill(EntityDamageEvent.DamageCause.ENTITY_ATTACK, entity);
                 continue;
             }
-            ((LivingEntity)e2).damage(((LivingEntity)e2).getHealth(), e2);
+            ((LivingEntity)e).damage(((LivingEntity)e).getHealth(), e);
         }
     }
 
@@ -468,7 +468,7 @@ SlayerBoss {
         double yl = loc.getY();
         double zl = loc.getZ();
         Location location = new Location(player.getWorld(), xl, yl, zl);
-        for (int y2 = location.getBlockY(); y2 > 0; --y2) {
+        for (int y = location.getBlockY(); y > 0; --y) {
             if (location.subtract(0.0, 1.0, 0.0).getBlock().getType() == Material.AIR) continue;
             this.test(location);
             break;
@@ -483,45 +483,45 @@ SlayerBoss {
         double yl = loc.getY();
         double zl = loc.getZ();
         Location location = new Location(player.getWorld(), xl, yl, zl);
-        for (int y2 = location.getBlockY(); y2 > 0 && location.subtract(0.0, 1.0, 0.0).getBlock().getType() == Material.AIR; --y2) {
+        for (int y = location.getBlockY(); y > 0 && location.subtract(0.0, 1.0, 0.0).getBlock().getType() == Material.AIR; --y) {
         }
     }
 
     public void test(Location loc) {
-        Location l2 = this.getBlockLoc(loc.getBlock().getLocation().clone());
-        this.createClay(l2.clone(), (byte)14);
-        this.createClay(l2.clone().add(0.0, 0.0, 1.0), (byte)14);
-        this.createClay(l2.clone().add(1.0, 0.0, 0.0), (byte)14);
-        this.createClay(l2.clone().add(0.0, 0.0, -1.0), (byte)14);
-        this.createClay(l2.clone().add(-1.0, 0.0, 0.0), (byte)14);
-        this.createClay(l2.clone().add(0.0, 0.0, -2.0), (byte)0);
-        this.createClay(l2.clone().add(1.0, 0.0, -1.0), (byte)0);
-        this.createClay(l2.clone().add(2.0, 0.0, 0.0), (byte)0);
-        this.createClay(l2.clone().add(1.0, 0.0, 1.0), (byte)0);
-        this.createClay(l2.clone().add(0.0, 0.0, 2.0), (byte)0);
-        this.createClay(l2.clone().add(-1.0, 0.0, 1.0), (byte)0);
-        this.createClay(l2.clone().add(-2.0, 0.0, 0.0), (byte)0);
-        this.createClay(l2.clone().add(-1.0, 0.0, -1.0), (byte)0);
-        this.createClay(l2.clone().add(1.0, 0.0, -2.0), (byte)8);
-        this.createClay(l2.clone().add(2.0, 0.0, -1.0), (byte)8);
-        this.createClay(l2.clone().add(2.0, 0.0, 1.0), (byte)8);
-        this.createClay(l2.clone().add(1.0, 0.0, 2.0), (byte)8);
-        this.createClay(l2.clone().add(-1.0, 0.0, 2.0), (byte)8);
-        this.createClay(l2.clone().add(-2.0, 0.0, 1.0), (byte)8);
-        this.createClay(l2.clone().add(-2.0, 0.0, -1.0), (byte)8);
-        this.createClay(l2.clone().add(-1.0, 0.0, -2.0), (byte)8);
+        Location l = this.getBlockLoc(loc.getBlock().getLocation().clone());
+        this.createClay(l.clone(), (byte)14);
+        this.createClay(l.clone().add(0.0, 0.0, 1.0), (byte)14);
+        this.createClay(l.clone().add(1.0, 0.0, 0.0), (byte)14);
+        this.createClay(l.clone().add(0.0, 0.0, -1.0), (byte)14);
+        this.createClay(l.clone().add(-1.0, 0.0, 0.0), (byte)14);
+        this.createClay(l.clone().add(0.0, 0.0, -2.0), (byte)0);
+        this.createClay(l.clone().add(1.0, 0.0, -1.0), (byte)0);
+        this.createClay(l.clone().add(2.0, 0.0, 0.0), (byte)0);
+        this.createClay(l.clone().add(1.0, 0.0, 1.0), (byte)0);
+        this.createClay(l.clone().add(0.0, 0.0, 2.0), (byte)0);
+        this.createClay(l.clone().add(-1.0, 0.0, 1.0), (byte)0);
+        this.createClay(l.clone().add(-2.0, 0.0, 0.0), (byte)0);
+        this.createClay(l.clone().add(-1.0, 0.0, -1.0), (byte)0);
+        this.createClay(l.clone().add(1.0, 0.0, -2.0), (byte)8);
+        this.createClay(l.clone().add(2.0, 0.0, -1.0), (byte)8);
+        this.createClay(l.clone().add(2.0, 0.0, 1.0), (byte)8);
+        this.createClay(l.clone().add(1.0, 0.0, 2.0), (byte)8);
+        this.createClay(l.clone().add(-1.0, 0.0, 2.0), (byte)8);
+        this.createClay(l.clone().add(-2.0, 0.0, 1.0), (byte)8);
+        this.createClay(l.clone().add(-2.0, 0.0, -1.0), (byte)8);
+        this.createClay(l.clone().add(-1.0, 0.0, -2.0), (byte)8);
     }
 
     public void createClay(Location loc, byte color) {
         Block cacheBlock = loc.getBlock();
-        block0: for (Player p2 : loc.getWorld().getPlayers()) {
-            int y2;
+        block0: for (Player p : loc.getWorld().getPlayers()) {
+            int y;
             Location cacheLocation;
             if (cacheBlock.getType().equals((Object)Material.AIR)) {
                 cacheLocation = cacheBlock.getLocation().clone();
-                for (y2 = cacheLocation.getBlockY(); y2 > 0; --y2) {
+                for (y = cacheLocation.getBlockY(); y > 0; --y) {
                     if (cacheLocation.subtract(0.0, 1.0, 0.0).getBlock().getType() == Material.AIR) continue;
-                    this.sendPacketBlock(cacheLocation, color, p2);
+                    this.sendPacketBlock(cacheLocation, color, p);
                     SUtil.delay(() -> cacheLocation.getBlock().getState().update(), 30L);
                     continue block0;
                 }
@@ -529,101 +529,101 @@ SlayerBoss {
             }
             if (cacheBlock.getType() != Material.AIR && cacheBlock.getLocation().add(0.0, 1.0, 0.0).getBlock().getType() != Material.AIR) {
                 cacheLocation = cacheBlock.getLocation().clone();
-                for (y2 = cacheLocation.getBlockY(); y2 > 0; ++y2) {
+                for (y = cacheLocation.getBlockY(); y > 0; ++y) {
                     if (cacheLocation.add(0.0, 1.0, 0.0).getBlock().getType() == Material.AIR) continue;
-                    this.sendPacketBlock(cacheLocation, color, p2);
+                    this.sendPacketBlock(cacheLocation, color, p);
                     SUtil.delay(() -> cacheLocation.getBlock().getState().update(), 30L);
                     continue block0;
                 }
                 continue;
             }
-            this.sendPacketBlock(loc, color, p2);
+            this.sendPacketBlock(loc, color, p);
             SUtil.delay(() -> loc.getBlock().getState().update(), 30L);
         }
     }
 
-    public void sendPacketBlock(Location loc, byte color, Player p2) {
+    public void sendPacketBlock(Location loc, byte color, Player p) {
         if (loc.getBlock().getType().toString().toUpperCase().contains("STAIR")) {
             if (color == 14) {
-                p2.sendBlockChange(loc, Material.ACACIA_STAIRS, loc.getBlock().getState().getData().getData());
+                p.sendBlockChange(loc, Material.ACACIA_STAIRS, loc.getBlock().getState().getData().getData());
             } else {
-                p2.sendBlockChange(loc, Material.QUARTZ_STAIRS, loc.getBlock().getState().getData().getData());
+                p.sendBlockChange(loc, Material.QUARTZ_STAIRS, loc.getBlock().getState().getData().getData());
             }
         } else if (loc.getBlock().getType().toString().toUpperCase().contains("SLAB") || loc.getBlock().getType().toString().toUpperCase().contains("STEP")) {
             if (color == 14) {
-                p2.sendBlockChange(loc, Material.WOOD_STEP, (byte)4);
+                p.sendBlockChange(loc, Material.WOOD_STEP, (byte)4);
             } else {
-                p2.sendBlockChange(loc, Material.STEP, (byte)7);
+                p.sendBlockChange(loc, Material.STEP, (byte)7);
             }
         } else {
-            p2.sendBlockChange(loc, Material.STAINED_CLAY, color);
+            p.sendBlockChange(loc, Material.STAINED_CLAY, color);
         }
     }
 
-    public Location getBlockLoc(Location l2) {
-        double x2 = l2.getX() + 0.5;
-        double z2 = l2.getZ() + 0.5;
-        if (l2.getX() < 0.0) {
-            x2 = l2.getX() - 0.5;
+    public Location getBlockLoc(Location l) {
+        double x = l.getX() + 0.5;
+        double z = l.getZ() + 0.5;
+        if (l.getX() < 0.0) {
+            x = l.getX() - 0.5;
         }
-        if (l2.getZ() < 0.0) {
-            z2 = l2.getZ() - 0.5;
+        if (l.getZ() < 0.0) {
+            z = l.getZ() - 0.5;
         }
-        Location loc = new Location(l2.getWorld(), x2, l2.getY(), z2);
+        Location loc = new Location(l.getWorld(), x, l.getY(), z);
         return loc;
     }
 
-    public void tptoground(org.bukkit.entity.Entity e2) {
-        Location loc = e2.getLocation();
+    public void tptoground(org.bukkit.entity.Entity e) {
+        Location loc = e.getLocation();
         double xl = loc.getX();
         double yl = loc.getY();
         double zl = loc.getZ();
         Location location = new Location(loc.getWorld(), xl, yl, zl);
-        for (int y2 = location.getBlockY(); y2 > 0; --y2) {
+        for (int y = location.getBlockY(); y > 0; --y) {
             if (location.subtract(0.0, 1.0, 0.0).getBlock().getType() == Material.AIR) continue;
-            e2.teleport(location.clone().add(0.0, 1.0, 0.0));
+            e.teleport(location.clone().add(0.0, 1.0, 0.0));
             break;
         }
     }
 
-    public void cylinder(Location loc, int r2) {
+    public void cylinder(Location loc, int r) {
         int cx = loc.getBlockX();
         int cy = loc.getBlockY();
         int cz = loc.getBlockZ();
-        org.bukkit.World w2 = loc.getWorld();
-        int rSquared = r2 * r2;
-        for (int x2 = cx - r2; x2 <= cx + r2; ++x2) {
-            for (int z2 = cz - r2; z2 <= cz + r2; ++z2) {
-                if ((cx - x2) * (cx - x2) + (cz - z2) * (cz - z2) > rSquared) continue;
-                Location l2 = new Location(w2, (double)x2, (double)cy, (double)z2);
-                this.sendPacketBedrock(l2);
+        org.bukkit.World w = loc.getWorld();
+        int rSquared = r * r;
+        for (int x = cx - r; x <= cx + r; ++x) {
+            for (int z = cz - r; z <= cz + r; ++z) {
+                if ((cx - x) * (cx - x) + (cz - z) * (cz - z) > rSquared) continue;
+                Location l = new Location(w, (double)x, (double)cy, (double)z);
+                this.sendPacketBedrock(l);
             }
         }
     }
 
-    public void cylinderReset(Location loc, int r2) {
+    public void cylinderReset(Location loc, int r) {
         int cx = loc.getBlockX();
         int cy = loc.getBlockY();
         int cz = loc.getBlockZ();
-        org.bukkit.World w2 = loc.getWorld();
-        int rSquared = r2 * r2;
-        for (int x2 = cx - r2; x2 <= cx + r2; ++x2) {
-            for (int z2 = cz - r2; z2 <= cz + r2; ++z2) {
-                if ((cx - x2) * (cx - x2) + (cz - z2) * (cz - z2) > rSquared) continue;
-                Location l2 = new Location(w2, (double)x2, (double)cy, (double)z2);
-                l2.getBlock().getState().update();
+        org.bukkit.World w = loc.getWorld();
+        int rSquared = r * r;
+        for (int x = cx - r; x <= cx + r; ++x) {
+            for (int z = cz - r; z <= cz + r; ++z) {
+                if ((cx - x) * (cx - x) + (cz - z) * (cz - z) > rSquared) continue;
+                Location l = new Location(w, (double)x, (double)cy, (double)z);
+                l.getBlock().getState().update();
             }
         }
     }
 
     public void createBedrock(Location loc) {
         Block cacheBlock = loc.getBlock();
-        block0: for (Player p2 : loc.getWorld().getPlayers()) {
-            int y2;
+        block0: for (Player p : loc.getWorld().getPlayers()) {
+            int y;
             Location cacheLocation;
             if (cacheBlock.getType().equals((Object)Material.AIR)) {
                 cacheLocation = cacheBlock.getLocation().clone();
-                for (y2 = cacheLocation.getBlockY(); y2 > 0; --y2) {
+                for (y = cacheLocation.getBlockY(); y > 0; --y) {
                     if (cacheLocation.subtract(0.0, 1.0, 0.0).getBlock().getType() == Material.AIR) continue;
                     this.sendPacketBedrock(cacheLocation);
                     continue block0;
@@ -632,7 +632,7 @@ SlayerBoss {
             }
             if (cacheBlock.getType() != Material.AIR && cacheBlock.getLocation().add(0.0, 1.0, 0.0).getBlock().getType() != Material.AIR) {
                 cacheLocation = cacheBlock.getLocation().clone();
-                for (y2 = cacheLocation.getBlockY(); y2 > 0; ++y2) {
+                for (y = cacheLocation.getBlockY(); y > 0; ++y) {
                     if (cacheLocation.add(0.0, 1.0, 0.0).getBlock().getType() == Material.AIR) continue;
                     this.sendPacketBedrock(cacheLocation);
                     continue block0;
@@ -643,9 +643,9 @@ SlayerBoss {
         }
     }
 
-    public void sendPacket(org.bukkit.World w2, Location l2) {
-        for (Player p2 : w2.getPlayers()) {
-            p2.sendBlockChange(l2, Material.BEDROCK, (byte)0);
+    public void sendPacket(org.bukkit.World w, Location l) {
+        for (Player p : w.getPlayers()) {
+            p.sendBlockChange(l, Material.BEDROCK, (byte)0);
         }
     }
 
@@ -662,9 +662,9 @@ SlayerBoss {
         }
     }
 
-    public void send(Location loc, Material mat, byte data, org.bukkit.World w2) {
-        for (Player p2 : w2.getPlayers()) {
-            p2.sendBlockChange(loc, mat, data);
+    public void send(Location loc, Material mat, byte data, org.bukkit.World w) {
+        for (Player p : w.getPlayers()) {
+            p.sendBlockChange(loc, mat, data);
         }
     }
 
@@ -678,14 +678,14 @@ SlayerBoss {
                 }
                 if (entity.hasMetadata("BoomBoomAtoned") && entity.getTicksLived() > 2 && entity.isOnGround()) {
                     entity.getWorld().playSound(entity.getLocation(), Sound.WITHER_SPAWN, 1.0f, 2.0f);
-                    for (org.bukkit.entity.Entity e2 : entity.getNearbyEntities(4.0, 3.0, 4.0)) {
-                        if (!(e2 instanceof LivingEntity) || e2.hasMetadata("NoAffect")) continue;
-                        if (e2 instanceof Player) {
-                            User.getUser(e2.getUniqueId()).damage(((Player)e2).getMaxHealth() * 10.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, entity);
-                            ((LivingEntity)e2).damage(0.1, entity);
+                    for (org.bukkit.entity.Entity e : entity.getNearbyEntities(4.0, 3.0, 4.0)) {
+                        if (!(e instanceof LivingEntity) || e.hasMetadata("NoAffect")) continue;
+                        if (e instanceof Player) {
+                            User.getUser(e.getUniqueId()).damage(((Player)e).getMaxHealth() * 10.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, entity);
+                            ((LivingEntity)e).damage(0.1, entity);
                             continue;
                         }
-                        ((LivingEntity)e2).damage((double)SUtil.random(0, 10), entity);
+                        ((LivingEntity)e).damage((double)SUtil.random(0, 10), entity);
                     }
                     entity.remove();
                 }
@@ -698,8 +698,8 @@ SlayerBoss {
         return this.tier;
     }
 
-    private static /* synthetic */ void lambda$onDamage$27(org.bukkit.entity.Entity en, Vector v2) {
-        en.setVelocity(v2);
+    private static /* synthetic */ void lambda$onDamage$27(org.bukkit.entity.Entity en, Vector v) {
+        en.setVelocity(v);
     }
 }
 

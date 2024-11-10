@@ -42,12 +42,12 @@ public class BlockFallAPI {
         EntityFallingBlock entityfallingblock = new EntityFallingBlock((net.minecraft.server.v1_8_R3.World)world);
         entityfallingblock.setLocation(loc.getX(), loc.getY(), loc.getZ(), 0.0f, 0.0f);
         PacketPlayOutSpawnEntity packet = new PacketPlayOutSpawnEntity((Entity)entityfallingblock, 70, mat.getId() + (data << 12));
-        double x2 = vec.getX();
-        double y2 = vec.getY();
-        double z2 = vec.getZ();
+        double x = vec.getX();
+        double y = vec.getY();
+        double z = vec.getZ();
         for (Player player : players.getPlayers()) {
             ((CraftPlayer)player).getHandle().playerConnection.sendPacket((Packet)packet);
-            ((CraftPlayer)player).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutEntityVelocity(entityfallingblock.getId(), x2, y2, z2));
+            ((CraftPlayer)player).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutEntityVelocity(entityfallingblock.getId(), x, y, z));
         }
         SUtil.delay(() -> BlockFallAPI.removeBlock(entityfallingblock, players), delay.intValue());
     }

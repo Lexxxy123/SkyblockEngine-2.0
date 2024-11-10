@@ -56,14 +56,6 @@ public interface MaterialStatistics {
         return ItemCategory.TOOLS_MISC;
     }
 
-    default public long getPrice() {
-        return 1L;
-    }
-
-    default public long getValue() {
-        return 1L;
-    }
-
     default public void load() {
     }
 }

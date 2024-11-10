@@ -21,7 +21,6 @@ import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.command.CommandParameters;
 import net.hypixel.skyblock.command.CommandSource;
 import net.hypixel.skyblock.command.SCommand;
-import net.hypixel.skyblock.config.Config;
 import net.hypixel.skyblock.features.ranks.PlayerRank;
 import org.apache.commons.lang.RandomStringUtils;
 import org.bukkit.Bukkit;
@@ -31,15 +30,14 @@ import org.bukkit.entity.Player;
 @CommandParameters(description="tempban player", aliases="tempban", permission=PlayerRank.MOD)
 public class TempBan
 extends SCommand {
-    public static Config config = SkyBlock.getPlugin().config;
     private static final Pattern periodPattern = Pattern.compile("([0-9]+)([hdwmy])");
 
     @Override
     public void run(CommandSource sender, String[] args) {
         if (args.length >= 3) {
             String reason = "";
-            for (int i2 = 2; i2 < args.length; ++i2) {
-                reason = String.valueOf(reason) + args[i2] + " ";
+            for (int i = 2; i < args.length; ++i) {
+                reason = String.valueOf(reason) + args[i] + " ";
             }
             String reason2 = reason.substring(0, reason.length() - 1);
             Player target = Bukkit.getPlayerExact((String)args[0]);
@@ -73,7 +71,7 @@ extends SCommand {
                         loadConfiguration.save(playerfile);
                         if (target != null) {
                             sender.send("\u00a7aTempbanned " + Bukkit.getPlayer((String)args[0]).getName() + " for " + args[1] + " for " + reason2);
-                            target.kickPlayer("\u00a7cYou are temporarily banned for \u00a7f" + TempBan.calculateTime((long)loadConfiguration.getInt(String.valueOf(uuid) + ".ban.length") - unixTime) + " \u00a7cfrom this server!\n\n\u00a77Reason: \u00a7f" + loadConfiguration.getString(String.valueOf(uuid) + ".ban.reason") + "\n\u00a77Find out more: \u00a7b\u00a7n" + config.getString("discord") + "\n\n\u00a77Ban ID: \u00a7f#" + loadConfiguration.getString(String.valueOf(uuid) + ".ban.id") + "\n\u00a77Sharing your Ban ID may affect the processing of your appeal!");
+                            target.kickPlayer("\u00a7cYou are temporarily banned for \u00a7f" + TempBan.calculateTime((long)loadConfiguration.getInt(String.valueOf(uuid) + ".ban.length") - unixTime) + " \u00a7cfrom this server!\n\n\u00a77Reason: \u00a7f" + loadConfiguration.getString(String.valueOf(uuid) + ".ban.reason") + "\n\u00a77Find out more: \u00a7b\u00a7nhttps://discord.gg/funpixel\n\n\u00a77Ban ID: \u00a7f#" + loadConfiguration.getString(String.valueOf(uuid) + ".ban.id") + "\n\u00a77Sharing your Ban ID may affect the processing of your appeal!");
                         } else {
                             sender.send("\u00a7aTempbanned " + args[0] + " for " + args[1] + " for " + reason2);
                         }

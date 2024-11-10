@@ -46,14 +46,14 @@ public class SadanBossManager {
         }
     }
 
-    public static void endFloor(World w2) {
-        if (w2.getName().toLowerCase().startsWith("f6") && !w2.getName().equalsIgnoreCase("f6")) {
-            for (Entity e2 : w2.getEntities()) {
-                if (e2 instanceof Player) continue;
-                e2.remove();
+    public static void endFloor(World w) {
+        if (w.getName().toLowerCase().startsWith("f6") && !w.getName().equalsIgnoreCase("f6")) {
+            for (Entity e : w.getEntities()) {
+                if (e instanceof Player) continue;
+                e.remove();
             }
-            new SkyBlockWorldManager(w2).delete();
-            SLog.severe("[DUNGEON BOSSROOM] Deleted " + w2.getName() + " and cleaned the memory !");
+            new SkyBlockWorldManager(w).delete();
+            SLog.severe("[DUNGEON BOSSROOM] Deleted " + w.getName() + " and cleaned the memory !");
         }
     }
 }

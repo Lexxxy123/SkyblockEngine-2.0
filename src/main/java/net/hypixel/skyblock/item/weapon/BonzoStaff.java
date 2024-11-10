@@ -115,46 +115,46 @@ Ability {
         Vector vecTo = location.getDirection().normalize().multiply(1);
         Location location2 = player1.getLocation();
         Random random = new Random();
-        int i2 = random.nextInt(9);
+        int i = random.nextInt(9);
         Color color = Color.RED;
         final ArmorStand stand = (ArmorStand)player1.getWorld().spawn(location.add(player1.getLocation().getDirection().multiply(1)), ArmorStand.class);
         stand.setVisible(false);
         stand.setGravity(false);
         stand.setMarker(true);
         stand.teleport(player1.getEyeLocation().add(vecTo));
-        if (i2 == 1) {
+        if (i == 1) {
             stand.setHelmet(SItem.of(SMaterial.BONZO_BALLOON_1).getStack());
             color = Color.RED;
         }
-        if (i2 == 2) {
+        if (i == 2) {
             stand.setHelmet(SItem.of(SMaterial.BONZO_BALLOON_2).getStack());
             color = Color.ORANGE;
         }
-        if (i2 == 3) {
+        if (i == 3) {
             stand.setHelmet(SItem.of(SMaterial.BONZO_BALLOON_3).getStack());
             color = Color.YELLOW;
         }
-        if (i2 == 4) {
+        if (i == 4) {
             stand.setHelmet(SItem.of(SMaterial.BONZO_BALLOON_4).getStack());
             color = Color.PURPLE;
         }
-        if (i2 == 5) {
+        if (i == 5) {
             stand.setHelmet(SItem.of(SMaterial.BONZO_BALLOON_5).getStack());
             color = Color.BLUE;
         }
-        if (i2 == 6) {
+        if (i == 6) {
             stand.setHelmet(SItem.of(SMaterial.BONZO_BALLOON_6).getStack());
             color = Color.AQUA;
         }
-        if (i2 == 7) {
+        if (i == 7) {
             stand.setHelmet(SItem.of(SMaterial.BONZO_BALLOON_7).getStack());
             color = Color.LIME;
         }
-        if (i2 == 8) {
+        if (i == 8) {
             stand.setHelmet(SItem.of(SMaterial.BONZO_BALLOON_8).getStack());
             color = Color.FUCHSIA;
         }
-        if (i2 == 9) {
+        if (i == 9) {
             stand.setHelmet(SItem.of(SMaterial.BONZO_BALLOON_9).getStack());
             color = Color.GREEN;
         }
@@ -172,12 +172,12 @@ Ability {
                     yaw *= -1.0f;
                 }
                 location.setYaw(yaw);
-                double x2 = direction.getX() * this.t;
-                double y2 = direction.getY() * this.t;
-                double z2 = direction.getZ() * this.t;
-                location.add(x2, y2, z2);
+                double x = direction.getX() * this.t;
+                double y = direction.getY() * this.t;
+                double z = direction.getZ() * this.t;
+                location.add(x, y, z);
                 stand.teleport(location);
-                location.subtract(x2, y2, z2);
+                location.subtract(x, y, z);
                 if (this.t >= 50.0) {
                     this.cancel();
                     stand.remove();

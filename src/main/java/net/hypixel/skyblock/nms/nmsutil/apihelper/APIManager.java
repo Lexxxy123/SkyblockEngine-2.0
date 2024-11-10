@@ -83,7 +83,7 @@ public class APIManager {
                     if (plugin == null) continue;
                     APIManager.registerAPIHost(clazzAPI, plugin);
                 }
-            } catch (ReflectiveOperationException e2) {
+            } catch (ReflectiveOperationException e) {
                 LOGGER.warning("API class '" + clazz.getName() + "' is missing valid constructor");
             }
             PENDING_API_CLASSES.remove(clazz);
@@ -116,7 +116,7 @@ public class APIManager {
                 throw new APIRegistrationException();
             }
             APIManager.registerAPIHost(clazz, host);
-        } catch (APIRegistrationException e2) {
+        } catch (APIRegistrationException e) {
             if (PENDING_API_CLASSES.containsKey(clazz)) {
                 PENDING_API_CLASSES.get(clazz).add(host);
             }

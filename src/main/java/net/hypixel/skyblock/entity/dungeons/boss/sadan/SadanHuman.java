@@ -108,17 +108,17 @@ extends BaseZombie {
         return 40000.0;
     }
 
-    public GlobalBossBar setBar(World w2, String s2) {
-        this.bb = new GlobalBossBar(Sputnik.trans(s2), w2);
-        for (Player p2 : w2.getPlayers()) {
-            this.bb.addPlayer(p2);
+    public GlobalBossBar setBar(World w, String s) {
+        this.bb = new GlobalBossBar(Sputnik.trans(s), w);
+        for (Player p : w.getPlayers()) {
+            this.bb.addPlayer(p);
         }
         return this.bb;
     }
 
-    public void removeAllBar(World w2, BossBar b2) {
-        for (Player p2 : w2.getPlayers()) {
-            b2.removePlayer(p2.getUniqueId());
+    public void removeAllBar(World w, BossBar b) {
+        for (Player p : w.getPlayers()) {
+            b.removePlayer(p.getUniqueId());
         }
     }
 
@@ -142,8 +142,8 @@ extends BaseZombie {
             Bukkit.broadcastMessage((String)Sputnik.trans("&cAn Error has been occured while performing the /spawncustommob command! Please check the Console!"));
             return;
         }
-        for (Player p2 : entity.getWorld().getPlayers()) {
-            User user = User.getUser(p2.getUniqueId());
+        for (Player p : entity.getWorld().getPlayers()) {
+            User user = User.getUser(p.getUniqueId());
             user.addBRun6(1);
         }
         BossRun.put(entity.getWorld().getUID(), true);
@@ -156,13 +156,13 @@ extends BaseZombie {
         SadanFunction.roomLoop(entity.getWorld());
         SadanInterest.put(entity.getWorld().getUID(), 105);
         SadanGiantsCount.put(entity.getWorld().getUID(), 4);
-        final GlobalBossBar bb2 = this.setBar(entity.getWorld(), "&c&lSadan");
+        final GlobalBossBar bb = this.setBar(entity.getWorld(), "&c&lSadan");
         new BukkitRunnable(){
 
             public void run() {
                 SadanHuman.this.phase1 = true;
-                bb2.setTitle(Sputnik.trans("&c&lSadan's Interest Level"));
-                bb2.setProgress(1.0);
+                bb.setTitle(Sputnik.trans("&c&lSadan's Interest Level"));
+                bb.setProgress(1.0);
                 SadanHuman.this.phase1((Entity)entity);
                 bkt.cancel();
             }
@@ -188,15 +188,15 @@ extends BaseZombie {
                 double result;
                 if (entity.isDead()) {
                     ArrayList<Player> plist = new ArrayList<Player>();
-                    for (Player p2 : bb2.players) {
-                        plist.add(p2);
+                    for (Player p : bb.players) {
+                        plist.add(p);
                     }
                     plist.forEach(pl -> {
-                        GlobalBossBar val$bb = bb2;
-                        bb2.removePlayer((Player)pl);
+                        GlobalBossBar val$bb = bb;
+                        bb.removePlayer((Player)pl);
                     });
-                    bb2.setProgress(0.0);
-                    bb2.cancel();
+                    bb.setProgress(0.0);
+                    bb.cancel();
                     this.cancel();
                     return;
                 }
@@ -204,17 +204,17 @@ extends BaseZombie {
                     if (SadanInterest.get(entity.getWorld().getUID()) > 0) {
                         int interest = SadanInterest.get(entity.getWorld().getUID());
                         result = (double)interest / 105.0;
-                        bb2.setProgress(result);
+                        bb.setProgress(result);
                     } else {
-                        bb2.setTitle(Sputnik.trans("&c&lSadan"));
-                        bb2.setProgress(1.0);
+                        bb.setTitle(Sputnik.trans("&c&lSadan"));
+                        bb.setProgress(1.0);
                         SadanHuman.this.phase1 = false;
                         SadanHuman.this.phase2((Entity)entity);
                         new BukkitRunnable(){
 
                             public void run() {
-                                bb2.setTitle(Sputnik.trans("&c&lSadan's Giants"));
-                                bb2.setProgress(1.0);
+                                bb.setTitle(Sputnik.trans("&c&lSadan's Giants"));
+                                bb.setProgress(1.0);
                             }
                         }.runTaskLater((Plugin)SkyBlock.getPlugin(), 35L);
                     }
@@ -223,10 +223,10 @@ extends BaseZombie {
                     if (SadanGiantsCount.get(entity.getWorld().getUID()) > 0) {
                         int giant = SadanGiantsCount.get(entity.getWorld().getUID());
                         result = (double)giant / 4.0;
-                        bb2.setProgress(result);
+                        bb.setProgress(result);
                     } else {
-                        bb2.setTitle(Sputnik.trans("&c&lSadan"));
-                        bb2.setProgress(1.0);
+                        bb.setTitle(Sputnik.trans("&c&lSadan"));
+                        bb.setProgress(1.0);
                         SadanHuman.this.phase2 = false;
                         SadanHuman.this.phase3((Entity)entity);
                     }
@@ -245,8 +245,8 @@ extends BaseZombie {
         EntityManager.shutTheFuckUp((Entity)entity);
         entity.setMetadata("GiantSword", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
         entity.setMetadata("NoAffect", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
-        net.minecraft.server.v1_8_R3.Entity e2 = ((CraftEntity)entity).getHandle();
-        double height_ = height = e2.getBoundingBox().e - e2.getBoundingBox().b;
+        net.minecraft.server.v1_8_R3.Entity e = ((CraftEntity)entity).getHandle();
+        double height_ = height = e.getBoundingBox().e - e.getBoundingBox().b;
         final ArmorStand hologram_d = (ArmorStand)entity.getWorld().spawn(entity.getLocation().add(0.0, height + 0.22, 0.0), ArmorStand.class);
         hologram_d.setVisible(false);
         hologram_d.setGravity(false);
@@ -404,11 +404,11 @@ extends BaseZombie {
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 2L);
     }
 
-    public void function(Entity e2) {
-        for (Entity e22 : e2.getWorld().getEntities()) {
-            if (!e22.hasMetadata("t_sadan_p1_1")) continue;
-            e22.remove();
-            new SEntity(new Location(e22.getWorld(), e22.getLocation().getX(), e22.getLocation().getY(), e22.getLocation().getZ(), e22.getLocation().getYaw(), 0.0f), SEntityType.TERRACOTTA_SADAN, new Object[0]);
+    public void function(Entity e) {
+        for (Entity e2 : e.getWorld().getEntities()) {
+            if (!e2.hasMetadata("t_sadan_p1_1")) continue;
+            e2.remove();
+            new SEntity(new Location(e2.getWorld(), e2.getLocation().getX(), e2.getLocation().getY(), e2.getLocation().getZ(), e2.getLocation().getYaw(), 0.0f), SEntityType.TERRACOTTA_SADAN, new Object[0]);
         }
     }
 
@@ -437,108 +437,108 @@ extends BaseZombie {
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
     }
 
-    public void a(final Entity e2) {
-        e2.setMetadata("RMHN", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
-        final Location l2 = e2.getLocation();
-        l2.setPitch(-27.0f);
-        l2.setYaw(-180.0f);
+    public void a(final Entity e) {
+        e.setMetadata("RMHN", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        final Location l = e.getLocation();
+        l.setPitch(-27.0f);
+        l.setYaw(-180.0f);
         new BukkitRunnable(){
 
             public void run() {
-                Vector teleportTo = l2.getDirection().normalize().multiply(1);
-                if (e2.isDead()) {
+                Vector teleportTo = l.getDirection().normalize().multiply(1);
+                if (e.isDead()) {
                     this.cancel();
                     return;
                 }
-                if (String.valueOf(e2.getLocation().getX()).contains("191") && String.valueOf(e2.getLocation().getZ()).contains("285")) {
-                    SadanHuman.this.b(e2);
+                if (String.valueOf(e.getLocation().getX()).contains("191") && String.valueOf(e.getLocation().getZ()).contains("285")) {
+                    SadanHuman.this.b(e);
                     this.cancel();
                     return;
                 }
-                e2.teleport(e2.getLocation().add(teleportTo).multiply(1.0));
+                e.teleport(e.getLocation().add(teleportTo).multiply(1.0));
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 2L);
     }
 
-    public void b(final Entity e2) {
-        final Location l2 = e2.getLocation();
-        l2.setPitch(90.0f);
-        l2.setYaw(-180.0f);
+    public void b(final Entity e) {
+        final Location l = e.getLocation();
+        l.setPitch(90.0f);
+        l.setYaw(-180.0f);
         new BukkitRunnable(){
 
             public void run() {
-                Vector teleportTo = l2.getDirection().normalize().multiply(1);
-                if (e2.isDead()) {
+                Vector teleportTo = l.getDirection().normalize().multiply(1);
+                if (e.isDead()) {
                     this.cancel();
                     return;
                 }
-                if (String.valueOf(e2.getLocation().getY()).contains("79")) {
+                if (String.valueOf(e.getLocation().getY()).contains("79")) {
                     new BukkitRunnable(){
 
                         public void run() {
-                            new SEntity(new Location(e2.getWorld(), e2.getLocation().getX(), 69.0, e2.getLocation().getZ(), 0.0f, 0.0f), SEntityType.GIANT_SADAN, new Object[0]);
-                            e2.getWorld().playSound(e2.getLocation(), Sound.ENDERDRAGON_GROWL, 100.0f, 0.85f);
-                            for (Entity e1 : e2.getWorld().getEntities()) {
+                            new SEntity(new Location(e.getWorld(), e.getLocation().getX(), 69.0, e.getLocation().getZ(), 0.0f, 0.0f), SEntityType.GIANT_SADAN, new Object[0]);
+                            e.getWorld().playSound(e.getLocation(), Sound.ENDERDRAGON_GROWL, 100.0f, 0.85f);
+                            for (Entity e1 : e.getWorld().getEntities()) {
                                 if (!e1.hasMetadata("dummyforphase3")) continue;
                                 e1.remove();
                             }
-                            e2.remove();
+                            e.remove();
                         }
                     }.runTaskLater((Plugin)SkyBlock.getPlugin(), 3L);
-                    SadanReach.remove(e2.getWorld().getUID());
+                    SadanReach.remove(e.getWorld().getUID());
                     this.cancel();
                     return;
                 }
-                e2.teleport(e2.getLocation().add(teleportTo).multiply(1.0));
+                e.teleport(e.getLocation().add(teleportTo).multiply(1.0));
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 2L);
     }
 
-    public void sayPhase1Dialouge(Entity e2) {
-        this.say("So you made it all the way here...and you wish to defy me? Sadan?!", e2);
-        this.sd_("The audacity! I have been the ruler of these floors for a hundred years!", e2, 60);
-        this.sd_("I am the bridge between this realm and the world below! You shall not pass!", e2, 120);
-        SUtil.delay(() -> DIALOUGE_BOSS.remove(e2), 180L);
+    public void sayPhase1Dialouge(Entity e) {
+        this.say("So you made it all the way here...and you wish to defy me? Sadan?!", e);
+        this.sd_("The audacity! I have been the ruler of these floors for a hundred years!", e, 60);
+        this.sd_("I am the bridge between this realm and the world below! You shall not pass!", e, 120);
+        SUtil.delay(() -> DIALOUGE_BOSS.remove(e), 180L);
     }
 
-    public void sendDelayed(Entity e2, String msg, int delay) {
-        this.say(msg, e2);
-        SUtil.delay(() -> DIALOUGE_BOSS.remove(e2), delay);
+    public void sendDelayed(Entity e, String msg, int delay) {
+        this.say(msg, e);
+        SUtil.delay(() -> DIALOUGE_BOSS.remove(e), delay);
     }
 
-    public void sayPhase2Dialouge(Entity e2) {
-        this.say("ENOUGH!", e2);
-        this.sd_("My giants! Unleashed!", e2, 40);
-        SUtil.delay(() -> DIALOUGE_BOSS.remove(e2), 80L);
+    public void sayPhase2Dialouge(Entity e) {
+        this.say("ENOUGH!", e);
+        this.sd_("My giants! Unleashed!", e, 40);
+        SUtil.delay(() -> DIALOUGE_BOSS.remove(e), 80L);
     }
 
-    public void sayPhase3Dialouge(Entity e2) {
-        this.say("You did it. I understand now, you have earned my respect.", e2);
-        this.sd_("If only you had become my disciples instead of this incompetent bunch.", e2, 60);
-        this.sd_("Maybe in another life. Until then, meet my ultimate corpse.", e2, 120);
-        this.sd_("I'm sorry but I need to concentrate. I wish it didn't have to come to this.", e2, 180);
-        SUtil.delay(() -> DIALOUGE_BOSS.remove(e2), 240L);
+    public void sayPhase3Dialouge(Entity e) {
+        this.say("You did it. I understand now, you have earned my respect.", e);
+        this.sd_("If only you had become my disciples instead of this incompetent bunch.", e, 60);
+        this.sd_("Maybe in another life. Until then, meet my ultimate corpse.", e, 120);
+        this.sd_("I'm sorry but I need to concentrate. I wish it didn't have to come to this.", e, 180);
+        SUtil.delay(() -> DIALOUGE_BOSS.remove(e), 240L);
     }
 
-    public void sd_(String message, Entity e2, int delay) {
-        if (e2.isDead()) {
+    public void sd_(String message, Entity e, int delay) {
+        if (e.isDead()) {
             return;
         }
-        SUtil.delay(() -> this.say(message, e2), delay);
+        SUtil.delay(() -> this.say(message, e), delay);
     }
 
-    public void say(String message, Entity e2) {
-        if (e2.isDead()) {
+    public void say(String message, Entity e) {
+        if (e.isDead()) {
             return;
         }
-        DIALOUGE_BOSS.put(e2, message);
-        for (Player p2 : e2.getWorld().getPlayers()) {
-            p2.sendMessage(Sputnik.trans("&c[BOSS] Sadan&f: " + message));
+        DIALOUGE_BOSS.put(e, message);
+        for (Player p : e.getWorld().getPlayers()) {
+            p.sendMessage(Sputnik.trans("&c[BOSS] Sadan&f: " + message));
         }
     }
 
-    public void cd_(Entity e2) {
-        DIALOUGE_BOSS.remove(e2);
+    public void cd_(Entity e) {
+        DIALOUGE_BOSS.remove(e);
     }
 
     public String randP1() {
@@ -571,12 +571,12 @@ extends BaseZombie {
         return "";
     }
 
-    public static BukkitTask playHBS(final World w2) {
+    public static BukkitTask playHBS(final World w) {
         return new BukkitRunnable(){
 
             public void run() {
-                for (Player p2 : w2.getPlayers()) {
-                    p2.playSound(p2.getLocation(), "mob.guardian.elder.hit", 1.0f, 0.0f);
+                for (Player p : w.getPlayers()) {
+                    p.playSound(p.getLocation(), "mob.guardian.elder.hit", 1.0f, 0.0f);
                 }
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 19L);

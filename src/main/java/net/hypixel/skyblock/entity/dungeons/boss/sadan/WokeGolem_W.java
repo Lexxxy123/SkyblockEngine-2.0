@@ -124,9 +124,9 @@ extends BaseZombie {
                             motY += (double)((float)(this.nms.getEffect(MobEffectList.JUMP).getAmplifier() + 1) * 0.2f);
                         }
                         if (this.nms.isSprinting()) {
-                            float f2 = this.nms.yaw * 0.01745329f;
-                            motX -= (double)(MathHelper.sin((float)f2) * 0.6f);
-                            motZ += (double)(MathHelper.cos((float)f2) * 0.6f);
+                            float f = this.nms.yaw * 0.01745329f;
+                            motX -= (double)(MathHelper.sin((float)f) * 0.6f);
+                            motZ += (double)(MathHelper.cos((float)f) * 0.6f);
                         }
                         entity.setVelocity(new Vector(motX, motY, motZ));
                     }
@@ -164,8 +164,8 @@ extends BaseZombie {
     }
 
     @Override
-    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
-        e2.getEntity().getWorld().playSound(e2.getEntity().getLocation(), Sound.IRONGOLEM_HIT, 1.0f, 1.0f);
+    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e, AtomicDouble damage) {
+        e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.IRONGOLEM_HIT, 1.0f, 1.0f);
     }
 
     @Override

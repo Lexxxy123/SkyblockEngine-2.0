@@ -101,7 +101,7 @@ Ability {
             boolean take = PlayerUtils.takeMana(player1, cost);
             if (!take) {
                 player1.playSound(player1.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
-                final long c2 = System.currentTimeMillis();
+                final long c = System.currentTimeMillis();
                 Repeater.MANA_REPLACEMENT_MAP.put(player1.getUniqueId(), new ManaReplacement(){
 
                     @Override
@@ -111,12 +111,12 @@ Ability {
 
                     @Override
                     public long getEnd() {
-                        return c2 + 1500L;
+                        return c + 1500L;
                     }
                 });
                 return;
             }
-            final long c3 = System.currentTimeMillis();
+            final long c = System.currentTimeMillis();
             Repeater.DEFENSE_REPLACEMENT_MAP.put(player1.getUniqueId(), new DefenseReplacement(){
 
                 @Override
@@ -126,7 +126,7 @@ Ability {
 
                 @Override
                 public long getEnd() {
-                    return c3 + 2000L;
+                    return c + 2000L;
                 }
             });
             ZSHash.Charges.put(player1.getUniqueId(), ZSHash.Charges.get(player1.getUniqueId()) - 1);
@@ -142,14 +142,14 @@ Ability {
             } else {
                 player1.setHealth(player1.getHealth() + healamount);
             }
-            for (Entity e2 : player1.getNearbyEntities(7.0, 7.0, 7.0)) {
-                if (!(e2 instanceof LivingEntity) || !(e2 instanceof Player)) continue;
-                if (((LivingEntity)e2).getMaxHealth() < ((LivingEntity)e2).getHealth() + 48.0) {
-                    ((LivingEntity)e2).setHealth(((LivingEntity)e2).getMaxHealth());
+            for (Entity e : player1.getNearbyEntities(7.0, 7.0, 7.0)) {
+                if (!(e instanceof LivingEntity) || !(e instanceof Player)) continue;
+                if (((LivingEntity)e).getMaxHealth() < ((LivingEntity)e).getHealth() + 48.0) {
+                    ((LivingEntity)e).setHealth(((LivingEntity)e).getMaxHealth());
                 } else {
-                    ((LivingEntity)e2).setHealth(player1.getHealth() + 48.0);
+                    ((LivingEntity)e).setHealth(player1.getHealth() + 48.0);
                 }
-                e2.sendMessage("" + ChatColor.GREEN + ChatColor.BOLD + player1.getName() + " healed you for 48 health!");
+                e.sendMessage("" + ChatColor.GREEN + ChatColor.BOLD + player1.getName() + " healed you for 48 health!");
             }
         } else {
             player1.sendMessage(ChatColor.translateAlternateColorCodes((char)'&', (String)("&cNo more charges, next one in &e" + ZSHash.Cooldown.get(player1.getUniqueId()) + "s")));

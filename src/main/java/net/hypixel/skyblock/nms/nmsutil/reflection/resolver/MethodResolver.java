@@ -22,8 +22,8 @@ extends MemberResolver<Method> {
     public Method resolveSignature(String ... signatures) throws ReflectiveOperationException {
         for (Method method : this.clazz.getDeclaredMethods()) {
             String methodSignature = MethodWrapper.getMethodSignature(method);
-            for (String s2 : signatures) {
-                if (!s2.equals(methodSignature)) continue;
+            for (String s : signatures) {
+                if (!s.equals(methodSignature)) continue;
                 return AccessUtil.setAccessible(method);
             }
         }
@@ -72,7 +72,7 @@ extends MemberResolver<Method> {
     public Method resolveSilent(String ... names) {
         try {
             return this.resolve(names);
-        } catch (Exception e2) {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -94,8 +94,8 @@ extends MemberResolver<Method> {
     public Method resolve(ResolverQuery ... queries) throws NoSuchMethodException {
         try {
             return (Method)super.resolve(queries);
-        } catch (ReflectiveOperationException e2) {
-            throw (NoSuchMethodException)e2;
+        } catch (ReflectiveOperationException e) {
+            throw (NoSuchMethodException)e;
         }
     }
 
@@ -118,8 +118,8 @@ extends MemberResolver<Method> {
         if (l1.length != l2.length) {
             return false;
         }
-        for (int i2 = 0; i2 < l1.length; ++i2) {
-            if (l1[i2] == l2[i2]) continue;
+        for (int i = 0; i < l1.length; ++i) {
+            if (l1[i] == l2[i]) continue;
             equal = false;
             break;
         }

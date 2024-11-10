@@ -27,12 +27,12 @@ public class PetsFollow {
         this.player = player;
     }
 
-    public void setNameTagAS(ArmorStand as2) {
-        this.nametag = as2;
+    public void setNameTagAS(ArmorStand as) {
+        this.nametag = as;
     }
 
-    public void setPetAS(ArmorStand as2) {
-        this.petitem = as2;
+    public void setPetAS(ArmorStand as) {
+        this.petitem = as;
     }
 
     public void addLocation(Location loc) {

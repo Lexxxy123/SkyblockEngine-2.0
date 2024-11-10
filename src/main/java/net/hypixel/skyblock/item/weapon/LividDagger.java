@@ -139,8 +139,8 @@ Ability {
     public void onAbilityUse(final Player player1, final SItem sItem) {
         Location throwLoc = player1.getLocation().add(0.0, 1.2, 0.0);
         final Vector throwVec = player1.getLocation().add(player1.getLocation().getDirection().multiply(10)).toVector().subtract(player1.getLocation().toVector()).normalize().multiply(1.2);
-        for (Player p2 : player1.getWorld().getPlayers()) {
-            ((CraftPlayer)p2).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)player1).getHandle(), 0));
+        for (Player p : player1.getWorld().getPlayers()) {
+            ((CraftPlayer)p).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)player1).getHandle(), 0));
         }
         final ArmorStand armorStand1 = (ArmorStand)player1.getWorld().spawnEntity(throwLoc, EntityType.ARMOR_STAND);
         armorStand1.getEquipment().setItemInHand(SItem.of(SMaterial.IRON_SWORD).getStack());
@@ -153,10 +153,10 @@ Ability {
             private int run = -1;
 
             public void run() {
-                boolean bl2;
+                boolean bl;
                 int angle;
                 Vector newVector;
-                int i2 = 0;
+                int i = 0;
                 int ran = 0;
                 int num = 90;
                 Object loc = null;
@@ -165,7 +165,7 @@ Ability {
                     this.cancel();
                     return;
                 }
-                for (int j2 = 0; j2 < 7; ++j2) {
+                for (int j = 0; j < 7; ++j) {
                     armorStand1.getWorld().spigot().playEffect(armorStand1.getLocation().clone().add(0.0, 1.75, 0.0), Effect.CRIT, 0, 1, (float)SUtil.random(-0.5, 0.5), (float)SUtil.random(0.0, 0.5), (float)SUtil.random(-0.5, 0.5), 0.0f, 1, 100);
                 }
                 if (!armorStand1.getLocation().getBlock().getType().isTransparent() || armorStand1.isOnGround()) {
@@ -177,26 +177,26 @@ Ability {
                 armorStand1.setRightArmPose(new EulerAngle(xPos + 0.35, 0.0, 0.0));
                 previousVector[0] = newVector = new Vector(throwVec.getX(), previousVector[0].getY() - 0.03, throwVec.getZ());
                 armorStand1.setVelocity(newVector);
-                if (i2 < 13) {
-                    angle = i2 * 20 + 90;
-                    bl2 = false;
+                if (i < 13) {
+                    angle = i * 20 + 90;
+                    bl = false;
                 } else {
-                    angle = i2 * 20 - 90;
-                    bl2 = true;
+                    angle = i * 20 - 90;
+                    bl = true;
                 }
                 if (!armorStand1.getLocation().getBlock().getType().isTransparent()) {
                     armorStand1.remove();
                     this.cancel();
                     return;
                 }
-                if (i2 % 2 == 0 && i2 < 13) {
+                if (i % 2 == 0 && i < 13) {
                     armorStand1.teleport(armorStand1.getLocation().add(teleportTo).multiply(1.0));
-                } else if (i2 % 2 == 0) {
+                } else if (i % 2 == 0) {
                     armorStand1.teleport(armorStand1.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                 }
-                for (Entity e2 : armorStand1.getNearbyEntities(0.7, 0.7, 0.7)) {
+                for (Entity e : armorStand1.getNearbyEntities(0.7, 0.7, 0.7)) {
                     Damageable entity;
-                    if (!(e2 instanceof LivingEntity) || e2 == player1.getPlayer() || (entity = (Damageable)e2).isDead() || !(entity instanceof LivingEntity) || entity instanceof Player || entity instanceof EnderDragonPart || entity instanceof Villager || entity instanceof ArmorStand || entity instanceof Item || entity instanceof ItemFrame || entity.hasMetadata("GiantSword") || Groups.ENDERMAN.contains(entity.getType())) continue;
+                    if (!(e instanceof LivingEntity) || e == player1.getPlayer() || (entity = (Damageable)e).isDead() || !(entity instanceof LivingEntity) || entity instanceof Player || entity instanceof EnderDragonPart || entity instanceof Villager || entity instanceof ArmorStand || entity instanceof Item || entity instanceof ItemFrame || entity.hasMetadata("GiantSword") || Groups.ENDERMAN.contains(entity.getType())) continue;
                     User user = User.getUser(player1.getUniqueId());
                     Object[] atp = Sputnik.calculateDamage(player1, player1, sItem.getStack(), (LivingEntity)entity, false);
                     double finalDamage1 = ((Float)atp[0]).floatValue();

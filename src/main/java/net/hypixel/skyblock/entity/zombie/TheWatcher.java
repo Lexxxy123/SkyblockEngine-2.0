@@ -71,8 +71,8 @@ extends BaseZombie {
     public void onSpawn(final LivingEntity entity, SEntity sEntity) {
         double height;
         entity.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 10000000, 1));
-        net.minecraft.server.v1_8_R3.Entity e2 = ((CraftEntity)entity).getHandle();
-        double height_ = height = e2.getBoundingBox().e - e2.getBoundingBox().b;
+        net.minecraft.server.v1_8_R3.Entity e = ((CraftEntity)entity).getHandle();
+        double height_ = height = e.getBoundingBox().e - e.getBoundingBox().b;
         final ArmorStand hologram = (ArmorStand)entity.getWorld().spawn(entity.getLocation().add(0.0, height, 0.0), ArmorStand.class);
         hologram.setVisible(false);
         hologram.setGravity(false);
@@ -189,16 +189,16 @@ extends BaseZombie {
     }
 
     @Override
-    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
+    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e, AtomicDouble damage) {
         if (damager instanceof Player) {
-            Location loc = e2.getEntity().getLocation().add(0.0, 1.2, 0.0);
+            Location loc = e.getEntity().getLocation().add(0.0, 1.2, 0.0);
             Beam beam = new Beam(loc, damager.getLocation().add(0.0, 1.0, 0.0));
             beam.start();
-            User.getUser(damager.getUniqueId()).damage(SUtil.random(600, 1000), EntityDamageEvent.DamageCause.ENTITY_ATTACK, e2.getEntity());
-            DIALOUGE_BOSS.put(e2.getEntity(), "&f&lI'm not your goal.");
-            ((LivingEntity)damager).damage(0.1, e2.getEntity());
+            User.getUser(damager.getUniqueId()).damage(SUtil.random(600, 1000), EntityDamageEvent.DamageCause.ENTITY_ATTACK, e.getEntity());
+            DIALOUGE_BOSS.put(e.getEntity(), "&f&lI'm not your goal.");
+            ((LivingEntity)damager).damage(0.1, e.getEntity());
             SUtil.delay(() -> beam.stop(), 30L);
-            SUtil.delay(() -> DIALOUGE_BOSS.remove(e2.getEntity()), 40L);
+            SUtil.delay(() -> DIALOUGE_BOSS.remove(e.getEntity()), 40L);
         }
     }
 

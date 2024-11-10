@@ -68,10 +68,10 @@ extends SCommand {
         return uuid + ":" + Base64.getEncoder().encodeToString(APICommand.xorString(DatatypeConverter.printHexBinary(digest).toUpperCase().substring(0, 10), "AWF6GGDnWJ54TErdQdsw"));
     }
 
-    private static byte[] xorString(String s2, String key) {
-        byte[] bytes = new byte[s2.length()];
-        for (int i2 = 0; i2 < s2.length(); ++i2) {
-            bytes[i2] = (byte)(s2.charAt(i2) ^ key.charAt(i2 % key.length()));
+    private static byte[] xorString(String s, String key) {
+        byte[] bytes = new byte[s.length()];
+        for (int i = 0; i < s.length(); ++i) {
+            bytes[i] = (byte)(s.charAt(i) ^ key.charAt(i % key.length()));
         }
         return bytes;
     }

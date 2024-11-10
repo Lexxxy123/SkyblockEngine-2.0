@@ -172,9 +172,9 @@ public class Metrics {
                 block2: {
                     try {
                         Metrics.sendData(data);
-                    } catch (Exception e2) {
+                    } catch (Exception e) {
                         if (!logFailedRequests) break block2;
-                        Metrics.this.plugin.getLogger().log(Level.WARNING, "Could not submit plugin stats of " + Metrics.this.plugin.getName(), e2);
+                        Metrics.this.plugin.getLogger().log(Level.WARNING, "Could not submit plugin stats of " + Metrics.this.plugin.getName(), e);
                     }
                 }
             }
@@ -727,9 +727,9 @@ public class Metrics {
                     return null;
                 }
                 chart.put((Object)"data", (Object)data);
-            } catch (Throwable t2) {
+            } catch (Throwable t) {
                 if (logFailedRequests) {
-                    Bukkit.getLogger().log(Level.WARNING, "Failed to get data for custom chart with id " + this.chartId, t2);
+                    Bukkit.getLogger().log(Level.WARNING, "Failed to get data for custom chart with id " + this.chartId, t);
                 }
                 return null;
             }

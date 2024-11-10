@@ -18,6 +18,7 @@ import net.hypixel.skyblock.features.ranks.PlayerRank;
 import net.hypixel.skyblock.features.region.Region;
 import net.hypixel.skyblock.features.region.RegionGenerator;
 import net.hypixel.skyblock.features.region.RegionType;
+import net.hypixel.skyblock.module.DatabaseModule;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -39,7 +40,7 @@ extends SCommand {
                     if (name.length() > 100) {
                         throw new CommandFailException("Name too long!");
                     }
-                    if (RegionCommand.plugin.regionData.exists(name)) {
+                    if (DatabaseModule.getRegionData().exists(name)) {
                         throw new CommandFailException("There is already a region named that!");
                     }
                     REGION_GENERATION_MAP.put(sender.getSender(), new RegionGenerator("create", name, type));

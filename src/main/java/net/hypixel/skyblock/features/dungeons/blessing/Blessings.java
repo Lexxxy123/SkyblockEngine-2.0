@@ -80,49 +80,49 @@ public class Blessings {
         }
     }
 
-    public static List<Blessings> getFrom(World w2) {
-        if (BLESSINGS_MAP.containsKey(w2)) {
-            return BLESSINGS_MAP.get(w2);
+    public static List<Blessings> getFrom(World w) {
+        if (BLESSINGS_MAP.containsKey(w)) {
+            return BLESSINGS_MAP.get(w);
         }
         return null;
     }
 
     public void remove() {
         BLESSINGS_MAP.get(this.world).remove(this);
-        for (Player p2 : this.world.getPlayers()) {
+        for (Player p : this.world.getPlayers()) {
             TemporaryStats ts = null;
-            User u2 = User.getUser(p2.getUniqueId());
-            if (null == u2) continue;
-            ts = null != TemporaryStats.getFromPlayer(u2.toBukkitPlayer()) ? TemporaryStats.getFromPlayer(u2.toBukkitPlayer()) : new TemporaryStats(User.getUser(u2.toBukkitPlayer().getUniqueId()));
+            User u = User.getUser(p.getUniqueId());
+            if (null == u) continue;
+            ts = null != TemporaryStats.getFromPlayer(u.toBukkitPlayer()) ? TemporaryStats.getFromPlayer(u.toBukkitPlayer()) : new TemporaryStats(User.getUser(u.toBukkitPlayer().getUniqueId()));
             ts.cleanStats();
         }
     }
 
-    public static void resetForWorld(World w2) {
-        BLESSINGS_MAP.remove(w2);
-        for (Player p2 : w2.getPlayers()) {
+    public static void resetForWorld(World w) {
+        BLESSINGS_MAP.remove(w);
+        for (Player p : w.getPlayers()) {
             TemporaryStats ts = null;
-            User u2 = User.getUser(p2.getUniqueId());
-            if (null == u2) continue;
-            ts = null != TemporaryStats.getFromPlayer(u2.toBukkitPlayer()) ? TemporaryStats.getFromPlayer(u2.toBukkitPlayer()) : new TemporaryStats(User.getUser(u2.toBukkitPlayer().getUniqueId()));
+            User u = User.getUser(p.getUniqueId());
+            if (null == u) continue;
+            ts = null != TemporaryStats.getFromPlayer(u.toBukkitPlayer()) ? TemporaryStats.getFromPlayer(u.toBukkitPlayer()) : new TemporaryStats(User.getUser(u.toBukkitPlayer().getUniqueId()));
             ts.cleanStats();
         }
     }
 
-    public WrappedStats getBlessingStats(User u2) {
+    public WrappedStats getBlessingStats(User u) {
         TemporaryStats ts = null;
-        ts = null != TemporaryStats.getFromPlayer(u2.toBukkitPlayer()) ? TemporaryStats.getFromPlayer(u2.toBukkitPlayer()) : new TemporaryStats(User.getUser(u2.toBukkitPlayer().getUniqueId()));
+        ts = null != TemporaryStats.getFromPlayer(u.toBukkitPlayer()) ? TemporaryStats.getFromPlayer(u.toBukkitPlayer()) : new TemporaryStats(User.getUser(u.toBukkitPlayer().getUniqueId()));
         ts.cleanStats();
-        float[] statsarray = this.calculate(User.getUser(u2.getUuid()));
+        float[] statsarray = this.calculate(User.getUser(u.getUuid()));
         return new WrappedStats(statsarray);
     }
 
-    private float[] calculate(User u2) {
+    private float[] calculate(User u) {
         float[] stats = new float[7];
-        if (null == u2) {
+        if (null == u) {
             return stats;
         }
-        PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(u2.getUuid());
+        PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(u.getUuid());
         double pci = 1.0 + (double)this.level * 2.0 * 1.2 / 100.0;
         double fic = (double)this.level * 2.0 * 1.2;
         if (BlessingType.LIFE_BLESSINGS == this.type) {
@@ -158,36 +158,36 @@ public class Blessings {
     }
 
     public String toText() {
-        String n2 = SUtil.toRomanNumeral(this.level);
+        String n = SUtil.toRomanNumeral(this.level);
         switch (this.type) {
             case LIFE_BLESSINGS: {
-                return "Blessing of Life " + n2;
+                return "Blessing of Life " + n;
             }
             case POWER_BLESSINGS: {
-                return "Blessing of Power " + n2;
+                return "Blessing of Power " + n;
             }
             case STONE_BLESSINGS: {
-                return "Blessing of Stone " + n2;
+                return "Blessing of Stone " + n;
             }
             case TIME_BLESSINGS: {
-                return "Blessing of Time " + n2;
+                return "Blessing of Time " + n;
             }
             case WISDOM_BLESSINGS: {
-                return "Blessing of Wisdom " + n2;
+                return "Blessing of Wisdom " + n;
             }
         }
-        return "Blessing " + n2;
+        return "Blessing " + n;
     }
 
     public static void update() {
         if (BLESSINGS_MAP.isEmpty()) {
             return;
         }
-        for (Player p2 : Bukkit.getOnlinePlayers()) {
-            World w2 = p2.getWorld();
-            if (null == User.getUser(p2.getUniqueId()) || !BLESSINGS_MAP.containsKey(w2)) continue;
-            List<Blessings> bls = BLESSINGS_MAP.get(w2);
-            TemporaryStats ts = null != TemporaryStats.getFromPlayer(p2) ? TemporaryStats.getFromPlayer(p2) : new TemporaryStats(User.getUser(p2.getUniqueId()));
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            World w = p.getWorld();
+            if (null == User.getUser(p.getUniqueId()) || !BLESSINGS_MAP.containsKey(w)) continue;
+            List<Blessings> bls = BLESSINGS_MAP.get(w);
+            TemporaryStats ts = null != TemporaryStats.getFromPlayer(p) ? TemporaryStats.getFromPlayer(p) : new TemporaryStats(User.getUser(p.getUniqueId()));
             float def = 0.0f;
             float spd = 0.0f;
             float intel = 0.0f;
@@ -195,9 +195,9 @@ public class Blessings {
             float str = 0.0f;
             float hpg = 0.0f;
             float hp = 0.0f;
-            for (Blessings bl2 : bls) {
+            for (Blessings bl : bls) {
                 ts.cleanStats();
-                float[] statsarray = bl2.calculate(User.getUser(p2.getUniqueId()));
+                float[] statsarray = bl.calculate(User.getUser(p.getUniqueId()));
                 hp += statsarray[0];
                 hpg += statsarray[1];
                 str += statsarray[2];
@@ -205,7 +205,7 @@ public class Blessings {
                 intel += statsarray[4];
                 spd += statsarray[5];
                 def += statsarray[6];
-                STAT_MAP.put(p2.getUniqueId(), statsarray);
+                STAT_MAP.put(p.getUniqueId(), statsarray);
             }
             ts.cleanStats();
             ts.setHealth(Math.max(0.0f, hp));
@@ -253,7 +253,7 @@ public class Blessings {
         return sb.toString();
     }
 
-    public static void openBlessingChest(Block chest, Blessings bless, Player e2) {
+    public static void openBlessingChest(Block chest, Blessings bless, Player e) {
         Location loc = chest.getLocation().add(0.5, 0.0, 0.5);
         SEntity sEntity = new SEntity(loc.clone().add(0.0, -1.0, 0.0), SEntityType.VELOCITY_ARMOR_STAND, new Object[0]);
         final ArmorStand drop = (ArmorStand)sEntity.getEntity();
@@ -261,32 +261,32 @@ public class Blessings {
         drop.setCustomNameVisible(false);
         drop.setMetadata("ss_drop", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
         drop.getEquipment().setHelmet(SUtil.getSkullURLStack("asadas", "e93e2068617872c542ecda1d27df4ece91c699907bf327c4ddb85309412d3939", 1, new String[0]));
-        final ArmorStand as2 = Sputnik.spawnStaticDialougeBox((Entity)drop, loc.clone().add(0.0, 1.65, 0.0));
-        as2.setCustomName(Sputnik.trans("&d" + bless.toText()));
-        as2.setCustomNameVisible(false);
-        as2.setMetadata("ss_drop", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        final ArmorStand as = Sputnik.spawnStaticDialougeBox((Entity)drop, loc.clone().add(0.0, 1.65, 0.0));
+        as.setCustomName(Sputnik.trans("&d" + bless.toText()));
+        as.setCustomNameVisible(false);
+        as.setMetadata("ss_drop", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
         drop.setVelocity(new Vector(0.0, 0.058, 0.0));
         SUtil.delay(() -> drop.remove(), 150L);
         SUtil.delay(() -> {
             bless.active();
-            User u2 = User.getUser(e2.getUniqueId());
-            if (null == u2) {
+            User u = User.getUser(e.getUniqueId());
+            if (null == u) {
                 return;
             }
-            for (Player p2 : loc.getWorld().getPlayers()) {
-                if (null == User.getUser(p2.getUniqueId())) continue;
-                p2.sendMessage(bless.buildPickupMessage(User.getUser(p2.getUniqueId()), u2));
+            for (Player p : loc.getWorld().getPlayers()) {
+                if (null == User.getUser(p.getUniqueId())) continue;
+                p.sendMessage(bless.buildPickupMessage(User.getUser(p.getUniqueId()), u));
             }
         }, 20L);
         new BukkitRunnable(){
 
             public void run() {
                 if (drop.isDead()) {
-                    as2.remove();
+                    as.remove();
                     this.cancel();
                     return;
                 }
-                as2.setCustomNameVisible(true);
+                as.setCustomNameVisible(true);
                 Vector velClone = drop.getVelocity().clone();
                 drop.setVelocity(new Vector(0.0, 0.0 > velClone.getY() ? 0.045 : -0.045, 0.0));
             }
@@ -295,20 +295,20 @@ public class Blessings {
 
             public void run() {
                 if (drop.isDead()) {
-                    as2.remove();
+                    as.remove();
                     this.cancel();
                     return;
                 }
-                Location l2 = drop.getLocation();
-                l2.setYaw(l2.getYaw() + 5.0f);
-                drop.teleport(l2);
+                Location l = drop.getLocation();
+                l.setYaw(l.getYaw() + 5.0f);
+                drop.teleport(l);
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
         new BukkitRunnable(){
 
             public void run() {
                 if (drop.isDead()) {
-                    as2.remove();
+                    as.remove();
                     this.cancel();
                     return;
                 }
@@ -324,16 +324,16 @@ public class Blessings {
         drop.setCustomNameVisible(false);
         drop.setMetadata("ss_drop", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
         drop.getEquipment().setHelmet(SUtil.getSkullURLStack("asadas", "e93e2068617872c542ecda1d27df4ece91c699907bf327c4ddb85309412d3939", 1, new String[0]));
-        final ArmorStand as2 = Sputnik.spawnStaticDialougeBox((Entity)drop, 2.35);
-        as2.setCustomName(Sputnik.trans("&d" + bless.toText()));
-        as2.setCustomNameVisible(true);
-        as2.setMetadata("ss_drop", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
+        final ArmorStand as = Sputnik.spawnStaticDialougeBox((Entity)drop, 2.35);
+        as.setCustomName(Sputnik.trans("&d" + bless.toText()));
+        as.setCustomNameVisible(true);
+        as.setMetadata("ss_drop", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
         drop.setVelocity(new Vector(0.0, 0.03, 0.0));
         SUtil.delay(() -> {
             if (!drop.isDead()) {
-                for (Player p2 : loc.getWorld().getPlayers()) {
-                    if (null == User.getUser(p2.getUniqueId())) continue;
-                    p2.sendMessage(bless.buildPickupMessage(User.getUser(p2.getUniqueId()), null));
+                for (Player p : loc.getWorld().getPlayers()) {
+                    if (null == User.getUser(p.getUniqueId())) continue;
+                    p.sendMessage(bless.buildPickupMessage(User.getUser(p.getUniqueId()), null));
                     bless.active();
                 }
                 drop.remove();
@@ -343,7 +343,7 @@ public class Blessings {
 
             public void run() {
                 if (drop.isDead()) {
-                    as2.remove();
+                    as.remove();
                     this.cancel();
                     return;
                 }
@@ -355,7 +355,7 @@ public class Blessings {
 
             public void run() {
                 if (drop.isDead()) {
-                    as2.remove();
+                    as.remove();
                     this.cancel();
                     return;
                 }
@@ -363,16 +363,16 @@ public class Blessings {
                     this.cancel();
                     return;
                 }
-                Location l2 = drop.getLocation();
-                l2.setYaw(l2.getYaw() + 2.5f);
-                drop.teleport(l2);
-                l2.getWorld().spigot().playEffect(drop.getLocation().add(0.0, 1.0, 0.0), Effect.FIREWORKS_SPARK, 0, 1, (float)SUtil.random(-1.0, 1.0), 1.0f, (float)SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
-                for (Entity e2 : drop.getNearbyEntities(0.07, 0.07, 0.07)) {
-                    User u2;
-                    if (!(e2 instanceof Player) || null == (u2 = User.getUser(e2.getUniqueId()))) continue;
-                    for (Player p2 : loc.getWorld().getPlayers()) {
-                        if (null == User.getUser(p2.getUniqueId())) continue;
-                        p2.sendMessage(bless.buildPickupMessage(User.getUser(p2.getUniqueId()), u2));
+                Location l = drop.getLocation();
+                l.setYaw(l.getYaw() + 2.5f);
+                drop.teleport(l);
+                l.getWorld().spigot().playEffect(drop.getLocation().add(0.0, 1.0, 0.0), Effect.FIREWORKS_SPARK, 0, 1, (float)SUtil.random(-1.0, 1.0), 1.0f, (float)SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
+                for (Entity e : drop.getNearbyEntities(0.07, 0.07, 0.07)) {
+                    User u;
+                    if (!(e instanceof Player) || null == (u = User.getUser(e.getUniqueId()))) continue;
+                    for (Player p : loc.getWorld().getPlayers()) {
+                        if (null == User.getUser(p.getUniqueId())) continue;
+                        p.sendMessage(bless.buildPickupMessage(User.getUser(p.getUniqueId()), u));
                     }
                     bless.active();
                     drop.getWorld().playEffect(loc, Effect.LAVA_POP, 0);

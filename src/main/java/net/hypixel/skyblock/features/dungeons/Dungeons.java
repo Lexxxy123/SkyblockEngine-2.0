@@ -40,9 +40,9 @@ public class Dungeons {
         DUNGEONS_CACHE.put(world, this);
     }
 
-    public static Dungeons getDungeonsInstance(World w2) {
-        if (DUNGEONS_CACHE.containsKey(w2)) {
-            return DUNGEONS_CACHE.get(w2);
+    public static Dungeons getDungeonsInstance(World w) {
+        if (DUNGEONS_CACHE.containsKey(w)) {
+            return DUNGEONS_CACHE.get(w);
         }
         SLog.severe("Cannot find dungeons instance for this world.");
         return null;

@@ -105,7 +105,7 @@ implements ConfigurationSerializable {
             SoundSequenceType.SLAYER_BOSS_SPAWN.play(clone);
         }
         SUtil.runIntervalForTicks(() -> {
-            for (int i2 = 0; i2 < 50; ++i2) {
+            for (int i = 0; i < 50; ++i) {
                 world.playEffect(clone.clone().add(0.0, -0.2, 0.0), Effect.WITCH_MAGIC, (Object)Effect.SPELL.getData());
                 world.playEffect(clone, Effect.SPELL, (Object)Effect.SPELL.getData());
                 world.playEffect(clone, Effect.FLYING_GLYPH, (Object)Effect.FLYING_GLYPH.getData());

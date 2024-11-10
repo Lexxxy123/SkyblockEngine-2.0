@@ -19,7 +19,7 @@ implements EntityFunction,
 EntityStatistics {
     @Override
     public String getEntityName() {
-        return "Pigman";
+        return "Redstone Pigman";
     }
 
     @Override
@@ -30,6 +30,11 @@ EntityStatistics {
     @Override
     public double getDamageDealt() {
         return 75.0;
+    }
+
+    @Override
+    public int mobLevel() {
+        return 10;
     }
 
     @Override

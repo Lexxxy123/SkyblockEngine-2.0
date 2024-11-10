@@ -34,14 +34,14 @@ import org.bukkit.inventory.ItemStack;
 public class SputnikPlayer {
     public static final Map<UUID, Integer> AbsHP = new HashMap<UUID, Integer>();
 
-    public static void sendTranslated(Player p2, String content) {
-        p2.sendMessage(ChatColor.translateAlternateColorCodes((char)'&', (String)content));
+    public static void sendTranslated(Player p, String content) {
+        p.sendMessage(ChatColor.translateAlternateColorCodes((char)'&', (String)content));
     }
 
     public static void BonemerangFix(Player player) {
-        for (int i2 = 0; i2 < player.getInventory().getSize(); ++i2) {
+        for (int i = 0; i < player.getInventory().getSize(); ++i) {
             NBTItem nbti;
-            ItemStack stack = player.getInventory().getItem(i2);
+            ItemStack stack = player.getInventory().getItem(i);
             if (stack == null || !(nbti = new NBTItem(stack)).hasKey("ejectedBonemerang").booleanValue() || nbti.getInteger("ejectedBonemerang") != 1) continue;
             net.minecraft.server.v1_8_R3.ItemStack tagStack = CraftItemStack.asNMSCopy((ItemStack)stack);
             NBTTagCompound tagCompound = tagStack.hasTag() ? tagStack.getTag() : new NBTTagCompound();
@@ -50,14 +50,14 @@ public class SputnikPlayer {
             ItemStack itemStack = CraftItemStack.asBukkitCopy((net.minecraft.server.v1_8_R3.ItemStack)tagStack);
             if (tagStack.getTag().getInt("ejectedBonemerang") != 0) continue;
             itemStack.setType(Material.BONE);
-            player.getInventory().setItem(i2, itemStack);
+            player.getInventory().setItem(i, itemStack);
         }
     }
 
     public static void KatanasFix(Player player) {
-        for (int i2 = 0; i2 < player.getInventory().getSize(); ++i2) {
+        for (int i = 0; i < player.getInventory().getSize(); ++i) {
             NBTItem nbti;
-            ItemStack stack = player.getInventory().getItem(i2);
+            ItemStack stack = player.getInventory().getItem(i);
             if (stack == null || !(nbti = new NBTItem(stack)).hasKey("isGoldSword").booleanValue() || nbti.getInteger("isGoldSword") != 1) continue;
             net.minecraft.server.v1_8_R3.ItemStack tagStack = CraftItemStack.asNMSCopy((ItemStack)stack);
             NBTTagCompound tagCompound = tagStack.hasTag() ? tagStack.getTag() : new NBTTagCompound();
@@ -66,45 +66,45 @@ public class SputnikPlayer {
             ItemStack itemStack = CraftItemStack.asBukkitCopy((net.minecraft.server.v1_8_R3.ItemStack)tagStack);
             if (tagStack.getTag().getInt("isGoldSword") != 0) continue;
             itemStack.setType(Material.DIAMOND_SWORD);
-            player.getInventory().setItem(i2, itemStack);
+            player.getInventory().setItem(i, itemStack);
         }
     }
 
-    public static void setCustomAbsorptionHP(Player p2, float amount) {
-        if (!AbsHP.containsKey(p2.getUniqueId())) {
-            AbsHP.put(p2.getUniqueId(), 0);
+    public static void setCustomAbsorptionHP(Player p, float amount) {
+        if (!AbsHP.containsKey(p.getUniqueId())) {
+            AbsHP.put(p.getUniqueId(), 0);
         }
-        AbsHP.put(p2.getUniqueId(), Math.round(amount));
+        AbsHP.put(p.getUniqueId(), Math.round(amount));
     }
 
-    public static void minusCustomAbsorptionHP(Player p2, float amount) {
-        if (!AbsHP.containsKey(p2.getUniqueId())) {
-            AbsHP.put(p2.getUniqueId(), 0);
+    public static void minusCustomAbsorptionHP(Player p, float amount) {
+        if (!AbsHP.containsKey(p.getUniqueId())) {
+            AbsHP.put(p.getUniqueId(), 0);
         }
-        if (AbsHP.get(p2.getUniqueId()) == 0) {
+        if (AbsHP.get(p.getUniqueId()) == 0) {
             return;
         }
-        AbsHP.put(p2.getUniqueId(), AbsHP.get(p2.getUniqueId()) - Math.round(amount));
+        AbsHP.put(p.getUniqueId(), AbsHP.get(p.getUniqueId()) - Math.round(amount));
     }
 
-    public static Integer getCustomAbsorptionHP(Player p2) {
-        if (!AbsHP.containsKey(p2.getUniqueId())) {
-            AbsHP.put(p2.getUniqueId(), 0);
+    public static Integer getCustomAbsorptionHP(Player p) {
+        if (!AbsHP.containsKey(p.getUniqueId())) {
+            AbsHP.put(p.getUniqueId(), 0);
         }
-        return AbsHP.get(p2.getUniqueId());
+        return AbsHP.get(p.getUniqueId());
     }
 
-    public static void updateScaledAHP(Player p2) {
-        EntityHuman human = ((CraftHumanEntity)p2).getHandle();
-        if (!AbsHP.containsKey(p2.getUniqueId())) {
-            AbsHP.put(p2.getUniqueId(), 0);
+    public static void updateScaledAHP(Player p) {
+        EntityHuman human = ((CraftHumanEntity)p).getHandle();
+        if (!AbsHP.containsKey(p.getUniqueId())) {
+            AbsHP.put(p.getUniqueId(), 0);
         }
-        if (AbsHP.get(p2.getUniqueId()) == 0) {
+        if (AbsHP.get(p.getUniqueId()) == 0) {
             human.setAbsorptionHearts(0.0f);
         }
-        Integer absHP = AbsHP.get(p2.getUniqueId());
+        Integer absHP = AbsHP.get(p.getUniqueId());
         human.setAbsorptionHearts((float)Math.min(20.0, (double)((int)Math.round(0.05 * (double)absHP.intValue()))));
-        if (AbsHP.get(p2.getUniqueId()) == 0) {
+        if (AbsHP.get(p.getUniqueId()) == 0) {
             human.setAbsorptionHearts(0.0f);
         }
     }

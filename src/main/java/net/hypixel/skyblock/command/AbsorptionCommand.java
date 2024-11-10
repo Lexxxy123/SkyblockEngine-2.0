@@ -36,9 +36,9 @@ extends SCommand {
         }
         Player player = sender.getPlayer();
         EntityHuman human = ((CraftHumanEntity)player).getHandle();
-        float f2 = Float.parseFloat(args[0]);
-        SputnikPlayer.setCustomAbsorptionHP(player, f2);
-        this.send(ChatColor.GREEN + "You now have " + ChatColor.GOLD + f2 + ChatColor.GREEN + " absorption hearts.");
+        float f = Float.parseFloat(args[0]);
+        SputnikPlayer.setCustomAbsorptionHP(player, f);
+        this.send(ChatColor.GREEN + "You now have " + ChatColor.GOLD + f + ChatColor.GREEN + " absorption hearts.");
     }
 }
 

@@ -10,9 +10,9 @@ public class OBCClassResolver
 extends ClassResolver {
     @Override
     public Class resolve(String ... names) throws ClassNotFoundException {
-        for (int i2 = 0; i2 < names.length; ++i2) {
-            if (names[i2].startsWith("org.bukkit.craftbukkit")) continue;
-            names[i2] = "org.bukkit.craftbukkit." + Minecraft.getVersion() + names[i2];
+        for (int i = 0; i < names.length; ++i) {
+            if (names[i].startsWith("org.bukkit.craftbukkit")) continue;
+            names[i] = "org.bukkit.craftbukkit." + Minecraft.getVersion() + names[i];
         }
         return super.resolve(names);
     }

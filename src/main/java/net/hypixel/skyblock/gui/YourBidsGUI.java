@@ -44,8 +44,8 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e2) {
-        final Player player = e2.getPlayer();
+    public void onOpen(GUIOpenEvent e) {
+        final Player player = e.getPlayer();
         if (this.items == null) {
             return;
         }
@@ -59,7 +59,7 @@ extends GUI {
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
+                public void run(InventoryClickEvent e) {
                     for (AuctionItem item : YourBidsGUI.this.items) {
                         if (!item.isExpired()) continue;
                         item.claim(player);
@@ -86,14 +86,14 @@ extends GUI {
             });
         }
         this.set(GUIClickableItem.createGUIOpenerItem(GUIType.AUCTION_HOUSE, player, ChatColor.GREEN + "Go Back", 22, Material.ARROW, ChatColor.GRAY + "To Auction House"));
-        for (int i2 = 0; i2 < this.items.size(); ++i2) {
+        for (int i = 0; i < this.items.size(); ++i) {
             AuctionItem item;
-            item = this.items.get(i2);
-            final int slot = INTERIOR[i2];
+            item = this.items.get(i);
+            final int slot = INTERIOR[i];
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
+                public void run(InventoryClickEvent e) {
                     new AuctionViewGUI(item, YourBidsGUI.this).open(player);
                 }
 

@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.module.DatabaseModule;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -28,12 +29,12 @@ public class SQLWorldData {
      * Enabled aggressive exception aggregation
      */
     public boolean exists(World world) {
-        try (Connection connection = SQLWorldData.plugin.sql.getConnection();){
+        try (Connection connection = DatabaseModule.getSqlInstance().getConnection();){
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM `worlds` WHERE name=?");
             statement.setString(1, world.getName());
             ResultSet set = statement.executeQuery();
-            boolean bl2 = set.next();
-            return bl2;
+            boolean bl = set.next();
+            return bl;
         } catch (SQLException ex) {
             ex.printStackTrace();
             return false;
@@ -46,12 +47,12 @@ public class SQLWorldData {
      * Enabled aggressive exception aggregation
      */
     public boolean existsID(int id) {
-        try (Connection connection = SQLWorldData.plugin.sql.getConnection();){
+        try (Connection connection = DatabaseModule.getSqlInstance().getConnection();){
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM `worlds` WHERE id=?");
             statement.setInt(1, id);
             ResultSet set = statement.executeQuery();
-            boolean bl2 = set.next();
-            return bl2;
+            boolean bl = set.next();
+            return bl;
         } catch (SQLException ex) {
             ex.printStackTrace();
             return false;
@@ -64,7 +65,7 @@ public class SQLWorldData {
      * Enabled aggressive exception aggregation
      */
     public int getWorldID(World world) {
-        try (Connection connection = SQLWorldData.plugin.sql.getConnection();){
+        try (Connection connection = DatabaseModule.getSqlInstance().getConnection();){
             PreparedStatement statement;
             if (!this.exists(world)) {
                 statement = connection.prepareStatement("INSERT INTO `worlds` (`id`, `name`) VALUES (?, ?);");
@@ -78,8 +79,8 @@ public class SQLWorldData {
             set.next();
             int id = set.getInt("id");
             set.close();
-            int n2 = id;
-            return n2;
+            int n = id;
+            return n;
         } catch (SQLException ex) {
             ex.printStackTrace();
             return -1;
@@ -92,7 +93,7 @@ public class SQLWorldData {
      * Enabled aggressive exception aggregation
      */
     public World getWorld(int id) {
-        try (Connection connection = SQLWorldData.plugin.sql.getConnection();){
+        try (Connection connection = DatabaseModule.getSqlInstance().getConnection();){
             if (!this.existsID(id)) {
                 World world3 = null;
                 if (connection != null) {
@@ -121,14 +122,14 @@ public class SQLWorldData {
      * Enabled aggressive exception aggregation
      */
     public int getWorldCount() {
-        try (Connection connection = SQLWorldData.plugin.sql.getConnection();){
+        try (Connection connection = DatabaseModule.getSqlInstance().getConnection();){
             PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) AS rows FROM `worlds`");
             ResultSet set = statement.executeQuery();
             set.next();
             int count = set.getInt("rows");
             set.close();
-            int n2 = count;
-            return n2;
+            int n = count;
+            return n;
         } catch (SQLException ex) {
             ex.printStackTrace();
             return 0;

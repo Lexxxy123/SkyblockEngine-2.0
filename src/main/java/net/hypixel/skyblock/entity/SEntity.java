@@ -176,8 +176,8 @@ public class SEntity {
         }.runTaskLater((Plugin)SkyBlock.getPlugin(), 2L);
     }
 
-    public SEntity(Entity e2, SEntityType type, Object ... params) {
-        this(e2.getLocation(), type, params);
+    public SEntity(Entity e, SEntityType type, Object ... params) {
+        this(e.getLocation(), type, params);
     }
 
     public void addDamageFor(Player player, double damage) {

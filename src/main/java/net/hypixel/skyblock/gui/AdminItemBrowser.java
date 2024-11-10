@@ -50,9 +50,9 @@ extends GUI {
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
-                    new AdminItemBrowser(finalPage - 1).open((Player)e2.getWhoClicked());
-                    ((Player)e2.getWhoClicked()).playSound(e2.getWhoClicked().getLocation(), Sound.NOTE_PIANO, 1.0f, 1.0f);
+                public void run(InventoryClickEvent e) {
+                    new AdminItemBrowser(finalPage - 1).open((Player)e.getWhoClicked());
+                    ((Player)e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.NOTE_PIANO, 1.0f, 1.0f);
                 }
 
                 @Override
@@ -71,9 +71,9 @@ extends GUI {
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
-                    new AdminItemBrowser(finalPage1 + 1).open((Player)e2.getWhoClicked());
-                    ((Player)e2.getWhoClicked()).playSound(e2.getWhoClicked().getLocation(), Sound.NOTE_PIANO, 1.0f, 1.0f);
+                public void run(InventoryClickEvent e) {
+                    new AdminItemBrowser(finalPage1 + 1).open((Player)e.getWhoClicked());
+                    ((Player)e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.NOTE_PIANO, 1.0f, 1.0f);
                 }
 
                 @Override
@@ -95,7 +95,7 @@ extends GUI {
             }
 
             @Override
-            public void run(InventoryClickEvent e2) {
+            public void run(InventoryClickEvent e) {
             }
 
             @Override
@@ -109,16 +109,16 @@ extends GUI {
             }
         });
         this.set(GUIClickableItem.getCloseItem(50));
-        List p2 = pagedMaterials.getPage(page);
-        if (p2 != null) {
-            for (int i2 = 0; i2 < p2.size(); ++i2) {
-                final int slot = INTERIOR[i2];
-                final SItem sItem = SItem.of((SMaterial)((Object)p2.get(i2)), ((SMaterial)((Object)p2.get(i2))).getData());
+        List p = pagedMaterials.getPage(page);
+        if (p != null) {
+            for (int i = 0; i < p.size(); ++i) {
+                final int slot = INTERIOR[i];
+                final SItem sItem = SItem.of((SMaterial)((Object)p.get(i)), ((SMaterial)((Object)p.get(i))).getData());
                 this.set(new GUIClickableItem(){
 
                     @Override
-                    public void run(InventoryClickEvent e2) {
-                        Player player = (Player)e2.getWhoClicked();
+                    public void run(InventoryClickEvent e) {
+                        Player player = (Player)e.getWhoClicked();
                         player.playSound(player.getLocation(), Sound.NOTE_PLING, 1.0f, 2.0f);
                         player.sendMessage(ChatColor.GOLD + sItem.getType().getDisplayName(sItem.getVariant()) + ChatColor.GREEN + " has been added to your inventory.");
                         player.getInventory().addItem(new ItemStack[]{SItem.of(sItem.getType(), sItem.getVariant()).getStack()});

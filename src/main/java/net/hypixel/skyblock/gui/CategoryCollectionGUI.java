@@ -48,8 +48,8 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e2) {
-        final Player player = e2.getPlayer();
+    public void onOpen(GUIOpenEvent e) {
+        final Player player = e.getPlayer();
         User user = User.getUser(player.getUniqueId());
         this.border(BLACK_STAINED_GLASS_PANE);
         PaginationList paged = new PaginationList(28);
@@ -62,8 +62,8 @@ extends GUI {
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
-                    new CategoryCollectionGUI(CategoryCollectionGUI.this.category, finalPage - 1).open((Player)e2.getWhoClicked());
+                public void run(InventoryClickEvent e) {
+                    new CategoryCollectionGUI(CategoryCollectionGUI.this.category, finalPage - 1).open((Player)e.getWhoClicked());
                 }
 
                 @Override
@@ -81,8 +81,8 @@ extends GUI {
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e2) {
-                    new CategoryCollectionGUI(CategoryCollectionGUI.this.category, finalPage + 1).open((Player)e2.getWhoClicked());
+                public void run(InventoryClickEvent e) {
+                    new CategoryCollectionGUI(CategoryCollectionGUI.this.category, finalPage + 1).open((Player)e.getWhoClicked());
                 }
 
                 @Override
@@ -98,13 +98,13 @@ extends GUI {
         }
         this.set(GUIClickableItem.createGUIOpenerItem(GUIType.COLLECTION_MENU, player, ChatColor.GREEN + "Go Back", 48, Material.ARROW, ChatColor.GRAY + "To Collection"));
         this.set(GUIClickableItem.getCloseItem(49));
-        List p2 = paged.getPage(this.page);
-        if (p2 == null) {
+        List p = paged.getPage(this.page);
+        if (p == null) {
             return;
         }
-        for (int i2 = 0; i2 < p2.size(); ++i2) {
-            final int slot = INTERIOR[i2];
-            final ItemCollection collection = (ItemCollection)p2.get(i2);
+        for (int i = 0; i < p.size(); ++i) {
+            final int slot = INTERIOR[i];
+            final ItemCollection collection = (ItemCollection)p.get(i);
             int amount = user.getCollection(collection);
             if (amount != 0) {
                 final ArrayList<String> lore = new ArrayList<String>(Arrays.asList(ChatColor.GRAY + "View all your " + collection.getName() + " Collection", ChatColor.GRAY + "progress and rewards!", " "));
@@ -129,7 +129,7 @@ extends GUI {
                 this.set(new GUIClickableItem(){
 
                     @Override
-                    public void run(InventoryClickEvent e2) {
+                    public void run(InventoryClickEvent e) {
                         new ItemCollectionGUI(collection).open(player);
                     }
 

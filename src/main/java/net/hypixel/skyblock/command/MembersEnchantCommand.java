@@ -50,8 +50,8 @@ extends SCommand {
             this.send(ChatColor.RED + "Invalid enchantment type! It might not get added yet.");
             return;
         }
-        int i2 = Integer.parseInt(args[1]);
-        if (i2 <= 0) {
+        int i = Integer.parseInt(args[1]);
+        if (i <= 0) {
             this.send(ChatColor.RED + "Are you serious? If you want to remove enchantments, use /rench");
             return;
         }
@@ -71,7 +71,7 @@ extends SCommand {
             this.send(ChatColor.RED + "This enchantment is not free! You need to slay Voidgloom Seraph IV for it!");
             return;
         }
-        if (i2 > 5 && type == EnchantmentType.FIRST_STRIKE) {
+        if (i > 5 && type == EnchantmentType.FIRST_STRIKE) {
             this.send(ChatColor.RED + "Too high enchantment level! This enchantment is capped at level 5 in case of /meb command! You need to slay Tarantula Broodfather IV to get a LVL VII version of this enchanment!");
             return;
         }
@@ -79,46 +79,46 @@ extends SCommand {
             this.send(ChatColor.RED + "This enchantment is banned due to rewamping in mining system!");
             return;
         }
-        if (i2 > 2 && type == EnchantmentType.KNOCKBACK) {
+        if (i > 2 && type == EnchantmentType.KNOCKBACK) {
             this.send(ChatColor.RED + "Too high enchantment level! This enchantment is capped at level 2!");
             return;
         }
-        if (i2 > 1500) {
+        if (i > 1500) {
             this.send(ChatColor.RED + "Too high enchantment level! This enchantment is capped at 1,500.");
             return;
         }
-        if (i2 > 320 && type == EnchantmentType.POWER) {
+        if (i > 320 && type == EnchantmentType.POWER) {
             this.send(ChatColor.RED + "Too high enchantment level! This enchantment is capped at level 320.");
             return;
         }
-        if (i2 > 400 && type == EnchantmentType.SHARPNESS) {
+        if (i > 400 && type == EnchantmentType.SHARPNESS) {
             this.send(ChatColor.RED + "Too high enchantment level! This enchantment is capped at level 400.");
             return;
         }
-        if (i2 > 1 && (type == EnchantmentType.ONE_FOR_ALL || type == EnchantmentType.TELEKINESIS || type == EnchantmentType.AQUA_INFINITY)) {
+        if (i > 1 && (type == EnchantmentType.ONE_FOR_ALL || type == EnchantmentType.TELEKINESIS || type == EnchantmentType.AQUA_INFINITY)) {
             this.send(ChatColor.RED + "Too high enchantment level! This enchantment is capped at level 1.");
             return;
         }
-        if (i2 > 30 && (type == EnchantmentType.CRITICAL || type == EnchantmentType.EXECUTE || type == EnchantmentType.AIMING)) {
+        if (i > 30 && (type == EnchantmentType.CRITICAL || type == EnchantmentType.EXECUTE || type == EnchantmentType.AIMING)) {
             this.send(ChatColor.RED + "Too high enchantment level! This enchantment is capped at level 30.");
             return;
         }
-        if (i2 > 10 && (type == EnchantmentType.ENDER_SLAYER || type == EnchantmentType.SMITE || type == EnchantmentType.BANE_OF_ARTHROPODS || type == EnchantmentType.DRAGON_HUNTER)) {
+        if (i > 10 && (type == EnchantmentType.ENDER_SLAYER || type == EnchantmentType.SMITE || type == EnchantmentType.BANE_OF_ARTHROPODS || type == EnchantmentType.DRAGON_HUNTER)) {
             this.send(ChatColor.RED + "Too high enchantment level! This enchantment is capped at level 10.");
             return;
         }
-        if (i2 > 10 && type == EnchantmentType.ULTIMATE_WISE) {
+        if (i > 10 && type == EnchantmentType.ULTIMATE_WISE) {
             this.send(ChatColor.RED + "Too high enchantment level! This enchantment is capped at level 8.");
             return;
         }
-        if (i2 > 10 && (type == EnchantmentType.SOUL_EATER || type == EnchantmentType.LIFE_STEAL || type == EnchantmentType.AIMING || type == EnchantmentType.VAMPIRISM)) {
+        if (i > 10 && (type == EnchantmentType.SOUL_EATER || type == EnchantmentType.LIFE_STEAL || type == EnchantmentType.AIMING || type == EnchantmentType.VAMPIRISM)) {
             this.send(ChatColor.RED + "Too high enchantment level! This enchantment is capped at level 5.");
             return;
         }
         SItem eBook = SItem.of(SMaterial.ENCHANTED_BOOK);
-        eBook.addEnchantment(type, i2);
+        eBook.addEnchantment(type, i);
         player.getInventory().addItem(new ItemStack[]{eBook.getStack()});
-        this.send(Sputnik.trans("&aYou have been given the &dEnchanted Book &awith &9" + type.getName() + " &9" + SUtil.toRomanNumeral(i2) + " &aon it. Use an Anvil to apply it to your items."));
+        this.send(Sputnik.trans("&aYou have been given the &dEnchanted Book &awith &9" + type.getName() + " &9" + SUtil.toRomanNumeral(i) + " &aon it. Use an Anvil to apply it to your items."));
     }
 
     public void stop() {

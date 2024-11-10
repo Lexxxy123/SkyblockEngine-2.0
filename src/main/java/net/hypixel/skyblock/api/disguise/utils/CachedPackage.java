@@ -39,7 +39,7 @@ final class CachedPackage {
     }
 
     public Optional<Class<?>> getPackageClass(String className, String ... aliases) {
-        return this.cache.computeIfAbsent(className, x2 -> {
+        return this.cache.computeIfAbsent(className, x -> {
             Optional<Class<?>> clazz = this.resolveClass(className);
             if (clazz.isPresent()) {
                 return clazz;

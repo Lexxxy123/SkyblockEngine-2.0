@@ -8,7 +8,6 @@
  */
 package net.hypixel.skyblock.command;
 
-import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.command.CommandParameters;
 import net.hypixel.skyblock.command.CommandSource;
 import net.hypixel.skyblock.command.SCommand;
@@ -30,21 +29,17 @@ extends SCommand {
             if (player.isOp()) {
                 this.send(ChatColor.GRAY + "Performing save action, please wait...");
                 SLog.info("[SYSTEM] Saving players data, this action was performed by " + player.getName() + "...");
-                for (Player p2 : Bukkit.getOnlinePlayers()) {
-                    User user = User.getUser(p2.getUniqueId());
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    User user = User.getUser(p.getUniqueId());
                     if (user == null) continue;
-                    if (SkyBlock.getPlugin().config.getBoolean("Config")) {
-                        user.configsave();
-                        continue;
-                    }
                     user.save();
                 }
                 Bukkit.broadcastMessage((String)Sputnik.trans("&b[SkyBlock D.C] &aAll players data have been saved! Action performed by " + player.getDisplayName() + "&a!"));
             }
         } else {
             SLog.info("[SYSTEM] Saving players data, this action was performed by CONSOLE...");
-            for (Player p3 : Bukkit.getOnlinePlayers()) {
-                User user = User.getUser(p3.getUniqueId());
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                User user = User.getUser(p.getUniqueId());
                 if (user == null) continue;
                 user.save();
             }

@@ -41,11 +41,11 @@ public class BungeeChannel {
     private ForwardConsumer globalForwardListener;
 
     public static synchronized BungeeChannel of(Plugin plugin) {
-        return registeredInstances.compute(plugin, (k2, v2) -> {
-            if (v2 == null) {
-                v2 = new BungeeChannel(plugin);
+        return registeredInstances.compute(plugin, (k, v) -> {
+            if (v == null) {
+                v = new BungeeChannel(plugin);
             }
-            return v2;
+            return v;
         });
     }
 
@@ -57,7 +57,7 @@ public class BungeeChannel {
         this.callbackMap = new HashMap();
         WeakHashMap<Plugin, BungeeChannel> weakHashMap = registeredInstances;
         synchronized (weakHashMap) {
-            registeredInstances.compute(plugin, (k2, oldInstance) -> {
+            registeredInstances.compute(plugin, (k, oldInstance) -> {
                 if (oldInstance != null) {
                     oldInstance.unregister();
                 }
@@ -300,8 +300,8 @@ public class BungeeChannel {
                 }
                 CompletableFuture<?> callback = callbacks.poll();
                 try {
-                    String s2;
-                    switch (s2 = subchannel) {
+                    String s;
+                    switch (s = subchannel) {
                         case "PlayerCount": {
                             callback.complete(input.readInt());
                             break;

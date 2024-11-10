@@ -116,7 +116,7 @@ SlayerBoss {
         if (((Zombie)this.bukkitEntity).getWorld() == player.getWorld() && 20.0 <= this.getBukkitEntity().getLocation().distance(player.getLocation()) && 0 == SUtil.random(0, 10)) {
             this.getBukkitEntity().teleport(player.getLocation());
         }
-        final LivingEntity e2 = (LivingEntity)this.getBukkitEntity();
+        final LivingEntity e = (LivingEntity)this.getBukkitEntity();
         if (System.currentTimeMillis() > this.end) {
             User.getUser(player.getUniqueId()).failSlayerQuest();
             ((Zombie)this.bukkitEntity).remove();
@@ -152,15 +152,15 @@ SlayerBoss {
         if (3 <= this.tier && !this.raged && 0 == SUtil.random(0, 200) && !this.Cooldown) {
             this.raged = true;
             this.Cooldown = true;
-            e2.getEquipment().setChestplate(SUtil.enchant(SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_CHESTPLATE), Color.fromRGB((int)0xBE0000))));
-            e2.getEquipment().setHelmet(SItem.of(SMaterial.REV_HORROR_2).getStack());
+            e.getEquipment().setChestplate(SUtil.enchant(SUtil.applyColorToLeatherArmor(new ItemStack(Material.LEATHER_CHESTPLATE), Color.fromRGB((int)0xBE0000))));
+            e.getEquipment().setHelmet(SItem.of(SMaterial.REV_HORROR_2).getStack());
             this.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).setValue(this.getMovementSpeed() + 0.02);
             this.hologram.getEntity().setCustomName(ChatColor.DARK_RED + "ENRAGED " + ChatColor.RED + SUtil.getFormattedTime(this.end - System.currentTimeMillis(), 1000));
             new BukkitRunnable(){
 
                 public void run() {
-                    e2.getEquipment().setChestplate(SUtil.enchant(new ItemStack(Material.DIAMOND_CHESTPLATE)));
-                    e2.getEquipment().setHelmet(SItem.of(SMaterial.REVENANT_HORROR_HEAD).getStack());
+                    e.getEquipment().setChestplate(SUtil.enchant(new ItemStack(Material.DIAMOND_CHESTPLATE)));
+                    e.getEquipment().setHelmet(SItem.of(SMaterial.REVENANT_HORROR_HEAD).getStack());
                     RevenantHorror.this.raged = false;
                     RevenantHorror.this.getAttributeInstance(GenericAttributes.MOVEMENT_SPEED).setValue(RevenantHorror.this.getMovementSpeed());
                     RevenantHorror.this.hologram.getEntity().setCustomName(ChatColor.RED + SUtil.getFormattedTime(RevenantHorror.this.end - System.currentTimeMillis(), 1000));
@@ -184,8 +184,8 @@ SlayerBoss {
         entity.setMetadata("notDisplay", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
         this.hologram_name = new SEntity(entity.getLocation().add(0.0, 2.0, 0.0), SEntityType.UNCOLLIDABLE_ARMOR_STAND, new Object[0]);
         ((ArmorStand)this.hologram_name.getEntity()).setVisible(false);
-        Entity e2 = this.getBukkitEntity().getHandle();
-        double height = e2.getBoundingBox().e - e2.getBoundingBox().b;
+        Entity e = this.getBukkitEntity().getHandle();
+        double height = e.getBoundingBox().e - e.getBoundingBox().b;
         ((ArmorStand)this.hologram_name.getEntity()).setGravity(false);
         this.hologram_name.getEntity().setCustomNameVisible(true);
         new BukkitRunnable(){
@@ -235,8 +235,6 @@ SlayerBoss {
         this.hologram.remove();
         SUtil.delay(() -> this.hologram_name.remove(), 20L);
         User user = User.getUser(damager.getUniqueId());
-        user.addCoins(50000L);
-        user.send(ChatColor.GOLD + "+50000 Coins");
     }
 
     @Override

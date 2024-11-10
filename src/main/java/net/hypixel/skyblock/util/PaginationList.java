@@ -50,22 +50,22 @@ extends ArrayList<T> {
 
     public List<List<T>> getPages() {
         ArrayList<List<T>> pages = new ArrayList<List<T>>();
-        for (int i2 = 1; i2 <= this.getPageCount(); ++i2) {
-            pages.add(this.getPage(i2));
+        for (int i = 1; i <= this.getPageCount(); ++i) {
+            pages.add(this.getPage(i));
         }
         return pages;
     }
 
-    public void addAll(T[] t2) {
-        Collections.addAll(this, t2);
+    public void addAll(T[] t) {
+        Collections.addAll(this, t);
     }
 
     @Override
     public String toString() {
         StringBuilder res = new StringBuilder();
-        for (int i2 = 1; i2 <= this.getPageCount(); ++i2) {
-            res.append("Page ").append(i2).append(": ").append("\n");
-            for (T element : this.getPage(i2)) {
+        for (int i = 1; i <= this.getPageCount(); ++i) {
+            res.append("Page ").append(i).append(": ").append("\n");
+            for (T element : this.getPage(i)) {
                 res.append(" - ").append(element).append("\n");
             }
         }

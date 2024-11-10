@@ -45,7 +45,7 @@ extends MemberResolver<Field> {
     public Field resolveSilent(String ... names) {
         try {
             return this.resolve(names);
-        } catch (Exception e2) {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -57,8 +57,8 @@ extends MemberResolver<Field> {
         }
         try {
             return (Field)super.resolve(builder.build());
-        } catch (ReflectiveOperationException e2) {
-            throw (NoSuchFieldException)e2;
+        } catch (ReflectiveOperationException e) {
+            throw (NoSuchFieldException)e;
         }
     }
 
@@ -66,7 +66,7 @@ extends MemberResolver<Field> {
     public Field resolveSilent(ResolverQuery ... queries) {
         try {
             return this.resolve(queries);
-        } catch (Exception e2) {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -75,8 +75,8 @@ extends MemberResolver<Field> {
     public Field resolve(ResolverQuery ... queries) throws NoSuchFieldException {
         try {
             return (Field)super.resolve(queries);
-        } catch (ReflectiveOperationException e2) {
-            throw (NoSuchFieldException)e2;
+        } catch (ReflectiveOperationException e) {
+            throw (NoSuchFieldException)e;
         }
     }
 
@@ -106,7 +106,7 @@ extends MemberResolver<Field> {
     public Field resolveByFirstTypeSilent(Class<?> type) {
         try {
             return this.resolveByFirstType(type);
-        } catch (Exception e2) {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -126,7 +126,7 @@ extends MemberResolver<Field> {
     public Field resolveByLastTypeSilent(Class<?> type) {
         try {
             return this.resolveByLastType(type);
-        } catch (Exception e2) {
+        } catch (Exception e) {
             return null;
         }
     }

@@ -45,8 +45,8 @@ implements Listener {
             this.server = (MinecraftServer)console.get(craftserver);
             ServerConnection conn = this.server.aq();
             this.networkManagers = Collections.synchronizedList((List)this.getNetworkManagerList(conn));
-        } catch (IllegalAccessException | NoSuchFieldException e2) {
-            e2.printStackTrace();
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            e.printStackTrace();
         }
     }
 
@@ -59,8 +59,8 @@ implements Listener {
                 if (channel.pipeline().context("pingapi_handler") != null || channel.pipeline().context("packet_handler") == null) continue;
                 channel.pipeline().addBefore("packet_handler", "pingapi_handler", (ChannelHandler)new DuplexHandler());
             }
-        } catch (IllegalAccessException e2) {
-            e2.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         } catch (IllegalArgumentException | NullPointerException | NoSuchElementException runtimeException) {
             // empty catch block
         }
@@ -72,7 +72,7 @@ implements Listener {
             field = serverConnection.getClass().getDeclaredField("h");
             field.setAccessible(true);
             return field.get(serverConnection);
-        } catch (IllegalAccessException | NoSuchFieldException e2) {
+        } catch (IllegalAccessException | NoSuchFieldException e) {
             return null;
         }
     }

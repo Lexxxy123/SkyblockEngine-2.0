@@ -9,27 +9,28 @@ package net.hypixel.skyblock.npc.hub.merchants;
 import net.hypixel.skyblock.features.merchant.FarmMerchantGUI;
 import net.hypixel.skyblock.npc.impl.NPCParameters;
 import net.hypixel.skyblock.npc.impl.NPCSkin;
-import net.hypixel.skyblock.npc.impl.SkyBlockNPC;
+import net.hypixel.skyblock.npc.impl.SkyblockNPC;
+import net.hypixel.skyblock.npc.impl.enums.NPCType;
 import org.bukkit.entity.Player;
 
 public class FarmMerchant
-extends SkyBlockNPC {
+extends SkyblockNPC {
     public FarmMerchant() {
         super(new NPCParameters(){
 
             @Override
-            public String id() {
-                return "FARM_MERCHANT";
-            }
-
-            @Override
             public String name() {
-                return "&fFarm Merchant";
+                return "Farm Merchant";
             }
 
             @Override
             public String[] messages() {
                 return new String[]{"You can buy and sell harvested crops with me!", "Wheat, carrots, potatoes, and melon are my specialties!", "Click me again to open the Farmer Shop!"};
+            }
+
+            @Override
+            public String[] holograms() {
+                return new String[]{"&fFarm Merchant", "&e&lCLICK"};
             }
 
             @Override
@@ -68,7 +69,12 @@ extends SkyBlockNPC {
             }
 
             @Override
-            public void onInteract(Player player, SkyBlockNPC npc) {
+            public NPCType type() {
+                return NPCType.PLAYER;
+            }
+
+            @Override
+            public void onInteract(Player player, SkyblockNPC npc) {
                 FarmMerchantGUI gui = new FarmMerchantGUI();
                 gui.open(player);
             }

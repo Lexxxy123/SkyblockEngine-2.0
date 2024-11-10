@@ -105,17 +105,17 @@ extends BaseZombie {
         return 1000000.0;
     }
 
-    public BossBar setBar(World w2, String s2) {
-        this.bb = new BossBar(Sputnik.trans(s2));
-        for (Player p2 : w2.getPlayers()) {
-            this.bb.addPlayer(p2.getUniqueId());
+    public BossBar setBar(World w, String s) {
+        this.bb = new BossBar(Sputnik.trans(s));
+        for (Player p : w.getPlayers()) {
+            this.bb.addPlayer(p.getUniqueId());
         }
         return this.bb;
     }
 
-    public void removeAllBar(World w2, BossBar b2) {
-        for (Player p2 : w2.getPlayers()) {
-            b2.removePlayer(p2.getUniqueId());
+    public void removeAllBar(World w, BossBar b) {
+        for (Player p : w.getPlayers()) {
+            b.removePlayer(p.getUniqueId());
         }
     }
 
@@ -217,10 +217,10 @@ extends BaseZombie {
         if (name != null) {
             message.append("            ").append(ChatColor.GREEN).append(name).append(ChatColor.GRAY).append(" dealt the final blow.\n \n");
         }
-        for (int i2 = 0; i2 < Math.min(3, damageDealt.size()); ++i2) {
+        for (int i = 0; i < Math.min(3, damageDealt.size()); ++i) {
             message.append("\n");
-            Map.Entry d2 = (Map.Entry)damageDealt.get(i2);
-            place = i2 + 1;
+            Map.Entry d = (Map.Entry)damageDealt.get(i);
+            place = i + 1;
             switch (place) {
                 case 1: {
                     message.append("        ").append(ChatColor.YELLOW);
@@ -248,17 +248,17 @@ extends BaseZombie {
                     message.append("rd");
                 }
             }
-            message.append(" Damager").append(ChatColor.RESET).append(ChatColor.GRAY).append(" - ").append(ChatColor.GREEN).append(Bukkit.getOfflinePlayer((UUID)((UUID)d2.getKey())).getName()).append(ChatColor.GRAY).append(" - ").append(ChatColor.YELLOW).append(SUtil.commaify(((Double)d2.getValue()).intValue()));
+            message.append(" Damager").append(ChatColor.RESET).append(ChatColor.GRAY).append(" - ").append(ChatColor.GREEN).append(Bukkit.getOfflinePlayer((UUID)((UUID)d.getKey())).getName()).append(ChatColor.GRAY).append(" - ").append(ChatColor.YELLOW).append(SUtil.commaify(((Double)d.getValue()).intValue()));
         }
         message.append("\n \n").append("         ").append(ChatColor.RESET).append(ChatColor.YELLOW).append("Your Damage: ").append("%s").append(ChatColor.RESET).append("\n").append("             ").append(ChatColor.YELLOW).append("Runecrafting Experience: ").append(ChatColor.LIGHT_PURPLE).append("N/A").append(ChatColor.RESET).append("\n \n");
         message.append(ChatColor.GREEN).append(ChatColor.BOLD).append("\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac");
         for (Player player : Bukkit.getOnlinePlayers()) {
             place = -1;
             int damage = 0;
-            for (int j2 = 0; j2 < damageDealt.size(); ++j2) {
-                Map.Entry d2 = (Map.Entry)damageDealt.get(j2);
+            for (int j = 0; j < damageDealt.size(); ++j) {
+                Map.Entry d2 = (Map.Entry)damageDealt.get(j);
                 if (!((UUID)d2.getKey()).equals(player.getUniqueId())) continue;
-                place = j2 + 1;
+                place = j + 1;
                 damage = ((Double)d2.getValue()).intValue();
             }
             if (!player.getWorld().getName().equals("gisland")) continue;
@@ -291,34 +291,34 @@ extends BaseZombie {
         return 0.3;
     }
 
-    public void laser(LivingEntity e2) {
+    public void laser(LivingEntity e) {
         int[] array_colors = new int[]{15249075, 15178658, 14907008, 14634331, 14563143};
-        Giant.applyEffect(PotionEffectType.SLOW, (Entity)e2, 240, 1);
-        SUtil.delay(() -> e2.getEquipment().setHelmet(Giant.buildColorStack(array_colors[0])), 20L);
-        SUtil.delay(() -> e2.getEquipment().setHelmet(Giant.buildColorStack(array_colors[1])), 40L);
-        SUtil.delay(() -> e2.getEquipment().setHelmet(Giant.buildColorStack(array_colors[2])), 60L);
-        SUtil.delay(() -> e2.getEquipment().setHelmet(Giant.buildColorStack(array_colors[3])), 80L);
-        SUtil.delay(() -> e2.getEquipment().setHelmet(Giant.buildColorStack(array_colors[4])), 100L);
-        SUtil.delay(() -> this.laserAni(e2), 105L);
+        Giant.applyEffect(PotionEffectType.SLOW, (Entity)e, 240, 1);
+        SUtil.delay(() -> e.getEquipment().setHelmet(Giant.buildColorStack(array_colors[0])), 20L);
+        SUtil.delay(() -> e.getEquipment().setHelmet(Giant.buildColorStack(array_colors[1])), 40L);
+        SUtil.delay(() -> e.getEquipment().setHelmet(Giant.buildColorStack(array_colors[2])), 60L);
+        SUtil.delay(() -> e.getEquipment().setHelmet(Giant.buildColorStack(array_colors[3])), 80L);
+        SUtil.delay(() -> e.getEquipment().setHelmet(Giant.buildColorStack(array_colors[4])), 100L);
+        SUtil.delay(() -> this.laserAni(e), 105L);
         SUtil.delay(() -> {
             this.laserActive = false;
         }, 250L);
-        SUtil.delay(() -> e2.getEquipment().setHelmet(Giant.buildColorStack(array_colors[4])), 270L);
-        SUtil.delay(() -> e2.getEquipment().setHelmet(Giant.buildColorStack(array_colors[3])), 290L);
-        SUtil.delay(() -> e2.getEquipment().setHelmet(Giant.buildColorStack(array_colors[2])), 310L);
-        SUtil.delay(() -> e2.getEquipment().setHelmet(Giant.buildColorStack(array_colors[1])), 330L);
-        SUtil.delay(() -> e2.getEquipment().setHelmet(Giant.buildColorStack(array_colors[0])), 350L);
-        SUtil.delay(() -> e2.getEquipment().setHelmet(Giant.b(15249075, Material.LEATHER_HELMET)), 370L);
+        SUtil.delay(() -> e.getEquipment().setHelmet(Giant.buildColorStack(array_colors[4])), 270L);
+        SUtil.delay(() -> e.getEquipment().setHelmet(Giant.buildColorStack(array_colors[3])), 290L);
+        SUtil.delay(() -> e.getEquipment().setHelmet(Giant.buildColorStack(array_colors[2])), 310L);
+        SUtil.delay(() -> e.getEquipment().setHelmet(Giant.buildColorStack(array_colors[1])), 330L);
+        SUtil.delay(() -> e.getEquipment().setHelmet(Giant.buildColorStack(array_colors[0])), 350L);
+        SUtil.delay(() -> e.getEquipment().setHelmet(Giant.b(15249075, Material.LEATHER_HELMET)), 370L);
         SUtil.delay(() -> {
             this.laserActiveCD = false;
         }, 950L);
     }
 
-    public void jumpAni(final LivingEntity e2) {
+    public void jumpAni(final LivingEntity e) {
         new BukkitRunnable(){
 
             public void run() {
-                if (e2.isDead()) {
+                if (e.isDead()) {
                     this.cancel();
                     return;
                 }
@@ -326,63 +326,63 @@ extends BaseZombie {
                     this.cancel();
                     return;
                 }
-                if (e2.isOnGround()) {
+                if (e.isOnGround()) {
                     Giant.this.shockWave = false;
                     SUtil.delay(() -> Giant.this.shockWaveCD = false, 500L);
-                    e2.getWorld().playEffect(e2.getLocation().add(0.0, 0.5, 0.0), Effect.EXPLOSION_HUGE, 3);
-                    e2.getWorld().playEffect(e2.getLocation(), Effect.EXPLOSION_HUGE, 3);
-                    e2.getWorld().playSound(e2.getLocation(), Sound.EXPLODE, 3.0f, 0.0f);
+                    e.getWorld().playEffect(e.getLocation().add(0.0, 0.5, 0.0), Effect.EXPLOSION_HUGE, 3);
+                    e.getWorld().playEffect(e.getLocation(), Effect.EXPLOSION_HUGE, 3);
+                    e.getWorld().playSound(e.getLocation(), Sound.EXPLODE, 3.0f, 0.0f);
                     SUtil.delay(() -> {
-                        LivingEntity val$e = e2;
-                        e2.getWorld().playSound(e2.getLocation(), Sound.EXPLODE, 10.0f, 0.0f);
+                        LivingEntity val$e = e;
+                        e.getWorld().playSound(e.getLocation(), Sound.EXPLODE, 10.0f, 0.0f);
                     }, 5L);
                     SUtil.delay(() -> {
-                        LivingEntity val$e2 = e2;
-                        e2.getWorld().playEffect(e2.getLocation().add(0.0, 0.5, 0.0), Effect.EXPLOSION_HUGE, 3);
+                        LivingEntity val$e2 = e;
+                        e.getWorld().playEffect(e.getLocation().add(0.0, 0.5, 0.0), Effect.EXPLOSION_HUGE, 3);
                     }, 5L);
                     SUtil.delay(() -> {
-                        LivingEntity val$e3 = e2;
-                        e2.getWorld().playEffect(e2.getLocation().add(0.0, 0.5, 0.0), Effect.EXPLOSION_HUGE, 3);
+                        LivingEntity val$e3 = e;
+                        e.getWorld().playEffect(e.getLocation().add(0.0, 0.5, 0.0), Effect.EXPLOSION_HUGE, 3);
                     }, 7L);
-                    Giant.createBlockTornado((Entity)e2, e2.getLocation().add(0.0, -1.0, 0.0).getBlock().getType(), e2.getLocation().add(0.0, -1.0, 0.0).getBlock().getData());
+                    Giant.createBlockTornado((Entity)e, e.getLocation().add(0.0, -1.0, 0.0).getBlock().getType(), e.getLocation().add(0.0, -1.0, 0.0).getBlock().getData());
                     new BukkitRunnable(){
 
                         public void run() {
-                            Giant.createBlockTornado((Entity)e2, e2.getLocation().add(0.0, -1.0, 0.0).getBlock().getType(), e2.getLocation().add(0.0, -1.0, 0.0).getBlock().getData());
+                            Giant.createBlockTornado((Entity)e, e.getLocation().add(0.0, -1.0, 0.0).getBlock().getType(), e.getLocation().add(0.0, -1.0, 0.0).getBlock().getData());
                         }
                     }.runTaskLater((Plugin)SkyBlock.getPlugin(), 5L);
                     new BukkitRunnable(){
 
                         public void run() {
-                            Giant.createBlockTornado((Entity)e2, e2.getLocation().add(0.0, -2.0, 0.0).getBlock().getType(), e2.getLocation().add(0.0, -2.0, 0.0).getBlock().getData());
+                            Giant.createBlockTornado((Entity)e, e.getLocation().add(0.0, -2.0, 0.0).getBlock().getType(), e.getLocation().add(0.0, -2.0, 0.0).getBlock().getData());
                         }
                     }.runTaskLater((Plugin)SkyBlock.getPlugin(), 6L);
                     new BukkitRunnable(){
 
                         public void run() {
-                            Giant.createBlockTornado((Entity)e2, e2.getLocation().add(0.0, -2.0, 0.0).getBlock().getType(), e2.getLocation().add(0.0, -2.0, 0.0).getBlock().getData());
+                            Giant.createBlockTornado((Entity)e, e.getLocation().add(0.0, -2.0, 0.0).getBlock().getType(), e.getLocation().add(0.0, -2.0, 0.0).getBlock().getData());
                         }
                     }.runTaskLater((Plugin)SkyBlock.getPlugin(), 7L);
                     new BukkitRunnable(){
 
                         public void run() {
-                            Giant.createBlockTornado((Entity)e2, e2.getLocation().add(0.0, -1.0, 0.0).getBlock().getType(), e2.getLocation().add(0.0, -1.0, 0.0).getBlock().getData());
+                            Giant.createBlockTornado((Entity)e, e.getLocation().add(0.0, -1.0, 0.0).getBlock().getType(), e.getLocation().add(0.0, -1.0, 0.0).getBlock().getData());
                         }
                     }.runTaskLater((Plugin)SkyBlock.getPlugin(), 8L);
                     SUtil.delay(() -> {
-                        LivingEntity val$e4 = e2;
-                        e2.getWorld().playSound(e2.getLocation(), Sound.EXPLODE, 3.0f, 0.0f);
+                        LivingEntity val$e4 = e;
+                        e.getWorld().playSound(e.getLocation(), Sound.EXPLODE, 3.0f, 0.0f);
                     }, 5L);
                     SUtil.delay(() -> {
-                        LivingEntity val$e5 = e2;
-                        e2.getWorld().playSound(e2.getLocation(), Sound.EXPLODE, 3.0f, 0.0f);
+                        LivingEntity val$e5 = e;
+                        e.getWorld().playSound(e.getLocation(), Sound.EXPLODE, 3.0f, 0.0f);
                     }, 10L);
-                    for (Entity entities : e2.getNearbyEntities(22.0, 10.0, 22.0)) {
+                    for (Entity entities : e.getNearbyEntities(22.0, 10.0, 22.0)) {
                         double damage;
-                        Player p2;
+                        Player p;
                         Vector vec = new Vector(0, 0, 0);
                         if (entities.hasMetadata("NPC") || entities instanceof ArmorStand || entities instanceof org.bukkit.entity.Giant) continue;
-                        if (entities.getLocation().distance(e2.getLocation()) > 8.0) {
+                        if (entities.getLocation().distance(e.getLocation()) > 8.0) {
                             vec.setY(2.25);
                             vec.setX(0.25);
                             entities.setVelocity(vec);
@@ -392,30 +392,30 @@ extends BaseZombie {
                             entities.setVelocity(vec);
                         }
                         if (!(entities instanceof Player)) continue;
-                        if (entities.getLocation().distance(e2.getLocation()) <= 5.0) {
-                            p2 = (Player)entities;
-                            damage = (double)SUtil.random(100, 300) + p2.getMaxHealth() * 90.0 / 100.0;
-                            User.getUser(p2.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)e2);
-                            p2.damage(1.0E-6, null);
-                            p2.sendMessage(Sputnik.trans("&7Terrorant's Shockwave Stomp have hit you for &c" + SUtil.commaify(Math.round(damage)) + " &7true damage."));
+                        if (entities.getLocation().distance(e.getLocation()) <= 5.0) {
+                            p = (Player)entities;
+                            damage = (double)SUtil.random(100, 300) + p.getMaxHealth() * 90.0 / 100.0;
+                            User.getUser(p.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)e);
+                            p.damage(1.0E-6, null);
+                            p.sendMessage(Sputnik.trans("&7Terrorant's Shockwave Stomp have hit you for &c" + SUtil.commaify(Math.round(damage)) + " &7true damage."));
                             continue;
                         }
-                        p2 = (Player)entities;
-                        damage = (double)SUtil.random(100, 300) + p2.getMaxHealth() * 10.0 / 100.0;
-                        User.getUser(p2.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)e2);
-                        p2.damage(1.0E-6, null);
-                        p2.sendMessage(Sputnik.trans("&7Terrorant's Shockwave Stomp have hit you for &c" + SUtil.commaify(Math.round(damage)) + " &7true damage."));
+                        p = (Player)entities;
+                        damage = (double)SUtil.random(100, 300) + p.getMaxHealth() * 10.0 / 100.0;
+                        User.getUser(p.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)e);
+                        p.damage(1.0E-6, null);
+                        p.sendMessage(Sputnik.trans("&7Terrorant's Shockwave Stomp have hit you for &c" + SUtil.commaify(Math.round(damage)) + " &7true damage."));
                     }
                 }
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
     }
 
-    public void laserAni(final LivingEntity e2) {
+    public void laserAni(final LivingEntity e) {
         new BukkitRunnable(){
 
             public void run() {
-                if (e2.isDead()) {
+                if (e.isDead()) {
                     this.cancel();
                     return;
                 }
@@ -423,18 +423,18 @@ extends BaseZombie {
                     this.cancel();
                     return;
                 }
-                for (Entity p2 : e2.getNearbyEntities(20.0, 20.0, 20.0)) {
-                    if (!(p2 instanceof Player)) continue;
-                    Player p22 = (Player)p2;
-                    p22.playSound(e2.getLocation(), "mob.guardian.elder.idle", 0.3f, 2.0f);
-                    p22.playSound(e2.getLocation(), "mob.guardian.elder.idle", 0.3f, 0.0f);
+                for (Entity p : e.getNearbyEntities(20.0, 20.0, 20.0)) {
+                    if (!(p instanceof Player)) continue;
+                    Player p2 = (Player)p;
+                    p2.playSound(e.getLocation(), "mob.guardian.elder.idle", 0.3f, 2.0f);
+                    p2.playSound(e.getLocation(), "mob.guardian.elder.idle", 0.3f, 0.0f);
                 }
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 2L);
         new BukkitRunnable(){
 
             public void run() {
-                if (e2.isDead()) {
+                if (e.isDead()) {
                     this.cancel();
                     return;
                 }
@@ -442,14 +442,14 @@ extends BaseZombie {
                     this.cancel();
                     return;
                 }
-                CraftLivingEntity target = ((CraftZombie)e2).getTarget();
-                float angle_1 = e2.getEyeLocation().getYaw() / 60.0f;
-                Location loc1 = e2.getEyeLocation().add(Math.cos(angle_1), 0.0, Math.sin(angle_1));
-                Location loc2 = e2.getEyeLocation().subtract(Math.cos(angle_1), 0.0, Math.sin(angle_1));
+                CraftLivingEntity target = ((CraftZombie)e).getTarget();
+                float angle_1 = e.getEyeLocation().getYaw() / 60.0f;
+                Location loc1 = e.getEyeLocation().add(Math.cos(angle_1), 0.0, Math.sin(angle_1));
+                Location loc2 = e.getEyeLocation().subtract(Math.cos(angle_1), 0.0, Math.sin(angle_1));
                 loc1.add(0.0, 9.5, 0.0);
                 loc2.add(0.0, 9.5, 0.0);
                 if (target != null) {
-                    if (target.getLocation().distance(e2.getLocation()) < 5.0 || target.getLocation().distance(e2.getLocation()) > 30.0) {
+                    if (target.getLocation().distance(e.getLocation()) < 5.0 || target.getLocation().distance(e.getLocation()) > 30.0) {
                         return;
                     }
                     Location loc1_ = target.getLocation();
@@ -464,7 +464,7 @@ extends BaseZombie {
         new BukkitRunnable(){
 
             public void run() {
-                if (e2.isDead()) {
+                if (e.isDead()) {
                     this.cancel();
                     return;
                 }
@@ -472,39 +472,39 @@ extends BaseZombie {
                     this.cancel();
                     return;
                 }
-                for (Entity entity : e2.getNearbyEntities(4.0, 10.0, 4.0)) {
+                for (Entity entity : e.getNearbyEntities(4.0, 10.0, 4.0)) {
                     if (!(entity instanceof Player)) continue;
                     double damage = (double)SUtil.random(100, 150) + ((LivingEntity)entity).getMaxHealth() * 5.0 / 100.0;
-                    User.getUser(entity.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)e2);
+                    User.getUser(entity.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)e);
                     entity.sendMessage(Sputnik.trans("&7Terrorant's Laser Heat have hit you for &c" + SUtil.commaify(Math.round(damage)) + " &7true damage! Move away from it!"));
                     ((LivingEntity)entity).damage(1.0E-6, null);
                 }
-                CraftLivingEntity target = ((CraftZombie)e2).getTarget();
-                float angle_1 = e2.getEyeLocation().getYaw() / 60.0f;
-                Location loc1 = e2.getEyeLocation().add(Math.cos(angle_1), 0.0, Math.sin(angle_1));
-                Location loc2 = e2.getEyeLocation().subtract(Math.cos(angle_1), 0.0, Math.sin(angle_1));
+                CraftLivingEntity target = ((CraftZombie)e).getTarget();
+                float angle_1 = e.getEyeLocation().getYaw() / 60.0f;
+                Location loc1 = e.getEyeLocation().add(Math.cos(angle_1), 0.0, Math.sin(angle_1));
+                Location loc2 = e.getEyeLocation().subtract(Math.cos(angle_1), 0.0, Math.sin(angle_1));
                 loc1.add(0.0, 9.5, 0.0);
                 loc2.add(0.0, 9.5, 0.0);
                 if (target != null) {
-                    if (target.getLocation().distance(e2.getLocation()) < 5.0 || target.getLocation().distance(e2.getLocation()) > 30.0) {
+                    if (target.getLocation().distance(e.getLocation()) < 5.0 || target.getLocation().distance(e.getLocation()) > 30.0) {
                         return;
                     }
                     Location loc1_ = target.getLocation();
                     Location loc2_ = target.getLocation();
                     Location en1 = loc1_.add(0.0, 0.5, 0.0);
                     Location en2 = loc2_.add(0.0, 0.5, 0.0);
-                    Giant.getEntity(loc1, en1, e2);
-                    Giant.getEntity(loc2, en2, e2);
+                    Giant.getEntity(loc1, en1, e);
+                    Giant.getEntity(loc2, en2, e);
                 }
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 20L);
     }
 
-    public void launchTerrain(final LivingEntity e2) {
+    public void launchTerrain(final LivingEntity e) {
         new BukkitRunnable(){
 
             public void run() {
-                if (e2.isDead()) {
+                if (e.isDead()) {
                     this.cancel();
                     return;
                 }
@@ -513,9 +513,9 @@ extends BaseZombie {
                     this.cancel();
                     return;
                 }
-                CraftLivingEntity t2 = ((CraftZombie)e2).getTarget();
-                if (t2 != null) {
-                    Giant.this.throwTerrain(e2, (Entity)t2);
+                CraftLivingEntity t = ((CraftZombie)e).getTarget();
+                if (t != null) {
+                    Giant.this.throwTerrain(e, (Entity)t);
                 }
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 30L);
@@ -529,16 +529,16 @@ extends BaseZombie {
         return stack;
     }
 
-    public static ItemStack b(int hexcolor, Material m2) {
-        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m2), Color.fromRGB((int)hexcolor));
+    public static ItemStack b(int hexcolor, Material m) {
+        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB((int)hexcolor));
         ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
         return stack;
     }
 
-    public static ItemStack c(Material m2) {
-        ItemStack stack = new ItemStack(m2);
+    public static ItemStack c(Material m) {
+        ItemStack stack = new ItemStack(m);
         ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
@@ -550,39 +550,39 @@ extends BaseZombie {
         Location crystalLocation = point2;
         Vector vector = blockLocation.clone().add(0.1, 0.0, 0.1).toVector().subtract(crystalLocation.clone().toVector());
         double count = 90.0;
-        for (int i2 = 1; i2 <= 90; ++i2) {
-            point1.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply((double)i2 / 90.0)), Effect.COLOURED_DUST, 0, 1, 0.8627451f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
-            point1.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply((double)i2 / 90.0)), Effect.COLOURED_DUST, 0, 1, 1.0196079f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
+        for (int i = 1; i <= 90; ++i) {
+            point1.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply((double)i / 90.0)), Effect.COLOURED_DUST, 0, 1, 0.8627451f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
+            point1.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply((double)i / 90.0)), Effect.COLOURED_DUST, 0, 1, 1.0196079f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
         }
     }
 
-    public static void getEntity(Location finaldestination, Location ended, LivingEntity e2) {
+    public static void getEntity(Location finaldestination, Location ended, LivingEntity e) {
         Location blockLocation = finaldestination;
         Location crystalLocation = ended;
         Vector vector = blockLocation.clone().add(0.1, 0.1, 0.1).toVector().subtract(crystalLocation.clone().toVector());
         double count = 90.0;
-        for (int i2 = 1; i2 <= 90; ++i2) {
-            for (Entity entity : ended.getWorld().getNearbyEntities(crystalLocation.clone().add(vector.clone().multiply((double)i2 / 90.0)), 0.17, 0.0, 0.17)) {
+        for (int i = 1; i <= 90; ++i) {
+            for (Entity entity : ended.getWorld().getNearbyEntities(crystalLocation.clone().add(vector.clone().multiply((double)i / 90.0)), 0.17, 0.0, 0.17)) {
                 if (!(entity instanceof Player)) continue;
-                Player p2 = (Player)entity;
-                double damage = (double)SUtil.random(200, 700) + p2.getMaxHealth() / 100.0;
-                User.getUser(p2.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)e2);
-                p2.damage(1.0E-6, null);
-                p2.sendMessage(Sputnik.trans("&7Terrorant's Laser Eye have hit you for &c" + SUtil.commaify(Math.round(damage)) + " &7true damage."));
+                Player p = (Player)entity;
+                double damage = (double)SUtil.random(200, 700) + p.getMaxHealth() / 100.0;
+                User.getUser(p.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)e);
+                p.damage(1.0E-6, null);
+                p.sendMessage(Sputnik.trans("&7Terrorant's Laser Eye have hit you for &c" + SUtil.commaify(Math.round(damage)) + " &7true damage."));
                 return;
             }
         }
     }
 
-    public static void applyEffect(PotionEffectType e2, Entity en, int ticks, int amp) {
-        ((LivingEntity)en).addPotionEffect(new PotionEffect(e2, ticks, amp));
+    public static void applyEffect(PotionEffectType e, Entity en, int ticks, int amp) {
+        ((LivingEntity)en).addPotionEffect(new PotionEffect(e, ticks, amp));
     }
 
-    public static void createBlockTornado(Entity e2, Material mat, byte id) {
-        for (int i2 = 0; i2 <= 30; ++i2) {
+    public static void createBlockTornado(Entity e, Material mat, byte id) {
+        for (int i = 0; i <= 30; ++i) {
             int random = SUtil.random(0, 3);
             double range = 0.0;
-            Location loc = e2.getLocation().clone();
+            Location loc = e.getLocation().clone();
             loc.setYaw((float)SUtil.random(0, 360));
             if (random == 1) {
                 range = 0.6;
@@ -595,21 +595,21 @@ extends BaseZombie {
             }
             Vector vec = loc.getDirection().normalize().multiply(range);
             vec.setY(1.1);
-            BlockFallAPI.sendVelocityBlock(e2.getLocation(), mat, id, e2.getWorld(), 70, vec);
+            BlockFallAPI.sendVelocityBlock(e.getLocation(), mat, id, e.getWorld(), 70, vec);
         }
     }
 
-    public static void damagePlayer(Player p2) {
-        double damage = (double)SUtil.random(200, 700) + p2.getMaxHealth() * 25.0 / 100.0;
-        User.getUser(p2.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)e);
-        p2.damage(1.0E-6, null);
-        p2.sendMessage(Sputnik.trans("&7Terrorant's Terrain Toss have hit you for &c" + SUtil.commaify(Math.round(damage)) + " &7true damage."));
+    public static void damagePlayer(Player p) {
+        double damage = (double)SUtil.random(200, 700) + p.getMaxHealth() * 25.0 / 100.0;
+        User.getUser(p.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)e);
+        p.damage(1.0E-6, null);
+        p.sendMessage(Sputnik.trans("&7Terrorant's Terrain Toss have hit you for &c" + SUtil.commaify(Math.round(damage)) + " &7true damage."));
     }
 
-    public void throwTerrain(LivingEntity e2, Entity target) {
-        Block b2 = target.getLocation().getBlock();
-        World world = e2.getWorld();
-        Location startBlock = e2.getLocation().add(e2.getLocation().getDirection().multiply(2));
+    public void throwTerrain(LivingEntity e, Entity target) {
+        Block b = target.getLocation().getBlock();
+        World world = e.getWorld();
+        Location startBlock = e.getLocation().add(e.getLocation().getDirection().multiply(2));
         ArrayList<Location> locationList = new ArrayList<Location>();
         ArrayList<Location> endList = new ArrayList<Location>();
         ArrayList blockTypes = new ArrayList();
@@ -617,7 +617,7 @@ extends BaseZombie {
         for (int length = -1; length < 2; ++length) {
             for (int height = -1; height < 2; ++height) {
                 Location loc = startBlock.clone().add((double)length, 0.0, (double)height);
-                Location end = b2.getLocation().clone().add((double)length, 0.0, (double)height);
+                Location end = b.getLocation().clone().add((double)length, 0.0, (double)height);
                 locationList.add(loc);
                 endList.add(end);
             }
@@ -626,20 +626,20 @@ extends BaseZombie {
         locationList.add(startBlock.clone().add(0.0, 0.0, -2.0));
         locationList.add(startBlock.clone().add(2.0, 0.0, 0.0));
         locationList.add(startBlock.clone().add(-2.0, 0.0, 0.0));
-        endList.add(b2.getLocation().clone().add(0.0, 0.0, 2.0));
-        endList.add(b2.getLocation().clone().add(0.0, 0.0, -2.0));
-        endList.add(b2.getLocation().clone().add(2.0, 0.0, 0.0));
-        endList.add(b2.getLocation().clone().add(-2.0, 0.0, 0.0));
+        endList.add(b.getLocation().clone().add(0.0, 0.0, 2.0));
+        endList.add(b.getLocation().clone().add(0.0, 0.0, -2.0));
+        endList.add(b.getLocation().clone().add(2.0, 0.0, 0.0));
+        endList.add(b.getLocation().clone().add(-2.0, 0.0, 0.0));
         locationList.add(startBlock.clone().add(0.0, -1.0, 0.0));
         locationList.add(startBlock.clone().add(1.0, -1.0, 0.0));
         locationList.add(startBlock.clone().add(-1.0, -1.0, 0.0));
         locationList.add(startBlock.clone().add(0.0, -1.0, 1.0));
         locationList.add(startBlock.clone().add(0.0, -1.0, -1.0));
-        endList.add(b2.getLocation().clone().add(0.0, -1.0, 0.0));
-        endList.add(b2.getLocation().clone().add(1.0, -1.0, 0.0));
-        endList.add(b2.getLocation().clone().add(-1.0, -1.0, 0.0));
-        endList.add(b2.getLocation().clone().add(0.0, -1.0, 1.0));
-        endList.add(b2.getLocation().clone().add(0.0, -1.0, -1.0));
+        endList.add(b.getLocation().clone().add(0.0, -1.0, 0.0));
+        endList.add(b.getLocation().clone().add(1.0, -1.0, 0.0));
+        endList.add(b.getLocation().clone().add(-1.0, -1.0, 0.0));
+        endList.add(b.getLocation().clone().add(0.0, -1.0, 1.0));
+        endList.add(b.getLocation().clone().add(0.0, -1.0, -1.0));
         Byte blockData = 0;
         locationList.forEach(block -> {
             Location loc2 = block.getBlock().getLocation().clone().subtract(0.0, 1.0, 0.0);
@@ -662,35 +662,35 @@ extends BaseZombie {
         });
     }
 
-    public static void playLaserSound(final Player p2, final Entity e2) {
+    public static void playLaserSound(final Player p, final Entity e) {
         new BukkitRunnable(){
 
             public void run() {
-                if (e2.isDead()) {
+                if (e.isDead()) {
                     this.cancel();
                     return;
                 }
-                p2.playSound(p2.getLocation(), "mob.guardian.elder.idle", 0.3f, 2.0f);
-                p2.playSound(p2.getLocation(), "mob.guardian.elder.idle", 0.3f, 0.0f);
+                p.playSound(p.getLocation(), "mob.guardian.elder.idle", 0.3f, 2.0f);
+                p.playSound(p.getLocation(), "mob.guardian.elder.idle", 0.3f, 0.0f);
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
     }
 
-    public void swordSlamAC(LivingEntity e2, LivingEntity tar) {
-        Giant.applyEffect(PotionEffectType.SLOW, (Entity)e2, 60, 4);
-        SUtil.delay(() -> this.swordSlamF(e2, tar), 60L);
+    public void swordSlamAC(LivingEntity e, LivingEntity tar) {
+        Giant.applyEffect(PotionEffectType.SLOW, (Entity)e, 60, 4);
+        SUtil.delay(() -> this.swordSlamF(e, tar), 60L);
     }
 
-    public void swordSlamF(LivingEntity e2, LivingEntity tar) {
+    public void swordSlamF(LivingEntity e, LivingEntity tar) {
         Vector vec = new Vector(0, 0, 0);
         vec.setY(2);
-        e2.setVelocity(vec);
-        SUtil.delay(() -> this.swordSlam(e2, tar), 30L);
+        e.setVelocity(vec);
+        SUtil.delay(() -> this.swordSlam(e, tar), 30L);
     }
 
-    public void swordSlam(final LivingEntity e2, final LivingEntity player) {
-        e2.getEquipment().setItemInHand(null);
-        final org.bukkit.entity.Giant armorStand = (org.bukkit.entity.Giant)player.getWorld().spawn(e2.getLocation().add(0.0, 5.0, 0.0), org.bukkit.entity.Giant.class);
+    public void swordSlam(final LivingEntity e, final LivingEntity player) {
+        e.getEquipment().setItemInHand(null);
+        final org.bukkit.entity.Giant armorStand = (org.bukkit.entity.Giant)player.getWorld().spawn(e.getLocation().add(0.0, 5.0, 0.0), org.bukkit.entity.Giant.class);
         armorStand.getEquipment().setItemInHand(SUtil.enchant(new ItemStack(Material.DIAMOND_SWORD)));
         Sputnik.applyPacketGiant((Entity)armorStand);
         armorStand.setCustomName("Dinnerbone");
@@ -699,7 +699,7 @@ extends BaseZombie {
         EntityManager.Woosh((LivingEntity)armorStand);
         EntityManager.noHit((Entity)armorStand);
         EntityManager.shutTheFuckUp((Entity)armorStand);
-        Location firstLocation = e2.getLocation().add(0.0, 5.0, 0.0);
+        Location firstLocation = e.getLocation().add(0.0, 5.0, 0.0);
         Location secondLocation = player.getLocation();
         Vector from = firstLocation.toVector();
         Vector to = secondLocation.toVector();
@@ -718,7 +718,7 @@ extends BaseZombie {
                     Giant.this.swordActiv = false;
                     SUtil.delay(() -> Giant.this.swordSlamCD = false, 450L);
                     armorStand.remove();
-                    org.bukkit.entity.Giant sword = (org.bukkit.entity.Giant)e2.getWorld().spawnEntity(armorStand.getLocation(), EntityType.GIANT);
+                    org.bukkit.entity.Giant sword = (org.bukkit.entity.Giant)e.getWorld().spawnEntity(armorStand.getLocation(), EntityType.GIANT);
                     Sputnik.applyPacketGiant((Entity)sword);
                     sword.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 100000, 1));
                     EntityManager.noAI((Entity)sword);
@@ -732,31 +732,31 @@ extends BaseZombie {
                     stand.setGravity(true);
                     stand.setPassenger((Entity)sword);
                     sword.getEquipment().setItemInHand(SUtil.enchant(new ItemStack(Material.DIAMOND_SWORD)));
-                    e2.getWorld().playSound(player.getLocation(), Sound.ANVIL_LAND, 1.0f, 0.0f);
-                    e2.getWorld().playSound(player.getLocation(), Sound.AMBIENCE_THUNDER, 1.0f, 0.35f);
+                    e.getWorld().playSound(player.getLocation(), Sound.ANVIL_LAND, 1.0f, 0.0f);
+                    e.getWorld().playSound(player.getLocation(), Sound.AMBIENCE_THUNDER, 1.0f, 0.35f);
                     for (Entity entities : sword.getWorld().getNearbyEntities(sword.getLocation().add(sword.getLocation().getDirection().multiply(3)), 4.0, 4.0, 4.0)) {
                         double damage;
-                        Player p2;
+                        Player p;
                         if (entities.hasMetadata("NPC") || entities instanceof ArmorStand || entities instanceof org.bukkit.entity.Giant || !(entities instanceof Player)) continue;
                         if (entities.getLocation().add(sword.getLocation().getDirection().multiply(3)).distance(sword.getLocation()) > 1.0) {
-                            p2 = (Player)entities;
-                            damage = (double)SUtil.random(100, 300) + p2.getMaxHealth() * 35.0 / 100.0;
-                            User.getUser(p2.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)e2);
-                            p2.damage(1.0E-6, null);
-                            p2.sendMessage(Sputnik.trans("&7Terrorant's &d&lSword Slam&7 have hit you for &c" + SUtil.commaify(Math.round(damage)) + " &7true damage."));
+                            p = (Player)entities;
+                            damage = (double)SUtil.random(100, 300) + p.getMaxHealth() * 35.0 / 100.0;
+                            User.getUser(p.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)e);
+                            p.damage(1.0E-6, null);
+                            p.sendMessage(Sputnik.trans("&7Terrorant's &d&lSword Slam&7 have hit you for &c" + SUtil.commaify(Math.round(damage)) + " &7true damage."));
                             continue;
                         }
-                        p2 = (Player)entities;
-                        damage = (double)SUtil.random(100, 300) + p2.getMaxHealth() * 90.0 / 100.0;
-                        User.getUser(p2.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)e2);
-                        p2.damage(1.0E-6, null);
-                        p2.sendMessage(Sputnik.trans("&7Terrorant's &d&lSword Slam&7 have hit you for &c" + SUtil.commaify(Math.round(damage)) + " &7true damage."));
+                        p = (Player)entities;
+                        damage = (double)SUtil.random(100, 300) + p.getMaxHealth() * 90.0 / 100.0;
+                        User.getUser(p.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)e);
+                        p.damage(1.0E-6, null);
+                        p.sendMessage(Sputnik.trans("&7Terrorant's &d&lSword Slam&7 have hit you for &c" + SUtil.commaify(Math.round(damage)) + " &7true damage."));
                     }
                     SUtil.delay(() -> sword.remove(), 65L);
                     SUtil.delay(() -> stand.remove(), 65L);
                     SUtil.delay(() -> {
-                        LivingEntity val$e = e2;
-                        e2.getEquipment().setItemInHand(SUtil.enchant(new ItemStack(Material.DIAMOND_SWORD)));
+                        LivingEntity val$e = e;
+                        e.getEquipment().setItemInHand(SUtil.enchant(new ItemStack(Material.DIAMOND_SWORD)));
                     }, 60L);
                 }
             }

@@ -8,27 +8,33 @@ package net.hypixel.skyblock.npc.hub.merchants;
 
 import net.hypixel.skyblock.features.merchant.LumberMerchantGUI;
 import net.hypixel.skyblock.npc.impl.NPCParameters;
-import net.hypixel.skyblock.npc.impl.SkyBlockNPC;
+import net.hypixel.skyblock.npc.impl.SkyblockNPC;
+import net.hypixel.skyblock.npc.impl.enums.NPCType;
 import org.bukkit.entity.Player;
 
 public class LumberMerchant
-extends SkyBlockNPC {
+extends SkyblockNPC {
     public LumberMerchant() {
         super(new NPCParameters(){
 
             @Override
-            public String id() {
-                return "LUMBER_JACK";
-            }
-
-            @Override
             public String name() {
-                return "&fLumberJack";
+                return "LumberJack";
             }
 
             @Override
             public String[] messages() {
                 return new String[]{"Buy and sell wood and axes with me!", "Click me again to open the Lumberjack Shop!"};
+            }
+
+            @Override
+            public String[] holograms() {
+                return new String[]{"&fLumberJack", "&e&lCLICK"};
+            }
+
+            @Override
+            public NPCType type() {
+                return NPCType.PLAYER;
             }
 
             @Override
@@ -52,7 +58,12 @@ extends SkyBlockNPC {
             }
 
             @Override
-            public void onInteract(Player player, SkyBlockNPC npc) {
+            public boolean looking() {
+                return true;
+            }
+
+            @Override
+            public void onInteract(Player player, SkyblockNPC npc) {
                 LumberMerchantGUI gui = new LumberMerchantGUI();
                 gui.open(player);
             }

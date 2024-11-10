@@ -37,7 +37,7 @@ extends SCommand {
         if (args.length == 2) {
             count = Integer.parseInt(args[1]);
         }
-        for (int i2 = 0; i2 < count; ++i2) {
+        for (int i = 0; i < count; ++i) {
             player.getWorld().playEffect(player.getLocation(), effect, (Object)effect.getData());
         }
         player.sendMessage(ChatColor.GRAY + "Played " + effect.name() + ".");

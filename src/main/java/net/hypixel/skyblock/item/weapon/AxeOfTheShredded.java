@@ -161,7 +161,7 @@ Ability {
         boolean take = PlayerUtils.takeMana(player1, cost);
         if (!take) {
             player1.playSound(player1.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
-            final long c2 = System.currentTimeMillis();
+            final long c = System.currentTimeMillis();
             Repeater.MANA_REPLACEMENT_MAP.put(player1.getUniqueId(), new ManaReplacement(){
 
                 @Override
@@ -171,12 +171,12 @@ Ability {
 
                 @Override
                 public long getEnd() {
-                    return c2 + 1500L;
+                    return c + 1500L;
                 }
             });
             return;
         }
-        final long c3 = System.currentTimeMillis();
+        final long c = System.currentTimeMillis();
         Repeater.DEFENSE_REPLACEMENT_MAP.put(player1.getUniqueId(), new DefenseReplacement(){
 
             @Override
@@ -186,7 +186,7 @@ Ability {
 
             @Override
             public long getEnd() {
-                return c3 + 2000L;
+                return c + 2000L;
             }
         });
         Location throwLoc = player1.getLocation().add(0.0, 0.5, 0.0);
@@ -206,16 +206,16 @@ Ability {
             private int run = -1;
 
             public void run() {
-                boolean bl2;
+                boolean bl;
                 int angle;
                 Vector newVector;
-                int j2 = 0;
-                int i2 = 0;
+                int j = 0;
+                int i = 0;
                 int ran = 0;
                 int num = 90;
                 Object loc = null;
                 ++this.run;
-                ++j2;
+                ++j;
                 if (this.run > 100) {
                     this.cancel();
                     return;
@@ -231,7 +231,7 @@ Ability {
                     this.cancel();
                     return;
                 }
-                if (j2 >= 25) {
+                if (j >= 25) {
                     armorStand1.remove();
                     this.cancel();
                     return;
@@ -240,31 +240,31 @@ Ability {
                 armorStand1.setRightArmPose(new EulerAngle(xPos + 0.5, 0.0, 0.0));
                 previousVector[0] = newVector = new Vector(throwVec.getX(), previousVector[0].getY() - 0.03, throwVec.getZ());
                 armorStand1.setVelocity(newVector);
-                if (i2 < 13) {
-                    angle = i2 * 20 + 90;
-                    bl2 = false;
+                if (i < 13) {
+                    angle = i * 20 + 90;
+                    bl = false;
                 } else {
-                    angle = i2 * 20 - 90;
-                    bl2 = true;
+                    angle = i * 20 - 90;
+                    bl = true;
                 }
                 if (locof.getBlock().getType() != Material.AIR && locof.getBlock().getType() != Material.WATER) {
                     armorStand1.remove();
                     this.cancel();
                     return;
                 }
-                if (i2 % 2 == 0 && i2 < 13) {
+                if (i % 2 == 0 && i < 13) {
                     armorStand1.teleport(armorStand1.getLocation().add(teleportTo).multiply(1.0));
-                } else if (i2 % 2 == 0) {
+                } else if (i % 2 == 0) {
                     armorStand1.teleport(armorStand1.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                 }
-                for (Entity e2 : armorStand1.getNearbyEntities(1.0, 1.0, 1.0)) {
-                    if (!(e2 instanceof LivingEntity) || e2 == player1.getPlayer()) continue;
-                    Damageable entity = (Damageable)e2;
-                    if (le.contains(e2) || entity.isDead() || !(entity instanceof LivingEntity) || entity instanceof Player || entity instanceof EnderDragonPart || entity instanceof Villager || entity instanceof ArmorStand || entity instanceof Item || entity instanceof ItemFrame || entity.hasMetadata("GiantSword") || entity.hasMetadata("VWE") || Groups.ENDERMAN.contains(entity.getType())) continue;
+                for (Entity e : armorStand1.getNearbyEntities(1.0, 1.0, 1.0)) {
+                    if (!(e instanceof LivingEntity) || e == player1.getPlayer()) continue;
+                    Damageable entity = (Damageable)e;
+                    if (le.contains(e) || entity.isDead() || !(entity instanceof LivingEntity) || entity instanceof Player || entity instanceof EnderDragonPart || entity instanceof Villager || entity instanceof ArmorStand || entity instanceof Item || entity instanceof ItemFrame || entity.hasMetadata("GiantSword") || entity.hasMetadata("VWE") || Groups.ENDERMAN.contains(entity.getType())) continue;
                     User user = User.getUser(player1.getUniqueId());
                     Object[] atp = Sputnik.calculateDamage(player1, player1, sItem.getStack(), (LivingEntity)entity, false);
                     double finalDamage1 = (double)((Float)atp[0]).floatValue() * damageBoost2;
-                    le.add((LivingEntity)e2);
+                    le.add((LivingEntity)e);
                     PlayerListener.spawnDamageInd((Entity)entity, (double)((Float)atp[2]).floatValue() * damageBoost2, (Boolean)atp[1]);
                     FerocityCalculation.activeFerocityTimes(player1, (LivingEntity)entity, (int)finalDamage1, (Boolean)atp[1]);
                     user.damageEntity(entity, finalDamage1);

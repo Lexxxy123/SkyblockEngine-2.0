@@ -36,6 +36,11 @@ extends BaseZombie {
     }
 
     @Override
+    public int mobLevel() {
+        return 70;
+    }
+
+    @Override
     public double getXPDropped() {
         return 300.0;
     }

@@ -245,9 +245,9 @@ extends BaseZombie {
                                         return;
                                     }
                                     Location location = entity.getEyeLocation().add(entity.getEyeLocation().getDirection().toLocation(entity.getWorld()));
-                                    Location l2 = location.clone();
-                                    l2.setYaw(location.getYaw());
-                                    Arrow arr = entity.getWorld().spawnArrow(l2, l2.getDirection(), (float)this.bowPower, 1.6f);
+                                    Location l = location.clone();
+                                    l.setYaw(location.getYaw());
+                                    Arrow arr = entity.getWorld().spawnArrow(l, l.getDirection(), (float)this.bowPower, 1.6f);
                                     arr.setShooter((ProjectileSource)entity);
                                     if (!this.crit) {
                                         arr.setCritical(SUtil.random(0, 1) == 1);
@@ -272,9 +272,9 @@ extends BaseZombie {
                         skywatch.setRightClicking(true);
                         HolyLostAdv.this.playPar(entity.getEyeLocation().setDirection(target1.getLocation().toVector().subtract(entity.getLocation().toVector())));
                         entity.getLocation().getWorld().playSound(entity.getLocation(), Sound.ENDERDRAGON_GROWL, 1.0f, 1.0f);
-                        for (org.bukkit.entity.Entity e2 : target1.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 3.0, 3.0, 3.0)) {
-                            if (!(e2 instanceof Player)) continue;
-                            Player player = (Player)e2;
+                        for (org.bukkit.entity.Entity e : target1.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1.0)), 3.0, 3.0, 3.0)) {
+                            if (!(e instanceof Player)) continue;
+                            Player player = (Player)e;
                             player.sendMessage(Sputnik.trans("&cLost Adventurer &aused &6Dragon's Breath &aon you!"));
                             player.setVelocity(entity.getLocation().toVector().subtract(player.getLocation().toVector()).normalize().multiply(-1.0).multiply(4.0));
                             PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
@@ -284,7 +284,7 @@ extends BaseZombie {
                             double defense = statistics.getDefense().addAll();
                             int dmglater = (int)Math.round(HolyLostAdv.this.getDamageDealt() * 3.0 - HolyLostAdv.this.getDamageDealt() * 3.0 * (defense / (defense + 100.0)));
                             User.getUser(player.getUniqueId()).damage(dmglater, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (org.bukkit.entity.Entity)entity);
-                            ((LivingEntity)e2).damage(1.0E-6, null);
+                            ((LivingEntity)e).damage(1.0E-6, null);
                         }
                         SUtil.delay(() -> {
                             PlayerWatcher val$skywatch = skywatch;
@@ -339,9 +339,9 @@ extends BaseZombie {
                             motY += (double)((float)(this.nms.getEffect(MobEffectList.JUMP).getAmplifier() + 1) * 0.2f);
                         }
                         if (this.nms.isSprinting()) {
-                            float f2 = this.nms.yaw * 0.01745329f;
-                            motX -= (double)(MathHelper.sin((float)f2) * 0.9f);
-                            motZ += (double)(MathHelper.cos((float)f2) * 0.9f);
+                            float f = this.nms.yaw * 0.01745329f;
+                            motX -= (double)(MathHelper.sin((float)f) * 0.9f);
+                            motZ += (double)(MathHelper.cos((float)f) * 0.9f);
                         }
                         entity.setVelocity(new Vector(motX, motY, motZ));
                     }
@@ -374,10 +374,10 @@ extends BaseZombie {
     }
 
     @Override
-    public void onDamage(SEntity sEntity, org.bukkit.entity.Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
+    public void onDamage(SEntity sEntity, org.bukkit.entity.Entity damager, EntityDamageByEntityEvent e, AtomicDouble damage) {
         LivingEntity en = sEntity.getEntity();
-        Vector v2 = new Vector(0, 0, 0);
-        SUtil.delay(() -> HolyLostAdv.lambda$onDamage$0((org.bukkit.entity.Entity)en, v2), 1L);
+        Vector v = new Vector(0, 0, 0);
+        SUtil.delay(() -> HolyLostAdv.lambda$onDamage$0((org.bukkit.entity.Entity)en, v), 1L);
     }
 
     @Override
@@ -385,8 +385,8 @@ extends BaseZombie {
         return new SEntityEquipment(SUtil.enchant(SItem.of(SMaterial.ASPECT_OF_THE_DRAGONS).getStack()), SUtil.enchant(SUtil.getSkullURLStack("Holy Dragon Helmet", "d13ad4fa48118d10a1ef42fd6d585472203bd88a98a087ab43182aa0493ea842", 1, "")), SUtil.enchant(HolyLostAdv.st(4706631, Material.LEATHER_CHESTPLATE, "Holy Dragon Chestplate")), SUtil.enchant(HolyLostAdv.st(4706631, Material.LEATHER_LEGGINGS, "Holy Dragon Leggings")), SUtil.enchant(HolyLostAdv.st(4706631, Material.LEATHER_BOOTS, "Holy Dragon Boots")));
     }
 
-    public static ItemStack st(int hexcolor, Material m2, String name) {
-        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m2), Color.fromRGB((int)hexcolor));
+    public static ItemStack st(int hexcolor, Material m, String name) {
+        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB((int)hexcolor));
         ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.setDisplayName(name);
         itemMeta.spigot().setUnbreakable(true);
@@ -419,9 +419,9 @@ extends BaseZombie {
         return 0.25;
     }
 
-    public void playPar(Location l2) {
+    public void playPar(Location l) {
         ConeEffect Effect2 = new ConeEffect(SkyBlock.effectManager);
-        Effect2.setLocation(l2.clone().add(l2.getDirection().normalize().multiply(-0.25)).add(0.0, -0.1, 0.0));
+        Effect2.setLocation(l.clone().add(l.getDirection().normalize().multiply(-0.25)).add(0.0, -0.1, 0.0));
         Effect2.particle = ParticleEffect.FLAME;
         Effect2.angularVelocity = 0.39269908169872414;
         Effect2.lengthGrow = 0.025f;
@@ -431,8 +431,8 @@ extends BaseZombie {
         Effect2.start();
     }
 
-    private static /* synthetic */ void lambda$onDamage$0(org.bukkit.entity.Entity en, Vector v2) {
-        en.setVelocity(v2);
+    private static /* synthetic */ void lambda$onDamage$0(org.bukkit.entity.Entity en, Vector v) {
+        en.setVelocity(v);
     }
 }
 

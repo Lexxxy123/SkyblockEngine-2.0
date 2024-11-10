@@ -114,9 +114,9 @@ extends Pet {
     }
 
     @Override
-    public void particleBelowA(Player p2, Location l2) {
-        p2.spigot().playEffect(l2, Effect.COLOURED_DUST, 0, 1, 0.003921569f, 0.003921569f, 0.003921569f, 1.0f, 0, 64);
-        p2.spigot().playEffect(l2, Effect.COLOURED_DUST, 0, 1, 0.003921569f, 0.003921569f, 0.003921569f, 1.0f, 0, 64);
+    public void particleBelowA(Player p, Location l) {
+        p.spigot().playEffect(l, Effect.COLOURED_DUST, 0, 1, 0.003921569f, 0.003921569f, 0.003921569f, 1.0f, 0, 64);
+        p.spigot().playEffect(l, Effect.COLOURED_DUST, 0, 1, 0.003921569f, 0.003921569f, 0.003921569f, 1.0f, 0, 64);
     }
 }
 

@@ -111,7 +111,7 @@ extends Pet {
     }
 
     @Override
-    public void particleBelowA(Player p2, Location l2) {
+    public void particleBelowA(Player p, Location l) {
     }
 }
 

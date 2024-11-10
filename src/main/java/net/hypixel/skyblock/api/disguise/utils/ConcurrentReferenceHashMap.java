@@ -76,8 +76,8 @@ implements ConcurrentMap<K, V> {
         int initialSize = 1 << ConcurrentReferenceHashMap.calculateShift(roundedUpSegmentCapacity, 0x40000000);
         Segment[] segments = (Segment[])Array.newInstance(Segment.class, size);
         int resizeThreshold = (int)((float)initialSize * this.getLoadFactor());
-        for (int i2 = 0; i2 < segments.length; ++i2) {
-            segments[i2] = new Segment(initialSize, resizeThreshold);
+        for (int i = 0; i < segments.length; ++i) {
+            segments[i] = new Segment(initialSize, resizeThreshold);
         }
         this.segments = segments;
     }
@@ -98,8 +98,8 @@ implements ConcurrentMap<K, V> {
         return new ReferenceManager();
     }
 
-    protected int getHash(@Nullable Object o2) {
-        int hash = o2 != null ? o2.hashCode() : 0;
+    protected int getHash(@Nullable Object o) {
+        int hash = o != null ? o.hashCode() : 0;
         hash += hash << 15 ^ 0xFFFFCD7D;
         hash ^= hash >>> 10;
         hash += hash << 3;
@@ -519,10 +519,10 @@ implements ConcurrentMap<K, V> {
         }
 
         @Override
-        public boolean contains(@Nullable Object o2) {
-            if (o2 instanceof Map.Entry) {
+        public boolean contains(@Nullable Object o) {
+            if (o instanceof Map.Entry) {
                 Entry otherEntry;
-                Map.Entry entry = (Map.Entry)o2;
+                Map.Entry entry = (Map.Entry)o;
                 Reference ref = ConcurrentReferenceHashMap.this.getReference(entry.getKey(), Restructure.NEVER);
                 Entry entry2 = otherEntry = ref != null ? ref.get() : null;
                 if (otherEntry != null) {
@@ -533,9 +533,9 @@ implements ConcurrentMap<K, V> {
         }
 
         @Override
-        public boolean remove(Object o2) {
-            if (o2 instanceof Map.Entry) {
-                Map.Entry entry = (Map.Entry)o2;
+        public boolean remove(Object o) {
+            if (o instanceof Map.Entry) {
+                Map.Entry entry = (Map.Entry)o;
                 return ConcurrentReferenceHashMap.this.remove(entry.getKey(), entry.getValue());
             }
             return false;
@@ -740,8 +740,8 @@ implements ConcurrentMap<K, V> {
                     this.references[index] = newReference;
                     this.count.incrementAndGet();
                 };
-                T t2 = task.execute(ref, entry, entries);
-                return t2;
+                T t = task.execute(ref, entry, entries);
+                return t;
             } finally {
                 this.unlock();
                 if (task.hasOption(TaskOption.RESTRUCTURE_AFTER)) {
@@ -796,10 +796,10 @@ implements ConcurrentMap<K, V> {
                     resizing = true;
                 }
                 Reference<K, V>[] restructured = resizing ? this.createReferenceArray(restructureSize) : this.references;
-                for (int i2 = 0; i2 < this.references.length; ++i2) {
-                    ref = this.references[i2];
+                for (int i = 0; i < this.references.length; ++i) {
+                    ref = this.references[i];
                     if (!resizing) {
-                        restructured[i2] = null;
+                        restructured[i] = null;
                     }
                     while (ref != null) {
                         Entry entry;

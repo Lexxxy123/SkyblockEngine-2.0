@@ -25,8 +25,8 @@ public class AttributeUtils {
                     Method getValueMethod = attributeInstance.getClass().getMethod("getValue", new Class[0]);
                     return (Double)getValueMethod.invoke(attributeInstance, new Object[0]);
                 }
-            } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e2) {
-                e2.printStackTrace();
+            } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+                e.printStackTrace();
             }
         }
         return 0.0;
@@ -37,8 +37,8 @@ public class AttributeUtils {
             Class<?> craftLivingEntityClass = Class.forName("org.bukkit.craftbukkit." + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3] + ".entity.CraftLivingEntity");
             getAttributeMethod = craftLivingEntityClass.getDeclaredMethod("getAttribute", Attribute.class);
             getAttributeMethod.setAccessible(true);
-        } catch (ClassNotFoundException | NoSuchMethodException e2) {
-            e2.printStackTrace();
+        } catch (ClassNotFoundException | NoSuchMethodException e) {
+            e.printStackTrace();
         }
     }
 }

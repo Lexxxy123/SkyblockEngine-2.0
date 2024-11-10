@@ -23,6 +23,11 @@ extends BaseSpider {
     }
 
     @Override
+    public int mobLevel() {
+        return 4;
+    }
+
+    @Override
     public double getMovementSpeed() {
         return 0.3;
     }

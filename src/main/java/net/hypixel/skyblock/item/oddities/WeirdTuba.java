@@ -76,9 +76,9 @@ Ability {
                 return 30.0;
             }
         }, 400L);
-        for (Entity e2 : player.getNearbyEntities(4.0, 4.0, 4.0)) {
-            if (!(e2 instanceof LivingEntity) || !(e2 instanceof Player)) continue;
-            PlayerUtils.boostPlayer(PlayerUtils.STATISTICS_CACHE.get(e2.getUniqueId()), new PlayerBoostStatistics(){
+        for (Entity e : player.getNearbyEntities(4.0, 4.0, 4.0)) {
+            if (!(e instanceof LivingEntity) || !(e instanceof Player)) continue;
+            PlayerUtils.boostPlayer(PlayerUtils.STATISTICS_CACHE.get(e.getUniqueId()), new PlayerBoostStatistics(){
 
                 @Override
                 public String getDisplayName() {

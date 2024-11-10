@@ -28,6 +28,11 @@ extends BaseWolf {
     }
 
     @Override
+    public int mobLevel() {
+        return 35;
+    }
+
+    @Override
     public List<EntityDrop> drops() {
         return Arrays.asList(new EntityDrop(SMaterial.SPRUCE_WOOD, EntityDropType.COMMON, 0.25), new EntityDrop(SMaterial.DARK_OAK_WOOD, EntityDropType.COMMON, 0.25), new EntityDrop(SMaterial.ACACIA_WOOD, EntityDropType.COMMON, 0.25));
     }

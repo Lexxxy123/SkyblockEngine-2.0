@@ -53,13 +53,13 @@ extends GUI {
     private static final Map<Rarity, Integer> COST_MAP = new HashMap<Rarity, Integer>();
     private static final List<UUID> COOLDOWN = new ArrayList<UUID>();
 
-    public void fillFrom(Inventory i2, int startFromSlot, int height, ItemStack stacc) {
-        i2.setItem(startFromSlot, stacc);
-        i2.setItem(startFromSlot + 9, stacc);
-        i2.setItem(startFromSlot + 9 + 9, stacc);
-        i2.setItem(startFromSlot + 9 + 9 + 9, stacc);
-        i2.setItem(startFromSlot + 9 + 9 + 9 + 9, stacc);
-        i2.setItem(startFromSlot + 9 + 9 + 9 + 9 + 9, stacc);
+    public void fillFrom(Inventory i, int startFromSlot, int height, ItemStack stacc) {
+        i.setItem(startFromSlot, stacc);
+        i.setItem(startFromSlot + 9, stacc);
+        i.setItem(startFromSlot + 9 + 9, stacc);
+        i.setItem(startFromSlot + 9 + 9 + 9, stacc);
+        i.setItem(startFromSlot + 9 + 9 + 9 + 9, stacc);
+        i.setItem(startFromSlot + 9 + 9 + 9 + 9 + 9, stacc);
     }
 
     public DungeonsItemConverting() {
@@ -85,12 +85,12 @@ extends GUI {
             }
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                SItem sItem = SItem.find(e2.getClickedInventory().getItem(13));
+            public void run(InventoryClickEvent e) {
+                SItem sItem = SItem.find(e.getClickedInventory().getItem(13));
                 if (sItem == null) {
                     return;
                 }
-                Player player = (Player)e2.getWhoClicked();
+                Player player = (Player)e.getWhoClicked();
                 if (!sItem.isStarrable()) {
                     player.sendMessage(ChatColor.RED + "That item cannot be upgraded!");
                     player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
@@ -101,7 +101,7 @@ extends GUI {
                     player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
                     return;
                 }
-                if (e2.getClickedInventory().getItem(31) != null && e2.getClickedInventory().getItem(31).getType() != Material.BARRIER) {
+                if (e.getClickedInventory().getItem(31) != null && e.getClickedInventory().getItem(31).getType() != Material.BARRIER) {
                     long add = (long)((Integer)COST_MAP.get((Object)sItem.getRarity())).intValue() * (long)(sItem.getStar() + 1);
                     double cur = User.getUser(player.getUniqueId()).getCoins();
                     if (!sItem.isStarrable() || sItem.getStar() >= 5) {
@@ -115,7 +115,7 @@ extends GUI {
                     }
                     player.playSound(player.getLocation(), Sound.ANVIL_USE, 1.0f, 1.0f);
                     User.getUser(player.getUniqueId()).subCoins(add);
-                    e2.getClickedInventory().setItem(13, null);
+                    e.getClickedInventory().setItem(13, null);
                     SItem build = sItem;
                     if (build.isDungeonsItem()) {
                         build.setStarAmount(build.getStar() + 1);
@@ -123,9 +123,9 @@ extends GUI {
                         build.setDungeonsItem(true);
                         build.setStarAmount(0);
                     }
-                    build.setDataString("owner", e2.getWhoClicked().getUniqueId().toString());
-                    ItemStack st = User.getUser(e2.getWhoClicked().getUniqueId()).updateItemBoost(build);
-                    e2.getClickedInventory().setItem(31, st);
+                    build.setDataString("owner", e.getWhoClicked().getUniqueId().toString());
+                    ItemStack st = User.getUser(e.getWhoClicked().getUniqueId()).updateItemBoost(build);
+                    e.getClickedInventory().setItem(31, st);
                 }
             }
         });
@@ -176,14 +176,14 @@ extends GUI {
                         build.setDataString("owner", ((HumanEntity)inventory.getViewers().get(0)).getUniqueId().toString());
                     }
                     ItemMeta mt = build.getStack().getItemMeta();
-                    List s2 = mt.getLore();
-                    s2.add(" ");
-                    s2.add(ChatColor.GRAY + "Cost");
-                    s2.add(ChatColor.AQUA + SUtil.commaify((Integer)COST_MAP.get((Object)sItem.getRarity()) * (sItem.getStar() + 1)) + " Coins");
-                    s2.add(" ");
-                    s2.add(ChatColor.YELLOW + "Click on the item above to");
-                    s2.add(ChatColor.YELLOW + "upgrade!");
-                    mt.setLore(s2);
+                    List s = mt.getLore();
+                    s.add(" ");
+                    s.add(ChatColor.GRAY + "Cost");
+                    s.add(ChatColor.AQUA + SUtil.commaify((Integer)COST_MAP.get((Object)sItem.getRarity()) * (sItem.getStar() + 1)) + " Coins");
+                    s.add(" ");
+                    s.add(ChatColor.YELLOW + "Click on the item above to");
+                    s.add(ChatColor.YELLOW + "upgrade!");
+                    mt.setLore(s);
                     st.setItemMeta(mt);
                     barrierStack = st;
                 }
@@ -194,16 +194,16 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(final GUIOpenEvent e2) {
+    public void onOpen(final GUIOpenEvent e) {
         new BukkitRunnable(){
 
             public void run() {
-                Player player = e2.getPlayer();
+                Player player = e.getPlayer();
                 if (DungeonsItemConverting.this != GUI.GUI_MAP.get(player.getUniqueId())) {
                     this.cancel();
                     return;
                 }
-                Inventory inventory = e2.getInventory();
+                Inventory inventory = e.getInventory();
                 DungeonsItemConverting.this.update(inventory);
                 SItem sItem = SItem.find(inventory.getItem(13));
                 if (sItem == null) {
@@ -220,25 +220,25 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(final InventoryClickEvent e2) {
-                ItemStack current = e2.getCurrentItem();
+            public void run(final InventoryClickEvent e) {
+                ItemStack current = e.getCurrentItem();
                 if (current == null) {
                     return;
                 }
-                if (e2.getCurrentItem().getType() == Material.BARRIER) {
-                    e2.setCancelled(true);
+                if (e.getCurrentItem().getType() == Material.BARRIER) {
+                    e.setCancelled(true);
                     return;
                 }
-                final Inventory inventory = e2.getClickedInventory();
+                final Inventory inventory = e.getClickedInventory();
                 if (!SUtil.isAir(inventory.getItem(13))) {
-                    e2.setCancelled(true);
-                    e2.getWhoClicked().sendMessage(ChatColor.RED + "Click on the anvil above to upgrade!");
+                    e.setCancelled(true);
+                    e.getWhoClicked().sendMessage(ChatColor.RED + "Click on the anvil above to upgrade!");
                     return;
                 }
                 new BukkitRunnable(){
 
                     public void run() {
-                        inventory.setItem(e2.getSlot(), ANVIL_BARRIER);
+                        inventory.setItem(e.getSlot(), ANVIL_BARRIER);
                     }
                 }.runTaskLater((Plugin)SkyBlock.getPlugin(), 1L);
             }
@@ -261,16 +261,16 @@ extends GUI {
     }
 
     @EventHandler
-    public void onInventoryClose(InventoryCloseEvent e2) {
-        if (!(e2.getPlayer() instanceof Player)) {
+    public void onInventoryClose(InventoryCloseEvent e) {
+        if (!(e.getPlayer() instanceof Player)) {
             return;
         }
-        Player player = (Player)e2.getPlayer();
+        Player player = (Player)e.getPlayer();
         GUI gui = (GUI)GUI_MAP.get(player.getUniqueId());
         if (gui == null) {
             return;
         }
-        gui.onClose(e2);
+        gui.onClose(e);
         GUI_MAP.remove(player.getUniqueId());
     }
 

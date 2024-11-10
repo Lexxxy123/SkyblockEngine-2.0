@@ -36,9 +36,9 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e2) {
-        final Player player = e2.getPlayer();
-        final User user = User.getUser(e2.getPlayer().getUniqueId());
+    public void onOpen(GUIOpenEvent e) {
+        final Player player = e.getPlayer();
+        final User user = User.getUser(e.getPlayer().getUniqueId());
         this.fill(BLACK_STAINED_GLASS_PANE);
         this.set(GUIClickableItem.getCloseItem(31));
         final SlayerQuest quest = user.getSlayerQuest();
@@ -47,7 +47,7 @@ extends GUI {
                 this.set(new GUIClickableItem(){
 
                     @Override
-                    public void run(InventoryClickEvent e2) {
+                    public void run(InventoryClickEvent e) {
                         user.setSlayerXP(quest.getType().getType(), user.getSlayerXP(quest.getType().getType()) + quest.getType().getRewardXP());
                         int level = quest.getType().getType().getLevelForXP(user.getSlayerXP(quest.getType().getType()));
                         player.playSound(player.getLocation(), Sound.LEVEL_UP, 1.0f, 2.0f);
@@ -71,7 +71,7 @@ extends GUI {
                 this.set(new GUIClickableItem(){
 
                     @Override
-                    public void run(InventoryClickEvent e2) {
+                    public void run(InventoryClickEvent e) {
                         user.setSlayerQuest(null);
                         player.sendMessage(ChatColor.YELLOW + "Your unsuccessful quest has been cleared out!");
                         GUIType.SLAYER.getGUI().open(player);
@@ -91,7 +91,7 @@ extends GUI {
                 this.set(new GUIClickableItem(){
 
                     @Override
-                    public void run(InventoryClickEvent e2) {
+                    public void run(InventoryClickEvent e) {
                         new SlayerCancellationConfirmGUI(user).open(player);
                     }
 
@@ -113,8 +113,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                GUIType.REVENANT_HORROR.getGUI().open((Player)e2.getWhoClicked());
+            public void run(InventoryClickEvent e) {
+                GUIType.REVENANT_HORROR.getGUI().open((Player)e.getWhoClicked());
             }
 
             @Override
@@ -130,8 +130,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                GUIType.TARANTULA_BROODFATHER.getGUI().open((Player)e2.getWhoClicked());
+            public void run(InventoryClickEvent e) {
+                GUIType.TARANTULA_BROODFATHER.getGUI().open((Player)e.getWhoClicked());
             }
 
             @Override
@@ -147,9 +147,9 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                Player p2 = (Player)e2.getWhoClicked();
-                if (p2 == null) {
+            public void run(InventoryClickEvent e) {
+                Player p = (Player)e.getWhoClicked();
+                if (p == null) {
                     return;
                 }
                 if (PlayerUtils.isAutoSlayer(player)) {
@@ -157,7 +157,7 @@ extends GUI {
                 } else {
                     PlayerUtils.AUTO_SLAYER.put(player.getUniqueId(), true);
                 }
-                GUIType.SLAYER.getGUI().open((Player)e2.getWhoClicked());
+                GUIType.SLAYER.getGUI().open((Player)e.getWhoClicked());
             }
 
             @Override
@@ -175,8 +175,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                GUIType.SVEN_PACKMASTER.getGUI().open((Player)e2.getWhoClicked());
+            public void run(InventoryClickEvent e) {
+                GUIType.SVEN_PACKMASTER.getGUI().open((Player)e.getWhoClicked());
             }
 
             @Override
@@ -192,8 +192,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e2) {
-                GUIType.VOIDGLOOM_SERAPH.getGUI().open((Player)e2.getWhoClicked());
+            public void run(InventoryClickEvent e) {
+                GUIType.VOIDGLOOM_SERAPH.getGUI().open((Player)e.getWhoClicked());
             }
 
             @Override

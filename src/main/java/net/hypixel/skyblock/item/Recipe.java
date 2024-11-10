@@ -65,41 +65,41 @@ public abstract class Recipe<T> {
 
     protected static MaterialQuantifiable[][] airless(MaterialQuantifiable[][] grid) {
         ArrayList<Integer> excluded = new ArrayList<Integer>(0);
-        for (int i2 = 0; i2 < grid.length; ++i2) {
+        for (int i = 0; i < grid.length; ++i) {
             boolean ex = true;
-            for (MaterialQuantifiable material : grid[i2]) {
+            for (MaterialQuantifiable material : grid[i]) {
                 if (material.getMaterial() == SMaterial.AIR) continue;
                 ex = false;
                 break;
             }
             if (!ex) continue;
-            excluded.add(i2);
+            excluded.add(i);
         }
         int amountExcluded = excluded.size();
-        MaterialQuantifiable[][] g2 = new MaterialQuantifiable[grid.length - amountExcluded][];
-        int b2 = 0;
-        for (int j2 = 0; j2 < grid.length; ++j2) {
-            if (excluded.contains(j2)) {
-                ++b2;
+        MaterialQuantifiable[][] g = new MaterialQuantifiable[grid.length - amountExcluded][];
+        int b = 0;
+        for (int j = 0; j < grid.length; ++j) {
+            if (excluded.contains(j)) {
+                ++b;
                 continue;
             }
-            MaterialQuantifiable[] line = grid[j2];
+            MaterialQuantifiable[] line = grid[j];
             int remaining = (int)Arrays.stream(line).filter(mat -> mat.getMaterial() != SMaterial.AIR).count();
-            g2[j2 - b2] = new MaterialQuantifiable[remaining];
-            int r2 = 0;
-            for (int k2 = 0; k2 < line.length; ++k2) {
-                if (line[k2].getMaterial() == SMaterial.AIR) continue;
-                g2[j2 - b2][r2] = line[k2];
-                ++r2;
+            g[j - b] = new MaterialQuantifiable[remaining];
+            int r = 0;
+            for (int k = 0; k < line.length; ++k) {
+                if (line[k].getMaterial() == SMaterial.AIR) continue;
+                g[j - b][r] = line[k];
+                ++r;
             }
         }
-        return g2;
+        return g;
     }
 
     public static List<SMaterial> getExchangeablesOf(SMaterial material) {
         for (List<SMaterial> materials : EXCHANGEABLES) {
-            int f2 = Collections.binarySearch(materials, material);
-            if (f2 < 0) continue;
+            int f = Collections.binarySearch(materials, material);
+            if (f < 0) continue;
             return materials;
         }
         return null;

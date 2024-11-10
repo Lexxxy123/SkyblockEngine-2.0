@@ -48,14 +48,14 @@ public class EntityManager {
         nmsEntity.f(tag);
     }
 
-    public static void setNBTTag(Entity bukkitEntity, String t2, int obj) {
+    public static void setNBTTag(Entity bukkitEntity, String t, int obj) {
         net.minecraft.server.v1_8_R3.Entity nmsEntity = ((CraftEntity)bukkitEntity).getHandle();
         NBTTagCompound tag = nmsEntity.getNBTTag();
         if (tag == null) {
             tag = new NBTTagCompound();
         }
         nmsEntity.c(tag);
-        tag.setInt(t2, obj);
+        tag.setInt(t, obj);
         nmsEntity.f(tag);
     }
 

@@ -12,7 +12,6 @@ public class CommandLoader {
 
     public void register(SCommand command) {
         this.commands.add(command);
-        command.register();
     }
 
     public int getCommandAmount() {

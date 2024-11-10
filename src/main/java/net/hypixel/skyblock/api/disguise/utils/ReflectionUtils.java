@@ -276,10 +276,10 @@ public abstract class ReflectionUtils {
     public static boolean isCglibRenamedMethod(Method renamedMethod) {
         String name = renamedMethod.getName();
         if (name.startsWith(CGLIB_RENAMED_METHOD_PREFIX)) {
-            int i2;
-            for (i2 = name.length() - 1; i2 >= 0 && Character.isDigit(name.charAt(i2)); --i2) {
+            int i;
+            for (i = name.length() - 1; i >= 0 && Character.isDigit(name.charAt(i)); --i) {
             }
-            return i2 > CGLIB_RENAMED_METHOD_PREFIX.length() && i2 < name.length() - 1 && name.charAt(i2) == '$';
+            return i > CGLIB_RENAMED_METHOD_PREFIX.length() && i < name.length() - 1 && name.charAt(i) == '$';
         }
         return false;
     }
@@ -318,10 +318,10 @@ public abstract class ReflectionUtils {
     }
 
     public static void setField(String field, @Nullable Object target, @Nullable Object value) {
-        Field f2 = ReflectionUtils.findField(target.getClass(), field);
-        f2.setAccessible(true);
-        ReflectionUtils.setField(f2, target, value);
-        f2.setAccessible(false);
+        Field f = ReflectionUtils.findField(target.getClass(), field);
+        f.setAccessible(true);
+        ReflectionUtils.setField(f, target, value);
+        f.setAccessible(false);
     }
 
     @Nullable
@@ -409,8 +409,8 @@ public abstract class ReflectionUtils {
     private static Field getFieldFromArrayAndIndex(Field[] fields, Class<?> fieldType, int index) throws NoSuchFieldException {
         int counter = 0;
         String typeName = fieldType.getName();
-        for (int i2 = 0; i2 < fields.length; ++i2) {
-            Field field = fields[i2];
+        for (int i = 0; i < fields.length; ++i) {
+            Field field = fields[i];
             if (!field.getType().getName().equals(typeName)) continue;
             if (counter == index) {
                 return field;
