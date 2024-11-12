@@ -68,13 +68,9 @@ import net.hypixel.skyblock.item.SMaterial;
 import net.hypixel.skyblock.item.TickingMaterial;
 import net.hypixel.skyblock.item.accessory.AccessoryFunction;
 import net.hypixel.skyblock.item.armor.ArmorSet;
-import net.hypixel.skyblock.item.armor.VoidlingsWardenHelmet;
-import net.hypixel.skyblock.item.armor.gigachad.GigachadSet;
-import net.hypixel.skyblock.item.armor.minichad.MinichadSet;
 import net.hypixel.skyblock.item.pet.Pet;
 import net.hypixel.skyblock.item.weapon.EdibleMace;
 import net.hypixel.skyblock.listener.PlayerListener;
-import net.hypixel.skyblock.module.ConfigModule;
 import net.hypixel.skyblock.user.DoublePlayerStatistic;
 import net.hypixel.skyblock.user.PlayerStatistics;
 import net.hypixel.skyblock.user.User;
@@ -123,9 +119,9 @@ public final class PlayerUtils {
         SItem hand = SItem.find(inv.getItemInHand());
         List<SItem> items = Arrays.asList(helmet, chestplate, leggings, boots);
         PlayerStatistics statistics = PlayerStatistics.blank(player.getUniqueId());
-        for (int i = 0; i < items.size(); ++i) {
-            SItem sItem = items.get(i);
-            PlayerUtils.updateArmorStatistics(sItem, statistics, i);
+        for (int i2 = 0; i2 < items.size(); ++i2) {
+            SItem sItem = items.get(i2);
+            PlayerUtils.updateArmorStatistics(sItem, statistics, i2);
         }
         PlayerUtils.updateSetStatistics(player, helmet, chestplate, leggings, boots, statistics);
         PlayerUtils.updateHandStatistics(hand, statistics);
@@ -138,12 +134,12 @@ public final class PlayerUtils {
         double hpbwea = 0.0;
         double ferogrant = 0.0;
         double mfgrant = 0.0;
-        double a = 0.0;
+        double a2 = 0.0;
         Player player = Bukkit.getPlayer((UUID)statistics.getUuid());
         User user = User.getUser(player.getUniqueId());
         Pet.PetItem active = user.getActivePet();
         int level = 0;
-        Pet pet = (Pet)SMaterial.HIDDEN_VOIDLINGS_PET.getGenericInstance();
+        Pet pet = (Pet)SMaterial.HIDDEN_GOLDEN_TIGER_2022.getGenericInstance();
         DoublePlayerStatistic strength = statistics.getStrength();
         DoublePlayerStatistic intelligence = statistics.getIntelligence();
         DoublePlayerStatistic speed = statistics.getSpeed();
@@ -199,7 +195,7 @@ public final class PlayerUtils {
             if (active != null) {
                 level = Pet.getLevel(active.getXp(), active.getRarity());
                 pet = (Pet)active.getType().getGenericInstance();
-                a = 20.0 * lvl / 100.0;
+                a2 = 20.0 * lvl / 100.0;
             }
         }
         if (hand != null && hand.getDataInt("hpb") > 0) {
@@ -220,16 +216,16 @@ public final class PlayerUtils {
             atkSpeed.add(4, is.getAtkSpeed());
             ferocity.add(4, is.getFerocity());
         }
-        defense.add(4, a * (pet.getPerDefense() * (double)level));
-        strength.add(4, a * (pet.getPerStrength() * (double)level));
-        intelligence.add(4, a * (pet.getPerIntelligence() * (double)level));
-        speed.add(4, a * (pet.getPerSpeed() * (double)level));
-        critChance.add(4, a * (pet.getPerCritChance() * (double)level));
-        critDamage.add(4, a * (pet.getPerCritDamage() * (double)level));
-        magicFind.add(4, a * (pet.getPerMagicFind() * (double)level));
-        trueDefense.add(4, a * (pet.getPerTrueDefense() * (double)level));
-        ferocity.add(4, a * (pet.getPerFerocity() * (double)level));
-        atkSpeed.add(4, a * (pet.getPerAttackSpeed() * (double)level));
+        defense.add(4, a2 * (pet.getPerDefense() * (double)level));
+        strength.add(4, a2 * (pet.getPerStrength() * (double)level));
+        intelligence.add(4, a2 * (pet.getPerIntelligence() * (double)level));
+        speed.add(4, a2 * (pet.getPerSpeed() * (double)level));
+        critChance.add(4, a2 * (pet.getPerCritChance() * (double)level));
+        critDamage.add(4, a2 * (pet.getPerCritDamage() * (double)level));
+        magicFind.add(4, a2 * (pet.getPerMagicFind() * (double)level));
+        trueDefense.add(4, a2 * (pet.getPerTrueDefense() * (double)level));
+        ferocity.add(4, a2 * (pet.getPerFerocity() * (double)level));
+        atkSpeed.add(4, a2 * (pet.getPerAttackSpeed() * (double)level));
         PlayerUtils.updateHealth(Bukkit.getPlayer((UUID)statistics.getUuid()), statistics);
         return statistics;
     }
@@ -241,7 +237,7 @@ public final class PlayerUtils {
             world = new BlankWorldCreator("islands").createWorld();
         }
         if ((user = User.getUser(player.getUniqueId())).getIslandX() == null || user.getIslandX() == 0.0) {
-            Config config = ConfigModule.getGenericConfig();
+            Config config = SkyBlock.getPlugin().config;
             double xOffset = config.getDouble("islands.x");
             double zOffset = config.getDouble("islands.z");
             if (xOffset < -2.5E7 || xOffset > 2.5E7) {
@@ -351,9 +347,6 @@ public final class PlayerUtils {
                 magicFind.add(slot, is.getMagicFind());
                 atkSpeed.add(slot, is.getAtkSpeed());
                 ferocity.add(slot, is.getFerocity());
-            }
-            if (piece.getType() == SMaterial.WARDEN_HELMET || piece.getType() == SMaterial.HIDDEN_VOIDLINGS_WARDEN_HELMET) {
-                speed.sub(slot, statistics.getSpeed().addAll() / 2.0);
             }
             if ((tickingMaterial = piece.getType().getTickingInstance()) != null) {
                 statistics.tickItem(slot, tickingMaterial.getInterval(), () -> tickingMaterial.tick(piece, Bukkit.getPlayer((UUID)statistics.getUuid())));
@@ -469,68 +462,21 @@ public final class PlayerUtils {
         DoublePlayerStatistic atkSpeed = statistics.getAttackSpeed();
         DoublePlayerStatistic trueDefense = statistics.getTrueDefense();
         if (helmet != null && chestplate != null && leggings != null && boots != null) {
+            PlayerBoostStatistics boost;
             ArmorSet set = SMaterial.findArmorSet(helmet.getType(), chestplate.getType(), leggings.getType(), boots.getType());
             statistics.setArmorSet(set);
             statistics.zeroAll(5);
-            if (set != null) {
-                PlayerBoostStatistics boost = set.whileHasFullSet(player);
-                if (boost != null) {
-                    health.set(5, boost.getBaseHealth());
-                    defense.set(5, boost.getBaseDefense());
-                    strength.set(5, boost.getBaseStrength());
-                    intelligence.set(5, boost.getBaseIntelligence());
-                    speed.set(5, boost.getBaseSpeed());
-                    critChance.set(5, boost.getBaseCritChance());
-                    critDamage.set(5, boost.getBaseCritDamage());
-                    magicFind.set(5, boost.getBaseMagicFind());
-                    ferocity.set(5, boost.getBaseFerocity());
-                    atkSpeed.set(5, boost.getBaseAttackSpeed());
-                }
-                if (set instanceof GigachadSet) {
-                    double defense2 = statistics.getDefense().addAll();
-                    double strength2 = statistics.getStrength().addAll();
-                    double intelligence2 = statistics.getIntelligence().addAll();
-                    double speed2 = statistics.getSpeed().addAll();
-                    double critChance2 = statistics.getCritChance().addAll();
-                    double critDamage2 = statistics.getCritDamage().addAll();
-                    double magicFind2 = statistics.getMagicFind().addAll();
-                    double trueDefense2 = statistics.getTrueDefense().addAll();
-                    double ferocity2 = statistics.getFerocity().addAll() - statistics.getFerocity().getFor(153);
-                    double atkSpeed2 = statistics.getAttackSpeed().addAll();
-                    double LevelMul = 20.0;
-                    defense.add(5, defense2 * 20.0 / 100.0);
-                    strength.add(5, strength2 * 20.0 / 100.0);
-                    intelligence.add(5, intelligence2 * 20.0 / 100.0);
-                    speed.add(5, speed2 * 20.0 / 100.0);
-                    critChance.add(5, critChance2 * 20.0 / 100.0);
-                    critDamage.add(5, critDamage2 * 20.0 / 100.0);
-                    magicFind.add(5, magicFind2 * 20.0 / 100.0);
-                    trueDefense.add(5, trueDefense2 * 20.0 / 100.0);
-                    ferocity.add(5, ferocity2 * 20.0 / 100.0);
-                    atkSpeed.add(5, atkSpeed2 * 20.0 / 100.0);
-                } else if (set instanceof MinichadSet) {
-                    double defense2 = statistics.getDefense().addAll();
-                    double strength2 = statistics.getStrength().addAll();
-                    double intelligence2 = statistics.getIntelligence().addAll();
-                    double speed2 = statistics.getSpeed().addAll();
-                    double critChance2 = statistics.getCritChance().addAll();
-                    double critDamage2 = statistics.getCritDamage().addAll();
-                    double magicFind2 = statistics.getMagicFind().addAll();
-                    double trueDefense2 = statistics.getTrueDefense().addAll();
-                    double ferocity2 = statistics.getFerocity().addAll() - statistics.getFerocity().getFor(153);
-                    double atkSpeed2 = statistics.getAttackSpeed().addAll();
-                    double LevelMul = 10.0;
-                    defense.add(5, defense2 * 10.0 / 100.0);
-                    strength.add(5, strength2 * 10.0 / 100.0);
-                    intelligence.add(5, intelligence2 * 10.0 / 100.0);
-                    speed.add(5, speed2 * 10.0 / 100.0);
-                    critChance.add(5, critChance2 * 10.0 / 100.0);
-                    critDamage.add(5, critDamage2 * 10.0 / 100.0);
-                    magicFind.add(5, magicFind2 * 10.0 / 100.0);
-                    trueDefense.add(5, trueDefense2 * 10.0 / 100.0);
-                    ferocity.add(5, ferocity2 * 10.0 / 100.0);
-                    atkSpeed.add(5, atkSpeed2 * 10.0 / 100.0);
-                }
+            if (set != null && (boost = set.whileHasFullSet(player)) != null) {
+                health.set(5, boost.getBaseHealth());
+                defense.set(5, boost.getBaseDefense());
+                strength.set(5, boost.getBaseStrength());
+                intelligence.set(5, boost.getBaseIntelligence());
+                speed.set(5, boost.getBaseSpeed());
+                critChance.set(5, boost.getBaseCritChance());
+                critDamage.set(5, boost.getBaseCritDamage());
+                magicFind.set(5, boost.getBaseMagicFind());
+                ferocity.set(5, boost.getBaseFerocity());
+                atkSpeed.set(5, boost.getBaseAttackSpeed());
             }
         } else {
             statistics.setArmorSet(null);
@@ -568,10 +514,10 @@ public final class PlayerUtils {
         DoublePlayerStatistic atkSpeed = statistics.getAttackSpeed();
         PlayerInventory inventory = player.getInventory();
         ArrayList<SMaterial> materials = new ArrayList<SMaterial>();
-        for (int i = 0; i <= inventory.getSize(); ++i) {
-            ItemStack stack = inventory.getItem(i);
+        for (int i2 = 0; i2 <= inventory.getSize(); ++i2) {
+            ItemStack stack = inventory.getItem(i2);
             SItem sItem = SItem.find(stack);
-            int slot = 15 + i;
+            int slot = 15 + i2;
             if (sItem != null) {
                 if (materials.contains((Object)sItem.getType()) || sItem.getType().getStatistics().getType() != GenericItemType.ACCESSORY) continue;
                 materials.add(sItem.getType());
@@ -599,7 +545,7 @@ public final class PlayerUtils {
         return statistics;
     }
 
-    public static void updateP(Player p) {
+    public static void updateP(Player p2) {
     }
 
     public static PlayerStatistics updatePotionEffects(User user, PlayerStatistics statistics) {
@@ -614,9 +560,9 @@ public final class PlayerUtils {
         DoublePlayerStatistic magicFind = statistics.getMagicFind();
         DoublePlayerStatistic trueDefense = statistics.getTrueDefense();
         DoublePlayerStatistic atkSpeed = statistics.getAttackSpeed();
-        for (int i = 0; i < user.getEffects().size(); ++i) {
-            ActivePotionEffect effect2 = user.getEffects().get(i);
-            int slot = 52 + i;
+        for (int i2 = 0; i2 < user.getEffects().size(); ++i2) {
+            ActivePotionEffect effect2 = user.getEffects().get(i2);
+            int slot = 52 + i2;
             health.zero(slot);
             defense.zero(slot);
             strength.zero(slot);
@@ -779,15 +725,11 @@ public final class PlayerUtils {
                 damage += (int)finald;
             }
             if (sItem.getType().getStatistics().getType() == GenericItemType.WEAPON && sItem.getEnchantment(EnchantmentType.ONE_FOR_ALL) != null) {
-                Enchantment e = sItem.getEnchantment(EnchantmentType.ONE_FOR_ALL);
-                damage += damage * (e.getLevel() * 210) / 100;
+                Enchantment e2 = sItem.getEnchantment(EnchantmentType.ONE_FOR_ALL);
+                damage += damage * (e2.getLevel() * 210) / 100;
             }
-            if (helmet != null) {
-                if (helmet.getType() == SMaterial.WARDEN_HELMET) {
-                    damage += (int)(20.0 * realSpeedDIVC / 100.0 * (double)damage);
-                } else if (helmet.getType() == SMaterial.HIDDEN_VOIDLINGS_WARDEN_HELMET) {
-                    damage += (int)(35.0 * realSpeedDIVC / 100.0 * (double)damage);
-                }
+            if (helmet != null && helmet.getType() == SMaterial.WARDEN_HELMET) {
+                damage += (int)(20.0 * realSpeedDIVC / 100.0 * (double)damage);
             }
             damage += 0;
             damage += (int)hpbwea;
@@ -900,9 +842,9 @@ public final class PlayerUtils {
                 if (lvl2 > 100.0) {
                     lvl2 = 100.0;
                 }
-                double aB = player.getHealth() + lvl2 / 100.0 * (player.getMaxHealth() - player.getHealth());
-                double aC = Math.min(player.getMaxHealth(), aB);
-                player.setHealth(aC);
+                double aB2 = player.getHealth() + lvl2 / 100.0 * (player.getMaxHealth() - player.getHealth());
+                double aC2 = Math.min(player.getMaxHealth(), aB2);
+                player.setHealth(aC2);
             }
         }
         int combatLevel = Skill.getLevel(User.getUser(player.getUniqueId()).getCombatXP(), false);
@@ -937,19 +879,7 @@ public final class PlayerUtils {
         }
         double FinalDMG = finalDamage;
         double finalPot = finalPotionBonus;
-        double fds = (FinalDMG + FinalDMG * finalPot) * (VoidlingsWardenHelmet.VOIDLING_WARDEN_BUFF.containsKey(user.getUuid()) ? 1.5 : 1.0);
-        if (active1 != null && pet.getDisplayName().equals("Archivy") && arrowHit) {
-            Pet.PetItem active3 = user.getActivePet();
-            int level3 = Pet.getLevel(active3.getXp(), active3.getRarity());
-            fds += fds * (double)((float)level3 / 2.0f) / 100.0;
-            if (user.isHeadShot()) {
-                fds += fds * (double)((float)level3 * 0.75f) / 100.0;
-                user.toBukkitPlayer().playSound(user.toBukkitPlayer().getLocation(), Sound.ITEM_BREAK, 1.0f, 1.0f);
-                for (int i = 0; i < 50; ++i) {
-                    damaged.getWorld().spigot().playEffect(damaged.getLocation().clone().add(0.0, 1.5, 0.0), Effect.MAGIC_CRIT, 0, 1, (float)SUtil.random(-0.5, 0.5), (float)SUtil.random(0.0, 0.5), (float)SUtil.random(-0.5, 0.5), 0.0f, 1, 100);
-                }
-            }
-        }
+        double fds = FinalDMG + FinalDMG * finalPot;
         user.setHeadShot(false);
         final double fdsfinal = fds;
         return new DamageResult(){
@@ -997,7 +927,7 @@ public final class PlayerUtils {
                         ex.printStackTrace();
                     }
                     if (ability.displayUsage() && sItem.getType() != SMaterial.AXE_OF_THE_SHREDDED && sItem.getType() != SMaterial.BONEMERANG && sItem.getType() != SMaterial.SHADOW_FURY && sItem.getType() != SMaterial.ASPECT_OF_THE_JERRY && sItem.getType() != SMaterial.FLOWER_OF_TRUTH && sItem.getType() != SMaterial.EDIBLE_MACE) {
-                        final long c = System.currentTimeMillis();
+                        final long c2 = System.currentTimeMillis();
                         Repeater.DEFENSE_REPLACEMENT_MAP.put(player.getUniqueId(), new DefenseReplacement(){
 
                             @Override
@@ -1007,7 +937,7 @@ public final class PlayerUtils {
 
                             @Override
                             public long getEnd() {
-                                return c + 2000L;
+                                return c2 + 2000L;
                             }
                         });
                     }
@@ -1029,7 +959,7 @@ public final class PlayerUtils {
                     }
                 } else {
                     player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
-                    final long c = System.currentTimeMillis();
+                    final long c3 = System.currentTimeMillis();
                     Repeater.MANA_REPLACEMENT_MAP.put(player.getUniqueId(), new ManaReplacement(){
 
                         @Override
@@ -1039,7 +969,7 @@ public final class PlayerUtils {
 
                         @Override
                         public long getEnd() {
-                            return c + 1500L;
+                            return c3 + 1500L;
                         }
                     });
                 }
@@ -1052,7 +982,7 @@ public final class PlayerUtils {
         if (player == null) {
             return;
         }
-        boolean bl = fill = player.getHealth() == player.getMaxHealth();
+        boolean bl2 = fill = player.getHealth() == player.getMaxHealth();
         if (player.getMaxHealth() != statistics.getMaxHealth().addAll().doubleValue()) {
             player.setMaxHealth(statistics.getMaxHealth().addAll().doubleValue());
         }
@@ -1180,11 +1110,11 @@ public final class PlayerUtils {
                 boolean rare = false;
                 for (EntityDrop drop : SUtil.shuffle(function.drops())) {
                     SItem sitem2;
-                    int r;
+                    int r2;
                     EntityDropType type = drop.getType();
                     double magicFind = STATISTICS_CACHE.get(damager.getUniqueId()).getMagicFind().addAll() / 100.0;
                     double sp = 100.0 * (drop.getDropChance() * (1.0 + magicFind * 10000.0 / 100.0));
-                    if (!ConfigModule.getGenericConfig().getBoolean("disableDebug")) {
+                    if (!SkyBlock.getPlugin().config.getBoolean("disableDebug")) {
                         SLog.info("-------------------------------");
                         SLog.info("Final SP " + sp);
                         SLog.info("Drop chance " + drop.getDropChance());
@@ -1198,17 +1128,17 @@ public final class PlayerUtils {
                     if (drop.getDropChance() >= 0.25) {
                         sp = 100.0 * drop.getDropChance();
                     }
-                    if ((r = SUtil.random(1, (int)Math.round(100.0 / sp))) != 1 || rare && type != EntityDropType.GUARANTEED) continue;
+                    if ((r2 = SUtil.random(1, (int)Math.round(100.0 / sp))) != 1 || rare && type != EntityDropType.GUARANTEED) continue;
                     ItemStack stack = drop.getStack();
                     SItem sItem = SItem.find(stack);
                     if (sItem == null) {
                         sItem = SItem.of(stack);
                     }
-                    MaterialStatistics s = sItem.getType().getStatistics();
+                    MaterialStatistics s2 = sItem.getType().getStatistics();
                     String name = sItem.getRarity().getColor() + sItem.getType().getDisplayName(sItem.getVariant());
-                    MaterialFunction f = sItem.getType().getFunction();
-                    if (f != null && s.getType() != GenericItemType.ACCESSORY) {
-                        f.onKill(entity, damager, sItem);
+                    MaterialFunction f2 = sItem.getType().getFunction();
+                    if (f2 != null && s2.getType() != GenericItemType.ACCESSORY) {
+                        f2.onKill(entity, damager, sItem);
                     }
                     if (damager != null) {
                         for (SItem accessory : PlayerUtils.getAccessories(damager)) {
@@ -1223,9 +1153,6 @@ public final class PlayerUtils {
                         int chance = (int)((double)Skill.getLevel(User.getUser(damager.getUniqueId()).getCombatXP(), false) * 1.5);
                         Random rnd = new Random();
                         rnd.nextInt(100);
-                    }
-                    if (sEntity.getEntity().getType() != EntityType.ENDERMAN || SUtil.random(1, 40) != 1 || sEntity.getStatistics().mobLevel() < 90 || SlayerBossType.SlayerMobType.ENDERMAN.getLevelForXP(User.getUser(damager.getUniqueId()).getEndermanSlayerXP()) < 6 || User.getUser(damager.getUniqueId()).getActivePet() == null || User.getUser(damager.getUniqueId()).getActivePet().getType() == SMaterial.HIDDEN_VOIDLINGS_PET) {
-                        // empty if block
                     }
                     if ((sitem2 = SItem.find(damager.getItemInHand())) != null) {
                         if (drop.getOwner() == null) {
@@ -1687,11 +1614,11 @@ public final class PlayerUtils {
     }
 
     public static boolean takeMana(Player player, int amount) {
-        int n = Repeater.MANA_MAP.get(player.getUniqueId()) - amount;
-        if (n < 0) {
+        int n2 = Repeater.MANA_MAP.get(player.getUniqueId()) - amount;
+        if (n2 < 0) {
             return false;
         }
-        Repeater.MANA_MAP.put(player.getUniqueId(), n);
+        Repeater.MANA_MAP.put(player.getUniqueId(), n2);
         return true;
     }
 
@@ -1718,10 +1645,10 @@ public final class PlayerUtils {
 
     public static int getSpecItemIndex(Player player, SMaterial type) {
         PlayerInventory inventory = player.getInventory();
-        for (int i = 0; i < inventory.getSize(); ++i) {
-            SItem item = SItem.find(inventory.getItem(i));
+        for (int i2 = 0; i2 < inventory.getSize(); ++i2) {
+            SItem item = SItem.find(inventory.getItem(i2));
             if (item == null || item.getType() != type) continue;
-            return i;
+            return i2;
         }
         return -1;
     }
@@ -1752,50 +1679,50 @@ public final class PlayerUtils {
         atkSpeed.add(slot, boostStatistics.getBaseAttackSpeed());
     }
 
-    public static boolean isAutoSlayer(Player p) {
-        boolean returnval = AUTO_SLAYER.containsKey(p.getUniqueId()) && AUTO_SLAYER.get(p.getUniqueId()) != false;
+    public static boolean isAutoSlayer(Player p2) {
+        boolean returnval = AUTO_SLAYER.containsKey(p2.getUniqueId()) && AUTO_SLAYER.get(p2.getUniqueId()) != false;
         return returnval;
     }
 
-    public static long getCookieDurationTicks(Player p) {
-        if (COOKIE_DURATION_CACHE.containsKey(p.getUniqueId())) {
-            return COOKIE_DURATION_CACHE.get(p.getUniqueId());
+    public static long getCookieDurationTicks(Player p2) {
+        if (COOKIE_DURATION_CACHE.containsKey(p2.getUniqueId())) {
+            return COOKIE_DURATION_CACHE.get(p2.getUniqueId());
         }
-        COOKIE_DURATION_CACHE.put(p.getUniqueId(), 0L);
+        COOKIE_DURATION_CACHE.put(p2.getUniqueId(), 0L);
         return 0L;
     }
 
-    public static void setCookieDurationTicks(Player p, long ticks) {
-        COOKIE_DURATION_CACHE.put(p.getUniqueId(), ticks);
+    public static void setCookieDurationTicks(Player p2, long ticks) {
+        COOKIE_DURATION_CACHE.put(p2.getUniqueId(), ticks);
     }
 
-    public static String getCookieDurationDisplay(Player p) {
-        if (PlayerUtils.getCookieDurationTicks(p) > 0L) {
-            return SUtil.getFormattedTimeToDay(PlayerUtils.getCookieDurationTicks(p));
+    public static String getCookieDurationDisplay(Player p2) {
+        if (PlayerUtils.getCookieDurationTicks(p2) > 0L) {
+            return SUtil.getFormattedTimeToDay(PlayerUtils.getCookieDurationTicks(p2));
         }
         return Sputnik.trans("&7Not active! Obtain booster cookies from the") + "\n" + Sputnik.trans("&7community shop in the hub.");
     }
 
-    public static String getCookieDurationDisplayGUI(Player p) {
-        if (PlayerUtils.getCookieDurationTicks(p) > 0L) {
-            return ChatColor.GREEN + SUtil.getFormattedTimeToDay(PlayerUtils.getCookieDurationTicks(p));
+    public static String getCookieDurationDisplayGUI(Player p2) {
+        if (PlayerUtils.getCookieDurationTicks(p2) > 0L) {
+            return ChatColor.GREEN + SUtil.getFormattedTimeToDay(PlayerUtils.getCookieDurationTicks(p2));
         }
         return Sputnik.trans("&cNot active!");
     }
 
-    public static void subtractDurationCookie(Player p, long sub) {
-        if (PlayerUtils.getCookieDurationTicks(p) > 0L) {
-            PlayerUtils.setCookieDurationTicks(p, PlayerUtils.getCookieDurationTicks(p) - sub);
+    public static void subtractDurationCookie(Player p2, long sub) {
+        if (PlayerUtils.getCookieDurationTicks(p2) > 0L) {
+            PlayerUtils.setCookieDurationTicks(p2, PlayerUtils.getCookieDurationTicks(p2) - sub);
         }
-        if (PlayerUtils.getCookieDurationTicks(p) <= 0L) {
-            PlayerUtils.wipeCookieStatsBuff(p);
+        if (PlayerUtils.getCookieDurationTicks(p2) <= 0L) {
+            PlayerUtils.wipeCookieStatsBuff(p2);
         } else {
-            PlayerUtils.loadCookieStatsBuff(p);
+            PlayerUtils.loadCookieStatsBuff(p2);
         }
     }
 
-    public static boolean cookieBuffActive(Player p) {
-        return PlayerUtils.getCookieDurationTicks(p) > 0L;
+    public static boolean cookieBuffActive(Player p2) {
+        return PlayerUtils.getCookieDurationTicks(p2) > 0L;
     }
 
     public static void loadCookieStatsBuff(Player player) {
@@ -1816,23 +1743,23 @@ public final class PlayerUtils {
         statistics.zeroAll(151);
     }
 
-    public static void aBs(final Player p) {
+    public static void aBs(final Player p2) {
         new BukkitRunnable(){
             final float cout;
             {
-                this.cout = p.getLocation().getYaw();
+                this.cout = p2.getLocation().getYaw();
             }
 
             public void run() {
-                if (!p.isOnline()) {
+                if (!p2.isOnline()) {
                     this.cancel();
                     return;
                 }
-                Location loc = p.getLocation();
+                Location loc = p2.getLocation();
                 loc.setYaw(this.cout);
                 loc.setPitch(0.0f);
                 loc.add(loc.getDirection().normalize().multiply(0.6));
-                p.getWorld().spigot().playEffect(loc.clone().add(0.0, 2.2, 0.0), Effect.FLAME, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+                p2.getWorld().spigot().playEffect(loc.clone().add(0.0, 2.2, 0.0), Effect.FLAME, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
     }

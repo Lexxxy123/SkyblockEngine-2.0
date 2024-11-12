@@ -49,12 +49,12 @@ public class ItemSerial {
         this.intarr.add(this.magicFind);
         StringBuilder sb = new StringBuilder();
         sb.append("ItemBoost[");
-        for (int j = 0; j < this.intarr.size(); ++j) {
-            if (j == this.intarr.size() - 1) {
-                sb.append(this.intarr.get(j));
+        for (int j2 = 0; j2 < this.intarr.size(); ++j2) {
+            if (j2 == this.intarr.size() - 1) {
+                sb.append(this.intarr.get(j2));
                 continue;
             }
-            sb.append(this.intarr.get(j) + ",");
+            sb.append(this.intarr.get(j2) + ",");
         }
         sb.append("]");
         sitem.setDataString("boost", sb.toString());
@@ -62,28 +62,28 @@ public class ItemSerial {
     }
 
     public static ItemSerial getItemBoostStatistics(SItem sitem) {
-        String s = sitem.getDataString("boost");
-        if (!s.contains("ItemBoost")) {
+        String s2 = sitem.getDataString("boost");
+        if (!s2.contains("ItemBoost")) {
             return ItemSerial.createBlank();
         }
-        s = s.replace("ItemBoost[", "");
-        s = s.replace("]", "");
-        String[] sta = s.split(",");
-        float[] f = new float[11];
-        for (int i = 0; i < sta.length; ++i) {
+        s2 = s2.replace("ItemBoost[", "");
+        s2 = s2.replace("]", "");
+        String[] sta = s2.split(",");
+        float[] f2 = new float[11];
+        for (int i2 = 0; i2 < sta.length; ++i2) {
             try {
-                f[i] = Float.parseFloat(sta[i]);
+                f2[i2] = Float.parseFloat(sta[i2]);
                 continue;
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
+            } catch (NumberFormatException e2) {
+                e2.printStackTrace();
             }
         }
-        return new ItemSerial(f[0], f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], f[9], f[10]);
+        return new ItemSerial(f2[0], f2[1], f2[2], f2[3], f2[4], f2[5], f2[6], f2[7], f2[8], f2[9], f2[10]);
     }
 
     public static ItemSerial createBlank() {
-        float[] f = new float[11];
-        return new ItemSerial(f[0], f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8], f[9], f[10]);
+        float[] f2 = new float[11];
+        return new ItemSerial(f2[0], f2[1], f2[2], f2[3], f2[4], f2[5], f2[6], f2[7], f2[8], f2[9], f2[10]);
     }
 
     public void setDamage(double damage) {

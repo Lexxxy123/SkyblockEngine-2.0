@@ -30,15 +30,15 @@ extends WrapperAbstract {
     public R invoke(Object object, Object ... args) {
         try {
             return (R)this.method.invoke(object, args);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (Exception e2) {
+            throw new RuntimeException(e2);
         }
     }
 
     public R invokeSilent(Object object, Object ... args) {
         try {
             return (R)this.method.invoke(object, args);
-        } catch (Exception e) {
+        } catch (Exception e2) {
             return null;
         }
     }
@@ -104,8 +104,8 @@ extends WrapperAbstract {
             String returnTypeString = returnType.isPrimitive() ? returnType.toString() : (fullClassNames ? returnType.getName() : returnType.getSimpleName());
             String methodName = method.getName();
             String[] parameterTypeStrings = new String[parameterTypes.length];
-            for (int i = 0; i < parameterTypeStrings.length; ++i) {
-                parameterTypeStrings[i] = parameterTypes[i].isPrimitive() ? parameterTypes[i].toString() : (fullClassNames ? parameterTypes[i].getName() : parameterTypes[i].getSimpleName());
+            for (int i2 = 0; i2 < parameterTypeStrings.length; ++i2) {
+                parameterTypeStrings[i2] = parameterTypes[i2].isPrimitive() ? parameterTypes[i2].toString() : (fullClassNames ? parameterTypes[i2].getName() : parameterTypes[i2].getSimpleName());
             }
             return new MethodSignature(returnTypeString, methodName, parameterTypeStrings);
         }
@@ -169,21 +169,21 @@ extends WrapperAbstract {
             if (this.parameterTypes.length != other.parameterTypes.length) {
                 return false;
             }
-            for (int i = 0; i < this.parameterTypes.length; ++i) {
-                if (Pattern.compile(this.getParameterType(i).replace("?", "\\w").replace("*", "\\w*")).matcher(other.getParameterType(i)).matches()) continue;
+            for (int i2 = 0; i2 < this.parameterTypes.length; ++i2) {
+                if (Pattern.compile(this.getParameterType(i2).replace("?", "\\w").replace("*", "\\w*")).matcher(other.getParameterType(i2)).matches()) continue;
                 return false;
             }
             return true;
         }
 
-        public boolean equals(Object o) {
-            if (this == o) {
+        public boolean equals(Object o2) {
+            if (this == o2) {
                 return true;
             }
-            if (null == o || this.getClass() != o.getClass()) {
+            if (null == o2 || this.getClass() != o2.getClass()) {
                 return false;
             }
-            MethodSignature signature1 = (MethodSignature)o;
+            MethodSignature signature1 = (MethodSignature)o2;
             return this.returnType.equals(signature1.returnType) && this.name.equals(signature1.name) && Arrays.equals(this.parameterTypes, signature1.parameterTypes) && this.signature.equals(signature1.signature);
         }
 

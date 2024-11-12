@@ -66,16 +66,16 @@ extends SCommand {
         if (player.isOp()) {
             if (args[0].contains("sp")) {
                 player.sendMessage(ChatColor.YELLOW + "Intizing Map...");
-                long s = System.currentTimeMillis();
-                Watcher w = new Watcher(new Location(player.getWorld(), 96.0, 99.0, 96.0), new Location(player.getWorld(), 126.0, 66.0, 126.0), 69);
-                w.intitize();
-                long s_ = System.currentTimeMillis() - s;
+                long s2 = System.currentTimeMillis();
+                Watcher w2 = new Watcher(new Location(player.getWorld(), 96.0, 99.0, 96.0), new Location(player.getWorld(), 126.0, 66.0, 126.0), 69);
+                w2.intitize();
+                long s_ = System.currentTimeMillis() - s2;
                 player.sendMessage(ChatColor.GREEN + "All actions completed (Loop, placing heads, spawn Watcher)! This took " + ChatColor.YELLOW + s_ + "ms");
             } else if (args[0].contains("pl")) {
                 player.sendMessage(ChatColor.YELLOW + "Done!");
-                for (Entity e : player.getWorld().getEntities()) {
-                    if (!(e instanceof ArmorStand) || !e.hasMetadata("WATCHER_ENTITY")) continue;
-                    e.getLocation().add(0.0, 1.7, 0.0).getBlock().setTypeIdAndData(35, (byte)4, true);
+                for (Entity e2 : player.getWorld().getEntities()) {
+                    if (!(e2 instanceof ArmorStand) || !e2.hasMetadata("WATCHER_ENTITY")) continue;
+                    e2.getLocation().add(0.0, 1.7, 0.0).getBlock().setTypeIdAndData(35, (byte)4, true);
                 }
             } else if (args[0].contains("test")) {
                 ItemSerial is = ItemSerial.createBlank();
@@ -98,12 +98,12 @@ extends SCommand {
                 } else if (args[0].contains("bs")) {
                     Blessings.dropBlessingPickable(player.getLocation().clone().add(2.0, 0.0, 2.0), new Blessings(BlessingType.valueOf(args[1]), Integer.parseInt(args[2]), player.getWorld()));
                 } else if (args[0].contains("blessshow")) {
-                    for (Blessings b : Blessings.getFrom(player.getWorld())) {
-                        player.sendMessage(ChatColor.YELLOW + b.toText());
-                        float[] n = b.getBlessingStats(User.getUser(player.getUniqueId())).getDefaultArray();
+                    for (Blessings b2 : Blessings.getFrom(player.getWorld())) {
+                        player.sendMessage(ChatColor.YELLOW + b2.toText());
+                        float[] n2 = b2.getBlessingStats(User.getUser(player.getUniqueId())).getDefaultArray();
                         StringBuilder sb = new StringBuilder();
-                        for (int i = 0; i < n.length; ++i) {
-                            sb.append(n[i] + " ");
+                        for (int i2 = 0; i2 < n2.length; ++i2) {
+                            sb.append(n2[i2] + " ");
                         }
                         player.sendMessage(ChatColor.RED + sb.toString());
                     }
@@ -136,14 +136,14 @@ extends SCommand {
                         }
                         this.send("&d[\u266b] &aPlaying BGM File &e" + args[2] + ".nbs &afrom disk&a for this world!");
                         SUtil.broadcastWorld(Sputnik.trans("&c"), player.getWorld());
-                        SUtil.broadcastWorld(Sputnik.trans("&d[\u266b] &eYou're listening to &6" + args[2].replaceAll("_", " ") + " &efrom the &dFunpixel Radio&e, requested by &d" + player.getName() + "&e, enjoy!"), player.getWorld());
+                        SUtil.broadcastWorld(Sputnik.trans("&d[\u266b] &eYou're listening to &6" + args[2].replaceAll("_", " ") + " &efrom the &dGodspunky Radio&e, requested by &d" + player.getName() + "&e, enjoy!"), player.getWorld());
                         SUtil.broadcastWorld(Sputnik.trans("&c"), player.getWorld());
                         Sputnik.playSound(s2, 1000, 10, true, player, player.getLocation());
                     } else if (args[1].contains("stop")) {
                         this.send("&d[\u266b] &eStopped all music played by you!");
                         sender.getUser().setPlayingSong(false);
                     } else {
-                        this.send("&d\u266b Funpixel Radiowave Usage \u266b");
+                        this.send("&d\u266b GodSpunky Radiowave Usage \u266b");
                         this.send("&eCommand (Play): &6/sstest musicbgm play <song name>");
                         this.send("&eCommand (Stop): &6/sstest musicbgm stop");
                         this.send("&eAbout: &cSSMusicEngine-v0.1.0-ALPHA");

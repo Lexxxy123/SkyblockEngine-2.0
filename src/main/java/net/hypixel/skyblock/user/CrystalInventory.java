@@ -24,8 +24,8 @@ public class CrystalInventory {
         statistics.getFerocity().set(150, 3.0 * (double)user.getCrystalLVL(5));
         statistics.getMagicFind().set(150, 0.02 * (double)user.getCrystalLVL(6));
         statistics.getStrength().set(150, 5.0 * (double)user.getCrystalLVL(7));
-        for (int i = 0; i <= 7; ++i) {
-            player.sendMessage(String.valueOf(user.getCrystalLVL(i)));
+        for (int i2 = 0; i2 <= 7; ++i2) {
+            player.sendMessage(String.valueOf(user.getCrystalLVL(i2)));
         }
     }
 }

@@ -30,9 +30,9 @@ extends SCommand {
                 this.send(ChatColor.RED + "Something wrong, contact admins!");
                 return;
             }
-            int i = Integer.parseInt(args[1]);
+            int i2 = Integer.parseInt(args[1]);
             SItem eBook = SItem.of(SMaterial.ENCHANTED_BOOK);
-            eBook.addEnchantment(type, i);
+            eBook.addEnchantment(type, i2);
             Sputnik.smartGiveItem(eBook.getStack(), player);
         } else {
             this.send(ChatColor.RED + "Unknown Command.");

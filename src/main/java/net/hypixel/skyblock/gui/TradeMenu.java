@@ -175,18 +175,18 @@ public class TradeMenu {
 
     public void returnToAllPlayers(Player player1, Player player2) {
         net.minecraft.server.v1_8_R3.ItemStack nmsStack;
-        for (ItemStack i : TradeGUI.itemOfferP1.get(this.tradeUUID)) {
-            nmsStack = CraftItemStack.asNMSCopy((ItemStack)i);
+        for (ItemStack i2 : TradeGUI.itemOfferP1.get(this.tradeUUID)) {
+            nmsStack = CraftItemStack.asNMSCopy((ItemStack)i2);
             if (!nmsStack.getTag().hasKey("data_bits")) {
-                Sputnik.smartGiveItem(i, player1);
+                Sputnik.smartGiveItem(i2, player1);
                 continue;
             }
             User.getUser(player1.getUniqueId()).addBits(nmsStack.getTag().getLong("data_bits"));
         }
-        for (ItemStack i : TradeGUI.itemOfferP2.get(this.tradeUUID)) {
-            nmsStack = CraftItemStack.asNMSCopy((ItemStack)i);
+        for (ItemStack i2 : TradeGUI.itemOfferP2.get(this.tradeUUID)) {
+            nmsStack = CraftItemStack.asNMSCopy((ItemStack)i2);
             if (!nmsStack.getTag().hasKey("data_bits")) {
-                Sputnik.smartGiveItem(i, player2);
+                Sputnik.smartGiveItem(i2, player2);
                 continue;
             }
             User.getUser(player2.getUniqueId()).addBits(nmsStack.getTag().getLong("data_bits"));

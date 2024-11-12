@@ -40,28 +40,28 @@ EntityFunction {
             return;
         }
         if (Objects.equals(quest.getType().getName(), "Revenant Horror") || Objects.equals(quest.getType().getName(), "Atoned Horror")) {
-            Location k = killed.getLocation().clone();
+            Location k2 = killed.getLocation().clone();
             if (SUtil.random(0, 8) == 0 && quest.getType().getTier() == 3) {
-                SlayerQuest.playMinibossSpawn(k, (Entity)player);
-                SUtil.delay(() -> new SEntity(k, SEntityType.REVENANT_SYCOPHANT, new Object[0]).setTarget((LivingEntity)player), 12L);
+                SlayerQuest.playMinibossSpawn(k2, (Entity)player);
+                SUtil.delay(() -> new SEntity(k2, SEntityType.REVENANT_SYCOPHANT, new Object[0]).setTarget((LivingEntity)player), 12L);
                 return;
             }
             if (SUtil.random(0, 16) == 0 && quest.getType().getTier() == 4) {
-                SlayerQuest.playMinibossSpawn(k, (Entity)player);
-                SUtil.delay(() -> new SEntity(k, SEntityType.REVENANT_CHAMPION, new Object[0]).setTarget((LivingEntity)player), 12L);
+                SlayerQuest.playMinibossSpawn(k2, (Entity)player);
+                SUtil.delay(() -> new SEntity(k2, SEntityType.REVENANT_CHAMPION, new Object[0]).setTarget((LivingEntity)player), 12L);
                 return;
             }
             if (SUtil.random(0, 45) == 0 && quest.getType().getTier() == 4) {
-                SlayerQuest.playMinibossSpawn(k, (Entity)player);
-                SUtil.delay(() -> new SEntity(k, SEntityType.DEFORMED_REVENANT, new Object[0]).setTarget((LivingEntity)player), 12L);
+                SlayerQuest.playMinibossSpawn(k2, (Entity)player);
+                SUtil.delay(() -> new SEntity(k2, SEntityType.DEFORMED_REVENANT, new Object[0]).setTarget((LivingEntity)player), 12L);
             }
             if (SUtil.random(0, 16) == 0 && quest.getType().getTier() == 5) {
-                SlayerQuest.playMinibossSpawn(k, (Entity)player);
-                SUtil.delay(() -> new SEntity(k, SEntityType.ATONED_CHAMPION, new Object[0]).setTarget((LivingEntity)player), 12L);
+                SlayerQuest.playMinibossSpawn(k2, (Entity)player);
+                SUtil.delay(() -> new SEntity(k2, SEntityType.ATONED_CHAMPION, new Object[0]).setTarget((LivingEntity)player), 12L);
             }
             if (SUtil.random(0, 40) == 0 && quest.getType().getTier() == 5) {
-                SlayerQuest.playMinibossSpawn(k, (Entity)player);
-                SUtil.delay(() -> new SEntity(k, SEntityType.ATONED_REVENANT, new Object[0]).setTarget((LivingEntity)player), 12L);
+                SlayerQuest.playMinibossSpawn(k2, (Entity)player);
+                SUtil.delay(() -> new SEntity(k2, SEntityType.ATONED_REVENANT, new Object[0]).setTarget((LivingEntity)player), 12L);
             }
         }
     }

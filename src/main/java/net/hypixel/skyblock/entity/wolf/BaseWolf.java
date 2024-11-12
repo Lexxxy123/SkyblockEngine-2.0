@@ -50,7 +50,7 @@ EntityFunction {
                 if (BaseWolf.this.target != null) {
                     return;
                 }
-                Player found = (Player)SUtil.getRandom(entity.getNearbyEntities(16.0, 4.0, 16.0).stream().filter(e -> e instanceof Player && (((Player)e).getGameMode() == GameMode.SURVIVAL || ((Player)e).getGameMode() == GameMode.ADVENTURE)).collect(Collectors.toList()));
+                Player found = (Player)SUtil.getRandom(entity.getNearbyEntities(16.0, 4.0, 16.0).stream().filter(e2 -> e2 instanceof Player && (((Player)e2).getGameMode() == GameMode.SURVIVAL || ((Player)e2).getGameMode() == GameMode.ADVENTURE)).collect(Collectors.toList()));
                 BaseWolf.this.target = (LivingEntity)found;
                 ((Wolf)entity).setTarget(BaseWolf.this.target);
             }
@@ -72,20 +72,20 @@ EntityFunction {
             return;
         }
         if (quest.getType().getName() == "Sven Packmaster") {
-            Location k = killed.getLocation().clone();
+            Location k2 = killed.getLocation().clone();
             if (SUtil.random(0, 8) == 0 && quest.getType().getTier() >= 3 && quest.getType().getTier() < 4) {
-                SlayerQuest.playMinibossSpawn(k, (Entity)player);
-                SUtil.delay(() -> new SEntity(k, SEntityType.SVEN_FOLLOWER, new Object[0]).setTarget((LivingEntity)player), 12L);
+                SlayerQuest.playMinibossSpawn(k2, (Entity)player);
+                SUtil.delay(() -> new SEntity(k2, SEntityType.SVEN_FOLLOWER, new Object[0]).setTarget((LivingEntity)player), 12L);
                 return;
             }
             if (SUtil.random(0, 12) == 0 && quest.getType().getTier() >= 4) {
-                SlayerQuest.playMinibossSpawn(k, (Entity)player);
-                SUtil.delay(() -> new SEntity(k, SEntityType.PACK_ENFORCER, new Object[0]).setTarget((LivingEntity)player), 12L);
+                SlayerQuest.playMinibossSpawn(k2, (Entity)player);
+                SUtil.delay(() -> new SEntity(k2, SEntityType.PACK_ENFORCER, new Object[0]).setTarget((LivingEntity)player), 12L);
                 return;
             }
             if (SUtil.random(0, 25) == 0 && quest.getType().getTier() >= 4) {
-                SlayerQuest.playMinibossSpawn(k, (Entity)player);
-                SUtil.delay(() -> new SEntity(k, SEntityType.SVEN_ALPHA, new Object[0]).setTarget((LivingEntity)player), 12L);
+                SlayerQuest.playMinibossSpawn(k2, (Entity)player);
+                SUtil.delay(() -> new SEntity(k2, SEntityType.SVEN_ALPHA, new Object[0]).setTarget((LivingEntity)player), 12L);
             }
         }
     }

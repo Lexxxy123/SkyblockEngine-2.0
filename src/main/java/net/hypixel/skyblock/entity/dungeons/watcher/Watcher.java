@@ -128,51 +128,51 @@ implements Listener {
 
     public void intitize() {
         Cuboid cb = new Cuboid(this.arg0, this.arg1.getBlockX(), this.arg1.getBlockY(), this.arg1.getBlockZ(), this.arg2.getBlockX(), this.arg2.getBlockY(), this.arg2.getBlockZ());
-        for (Block b : cb.getBlocks()) {
-            if (Material.BEACON == b.getType()) {
-                this.watcher = b.getLocation().add(0.5, 0.0, 0.5);
+        for (Block b2 : cb.getBlocks()) {
+            if (Material.BEACON == b2.getType()) {
+                this.watcher = b2.getLocation().add(0.5, 0.0, 0.5);
                 continue;
             }
-            if (Material.WOOL != b.getType() || 4 != b.getData()) continue;
-            this.P1Heads.add(b.getLocation().add(0.5, 0.0, 0.5));
+            if (Material.WOOL != b2.getType() || 4 != b2.getData()) continue;
+            this.P1Heads.add(b2.getLocation().add(0.5, 0.0, 0.5));
         }
         this.apt();
         WATCHER_CACHE.put(this.arg0, this);
         this.a = true;
         if (this.isIntitized()) {
-            int i = 0;
+            int i2 = 0;
             for (Location loc : this.P1Heads) {
-                this.placeHead(loc, i);
-                ++i;
+                this.placeHead(loc, i2);
+                ++i2;
             }
         }
         this.spawnWatcher(this.watcher);
-        final GlobalBossBar bb = new GlobalBossBar(Watcher.trans("&c&lThe Watcher"), this.watcher.getWorld());
-        for (Player p : this.watcher.getWorld().getPlayers()) {
-            bb.addPlayer(p);
+        final GlobalBossBar bb2 = new GlobalBossBar(Watcher.trans("&c&lThe Watcher"), this.watcher.getWorld());
+        for (Player p2 : this.watcher.getWorld().getPlayers()) {
+            bb2.addPlayer(p2);
         }
-        bb.setProgress(this.currentMobsCount / 15);
+        bb2.setProgress(this.currentMobsCount / 15);
         new BukkitRunnable(){
 
             public void run() {
                 if (Watcher.this.ewatcher.isDead()) {
                     ArrayList<Player> plist = new ArrayList<Player>();
-                    for (Player p : bb.players) {
-                        plist.add(p);
+                    for (Player p2 : bb2.players) {
+                        plist.add(p2);
                     }
                     plist.forEach(pl -> {
-                        GlobalBossBar val$bb = bb;
-                        bb.removePlayer((Player)pl);
+                        GlobalBossBar val$bb = bb2;
+                        bb2.removePlayer((Player)pl);
                     });
-                    bb.setProgress(0.0);
-                    bb.cancel();
+                    bb2.setProgress(0.0);
+                    bb2.cancel();
                     this.cancel();
                     return;
                 }
                 if (0 < Watcher.this.currentMobsCount) {
-                    bb.setProgress((double)Watcher.this.currentMobsCount / 15.0);
+                    bb2.setProgress((double)Watcher.this.currentMobsCount / 15.0);
                 } else {
-                    bb.setProgress(1.0E-5);
+                    bb2.setProgress(1.0E-5);
                 }
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
@@ -187,15 +187,15 @@ implements Listener {
             if (ew == EnumWatcherType.PLAYER) continue;
             this.how.add(new HeadsOnWall(ew));
         }
-        for (Player p : this.arg0.getPlayers()) {
-            HeadsOnWall a = new HeadsOnWall(EnumWatcherType.PLAYER);
-            a.skullTexture = p.getName();
-            a.arg0 = true;
-            this.how.add(a);
+        for (Player p2 : this.arg0.getPlayers()) {
+            HeadsOnWall a2 = new HeadsOnWall(EnumWatcherType.PLAYER);
+            a2.skullTexture = p2.getName();
+            a2.arg0 = true;
+            this.how.add(a2);
         }
         EnumWatcherType[] rp = EnumWatcherType.values();
         ArrayList<EnumWatcherType> ewt = new ArrayList<EnumWatcherType>(Arrays.asList(rp));
-        ewt.removeIf(r -> EnumWatcherType.BONZO == r || EnumWatcherType.LIVID == r || EnumWatcherType.PLAYER == r);
+        ewt.removeIf(r2 -> EnumWatcherType.BONZO == r2 || EnumWatcherType.LIVID == r2 || EnumWatcherType.PLAYER == r2);
         Collections.shuffle(ewt);
         for (EnumWatcherType ew : ewt) {
             this.how.add(new HeadsOnWall(ew));
@@ -217,7 +217,7 @@ implements Listener {
         Location newA = loc.getBlock().getLocation().add(0.5, 0.0, 0.5);
         newA.add(0.0, 1.7, 0.0);
         int rot = 0;
-        for (int i = 0; 4 > i; ++i) {
+        for (int i2 = 0; 4 > i2; ++i2) {
             newA.setYaw((float)(rot += 90));
             Location newLoc = newA.clone().add(newA.getDirection().normalize().multiply(2));
             if (Material.AIR != newLoc.getBlock().getType()) continue;
@@ -226,12 +226,12 @@ implements Listener {
         return 0.0f;
     }
 
-    public void placeHead(Location l, int index) {
+    public void placeHead(Location l2, int index) {
         index = Math.min(29, index);
-        l.getBlock().setType(Material.AIR);
-        Location sloc = l.add(0.0, -1.25, 0.0);
+        l2.getBlock().setType(Material.AIR);
+        Location sloc = l2.add(0.0, -1.25, 0.0);
         sloc.setYaw(Watcher.getYaw(sloc));
-        ArmorStand stand = (ArmorStand)l.getWorld().spawn(sloc, ArmorStand.class);
+        ArmorStand stand = (ArmorStand)l2.getWorld().spawn(sloc, ArmorStand.class);
         stand.setMetadata("WATCHER_ENTITY", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)0));
         stand.setMetadata("TYPE", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)this.how.get((int)index).stype));
         stand.setCustomNameVisible(false);
@@ -244,22 +244,22 @@ implements Listener {
         stand.setVisible(false);
     }
 
-    public void returnWatcher(final org.bukkit.entity.Entity e) {
-        final Watcher w = Watcher.getWatcher(e.getWorld());
+    public void returnWatcher(final org.bukkit.entity.Entity e2) {
+        final Watcher w2 = Watcher.getWatcher(e2.getWorld());
         new BukkitRunnable(){
 
             public void run() {
-                if (e.isDead()) {
+                if (e2.isDead()) {
                     this.cancel();
                     return;
                 }
-                if (e.getWorld().getNearbyEntities(w.watcher.clone().add(0.0, -1.5, 0.0), 0.1, 0.1, 0.1).contains(e)) {
+                if (e2.getWorld().getNearbyEntities(w2.watcher.clone().add(0.0, -1.5, 0.0), 0.1, 0.1, 0.1).contains(e2)) {
                     Watcher.this.isResting = true;
                     if (15 > Watcher.this.mobSpawned) {
                         SUtil.delay(() -> {
-                            org.bukkit.entity.Entity val$e = e;
-                            if (!e.isDead() && 15 > Watcher.this.mobSpawned) {
-                                Watcher.this.moveWatcher(e, false);
+                            org.bukkit.entity.Entity val$e = e2;
+                            if (!e2.isDead() && 15 > Watcher.this.mobSpawned) {
+                                Watcher.this.moveWatcher(e2, false);
                             }
                         }, 100L);
                     }
@@ -270,55 +270,55 @@ implements Listener {
                     this.cancel();
                     return;
                 }
-                Location r = e.getLocation().setDirection(w.watcher.clone().add(0.0, -1.5, 0.0).toVector().subtract(e.getLocation().toVector()));
-                e.teleport(r);
-                Watcher.sendHeadRotation(e, r.getYaw(), r.getPitch());
-                double x = 0.0;
-                double y = 0.0;
-                double z = 0.0;
-                x = Math.toRadians(r.getPitch());
-                ((ArmorStand)e).setHeadPose(new EulerAngle(x, 0.0, 0.0));
-                e.teleport(e.getLocation().add(e.getLocation().getDirection().multiply(0.5)));
+                Location r2 = e2.getLocation().setDirection(w2.watcher.clone().add(0.0, -1.5, 0.0).toVector().subtract(e2.getLocation().toVector()));
+                e2.teleport(r2);
+                Watcher.sendHeadRotation(e2, r2.getYaw(), r2.getPitch());
+                double x2 = 0.0;
+                double y2 = 0.0;
+                double z2 = 0.0;
+                x2 = Math.toRadians(r2.getPitch());
+                ((ArmorStand)e2).setHeadPose(new EulerAngle(x2, 0.0, 0.0));
+                e2.teleport(e2.getLocation().add(e2.getLocation().getDirection().multiply(0.5)));
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
     }
 
-    public ArmorStand findArmorStand(Location l) {
-        for (org.bukkit.entity.Entity e : l.getWorld().getNearbyEntities(l, (double)0.1f, (double)0.1f, (double)0.1f)) {
-            if (!(e instanceof ArmorStand) || !e.hasMetadata("WATCHER_ENTITY")) continue;
-            return (ArmorStand)e;
+    public ArmorStand findArmorStand(Location l2) {
+        for (org.bukkit.entity.Entity e2 : l2.getWorld().getNearbyEntities(l2, (double)0.1f, (double)0.1f, (double)0.1f)) {
+            if (!(e2 instanceof ArmorStand) || !e2.hasMetadata("WATCHER_ENTITY")) continue;
+            return (ArmorStand)e2;
         }
         return null;
     }
 
-    public void moveWatcher(final org.bukkit.entity.Entity e, boolean firstMove) {
+    public void moveWatcher(final org.bukkit.entity.Entity e2, boolean firstMove) {
         this.firstRun = firstMove;
         this.isResting = false;
-        Watcher w = Watcher.getWatcher(e.getWorld());
-        int inx = Watcher.random(0, w.P1Heads.size() - 1);
+        Watcher w2 = Watcher.getWatcher(e2.getWorld());
+        int inx = Watcher.random(0, w2.P1Heads.size() - 1);
         Location tpTo = null;
         if (this.firstRun) {
             this.firstRun = false;
             ArrayList<Location> removedLoc = new ArrayList<Location>();
-            for (Location l : w.P1Heads) {
-                if (!((MetadataValue)this.findArmorStand(l).getMetadata("TYPE").get(0)).asString().contains("TEAMMATE")) continue;
-                removedLoc.add(l);
+            for (Location l2 : w2.P1Heads) {
+                if (!((MetadataValue)this.findArmorStand(l2).getMetadata("TYPE").get(0)).asString().contains("TEAMMATE")) continue;
+                removedLoc.add(l2);
             }
-            w.P1Heads.removeAll(removedLoc);
-            for (Location l : w.P1Heads) {
-                String lb = ((MetadataValue)this.findArmorStand(l).getMetadata("TYPE").get(0)).asString();
+            w2.P1Heads.removeAll(removedLoc);
+            for (Location l2 : w2.P1Heads) {
+                String lb = ((MetadataValue)this.findArmorStand(l2).getMetadata("TYPE").get(0)).asString();
                 if (!lb.contains("BONZO") && !lb.contains("LIVID")) continue;
-                tpTo = l;
-                w.P1Heads.remove(l);
+                tpTo = l2;
+                w2.P1Heads.remove(l2);
                 break;
             }
         } else {
-            tpTo = w.P1Heads.get(inx);
-            w.P1Heads.remove(inx);
+            tpTo = w2.P1Heads.get(inx);
+            w2.P1Heads.remove(inx);
             while (this.spawnedMob.contains(((MetadataValue)this.findArmorStand(tpTo).getMetadata("TYPE").get(0)).asString())) {
-                int inxe = Watcher.random(0, w.P1Heads.size() - 1);
-                tpTo = w.P1Heads.get(inxe);
-                w.P1Heads.remove(inxe);
+                int inxe = Watcher.random(0, w2.P1Heads.size() - 1);
+                tpTo = w2.P1Heads.get(inxe);
+                w2.P1Heads.remove(inxe);
             }
         }
         this.spawnedMob.add(((MetadataValue)this.findArmorStand(tpTo).getMetadata("TYPE").get(0)).asString());
@@ -329,24 +329,24 @@ implements Listener {
         new BukkitRunnable(){
 
             public void run() {
-                if (e.isDead()) {
+                if (e2.isDead()) {
                     this.cancel();
                     return;
                 }
-                if (e.getWorld().getNearbyEntities(tpToC, 0.6, 0.6, 0.6).contains(e)) {
+                if (e2.getWorld().getNearbyEntities(tpToC, 0.6, 0.6, 0.6).contains(e2)) {
                     ArmorStand st = Watcher.this.findArmorStand(tpToC);
                     st.getEquipment().setHelmet(null);
                     st.setCustomNameVisible(false);
                     Watcher.this.playHeadSpawning((org.bukkit.entity.Entity)st);
                     SUtil.delay(() -> {
-                        org.bukkit.entity.Entity val$e = e;
+                        org.bukkit.entity.Entity val$e = e2;
                         if (15 <= Watcher.this.mobSpawned) {
                             Watcher.this.sd("That will be enough for now.", 20, 50, true);
                         }
                         if (3 <= Watcher.this.perRunMS || 15 <= Watcher.this.mobSpawned) {
-                            Watcher.this.returnWatcher(e);
+                            Watcher.this.returnWatcher(e2);
                         } else {
-                            Watcher.this.moveWatcher(e, false);
+                            Watcher.this.moveWatcher(e2, false);
                         }
                     }, 15L);
                     Watcher this$0 = Watcher.this;
@@ -359,25 +359,25 @@ implements Listener {
                     this.cancel();
                     return;
                 }
-                Location r = e.getLocation().setDirection(tpToC.toVector().subtract(e.getLocation().toVector()));
-                e.teleport(r);
-                Watcher.sendHeadRotation(e, r.getYaw(), r.getPitch());
-                double x = 0.0;
-                double y = 0.0;
-                double z = 0.0;
-                x = Math.toRadians(r.getPitch());
-                ((ArmorStand)e).setHeadPose(new EulerAngle(x, 0.0, 0.0));
-                e.teleport(e.getLocation().add(e.getLocation().getDirection().multiply(0.5)));
+                Location r2 = e2.getLocation().setDirection(tpToC.toVector().subtract(e2.getLocation().toVector()));
+                e2.teleport(r2);
+                Watcher.sendHeadRotation(e2, r2.getYaw(), r2.getPitch());
+                double x2 = 0.0;
+                double y2 = 0.0;
+                double z2 = 0.0;
+                x2 = Math.toRadians(r2.getPitch());
+                ((ArmorStand)e2).setHeadPose(new EulerAngle(x2, 0.0, 0.0));
+                e2.teleport(e2.getLocation().add(e2.getLocation().getDirection().multiply(0.5)));
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
     }
 
-    public static void sendHeadRotation(org.bukkit.entity.Entity e, float yaw, float pitch) {
-        EntityArmorStand pl = ((CraftArmorStand)e).getHandle();
-        pl.setLocation(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), yaw, pitch);
+    public static void sendHeadRotation(org.bukkit.entity.Entity e2, float yaw, float pitch) {
+        EntityArmorStand pl = ((CraftArmorStand)e2).getHandle();
+        pl.setLocation(e2.getLocation().getX(), e2.getLocation().getY(), e2.getLocation().getZ(), yaw, pitch);
         PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport((Entity)pl);
-        for (Player p : e.getWorld().getPlayers()) {
-            ((CraftPlayer)p).getHandle().playerConnection.sendPacket((Packet)packet);
+        for (Player p2 : e2.getWorld().getPlayers()) {
+            ((CraftPlayer)p2).getHandle().playerConnection.sendPacket((Packet)packet);
         }
     }
 
@@ -391,11 +391,11 @@ implements Listener {
         return new Random().nextInt(max - min + 1) + min;
     }
 
-    public ArmorStand spawnWatchfulEyes(final org.bukkit.entity.Entity e) {
-        Location l1 = e.getLocation().clone().add(e.getLocation().getDirection().normalize().multiply(-1.5));
+    public ArmorStand spawnWatchfulEyes(final org.bukkit.entity.Entity e2) {
+        Location l1 = e2.getLocation().clone().add(e2.getLocation().getDirection().normalize().multiply(-1.5));
         float angle1 = l1.getYaw() / 60.0f;
         Location loc_1 = l1.add(Math.cos(angle1), 0.0, Math.sin(angle1));
-        Location loc = e.getLocation();
+        Location loc = e2.getLocation();
         final ArmorStand stand = (ArmorStand)loc.getWorld().spawn(loc_1.add(0.0, 1.5, 0.0), ArmorStand.class);
         stand.setCustomName(Watcher.trans("&3&lWatchful Eye"));
         stand.setCustomNameVisible(true);
@@ -422,32 +422,32 @@ implements Listener {
                     this.cancel();
                     return;
                 }
-                if (e instanceof ArmorStand && !Watcher.this.wfe1_shoot) {
-                    Location r = stand.getLocation().setDirection(e.getLocation().toVector().subtract(stand.getLocation().toVector()));
-                    stand.teleport(r);
-                    Watcher.sendHeadRotation((org.bukkit.entity.Entity)stand, r.getYaw(), r.getPitch());
-                    double x = 0.0;
-                    double y = 0.0;
-                    double z = 0.0;
-                    x = Math.toRadians(r.getPitch());
-                    stand.setHeadPose(new EulerAngle(x, 0.0, 0.0));
+                if (e2 instanceof ArmorStand && !Watcher.this.wfe1_shoot) {
+                    Location r2 = stand.getLocation().setDirection(e2.getLocation().toVector().subtract(stand.getLocation().toVector()));
+                    stand.teleport(r2);
+                    Watcher.sendHeadRotation((org.bukkit.entity.Entity)stand, r2.getYaw(), r2.getPitch());
+                    double x2 = 0.0;
+                    double y2 = 0.0;
+                    double z2 = 0.0;
+                    x2 = Math.toRadians(r2.getPitch());
+                    stand.setHeadPose(new EulerAngle(x2, 0.0, 0.0));
                 }
-                Location l = e.getLocation().clone().add(0.0, 1.0, 0.0).add(e.getLocation().getDirection().normalize().multiply(-1.5));
-                float angle = l.getYaw() / 60.0f;
-                Location loc_ = l.add(Math.cos(angle), 0.0, Math.sin(angle));
-                if (2.5 < stand.getLocation().distance(e.getLocation()) && !Watcher.this.wfe1_shoot) {
-                    stand.teleport(stand.getLocation().add(loc_.toVector().subtract(stand.getLocation().toVector()).normalize().multiply(Math.min(9.0, Math.min(15.0, e.getLocation().distance(stand.getLocation())) / 4.0 + 0.2))));
+                Location l2 = e2.getLocation().clone().add(0.0, 1.0, 0.0).add(e2.getLocation().getDirection().normalize().multiply(-1.5));
+                float angle = l2.getYaw() / 60.0f;
+                Location loc_ = l2.add(Math.cos(angle), 0.0, Math.sin(angle));
+                if (2.5 < stand.getLocation().distance(e2.getLocation()) && !Watcher.this.wfe1_shoot) {
+                    stand.teleport(stand.getLocation().add(loc_.toVector().subtract(stand.getLocation().toVector()).normalize().multiply(Math.min(9.0, Math.min(15.0, e2.getLocation().distance(stand.getLocation())) / 4.0 + 0.2))));
                 }
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 3L);
         return stand;
     }
 
-    public ArmorStand spawnWatchfulEyes2(final org.bukkit.entity.Entity e) {
-        Location l1 = e.getLocation().clone().add(e.getLocation().getDirection().normalize().multiply(-1.5));
+    public ArmorStand spawnWatchfulEyes2(final org.bukkit.entity.Entity e2) {
+        Location l1 = e2.getLocation().clone().add(e2.getLocation().getDirection().normalize().multiply(-1.5));
         float angle1 = l1.getYaw() / 60.0f;
         Location loc_1 = l1.subtract(Math.cos(angle1), 0.0, Math.sin(angle1));
-        Location loc = e.getLocation();
+        Location loc = e2.getLocation();
         final ArmorStand stand = (ArmorStand)loc.getWorld().spawn(loc_1.add(0.0, 1.5, 0.0), ArmorStand.class);
         stand.setCustomName(Watcher.trans("&3&lWatchful Eye"));
         stand.setCustomNameVisible(true);
@@ -474,21 +474,21 @@ implements Listener {
                     this.cancel();
                     return;
                 }
-                if (e instanceof ArmorStand && !Watcher.this.wfe2_shoot) {
-                    Location r = stand.getLocation().setDirection(e.getLocation().toVector().subtract(stand.getLocation().toVector()));
-                    stand.teleport(r);
-                    Watcher.sendHeadRotation((org.bukkit.entity.Entity)stand, r.getYaw(), r.getPitch());
-                    double x = 0.0;
-                    double y = 0.0;
-                    double z = 0.0;
-                    x = Math.toRadians(r.getPitch());
-                    stand.setHeadPose(new EulerAngle(x, 0.0, 0.0));
+                if (e2 instanceof ArmorStand && !Watcher.this.wfe2_shoot) {
+                    Location r2 = stand.getLocation().setDirection(e2.getLocation().toVector().subtract(stand.getLocation().toVector()));
+                    stand.teleport(r2);
+                    Watcher.sendHeadRotation((org.bukkit.entity.Entity)stand, r2.getYaw(), r2.getPitch());
+                    double x2 = 0.0;
+                    double y2 = 0.0;
+                    double z2 = 0.0;
+                    x2 = Math.toRadians(r2.getPitch());
+                    stand.setHeadPose(new EulerAngle(x2, 0.0, 0.0));
                 }
-                Location l = e.getLocation().clone().add(0.0, 1.0, 0.0).add(e.getLocation().getDirection().normalize().multiply(-1.5));
-                float angle = l.getYaw() / 60.0f;
-                Location loc_ = l.subtract(Math.cos(angle), 0.0, Math.sin(angle));
-                if (2.5 < stand.getLocation().distance(e.getLocation()) && !Watcher.this.wfe2_shoot) {
-                    stand.teleport(stand.getLocation().add(loc_.toVector().subtract(stand.getLocation().toVector()).normalize().multiply(Math.min(9.0, Math.min(15.0, e.getLocation().distance(stand.getLocation())) / 4.0 + 0.2))));
+                Location l2 = e2.getLocation().clone().add(0.0, 1.0, 0.0).add(e2.getLocation().getDirection().normalize().multiply(-1.5));
+                float angle = l2.getYaw() / 60.0f;
+                Location loc_ = l2.subtract(Math.cos(angle), 0.0, Math.sin(angle));
+                if (2.5 < stand.getLocation().distance(e2.getLocation()) && !Watcher.this.wfe2_shoot) {
+                    stand.teleport(stand.getLocation().add(loc_.toVector().subtract(stand.getLocation().toVector()).normalize().multiply(Math.min(9.0, Math.min(15.0, e2.getLocation().distance(stand.getLocation())) / 4.0 + 0.2))));
                 }
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 3L);
@@ -512,16 +512,16 @@ implements Listener {
         stand2.setMarker(true);
         stand2.setGravity(false);
         this.isResting = true;
-        for (org.bukkit.entity.Entity e : stand.getNearbyEntities(20.0, 20.0, 20.0)) {
-            if (!(e instanceof Player)) continue;
-            Location r = stand.getLocation().setDirection(e.getLocation().toVector().subtract(stand.getLocation().toVector()));
-            stand.teleport(r);
-            Watcher.sendHeadRotation((org.bukkit.entity.Entity)stand, r.getYaw(), r.getPitch());
-            double x = 0.0;
-            double y = 0.0;
-            double z = 0.0;
-            x = Math.toRadians(r.getPitch());
-            stand.setHeadPose(new EulerAngle(x, 0.0, 0.0));
+        for (org.bukkit.entity.Entity e2 : stand.getNearbyEntities(20.0, 20.0, 20.0)) {
+            if (!(e2 instanceof Player)) continue;
+            Location r2 = stand.getLocation().setDirection(e2.getLocation().toVector().subtract(stand.getLocation().toVector()));
+            stand.teleport(r2);
+            Watcher.sendHeadRotation((org.bukkit.entity.Entity)stand, r2.getYaw(), r2.getPitch());
+            double x2 = 0.0;
+            double y2 = 0.0;
+            double z2 = 0.0;
+            x2 = Math.toRadians(r2.getPitch());
+            stand.setHeadPose(new EulerAngle(x2, 0.0, 0.0));
             break;
         }
         this.wfe1 = this.spawnWatchfulEyes((org.bukkit.entity.Entity)stand);
@@ -533,8 +533,8 @@ implements Listener {
                     this.cancel();
                     return;
                 }
-                for (final org.bukkit.entity.Entity e : stand.getNearbyEntities(20.0, 20.0, 20.0)) {
-                    if (!(e instanceof Player) || Watcher.this.welcomeParticles || !(e.getLocation().getY() >= (double)(Watcher.this.floorY + 6.0f))) continue;
+                for (final org.bukkit.entity.Entity e2 : stand.getNearbyEntities(20.0, 20.0, 20.0)) {
+                    if (!(e2 instanceof Player) || Watcher.this.welcomeParticles || !(e2.getLocation().getY() >= (double)(Watcher.this.floorY + 6.0f))) continue;
                     ArmorStand st = null;
                     final int rnd = Watcher.random(0, 1);
                     st = 1 == rnd ? Watcher.this.wfe1 : Watcher.this.wfe2;
@@ -543,13 +543,13 @@ implements Listener {
                     } else {
                         Watcher.this.wfe2_shoot = true;
                     }
-                    for (int i = 0; 2 > i; ++i) {
-                        Watcher.drawLineforMovingPoints(st.getLocation().clone().add(0.0, 1.8, 0.0), e.getLocation().clone().add(0.0, 1.4, 0.0), 25.0, (Player)e, (org.bukkit.entity.Entity)stand);
+                    for (int i2 = 0; 2 > i2; ++i2) {
+                        Watcher.drawLineforMovingPoints(st.getLocation().clone().add(0.0, 1.8, 0.0), e2.getLocation().clone().add(0.0, 1.4, 0.0), 25.0, (Player)e2, (org.bukkit.entity.Entity)stand);
                     }
                     Watcher.this.sd(Watcher.this.sneakyPeaky[Watcher.random(0, Watcher.this.sneakyPeaky.length - 1)], 0, 50, true);
-                    User.getUser(e.getUniqueId()).damage(((Player)e).getMaxHealth() / 4.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (org.bukkit.entity.Entity)Watcher.this.ewatcher);
-                    ((Player)e).damage(1.0E-5);
-                    final ArmorStand s = st;
+                    User.getUser(e2.getUniqueId()).damage(((Player)e2).getMaxHealth() / 4.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (org.bukkit.entity.Entity)Watcher.this.ewatcher);
+                    ((Player)e2).damage(1.0E-5);
+                    final ArmorStand s2 = st;
                     new BukkitRunnable(){
                         int i = 0;
 
@@ -564,14 +564,14 @@ implements Listener {
                                 return;
                             }
                             ++this.i;
-                            Location r = stand.getLocation().setDirection(e.getLocation().toVector().subtract(s.getLocation().toVector()));
-                            stand.teleport(r);
-                            Watcher.sendHeadRotation((org.bukkit.entity.Entity)s, r.getYaw(), r.getPitch());
-                            double x = 0.0;
-                            double y = 0.0;
-                            double z = 0.0;
-                            x = Math.toRadians(r.getPitch());
-                            s.setHeadPose(new EulerAngle(x, 0.0, 0.0));
+                            Location r2 = stand.getLocation().setDirection(e2.getLocation().toVector().subtract(s2.getLocation().toVector()));
+                            stand.teleport(r2);
+                            Watcher.sendHeadRotation((org.bukkit.entity.Entity)s2, r2.getYaw(), r2.getPitch());
+                            double x2 = 0.0;
+                            double y2 = 0.0;
+                            double z2 = 0.0;
+                            x2 = Math.toRadians(r2.getPitch());
+                            s2.setHeadPose(new EulerAngle(x2, 0.0, 0.0));
                         }
                     }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
                 }
@@ -596,16 +596,16 @@ implements Listener {
                     return;
                 }
                 if (Watcher.this.isResting) {
-                    for (org.bukkit.entity.Entity e : stand.getNearbyEntities(20.0, 20.0, 20.0)) {
-                        if (!(e instanceof Player)) continue;
-                        Location r = stand.getLocation().setDirection(e.getLocation().toVector().subtract(stand.getLocation().toVector()));
-                        stand.teleport(r);
-                        Watcher.sendHeadRotation((org.bukkit.entity.Entity)stand, r.getYaw(), r.getPitch());
-                        double x = 0.0;
-                        double y = 0.0;
-                        double z = 0.0;
-                        x = Math.toRadians(r.getPitch());
-                        stand.setHeadPose(new EulerAngle(x, 0.0, 0.0));
+                    for (org.bukkit.entity.Entity e2 : stand.getNearbyEntities(20.0, 20.0, 20.0)) {
+                        if (!(e2 instanceof Player)) continue;
+                        Location r2 = stand.getLocation().setDirection(e2.getLocation().toVector().subtract(stand.getLocation().toVector()));
+                        stand.teleport(r2);
+                        Watcher.sendHeadRotation((org.bukkit.entity.Entity)stand, r2.getYaw(), r2.getPitch());
+                        double x2 = 0.0;
+                        double y2 = 0.0;
+                        double z2 = 0.0;
+                        x2 = Math.toRadians(r2.getPitch());
+                        stand.setHeadPose(new EulerAngle(x2, 0.0, 0.0));
                         break;
                     }
                 }
@@ -658,14 +658,14 @@ implements Listener {
         }, 200L);
     }
 
-    public static void drawLineforMovingPoints(Location point1, Location point2, double space, Player p, org.bukkit.entity.Entity e) {
+    public static void drawLineforMovingPoints(Location point1, Location point2, double space, Player p2, org.bukkit.entity.Entity e2) {
         Location blockLocation = point1;
         Location crystalLocation = point2;
         Vector vector = blockLocation.clone().toVector().subtract(crystalLocation.clone().toVector());
         double count = 45.0;
-        for (int i = 1; 45 >= i; ++i) {
-            Vector v = vector.clone().multiply((double)i / 45.0);
-            point1.getWorld().spigot().playEffect(crystalLocation.clone().add(v), Effect.MAGIC_CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+        for (int i2 = 1; 45 >= i2; ++i2) {
+            Vector v2 = vector.clone().multiply((double)i2 / 45.0);
+            point1.getWorld().spigot().playEffect(crystalLocation.clone().add(v2), Effect.MAGIC_CRIT, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
         }
     }
 
@@ -682,9 +682,9 @@ implements Listener {
         byte[] ed = Base64.getEncoder().encode(String.format("{textures:{SKIN:{url:\"http://textures.minecraft.net/texture/%s\"}}}", texture).getBytes());
         profile.getProperties().put((Object)"textures", (Object)new Property("textures", new String(ed)));
         try {
-            Field f = meta.getClass().getDeclaredField("profile");
-            f.setAccessible(true);
-            f.set(meta, profile);
+            Field f2 = meta.getClass().getDeclaredField("profile");
+            f2.setAccessible(true);
+            f2.set(meta, profile);
         } catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException exception) {
             // empty catch block
         }
@@ -701,15 +701,15 @@ implements Listener {
         return stack;
     }
 
-    public void playHeadSpawning(org.bukkit.entity.Entity e) {
-        String amd = ((MetadataValue)e.getMetadata("TYPE").get(0)).asString();
+    public void playHeadSpawning(org.bukkit.entity.Entity e2) {
+        String amd = ((MetadataValue)e2.getMetadata("TYPE").get(0)).asString();
         amd = amd.replace("WATCHER_", "");
-        final HeadsOnWall h = new HeadsOnWall(EnumWatcherType.valueOf(amd));
+        final HeadsOnWall h2 = new HeadsOnWall(EnumWatcherType.valueOf(amd));
         final Location target = this.watcher.clone().add(0.0, -3.5, 0.0);
-        final ArmorStand stand = (ArmorStand)e.getWorld().spawn(e.getLocation(), ArmorStand.class);
+        final ArmorStand stand = (ArmorStand)e2.getWorld().spawn(e2.getLocation(), ArmorStand.class);
         stand.setCustomNameVisible(false);
         stand.setVisible(false);
-        stand.getEquipment().setHelmet(Watcher.getSkull(h.skullTexture));
+        stand.getEquipment().setHelmet(Watcher.getSkull(h2.skullTexture));
         stand.setGravity(false);
         new BukkitRunnable(){
 
@@ -737,20 +737,20 @@ implements Listener {
                 }
                 if (this.i >= Watcher.random(40, 45) && Material.AIR == stand.getLocation().getBlock().getType() && Material.AIR == stand.getLocation().clone().add(0.0, 1.0, 0.0).getBlock().getType()) {
                     stand.remove();
-                    for (int i = 0; 20 > i; ++i) {
+                    for (int i2 = 0; 20 > i2; ++i2) {
                         stand.getWorld().spigot().playEffect(stand.getLocation().clone().add(0.0, 0.25, 0.0), Effect.EXPLOSION, 0, 1, (float)Watcher.random(-0.5, 0.5), (float)Watcher.random(-1, 1), (float)Watcher.random(-0.5, 0.5), 0.0f, 1, 20);
                     }
                     stand.getWorld().playSound(stand.getLocation(), Sound.ZOMBIE_REMEDY, 0.2f, 1.8f);
-                    new SEntity(stand.getLocation(), SEntityType.valueOf(h.stype), new Object[0]);
+                    new SEntity(stand.getLocation(), SEntityType.valueOf(h2.stype), new Object[0]);
                     this.cancel();
                     return;
                 }
                 ++this.i;
                 this.t += 15;
-                Location r = stand.getLocation().setDirection(target.toVector().subtract(stand.getLocation().toVector()));
-                stand.teleport(r);
+                Location r2 = stand.getLocation().setDirection(target.toVector().subtract(stand.getLocation().toVector()));
+                stand.teleport(r2);
                 stand.teleport(stand.getLocation().add(stand.getLocation().getDirection().multiply(0.25)));
-                Watcher.sendHeadRotation((org.bukkit.entity.Entity)stand, this.t, r.getPitch());
+                Watcher.sendHeadRotation((org.bukkit.entity.Entity)stand, this.t, r2.getPitch());
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 1L, 1L);
     }
@@ -760,8 +760,8 @@ implements Listener {
             this.econv.setCustomNameVisible(false);
             return;
         }
-        for (Player p : this.econv.getWorld().getPlayers()) {
-            p.sendMessage(Watcher.trans("&c[BOSS] The Watcher&f: " + str));
+        for (Player p2 : this.econv.getWorld().getPlayers()) {
+            p2.sendMessage(Watcher.trans("&c[BOSS] The Watcher&f: " + str));
         }
         this.econv.setCustomNameVisible(true);
         this.econv.setCustomName(Watcher.trans("&f&l" + str));

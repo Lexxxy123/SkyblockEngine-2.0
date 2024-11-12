@@ -160,7 +160,7 @@ extends BaseZombie {
                     this.cancel();
                     return;
                 }
-                for (int i = 0; 20 > i; ++i) {
+                for (int i2 = 0; 20 > i2; ++i2) {
                     entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 0.25, 0.0), Effect.FLAME, 0, 1, (float)SUtil.random(-0.5, 0.5), (float)SUtil.random(0.0, 1.5), (float)SUtil.random(-0.5, 0.5), 0.0f, 1, 20);
                 }
             }
@@ -271,9 +271,9 @@ extends BaseZombie {
                                         return;
                                     }
                                     Location location = entity.getEyeLocation().add(entity.getEyeLocation().getDirection().toLocation(entity.getWorld()));
-                                    Location l = location.clone();
-                                    l.setYaw(location.getYaw());
-                                    Arrow arr = entity.getWorld().spawnArrow(l, l.getDirection(), (float)this.bowPower, 1.6f);
+                                    Location l2 = location.clone();
+                                    l2.setYaw(location.getYaw());
+                                    Arrow arr = entity.getWorld().spawnArrow(l2, l2.getDirection(), (float)this.bowPower, 1.6f);
                                     arr.setShooter((ProjectileSource)entity);
                                     if (!this.crit) {
                                         arr.setCritical(1 == SUtil.random(0, 1));
@@ -303,21 +303,21 @@ extends BaseZombie {
                         skywatch.setRightClicking(true);
                         FrozenAdv.this.playPar(entity.getEyeLocation().setDirection(target1.getLocation().toVector().subtract(entity.getLocation().toVector())));
                         entity.getLocation().getWorld().playSound(entity.getLocation(), Sound.ENDERDRAGON_GROWL, 1.0f, 1.0f);
-                        for (org.bukkit.entity.Entity e : target1.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1)), 3.0, 3.0, 3.0)) {
-                            if (!(e instanceof Player)) continue;
-                            final Player player = (Player)e;
+                        for (org.bukkit.entity.Entity e2 : target1.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(1)), 3.0, 3.0, 3.0)) {
+                            if (!(e2 instanceof Player)) continue;
+                            final Player player = (Player)e2;
                             player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 20));
-                            double b = 0.0;
-                            for (int i = 0; 2 > i; ++i) {
-                                final int d = i;
-                                if (0 == d) {
-                                    b = 0.2;
-                                } else if (1 == i) {
-                                    b = 0.4;
-                                } else if (2 == i) {
-                                    b = 0.6;
+                            double b2 = 0.0;
+                            for (int i2 = 0; 2 > i2; ++i2) {
+                                final int d2 = i2;
+                                if (0 == d2) {
+                                    b2 = 0.2;
+                                } else if (1 == i2) {
+                                    b2 = 0.4;
+                                } else if (2 == i2) {
+                                    b2 = 0.6;
                                 }
-                                final ArmorStand stands = (ArmorStand)player.getWorld().spawn(player.getLocation().add(0.0, b + 1.0, 0.0), ArmorStand.class);
+                                final ArmorStand stands = (ArmorStand)player.getWorld().spawn(player.getLocation().add(0.0, b2 + 1.0, 0.0), ArmorStand.class);
                                 stands.setCustomNameVisible(false);
                                 stands.setVisible(false);
                                 stands.setArms(true);
@@ -332,13 +332,13 @@ extends BaseZombie {
                                 new BukkitRunnable(){
 
                                     public void run() {
-                                        double c = 0.0;
-                                        if (0 == d) {
-                                            c = 0.2;
-                                        } else if (1 == d) {
-                                            c = 0.4;
-                                        } else if (2 == d) {
-                                            c = 0.6;
+                                        double c2 = 0.0;
+                                        if (0 == d2) {
+                                            c2 = 0.2;
+                                        } else if (1 == d2) {
+                                            c2 = 0.4;
+                                        } else if (2 == d2) {
+                                            c2 = 0.6;
                                         }
                                         if (stands.isDead()) {
                                             player.removePotionEffect(PotionEffectType.SLOW);
@@ -350,7 +350,7 @@ extends BaseZombie {
                                             stands.remove();
                                             player.removeMetadata("frozen", (Plugin)SkyBlock.getPlugin());
                                         }
-                                        stands.teleport(player.getLocation().add(0.0, c + 1.0, 0.0));
+                                        stands.teleport(player.getLocation().add(0.0, c2 + 1.0, 0.0));
                                     }
                                 }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
                             }
@@ -362,7 +362,7 @@ extends BaseZombie {
                             int dmglater = (int)Math.round(FrozenAdv.this.getDamageDealt() * 3.0 - FrozenAdv.this.getDamageDealt() * 3.0 * (defense / (defense + 100.0)));
                             User.getUser(player.getUniqueId()).damage(dmglater, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (org.bukkit.entity.Entity)entity);
                             player.setMetadata("frozen", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
-                            ((LivingEntity)e).damage(1.0E-6, null);
+                            ((LivingEntity)e2).damage(1.0E-6, null);
                         }
                         SUtil.delay(() -> {
                             PlayerWatcher val$skywatch = skywatch;
@@ -417,9 +417,9 @@ extends BaseZombie {
                             motY += (double)((float)(this.nms.getEffect(MobEffectList.JUMP).getAmplifier() + 1) * 0.2f);
                         }
                         if (this.nms.isSprinting()) {
-                            float f = this.nms.yaw * 0.01745329f;
-                            motX -= (double)(MathHelper.sin((float)f) * 0.9f);
-                            motZ += (double)(MathHelper.cos((float)f) * 0.9f);
+                            float f2 = this.nms.yaw * 0.01745329f;
+                            motX -= (double)(MathHelper.sin((float)f2) * 0.9f);
+                            motZ += (double)(MathHelper.cos((float)f2) * 0.9f);
                         }
                         entity.setVelocity(new Vector(motX, motY, motZ));
                     }
@@ -452,10 +452,10 @@ extends BaseZombie {
     }
 
     @Override
-    public void onDamage(SEntity sEntity, org.bukkit.entity.Entity damager, EntityDamageByEntityEvent e, AtomicDouble damage) {
+    public void onDamage(SEntity sEntity, org.bukkit.entity.Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
         LivingEntity en = sEntity.getEntity();
-        Vector v = new Vector(0, 0, 0);
-        SUtil.delay(() -> FrozenAdv.lambda$onDamage$0((org.bukkit.entity.Entity)en, v), 1L);
+        Vector v2 = new Vector(0, 0, 0);
+        SUtil.delay(() -> FrozenAdv.lambda$onDamage$0((org.bukkit.entity.Entity)en, v2), 1L);
     }
 
     @Override
@@ -463,8 +463,8 @@ extends BaseZombie {
         return new SEntityEquipment(SUtil.enchant(SItem.of(SMaterial.ICE_WAND).getStack()), SUtil.enchant(SUtil.getSkullURLStack("Frozen Blaze Helmet", "55a13bb48e3595b55de8dd6943fc38db5235371278c695bd453e49a0999", 1, "")), SUtil.enchant(FrozenAdv.st(10541807, Material.LEATHER_CHESTPLATE, "Frozen Blaze Chestplate")), SUtil.enchant(FrozenAdv.st(10541807, Material.LEATHER_LEGGINGS, "Frozen Blaze Leggings")), SUtil.enchant(FrozenAdv.st(10541807, Material.LEATHER_BOOTS, "Frozen Blaze Boots")));
     }
 
-    public static ItemStack st(int hexcolor, Material m, String name) {
-        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB((int)hexcolor));
+    public static ItemStack st(int hexcolor, Material m2, String name) {
+        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m2), Color.fromRGB((int)hexcolor));
         ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.setDisplayName(name);
         itemMeta.spigot().setUnbreakable(true);
@@ -497,9 +497,9 @@ extends BaseZombie {
         return 0.25;
     }
 
-    public void playPar(Location l) {
+    public void playPar(Location l2) {
         ConeEffect Effect2 = new ConeEffect(SkyBlock.effectManager);
-        Effect2.setLocation(l.clone().add(l.getDirection().normalize().multiply(-0.25)).add(0.0, -0.1, 0.0));
+        Effect2.setLocation(l2.clone().add(l2.getDirection().normalize().multiply(-0.25)).add(0.0, -0.1, 0.0));
         Effect2.particle = ParticleEffect.SNOW_SHOVEL;
         Effect2.color = Color.WHITE;
         Effect2.angularVelocity = 0.39269908169872414;
@@ -511,30 +511,30 @@ extends BaseZombie {
     }
 
     public void lightningPlayer(org.bukkit.entity.Entity en) {
-        List a = en.getNearbyEntities(10.0, 10.0, 10.0);
-        a.removeIf(entity -> EntityType.PLAYER != entity.getType());
-        if (3 > a.size()) {
-            for (int i = 0; i < SUtil.random(1, 3); ++i) {
+        List a2 = en.getNearbyEntities(10.0, 10.0, 10.0);
+        a2.removeIf(entity -> EntityType.PLAYER != entity.getType());
+        if (3 > a2.size()) {
+            for (int i2 = 0; i2 < SUtil.random(1, 3); ++i2) {
                 en.getWorld().strikeLightningEffect(new Location(en.getWorld(), en.getLocation().getX() + (double)SUtil.random(-2, 2), en.getLocation().getY(), en.getLocation().getZ() + (double)SUtil.random(-2, 2), en.getLocation().getYaw(), en.getLocation().getPitch()));
             }
         }
-        for (org.bukkit.entity.Entity e : en.getNearbyEntities(10.0, 10.0, 10.0)) {
-            if (!(e instanceof Player)) continue;
-            Player p = (Player)e;
-            p.getWorld().strikeLightningEffect(p.getLocation());
-            User.getUser(p.getUniqueId()).damage(p.getMaxHealth() * 10.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, e);
+        for (org.bukkit.entity.Entity e2 : en.getNearbyEntities(10.0, 10.0, 10.0)) {
+            if (!(e2 instanceof Player)) continue;
+            Player p2 = (Player)e2;
+            p2.getWorld().strikeLightningEffect(p2.getLocation());
+            User.getUser(p2.getUniqueId()).damage(p2.getMaxHealth() * 10.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, e2);
         }
     }
 
-    public static void sendHeadRotation(org.bukkit.entity.Entity e, float yaw, float pitch) {
-        EntityZombie pl = ((CraftZombie)e).getHandle();
-        pl.setLocation(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), yaw, pitch);
+    public static void sendHeadRotation(org.bukkit.entity.Entity e2, float yaw, float pitch) {
+        EntityZombie pl = ((CraftZombie)e2).getHandle();
+        pl.setLocation(e2.getLocation().getX(), e2.getLocation().getY(), e2.getLocation().getZ(), yaw, pitch);
         PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport((Entity)pl);
-        Sputnik.sendPacket(e.getWorld(), (Packet)packet);
+        Sputnik.sendPacket(e2.getWorld(), (Packet)packet);
     }
 
-    private static /* synthetic */ void lambda$onDamage$0(org.bukkit.entity.Entity en, Vector v) {
-        en.setVelocity(v);
+    private static /* synthetic */ void lambda$onDamage$0(org.bukkit.entity.Entity en, Vector v2) {
+        en.setVelocity(v2);
     }
 }
 

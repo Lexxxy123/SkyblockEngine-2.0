@@ -39,8 +39,8 @@ public class SkyEncryption {
             byte[] plainText = unencryptedString.getBytes(StandardCharsets.UTF_8);
             byte[] encryptedText = this.cipher.doFinal(plainText);
             encryptedString = new String(Base64.getEncoder().encode(encryptedText));
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception e2) {
+            e2.printStackTrace();
         }
         return encryptedString;
     }
@@ -52,8 +52,8 @@ public class SkyEncryption {
             byte[] encryptedText = Base64.getDecoder().decode(encryptedString);
             byte[] plainText = this.cipher.doFinal(encryptedText);
             decryptedText = new String(plainText);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception e2) {
+            e2.printStackTrace();
         }
         return decryptedText;
     }

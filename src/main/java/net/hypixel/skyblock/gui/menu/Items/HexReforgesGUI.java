@@ -62,8 +62,8 @@ extends GUI {
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e) {
-                    new HexReforgesGUI(item, finalPage - 1).open((Player)e.getWhoClicked());
+                public void run(InventoryClickEvent e2) {
+                    new HexReforgesGUI(item, finalPage - 1).open((Player)e2.getWhoClicked());
                 }
 
                 @Override
@@ -81,8 +81,8 @@ extends GUI {
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e) {
-                    new HexReforgesGUI(item, finalPage + 1).open((Player)e.getWhoClicked());
+                public void run(InventoryClickEvent e2) {
+                    new HexReforgesGUI(item, finalPage + 1).open((Player)e2.getWhoClicked());
                 }
 
                 @Override
@@ -96,18 +96,18 @@ extends GUI {
                 }
             });
         }
-        int i = 0;
-        while (i < items.size()) {
-            final int slot = INTERIOR[i];
-            final int finalI = i++;
+        int i2 = 0;
+        while (i2 < items.size()) {
+            final int slot = INTERIOR[i2];
+            final int finalI = i2++;
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e) {
-                    Player player = (Player)e.getWhoClicked();
+                public void run(InventoryClickEvent e2) {
+                    Player player = (Player)e2.getWhoClicked();
                     player.playSound(player.getLocation(), Sound.ORB_PICKUP, 10.0f, 2.0f);
-                    player.sendMessage(ChatColor.translateAlternateColorCodes((char)'&', (String)("&aYou selected the reforge " + SItem.find(e.getCurrentItem()).getReforge().getName() + " to be applied on your item!")));
-                    HexReforgesGUI.this.selected = SItem.find(e.getCurrentItem()).getReforge();
+                    player.sendMessage(ChatColor.translateAlternateColorCodes((char)'&', (String)("&aYou selected the reforge " + SItem.find(e2.getCurrentItem()).getReforge().getName() + " to be applied on your item!")));
+                    HexReforgesGUI.this.selected = SItem.find(e2.getCurrentItem()).getReforge();
                 }
 
                 @Override
@@ -126,18 +126,18 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 if (HexReforgesGUI.this.selected == null) {
-                    e.getWhoClicked().getInventory().setItem(e.getWhoClicked().getInventory().firstEmpty(), item.getStack());
-                    e.getWhoClicked().closeInventory();
+                    e2.getWhoClicked().getInventory().setItem(e2.getWhoClicked().getInventory().firstEmpty(), item.getStack());
+                    e2.getWhoClicked().closeInventory();
                     return;
                 }
-                Player p = (Player)e.getWhoClicked();
-                p.playSound(p.getLocation(), Sound.ANVIL_USE, 10.0f, 1.0f);
+                Player p2 = (Player)e2.getWhoClicked();
+                p2.playSound(p2.getLocation(), Sound.ANVIL_USE, 10.0f, 1.0f);
                 HexReforgesGUI.this.forceclose = true;
                 item.setReforge(HexReforgesGUI.this.selected);
-                p.sendMessage(ChatColor.translateAlternateColorCodes((char)'&', (String)("&aYou applied the reforge " + HexReforgesGUI.this.selected.getName() + " to your " + item.getFullName() + "!")));
-                new HexGUI(p.getPlayer(), item).open(p);
+                p2.sendMessage(ChatColor.translateAlternateColorCodes((char)'&', (String)("&aYou applied the reforge " + HexReforgesGUI.this.selected.getName() + " to your " + item.getFullName() + "!")));
+                new HexGUI(p2.getPlayer(), item).open(p2);
             }
 
             @Override
@@ -153,9 +153,9 @@ extends GUI {
     }
 
     @Override
-    public void onClose(InventoryCloseEvent e) {
+    public void onClose(InventoryCloseEvent e2) {
         if (!this.forceclose && this.upgradeableItem != null) {
-            e.getPlayer().getInventory().addItem(new ItemStack[]{this.upgradeableItem.getStack()});
+            e2.getPlayer().getInventory().addItem(new ItemStack[]{this.upgradeableItem.getStack()});
         }
     }
 }

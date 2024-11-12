@@ -32,20 +32,20 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e) {
-        final Player player = e.getPlayer();
+    public void onOpen(GUIOpenEvent e2) {
+        final Player player = e2.getPlayer();
         User user = User.getUser(player.getUniqueId());
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
-                Player p = (Player)e.getWhoClicked();
-                if (User.getUser(p.getUniqueId()).getBits() >= 2000L) {
-                    User.getUser(p.getUniqueId()).subBits(2000L);
-                    p.sendMessage(Sputnik.trans("&eYou have travelled to the &cWithering Ruins&e!"));
-                    p.teleport(new Location(Bukkit.getWorld((String)"arena"), 234744.5, 158.0, 236558.5, 135.0f, 0.0f));
+            public void run(InventoryClickEvent e2) {
+                Player p2 = (Player)e2.getWhoClicked();
+                if (User.getUser(p2.getUniqueId()).getBits() >= 2000L) {
+                    User.getUser(p2.getUniqueId()).subBits(2000L);
+                    p2.sendMessage(Sputnik.trans("&eYou have travelled to the &cWithering Ruins&e!"));
+                    p2.teleport(new Location(Bukkit.getWorld((String)"arena"), 234744.5, 158.0, 236558.5, 135.0f, 0.0f));
                 } else {
-                    p.sendMessage(Sputnik.trans("&cYou cannot afford for this ride!"));
+                    p2.sendMessage(Sputnik.trans("&cYou cannot afford for this ride!"));
                 }
             }
 

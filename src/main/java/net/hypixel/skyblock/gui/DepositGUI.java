@@ -10,6 +10,7 @@
  */
 package net.hypixel.skyblock.gui;
 
+import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.gui.BankerGUI;
 import net.hypixel.skyblock.gui.GUI;
 import net.hypixel.skyblock.gui.GUIClickableItem;
@@ -31,19 +32,23 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e) {
+    public void onOpen(GUIOpenEvent e2) {
         this.fill(BLACK_STAINED_GLASS_PANE);
-        final Player player = e.getPlayer();
+        final Player player = e2.getPlayer();
         this.set(GUIClickableItem.createGUIOpenerItem(GUIType.BANKER, player, ChatColor.GREEN + "Go Back", 31, Material.ARROW, ChatColor.GRAY + "To Personal Bank Account"));
         final User user = User.getUser(player.getUniqueId());
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 long coins = user.getCoins();
                 user.subCoins(coins);
                 user.addBankCoins(coins);
-                user.save();
+                if (SkyBlock.getPlugin().config.getBoolean("Config")) {
+                    user.configsave();
+                } else {
+                    user.save();
+                }
                 player.sendMessage(ChatColor.GREEN + "You have deposited " + ChatColor.GOLD + SUtil.commaify(coins) + " coins" + ChatColor.GREEN + "! You now have " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()) + " coins " + ChatColor.GREEN + "in your account!");
                 GUIType.BANKER.getGUI().open(player);
             }
@@ -61,11 +66,15 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 long coins = user.getCoins() / 2L;
                 user.subCoins(coins);
                 user.addBankCoins(coins);
-                user.save();
+                if (SkyBlock.getPlugin().config.getBoolean("Config")) {
+                    user.configsave();
+                } else {
+                    user.save();
+                }
                 player.sendMessage(ChatColor.GREEN + "You have deposited " + ChatColor.GOLD + SUtil.commaify(coins) + " coins" + ChatColor.GREEN + "! You now have " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()) + " coins " + ChatColor.GREEN + "in your account!");
                 GUIType.BANKER.getGUI().open(player);
             }
@@ -96,7 +105,11 @@ extends GUI {
                     }
                     user.subCoins(coins);
                     user.addBankCoins(coins);
-                    user.save();
+                    if (SkyBlock.getPlugin().config.getBoolean("Config")) {
+                        user.configsave();
+                    } else {
+                        user.save();
+                    }
                     player.sendMessage(ChatColor.GREEN + "You have deposited " + ChatColor.GOLD + SUtil.commaify(coins) + " coins" + ChatColor.GREEN + "! You now have " + ChatColor.GOLD + SUtil.commaify(user.getBankCoins()) + " coins " + ChatColor.GREEN + "in your account!");
                 } catch (NumberFormatException ex) {
                     player.sendMessage(ChatColor.RED + "That is not a valid number!");
@@ -106,7 +119,7 @@ extends GUI {
             }
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
             }
 
             @Override

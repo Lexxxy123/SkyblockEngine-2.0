@@ -231,7 +231,7 @@ TickingMaterial {
             boolean take = PlayerUtils.takeMana(player, cost);
             if (!take) {
                 player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
-                final long c = System.currentTimeMillis();
+                final long c2 = System.currentTimeMillis();
                 Repeater.MANA_REPLACEMENT_MAP.put(player.getUniqueId(), new ManaReplacement(){
 
                     @Override
@@ -241,7 +241,7 @@ TickingMaterial {
 
                     @Override
                     public long getEnd() {
-                        return c + 1500L;
+                        return c2 + 1500L;
                     }
                 });
                 player.sendMessage(ChatColor.translateAlternateColorCodes((char)'&', (String)"&dEye Beam &cDe-Activated!"));
@@ -249,7 +249,7 @@ TickingMaterial {
                 PrecursorLivingSeconds.put(player.getUniqueId(), 0);
                 return;
             }
-            final long c = System.currentTimeMillis();
+            final long c3 = System.currentTimeMillis();
             Repeater.DEFENSE_REPLACEMENT_MAP.put(player.getUniqueId(), new DefenseReplacement(){
 
                 @Override
@@ -259,11 +259,11 @@ TickingMaterial {
 
                 @Override
                 public long getEnd() {
-                    return c + 2000L;
+                    return c3 + 2000L;
                 }
             });
-            for (int i = 1; i <= 40; ++i) {
-                for (Entity entity : player.getWorld().getNearbyEntities(crystalLocation.clone().add(vector.clone().multiply((double)i / 40.0)), 0.5, 0.0, 0.5)) {
+            for (int i2 = 1; i2 <= 40; ++i2) {
+                for (Entity entity : player.getWorld().getNearbyEntities(crystalLocation.clone().add(vector.clone().multiply((double)i2 / 40.0)), 0.5, 0.0, 0.5)) {
                     if (ACT == "false") {
                         return;
                     }
@@ -298,8 +298,8 @@ TickingMaterial {
                     }.runTaskLater((Plugin)SkyBlock.getPlugin(), 30L);
                     ACT = "false";
                 }
-                player.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply((double)i / 40.0)), Effect.COLOURED_DUST, 0, 1, 0.5882353f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
-                player.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply((double)i / 40.0)), Effect.COLOURED_DUST, 0, 1, 0.84313726f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
+                player.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply((double)i2 / 40.0)), Effect.COLOURED_DUST, 0, 1, 0.5882353f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
+                player.getWorld().spigot().playEffect(crystalLocation.clone().add(vector.clone().multiply((double)i2 / 40.0)), Effect.COLOURED_DUST, 0, 1, 0.84313726f, 0.03529412f, 0.007843138f, 1.0f, 0, 64);
             }
         }
     }

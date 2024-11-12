@@ -34,14 +34,14 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e) {
+    public void onOpen(GUIOpenEvent e2) {
         this.fill(BLACK_STAINED_GLASS_PANE);
-        final Player player = e.getPlayer();
+        final Player player = e2.getPlayer();
         this.set(GUIClickableItem.createGUIOpenerItem(GUIType.SLAYER, player, ChatColor.GREEN + "Go Back", 49, Material.ARROW, ChatColor.GRAY + "To Slayer"));
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 new SlayerConfirmGUI(SlayerBossType.REVENANT_HORROR_I, () -> {
                     Player val$player = player;
                     User.getUser(player.getUniqueId()).startSlayerQuest(SlayerBossType.REVENANT_HORROR_I);
@@ -61,7 +61,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 new SlayerConfirmGUI(SlayerBossType.REVENANT_HORROR_II, () -> {
                     Player val$player = player;
                     User.getUser(player.getUniqueId()).startSlayerQuest(SlayerBossType.REVENANT_HORROR_II);
@@ -81,7 +81,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 new SlayerConfirmGUI(SlayerBossType.REVENANT_HORROR_III, () -> {
                     Player val$player = player;
                     User.getUser(player.getUniqueId()).startSlayerQuest(SlayerBossType.REVENANT_HORROR_III);
@@ -101,7 +101,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 new SlayerConfirmGUI(SlayerBossType.REVENANT_HORROR_IV, () -> {
                     Player val$player = player;
                     User.getUser(player.getUniqueId()).startSlayerQuest(SlayerBossType.REVENANT_HORROR_IV);
@@ -121,7 +121,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 new SlayerConfirmGUI(SlayerBossType.REVENANT_HORROR_V, () -> {
                     Player val$player = player;
                     User.getUser(player.getUniqueId()).startSlayerQuest(SlayerBossType.REVENANT_HORROR_V);
@@ -142,7 +142,7 @@ extends GUI {
 
             @Override
             public ItemStack getItem() {
-                return SUtil.getStack(ChatColor.DARK_PURPLE + "Boss Leveling Rewards", Material.GOLD_BLOCK, (short)0, 1, ChatColor.DARK_GRAY + "Zombie Slayer LVL", ChatColor.GRAY + " ", Sputnik.trans("&51. &7Kill boss to get XP"), Sputnik.trans("&52. &7Gain LVL from XP"), Sputnik.trans("&53. &7Unlock rewards per LVL"), Sputnik.trans(" "), Sputnik.trans("&7Current LVL: &e" + SlayerBossType.SlayerMobType.ZOMBIE.getLevelForXP(User.getUser(player.getUniqueId()).getZombieSlayerXP())), Sputnik.trans(" "), Sputnik.trans("&7Zombie Slayer XP to LVL " + (SlayerBossType.SlayerMobType.ZOMBIE.getLevelForXP(User.getUser(player.getUniqueId()).getZombieSlayerXP()) + 1) + ":"), Sputnik.trans(SUtil.createLineProgressBar(18, ChatColor.DARK_PURPLE, User.getUser(player.getUniqueId()).getZombieSlayerXP(), SlayerBossType.staticGetXPReqForLevel(SlayerBossType.SlayerMobType.ZOMBIE.getLevelForXP(User.getUser(player.getUniqueId()).getZombieSlayerXP()), EntityType.ZOMBIE))), " ", Sputnik.trans("&cCurrently Not available!"));
+                return SUtil.getStack(ChatColor.DARK_PURPLE + "Boss Leveling Rewards", Material.GOLD_BLOCK, (short)0, 1, ChatColor.DARK_GRAY + "Zombie Slayer LVL", ChatColor.GRAY + " ", Sputnik.trans("&51. &7Kill boss to get XP"), Sputnik.trans("&52. &7Gain LVL from XP"), Sputnik.trans("&53. &7Unlock rewards per LVL"), Sputnik.trans(" "), Sputnik.trans("&7Current LVL: &e" + SlayerBossType.SlayerMobType.ZOMBIE.getLevelForXP(User.getUser(player.getUniqueId()).getZombieSlayerXP())), Sputnik.trans(" "), Sputnik.trans("&7Zombie Slayer XP to LVL " + (SlayerBossType.SlayerMobType.ZOMBIE.getLevelForXP(User.getUser(player.getUniqueId()).getZombieSlayerXP()) + 1) + ":"), Sputnik.trans(SUtil.createLineProgressBar(18, ChatColor.DARK_PURPLE, User.getUser(player.getUniqueId()).getZombieSlayerXP(), SlayerBossType.staticGetXPReqForLevel(SlayerBossType.SlayerMobType.ZOMBIE.getLevelForXP(User.getUser(player.getUniqueId()).getZombieSlayerXP()), EntityType.ZOMBIE))), " ", Sputnik.trans("&cNot available on Semi-Sandbox mode!"));
             }
 
             @Override
@@ -151,7 +151,7 @@ extends GUI {
             }
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
             }
         });
         this.set(new GUIClickableItem(){
@@ -167,7 +167,7 @@ extends GUI {
             }
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
             }
         });
         this.set(new GUIClickableItem(){
@@ -183,7 +183,7 @@ extends GUI {
             }
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
             }
         });
     }

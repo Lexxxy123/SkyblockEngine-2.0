@@ -136,17 +136,17 @@ Ability {
             user.damageEntityIgnoreShield((Damageable)entity, baseDamage);
             entity.setMetadata("frozen", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
             PlayerListener.spawnDamageInd(entity, baseDamage, false);
-            double b = 0.0;
-            for (int i = 0; i < 2; ++i) {
-                final int d = i;
-                if (d == 0) {
-                    b = 0.2;
-                } else if (i == 1) {
-                    b = 0.4;
-                } else if (i == 2) {
-                    b = 0.6;
+            double b2 = 0.0;
+            for (int i2 = 0; i2 < 2; ++i2) {
+                final int d2 = i2;
+                if (d2 == 0) {
+                    b2 = 0.2;
+                } else if (i2 == 1) {
+                    b2 = 0.4;
+                } else if (i2 == 2) {
+                    b2 = 0.6;
                 }
-                final ArmorStand stands = (ArmorStand)entity.getWorld().spawn(entity.getLocation().add(0.0, b + 1.0, 0.0), ArmorStand.class);
+                final ArmorStand stands = (ArmorStand)entity.getWorld().spawn(entity.getLocation().add(0.0, b2 + 1.0, 0.0), ArmorStand.class);
                 stands.setCustomNameVisible(false);
                 stands.setVisible(false);
                 stands.setArms(true);
@@ -158,13 +158,13 @@ Ability {
                 new BukkitRunnable(){
 
                     public void run() {
-                        double c = 0.0;
-                        if (d == 0) {
-                            c = 0.2;
-                        } else if (d == 1) {
-                            c = 0.4;
-                        } else if (d == 2) {
-                            c = 0.6;
+                        double c2 = 0.0;
+                        if (d2 == 0) {
+                            c2 = 0.2;
+                        } else if (d2 == 1) {
+                            c2 = 0.4;
+                        } else if (d2 == 2) {
+                            c2 = 0.6;
                         }
                         if (stands.isDead()) {
                             ((LivingEntity)entity).removePotionEffect(PotionEffectType.SLOW);
@@ -176,7 +176,7 @@ Ability {
                             stands.remove();
                         }
                         ((LivingEntity)entity).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 20));
-                        stands.teleport(entity.getLocation().add(0.0, c + 1.0, 0.0));
+                        stands.teleport(entity.getLocation().add(0.0, c2 + 1.0, 0.0));
                     }
                 }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
             }

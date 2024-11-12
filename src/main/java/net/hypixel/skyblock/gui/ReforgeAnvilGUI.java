@@ -54,12 +54,12 @@ implements Listener {
     private static final Map<Rarity, Integer> COST_MAP = new HashMap<Rarity, Integer>();
     private static final List<UUID> COOLDOWN = new ArrayList<UUID>();
 
-    public void fillFrom(Inventory i, int startFromSlot, int height, ItemStack stacc) {
-        i.setItem(startFromSlot, stacc);
-        i.setItem(startFromSlot + 9, stacc);
-        i.setItem(startFromSlot + 9 + 9, stacc);
-        i.setItem(startFromSlot + 9 + 9 + 9, stacc);
-        i.setItem(startFromSlot + 9 + 9 + 9 + 9, stacc);
+    public void fillFrom(Inventory i2, int startFromSlot, int height, ItemStack stacc) {
+        i2.setItem(startFromSlot, stacc);
+        i2.setItem(startFromSlot + 9, stacc);
+        i2.setItem(startFromSlot + 9 + 9, stacc);
+        i2.setItem(startFromSlot + 9 + 9 + 9, stacc);
+        i2.setItem(startFromSlot + 9 + 9 + 9 + 9, stacc);
     }
 
     public ReforgeAnvilGUI() {
@@ -84,8 +84,8 @@ implements Listener {
             }
 
             @Override
-            public void run(InventoryClickEvent e) {
-                SItem sItem = SItem.find(e.getClickedInventory().getItem(13));
+            public void run(InventoryClickEvent e2) {
+                SItem sItem = SItem.find(e2.getClickedInventory().getItem(13));
                 if (sItem == null) {
                     return;
                 }
@@ -93,7 +93,7 @@ implements Listener {
                     return;
                 }
                 List possible = Arrays.stream(ReforgeType.values()).filter(type -> type.getReforge().getCompatibleTypes().contains((Object)sItem.getType().getStatistics().getType()) && type.isAccessible()).collect(Collectors.toList());
-                final Player player = (Player)e.getWhoClicked();
+                final Player player = (Player)e2.getWhoClicked();
                 if (possible.size() == 0) {
                     player.sendMessage(ChatColor.RED + "That item cannot be reforged!");
                     return;
@@ -145,16 +145,16 @@ implements Listener {
     }
 
     @Override
-    public void onOpen(final GUIOpenEvent e) {
+    public void onOpen(final GUIOpenEvent e2) {
         new BukkitRunnable(){
 
             public void run() {
-                Player player = e.getPlayer();
+                Player player = e2.getPlayer();
                 if (ReforgeAnvilGUI.this != GUI.GUI_MAP.get(player.getUniqueId())) {
                     this.cancel();
                     return;
                 }
-                Inventory inventory = e.getInventory();
+                Inventory inventory = e2.getInventory();
                 SItem sItem = SItem.find(inventory.getItem(13));
                 if (sItem == null) {
                     ReforgeAnvilGUI.this.fillFrom(inventory, 0, 5, SUtil.createColoredStainedGlassPane((short)14, ChatColor.RESET + " "));
@@ -170,16 +170,16 @@ implements Listener {
     }
 
     @EventHandler
-    public void onInventoryClose(InventoryCloseEvent e) {
-        if (!(e.getPlayer() instanceof Player)) {
+    public void onInventoryClose(InventoryCloseEvent e2) {
+        if (!(e2.getPlayer() instanceof Player)) {
             return;
         }
-        Player player = (Player)e.getPlayer();
+        Player player = (Player)e2.getPlayer();
         GUI gui = (GUI)GUI_MAP.get(player.getUniqueId());
         if (gui == null) {
             return;
         }
-        gui.onClose(e);
+        gui.onClose(e2);
         GUI_MAP.remove(player.getUniqueId());
     }
 

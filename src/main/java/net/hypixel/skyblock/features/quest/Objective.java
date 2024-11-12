@@ -40,8 +40,8 @@ implements Listener {
         return this.getQuest().getNext(this);
     }
 
-    public void complete(Player p) {
-        User player = User.getUser(p.getUniqueId());
+    public void complete(Player p2) {
+        User player = User.getUser(p2.getUniqueId());
         Objective next = this.getNext();
         player.addCompletedObjectives(this.getId());
         if (this.getNext() == null) {

@@ -37,13 +37,13 @@ public class BukkitSerializeClass {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream((OutputStream)outputStream);
             dataOutput.writeInt(items.length);
-            for (int i = 0; i < items.length; ++i) {
-                dataOutput.writeObject((Object)items[i]);
+            for (int i2 = 0; i2 < items.length; ++i2) {
+                dataOutput.writeObject((Object)items[i2]);
             }
             dataOutput.close();
             return Base64Coder.encodeLines((byte[])outputStream.toByteArray());
-        } catch (Exception e) {
-            throw new IllegalStateException("Unable to save item stacks.", e);
+        } catch (Exception e2) {
+            throw new IllegalStateException("Unable to save item stacks.", e2);
         }
     }
 
@@ -52,13 +52,13 @@ public class BukkitSerializeClass {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream((OutputStream)outputStream);
             dataOutput.writeInt(inventory.getSize());
-            for (int i = 0; i < inventory.getSize(); ++i) {
-                dataOutput.writeObject((Object)inventory.getItem(i));
+            for (int i2 = 0; i2 < inventory.getSize(); ++i2) {
+                dataOutput.writeObject((Object)inventory.getItem(i2));
             }
             dataOutput.close();
             return Base64Coder.encodeLines((byte[])outputStream.toByteArray());
-        } catch (Exception e) {
-            throw new IllegalStateException("Unable to save item stacks.", e);
+        } catch (Exception e2) {
+            throw new IllegalStateException("Unable to save item stacks.", e2);
         }
     }
 
@@ -67,13 +67,13 @@ public class BukkitSerializeClass {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines((String)data));
             BukkitObjectInputStream dataInput = new BukkitObjectInputStream((InputStream)inputStream);
             Inventory inventory = Bukkit.getServer().createInventory(null, dataInput.readInt());
-            for (int i = 0; i < inventory.getSize(); ++i) {
-                inventory.setItem(i, (ItemStack)dataInput.readObject());
+            for (int i2 = 0; i2 < inventory.getSize(); ++i2) {
+                inventory.setItem(i2, (ItemStack)dataInput.readObject());
             }
             dataInput.close();
             return inventory;
-        } catch (ClassNotFoundException e) {
-            throw new IOException("Unable to decode class type.", e);
+        } catch (ClassNotFoundException e2) {
+            throw new IOException("Unable to decode class type.", e2);
         }
     }
 
@@ -82,13 +82,13 @@ public class BukkitSerializeClass {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines((String)data));
             BukkitObjectInputStream dataInput = new BukkitObjectInputStream((InputStream)inputStream);
             ItemStack[] items = new ItemStack[dataInput.readInt()];
-            for (int i = 0; i < items.length; ++i) {
-                items[i] = (ItemStack)dataInput.readObject();
+            for (int i2 = 0; i2 < items.length; ++i2) {
+                items[i2] = (ItemStack)dataInput.readObject();
             }
             dataInput.close();
             return items;
-        } catch (ClassNotFoundException e) {
-            throw new IOException("Unable to decode class type.", e);
+        } catch (ClassNotFoundException e2) {
+            throw new IOException("Unable to decode class type.", e2);
         }
     }
 }

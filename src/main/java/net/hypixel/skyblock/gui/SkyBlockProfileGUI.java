@@ -36,11 +36,11 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e) {
+    public void onOpen(GUIOpenEvent e2) {
         this.fill(BLACK_STAINED_GLASS_PANE);
-        this.set(GUIClickableItem.createGUIOpenerItem(GUIType.SKYBLOCK_MENU, e.getPlayer(), ChatColor.GREEN + "Go Back", 48, Material.ARROW, ChatColor.GRAY + "To SkyBlock Menu"));
+        this.set(GUIClickableItem.createGUIOpenerItem(GUIType.SKYBLOCK_MENU, e2.getPlayer(), ChatColor.GREEN + "Go Back", 48, Material.ARROW, ChatColor.GRAY + "To SkyBlock Menu"));
         this.set(GUIClickableItem.getCloseItem(49));
-        Player player = e.getPlayer();
+        Player player = e2.getPlayer();
         PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
         Double visualcap = statistics.getCritChance().addAll() * 100.0;
         if (visualcap > 100.0) {

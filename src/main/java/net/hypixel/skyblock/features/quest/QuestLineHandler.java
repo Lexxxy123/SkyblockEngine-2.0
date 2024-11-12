@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import net.hypixel.skyblock.features.quest.Objective;
 import net.hypixel.skyblock.features.quest.QuestLine;
-import net.hypixel.skyblock.features.quest.dungeon.Dungeon;
-import net.hypixel.skyblock.features.quest.dungeon.Mort;
+import net.hypixel.skyblock.features.quest.hub.IntroduceYourselfQuest;
+import net.hypixel.skyblock.features.quest.starting.GettingStartedQuest;
 import net.hypixel.skyblock.features.region.RegionType;
 import net.hypixel.skyblock.user.User;
 
@@ -17,8 +17,8 @@ public class QuestLineHandler {
     private final HashMap<RegionType, List<QuestLine>> quests = new HashMap();
 
     public QuestLineHandler() {
-        this.register(RegionType.MOUNTAIN, (QuestLine)new Mort());
-        this.register(RegionType.F6, (QuestLine)new Dungeon());
+        this.register(RegionType.PRIVATE_ISLAND, (QuestLine)new GettingStartedQuest());
+        this.register(RegionType.VILLAGE, (QuestLine)new IntroduceYourselfQuest());
         for (List<QuestLine> quest : this.quests.values()) {
             quest.forEach(QuestLine::onEnable);
         }

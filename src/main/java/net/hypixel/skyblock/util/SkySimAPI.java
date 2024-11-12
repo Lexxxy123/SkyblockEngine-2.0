@@ -18,11 +18,11 @@ import org.bukkit.inventory.PlayerInventory;
 
 public class SkySimAPI {
     public static void requestPlayerAPI(OfflinePlayer player) {
-        Player p = player.getPlayer();
-        PlayerInventory inv = p.getInventory();
+        Player p2 = player.getPlayer();
+        PlayerInventory inv = p2.getInventory();
         StringBuilder sb = new StringBuilder();
-        for (int i = 39; i >= 0; --i) {
-            ItemStack stack = inv.getItem(i);
+        for (int i2 = 39; i2 >= 0; --i2) {
+            ItemStack stack = inv.getItem(i2);
             if (stack == null) continue;
             sb.append(NBTExplorer.NBTSaver(stack));
         }

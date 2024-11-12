@@ -50,29 +50,29 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e) {
-        final Player player = e.getPlayer();
-        User user = User.getUser(e.getPlayer().getUniqueId());
+    public void onOpen(GUIOpenEvent e2) {
+        final Player player = e2.getPlayer();
+        User user = User.getUser(e2.getPlayer().getUniqueId());
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
-                if (e.getWhoClicked().getInventory().getItem(CookieConfirmGUI.this.cookieSlot) == null || CookieConfirmGUI.this.stack == null) {
-                    ((Player)e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.VILLAGER_NO, 1.0f, 1.0f);
-                    CookieConfirmGUI.this.sendError((Player)e.getWhoClicked());
+            public void run(InventoryClickEvent e2) {
+                if (e2.getWhoClicked().getInventory().getItem(CookieConfirmGUI.this.cookieSlot) == null || CookieConfirmGUI.this.stack == null) {
+                    ((Player)e2.getWhoClicked()).playSound(e2.getWhoClicked().getLocation(), Sound.VILLAGER_NO, 1.0f, 1.0f);
+                    CookieConfirmGUI.this.sendError((Player)e2.getWhoClicked());
                     return;
                 }
-                if (!e.getWhoClicked().getInventory().getItem(CookieConfirmGUI.this.cookieSlot).toString().equalsIgnoreCase(CookieConfirmGUI.this.stack.toString())) {
-                    ((Player)e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.VILLAGER_NO, 1.0f, 1.0f);
-                    CookieConfirmGUI.this.sendError((Player)e.getWhoClicked());
+                if (!e2.getWhoClicked().getInventory().getItem(CookieConfirmGUI.this.cookieSlot).toString().equalsIgnoreCase(CookieConfirmGUI.this.stack.toString())) {
+                    ((Player)e2.getWhoClicked()).playSound(e2.getWhoClicked().getLocation(), Sound.VILLAGER_NO, 1.0f, 1.0f);
+                    CookieConfirmGUI.this.sendError((Player)e2.getWhoClicked());
                     return;
                 }
-                e.getWhoClicked().getInventory().setItem(CookieConfirmGUI.this.cookieSlot, null);
-                PlayerUtils.setCookieDurationTicks((Player)e.getWhoClicked(), PlayerUtils.getCookieDurationTicks(player) + 3456000L);
-                e.getWhoClicked().sendMessage(Sputnik.trans("&eYou consumed a &6Booster Cookie&e! " + CookieConfirmGUI.this.suffix[SUtil.random(0, CookieConfirmGUI.this.suffix.length - 1)]));
-                e.getWhoClicked().closeInventory();
-                ((Player)e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.CLICK, 1.0f, 1.0f);
-                CookieConfirmGUI.this.playParticle((Player)e.getWhoClicked());
+                e2.getWhoClicked().getInventory().setItem(CookieConfirmGUI.this.cookieSlot, null);
+                PlayerUtils.setCookieDurationTicks((Player)e2.getWhoClicked(), PlayerUtils.getCookieDurationTicks(player) + 3456000L);
+                e2.getWhoClicked().sendMessage(Sputnik.trans("&eYou consumed a &6Booster Cookie&e! " + CookieConfirmGUI.this.suffix[SUtil.random(0, CookieConfirmGUI.this.suffix.length - 1)]));
+                e2.getWhoClicked().closeInventory();
+                ((Player)e2.getWhoClicked()).playSound(e2.getWhoClicked().getLocation(), Sound.CLICK, 1.0f, 1.0f);
+                CookieConfirmGUI.this.playParticle((Player)e2.getWhoClicked());
             }
 
             @Override
@@ -91,9 +91,9 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
-                e.getWhoClicked().closeInventory();
-                ((Player)e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.CLICK, 1.0f, 1.0f);
+            public void run(InventoryClickEvent e2) {
+                e2.getWhoClicked().closeInventory();
+                ((Player)e2.getWhoClicked()).playSound(e2.getWhoClicked().getLocation(), Sound.CLICK, 1.0f, 1.0f);
             }
 
             @Override
@@ -108,15 +108,15 @@ extends GUI {
         });
     }
 
-    public void sendError(Player p) {
-        p.closeInventory();
-        p.sendMessage(ChatColor.RED + "An unexpected error occured while consuming this Booster Cookie! Contact server staff if this happends again.");
+    public void sendError(Player p2) {
+        p2.closeInventory();
+        p2.sendMessage(ChatColor.RED + "An unexpected error occured while consuming this Booster Cookie! Contact server staff if this happends again.");
     }
 
-    public void playParticle(final Player p) {
-        p.getWorld().playSound(p.getLocation(), Sound.EAT, 1.0f, 1.6f);
-        SUtil.delay(() -> p.getWorld().playSound(p.getLocation(), Sound.EAT, 1.0f, 1.7f), 3L);
-        SUtil.delay(() -> p.getWorld().playSound(p.getLocation(), Sound.EAT, 1.0f, 1.8f), 6L);
+    public void playParticle(final Player p2) {
+        p2.getWorld().playSound(p2.getLocation(), Sound.EAT, 1.0f, 1.6f);
+        SUtil.delay(() -> p2.getWorld().playSound(p2.getLocation(), Sound.EAT, 1.0f, 1.7f), 3L);
+        SUtil.delay(() -> p2.getWorld().playSound(p2.getLocation(), Sound.EAT, 1.0f, 1.8f), 6L);
         new BukkitRunnable(){
             int count = 0;
 
@@ -125,26 +125,26 @@ extends GUI {
                     this.cancel();
                     return;
                 }
-                p.getWorld().playEffect(p.getLocation().add(0.0, 0.5, 0.0), Effect.POTION_SWIRL, 5);
-                p.getWorld().playEffect(p.getLocation().add(0.0, 0.5, 0.0), Effect.POTION_SWIRL, 5);
-                p.getWorld().playEffect(p.getLocation().add(0.0, 0.5, 0.0), Effect.POTION_SWIRL, 5);
-                p.getWorld().playEffect(p.getLocation().add(0.0, 0.5, 0.0), Effect.POTION_SWIRL, 5);
-                p.getWorld().playEffect(p.getLocation().add(0.0, 0.5, 0.0), Effect.POTION_SWIRL, 5);
-                p.getWorld().playEffect(p.getLocation().add(0.0, 0.5, 0.0), Effect.POTION_SWIRL, 5);
-                p.getWorld().playEffect(p.getLocation().add(0.0, 0.5, 0.0), Effect.POTION_SWIRL, 5);
-                p.getWorld().playEffect(p.getLocation().add(0.0, 0.5, 0.0), Effect.POTION_SWIRL, 5);
-                p.getWorld().playEffect(p.getLocation().add(0.0, 0.5, 0.0), Effect.POTION_SWIRL, 5);
-                p.getWorld().playEffect(p.getLocation().add(0.0, 0.5, 0.0), Effect.POTION_SWIRL, 5);
-                p.getWorld().spigot().playEffect(p.getLocation(), Effect.FIREWORKS_SPARK, 0, 1, (float)SUtil.random(-1.0, 1.0), 1.0f, (float)SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
-                p.getWorld().spigot().playEffect(p.getLocation(), Effect.SPELL, 0, 1, (float)SUtil.random(-1.0, 1.0), 1.0f, (float)SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
-                p.getWorld().spigot().playEffect(p.getLocation(), Effect.FIREWORKS_SPARK, 0, 1, (float)SUtil.random(-1.0, 1.0), 1.0f, (float)SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
-                p.getWorld().spigot().playEffect(p.getLocation(), Effect.SPELL, 0, 1, (float)SUtil.random(-1.0, 1.0), 1.0f, (float)SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
-                p.getWorld().spigot().playEffect(p.getLocation(), Effect.FIREWORKS_SPARK, 0, 1, (float)SUtil.random(-1.0, 1.0), 1.0f, (float)SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
-                p.getWorld().spigot().playEffect(p.getLocation(), Effect.SPELL, 0, 1, (float)SUtil.random(-1.0, 1.0), 1.0f, (float)SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
-                p.getWorld().spigot().playEffect(p.getLocation(), Effect.FIREWORKS_SPARK, 0, 1, (float)SUtil.random(-1.0, 1.0), 1.0f, (float)SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
-                p.getWorld().spigot().playEffect(p.getLocation(), Effect.SPELL, 0, 1, (float)SUtil.random(-1.0, 1.0), 1.0f, (float)SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
-                p.getWorld().playEffect(p.getLocation().add(0.0, 0.5, 0.0), Effect.LAVA_POP, 5);
-                p.getWorld().playEffect(p.getLocation().add(0.0, 0.5, 0.0), Effect.LAVA_POP, 5);
+                p2.getWorld().playEffect(p2.getLocation().add(0.0, 0.5, 0.0), Effect.POTION_SWIRL, 5);
+                p2.getWorld().playEffect(p2.getLocation().add(0.0, 0.5, 0.0), Effect.POTION_SWIRL, 5);
+                p2.getWorld().playEffect(p2.getLocation().add(0.0, 0.5, 0.0), Effect.POTION_SWIRL, 5);
+                p2.getWorld().playEffect(p2.getLocation().add(0.0, 0.5, 0.0), Effect.POTION_SWIRL, 5);
+                p2.getWorld().playEffect(p2.getLocation().add(0.0, 0.5, 0.0), Effect.POTION_SWIRL, 5);
+                p2.getWorld().playEffect(p2.getLocation().add(0.0, 0.5, 0.0), Effect.POTION_SWIRL, 5);
+                p2.getWorld().playEffect(p2.getLocation().add(0.0, 0.5, 0.0), Effect.POTION_SWIRL, 5);
+                p2.getWorld().playEffect(p2.getLocation().add(0.0, 0.5, 0.0), Effect.POTION_SWIRL, 5);
+                p2.getWorld().playEffect(p2.getLocation().add(0.0, 0.5, 0.0), Effect.POTION_SWIRL, 5);
+                p2.getWorld().playEffect(p2.getLocation().add(0.0, 0.5, 0.0), Effect.POTION_SWIRL, 5);
+                p2.getWorld().spigot().playEffect(p2.getLocation(), Effect.FIREWORKS_SPARK, 0, 1, (float)SUtil.random(-1.0, 1.0), 1.0f, (float)SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
+                p2.getWorld().spigot().playEffect(p2.getLocation(), Effect.SPELL, 0, 1, (float)SUtil.random(-1.0, 1.0), 1.0f, (float)SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
+                p2.getWorld().spigot().playEffect(p2.getLocation(), Effect.FIREWORKS_SPARK, 0, 1, (float)SUtil.random(-1.0, 1.0), 1.0f, (float)SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
+                p2.getWorld().spigot().playEffect(p2.getLocation(), Effect.SPELL, 0, 1, (float)SUtil.random(-1.0, 1.0), 1.0f, (float)SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
+                p2.getWorld().spigot().playEffect(p2.getLocation(), Effect.FIREWORKS_SPARK, 0, 1, (float)SUtil.random(-1.0, 1.0), 1.0f, (float)SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
+                p2.getWorld().spigot().playEffect(p2.getLocation(), Effect.SPELL, 0, 1, (float)SUtil.random(-1.0, 1.0), 1.0f, (float)SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
+                p2.getWorld().spigot().playEffect(p2.getLocation(), Effect.FIREWORKS_SPARK, 0, 1, (float)SUtil.random(-1.0, 1.0), 1.0f, (float)SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
+                p2.getWorld().spigot().playEffect(p2.getLocation(), Effect.SPELL, 0, 1, (float)SUtil.random(-1.0, 1.0), 1.0f, (float)SUtil.random(-1.0, 1.0), 0.0f, 1, 100);
+                p2.getWorld().playEffect(p2.getLocation().add(0.0, 0.5, 0.0), Effect.LAVA_POP, 5);
+                p2.getWorld().playEffect(p2.getLocation().add(0.0, 0.5, 0.0), Effect.LAVA_POP, 5);
                 ++this.count;
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);

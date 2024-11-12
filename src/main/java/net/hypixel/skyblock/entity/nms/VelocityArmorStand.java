@@ -40,9 +40,9 @@ SNMSEntity {
         this((World)((CraftWorld)Bukkit.getWorlds().get(0)).getHandle());
     }
 
-    public void g(float f, float f1) {
+    public void g(float f2, float f1) {
         if (!this.hasGravity()) {
-            super.g(f, f1);
+            super.g(f2, f1);
         } else {
             this.move(this.motX, this.motY, this.motZ);
         }

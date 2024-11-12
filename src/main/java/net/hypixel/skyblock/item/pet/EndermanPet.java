@@ -58,13 +58,13 @@ extends Pet {
             }
 
             @Override
-            public void onHurt(EntityDamageByEntityEvent e, Entity damager) {
+            public void onHurt(EntityDamageByEntityEvent e2, Entity damager) {
                 SEntity entity = SEntity.findSEntity(damager);
                 if (entity == null) {
                     return;
                 }
                 if (Groups.END_MOBS.contains((Object)entity.getSpecType())) {
-                    e.setDamage(e.getDamage() - e.getDamage() * enderian.doubleValue() * 0.01);
+                    e2.setDamage(e2.getDamage() - e2.getDamage() * enderian.doubleValue() * 0.01);
                 }
             }
         }));
@@ -130,10 +130,10 @@ extends Pet {
     }
 
     @Override
-    public void particleBelowA(Player p, Location l) {
-        p.spigot().playEffect(l, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
-        p.spigot().playEffect(l, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
-        p.spigot().playEffect(l, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+    public void particleBelowA(Player p2, Location l2) {
+        p2.spigot().playEffect(l2, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+        p2.spigot().playEffect(l2, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+        p2.spigot().playEffect(l2, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
     }
 }
 

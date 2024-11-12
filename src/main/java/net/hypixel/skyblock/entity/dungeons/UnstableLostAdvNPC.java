@@ -206,9 +206,9 @@ extends BaseZombie {
                         skywatch.setRightClicking(true);
                         UnstableLostAdvNPC.this.playPar(entity.getEyeLocation().setDirection(target1.getLocation().toVector().subtract(entity.getLocation().toVector())));
                         entity.getLocation().getWorld().playSound(entity.getLocation(), Sound.ENDERDRAGON_GROWL, 1.0f, 1.0f);
-                        for (org.bukkit.entity.Entity e : target1.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(3.0)), 3.0, 3.0, 3.0)) {
-                            if (!(e instanceof Player)) continue;
-                            Player player = (Player)e;
+                        for (org.bukkit.entity.Entity e2 : target1.getWorld().getNearbyEntities(entity.getLocation().add(entity.getLocation().getDirection().multiply(3.0)), 3.0, 3.0, 3.0)) {
+                            if (!(e2 instanceof Player)) continue;
+                            Player player = (Player)e2;
                             player.sendMessage(Sputnik.trans("&cLost Adventurer &aused &6Dragon's Breath &aon you!"));
                             player.setVelocity(player.getLocation().toVector().subtract(player.getLocation().toVector()).normalize().multiply(-1.0).multiply(6.0));
                             PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
@@ -218,7 +218,7 @@ extends BaseZombie {
                             double defense = statistics.getDefense().addAll();
                             int dmglater = (int)Math.round(70000.0 - 70000.0 * (defense / (defense + 100.0)));
                             User.getUser(player.getUniqueId()).damage(dmglater, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (org.bukkit.entity.Entity)entity);
-                            ((LivingEntity)e).damage(1.0E-6, null);
+                            ((LivingEntity)e2).damage(1.0E-6, null);
                         }
                         SUtil.delay(() -> {
                             PlayerWatcher val$skywatch = skywatch;
@@ -253,9 +253,9 @@ extends BaseZombie {
                             PlayerWatcher val$skywatch4 = skywatch;
                             if (UnstableLostAdvNPC.this.isBowing) {
                                 Location location = entity.getEyeLocation().add(entity.getEyeLocation().getDirection().toLocation(entity.getWorld()));
-                                Location l = location.clone();
-                                l.setYaw(location.getYaw());
-                                entity.getWorld().spawnArrow(l, l.getDirection(), 2.2f, 1.6f).setShooter((ProjectileSource)entity);
+                                Location l2 = location.clone();
+                                l2.setYaw(location.getYaw());
+                                entity.getWorld().spawnArrow(l2, l2.getDirection(), 2.2f, 1.6f).setShooter((ProjectileSource)entity);
                                 skywatch.setRightClicking(false);
                                 UnstableLostAdvNPC.this.isBowing = false;
                             }
@@ -296,10 +296,10 @@ extends BaseZombie {
     }
 
     @Override
-    public void onDamage(SEntity sEntity, org.bukkit.entity.Entity damager, EntityDamageByEntityEvent e, AtomicDouble damage) {
+    public void onDamage(SEntity sEntity, org.bukkit.entity.Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
         LivingEntity en = sEntity.getEntity();
-        Vector v = new Vector(0, 0, 0);
-        SUtil.delay(() -> UnstableLostAdvNPC.lambda$onDamage$0((org.bukkit.entity.Entity)en, v), 1L);
+        Vector v2 = new Vector(0, 0, 0);
+        SUtil.delay(() -> UnstableLostAdvNPC.lambda$onDamage$0((org.bukkit.entity.Entity)en, v2), 1L);
     }
 
     @Override
@@ -332,9 +332,9 @@ extends BaseZombie {
         return 0.4;
     }
 
-    public void playPar(Location l) {
+    public void playPar(Location l2) {
         ConeEffect Effect2 = new ConeEffect(SkyBlock.effectManager);
-        Effect2.setLocation(l.clone().add(l.getDirection().normalize().multiply(-0.25)).add(0.0, -0.1, 0.0));
+        Effect2.setLocation(l2.clone().add(l2.getDirection().normalize().multiply(-0.25)).add(0.0, -0.1, 0.0));
         Effect2.particle = de.slikey.effectlib.util.ParticleEffect.FLAME;
         Effect2.angularVelocity = 0.39269908169872414;
         Effect2.lengthGrow = 0.025f;
@@ -342,8 +342,8 @@ extends BaseZombie {
         Effect2.start();
     }
 
-    private static /* synthetic */ void lambda$onDamage$0(org.bukkit.entity.Entity en, Vector v) {
-        en.setVelocity(v);
+    private static /* synthetic */ void lambda$onDamage$0(org.bukkit.entity.Entity en, Vector v2) {
+        en.setVelocity(v2);
     }
 }
 

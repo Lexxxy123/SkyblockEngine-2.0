@@ -15,7 +15,7 @@ implements ToolStatistics,
 MaterialFunction {
     @Override
     public String getDisplayName() {
-        return "Dctr's Space Helmet";
+        return "Donator's Space Helmet";
     }
 
     @Override
@@ -55,7 +55,7 @@ MaterialFunction {
 
     @Override
     public String getLore() {
-        return Sputnik.trans("&7Given to people who helped us out in the development Journey of SkyBlock, thank you very much! &c\u2764");
+        return Sputnik.trans("&7Given to people who donated or help us out in the development of SkyBlock, thank you very much! &c\u2764");
     }
 }
 

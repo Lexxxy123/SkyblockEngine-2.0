@@ -48,8 +48,8 @@ public class ReflectionsUtils {
         }
     }
 
-    public static Object getField(String f, Object target) {
-        Field field = ReflectionsUtils.findField(target.getClass(), f, null);
+    public static Object getField(String f2, Object target) {
+        Field field = ReflectionsUtils.findField(target.getClass(), f2, null);
         field.setAccessible(true);
         try {
             return field.get(target);

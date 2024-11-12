@@ -22,23 +22,23 @@ implements ConfigurationSerializable {
     }
 
     public SerialNBTTagCompound(NBTTagCompound compound) {
-        for (String k : compound.c()) {
-            this.set(k, compound.get(k));
+        for (String k2 : compound.c()) {
+            this.set(k2, compound.get(k2));
         }
     }
 
     public Map<String, Object> serialize() {
         HashMap<String, Object> map = new HashMap<String, Object>();
-        for (String k : this.c()) {
-            NBTBase b = this.get(k);
-            if (b instanceof NBTTagCompound) {
-                SerialNBTTagCompound serial = new SerialNBTTagCompound((NBTTagCompound)b);
+        for (String k2 : this.c()) {
+            NBTBase b2 = this.get(k2);
+            if (b2 instanceof NBTTagCompound) {
+                SerialNBTTagCompound serial = new SerialNBTTagCompound((NBTTagCompound)b2);
                 for (Map.Entry<String, Object> entry : serial.serialize().entrySet()) {
-                    map.put(k + "." + entry.getKey(), entry.getValue());
+                    map.put(k2 + "." + entry.getKey(), entry.getValue());
                 }
                 continue;
             }
-            map.put(k, SUtil.getObjectFromCompound(this, k));
+            map.put(k2, SUtil.getObjectFromCompound(this, k2));
         }
         return map;
     }
@@ -51,11 +51,11 @@ implements ConfigurationSerializable {
             if (dir.length >= 2) {
                 key = dir[dir.length - 1];
                 SerialNBTTagCompound track = compound;
-                for (int i = 0; i < dir.length - 1; ++i) {
-                    if (!track.hasKey(dir[i])) {
-                        track.set(dir[i], (NBTBase)new NBTTagCompound());
+                for (int i2 = 0; i2 < dir.length - 1; ++i2) {
+                    if (!track.hasKey(dir[i2])) {
+                        track.set(dir[i2], (NBTBase)new NBTTagCompound());
                     }
-                    track = track.getCompound(dir[i]);
+                    track = track.getCompound(dir[i2]);
                 }
                 track.set(key, SUtil.getBaseFromObject(entry.getValue()));
                 continue;

@@ -105,8 +105,8 @@ Ability {
 
     @Override
     public void onAbilityUse(Player player, SItem sItem) {
-        int i = 0;
-        double j = 0.0;
+        int i2 = 0;
+        double j2 = 0.0;
         Location location = player.getTargetBlock((Set)null, 6).getLocation();
         final Giant sword = (Giant)player.getWorld().spawnEntity(location, EntityType.GIANT);
         sword.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 100000, 1));
@@ -131,15 +131,15 @@ Ability {
             User user = User.getUser(player.getUniqueId());
             double baseDamage = Sputnik.calculateMagicDamage(entity, player, 100000, 0.05);
             user.damageEntityIgnoreShield((Damageable)entity, baseDamage);
-            ++i;
-            j += baseDamage;
+            ++i2;
+            j2 += baseDamage;
             PlayerListener.spawnDamageInd(entity, baseDamage, false);
         }
-        if (i > 0) {
-            if (i == 1) {
-                player.sendMessage(ChatColor.GRAY + "Your Implosion hit " + ChatColor.RED + i + ChatColor.GRAY + " enemy for " + ChatColor.RED + SUtil.commaify(j) + ChatColor.GRAY + " damage.");
+        if (i2 > 0) {
+            if (i2 == 1) {
+                player.sendMessage(ChatColor.GRAY + "Your Implosion hit " + ChatColor.RED + i2 + ChatColor.GRAY + " enemy for " + ChatColor.RED + SUtil.commaify(j2) + ChatColor.GRAY + " damage.");
             } else {
-                player.sendMessage(ChatColor.GRAY + "Your Implosion hit " + ChatColor.RED + i + ChatColor.GRAY + " enemies for " + ChatColor.RED + SUtil.commaify(j) + ChatColor.GRAY + " damage.");
+                player.sendMessage(ChatColor.GRAY + "Your Implosion hit " + ChatColor.RED + i2 + ChatColor.GRAY + " enemies for " + ChatColor.RED + SUtil.commaify(j2) + ChatColor.GRAY + " damage.");
             }
         }
         new BukkitRunnable(){

@@ -108,16 +108,16 @@ public class TemporaryStats {
         statistics.getAbilityDamage().set(152, Double.valueOf(this.abilityDamage));
     }
 
-    public static TemporaryStats getFromPlayer(Player p) {
-        if (TEMP_CACHE.containsKey(p.getUniqueId())) {
-            return TEMP_CACHE.get(p.getUniqueId());
+    public static TemporaryStats getFromPlayer(Player p2) {
+        if (TEMP_CACHE.containsKey(p2.getUniqueId())) {
+            return TEMP_CACHE.get(p2.getUniqueId());
         }
         return null;
     }
 
-    public static TemporaryStats getFromPlayer(UUID u) {
-        if (TEMP_CACHE.containsKey(u)) {
-            return TEMP_CACHE.get(u);
+    public static TemporaryStats getFromPlayer(UUID u2) {
+        if (TEMP_CACHE.containsKey(u2)) {
+            return TEMP_CACHE.get(u2);
         }
         return null;
     }

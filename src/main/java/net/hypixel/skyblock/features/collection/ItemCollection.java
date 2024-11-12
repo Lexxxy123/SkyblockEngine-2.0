@@ -57,7 +57,7 @@ public class ItemCollection {
         this.material = material;
         this.data = data;
         this.rewards = new ArrayList<ItemCollectionRewards>();
-        for (int i = 0; i < size; ++i) {
+        for (int i2 = 0; i2 < size; ++i2) {
             this.rewards.add(null);
         }
         this.temporary = true;

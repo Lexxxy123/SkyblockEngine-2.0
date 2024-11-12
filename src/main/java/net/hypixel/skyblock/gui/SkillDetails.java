@@ -51,7 +51,7 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e) {
+    public void onOpen(GUIOpenEvent e2) {
         block40: {
             int level;
             double xp;
@@ -80,7 +80,7 @@ extends GUI {
                 this.set(new GUIClickableItem(){
 
                     @Override
-                    public void run(InventoryClickEvent e) {
+                    public void run(InventoryClickEvent e2) {
                         GUIType.SKILL_MENU.getGUI().open(SkillDetails.this.player);
                     }
 
@@ -95,10 +95,10 @@ extends GUI {
                     }
                 });
                 String name = "";
-                ArrayList<String> l = new ArrayList<String>();
+                ArrayList<String> l2 = new ArrayList<String>();
                 if (this.skill != null) {
                     for (String line : this.skill.getDescription()) {
-                        l.add(ChatColor.GRAY + line);
+                        l2.add(ChatColor.GRAY + line);
                     }
                 }
                 if (this.skill != null && (level < 50 && !this.skill.hasSixtyLevels() || level < 60 && this.skill.hasSixtyLevels())) {
@@ -106,30 +106,30 @@ extends GUI {
                     int nextLevel = level + 1;
                     String numeral = SUtil.toRomanNumeral(nextLevel);
                     double nextXP = Skill.getNextOverallXPGoal(xp, this.skill.hasSixtyLevels());
-                    l.add(" ");
-                    l.add(SUtil.createProgressText("Progress to Level " + numeral, xp, nextXP));
-                    l.add(SUtil.createSLineProgressBar(20, ChatColor.DARK_GREEN, xp, nextXP));
-                    l.add(" ");
+                    l2.add(" ");
+                    l2.add(SUtil.createProgressText("Progress to Level " + numeral, xp, nextXP));
+                    l2.add(SUtil.createSLineProgressBar(20, ChatColor.DARK_GREEN, xp, nextXP));
+                    l2.add(" ");
                     for (String line2 : this.skill.getRewardLore(nextLevel, nextLevel, false)) {
-                        l.add("  " + line2);
+                        l2.add("  " + line2);
                     }
-                    l.add(" ");
+                    l2.add(" ");
                 } else if (this.skill != null) {
                     name = this.skill.getName();
-                    l.add(" ");
+                    l2.add(" ");
                 }
                 if (this.skill != null) {
-                    l.add(Sputnik.trans("&8Increase your " + this.skill.getName() + " Level to"));
-                    l.add(Sputnik.trans("&8unlock Perks, statistic bonuses,"));
-                    l.add(Sputnik.trans("&8and more!"));
+                    l2.add(Sputnik.trans("&8Increase your " + this.skill.getName() + " Level to"));
+                    l2.add(Sputnik.trans("&8unlock Perks, statistic bonuses,"));
+                    l2.add(Sputnik.trans("&8and more!"));
                 }
-                this.set(0, SUtil.getStack(ChatColor.GREEN + this.skill.getName() + " Skill", this.skillInstanceMat, this.data, 1, l));
+                this.set(0, SUtil.getStack(ChatColor.GREEN + this.skill.getName() + " Skill", this.skillInstanceMat, this.data, 1, l2));
                 if (this.page == 1 && level >= 25) {
                     this.set(new GUIClickableItem(){
 
                         @Override
-                        public void run(InventoryClickEvent e) {
-                            new SkillDetails(SkillDetails.this.skill, (Player)e.getWhoClicked(), SkillDetails.this.page + 1).open(SkillDetails.this.player);
+                        public void run(InventoryClickEvent e2) {
+                            new SkillDetails(SkillDetails.this.skill, (Player)e2.getWhoClicked(), SkillDetails.this.page + 1).open(SkillDetails.this.player);
                         }
 
                         @Override
@@ -146,8 +146,8 @@ extends GUI {
                     this.set(new GUIClickableItem(){
 
                         @Override
-                        public void run(InventoryClickEvent e) {
-                            new SkillDetails(SkillDetails.this.skill, (Player)e.getWhoClicked(), SkillDetails.this.page - 1).open(SkillDetails.this.player);
+                        public void run(InventoryClickEvent e2) {
+                            new SkillDetails(SkillDetails.this.skill, (Player)e2.getWhoClicked(), SkillDetails.this.page - 1).open(SkillDetails.this.player);
                         }
 
                         @Override
@@ -164,72 +164,72 @@ extends GUI {
                     this.player.closeInventory();
                 }
                 if (this.page != 1) break block39;
-                int i = 1;
+                int i2 = 1;
                 short data = 0;
-                ChatColor c = ChatColor.GRAY;
+                ChatColor c2 = ChatColor.GRAY;
                 double nextXP2 = Skill.getNextOverallXPGoal(xp, this.skill.hasSixtyLevels());
                 for (int slot : slots) {
                     ArrayList<String> lore = new ArrayList<String>();
                     lore.add(Sputnik.trans("&7Rewards:"));
-                    for (String str : this.skill.getRewardLore(i, i, false)) {
+                    for (String str : this.skill.getRewardLore(i2, i2, false)) {
                         lore.add("  " + str);
                     }
-                    if (i > level && i != level + 1) {
+                    if (i2 > level && i2 != level + 1) {
                         data = 14;
-                        c = ChatColor.RED;
-                    } else if (i == level + 1) {
+                        c2 = ChatColor.RED;
+                    } else if (i2 == level + 1) {
                         data = 4;
-                        c = ChatColor.YELLOW;
+                        c2 = ChatColor.YELLOW;
                         lore.add(" ");
                         lore.add(SUtil.createProgressText(ChatColor.GRAY + "Progress" + ChatColor.YELLOW, xp, nextXP2));
                         lore.add(SUtil.createSLineProgressBar(20, ChatColor.DARK_GREEN, xp, nextXP2));
-                    } else if (i <= level) {
+                    } else if (i2 <= level) {
                         data = 5;
-                        c = ChatColor.GREEN;
+                        c2 = ChatColor.GREEN;
                         lore.add(" ");
-                        lore.add(c + "UNLOCKED");
+                        lore.add(c2 + "UNLOCKED");
                     }
-                    if (i <= level && i % 5 == 0) {
-                        this.set(slot, SUtil.getStack(c + this.skill.getName() + " Level " + SUtil.toRomanNumeral(i), this.skillLvlMat, this.data, i, lore));
+                    if (i2 <= level && i2 % 5 == 0) {
+                        this.set(slot, SUtil.getStack(c2 + this.skill.getName() + " Level " + SUtil.toRomanNumeral(i2), this.skillLvlMat, this.data, i2, lore));
                     } else {
-                        this.set(slot, SUtil.getColorStack(data, c + this.skill.getName() + " Level " + SUtil.toRomanNumeral(i), lore, (short)0, i));
+                        this.set(slot, SUtil.getColorStack(data, c2 + this.skill.getName() + " Level " + SUtil.toRomanNumeral(i2), lore, (short)0, i2));
                     }
-                    ++i;
+                    ++i2;
                 }
                 break block40;
             }
             if (this.page != 2) break block40;
-            int i = 26;
+            int i3 = 26;
             short data = 0;
-            ChatColor c = ChatColor.GRAY;
+            ChatColor c3 = ChatColor.GRAY;
             double nextXP2 = Skill.getNextOverallXPGoal(xp, this.skill.hasSixtyLevels());
             for (int slot : slots) {
                 ArrayList<String> lore = new ArrayList<String>();
                 lore.add(Sputnik.trans("&7Rewards:"));
-                for (String str : this.skill.getRewardLore(i, i, false)) {
+                for (String str : this.skill.getRewardLore(i3, i3, false)) {
                     lore.add("  " + str);
                 }
-                if (i > level && i != level + 1) {
+                if (i3 > level && i3 != level + 1) {
                     data = 14;
-                    c = ChatColor.RED;
-                } else if (i == level + 1) {
+                    c3 = ChatColor.RED;
+                } else if (i3 == level + 1) {
                     data = 4;
-                    c = ChatColor.YELLOW;
+                    c3 = ChatColor.YELLOW;
                     lore.add(" ");
                     lore.add(SUtil.createProgressText(ChatColor.GRAY + "Progress" + ChatColor.YELLOW, xp, nextXP2));
                     lore.add(SUtil.createSLineProgressBar(20, ChatColor.DARK_GREEN, xp, nextXP2));
-                } else if (i <= level) {
+                } else if (i3 <= level) {
                     data = 5;
-                    c = ChatColor.GREEN;
+                    c3 = ChatColor.GREEN;
                     lore.add(" ");
-                    lore.add(c + "UNLOCKED");
+                    lore.add(c3 + "UNLOCKED");
                 }
-                if (i <= level && i % 5 == 0) {
-                    this.set(slot, SUtil.getStack(c + this.skill.getName() + " Level " + SUtil.toRomanNumeral(i), this.skillInstanceMat, this.data, i, lore));
+                if (i3 <= level && i3 % 5 == 0) {
+                    this.set(slot, SUtil.getStack(c3 + this.skill.getName() + " Level " + SUtil.toRomanNumeral(i3), this.skillInstanceMat, this.data, i3, lore));
                 } else {
-                    this.set(slot, SUtil.getColorStack(data, c + this.skill.getName() + " Level " + SUtil.toRomanNumeral(i), lore, (short)0, i));
+                    this.set(slot, SUtil.getColorStack(data, c3 + this.skill.getName() + " Level " + SUtil.toRomanNumeral(i3), lore, (short)0, i3));
                 }
-                ++i;
+                ++i3;
             }
         }
     }

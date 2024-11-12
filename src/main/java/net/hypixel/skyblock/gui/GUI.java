@@ -59,13 +59,13 @@ public abstract class GUI {
     }
 
     public void set(GUIItem item) {
-        this.items.removeIf(i -> i.getSlot() == item.getSlot());
+        this.items.removeIf(i2 -> i2.getSlot() == item.getSlot());
         this.items.add(item);
     }
 
     public void set(final int slot, final ItemStack stack, final boolean pickup) {
         if (stack == null) {
-            this.items.removeIf(i -> i.getSlot() == slot);
+            this.items.removeIf(i2 -> i2.getSlot() == slot);
             return;
         }
         this.set(new GUIItem(){
@@ -117,11 +117,11 @@ public abstract class GUI {
         }
         topRight += 9;
         bottomLeft -= 9;
-        for (int y = topLeft; y <= bottomLeft; y += 9) {
-            for (int x = y; x <= topRight - topLeft + y; ++x) {
-                int f = x;
-                if (this.items.stream().filter(item -> item.getSlot() == f).toArray().length != 0 && !overwrite) continue;
-                this.set(x, stack, pickup);
+        for (int y2 = topLeft; y2 <= bottomLeft; y2 += 9) {
+            for (int x2 = y2; x2 <= topRight - topLeft + y2; ++x2) {
+                int f2 = x2;
+                if (this.items.stream().filter(item -> item.getSlot() == f2).toArray().length != 0 && !overwrite) continue;
+                this.set(x2, stack, pickup);
             }
         }
     }
@@ -160,15 +160,15 @@ public abstract class GUI {
         }
         topRight += 9;
         bottomLeft -= 9;
-        for (int y = topLeft; y <= bottomLeft; y += 9) {
-            for (int x = y; x <= topRight - topLeft + y; ++x) {
-                int f = x;
-                if (this.items.stream().filter(item -> item.getSlot() == f).toArray().length != 0 && !overwrite) continue;
-                if (y == topLeft || y == bottomLeft) {
-                    this.set(x, stack, pickup);
+        for (int y2 = topLeft; y2 <= bottomLeft; y2 += 9) {
+            for (int x2 = y2; x2 <= topRight - topLeft + y2; ++x2) {
+                int f2 = x2;
+                if (this.items.stream().filter(item -> item.getSlot() == f2).toArray().length != 0 && !overwrite) continue;
+                if (y2 == topLeft || y2 == bottomLeft) {
+                    this.set(x2, stack, pickup);
                 }
-                if (x != y && x != topRight - topLeft + y) continue;
-                this.set(x, stack, pickup);
+                if (x2 != y2 && x2 != topRight - topLeft + y2) continue;
+                this.set(x2, stack, pickup);
             }
         }
     }
@@ -186,7 +186,7 @@ public abstract class GUI {
     }
 
     public void add(SMaterial material, byte variant, int amount, boolean pickup) {
-        for (int i = 0; i < amount / 64; ++i) {
+        for (int i2 = 0; i2 < amount / 64; ++i2) {
             int first = this.firstEmpty();
             if (first == -1) {
                 return;
@@ -201,12 +201,12 @@ public abstract class GUI {
     }
 
     public int firstEmpty() {
-        int i = 0;
-        while (i < this.size) {
-            int finalI = i++;
+        int i2 = 0;
+        while (i2 < this.size) {
+            int finalI = i2++;
             long found = this.items.stream().filter(item -> item.getSlot() == finalI).count();
             if (found != 0L) continue;
-            return i;
+            return i2;
         }
         return -1;
     }
@@ -230,19 +230,19 @@ public abstract class GUI {
     public void update(Inventory inventory) {
     }
 
-    public void onOpen(GUIOpenEvent e) throws IOException {
+    public void onOpen(GUIOpenEvent e2) throws IOException {
     }
 
-    public void onClose(InventoryCloseEvent e) {
+    public void onClose(InventoryCloseEvent e2) {
     }
 
     public void early(Player player) {
     }
 
-    public void onBottomClick(InventoryClickEvent e) throws IOException {
+    public void onBottomClick(InventoryClickEvent e2) throws IOException {
     }
 
-    public void onTopClick(InventoryClickEvent e) {
+    public void onTopClick(InventoryClickEvent e2) {
     }
 
     public String getTitle() {

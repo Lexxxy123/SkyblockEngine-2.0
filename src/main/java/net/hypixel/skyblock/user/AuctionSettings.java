@@ -67,11 +67,11 @@ ConfigurationSerializable {
         return "AuctionSettings{category=" + this.category.name() + ", query=" + this.query + ", sort=" + this.sort.name() + ", tier=" + this.tier.name() + ", type=" + this.type.name() + "}";
     }
 
-    public boolean equals(Object o) {
-        if (!(o instanceof AuctionSettings)) {
+    public boolean equals(Object o2) {
+        if (!(o2 instanceof AuctionSettings)) {
             return false;
         }
-        AuctionSettings settings = (AuctionSettings)o;
+        AuctionSettings settings = (AuctionSettings)o2;
         return this.category == settings.category && this.query.equals(settings.query) && this.sort == settings.sort && this.tier == settings.tier && this.type == settings.type;
     }
 

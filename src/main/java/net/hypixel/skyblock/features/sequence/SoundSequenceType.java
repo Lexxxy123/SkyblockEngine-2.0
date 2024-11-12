@@ -48,8 +48,8 @@ public class SoundSequenceType {
         this.sequence.play(entity);
     }
 
-    public void play(Player p) {
-        this.sequence.play(p);
+    public void play(Player p2) {
+        this.sequence.play(p2);
     }
 
     public static SoundSequenceType getByNamespace(String namespace) {

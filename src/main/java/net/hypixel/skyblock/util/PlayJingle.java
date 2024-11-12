@@ -31,8 +31,8 @@ public class PlayJingle {
         esp.setVolume((byte)100);
         esp.setLoop(true);
         esp.setTargetLocation(loc);
-        for (Player p : loc.getWorld().getPlayers()) {
-            esp.addPlayer(p);
+        for (Player p2 : loc.getWorld().getPlayers()) {
+            esp.addPlayer(p2);
         }
         esp.setPlaying(true);
         new BukkitRunnable(){

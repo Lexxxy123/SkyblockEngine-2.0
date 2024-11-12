@@ -89,8 +89,8 @@ implements NPCMobs {
         return 1500000.0;
     }
 
-    public static ItemStack b(int hexcolor, Material m) {
-        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB((int)hexcolor));
+    public static ItemStack b(int hexcolor, Material m2) {
+        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m2), Color.fromRGB((int)hexcolor));
         ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
@@ -223,7 +223,7 @@ implements NPCMobs {
     }
 
     @Override
-    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e, AtomicDouble damage) {
+    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
     }
 
     @Override
@@ -236,11 +236,11 @@ implements NPCMobs {
         return 0.2;
     }
 
-    public void throwSkull(LivingEntity e, PlayerDisguise pl) {
+    public void throwSkull(LivingEntity e2, PlayerDisguise pl) {
         pl.getWatcher().setRightClicking(true);
-        WitherSkull skull = (WitherSkull)e.launchProjectile(WitherSkull.class);
-        skull.setShooter((ProjectileSource)e);
-        e.getWorld().playSound(e.getLocation(), Sound.WITHER_SHOOT, 1.0f, 1.0f);
+        WitherSkull skull = (WitherSkull)e2.launchProjectile(WitherSkull.class);
+        skull.setShooter((ProjectileSource)e2);
+        e2.getWorld().playSound(e2.getLocation(), Sound.WITHER_SHOOT, 1.0f, 1.0f);
         SUtil.delay(() -> pl.getWatcher().setRightClicking(false), 10L);
     }
 }

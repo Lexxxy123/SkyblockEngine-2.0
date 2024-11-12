@@ -32,11 +32,6 @@ extends BaseWolf {
     }
 
     @Override
-    public int mobLevel() {
-        return 55;
-    }
-
-    @Override
     public List<EntityDrop> drops() {
         return Arrays.asList(new EntityDrop(SMaterial.JUNGLE_WOOD, EntityDropType.GUARANTEED, 1.0), new EntityDrop(SMaterial.WEAK_WOLF_CATALYST, EntityDropType.VERY_RARE, 0.005));
     }
@@ -49,6 +44,11 @@ extends BaseWolf {
     @Override
     public boolean isAngry() {
         return true;
+    }
+
+    @Override
+    public int mobLevel() {
+        return 55;
     }
 }
 

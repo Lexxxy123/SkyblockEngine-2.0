@@ -17,13 +17,12 @@ public enum PlayerRank {
     HELPER("&9[HELPER]", 11),
     MOD("&2[MOD]", 12),
     GAMEMASTER("&2[GM]", 13),
+    BUILD("&3[BUILD TEAM]", 14),
     ADMIN("&c[ADMIN]", 15),
-    DEV("&3[DEV]", 16),
-    DEPUTY("&c[DEPUTY]", 17),
-    COOWNER("&c[CO OWNER]", 18),
-    WATCHDOG("&c[WATCHDOG]", 19),
-    SLOTH("&c[SLOTH]", 20),
-    OWNER("&c[OWNER]", 21);
+    MANAGER("&c[MANAGER]", 16),
+    WATCHDOG("&c[WATCHDOG]", 17),
+    JERRY("&d[JERRY++]", 18),
+    OWNER("&c[OWNER]", 19);
 
     private final String prefix;
     private final int level;

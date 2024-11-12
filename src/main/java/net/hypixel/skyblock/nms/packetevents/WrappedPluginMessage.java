@@ -13,9 +13,9 @@ public class WrappedPluginMessage {
     private final Player player;
     private final byte[] message;
 
-    public WrappedPluginMessage(String cn, Player p, byte[] msg) {
+    public WrappedPluginMessage(String cn, Player p2, byte[] msg) {
         this.channelName = cn;
-        this.player = p;
+        this.player = p2;
         this.message = msg;
     }
 

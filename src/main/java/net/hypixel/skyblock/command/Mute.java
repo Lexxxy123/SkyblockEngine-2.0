@@ -21,6 +21,7 @@ import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.command.CommandParameters;
 import net.hypixel.skyblock.command.CommandSource;
 import net.hypixel.skyblock.command.SCommand;
+import net.hypixel.skyblock.config.Config;
 import net.hypixel.skyblock.features.ranks.PlayerRank;
 import org.apache.commons.lang.RandomStringUtils;
 import org.bukkit.Bukkit;
@@ -30,14 +31,15 @@ import org.bukkit.entity.Player;
 @CommandParameters(description="mute player", aliases="mute", permission=PlayerRank.HELPER)
 public class Mute
 extends SCommand {
+    public static Config config = SkyBlock.getInstance().config;
     private static final Pattern periodPattern = Pattern.compile("([0-9]+)([hdwmy])");
 
     @Override
     public void run(CommandSource sender, String[] args) {
         if (args.length >= 3) {
             String reason = "";
-            for (int i = 2; i < args.length; ++i) {
-                reason = String.valueOf(reason) + args[i] + " ";
+            for (int i2 = 2; i2 < args.length; ++i2) {
+                reason = String.valueOf(reason) + args[i2] + " ";
             }
             String reason2 = reason.substring(0, reason.length() - 1);
             Player target = Bukkit.getPlayerExact((String)args[0]);
@@ -75,7 +77,7 @@ extends SCommand {
                             target.sendMessage("\u00a7cYou are currently muted for " + reason2 + ".");
                             target.sendMessage("\u00a77Your mute will expire in \u00a7c" + Mute.calculateTime((long)loadConfiguration.getInt(String.valueOf(uuid) + ".mute.length") - unixTime));
                             target.sendMessage("");
-                            target.sendMessage("\u00a77Find out more here: \u00a7ehttps://discord.gg/funpixel");
+                            target.sendMessage("\u00a77Find out more here: \u00a7e" + config.getString("discord"));
                             target.sendMessage("\u00a77Mute ID: \u00a7f#" + loadConfiguration.getString(String.valueOf(uuid) + ".mute.id"));
                             target.sendMessage("\u00a7c\u00a7l\u00a7m---------------------------------------------");
                         } else {

@@ -31,8 +31,8 @@ extends PongPacket {
             Method writeAndFlush = ctx.getClass().getMethod("writeAndFlush", Object.class);
             writeAndFlush.setAccessible(true);
             writeAndFlush.invoke(ctx, packet);
-        } catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException | NoSuchMethodException | SecurityException | InvocationTargetException e) {
-            e.printStackTrace();
+        } catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException | NoSuchMethodException | SecurityException | InvocationTargetException e2) {
+            e2.printStackTrace();
         }
     }
 }

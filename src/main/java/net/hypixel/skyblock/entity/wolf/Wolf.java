@@ -28,11 +28,6 @@ extends BaseWolf {
     }
 
     @Override
-    public int mobLevel() {
-        return 15;
-    }
-
-    @Override
     public List<EntityDrop> drops() {
         return Collections.singletonList(new EntityDrop(SMaterial.BONE, EntityDropType.GUARANTEED, 1.0));
     }
@@ -45,6 +40,11 @@ extends BaseWolf {
     @Override
     public boolean isAngry() {
         return true;
+    }
+
+    @Override
+    public int mobLevel() {
+        return 15;
     }
 }
 

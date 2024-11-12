@@ -19,8 +19,8 @@ public class UserStash {
     private final UUID user;
     private final User u;
 
-    public static UserStash getStash(UUID u) {
-        return new UserStash(u);
+    public static UserStash getStash(UUID u2) {
+        return new UserStash(u2);
     }
 
     public UserStash(UUID uuid) {
@@ -48,9 +48,9 @@ public class UserStash {
         return quant;
     }
 
-    public void addItemInStash(ItemStack i) {
+    public void addItemInStash(ItemStack i2) {
         ArrayList<ItemStack> modifiableList = new ArrayList<ItemStack>(this.u.getStashedItems());
-        modifiableList.add(i);
+        modifiableList.add(i2);
         this.u.setStashedItems(modifiableList);
         this.u.send("&cAn item didn't fit into your inventory and was added to your item stash! Use /pickupstash to get it back!");
     }
@@ -65,22 +65,22 @@ public class UserStash {
             this.u.send("&cYour inventory is full!");
             return;
         }
-        for (ItemStack i : this.u.getStashedItems()) {
+        for (ItemStack i2 : this.u.getStashedItems()) {
             if (this.u.toBukkitPlayer().getInventory().firstEmpty() == -1) {
                 this.u.send("&eYou picked up &a" + SUtil.commaify(picked) + " &eitems from your item stash!");
                 this.u.send("&eYou still have &b" + SUtil.commaify(this.getStashQuantity()) + " &eitems in there!");
                 return;
             }
-            this.u.toBukkitPlayer().getInventory().addItem(new ItemStack[]{i});
-            picked += (long)i.getAmount();
+            this.u.toBukkitPlayer().getInventory().addItem(new ItemStack[]{i2});
+            picked += (long)i2.getAmount();
             ArrayList<ItemStack> modifiableList = new ArrayList<ItemStack>(this.u.getStashedItems());
-            modifiableList.remove(i);
+            modifiableList.remove(i2);
             this.u.setStashedItems(modifiableList);
-            if (i.getAmount() < 2) {
-                this.u.send("&eFrom stash: &f" + i.getItemMeta().getDisplayName());
+            if (i2.getAmount() < 2) {
+                this.u.send("&eFrom stash: &f" + i2.getItemMeta().getDisplayName());
                 continue;
             }
-            this.u.send("&eFrom stash: &7" + i.getAmount() + "x &f" + i.getItemMeta().getDisplayName());
+            this.u.send("&eFrom stash: &7" + i2.getAmount() + "x &f" + i2.getItemMeta().getDisplayName());
         }
         this.u.send("&eYou picked up &aall &eitems from your item stash!");
     }

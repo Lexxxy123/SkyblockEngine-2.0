@@ -84,15 +84,15 @@ Ability {
     }
 
     @Override
-    public void onBowShoot(SItem bow, EntityShootBowEvent e) {
-        Player shooter = (Player)e.getEntity();
+    public void onBowShoot(SItem bow, EntityShootBowEvent e2) {
+        Player shooter = (Player)e2.getEntity();
         Location location = shooter.getEyeLocation().add(shooter.getEyeLocation().getDirection().toLocation(shooter.getWorld()));
-        float speed = e.getForce() * 3.0f;
-        Location l = location.clone();
-        l.setYaw(location.getYaw() - 30.0f);
-        shooter.getWorld().spawnArrow(l, l.getDirection(), speed, 1.0f).setShooter((ProjectileSource)shooter);
-        l.setYaw(location.getYaw() + 30.0f);
-        shooter.getWorld().spawnArrow(l, l.getDirection(), speed, 1.0f).setShooter((ProjectileSource)shooter);
+        float speed = e2.getForce() * 3.0f;
+        Location l2 = location.clone();
+        l2.setYaw(location.getYaw() - 30.0f);
+        shooter.getWorld().spawnArrow(l2, l2.getDirection(), speed, 1.0f).setShooter((ProjectileSource)shooter);
+        l2.setYaw(location.getYaw() + 30.0f);
+        shooter.getWorld().spawnArrow(l2, l2.getDirection(), speed, 1.0f).setShooter((ProjectileSource)shooter);
     }
 }
 

@@ -103,8 +103,8 @@ public class PotionEffectType {
         return description;
     }
 
-    public boolean equals(Object o) {
-        return o instanceof PotionEffectType && ((PotionEffectType)o).namespace.equals(this.namespace);
+    public boolean equals(Object o2) {
+        return o2 instanceof PotionEffectType && ((PotionEffectType)o2).namespace.equals(this.namespace);
     }
 
     public String getName() {

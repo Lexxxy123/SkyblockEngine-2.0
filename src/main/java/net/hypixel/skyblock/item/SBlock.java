@@ -10,7 +10,6 @@ package net.hypixel.skyblock.item;
 
 import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.item.SMaterial;
-import net.hypixel.skyblock.module.ConfigModule;
 import net.hypixel.skyblock.util.SUtil;
 import net.minecraft.server.v1_8_R3.NBTTagCompound;
 import org.bukkit.Location;
@@ -45,7 +44,7 @@ public class SBlock {
     }
 
     public static SBlock getBlock(Location location) {
-        ConfigurationSection cs = ConfigModule.getBlocks().getConfigurationSection(SBlock.toLocationString(location));
+        ConfigurationSection cs = SBlock.plugin.blocks.getConfigurationSection(SBlock.toLocationString(location));
         if (null == cs) {
             return null;
         }
@@ -58,18 +57,18 @@ public class SBlock {
     }
 
     public void save() {
-        ConfigModule.getBlocks().set(this.toLocationString() + ".type", this.type.name());
+        SBlock.plugin.blocks.set(this.toLocationString() + ".type", this.type.name());
         for (String key : this.data.c()) {
-            Object o = SUtil.getObjectFromCompound(this.data, key);
-            if (o instanceof NBTTagCompound) continue;
-            ConfigModule.getBlocks().set(this.toLocationString() + "." + key, o);
+            Object o2 = SUtil.getObjectFromCompound(this.data, key);
+            if (o2 instanceof NBTTagCompound) continue;
+            SBlock.plugin.blocks.set(this.toLocationString() + "." + key, o2);
         }
-        ConfigModule.getBlocks().save();
+        SBlock.plugin.blocks.save();
     }
 
     public void delete() {
-        ConfigModule.getBlocks().set(this.toLocationString(), null);
-        ConfigModule.getBlocks().save();
+        SBlock.plugin.blocks.set(this.toLocationString(), null);
+        SBlock.plugin.blocks.save();
     }
 
     private String toLocationString() {

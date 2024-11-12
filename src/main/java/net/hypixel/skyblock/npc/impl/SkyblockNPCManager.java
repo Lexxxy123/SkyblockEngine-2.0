@@ -5,16 +5,16 @@ package net.hypixel.skyblock.npc.impl;
 
 import java.util.HashSet;
 import java.util.Set;
-import net.hypixel.skyblock.npc.impl.SkyblockNPC;
+import net.hypixel.skyblock.npc.impl.SkyBlockNPC;
 
 public class SkyblockNPCManager {
-    private static final Set<SkyblockNPC> SKYBLOCK_NPCS = new HashSet<SkyblockNPC>();
+    private static final Set<SkyBlockNPC> SKYBLOCK_NPCS = new HashSet<SkyBlockNPC>();
 
-    public static void registerNPC(SkyblockNPC skyblockNPC) {
+    public static void registerNPC(SkyBlockNPC skyblockNPC) {
         SKYBLOCK_NPCS.add(skyblockNPC);
     }
 
-    public static Set<SkyblockNPC> getNPCS() {
+    public static Set<SkyBlockNPC> getNPCS() {
         return SKYBLOCK_NPCS;
     }
 }

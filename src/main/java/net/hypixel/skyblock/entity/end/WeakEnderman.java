@@ -23,13 +23,13 @@ extends BaseEnderman {
     }
 
     @Override
-    public int mobLevel() {
-        return 42;
+    public double getXPDropped() {
+        return 28.0;
     }
 
     @Override
-    public double getXPDropped() {
-        return 28.0;
+    public int mobLevel() {
+        return 42;
     }
 }
 

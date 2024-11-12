@@ -44,9 +44,9 @@ extends SCommand {
     }
 
     public void endDragonFight(World world) {
-        for (Entity e : world.getEntities()) {
-            if (e.getType() != EntityType.ENDER_DRAGON && e.getType() != EntityType.ENDER_CRYSTAL) continue;
-            e.remove();
+        for (Entity e2 : world.getEntities()) {
+            if (e2.getType() != EntityType.ENDER_DRAGON && e2.getType() != EntityType.ENDER_CRYSTAL) continue;
+            e2.remove();
         }
     }
 }

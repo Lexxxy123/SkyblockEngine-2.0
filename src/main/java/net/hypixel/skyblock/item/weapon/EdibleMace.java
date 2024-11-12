@@ -90,7 +90,7 @@ Ability {
                 boolean take = PlayerUtils.takeMana(player1, cost);
                 if (!take) {
                     player1.playSound(player1.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
-                    final long c = System.currentTimeMillis();
+                    final long c2 = System.currentTimeMillis();
                     Repeater.MANA_REPLACEMENT_MAP.put(player1.getUniqueId(), new ManaReplacement(){
 
                         @Override
@@ -100,12 +100,12 @@ Ability {
 
                         @Override
                         public long getEnd() {
-                            return c + 1500L;
+                            return c2 + 1500L;
                         }
                     });
                     return;
                 }
-                final long c = System.currentTimeMillis();
+                final long c3 = System.currentTimeMillis();
                 Repeater.DEFENSE_REPLACEMENT_MAP.put(player1.getUniqueId(), new DefenseReplacement(){
 
                     @Override
@@ -115,7 +115,7 @@ Ability {
 
                     @Override
                     public long getEnd() {
-                        return c + 2000L;
+                        return c3 + 2000L;
                     }
                 });
                 edibleMace.put(player1.getUniqueId(), true);

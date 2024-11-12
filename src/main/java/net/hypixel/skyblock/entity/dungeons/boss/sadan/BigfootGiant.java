@@ -104,9 +104,9 @@ extends BaseZombie {
         }
         e = entity;
         ((CraftZombie)entity).setBaby(false);
-        Player p = (Player)entity.getWorld().getPlayers().get(SUtil.random(0, entity.getWorld().getPlayers().size() - 1));
-        if (p != null && p.getGameMode() != GameMode.SPECTATOR && p.getGameMode() != GameMode.CREATIVE) {
-            ((CraftZombie)entity).setTarget((LivingEntity)p);
+        Player p2 = (Player)entity.getWorld().getPlayers().get(SUtil.random(0, entity.getWorld().getPlayers().size() - 1));
+        if (p2 != null && p2.getGameMode() != GameMode.SPECTATOR && p2.getGameMode() != GameMode.CREATIVE) {
+            ((CraftZombie)entity).setTarget((LivingEntity)p2);
         }
         AttributeInstance followRange = ((CraftLivingEntity)entity).getHandle().getAttributeInstance(GenericAttributes.FOLLOW_RANGE);
         followRange.setValue(500.0);
@@ -198,11 +198,11 @@ extends BaseZombie {
         return 0.35;
     }
 
-    public void jumpAni(final LivingEntity e) {
+    public void jumpAni(final LivingEntity e2) {
         new BukkitRunnable(){
 
             public void run() {
-                if (e.isDead()) {
+                if (e2.isDead()) {
                     this.cancel();
                     return;
                 }
@@ -210,27 +210,27 @@ extends BaseZombie {
                     this.cancel();
                     return;
                 }
-                if (e.isOnGround()) {
+                if (e2.isOnGround()) {
                     BigfootGiant.this.shockWave = false;
                     SUtil.delay(() -> BigfootGiant.this.shockWaveCD = false, 400L);
-                    e.getWorld().playEffect(e.getLocation().add(0.0, 0.5, 0.0), Effect.EXPLOSION_HUGE, 3);
-                    e.getWorld().playEffect(e.getLocation(), Effect.EXPLOSION_HUGE, 3);
-                    e.getWorld().playSound(e.getLocation(), Sound.EXPLODE, 3.0f, 0.0f);
+                    e2.getWorld().playEffect(e2.getLocation().add(0.0, 0.5, 0.0), Effect.EXPLOSION_HUGE, 3);
+                    e2.getWorld().playEffect(e2.getLocation(), Effect.EXPLOSION_HUGE, 3);
+                    e2.getWorld().playSound(e2.getLocation(), Sound.EXPLODE, 3.0f, 0.0f);
                     SUtil.delay(() -> {
-                        LivingEntity val$e = e;
-                        e.getWorld().playSound(e.getLocation(), Sound.EXPLODE, 10.0f, 0.0f);
+                        LivingEntity val$e = e2;
+                        e2.getWorld().playSound(e2.getLocation(), Sound.EXPLODE, 10.0f, 0.0f);
                     }, 5L);
-                    for (Entity entities : e.getNearbyEntities(15.0, 10.0, 15.0)) {
-                        Player p;
+                    for (Entity entities : e2.getNearbyEntities(15.0, 10.0, 15.0)) {
+                        Player p2;
                         Vector vec = new Vector(0, 0, 0);
                         if (entities.hasMetadata("NPC") || entities instanceof ArmorStand || entities.hasMetadata("highername") || !(entities instanceof Player)) continue;
-                        if (entities.getLocation().distance(e.getLocation()) <= 5.0) {
-                            p = (Player)entities;
-                            p.sendMessage(Sputnik.trans("&c&lBigfoot &chit you with &eStomp &cfor " + SUtil.commaify(Math.round(SadanFunction.dmgc(40000, p, (Entity)e).intValue())) + " &cdamage."));
+                        if (entities.getLocation().distance(e2.getLocation()) <= 5.0) {
+                            p2 = (Player)entities;
+                            p2.sendMessage(Sputnik.trans("&c&lBigfoot &chit you with &eStomp &cfor " + SUtil.commaify(Math.round(SadanFunction.dmgc(40000, p2, (Entity)e2).intValue())) + " &cdamage."));
                             continue;
                         }
-                        p = (Player)entities;
-                        p.sendMessage(Sputnik.trans("&c&lBigfoot &chit you with &eStomp &cfor " + SUtil.commaify(Math.round(SadanFunction.dmgc(35000, p, (Entity)e).intValue())) + " &cdamage."));
+                        p2 = (Player)entities;
+                        p2.sendMessage(Sputnik.trans("&c&lBigfoot &chit you with &eStomp &cfor " + SUtil.commaify(Math.round(SadanFunction.dmgc(35000, p2, (Entity)e2).intValue())) + " &cdamage."));
                     }
                 }
             }
@@ -245,31 +245,31 @@ extends BaseZombie {
         return stack;
     }
 
-    public static ItemStack b(int hexcolor, Material m) {
-        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB((int)hexcolor));
+    public static ItemStack b(int hexcolor, Material m2) {
+        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m2), Color.fromRGB((int)hexcolor));
         ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
         return stack;
     }
 
-    public static ItemStack c(Material m) {
-        ItemStack stack = new ItemStack(m);
+    public static ItemStack c(Material m2) {
+        ItemStack stack = new ItemStack(m2);
         ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
         return stack;
     }
 
-    public static void applyEffect(PotionEffectType e, Entity en, int ticks, int amp) {
-        ((LivingEntity)en).addPotionEffect(new PotionEffect(e, ticks, amp));
+    public static void applyEffect(PotionEffectType e2, Entity en, int ticks, int amp) {
+        ((LivingEntity)en).addPotionEffect(new PotionEffect(e2, ticks, amp));
     }
 
-    public static void createBlockTornado(Entity e, Material mat, byte id) {
-        for (int i = 0; i <= 30; ++i) {
+    public static void createBlockTornado(Entity e2, Material mat, byte id) {
+        for (int i2 = 0; i2 <= 30; ++i2) {
             int random = SUtil.random(0, 3);
             double range = 0.0;
-            Location loc = e.getLocation().clone();
+            Location loc = e2.getLocation().clone();
             loc.setYaw((float)SUtil.random(0, 360));
             if (random == 1) {
                 range = 0.6;
@@ -282,13 +282,13 @@ extends BaseZombie {
             }
             Vector vec = loc.getDirection().normalize().multiply(range);
             vec.setY(1.1);
-            BlockFallAPI.sendVelocityBlock(e.getLocation(), mat, id, e.getWorld(), 70, vec);
+            BlockFallAPI.sendVelocityBlock(e2.getLocation(), mat, id, e2.getWorld(), 70, vec);
         }
     }
 
     @Override
-    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e, AtomicDouble damage) {
-        e.getEntity().getWorld().playSound(e.getEntity().getLocation(), Sound.ZOMBIE_HURT, 1.0f, 0.0f);
+    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
+        e2.getEntity().getWorld().playSound(e2.getEntity().getLocation(), Sound.ZOMBIE_HURT, 1.0f, 0.0f);
     }
 }
 

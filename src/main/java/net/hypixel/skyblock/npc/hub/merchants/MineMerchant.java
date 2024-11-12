@@ -8,33 +8,27 @@ package net.hypixel.skyblock.npc.hub.merchants;
 
 import net.hypixel.skyblock.features.merchant.MineMerchantGUI;
 import net.hypixel.skyblock.npc.impl.NPCParameters;
-import net.hypixel.skyblock.npc.impl.SkyblockNPC;
-import net.hypixel.skyblock.npc.impl.enums.NPCType;
+import net.hypixel.skyblock.npc.impl.SkyBlockNPC;
 import org.bukkit.entity.Player;
 
 public class MineMerchant
-extends SkyblockNPC {
+extends SkyBlockNPC {
     public MineMerchant() {
         super(new NPCParameters(){
 
             @Override
+            public String id() {
+                return "MINER_MERCHANT";
+            }
+
+            @Override
             public String name() {
-                return "Miner";
+                return "&fMine";
             }
 
             @Override
             public String[] messages() {
                 return new String[]{"My specialities are ores, stone, and mining equipment.", "Click me again to open the Miner Shop!"};
-            }
-
-            @Override
-            public String[] holograms() {
-                return new String[]{"&fMiner", "&e&lCLICK"};
-            }
-
-            @Override
-            public NPCType type() {
-                return NPCType.PLAYER;
             }
 
             @Override
@@ -58,12 +52,7 @@ extends SkyblockNPC {
             }
 
             @Override
-            public boolean looking() {
-                return true;
-            }
-
-            @Override
-            public void onInteract(Player player, SkyblockNPC npc) {
+            public void onInteract(Player player, SkyBlockNPC npc) {
                 MineMerchantGUI gui = new MineMerchantGUI();
                 gui.open(player);
             }

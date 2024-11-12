@@ -51,27 +51,27 @@ implements DungeonsSkill {
 
     @Override
     public List<String> getPassive() {
-        ArrayList<String> t = new ArrayList<String>();
-        t.add("Doubleshot");
-        t.add("Bone Plating");
-        t.add("Bouncy Arrows" + ChatColor.RED + " Soon!");
-        return t;
+        ArrayList<String> t2 = new ArrayList<String>();
+        t2.add("Doubleshot");
+        t2.add("Bone Plating");
+        t2.add("Bouncy Arrows" + ChatColor.RED + " Soon!");
+        return t2;
     }
 
     @Override
     public List<String> getOrb() {
-        ArrayList<String> t = new ArrayList<String>();
-        t.add("Explosive Shot");
-        t.add("Machine Gun Bow");
-        return t;
+        ArrayList<String> t2 = new ArrayList<String>();
+        t2.add("Explosive Shot");
+        t2.add("Machine Gun Bow");
+        return t2;
     }
 
     @Override
     public List<String> getGhost() {
-        ArrayList<String> t = new ArrayList<String>();
-        t.add("Stun Bow");
-        t.add("Healing Bow");
-        return t;
+        ArrayList<String> t2 = new ArrayList<String>();
+        t2.add("Stun Bow");
+        t2.add("Healing Bow");
+        return t2;
     }
 }
 

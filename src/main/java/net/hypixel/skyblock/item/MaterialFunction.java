@@ -17,10 +17,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 public interface MaterialFunction {
-    default public void onInteraction(PlayerInteractEvent e) {
+    default public void onInteraction(PlayerInteractEvent e2) {
     }
 
-    default public void onInventoryClick(SItem instance, InventoryClickEvent e) {
+    default public void onInventoryClick(SItem instance, InventoryClickEvent e2) {
     }
 
     default public void onDamage(Entity damaged, Player damager, AtomicDouble damage, SItem item) {

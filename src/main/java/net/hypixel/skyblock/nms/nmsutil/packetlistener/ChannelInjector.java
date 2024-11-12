@@ -38,12 +38,12 @@ public class ChannelInjector {
         return (ChannelAbstract)new ConstructorResolver(CLASS_RESOLVER.resolve(clazzName)).resolve(new Class[][]{{IPacketListener.class}}).newInstance(iPacketListener);
     }
 
-    public void addChannel(Player p) {
-        this.channel.addChannel(p);
+    public void addChannel(Player p2) {
+        this.channel.addChannel(p2);
     }
 
-    public void removeChannel(Player p) {
-        this.channel.removeChannel(p);
+    public void removeChannel(Player p2) {
+        this.channel.removeChannel(p2);
     }
 
     public void addServerChannel() {

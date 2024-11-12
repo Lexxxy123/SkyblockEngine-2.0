@@ -51,14 +51,14 @@ Untradeable {
     }
 
     @Override
-    public void onInteraction(PlayerInteractEvent e) {
-        GUIType.SKYBLOCK_MENU.getGUI().open(e.getPlayer());
+    public void onInteraction(PlayerInteractEvent e2) {
+        GUIType.SKYBLOCK_MENU.getGUI().open(e2.getPlayer());
     }
 
     @Override
-    public void onInventoryClick(SItem instance, InventoryClickEvent e) {
-        e.setCancelled(true);
-        GUIType.SKYBLOCK_MENU.getGUI().open((Player)e.getWhoClicked());
+    public void onInventoryClick(SItem instance, InventoryClickEvent e2) {
+        e2.setCancelled(true);
+        GUIType.SKYBLOCK_MENU.getGUI().open((Player)e2.getWhoClicked());
     }
 }
 

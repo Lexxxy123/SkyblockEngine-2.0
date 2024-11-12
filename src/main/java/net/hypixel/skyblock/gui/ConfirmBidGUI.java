@@ -36,15 +36,15 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e) {
-        final Player player = e.getPlayer();
-        final User user = User.getUser(e.getPlayer().getUniqueId());
+    public void onOpen(GUIOpenEvent e2) {
+        final Player player = e2.getPlayer();
+        final User user = User.getUser(e2.getPlayer().getUniqueId());
         final int count = this.item.getItem().getStack().getAmount();
         final boolean personal = this.item.getOwner().getUuid().equals(user.getUuid());
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 if (ConfirmBidGUI.this.item.isExpired()) {
                     player.sendMessage(ChatColor.RED + "The item you are trying to bid on has already expired!");
                     player.closeInventory();
@@ -90,8 +90,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
-                e.getWhoClicked().closeInventory();
+            public void run(InventoryClickEvent e2) {
+                e2.getWhoClicked().closeInventory();
             }
 
             @Override

@@ -112,7 +112,6 @@ import net.hypixel.skyblock.entity.end.VoidlingDevotee;
 import net.hypixel.skyblock.entity.end.VoidlingExtremist;
 import net.hypixel.skyblock.entity.end.VoidlingFanatic;
 import net.hypixel.skyblock.entity.end.VoidlingRadical;
-import net.hypixel.skyblock.entity.end.VoidlingsWardenMob;
 import net.hypixel.skyblock.entity.end.Watcher;
 import net.hypixel.skyblock.entity.end.WeakEnderman;
 import net.hypixel.skyblock.entity.end.Zealot;
@@ -191,7 +190,6 @@ public enum SEntityType {
     SHADOW_ASSASSINS(EntityType.ZOMBIE, ShadowAssassins.class),
     TERRORANT(EntityType.ZOMBIE, Giant.class),
     TEST_OBJECT(EntityType.ZOMBIE, Zombie.class),
-    VOIDLINGS_WARDEN(EntityType.ZOMBIE, VoidlingsWardenMob.class),
     TEST_CHIMMY_OBJECT_T34(EntityType.ZOMBIE, TestingMob.class),
     TERRACOTTA_SADAN(EntityType.ZOMBIE, TerracottaSadan.class),
     BIGFOOT_SADAN(EntityType.ZOMBIE, BigfootGiant.class),
@@ -338,8 +336,8 @@ public enum SEntityType {
     public Object instance(Object ... params) {
         try {
             Class[] paramTypes = new Class[params.length];
-            for (int i = 0; i < paramTypes.length; ++i) {
-                paramTypes[i] = params[i].getClass();
+            for (int i2 = 0; i2 < paramTypes.length; ++i2) {
+                paramTypes[i2] = params[i2].getClass();
             }
             return this.clazz.getConstructor(paramTypes).newInstance(params);
         } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException ex) {
@@ -351,8 +349,8 @@ public enum SEntityType {
     public Object getGenericInstance() {
         try {
             return this.clazz.newInstance();
-        } catch (IllegalAccessException | InstantiationException e) {
-            e.printStackTrace();
+        } catch (IllegalAccessException | InstantiationException e2) {
+            e2.printStackTrace();
             return null;
         }
     }
@@ -360,10 +358,10 @@ public enum SEntityType {
     private static void registerEntity(String name, int id, Class<? extends EntityInsentient> clazz) {
         try {
             ArrayList<Map> dataMap = new ArrayList<Map>();
-            for (Field f : EntityTypes.class.getDeclaredFields()) {
-                if (!f.getType().getSimpleName().equals(Map.class.getSimpleName())) continue;
-                f.setAccessible(true);
-                dataMap.add((Map)f.get(null));
+            for (Field f2 : EntityTypes.class.getDeclaredFields()) {
+                if (!f2.getType().getSimpleName().equals(Map.class.getSimpleName())) continue;
+                f2.setAccessible(true);
+                dataMap.add((Map)f2.get(null));
             }
             if (((Map)dataMap.get(2)).containsKey(id)) {
                 ((Map)dataMap.get(0)).remove(name);
@@ -372,8 +370,8 @@ public enum SEntityType {
             Method method = EntityTypes.class.getDeclaredMethod("a", Class.class, String.class, Integer.TYPE);
             method.setAccessible(true);
             method.invoke(null, clazz, name, id);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception e2) {
+            e2.printStackTrace();
         }
     }
 

@@ -32,18 +32,18 @@ extends SCommand {
         if (sender instanceof ConsoleCommandSender) {
             throw new CommandFailException("Console senders cannot use this command!");
         }
-        Player p = sender.getPlayer();
+        Player p2 = sender.getPlayer();
         if (2 != args.length) {
             this.send(ChatColor.RED + "System Command! You don't have access to it.");
-            p.playSound(p.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
+            p2.playSound(p2.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
             return;
         }
         if (!KEYS.contains(UUID.fromString(args[0]))) {
             this.send(ChatColor.RED + "The requested action is no longer available!");
-            p.playSound(p.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
+            p2.playSound(p2.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
             return;
         }
-        p.chat("/trade " + args[1]);
+        p2.chat("/trade " + args[1]);
         KEYS.remove(UUID.fromString(args[0]));
     }
 }

@@ -59,6 +59,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.api.serializer.BukkitSerializeClass;
+import net.hypixel.skyblock.config.Config;
 import net.hypixel.skyblock.database.DatabaseManager;
 import net.hypixel.skyblock.entity.SEntity;
 import net.hypixel.skyblock.entity.StaticWardenManager;
@@ -171,6 +172,7 @@ public class User {
     private final Map<SMaterial, Integer> quiver;
     private final List<ActivePotionEffect> effects;
     private List<String> talkedNPCs;
+    private List<String> talkedVillagers;
     double farmingXP;
     private boolean boneToZeroDamage;
     private boolean cooldownAPI;
@@ -207,7 +209,10 @@ public class User {
     private Double islandZ;
     public PlayerRank rank;
     public Player player;
+    private Config config;
+    public static Config sbc;
     public List<String> foundzone;
+    public boolean hasIsland;
 
     private User(UUID uuid) {
         this.dataCache = new HashMap<String, Object>();
@@ -215,11 +220,13 @@ public class User {
         this.boneToZeroDamage = false;
         this.rank = PlayerRank.DEFAULT;
         this.cooldownAPI = false;
+        this.talkedVillagers = new CopyOnWriteArrayList<String>();
         this.saveable = true;
         this.waitingForSign = false;
         this.signContent = null;
         this.isCompletedSign = false;
         this.uuid = uuid;
+        this.hasIsland = false;
         this.foundzone = new ArrayList<String>();
         this.collections = ItemCollection.getDefaultCollections();
         this.totalfloor6run = 0L;
@@ -247,11 +254,184 @@ public class User {
         this.auctionSettings = new AuctionSettings();
         this.auctionCreationBIN = false;
         this.auctionEscrow = new AuctionEscrow();
+        if (sbc.getBoolean("Config")) {
+            String path = uuid.toString() + ".yml";
+            if (!USER_FOLDER.exists()) {
+                USER_FOLDER.mkdirs();
+            }
+            File configFile = new File(USER_FOLDER, path);
+            boolean save = false;
+            try {
+                if (!configFile.exists()) {
+                    save = true;
+                    configFile.createNewFile();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            this.config = new Config(USER_FOLDER, path);
+            if (save) {
+                this.configsave();
+            }
+            this.configload();
+        }
         USER_CACHE.put(uuid, this);
+    }
+
+    public Config getConfig() {
+        return this.config;
     }
 
     public void unload() {
         USER_CACHE.remove(this.uuid);
+    }
+
+    public void configload() {
+        this.uuid = UUID.fromString(this.config.getString("uuid"));
+        if (this.config.contains("collections")) {
+            for (String identifier : this.config.getConfigurationSection("collections").getKeys(false)) {
+                this.collections.put(ItemCollection.getByIdentifier(identifier), this.config.getInt("collections." + identifier));
+            }
+        }
+        this.islandX = this.config.contains("island.x") ? Double.valueOf(this.config.getDouble("island.x")) : null;
+        this.islandZ = this.config.contains("island.z") ? Double.valueOf(this.config.getDouble("island.z")) : null;
+        this.rank = PlayerRank.valueOf(this.config.getString("rank"));
+        this.hasIsland = this.config.getBoolean("hasIsland");
+        this.coins = this.config.getLong("coins");
+        this.bits = this.config.getLong("bits");
+        this.bankCoins = this.config.getLong("bankCoins");
+        Region region = this.lastRegion = this.config.getString("lastRegion") != null ? Region.get(this.config.getString("lastRegion")) : null;
+        if (this.config.contains("quiver")) {
+            for (String m2 : this.config.getConfigurationSection("quiver").getKeys(false)) {
+                this.quiver.put(SMaterial.getMaterial(m2), this.config.getInt("quiver." + m2));
+            }
+        }
+        if (this.config.contains("effects")) {
+            for (String key : this.config.getConfigurationSection("effects").getKeys(false)) {
+                this.effects.add(new ActivePotionEffect(new PotionEffect(PotionEffectType.getByNamespace(key), this.config.getInt("effects." + key + ".level"), this.config.getLong("effects." + key + ".duration")), this.config.getLong("effects." + key + ".remaining")));
+            }
+        }
+        this.totalfloor6run = this.config.getLong("dungeons.floor6.run");
+        this.sadancollections = this.config.getLong("dungeons.boss.sadan");
+        this.farmingXP = this.config.getDouble("xp.farming");
+        this.miningXP = this.config.getDouble("xp.mining");
+        this.combatXP = this.config.getDouble("xp.combat");
+        this.foragingXP = this.config.getDouble("xp.foraging");
+        this.enchantXP = this.config.getDouble("xp.enchant");
+        this.cataXP = this.config.getDouble("xp.dungeons.cata");
+        this.archerXP = this.config.getDouble("xp.dungeons.arch");
+        this.mageXP = this.config.getDouble("xp.dungeons.mage");
+        this.tankXP = this.config.getDouble("xp.dungeons.tank");
+        this.berserkXP = this.config.getDouble("xp.dungeons.bers");
+        this.healerXP = this.config.getDouble("xp.dungeons.heal");
+        this.highestSlayers[0] = this.config.getInt("slayer.revenantHorror.highest");
+        this.highestSlayers[1] = this.config.getInt("slayer.tarantulaBroodfather.highest");
+        this.highestSlayers[2] = this.config.getInt("slayer.svenPackmaster.highest");
+        this.highestSlayers[3] = this.config.getInt("slayer.voidgloomSeraph.highest");
+        this.slayerXP[0] = this.config.getInt("xp.slayer.revenantHorror");
+        this.slayerXP[1] = this.config.getInt("xp.slayer.tarantulaBroodfather");
+        this.slayerXP[2] = this.config.getInt("xp.slayer.svenPackmaster");
+        this.slayerXP[3] = this.config.getInt("xp.slayer.voidgloomSeraph");
+        this.permanentCoins = this.config.getBoolean("permanentCoins");
+        this.slayerQuest = (SlayerQuest)this.config.get("slayer.quest");
+        if (this.config.contains("pets")) {
+            this.pets = this.config.getList("pets");
+        }
+        if (this.config.contains("unlockedRecipes")) {
+            this.unlockedRecipes = this.config.getList("unlockedRecipes");
+        }
+        if (this.config.contains("talked_npcs")) {
+            this.talkedNPCs = this.config.getList("talked_npcs");
+        }
+        if (this.config.contains("talked_villagers")) {
+            this.talkedVillagers = this.config.getList("talked_villagers");
+        }
+        if (this.config.contains("foundzones")) {
+            this.foundzone = this.config.getList("foundzones");
+        }
+        if (this.config.contains("completedQuest")) {
+            this.completedQuests = this.config.getList("completedQuest");
+        }
+        if (this.config.contains("completedObjectives")) {
+            this.completedObjectives = this.config.getList("completedObjectives");
+        }
+        this.auctionSettings = (AuctionSettings)this.config.get("auction.settings");
+        if (this.auctionSettings == null) {
+            this.auctionSettings = new AuctionSettings();
+        }
+        this.auctionCreationBIN = this.config.getBoolean("auction.creationBIN");
+        this.auctionEscrow = (AuctionEscrow)this.config.get("auction.escrow");
+        if (this.auctionEscrow == null) {
+            this.auctionEscrow = new AuctionEscrow();
+        }
+    }
+
+    public void configsave() {
+        this.config.set("uuid", this.uuid.toString());
+        this.config.set("rank", this.rank.toString());
+        this.config.set("collections", null);
+        this.config.set("island.x", this.islandX);
+        this.config.set("island.z", this.islandZ);
+        for (Map.Entry<ItemCollection, Integer> entry : this.collections.entrySet()) {
+            this.config.set("collections." + entry.getKey().getIdentifier(), entry.getValue());
+        }
+        this.config.set("hasIsland", this.hasIsland);
+        this.config.set("coins", this.coins);
+        this.config.set("bits", this.bits);
+        this.config.set("bankCoins", this.bankCoins);
+        if (this.lastRegion != null) {
+            this.config.set("lastRegion", this.lastRegion.getName());
+        }
+        this.config.set("quiver", null);
+        for (Map.Entry<Object, Integer> entry : this.quiver.entrySet()) {
+            this.config.set("quiver." + ((SMaterial)((Object)entry.getKey())).name().toLowerCase(), entry.getValue());
+        }
+        this.config.set("effects", null);
+        for (ActivePotionEffect activePotionEffect : this.effects) {
+            PotionEffectType type = activePotionEffect.getEffect().getType();
+            this.config.set("effects." + type.getNamespace() + ".level", activePotionEffect.getEffect().getLevel());
+            this.config.set("effects." + type.getNamespace() + ".duration", activePotionEffect.getEffect().getDuration());
+            this.config.set("effects." + type.getNamespace() + ".remaining", activePotionEffect.getRemaining());
+        }
+        this.config.set("dungeons.floor6.run", this.totalfloor6run);
+        this.config.set("dungeons.boss.sadan", this.sadancollections);
+        this.config.set("xp.farming", this.farmingXP);
+        this.config.set("xp.mining", this.miningXP);
+        this.config.set("xp.combat", this.combatXP);
+        this.config.set("xp.foraging", this.foragingXP);
+        this.config.set("xp.enchant", this.enchantXP);
+        this.config.set("xp.dungeons.cata", this.cataXP);
+        this.config.set("xp.dungeons.arch", this.archerXP);
+        this.config.set("xp.dungeons.bers", this.berserkXP);
+        this.config.set("xp.dungeons.heal", this.healerXP);
+        this.config.set("xp.dungeons.mage", this.mageXP);
+        this.config.set("xp.dungeons.tank", this.tankXP);
+        this.config.set("slayer.revenantHorror.highest", this.highestSlayers[0]);
+        this.config.set("slayer.tarantulaBroodfather.highest", this.highestSlayers[1]);
+        this.config.set("slayer.svenPackmaster.highest", this.highestSlayers[2]);
+        this.config.set("slayer.voidgloomSeraph.highest", this.highestSlayers[3]);
+        this.config.set("xp.slayer.revenantHorror", this.slayerXP[0]);
+        this.config.set("xp.slayer.tarantulaBroodfather", this.slayerXP[1]);
+        this.config.set("xp.slayer.svenPackmaster", this.slayerXP[2]);
+        this.config.set("xp.slayer.voidgloomSeraph", this.slayerXP[3]);
+        this.config.set("permanentCoins", this.permanentCoins);
+        this.config.set("slayer.quest", this.slayerQuest);
+        this.config.set("pets", this.pets);
+        this.config.set("unlockedRecipes", this.unlockedRecipes);
+        this.config.set("talked_npcs", this.talkedNPCs);
+        this.config.set("talked_villagers", this.talkedVillagers);
+        this.config.set("completedObjectives", this.completedObjectives);
+        this.config.set("completedQuest", this.completedQuests);
+        this.config.set("unlockedRecipes", this.unlockedRecipes);
+        this.config.set("foundzones", this.foundzone);
+        this.config.set("auction.settings", this.auctionSettings);
+        this.config.set("auction.creationBIN", this.auctionCreationBIN);
+        this.config.set("auction.escrow", this.auctionEscrow);
+        if (Bukkit.getPlayer((UUID)this.uuid) != null && Bukkit.getPlayer((UUID)this.uuid).isOnline()) {
+            this.config.set("configures.showPets", PetsGUI.getShowPet(Bukkit.getPlayer((UUID)this.uuid)));
+            this.config.set("configures.autoSlayer", PlayerUtils.isAutoSlayer(Bukkit.getPlayer((UUID)this.uuid)));
+        }
+        this.config.save();
     }
 
     public synchronized void addTalkedNPC(String name) {
@@ -260,12 +440,18 @@ public class User {
         }
     }
 
+    public synchronized void addTalkedVillager(String name) {
+        if (!this.talkedVillagers.contains(name)) {
+            this.talkedVillagers.add(name);
+        }
+    }
+
     public List<String> getdiscoveredzones() {
         return this.foundzone;
     }
 
-    public void addnewzone(String q) {
-        this.foundzone.add(q);
+    public void addnewzone(String q2) {
+        this.foundzone.add(q2);
     }
 
     public void addCompletedQuest(String questName) {
@@ -319,7 +505,11 @@ public class User {
     }
 
     public void asyncSavingData() {
-        this.save();
+        if (SkyBlock.getPlugin().config.getBoolean("Config")) {
+            this.configsave();
+        } else {
+            this.save();
+        }
     }
 
     public void loadStatic() {
@@ -348,6 +538,7 @@ public class User {
                 User.this.setDataProperty("rank", User.this.rank.toString());
                 User.this.setDataProperty("islandX", User.this.islandX);
                 User.this.setDataProperty("islandZ", User.this.islandZ);
+                User.this.setDataProperty("hasIsland", User.this.hasIsland);
                 HashMap<String, Integer> collectionsData = new HashMap<String, Integer>();
                 for (ItemCollection collection : ItemCollection.getCollections()) {
                     collectionsData.put(collection.getIdentifier(), User.this.getCollection(collection));
@@ -374,6 +565,11 @@ public class User {
                 is = User.this.stashedItems.toArray(is);
                 data.put("stash", BukkitSerializeClass.itemStackArrayToBase64(is));
                 User.this.setDataProperty("data", data);
+                HashMap<String, List<String>> quest = new HashMap<String, List<String>>();
+                quest.put("talkedvillager", User.this.talkedVillagers);
+                quest.put("completedQuests", User.this.completedQuests);
+                quest.put("completedObjectives", User.this.completedObjectives);
+                User.this.setDataProperty("quest", quest);
                 User.this.setDataProperty("totalfloor6run", User.this.totalfloor6run);
                 User.this.setDataProperty("sadanCollections", User.this.sadancollections);
                 User.this.setDataProperty("effects", effects);
@@ -391,8 +587,6 @@ public class User {
                 User.this.setDataProperty("xpSlayerTarantulaBroodfather", User.this.slayerXP[1]);
                 User.this.setDataProperty("xpSlayerSvenPackmaster", User.this.slayerXP[2]);
                 User.this.setDataProperty("xpSlayerVoidgloomSeraph", User.this.slayerXP[3]);
-                User.this.setDataProperty("completedQuests", User.this.completedQuests);
-                User.this.setDataProperty("completedObjectives", User.this.completedObjectives);
                 if (User.this.slayerQuest != null) {
                     User.this.setDataProperty("slayerQuest", User.this.getSlayerQuest().serialize());
                 }
@@ -474,8 +668,8 @@ public class User {
                 ItemStack[] arr = new ItemStack[]{};
                 try {
                     arr = BukkitSerializeClass.itemStackArrayFromBase64(databaseDocument.getString("stash"));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                } catch (IOException e2) {
+                    throw new RuntimeException(e2);
                 }
                 this.stashedItems = Arrays.asList(arr);
             }
@@ -490,11 +684,11 @@ public class User {
     public String getPureListFrom(Inventory piv) {
         ItemStack[] ist = piv.getContents();
         List<ItemStack> arraylist = Arrays.asList(ist);
-        for (int i = 0; i < ist.length; ++i) {
+        for (int i2 = 0; i2 < ist.length; ++i2) {
             NBTItem nbti;
-            ItemStack stack = ist[i];
+            ItemStack stack = ist[i2];
             if (stack == null || !(nbti = new NBTItem(stack)).hasKey("dontSaveToProfile").booleanValue()) continue;
-            arraylist.remove(i);
+            arraylist.remove(i2);
         }
         ItemStack[] arrl = (ItemStack[])arraylist.toArray();
         return BukkitSerializeClass.itemStackArrayToBase64(arrl);
@@ -515,6 +709,7 @@ public class User {
                 User.this.setRank(PlayerRank.valueOf(User.this.getString("rank", "DEFAULT")));
                 User.this.islandX = User.this.getDouble("islandX", 0);
                 User.this.islandZ = User.this.getDouble("islandZ", 0);
+                User.this.hasIsland = User.this.getBoolean("hasIsland", false);
                 if (User.this.getString("lastRegion", "none").equals("none")) {
                     User.this.setLastRegion(null);
                 } else {
@@ -562,10 +757,13 @@ public class User {
                 } catch (Exception ignored) {
                     User.this.setAuctionEscrow(new AuctionEscrow());
                 }
-                User.this.completedQuests = User.this.getStringList("completedQuests", new ArrayList<String>());
-                User.this.completedObjectives = User.this.getStringList("completedObjectives", new ArrayList<String>());
-                User.this.setCompletedQuests(User.this.completedQuests);
-                User.this.setCompletedObjectives(User.this.completedObjectives);
+                Document questData = (Document)User.this.get("quests", new Document());
+                List<String> completedQuests = questData.getList("completedQuests", String.class, new ArrayList());
+                List<String> completedObjectives = questData.getList("completedObjectives", String.class, new ArrayList());
+                List<String> talkedto = questData.getList("talkedto", String.class, new ArrayList());
+                User.this.setCompletedQuests(completedQuests);
+                User.this.setCompletedObjectives(completedObjectives);
+                User.this.talkedVillagers = talkedto;
                 User.this.setAuctionCreationBIN(User.this.getBoolean("auctionCreationBIN", false));
                 List<Document> effectsDocuments = User.this.dataDocument.getList("effects", Document.class);
                 for (Document effectData : effectsDocuments) {
@@ -584,8 +782,8 @@ public class User {
                 }
                 try {
                     User.this.loadPlayerData();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                } catch (IOException e2) {
+                    throw new RuntimeException(e2);
                 }
             }
         });
@@ -686,12 +884,8 @@ public class User {
         this.coins += coins;
     }
 
-    public boolean subCoins(long coins) {
-        if (this.coins >= coins && coins > 0L) {
-            this.coins -= coins;
-            return true;
-        }
-        return false;
+    public void subCoins(long coins) {
+        this.coins -= coins;
     }
 
     public void addBankCoins(long bankCoins) {
@@ -702,28 +896,28 @@ public class User {
         this.bankCoins -= bankCoins;
     }
 
-    public void addBCollection(int a) {
-        this.sadancollections += (long)a;
+    public void addBCollection(int a2) {
+        this.sadancollections += (long)a2;
     }
 
-    public void setBCollection(int a) {
-        this.sadancollections = a;
+    public void setBCollection(int a2) {
+        this.sadancollections = a2;
     }
 
-    public void subBCollection(int a) {
-        this.sadancollections -= (long)a;
+    public void subBCollection(int a2) {
+        this.sadancollections -= (long)a2;
     }
 
     public long getBCollection() {
         return this.sadancollections;
     }
 
-    public void addBRun6(int a) {
-        this.totalfloor6run += (long)a;
+    public void addBRun6(int a2) {
+        this.totalfloor6run += (long)a2;
     }
 
-    public void subBRun6(int a) {
-        this.totalfloor6run -= (long)a;
+    public void subBRun6(int a2) {
+        this.totalfloor6run -= (long)a2;
     }
 
     public long getBRun6() {
@@ -732,8 +926,8 @@ public class User {
 
     public void addToCollection(ItemCollection collection, int amount) {
         int prevTier = collection.getTier(this.getCollection(collection));
-        int i = this.collections.getOrDefault(collection, 0);
-        this.collections.put(collection, i + amount);
+        int i2 = this.collections.getOrDefault(collection, 0);
+        this.collections.put(collection, i2 + amount);
         this.updateCollection(collection, prevTier);
     }
 
@@ -794,8 +988,8 @@ public class User {
     }
 
     public void addToQuiver(SMaterial material, int amount) {
-        int i = this.quiver.getOrDefault((Object)material, 0);
-        this.setQuiver(material, i + amount);
+        int i2 = this.quiver.getOrDefault((Object)material, 0);
+        this.setQuiver(material, i2 + amount);
     }
 
     public void addToQuiver(SMaterial material) {
@@ -849,9 +1043,9 @@ public class User {
     }
 
     public void equipPet(Pet.PetItem pet) {
-        for (Pet.PetItem p : this.pets) {
-            if (!p.isActive()) continue;
-            p.setActive(false);
+        for (Pet.PetItem p2 : this.pets) {
+            if (!p2.isActive()) continue;
+            p2.setActive(false);
             break;
         }
         pet.setActive(true);
@@ -860,8 +1054,8 @@ public class User {
     public void removePet(Pet.PetItem pet) {
         Iterator<Pet.PetItem> iter = this.pets.iterator();
         while (iter.hasNext()) {
-            Pet.PetItem p = iter.next();
-            if (!pet.equals(p)) continue;
+            Pet.PetItem p2 = iter.next();
+            if (!pet.equals(p2)) continue;
             iter.remove();
             break;
         }
@@ -1045,20 +1239,20 @@ public class User {
         return this.slayerXP[type.ordinal()];
     }
 
-    public int getCrystalLVL(int i) {
-        if (i > 7) {
+    public int getCrystalLVL(int i2) {
+        if (i2 > 7) {
             SLog.severe("Out of bound on action taking data from database!");
             return 0;
         }
-        return this.crystalLVL[i];
+        return this.crystalLVL[i2];
     }
 
-    public void setCrystalLVL(int i, int a) {
-        if (i > 7) {
+    public void setCrystalLVL(int i2, int a2) {
+        if (i2 > 7) {
             SLog.severe("Out of bound on action taking data from database!");
             return;
         }
-        this.crystalLVL[i] = a;
+        this.crystalLVL[i2] = a2;
     }
 
     public int getSlayerCombatXPBuff() {
@@ -1104,9 +1298,9 @@ public class User {
     }
 
     public void removeAllSlayerBosses() {
-        for (Entity e : Bukkit.getPlayer((UUID)this.uuid).getWorld().getEntities()) {
-            if (!e.hasMetadata("BOSS_OWNER_" + this.uuid.toString()) || !e.hasMetadata("SlayerBoss")) continue;
-            e.remove();
+        for (Entity e2 : Bukkit.getPlayer((UUID)this.uuid).getWorld().getEntities()) {
+            if (!e2.hasMetadata("BOSS_OWNER_" + this.uuid.toString()) || !e2.hasMetadata("SlayerBoss")) continue;
+            e2.remove();
         }
     }
 
@@ -1155,9 +1349,9 @@ public class User {
             if (lvl > 100.0) {
                 lvl = 100.0;
             }
-            double aB = player.getHealth() + lvl / 100.0 * (player.getMaxHealth() - player.getHealth());
-            double aC = Math.min(player.getMaxHealth(), aB);
-            player.setHealth(aC);
+            double aB2 = player.getHealth() + lvl / 100.0 * (player.getMaxHealth() - player.getHealth());
+            double aC2 = Math.min(player.getMaxHealth(), aB2);
+            player.setHealth(aC2);
         }
     }
 
@@ -1191,9 +1385,9 @@ public class User {
             if (lvl > 100.0) {
                 lvl = 100.0;
             }
-            double aB = player.getHealth() + lvl / 100.0 * (player.getMaxHealth() - player.getHealth());
-            double aC = Math.min(player.getMaxHealth(), aB);
-            player.setHealth(aC);
+            double aB2 = player.getHealth() + lvl / 100.0 * (player.getMaxHealth() - player.getHealth());
+            double aC2 = Math.min(player.getMaxHealth(), aB2);
+            player.setHealth(aC2);
         }
     }
 
@@ -1201,7 +1395,7 @@ public class User {
         return USER_FOLDER;
     }
 
-    public void damageEntityBowEman(Damageable entity1, double damage, Player player, Arrow a) {
+    public void damageEntityBowEman(Damageable entity1, double damage, Player player, Arrow a2) {
         if (VoidgloomSeraph.HIT_SHIELD.containsKey(entity1)) {
             VoidgloomSeraph.HIT_SHIELD.put((Entity)entity1, VoidgloomSeraph.HIT_SHIELD.get(entity1) - 1);
             entity1.getWorld().playSound(entity1.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 2.0f);
@@ -1225,7 +1419,7 @@ public class User {
             entity1.setHealth(Math.max(0.0, entity1.getHealth() - damage));
         }
         PlayerUtils.handleSpecEntity((Entity)entity1, player, new AtomicDouble(damage));
-        a.remove();
+        a2.remove();
     }
 
     public void damageEntity(LivingEntity entity) {
@@ -1236,7 +1430,7 @@ public class User {
         entity.damage(0.0, (Entity)player);
     }
 
-    public void damage(double d, EntityDamageEvent.DamageCause cause, Entity entity) {
+    public void damage(double d2, EntityDamageEvent.DamageCause cause, Entity entity) {
         Player player = Bukkit.getPlayer((UUID)this.uuid);
         if (player == null) {
             return;
@@ -1248,14 +1442,14 @@ public class User {
         PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
         double trueDefense = statistics.getTrueDefense().addAll();
         double health = statistics.getMaxHealth().addAll();
-        d -= d * (trueDefense / (trueDefense + 100.0));
-        if (player.getHealth() + (double)SputnikPlayer.getCustomAbsorptionHP(player).intValue() - d <= 0.0) {
+        d2 -= d2 * (trueDefense / (trueDefense + 100.0));
+        if (player.getHealth() + (double)SputnikPlayer.getCustomAbsorptionHP(player).intValue() - d2 <= 0.0) {
             this.kill(cause, entity);
             return;
         }
-        float ab = (float)Math.max(0.0, (double)SputnikPlayer.getCustomAbsorptionHP(player).intValue() - d);
-        double actual = Math.max(0.0, d - (double)SputnikPlayer.getCustomAbsorptionHP(player).intValue());
-        SputnikPlayer.setCustomAbsorptionHP(player, ab);
+        float ab2 = (float)Math.max(0.0, (double)SputnikPlayer.getCustomAbsorptionHP(player).intValue() - d2);
+        double actual = Math.max(0.0, d2 - (double)SputnikPlayer.getCustomAbsorptionHP(player).intValue());
+        SputnikPlayer.setCustomAbsorptionHP(player, ab2);
         if (cause == EntityDamageEvent.DamageCause.FIRE || cause == EntityDamageEvent.DamageCause.FIRE_TICK || cause == EntityDamageEvent.DamageCause.LAVA) {
             boolean damage = false;
             if (cause == EntityDamageEvent.DamageCause.FIRE || cause == EntityDamageEvent.DamageCause.FIRE_TICK && cause != EntityDamageEvent.DamageCause.LAVA) {
@@ -1298,8 +1492,8 @@ public class User {
         }
     }
 
-    public void damage(double d) {
-        this.damage(d, EntityDamageEvent.DamageCause.CUSTOM, null);
+    public void damage(double d2) {
+        this.damage(d2, EntityDamageEvent.DamageCause.CUSTOM, null);
     }
 
     public void kill(EntityDamageEvent.DamageCause cause, Entity entity) {
@@ -1310,8 +1504,8 @@ public class User {
             return;
         }
         player.setHealth(player.getMaxHealth());
-        for (int i = 0; i < player.getInventory().getSize(); ++i) {
-            ItemStack stack = player.getInventory().getItem(i);
+        for (int i2 = 0; i2 < player.getInventory().getSize(); ++i2) {
+            ItemStack stack = player.getInventory().getItem(i2);
             SItem sItem = SItem.find(stack);
             if (sItem != null) continue;
         }
@@ -1325,20 +1519,20 @@ public class User {
                 this.clearPotionEffects();
             }
         } else {
-            final World w = player.getWorld();
+            final World w2 = player.getWorld();
             for (Entity en : player.getWorld().getEntities()) {
                 if (en instanceof HumanEntity) continue;
                 en.remove();
             }
-            SadanFunction.sendReMsg(false, w);
-            SadanHuman.IsMusicPlaying.put(w.getUID(), false);
-            SadanHuman.BossRun.put(w.getUID(), false);
-            SadanFunction.endRoom2(w);
-            final BukkitTask bkt = SadanHuman.playHBS(w);
+            SadanFunction.sendReMsg(false, w2);
+            SadanHuman.IsMusicPlaying.put(w2.getUID(), false);
+            SadanHuman.BossRun.put(w2.getUID(), false);
+            SadanFunction.endRoom2(w2);
+            final BukkitTask bkt = SadanHuman.playHBS(w2);
             new BukkitRunnable(){
 
                 public void run() {
-                    if (w == null || w.getPlayers().size() == 0) {
+                    if (w2 == null || w2.getPlayers().size() == 0) {
                         bkt.cancel();
                         this.cancel();
                     }
@@ -1423,9 +1617,9 @@ public class User {
             player.sendMessage(ChatColor.RED + " \u2620 " + ChatColor.GRAY + message + ChatColor.GRAY + " and became a ghost.");
             SUtil.broadcastExcept(ChatColor.RED + " \u2620 " + ChatColor.GRAY + String.format(out, player.getName()) + ChatColor.GRAY + " and became a ghost.", player);
         }
-        for (Entity e : player.getWorld().getEntities()) {
-            if (!e.hasMetadata("owner") || !((MetadataValue)e.getMetadata("owner").get(0)).asString().equals(player.getUniqueId().toString())) continue;
-            e.remove();
+        for (Entity e2 : player.getWorld().getEntities()) {
+            if (!e2.hasMetadata("owner") || !((MetadataValue)e2.getMetadata("owner").get(0)).asString().equals(player.getUniqueId().toString())) continue;
+            e2.remove();
             player.sendMessage(ChatColor.RED + "\u2620 Your Voidling's Warden Boss has been despawned since you died!");
             StaticWardenManager.endFight();
         }
@@ -1459,7 +1653,11 @@ public class User {
             long sub = (long)((double)this.coins * 0.25);
             player.sendMessage(ChatColor.RED + "You died, lost " + SUtil.commaify(sub) + " coins, and your piggy bank broke!");
             this.coins -= sub;
-            this.save();
+            if (SkyBlock.getPlugin().config.getBoolean("Config")) {
+                this.configsave();
+            } else {
+                this.save();
+            }
             return;
         }
         long sub2 = this.coins / 2L;
@@ -1468,9 +1666,9 @@ public class User {
         this.save();
     }
 
-    public void setIslandLocation(double x, double z) {
-        this.islandX = x;
-        this.islandZ = z;
+    public void setIslandLocation(double x2, double z2) {
+        this.islandX = x2;
+        this.islandZ = z2;
     }
 
     public void addPotionEffect(PotionEffect effect) {
@@ -1522,9 +1720,9 @@ public class User {
         if (world == null) {
             return false;
         }
-        double x = location.getX();
-        double z = location.getZ();
-        return world.getUID().equals(location.getWorld().getUID()) && x >= this.islandX - 125.0 && x <= this.islandX + 125.0 && z >= this.islandZ - 125.0 && z <= this.islandZ + 125.0;
+        double x2 = location.getX();
+        double z2 = location.getZ();
+        return world.getUID().equals(location.getWorld().getUID()) && x2 >= this.islandX - 125.0 && x2 <= this.islandX + 125.0 && z2 >= this.islandZ - 125.0 && z2 <= this.islandZ + 125.0;
     }
 
     public boolean isOnUserIsland() {
@@ -1536,9 +1734,9 @@ public class User {
         if (world == null) {
             return false;
         }
-        double x = player.getLocation().getX();
-        double z = player.getLocation().getZ();
-        return world.getUID().equals(player.getWorld().getUID()) && x < this.islandX - 125.0 && x > this.islandX + 125.0 && z < this.islandZ - 125.0 && z > this.islandZ + 125.0;
+        double x2 = player.getLocation().getX();
+        double z2 = player.getLocation().getZ();
+        return world.getUID().equals(player.getWorld().getUID()) && x2 < this.islandX - 125.0 && x2 > this.islandX + 125.0 && z2 < this.islandZ - 125.0 && z2 > this.islandZ + 125.0;
     }
 
     public List<AuctionItem> getBids() {
@@ -1585,7 +1783,8 @@ public class User {
                 case COAL_MINE_CAVES: 
                 case MOUNTAIN: 
                 case VILLAGE: {
-                    player.teleport(player.getWorld().getSpawnLocation());
+                    Location l2 = new Location(Bukkit.getWorld((String)"world"), -2.5, 70.0, -68.5, 180.0f, 0.0f);
+                    player.teleport(l2);
                 }
                 case HIGH_LEVEL: {
                     player.teleport(player.getWorld().getSpawnLocation());
@@ -1616,7 +1815,8 @@ public class User {
                 }
             }
         } else {
-            player.teleport(player.getWorld().getSpawnLocation());
+            Location l3 = new Location(Bukkit.getWorld((String)"world"), -2.5, 70.0, -68.5, 180.0f, 0.0f);
+            player.teleport(l3);
         }
     }
 
@@ -1673,8 +1873,8 @@ public class User {
             Reforge reforge = sitem.getReforge() == null ? Reforge.blank() : sitem.getReforge();
             double bonusEn = 0.0;
             if (sitem.getType().getStatistics().getType() == GenericItemType.WEAPON && sitem.getEnchantment(EnchantmentType.ONE_FOR_ALL) != null) {
-                Enchantment e = sitem.getEnchantment(EnchantmentType.ONE_FOR_ALL);
-                bonusEn = hs.getBaseDamage() * (e.getLevel() * 210) / 100;
+                Enchantment e2 = sitem.getEnchantment(EnchantmentType.ONE_FOR_ALL);
+                bonusEn = hs.getBaseDamage() * (e2.getLevel() * 210) / 100;
             }
             if (sitem.getType().getStatistics().getType() == GenericItemType.WEAPON || sitem.getType().getStatistics().getType() == GenericItemType.RANGED_WEAPON) {
                 hpbboostweapons = sitem.getDataInt("hpb") * 2;
@@ -1717,8 +1917,8 @@ public class User {
         if (starNum <= 5) {
             percentMstars *= 0;
         }
-        double d = 1.0 + (double)percentMstars / 100.0;
-        return stat * ((double)(1 + percentMstars / 100) * (1.0 + 0.1 * (double)Math.min(5, starNum)) * (double)(1 + cataBuffPercentage / 100) * d);
+        double d2 = 1.0 + (double)percentMstars / 100.0;
+        return stat * ((double)(1 + percentMstars / 100) * (1.0 + 0.1 * (double)Math.min(5, starNum)) * (double)(1 + cataBuffPercentage / 100) * d2);
     }
 
     public void sendClickableMessage(String message, TextComponent[] hover, String commandToRun) {
@@ -1838,6 +2038,10 @@ public class User {
 
     public List<String> getTalkedNPCs() {
         return this.talkedNPCs;
+    }
+
+    public List<String> getTalkedVillagers() {
+        return this.talkedVillagers;
     }
 
     public double getFarmingXP() {
@@ -2032,7 +2236,12 @@ public class User {
         return this.rank;
     }
 
+    public boolean isHasIsland() {
+        return this.hasIsland;
+    }
+
     static {
+        sbc = SkyBlock.getInstance().config;
         USER_CACHE = new HashMap<UUID, User>();
         plugin = SkyBlock.getPlugin();
         USER_FOLDER = new File(plugin.getDataFolder(), "./users");

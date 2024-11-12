@@ -35,16 +35,16 @@ public interface ClassSource {
         return ClassSource.fromMap(Collections.emptyMap());
     }
 
-    public static String append(String a, String b) {
-        boolean left = a.endsWith(".");
-        boolean right = b.endsWith(".");
+    public static String append(String a2, String b2) {
+        boolean left = a2.endsWith(".");
+        boolean right = b2.endsWith(".");
         if (left && right) {
-            return a.substring(0, a.length() - 1) + b;
+            return a2.substring(0, a2.length() - 1) + b2;
         }
         if (left != right) {
-            return a + b;
+            return a2 + b2;
         }
-        return a + "." + b;
+        return a2 + "." + b2;
     }
 
     default public ClassSource usingPackage(String packageName) {

@@ -31,16 +31,16 @@ extends YamlConfiguration {
     public void load() {
         try {
             super.load(this.file);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception e2) {
+            e2.printStackTrace();
         }
     }
 
     public void save() {
         try {
             super.save(this.file);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception e2) {
+            e2.printStackTrace();
         }
     }
 }

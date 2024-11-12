@@ -30,9 +30,9 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e) {
+    public void onOpen(GUIOpenEvent e2) {
         this.fill(BLACK_STAINED_GLASS_PANE);
-        Player player = e.getPlayer();
+        Player player = e2.getPlayer();
         User user = User.getUser(player.getUniqueId());
         this.set(GUIClickableItem.getCloseItem(49));
         AtomicInteger found = new AtomicInteger();

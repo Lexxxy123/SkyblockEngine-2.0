@@ -7,14 +7,18 @@
 package net.hypixel.skyblock.npc.impl;
 
 import net.hypixel.skyblock.npc.impl.NPCSkin;
-import net.hypixel.skyblock.npc.impl.SkyblockNPC;
+import net.hypixel.skyblock.npc.impl.SkyBlockNPC;
 import net.hypixel.skyblock.npc.impl.enums.NPCType;
 import org.bukkit.entity.Player;
 
 public interface NPCParameters {
     public static final String CLICK = "&e&lCLICK";
 
-    public String name();
+    public String id();
+
+    default public String name() {
+        return null;
+    }
 
     default public NPCType type() {
         return NPCType.PLAYER;
@@ -24,7 +28,18 @@ public interface NPCParameters {
         return null;
     }
 
-    public String[] holograms();
+    default public String[] holograms() {
+        String[] stringArray;
+        if (this.name() != null) {
+            String[] stringArray2 = new String[2];
+            stringArray2[0] = this.name();
+            stringArray = stringArray2;
+            stringArray2[1] = CLICK;
+        } else {
+            stringArray = null;
+        }
+        return stringArray;
+    }
 
     default public NPCSkin skin() {
         return null;
@@ -50,6 +65,6 @@ public interface NPCParameters {
         return true;
     }
 
-    public void onInteract(Player var1, SkyblockNPC var2);
+    public void onInteract(Player var1, SkyBlockNPC var2);
 }
 

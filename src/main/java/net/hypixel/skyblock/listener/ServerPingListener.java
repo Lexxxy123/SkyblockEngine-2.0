@@ -16,8 +16,8 @@ import org.bukkit.event.server.ServerListPingEvent;
 public class ServerPingListener
 extends PListener {
     @EventHandler
-    public void onServerPing(ServerListPingEvent e) {
-        e.setMotd(ChatColor.GOLD + "SkyBlock Version 0.7.0 BETA, Starting up...");
+    public void onServerPing(ServerListPingEvent e2) {
+        e2.setMotd(ChatColor.GOLD + "SkyBlock Version 0.7.0 BETA, Starting up...");
     }
 }
 

@@ -16,7 +16,7 @@ extends ResolverAbstract<Class> {
     public Class resolveSilent(String ... names) {
         try {
             return this.resolve(names);
-        } catch (Exception e) {
+        } catch (Exception e2) {
             return null;
         }
     }
@@ -28,8 +28,8 @@ extends ResolverAbstract<Class> {
         }
         try {
             return (Class)super.resolve(builder.build());
-        } catch (ReflectiveOperationException e) {
-            throw (ClassNotFoundException)e;
+        } catch (ReflectiveOperationException e2) {
+            throw (ClassNotFoundException)e2;
         }
     }
 

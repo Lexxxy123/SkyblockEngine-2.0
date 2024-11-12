@@ -45,9 +45,9 @@ public abstract class Skill {
         if (xp >= 5.5172425E7 && !sixty) {
             return 50;
         }
-        for (int i = XP_GOALS.size() - 1; i >= 0; --i) {
-            if (!((double)XP_GOALS.get(i).intValue() < xp)) continue;
-            return i;
+        for (int i2 = XP_GOALS.size() - 1; i2 >= 0; --i2) {
+            if (!((double)XP_GOALS.get(i2).intValue() < xp)) continue;
+            return i2;
         }
         return 60;
     }
@@ -64,10 +64,10 @@ public abstract class Skill {
         if (xp >= 5.5172425E7 && !sixty) {
             return 0.0;
         }
-        for (int i = 0; i < XP_GOALS.size(); ++i) {
-            int goal = XP_GOALS.get(i);
+        for (int i2 = 0; i2 < XP_GOALS.size(); ++i2) {
+            int goal = XP_GOALS.get(i2);
             if (!((double)goal > xp)) continue;
-            return goal - SUtil.getOrDefault(XP_GOALS, i - 1, Integer.valueOf(0));
+            return goal - SUtil.getOrDefault(XP_GOALS, i2 - 1, Integer.valueOf(0));
         }
         return 0.0;
     }
@@ -176,9 +176,9 @@ public abstract class Skill {
 
     public List<String> getRewardLore(int level, int prevLevel, boolean showOld) {
         ArrayList<String> lore = new ArrayList<String>();
-        String s = this.getAlternativeName();
-        if (!s.contains("{skip}")) {
-            lore.add(ChatColor.YELLOW + s + " " + SUtil.toRomanNumeral(level) + ChatColor.WHITE);
+        String s2 = this.getAlternativeName();
+        if (!s2.contains("{skip}")) {
+            lore.add(ChatColor.YELLOW + s2 + " " + SUtil.toRomanNumeral(level) + ChatColor.WHITE);
         }
         lore.addAll(this.getLevelUpInformation(level, prevLevel, showOld));
         if (this != CatacombsSkill.INSTANCE) {

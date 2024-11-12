@@ -79,13 +79,13 @@ extends BaseZombie {
 
     @Override
     public void onSpawn(final LivingEntity entity, SEntity sEntity) {
-        HeadsOnWall h = new HeadsOnWall(EnumWatcherType.PUTRID);
-        PlayerDisguise p = Sputnik.applyPacketNPC((Entity)entity, h.value, h.signature, true);
+        HeadsOnWall h2 = new HeadsOnWall(EnumWatcherType.PUTRID);
+        PlayerDisguise p2 = Sputnik.applyPacketNPC((Entity)entity, h2.value, h2.signature, true);
         EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 99);
         entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
         entity.setMetadata("LD", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
         entity.setMetadata("WATCHER_E", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
-        p.setReplaceSounds(false);
+        p2.setReplaceSounds(false);
         new BukkitRunnable(){
 
             public void run() {
@@ -114,23 +114,23 @@ extends BaseZombie {
     }
 
     @Override
-    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e, AtomicDouble damage) {
+    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
         LivingEntity en = sEntity.getEntity();
-        Vector v = new Vector(0, 0, 0);
-        SUtil.delay(() -> WatcherPutrid.lambda$onDamage$0((Entity)en, v), 1L);
+        Vector v2 = new Vector(0, 0, 0);
+        SUtil.delay(() -> WatcherPutrid.lambda$onDamage$0((Entity)en, v2), 1L);
     }
 
     @Override
-    public void onAttack(EntityDamageByEntityEvent e) {
-        LivingEntity killed = (LivingEntity)e.getEntity();
+    public void onAttack(EntityDamageByEntityEvent e2) {
+        LivingEntity killed = (LivingEntity)e2.getEntity();
         if (1 == SUtil.random(0, 20)) {
             killed.getLocation().getWorld().playEffect(killed.getLocation(), Effect.EXPLOSION_HUGE, 0);
             killed.getWorld().playSound(killed.getLocation(), Sound.EXPLODE, 1.0f, 1.0f);
             killed.getNearbyEntities(5.0, 5.0, 5.0).forEach(entity -> {
                 if (entity instanceof Player) {
-                    Player p = (Player)entity;
-                    p.damage(1.0E-5);
-                    User.getUser(p.getUniqueId()).damage(p.getMaxHealth() * 10.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)killed);
+                    Player p2 = (Player)entity;
+                    p2.damage(1.0E-5);
+                    User.getUser(p2.getUniqueId()).damage(p2.getMaxHealth() * 10.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (Entity)killed);
                 }
             });
         }
@@ -170,8 +170,8 @@ extends BaseZombie {
         return 540;
     }
 
-    private static /* synthetic */ void lambda$onDamage$0(Entity en, Vector v) {
-        en.setVelocity(v);
+    private static /* synthetic */ void lambda$onDamage$0(Entity en, Vector v2) {
+        en.setVelocity(v2);
     }
 }
 

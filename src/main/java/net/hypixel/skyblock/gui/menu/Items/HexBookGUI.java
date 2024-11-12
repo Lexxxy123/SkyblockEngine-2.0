@@ -42,12 +42,12 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
-                e.getWhoClicked().sendMessage(SUtil.color("&d&lSUCCESS! &r&aYou applied all selected modifications to your " + item.getFullName() + "!"));
+            public void run(InventoryClickEvent e2) {
+                e2.getWhoClicked().sendMessage(SUtil.color("&d&lSUCCESS! &r&aYou applied all selected modifications to your " + item.getFullName() + "!"));
                 HexBookGUI.this.forceclose = true;
-                Player p = (Player)e.getWhoClicked();
-                p.playSound(p.getLocation(), Sound.ORB_PICKUP, 10.0f, 10.0f);
-                new HexGUI(p.getPlayer(), item).open(p);
+                Player p2 = (Player)e2.getWhoClicked();
+                p2.playSound(p2.getLocation(), Sound.ORB_PICKUP, 10.0f, 10.0f);
+                new HexGUI(p2.getPlayer(), item).open(p2);
             }
 
             @Override
@@ -65,15 +65,15 @@ extends GUI {
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e) {
+                public void run(InventoryClickEvent e2) {
                     int current = item.getHPBs();
                     if (current < 10) {
                         item.setHPBs(current + 1);
-                        ((Player)e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.ANVIL_USE, 10.0f, 2.0f);
-                        e.getWhoClicked().sendMessage(SUtil.color("&aYou added 1 Hot Potato book to your item!"));
+                        ((Player)e2.getWhoClicked()).playSound(e2.getWhoClicked().getLocation(), Sound.ANVIL_USE, 10.0f, 2.0f);
+                        e2.getWhoClicked().sendMessage(SUtil.color("&aYou added 1 Hot Potato book to your item!"));
                     } else {
-                        e.getWhoClicked().sendMessage(SUtil.color("&cYou have already applied the maximum amount of Hot Potato Books to this item!"));
-                        ((Player)e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.VILLAGER_NO, 10.0f, 1.0f);
+                        e2.getWhoClicked().sendMessage(SUtil.color("&cYou have already applied the maximum amount of Hot Potato Books to this item!"));
+                        ((Player)e2.getWhoClicked()).playSound(e2.getWhoClicked().getLocation(), Sound.VILLAGER_NO, 10.0f, 1.0f);
                     }
                 }
 
@@ -90,7 +90,7 @@ extends GUI {
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e) {
+                public void run(InventoryClickEvent e2) {
                     int amount = item.getStar();
                     if (item.getStar() == 5) {
                         return;
@@ -100,8 +100,8 @@ extends GUI {
                     item.setDungeonsItem(true);
                     item.setStarAmount(0);
                     item.setStarAmount(item.getStar() + amount);
-                    ((Player)e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.ANVIL_USE, 10.0f, 2.0f);
-                    e.getWhoClicked().sendMessage(SUtil.color("&aYou added 1 Star to your item!"));
+                    ((Player)e2.getWhoClicked()).playSound(e2.getWhoClicked().getLocation(), Sound.ANVIL_USE, 10.0f, 2.0f);
+                    e2.getWhoClicked().sendMessage(SUtil.color("&aYou added 1 Star to your item!"));
                 }
 
                 @Override
@@ -118,9 +118,9 @@ extends GUI {
     }
 
     @Override
-    public void onClose(InventoryCloseEvent e) {
+    public void onClose(InventoryCloseEvent e2) {
         if (!this.forceclose && this.item != null) {
-            e.getPlayer().getInventory().addItem(new ItemStack[]{this.item.getStack()});
+            e2.getPlayer().getInventory().addItem(new ItemStack[]{this.item.getStack()});
         }
     }
 }

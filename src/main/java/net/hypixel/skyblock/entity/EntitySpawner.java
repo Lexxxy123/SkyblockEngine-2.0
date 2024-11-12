@@ -17,7 +17,6 @@ import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.config.Config;
 import net.hypixel.skyblock.entity.SEntity;
 import net.hypixel.skyblock.entity.SEntityType;
-import net.hypixel.skyblock.module.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -48,14 +47,14 @@ public class EntitySpawner {
     }
 
     public void delete() {
-        Config spawners = ConfigModule.getSpawners();
+        Config spawners = SkyBlock.getPlugin().spawners;
         SPAWNER_CACHE.remove(this);
         spawners.set(this.uuid.toString(), null);
         spawners.save();
     }
 
     public void save() {
-        Config spawners = ConfigModule.getSpawners();
+        Config spawners = SkyBlock.getPlugin().spawners;
         spawners.set(this.uuid.toString() + ".type", this.type.name());
         spawners.set(this.uuid + ".location", this.location);
         spawners.save();
@@ -66,13 +65,13 @@ public class EntitySpawner {
     }
 
     public static EntitySpawner deserialize(String key) {
-        Config spawners = ConfigModule.getSpawners();
+        Config spawners = SkyBlock.getPlugin().spawners;
         return new EntitySpawner(UUID.fromString(key), SEntityType.getEntityType(spawners.getString(key + ".type")), (Location)spawners.get(key + ".location"));
     }
 
     public static List<EntitySpawner> getSpawners() {
         if (SPAWNER_CACHE.size() == 0) {
-            Config spawners = ConfigModule.getSpawners();
+            Config spawners = SkyBlock.getPlugin().spawners;
             for (String key : spawners.getKeys(false)) {
                 SPAWNER_CACHE.add(EntitySpawner.deserialize(key));
             }

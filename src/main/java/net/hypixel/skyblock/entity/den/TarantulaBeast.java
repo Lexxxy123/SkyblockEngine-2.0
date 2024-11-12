@@ -34,11 +34,6 @@ extends BaseSpider {
     }
 
     @Override
-    public int mobLevel() {
-        return 180;
-    }
-
-    @Override
     public double getXPDropped() {
         return 300.0;
     }

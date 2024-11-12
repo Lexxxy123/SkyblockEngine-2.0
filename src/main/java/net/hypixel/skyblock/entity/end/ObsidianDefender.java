@@ -58,11 +58,6 @@ EntityStatistics {
     }
 
     @Override
-    public int mobLevel() {
-        return 55;
-    }
-
-    @Override
     public List<EntityDrop> drops() {
         return Arrays.asList(new EntityDrop(new ItemStack(Material.OBSIDIAN, SUtil.random(6, 7)), EntityDropType.GUARANTEED, 1.0), new EntityDrop(SItem.of(SMaterial.ENCHANTED_OBSIDIAN).getStack(), EntityDropType.RARE, 0.05), new EntityDrop(SItem.of(SMaterial.OBSIDIAN_CHESTPLATE).getStack(), EntityDropType.EXTRAORDINARILY_RARE, 0.001));
     }
@@ -85,21 +80,26 @@ EntityStatistics {
     }
 
     @Override
-    public void onAttack(EntityDamageByEntityEvent e) {
+    public void onAttack(EntityDamageByEntityEvent e2) {
         PlayerInventory inventory;
         SItem sItem;
-        if (!(e.getEntity() instanceof LivingEntity)) {
+        if (!(e2.getEntity() instanceof LivingEntity)) {
             return;
         }
-        if (e.getEntity() instanceof Player && null != (sItem = SItem.find((inventory = ((Player)e.getEntity()).getInventory()).getChestplate())) && SMaterial.OBSIDIAN_CHESTPLATE == sItem.getType()) {
+        if (e2.getEntity() instanceof Player && null != (sItem = SItem.find((inventory = ((Player)e2.getEntity()).getInventory()).getChestplate())) && SMaterial.OBSIDIAN_CHESTPLATE == sItem.getType()) {
             return;
         }
-        ((LivingEntity)e.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 80, 1));
+        ((LivingEntity)e2.getEntity()).addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 80, 1));
     }
 
     @Override
     public double getXPDropped() {
         return 43.2;
+    }
+
+    @Override
+    public int mobLevel() {
+        return 55;
     }
 }
 

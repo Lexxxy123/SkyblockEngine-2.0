@@ -103,8 +103,8 @@ public class BlessingChest {
                 SUtil.delay(() -> {
                     BlockPosition pos = new BlockPosition(chestLocation.getBlockX(), chestLocation.getBlockY(), chestLocation.getBlockZ());
                     PacketPlayOutBlockAction packet = new PacketPlayOutBlockAction(pos, (Block)Blocks.CHEST, 1, 1);
-                    for (Player p : chestLocation.getWorld().getPlayers()) {
-                        ((CraftPlayer)p).getHandle().playerConnection.sendPacket((Packet)packet);
+                    for (Player p2 : chestLocation.getWorld().getPlayers()) {
+                        ((CraftPlayer)p2).getHandle().playerConnection.sendPacket((Packet)packet);
                     }
                 }, 1L);
             }

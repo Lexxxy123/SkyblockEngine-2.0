@@ -27,7 +27,7 @@ public class PingAPI {
             Class<PingInjector> injector = PingInjector.class;
             Bukkit.getPluginManager().registerEvents((Listener)injector.newInstance(), (Plugin)SkyBlock.getPlugin());
             SLog.info("Successfully hooked into " + Bukkit.getServer().getName());
-        } catch (IllegalAccessException | IllegalArgumentException | InstantiationException | SecurityException e) {
+        } catch (IllegalAccessException | IllegalArgumentException | InstantiationException | SecurityException e2) {
             SLog.severe("Non compatible server version!");
             Bukkit.getPluginManager().disablePlugin((Plugin)SkyBlock.getPlugin());
         }

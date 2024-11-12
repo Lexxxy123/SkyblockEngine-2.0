@@ -11,10 +11,8 @@ import net.hypixel.skyblock.gui.AuctionConfirmGUI;
 import net.hypixel.skyblock.gui.AuctionHouseGUI;
 import net.hypixel.skyblock.gui.AuctionsBrowserGUI;
 import net.hypixel.skyblock.gui.BankerGUI;
-import net.hypixel.skyblock.gui.BitShopGUI;
 import net.hypixel.skyblock.gui.BoosterCookieShop;
 import net.hypixel.skyblock.gui.BossMenu;
-import net.hypixel.skyblock.gui.CityProjectGUI;
 import net.hypixel.skyblock.gui.CollectionBoss;
 import net.hypixel.skyblock.gui.CollectionMenuGUI;
 import net.hypixel.skyblock.gui.CookieConfirmGUI;
@@ -24,7 +22,6 @@ import net.hypixel.skyblock.gui.CreateAuctionGUI;
 import net.hypixel.skyblock.gui.DepositGUI;
 import net.hypixel.skyblock.gui.DungeonsItemConverting;
 import net.hypixel.skyblock.gui.DungeonsLevelGUI;
-import net.hypixel.skyblock.gui.FireSaleGUI;
 import net.hypixel.skyblock.gui.GUI;
 import net.hypixel.skyblock.gui.ItemBrowserGUI;
 import net.hypixel.skyblock.gui.ItemEditor;
@@ -54,9 +51,6 @@ public enum GUIType {
     CRAFTING_TABLE(CraftingTableGUI.class),
     ITEM_BROWSE(ItemBrowserGUI.class),
     MOB_GUI(MobSummonGUI.class),
-    CITY_PROJECT(CityProjectGUI.class),
-    FIRE_SALE(FireSaleGUI.class),
-    BIT_SHOP(BitShopGUI.class),
     ANVIL(AnvilGUI.class),
     TRASH(TrashGUI.class),
     COOKIE_GUI(CookieGUI.class),
@@ -105,8 +99,8 @@ public enum GUIType {
     public GUI getGUI() {
         try {
             return this.gui.newInstance();
-        } catch (IllegalAccessException | InstantiationException e) {
-            e.printStackTrace();
+        } catch (IllegalAccessException | InstantiationException e2) {
+            e2.printStackTrace();
             return null;
         }
     }

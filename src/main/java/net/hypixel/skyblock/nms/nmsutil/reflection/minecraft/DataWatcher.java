@@ -270,7 +270,7 @@ public class DataWatcher {
                 block2: {
                     try {
                         this.type = new FieldResolver(nmsClassResolver.resolve(className)).resolve(fieldNames).get(null);
-                    } catch (Exception e) {
+                    } catch (Exception e2) {
                         if (!Minecraft.VERSION.newerThan(Minecraft.Version.v1_9_R1)) break block2;
                         System.err.println("[SkyBlocl Reflection Injector] Failed to find DataWatcherObject for " + className + " " + Arrays.toString(fieldNames));
                     }
@@ -281,7 +281,7 @@ public class DataWatcher {
                 block2: {
                     try {
                         this.type = new FieldResolver(nmsClassResolver.resolve(className)).resolveIndex(index).get(null);
-                    } catch (Exception e) {
+                    } catch (Exception e2) {
                         if (!Minecraft.VERSION.newerThan(Minecraft.Version.v1_9_R1)) break block2;
                         System.err.println("[SkyBlock Reflection Injector] Failed to find DataWatcherObject for " + className + " #" + index);
                     }
@@ -298,7 +298,7 @@ public class DataWatcher {
                             ++firstObject;
                         }
                         this.type = new FieldResolver(clazz).resolveIndex(firstObject + offset).get(null);
-                    } catch (Exception e) {
+                    } catch (Exception e2) {
                         if (!Minecraft.VERSION.newerThan(Minecraft.Version.v1_9_R1)) break block3;
                         System.err.println("[SkyBlock Reflection Injector] Failed to find DataWatcherObject for " + className + " #" + index + " (" + firstObject + "+" + offset + ")");
                     }

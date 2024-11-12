@@ -14,12 +14,12 @@ public class TradeUtil {
     private static HashMap<UUID, UUID> tradeReq = new HashMap();
     public static final HashMap<UUID, Boolean> trading = new HashMap();
 
-    public static boolean hasRequest(Player p, Player requester) {
-        return tradeReq.containsKey(requester.getUniqueId()) && tradeReq.get(requester.getUniqueId()) == p.getUniqueId();
+    public static boolean hasRequest(Player p2, Player requester) {
+        return tradeReq.containsKey(requester.getUniqueId()) && tradeReq.get(requester.getUniqueId()) == p2.getUniqueId();
     }
 
-    public static void requestTrade(Player requester, Player p) {
-        tradeReq.put(requester.getUniqueId(), p.getUniqueId());
+    public static void requestTrade(Player requester, Player p2) {
+        tradeReq.put(requester.getUniqueId(), p2.getUniqueId());
     }
 
     public static void resetTrade(Player requester) {

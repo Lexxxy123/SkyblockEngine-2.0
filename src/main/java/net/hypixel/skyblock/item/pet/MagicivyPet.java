@@ -103,11 +103,11 @@ extends Pet {
                 }
 
                 @Override
-                public void onHurt(EntityDamageByEntityEvent e, Entity damager) {
-                    double c;
-                    double r = SUtil.random(0.0, 1.0);
-                    if (r < (c = 0.2 * (double)level / 100.0)) {
-                        MagicivyPet.this.spawnIceCube((Player)e.getEntity());
+                public void onHurt(EntityDamageByEntityEvent e2, Entity damager) {
+                    double c2;
+                    double r2 = SUtil.random(0.0, 1.0);
+                    if (r2 < (c2 = 0.2 * (double)level / 100.0)) {
+                        MagicivyPet.this.spawnIceCube((Player)e2.getEntity());
                     }
                 }
             });
@@ -140,10 +140,10 @@ extends Pet {
                 }
 
                 @Override
-                public void onHurt(EntityDamageByEntityEvent e, Entity damager) {
-                    Entity en = e.getEntity();
-                    Vector v = new Vector(0, 0, 0);
-                    SUtil.delay(() -> en.setVelocity(v), 0L);
+                public void onHurt(EntityDamageByEntityEvent e2, Entity damager) {
+                    Entity en = e2.getEntity();
+                    Vector v2 = new Vector(0, 0, 0);
+                    SUtil.delay(() -> en.setVelocity(v2), 0L);
                 }
             });
         }
@@ -191,25 +191,25 @@ extends Pet {
     }
 
     @Override
-    public void particleBelowA(Player p, Location l) {
-        p.spigot().playEffect(l, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
-        p.spigot().playEffect(l, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
-        p.spigot().playEffect(l, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+    public void particleBelowA(Player p2, Location l2) {
+        p2.spigot().playEffect(l2, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+        p2.spigot().playEffect(l2, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+        p2.spigot().playEffect(l2, Effect.WITCH_MAGIC, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
     }
 
     public void spawnIceCube(Player player) {
-        int i;
+        int i2;
         if (COOLDOWN.containsKey(player) && COOLDOWN.get(player).booleanValue()) {
             return;
         }
         COOLDOWN.put(player, true);
         SUtil.delay(() -> COOLDOWN.put(player, false), 100L);
         player.playSound(player.getLocation(), Sound.ENDERDRAGON_GROWL, 5.0f, 0.7f);
-        for (i = 1; i < 9; ++i) {
-            int j = i;
-            SUtil.delay(() -> this.createCircle(player.getLocation(), j), i);
+        for (i2 = 1; i2 < 9; ++i2) {
+            int j2 = i2;
+            SUtil.delay(() -> this.createCircle(player.getLocation(), j2), i2);
         }
-        for (i = 0; i < 40; ++i) {
+        for (i2 = 0; i2 < 40; ++i2) {
             player.getWorld().spigot().playEffect(player.getLocation().clone().add(0.0, 0.25, 0.0), Effect.SNOW_SHOVEL, 0, 1, (float)SUtil.random(-0.5, 0.5), (float)SUtil.random(0.0, 2.0), (float)SUtil.random(-0.5, 0.5), 0.0f, 1, 20);
         }
         player.playSound(player.getLocation(), Sound.EXPLODE, 5.0f, 0.0f);
@@ -217,17 +217,17 @@ extends Pet {
             if (!(entity instanceof LivingEntity) || entity instanceof Player || entity instanceof EnderDragon || entity instanceof EnderDragonPart || entity instanceof Villager || entity instanceof ArmorStand || entity.hasMetadata("GiantSword") || entity.hasMetadata("NoAffect") || entity.isDead()) continue;
             User user = User.getUser(player.getUniqueId());
             entity.setMetadata("frozen", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
-            double b = 0.0;
-            for (int k = 0; k < 2; ++k) {
-                final int d = k;
-                if (d == 0) {
-                    b = 0.2;
-                } else if (k == 1) {
-                    b = 0.4;
-                } else if (k == 2) {
-                    b = 0.6;
+            double b2 = 0.0;
+            for (int k2 = 0; k2 < 2; ++k2) {
+                final int d2 = k2;
+                if (d2 == 0) {
+                    b2 = 0.2;
+                } else if (k2 == 1) {
+                    b2 = 0.4;
+                } else if (k2 == 2) {
+                    b2 = 0.6;
                 }
-                final ArmorStand stands = (ArmorStand)entity.getWorld().spawn(entity.getLocation().add(0.0, b + 1.0, 0.0), ArmorStand.class);
+                final ArmorStand stands = (ArmorStand)entity.getWorld().spawn(entity.getLocation().add(0.0, b2 + 1.0, 0.0), ArmorStand.class);
                 stands.setCustomNameVisible(false);
                 stands.setVisible(false);
                 stands.setArms(true);
@@ -239,13 +239,13 @@ extends Pet {
                 new BukkitRunnable(){
 
                     public void run() {
-                        double c = 0.0;
-                        if (d == 0) {
-                            c = 0.2;
-                        } else if (d == 1) {
-                            c = 0.4;
-                        } else if (d == 2) {
-                            c = 0.6;
+                        double c2 = 0.0;
+                        if (d2 == 0) {
+                            c2 = 0.2;
+                        } else if (d2 == 1) {
+                            c2 = 0.4;
+                        } else if (d2 == 2) {
+                            c2 = 0.6;
                         }
                         if (stands.isDead()) {
                             ((LivingEntity)entity).removePotionEffect(PotionEffectType.SLOW);
@@ -258,48 +258,48 @@ extends Pet {
                             stands.remove();
                         }
                         ((LivingEntity)entity).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 20));
-                        stands.teleport(entity.getLocation().add(0.0, c + 1.0, 0.0));
+                        stands.teleport(entity.getLocation().add(0.0, c2 + 1.0, 0.0));
                     }
                 }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
             }
         }
     }
 
-    private void createCircle(Location l, double radius) {
-        l.setPitch(90.0f);
-        Vector dist = l.getDirection();
-        Location mid = l.add(dist);
+    private void createCircle(Location l2, double radius) {
+        l2.setPitch(90.0f);
+        Vector dist = l2.getDirection();
+        Location mid = l2.add(dist);
         int particles = (int)(radius * 8.0);
-        for (int i = 0; i < particles; ++i) {
-            double angle = Math.PI * 2 * (double)i / (double)particles;
-            double x = Math.cos(angle) * radius;
-            double y = Math.sin(angle) * radius;
-            Vector v = this.rotateAroundAxisX(new Vector(x, y, 0.0), l.getPitch());
-            v = this.rotateAroundAxisY(v, l.getYaw());
-            Location temp = mid.clone().add(v);
-            l.getWorld().spigot().playEffect(temp, Effect.CLOUD, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
-            l.getWorld().spigot().playEffect(temp, Effect.CLOUD, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
-            l.getWorld().spigot().playEffect(temp, Effect.CLOUD, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+        for (int i2 = 0; i2 < particles; ++i2) {
+            double angle = Math.PI * 2 * (double)i2 / (double)particles;
+            double x2 = Math.cos(angle) * radius;
+            double y2 = Math.sin(angle) * radius;
+            Vector v2 = this.rotateAroundAxisX(new Vector(x2, y2, 0.0), l2.getPitch());
+            v2 = this.rotateAroundAxisY(v2, l2.getYaw());
+            Location temp = mid.clone().add(v2);
+            l2.getWorld().spigot().playEffect(temp, Effect.CLOUD, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+            l2.getWorld().spigot().playEffect(temp, Effect.CLOUD, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
+            l2.getWorld().spigot().playEffect(temp, Effect.CLOUD, 0, 1, 1.0f, 1.0f, 1.0f, 0.0f, 0, 64);
         }
     }
 
-    private Vector rotateAroundAxisX(Vector v, double angle) {
+    private Vector rotateAroundAxisX(Vector v2, double angle) {
         angle = Math.toRadians(angle);
         double cos = Math.cos(angle);
         double sin = Math.sin(angle);
-        double y = v.getY() * cos - v.getZ() * sin;
-        double z = v.getY() * sin + v.getZ() * cos;
-        return v.setY(y).setZ(z);
+        double y2 = v2.getY() * cos - v2.getZ() * sin;
+        double z2 = v2.getY() * sin + v2.getZ() * cos;
+        return v2.setY(y2).setZ(z2);
     }
 
-    private Vector rotateAroundAxisY(Vector v, double angle) {
+    private Vector rotateAroundAxisY(Vector v2, double angle) {
         angle = -angle;
         angle = Math.toRadians(angle);
         double cos = Math.cos(angle);
         double sin = Math.sin(angle);
-        double x = v.getX() * cos + v.getZ() * sin;
-        double z = v.getX() * -sin + v.getZ() * cos;
-        return v.setX(x).setZ(z);
+        double x2 = v2.getX() * cos + v2.getZ() * sin;
+        double z2 = v2.getX() * -sin + v2.getZ() * cos;
+        return v2.setX(x2).setZ(z2);
     }
 }
 

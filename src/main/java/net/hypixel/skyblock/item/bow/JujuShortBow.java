@@ -83,12 +83,12 @@ BowFunction {
     }
 
     @Override
-    public void onInteraction(PlayerInteractEvent e) {
-        SItem sItem = SItem.find(e.getPlayer().getItemInHand());
+    public void onInteraction(PlayerInteractEvent e2) {
+        SItem sItem = SItem.find(e2.getPlayer().getItemInHand());
         Enchantment aiming = sItem.getEnchantment(EnchantmentType.AIMING);
-        Player shooter = e.getPlayer();
+        Player shooter = e2.getPlayer();
         if (shooter.getPlayer().getInventory().contains(Material.ARROW, 1) || shooter.getPlayer().getGameMode() == GameMode.CREATIVE) {
-            if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            if (e2.getAction() == Action.RIGHT_CLICK_AIR || e2.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 shooter.updateInventory();
                 if (USABLE_JUJU.containsKey(shooter.getUniqueId()) && !USABLE_JUJU.get(shooter.getUniqueId()).booleanValue()) {
                     return;
@@ -98,15 +98,15 @@ BowFunction {
                 }
                 shooter.playSound(shooter.getLocation(), Sound.SHOOT_ARROW, 1.0f, 1.0f);
                 Location location = shooter.getEyeLocation().add(shooter.getEyeLocation().getDirection().toLocation(shooter.getWorld()));
-                Location l = location.clone();
-                l.setYaw(location.getYaw());
-                Arrow a = shooter.getWorld().spawnArrow(l, l.getDirection(), 2.1f, 1.5f);
-                a.setShooter((ProjectileSource)shooter);
+                Location l2 = location.clone();
+                l2.setYaw(location.getYaw());
+                Arrow a2 = shooter.getWorld().spawnArrow(l2, l2.getDirection(), 2.1f, 1.5f);
+                a2.setShooter((ProjectileSource)shooter);
                 USABLE_JUJU.put(shooter.getUniqueId(), false);
                 PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(shooter.getUniqueId());
                 double atkSpeed = Math.min(100L, Math.round(statistics.getAttackSpeed().addAll()));
                 SUtil.delay(() -> USABLE_JUJU.put(shooter.getUniqueId(), true), (long)(16.0 / (1.0 + atkSpeed / 100.0)));
-            } else if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
+            } else if (e2.getAction() == Action.LEFT_CLICK_AIR || e2.getAction() == Action.LEFT_CLICK_BLOCK) {
                 shooter.updateInventory();
                 if (USABLE_JUJU.containsKey(shooter.getUniqueId()) && !USABLE_JUJU.get(shooter.getUniqueId()).booleanValue()) {
                     return;
@@ -116,9 +116,9 @@ BowFunction {
                 }
                 shooter.playSound(shooter.getLocation(), Sound.SHOOT_ARROW, 1.0f, 1.0f);
                 Location location = shooter.getEyeLocation().add(shooter.getEyeLocation().getDirection().toLocation(shooter.getWorld()));
-                Location l = location.clone();
-                l.setYaw(location.getYaw());
-                Arrow a2 = shooter.getWorld().spawnArrow(l, l.getDirection(), 2.2f, 1.6f);
+                Location l3 = location.clone();
+                l3.setYaw(location.getYaw());
+                Arrow a2 = shooter.getWorld().spawnArrow(l3, l3.getDirection(), 2.2f, 1.6f);
                 a2.setShooter((ProjectileSource)shooter);
                 USABLE_JUJU.put(shooter.getUniqueId(), false);
                 PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(shooter.getUniqueId());
@@ -131,9 +131,9 @@ BowFunction {
     }
 
     @Override
-    public void onBowShoot(SItem bow, EntityShootBowEvent e) {
-        Player player = (Player)e.getEntity();
-        e.setCancelled(true);
+    public void onBowShoot(SItem bow, EntityShootBowEvent e2) {
+        Player player = (Player)e2.getEntity();
+        e2.setCancelled(true);
         player.updateInventory();
     }
 }

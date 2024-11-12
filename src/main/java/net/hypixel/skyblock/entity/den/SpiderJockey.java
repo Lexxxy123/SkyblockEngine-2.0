@@ -33,11 +33,6 @@ implements JockeyStatistics {
     }
 
     @Override
-    public int mobLevel() {
-        return 3;
-    }
-
-    @Override
     public double getXPDropped() {
         return 8.0;
     }
@@ -58,11 +53,6 @@ implements JockeyStatistics {
         @Override
         public double getDamageDealt() {
             return 38.0;
-        }
-
-        @Override
-        public int mobLevel() {
-            return 3;
         }
 
         @Override

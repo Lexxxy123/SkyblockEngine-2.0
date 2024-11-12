@@ -47,9 +47,9 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e) {
+    public void onOpen(GUIOpenEvent e2) {
         this.fill(BLACK_STAINED_GLASS_PANE);
-        Player player = e.getPlayer();
+        Player player = e2.getPlayer();
         User user = User.getUser(player.getUniqueId());
         this.set(GUIClickableItem.getCloseItem(49));
         AtomicInteger found = new AtomicInteger();
@@ -100,7 +100,7 @@ extends GUI {
         } else if (skill instanceof HealerSkill) {
             mat = Material.POTION;
         }
-        ArrayList<String> l = new ArrayList<String>();
+        ArrayList<String> l2 = new ArrayList<String>();
         double xp = skill != null ? user.getSkillXP(skill) : 0.0;
         int level = skill != null ? Skill.getLevel(xp, skill.hasSixtyLevels()) : 0;
         String name = ChatColor.RED + "Coming Soon!";
@@ -110,45 +110,45 @@ extends GUI {
             String numeral = SUtil.toRomanNumeral(nextLevel);
             double nextXP = Skill.getNextOverallXPGoal(xp, skill.hasSixtyLevels());
             if (!lore1.contains("{}")) {
-                l.add(Sputnik.trans(lore1));
+                l2.add(Sputnik.trans(lore1));
             }
             if (!lore2.contains("{}")) {
-                l.add(Sputnik.trans(lore2));
+                l2.add(Sputnik.trans(lore2));
             }
             if (!lore3.contains("{}")) {
-                l.add(Sputnik.trans(lore3));
+                l2.add(Sputnik.trans(lore3));
             }
             if (!lore4.contains("{}")) {
-                l.add(Sputnik.trans(lore4));
+                l2.add(Sputnik.trans(lore4));
             }
-            l.add(Sputnik.trans("&f&lClass Passives"));
+            l2.add(Sputnik.trans("&f&lClass Passives"));
             for (String str : ((DungeonsSkill)((Object)skill)).getPassive()) {
-                l.add(Sputnik.trans(" &8\u2022 &a" + str));
+                l2.add(Sputnik.trans(" &8\u2022 &a" + str));
             }
-            l.add(" ");
-            l.add(Sputnik.trans("&f&lDungeon Orb Abilties"));
+            l2.add(" ");
+            l2.add(Sputnik.trans("&f&lDungeon Orb Abilties"));
             for (String str : ((DungeonsSkill)((Object)skill)).getOrb()) {
-                l.add(Sputnik.trans(" &8\u2022 &6" + str));
+                l2.add(Sputnik.trans(" &8\u2022 &6" + str));
             }
-            l.add(" ");
-            l.add(Sputnik.trans("&f&lGhost Abilties"));
+            l2.add(" ");
+            l2.add(Sputnik.trans("&f&lGhost Abilties"));
             for (String str : ((DungeonsSkill)((Object)skill)).getGhost()) {
-                l.add(Sputnik.trans(" &8\u2022 &f" + str));
+                l2.add(Sputnik.trans(" &8\u2022 &f" + str));
             }
-            l.add(" ");
-            l.add(SUtil.createProgressText("Progress to Level " + numeral, xp, nextXP));
-            l.add(SUtil.createSLineProgressBar(20, ChatColor.DARK_GREEN, xp, nextXP));
-            l.add(" ");
-            l.add(Sputnik.trans("&8&oUse this class in dungeons"));
-            l.add(Sputnik.trans("&8&oto level it up"));
-            l.add(" ");
+            l2.add(" ");
+            l2.add(SUtil.createProgressText("Progress to Level " + numeral, xp, nextXP));
+            l2.add(SUtil.createSLineProgressBar(20, ChatColor.DARK_GREEN, xp, nextXP));
+            l2.add(" ");
+            l2.add(Sputnik.trans("&8&oUse this class in dungeons"));
+            l2.add(Sputnik.trans("&8&oto level it up"));
+            l2.add(" ");
         } else if (skill != null) {
             name = skill.getName();
         }
         if (skill != null) {
-            l.add(ChatColor.RED + "Skill Tree Coming Soon!");
+            l2.add(ChatColor.RED + "Skill Tree Coming Soon!");
         }
-        stack = SUtil.getStack(ChatColor.GREEN + name + (level != 0 ? " " + SUtil.toRomanNumeral(level) : ""), mat, (short)0, 1, l);
+        stack = SUtil.getStack(ChatColor.GREEN + name + (level != 0 ? " " + SUtil.toRomanNumeral(level) : ""), mat, (short)0, 1, l2);
         if (skill instanceof HealerSkill) {
             Potion pot = new Potion(1);
             pot.setType(PotionType.INSTANT_HEAL);
@@ -160,16 +160,16 @@ extends GUI {
 
     private static GUIClickableItem createCollectionClickable(GUI gui, Skill skill, int slot, Player player) {
         User user = User.getUser(player.getUniqueId());
-        ArrayList<String> l = new ArrayList<String>();
+        ArrayList<String> l2 = new ArrayList<String>();
         if (skill != null) {
             for (String line : skill.getDescription()) {
-                l.add(ChatColor.GRAY + line);
+                l2.add(ChatColor.GRAY + line);
             }
         }
-        if (l.size() == 0) {
-            l.add(ChatColor.GRAY + "Coming at a later date!");
+        if (l2.size() == 0) {
+            l2.add(ChatColor.GRAY + "Coming at a later date!");
         } else {
-            l.add(" ");
+            l2.add(" ");
         }
         double xp = skill != null ? user.getSkillXP(skill) : 0.0;
         int level = skill != null ? Skill.getLevel(xp, skill.hasSixtyLevels()) : 0;
@@ -179,20 +179,20 @@ extends GUI {
             int nextLevel = level + 1;
             String numeral = SUtil.toRomanNumeral(nextLevel);
             double nextXP = Skill.getNextOverallXPGoal(xp, skill.hasSixtyLevels());
-            l.add(SUtil.createProgressText("Progress to Level " + numeral, xp, nextXP));
-            l.add(SUtil.createSLineProgressBar(20, ChatColor.DARK_GREEN, xp, nextXP));
-            l.add(" ");
+            l2.add(SUtil.createProgressText("Progress to Level " + numeral, xp, nextXP));
+            l2.add(SUtil.createSLineProgressBar(20, ChatColor.DARK_GREEN, xp, nextXP));
+            l2.add(" ");
             for (String line2 : skill.getRewardLore(nextLevel, nextLevel, false)) {
-                l.add(line2);
+                l2.add(line2);
             }
-            l.add(" ");
+            l2.add(" ");
         } else if (skill != null) {
             name = skill.getName();
         }
         if (skill != null) {
-            l.add(ChatColor.YELLOW + "Click to view!");
+            l2.add(ChatColor.YELLOW + "Click to view!");
         }
-        return GUIClickableItem.createGUIOpenerItemHead(gui, player, ChatColor.RED + name, slot, "964e1c3e315c8d8fffc37985b6681c5bd16a6f97ffd07199e8a05efbef103793", 1, SUtil.toArray(l, String.class));
+        return GUIClickableItem.createGUIOpenerItemHead(gui, player, ChatColor.RED + name, slot, "964e1c3e315c8d8fffc37985b6681c5bd16a6f97ffd07199e8a05efbef103793", 1, SUtil.toArray(l2, String.class));
     }
 }
 

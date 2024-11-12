@@ -40,14 +40,14 @@ public class Sidebar {
         this.obj.setDisplayName(name);
     }
 
-    public void add(String s) {
-        Score score = this.obj.getScore(s);
+    public void add(String s2) {
+        Score score = this.obj.getScore(s2);
         this.scores.add(0, score);
     }
 
     public void apply(Player player) {
-        for (int i = 0; i < this.scores.size(); ++i) {
-            this.scores.get(i).setScore(i);
+        for (int i2 = 0; i2 < this.scores.size(); ++i2) {
+            this.scores.get(i2).setScore(i2);
         }
         player.setScoreboard(this.board);
     }

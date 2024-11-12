@@ -90,8 +90,8 @@ public class SkyBlockWorldManager {
                     out.close();
                 }
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (IOException e2) {
+            throw new RuntimeException(e2);
         }
     }
 }

@@ -60,31 +60,31 @@ extends PListener {
     public static final Map<UUID, Boolean> QUERY_MAPPING = new HashMap<UUID, Boolean>();
 
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent e) {
-        GUI gui = GUI.GUI_MAP.get(e.getWhoClicked().getUniqueId());
+    public void onInventoryClick(InventoryClickEvent e2) {
+        GUI gui = GUI.GUI_MAP.get(e2.getWhoClicked().getUniqueId());
         if (gui == null) {
             return;
         }
-        if (e.getClickedInventory() == e.getView().getTopInventory()) {
-            int slot = e.getSlot();
-            gui.onTopClick(e);
+        if (e2.getClickedInventory() == e2.getView().getTopInventory()) {
+            int slot = e2.getSlot();
+            gui.onTopClick(e2);
             GUIItem item = gui.get(slot);
             if (item != null) {
                 Player player;
                 if (!item.canPickup()) {
-                    e.setCancelled(true);
+                    e2.setCancelled(true);
                 }
                 if (item instanceof GUIClickableItem) {
                     GUIClickableItem clickable = (GUIClickableItem)item;
                     try {
-                        clickable.run(e);
+                        clickable.run(e2);
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
                 }
                 if (item instanceof GUIQueryItem) {
                     GUIQueryItem query = (GUIQueryItem)item;
-                    player = (Player)e.getWhoClicked();
+                    player = (Player)e2.getWhoClicked();
                     QUERY_MAPPING.put(player.getUniqueId(), true);
                     player.closeInventory();
                     player.sendMessage(ChatColor.GREEN + "Enter your query:");
@@ -92,19 +92,19 @@ extends PListener {
                 }
                 if (item instanceof GUISignItem) {
                     GUISignItem query2 = (GUISignItem)item;
-                    player = (Player)e.getWhoClicked();
+                    player = (Player)e2.getWhoClicked();
                     SignInput.SIGN_INPUT_QUERY.put(player.getUniqueId(), query2);
                     new SignInput(player, new String[]{"", "^^^^^^^", "Enter amount", "of Bits"}, 15, query2.inti());
                 }
             }
         } else {
             try {
-                gui.onBottomClick(e);
+                gui.onBottomClick(e2);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
         }
-        gui.update(e.getView().getTopInventory());
+        gui.update(e2.getView().getTopInventory());
     }
 
     @EventHandler
@@ -120,21 +120,21 @@ extends PListener {
     }
 
     @EventHandler
-    public void onGUIOpen(GUIOpenEvent e) {
-        GUI gui = e.getOpened();
+    public void onGUIOpen(GUIOpenEvent e2) {
+        GUI gui = e2.getOpened();
         try {
-            e.getOpened().onOpen(e);
+            e2.getOpened().onOpen(e2);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
     }
 
     @EventHandler
-    public void onBlockInteract(PlayerInteractEvent e) {
-        if (e.getAction() != Action.RIGHT_CLICK_BLOCK) {
+    public void onBlockInteract(PlayerInteractEvent e2) {
+        if (e2.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return;
         }
-        Block block = e.getClickedBlock();
+        Block block = e2.getClickedBlock();
         GUI toOpen = null;
         switch (block.getType()) {
             case WORKBENCH: {
@@ -146,21 +146,21 @@ extends PListener {
             }
         }
         if (toOpen != null) {
-            e.setCancelled(true);
-            toOpen.open(e.getPlayer());
+            e2.setCancelled(true);
+            toOpen.open(e2.getPlayer());
         }
     }
 
     @EventHandler
-    public void onPlayerChat(AsyncPlayerChatEvent e) {
-        Player player = e.getPlayer();
+    public void onPlayerChat(AsyncPlayerChatEvent e2) {
+        Player player = e2.getPlayer();
         if (!QUERY_MAP.containsKey(player.getUniqueId())) {
             return;
         }
-        e.setCancelled(true);
+        e2.setCancelled(true);
         GUIQueryItem item = QUERY_MAP.get(player.getUniqueId());
-        player.sendMessage(ChatColor.GOLD + "Querying for: " + e.getMessage());
-        GUI next = item.onQueryFinish(e.getMessage());
+        player.sendMessage(ChatColor.GOLD + "Querying for: " + e2.getMessage());
+        GUI next = item.onQueryFinish(e2.getMessage());
         if (next != null) {
             next.open(player);
         }
@@ -169,12 +169,12 @@ extends PListener {
     }
 
     @EventHandler
-    public void onInventoryClose(InventoryCloseEvent e) {
-        Inventory inventory = e.getInventory();
-        if (!(e.getPlayer() instanceof Player)) {
+    public void onInventoryClose(InventoryCloseEvent e2) {
+        Inventory inventory = e2.getInventory();
+        if (!(e2.getPlayer() instanceof Player)) {
             return;
         }
-        Player player = (Player)e.getPlayer();
+        Player player = (Player)e2.getPlayer();
         GUI gui = GUI.GUI_MAP.get(player.getUniqueId());
         if (gui == null) {
             return;
@@ -299,7 +299,7 @@ extends PListener {
         if (User.getUser(player.getUniqueId()) != null && User.getUser(player.getUniqueId()).isWaitingForSign()) {
             return;
         }
-        gui.onClose(e);
+        gui.onClose(e2);
     }
 }
 

@@ -56,26 +56,26 @@ public class SignInput {
     private final User user;
     public static final Map<UUID, GUISignItem> SIGN_INPUT_QUERY = new HashMap<UUID, GUISignItem>();
 
-    public SignInput(Player p, String[] text, int timeoutSec, UUID tradeUUID) {
-        this.player = p;
+    public SignInput(Player p2, String[] text, int timeoutSec, UUID tradeUUID) {
+        this.player = p2;
         this.timeoutSec = timeoutSec;
         this.tradeUUID = tradeUUID;
-        this.user = User.getUser(p.getUniqueId());
+        this.user = User.getUser(p2.getUniqueId());
         this.openSign(text);
     }
 
     public void openSign(String[] strings) {
         this.signLoc = this.player.getLocation();
         this.signLoc.setY(1.0);
-        BlockPosition p = new BlockPosition(this.signLoc.getBlockX(), this.signLoc.getBlockY(), this.signLoc.getBlockZ());
-        PacketPlayOutBlockChange blockPacket = new PacketPlayOutBlockChange((World)((CraftWorld)this.signLoc.getWorld()).getHandle(), p);
+        BlockPosition p2 = new BlockPosition(this.signLoc.getBlockX(), this.signLoc.getBlockY(), this.signLoc.getBlockZ());
+        PacketPlayOutBlockChange blockPacket = new PacketPlayOutBlockChange((World)((CraftWorld)this.signLoc.getWorld()).getHandle(), p2);
         blockPacket.block = Blocks.STANDING_SIGN.getBlockData();
         IChatBaseComponent[] lines = new IChatBaseComponent[4];
-        for (int i = 0; i < 4; ++i) {
-            lines[i] = new ChatComponentText(strings[i]);
+        for (int i2 = 0; i2 < 4; ++i2) {
+            lines[i2] = new ChatComponentText(strings[i2]);
         }
-        PacketPlayOutUpdateSign sign = new PacketPlayOutUpdateSign((World)((CraftWorld)this.signLoc.getWorld()).getHandle(), p, lines);
-        PacketPlayOutOpenSignEditor packet = new PacketPlayOutOpenSignEditor(p);
+        PacketPlayOutUpdateSign sign = new PacketPlayOutUpdateSign((World)((CraftWorld)this.signLoc.getWorld()).getHandle(), p2, lines);
+        PacketPlayOutOpenSignEditor packet = new PacketPlayOutOpenSignEditor(p2);
         ((CraftPlayer)this.player).getHandle().playerConnection.sendPacket((Packet)blockPacket);
         ((CraftPlayer)this.player).getHandle().playerConnection.sendPacket((Packet)sign);
         ((CraftPlayer)this.player).getHandle().playerConnection.sendPacket((Packet)packet);

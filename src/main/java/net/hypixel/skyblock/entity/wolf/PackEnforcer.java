@@ -28,11 +28,6 @@ extends BaseWolf {
     }
 
     @Override
-    public int mobLevel() {
-        return 100;
-    }
-
-    @Override
     public List<EntityDrop> drops() {
         return Collections.singletonList(new EntityDrop(SMaterial.WOLF_TOOTH, EntityDropType.GUARANTEED, 1.0));
     }

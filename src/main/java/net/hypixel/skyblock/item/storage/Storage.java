@@ -45,8 +45,8 @@ Untradeable {
     }
 
     @Override
-    public void onInteraction(PlayerInteractEvent e) {
-        e.getPlayer().sendMessage(ChatColor.RED + "This item is currently disabled due to an exploit!");
+    public void onInteraction(PlayerInteractEvent e2) {
+        e2.getPlayer().sendMessage(ChatColor.RED + "This item is currently disabled due to an exploit!");
     }
 
     @Override

@@ -106,9 +106,9 @@ Ability {
     }
 
     @Override
-    public void onAbilityUse(final Player p, SItem sItem) {
-        p.getWorld().playSound(p.getLocation(), Sound.FIREWORK_LAUNCH, 1.0f, 10.0f);
-        Location loc = p.getLocation();
+    public void onAbilityUse(final Player p2, SItem sItem) {
+        p2.getWorld().playSound(p2.getLocation(), Sound.FIREWORK_LAUNCH, 1.0f, 10.0f);
+        Location loc = p2.getLocation();
         loc.setY(loc.getY() + 1.0);
         Vector vecTo1 = loc.getDirection().normalize().multiply(0.3);
         final Vector vecTo2 = loc.getDirection().normalize().multiply(1);
@@ -118,7 +118,7 @@ Ability {
         meta.setDisplayName("ice");
         item.setItemMeta(meta);
         loc = loc.add(vecTo1);
-        Entity ent1 = p.getWorld().spawn(loc, ArmorStand.class);
+        Entity ent1 = p2.getWorld().spawn(loc, ArmorStand.class);
         final ArmorStand stand1 = (ArmorStand)ent1;
         stand1.setVisible(false);
         stand1.setArms(true);
@@ -127,7 +127,7 @@ Ability {
         stand1.setSmall(true);
         item.setType(Material.PACKED_ICE);
         loc = loc.add(vecTo1);
-        Entity ent2 = p.getWorld().spawn(loc, ArmorStand.class);
+        Entity ent2 = p2.getWorld().spawn(loc, ArmorStand.class);
         final ArmorStand stand2 = (ArmorStand)ent2;
         stand2.setVisible(false);
         stand2.setArms(true);
@@ -136,7 +136,7 @@ Ability {
         stand2.setSmall(true);
         item.setType(Material.ICE);
         loc = loc.add(vecTo1);
-        Entity ent3 = p.getWorld().spawn(loc, ArmorStand.class);
+        Entity ent3 = p2.getWorld().spawn(loc, ArmorStand.class);
         final ArmorStand stand3 = (ArmorStand)ent3;
         stand3.setVisible(false);
         stand3.setArms(true);
@@ -145,7 +145,7 @@ Ability {
         stand3.setSmall(true);
         item.setType(Material.PACKED_ICE);
         loc = loc.add(vecTo1);
-        Entity ent4 = p.getWorld().spawn(loc, ArmorStand.class);
+        Entity ent4 = p2.getWorld().spawn(loc, ArmorStand.class);
         final ArmorStand stand4 = (ArmorStand)ent4;
         stand4.setVisible(false);
         stand4.setArms(true);
@@ -154,7 +154,7 @@ Ability {
         stand4.setSmall(true);
         item.setType(Material.ICE);
         loc = loc.add(vecTo1);
-        Entity ent5 = p.getWorld().spawn(loc, ArmorStand.class);
+        Entity ent5 = p2.getWorld().spawn(loc, ArmorStand.class);
         final ArmorStand stand5 = (ArmorStand)ent5;
         stand5.setVisible(false);
         stand5.setArms(true);
@@ -175,7 +175,7 @@ Ability {
         stand3.setMarker(true);
         stand4.setMarker(true);
         stand5.setMarker(true);
-        FrozenScythe.throwIce(stand1, stand2, stand3, stand4, stand5, p, vecTo2, back);
+        FrozenScythe.throwIce(stand1, stand2, stand3, stand4, stand5, p2, vecTo2, back);
         new BukkitRunnable(){
 
             public void run() {
@@ -183,9 +183,9 @@ Ability {
                     if (!stand1.isDead()) {
                         Location loc = stand1.getLocation();
                         loc.setY(loc.getY() + 0.5);
-                        p.getWorld().spigot().playEffect(loc, Effect.SNOW_SHOVEL, 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, 40);
-                        p.getWorld().spigot().playEffect(loc, Effect.SNOW_SHOVEL, 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, 40);
-                        p.getWorld().spigot().playEffect(loc, Effect.SNOW_SHOVEL, 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, 40);
+                        p2.getWorld().spigot().playEffect(loc, Effect.SNOW_SHOVEL, 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, 40);
+                        p2.getWorld().spigot().playEffect(loc, Effect.SNOW_SHOVEL, 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, 40);
+                        p2.getWorld().spigot().playEffect(loc, Effect.SNOW_SHOVEL, 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, 40);
                     }
                     stand1.teleport(stand1.getLocation().add(vecTo2));
                     stand2.teleport(stand2.getLocation().add(vecTo2));
@@ -194,27 +194,27 @@ Ability {
                     stand5.teleport(stand5.getLocation().add(vecTo2));
                     for (Entity entity : stand1.getWorld().getNearbyEntities(stand1.getLocation().add(stand1.getLocation().getDirection().multiply(1.0)), 0.3, 0.3, 0.3)) {
                         if (entity.isDead() || !(entity instanceof LivingEntity) || entity.hasMetadata("GiantSword") || entity instanceof Player || entity instanceof EnderDragonPart || entity instanceof Villager || entity instanceof ArmorStand) continue;
-                        User user = User.getUser(p.getUniqueId());
+                        User user = User.getUser(p2.getUniqueId());
                         ((LivingEntity)entity).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100, 1));
-                        double baseDamage = Sputnik.calculateMagicDamage(entity, p, 1000, 0.3);
+                        double baseDamage = Sputnik.calculateMagicDamage(entity, p2, 1000, 0.3);
                         user.damageEntityIgnoreShield((Damageable)entity, (int)baseDamage);
                         if (PlayerUtils.Debugmsg.debugmsg) {
-                            SLog.info("[DEBUG] " + p.getName() + " have dealt " + (float)baseDamage + " damage! (Frozen Scythe Ability)");
+                            SLog.info("[DEBUG] " + p2.getName() + " have dealt " + (float)baseDamage + " damage! (Frozen Scythe Ability)");
                         }
                         PlayerListener.spawnDamageInd(entity, baseDamage, false);
                     }
                 } else if (!stand1.isDead()) {
                     Location loc = stand1.getLocation();
                     loc.setY(loc.getY() + 0.5);
-                    p.getWorld().spigot().playEffect(loc, Effect.SNOW_SHOVEL, 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, 40);
-                    p.getWorld().spigot().playEffect(loc, Effect.SNOW_SHOVEL, 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, 40);
-                    p.getWorld().spigot().playEffect(loc, Effect.SNOW_SHOVEL, 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, 40);
+                    p2.getWorld().spigot().playEffect(loc, Effect.SNOW_SHOVEL, 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, 40);
+                    p2.getWorld().spigot().playEffect(loc, Effect.SNOW_SHOVEL, 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, 40);
+                    p2.getWorld().spigot().playEffect(loc, Effect.SNOW_SHOVEL, 0, 0, 0.0f, 0.0f, 0.0f, 0.0f, 0, 40);
                 }
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 1L, 0L);
     }
 
-    public static void throwIce(final ArmorStand stand1, final ArmorStand stand2, final ArmorStand stand3, final ArmorStand stand4, final ArmorStand stand5, Player p, Vector vecTo, Vector back) {
+    public static void throwIce(final ArmorStand stand1, final ArmorStand stand2, final ArmorStand stand3, final ArmorStand stand4, final ArmorStand stand5, Player p2, Vector vecTo, Vector back) {
         new BukkitRunnable(){
 
             public void run() {

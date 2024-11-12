@@ -38,11 +38,6 @@ EntityStatistics {
     }
 
     @Override
-    public int mobLevel() {
-        return 7;
-    }
-
-    @Override
     public SEntityEquipment getEntityEquipment() {
         return new SEntityEquipment(null, new ItemStack(Material.STAINED_GLASS, 1, 11), SItem.of(SMaterial.LAPIS_ARMOR_CHESTPLATE).getStack(), SItem.of(SMaterial.LAPIS_ARMOR_LEGGINGS).getStack(), SItem.of(SMaterial.LAPIS_ARMOR_BOOTS).getStack());
     }

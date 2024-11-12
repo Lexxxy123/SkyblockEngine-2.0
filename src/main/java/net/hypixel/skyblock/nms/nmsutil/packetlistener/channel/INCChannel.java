@@ -43,13 +43,13 @@ extends ChannelAbstract {
                 public void run() {
                     try {
                         channel.pipeline().addBefore("packet_handler", "packet_listener_player", (io.netty.channel.ChannelHandler)new ChannelHandler(player));
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
+                    } catch (Exception e2) {
+                        throw new RuntimeException(e2);
                     }
                 }
             });
-        } catch (ReflectiveOperationException e) {
-            throw new RuntimeException("Failed to add channel for " + player, e);
+        } catch (ReflectiveOperationException e2) {
+            throw new RuntimeException("Failed to add channel for " + player, e2);
         }
     }
 
@@ -65,13 +65,13 @@ extends ChannelAbstract {
                         if (channel.pipeline().get("packet_listener_player") != null) {
                             channel.pipeline().remove("packet_listener_player");
                         }
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
+                    } catch (Exception e2) {
+                        throw new RuntimeException(e2);
                     }
                 }
             });
-        } catch (ReflectiveOperationException e) {
-            throw new RuntimeException("Failed to remove channel for " + player, e);
+        } catch (ReflectiveOperationException e2) {
+            throw new RuntimeException("Failed to remove channel for " + player, e2);
         }
     }
 
@@ -155,7 +155,7 @@ extends ChannelAbstract {
         @Override
         public boolean add(E paramE) {
             try {
-                final E a = paramE;
+                final E a2 = paramE;
                 INCChannel.this.addChannelExecutor.execute(new Runnable(){
 
                     @Override
@@ -163,7 +163,7 @@ extends ChannelAbstract {
                         try {
                             Channel channel = null;
                             while (channel == null) {
-                                channel = (Channel)channelField.get(a);
+                                channel = (Channel)channelField.get(a2);
                             }
                             if (channel.pipeline().get("packet_listener_server") == null) {
                                 channel.pipeline().addBefore("packet_handler", "packet_listener_server", (io.netty.channel.ChannelHandler)new ChannelHandler(new INCChannelWrapper(channel)));
@@ -182,7 +182,7 @@ extends ChannelAbstract {
         @Override
         public boolean remove(Object arg0) {
             try {
-                final Object a = arg0;
+                final Object a2 = arg0;
                 INCChannel.this.removeChannelExecutor.execute(new Runnable(){
 
                     @Override
@@ -190,7 +190,7 @@ extends ChannelAbstract {
                         try {
                             Channel channel = null;
                             while (channel == null) {
-                                channel = (Channel)channelField.get(a);
+                                channel = (Channel)channelField.get(a2);
                             }
                             channel.pipeline().remove("packet_listener_server");
                         } catch (Exception exception) {

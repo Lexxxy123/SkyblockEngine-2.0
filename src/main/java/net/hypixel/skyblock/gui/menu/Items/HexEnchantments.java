@@ -67,9 +67,9 @@ extends GUI {
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e) {
+                public void run(InventoryClickEvent e2) {
                     HexEnchantments.this.forceclose = true;
-                    new HexEnchantments(item, page - 1).open((Player)e.getWhoClicked());
+                    new HexEnchantments(item, page - 1).open((Player)e2.getWhoClicked());
                     HexEnchantments.this.upgradeableItem = null;
                 }
 
@@ -88,9 +88,9 @@ extends GUI {
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e) {
+                public void run(InventoryClickEvent e2) {
                     HexEnchantments.this.forceclose = true;
-                    new HexEnchantments(item, page + 1).open((Player)e.getWhoClicked());
+                    new HexEnchantments(item, page + 1).open((Player)e2.getWhoClicked());
                     HexEnchantments.this.upgradeableItem = null;
                 }
 
@@ -105,16 +105,16 @@ extends GUI {
                 }
             });
         }
-        int i = 0;
-        while (i < items.size()) {
-            final int slot = INTERIOR[i];
-            final int finalI = i++;
+        int i2 = 0;
+        while (i2 < items.size()) {
+            final int slot = INTERIOR[i2];
+            final int finalI = i2++;
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e) {
+                public void run(InventoryClickEvent e2) {
                     HexEnchantments.this.forceclose = true;
-                    Player player = (Player)e.getWhoClicked();
+                    Player player = (Player)e2.getWhoClicked();
                     player.playSound(player.getLocation(), Sound.ORB_PICKUP, 10.0f, 2.0f);
                     for (Enchantment enchantment : ((SItem)items.get(finalI)).getEnchantments()) {
                         EnchantmentType type = enchantment.getType();
@@ -158,15 +158,15 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 for (EnchantmentType type : HexEnchantments.this.selected) {
                     item.addEnchantment(type, type.maxLvl);
                 }
                 HexEnchantments.this.forceclose = true;
-                e.getWhoClicked().sendMessage(ChatColor.translateAlternateColorCodes((char)'&', (String)("&d&lSUCCESS! &r&dYou enchanted your " + item.getFullName() + "!")));
-                Player p = (Player)e.getWhoClicked();
-                p.playSound(p.getLocation(), Sound.ANVIL_USE, 10.0f, 1.0f);
-                new HexGUI(p.getPlayer(), item).open(p);
+                e2.getWhoClicked().sendMessage(ChatColor.translateAlternateColorCodes((char)'&', (String)("&d&lSUCCESS! &r&dYou enchanted your " + item.getFullName() + "!")));
+                Player p2 = (Player)e2.getWhoClicked();
+                p2.playSound(p2.getLocation(), Sound.ANVIL_USE, 10.0f, 1.0f);
+                new HexGUI(p2.getPlayer(), item).open(p2);
                 HexEnchantments.this.upgradeableItem = null;
             }
 
@@ -183,9 +183,9 @@ extends GUI {
     }
 
     @Override
-    public void onClose(InventoryCloseEvent e) {
+    public void onClose(InventoryCloseEvent e2) {
         if (!this.forceclose && this.upgradeableItem != null) {
-            e.getPlayer().getInventory().addItem(new ItemStack[]{this.upgradeableItem.getStack()});
+            e2.getPlayer().getInventory().addItem(new ItemStack[]{this.upgradeableItem.getStack()});
         }
     }
 }

@@ -21,7 +21,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
 import java.lang.reflect.Field;
 import net.hypixel.skyblock.event.SkyblockPlayerNPCClickEvent;
-import net.hypixel.skyblock.npc.impl.SkyblockNPC;
+import net.hypixel.skyblock.npc.impl.SkyBlockNPC;
 import net.hypixel.skyblock.npc.impl.SkyblockNPCManager;
 import net.hypixel.skyblock.user.User;
 import net.minecraft.server.v1_8_R3.Packet;
@@ -43,14 +43,14 @@ public class PacketReader {
                     try {
                         PacketPlayInUseEntity packetPlayInUseEntity = (PacketPlayInUseEntity)packet;
                         PacketReader.this.readPacket((Packet<?>)packetPlayInUseEntity, player);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    } catch (Exception e2) {
+                        e2.printStackTrace();
                     }
                 }
                 try {
                     super.channelRead(channelHandlerContext, packet);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (Exception e3) {
+                    e3.printStackTrace();
                 }
             }
         };
@@ -58,11 +58,11 @@ public class PacketReader {
         pipeline.addBefore("packet_handler", player.getName(), (ChannelHandler)channelDuplexHandler);
     }
 
-    public void readPacket(Packet<?> packet, Player p) {
+    public void readPacket(Packet<?> packet, Player p2) {
         if (packet.getClass().getSimpleName().equalsIgnoreCase("PacketPlayInUseEntity")) {
             int id = (Integer)this.getValue(packet, "a");
             if (this.getValue(packet, "action").toString().equalsIgnoreCase("interact")) {
-                for (SkyblockNPC npc : SkyblockNPCManager.getNPCS()) {
+                for (SkyBlockNPC npc : SkyblockNPCManager.getNPCS()) {
                     if (npc.getEntityID() != id) continue;
                     SkyblockPlayerNPCClickEvent npcClickEvent = new SkyblockPlayerNPCClickEvent(this.player, npc);
                     Bukkit.getPluginManager().callEvent((Event)npcClickEvent);

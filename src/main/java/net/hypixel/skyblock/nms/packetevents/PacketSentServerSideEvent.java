@@ -21,8 +21,8 @@ implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private final SentPacket a;
 
-    public PacketSentServerSideEvent(SentPacket b) {
-        this.a = b;
+    public PacketSentServerSideEvent(SentPacket b2) {
+        this.a = b2;
     }
 
     public Packet getPacket() {

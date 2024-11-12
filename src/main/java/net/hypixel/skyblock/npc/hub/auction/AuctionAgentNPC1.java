@@ -9,33 +9,22 @@ package net.hypixel.skyblock.npc.hub.auction;
 import net.hypixel.skyblock.gui.GUIType;
 import net.hypixel.skyblock.npc.impl.NPCParameters;
 import net.hypixel.skyblock.npc.impl.NPCSkin;
-import net.hypixel.skyblock.npc.impl.SkyblockNPC;
-import net.hypixel.skyblock.npc.impl.enums.NPCType;
+import net.hypixel.skyblock.npc.impl.SkyBlockNPC;
 import org.bukkit.entity.Player;
 
 public class AuctionAgentNPC1
-extends SkyblockNPC {
+extends SkyBlockNPC {
     public AuctionAgentNPC1() {
         super(new NPCParameters(){
 
             @Override
+            public String id() {
+                return "AUCTION_AGENT1";
+            }
+
+            @Override
             public String name() {
-                return "Auction_Agent1";
-            }
-
-            @Override
-            public String[] messages() {
-                return null;
-            }
-
-            @Override
-            public String[] holograms() {
-                return new String[]{"&fAuction Agent", "&e&lCLICK"};
-            }
-
-            @Override
-            public NPCType type() {
-                return NPCType.PLAYER;
+                return "&fAuction Agent";
             }
 
             @Override
@@ -60,7 +49,7 @@ extends SkyblockNPC {
 
             @Override
             public double z() {
-                return -95.0;
+                return -86.0;
             }
 
             @Override
@@ -79,7 +68,7 @@ extends SkyblockNPC {
             }
 
             @Override
-            public void onInteract(Player player, SkyblockNPC npc) {
+            public void onInteract(Player player, SkyBlockNPC npc) {
                 GUIType.AUCTION_HOUSE.getGUI().open(player);
             }
         });

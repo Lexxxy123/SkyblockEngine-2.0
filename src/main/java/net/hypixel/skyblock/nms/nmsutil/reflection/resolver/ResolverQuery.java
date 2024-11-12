@@ -33,14 +33,14 @@ public class ResolverQuery {
         return this.types;
     }
 
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object o2) {
+        if (this == o2) {
             return true;
         }
-        if (o == null || this.getClass() != o.getClass()) {
+        if (o2 == null || this.getClass() != o2.getClass()) {
             return false;
         }
-        ResolverQuery that = (ResolverQuery)o;
+        ResolverQuery that = (ResolverQuery)o2;
         if (this.name != null ? this.name.equals(that.name) : that.name == null) {
             return Arrays.equals(this.types, that.types);
         }

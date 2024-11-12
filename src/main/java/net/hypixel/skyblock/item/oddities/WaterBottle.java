@@ -54,10 +54,10 @@ ItemData {
         }
         NBTTagCompound compound = (NBTTagCompound)value;
         ArrayList<String> lore = new ArrayList<String>();
-        for (String k : compound.c()) {
+        for (String k2 : compound.c()) {
             lore.add(" ");
-            NBTTagCompound effectData = compound.getCompound(k);
-            PotionEffectType type = PotionEffectType.getByNamespace(k);
+            NBTTagCompound effectData = compound.getCompound(k2);
+            PotionEffectType type = PotionEffectType.getByNamespace(k2);
             int level = effectData.getInt("level");
             long duration = effectData.getLong("duration");
             PotionEffect effect = new PotionEffect(type, level, duration);

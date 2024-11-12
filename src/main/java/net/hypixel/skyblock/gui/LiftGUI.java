@@ -31,13 +31,13 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e) {
+    public void onOpen(GUIOpenEvent e2) {
         this.fill(BLACK_STAINED_GLASS_PANE);
-        final Player player = e.getPlayer();
+        final Player player = e2.getPlayer();
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 player.closeInventory();
                 player.teleport(new Location(player.getWorld(), 44.5, 150.0, -559.5, 90.0f, 0.0f));
                 player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 1.0f);
@@ -56,7 +56,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 player.closeInventory();
                 player.teleport(new Location(player.getWorld(), 44.5, 121.0, -559.5, 90.0f, 0.0f));
                 player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 1.0f);
@@ -75,7 +75,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 player.closeInventory();
                 player.teleport(new Location(player.getWorld(), 44.5, 101.0, -559.5, 90.0f, 0.0f));
                 player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 1.0f);
@@ -94,7 +94,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 player.closeInventory();
                 player.teleport(new Location(player.getWorld(), 44.5, 66.0, -559.5, 90.0f, 0.0f));
                 player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 1.0f);
@@ -113,7 +113,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 player.closeInventory();
                 player.teleport(new Location(player.getWorld(), 44.5, 38.0, -559.5, 90.0f, 0.0f));
                 player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 1.0f);
@@ -132,7 +132,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 player.closeInventory();
                 player.teleport(new Location(player.getWorld(), 44.5, 13.0, -559.5, 90.0f, 0.0f));
                 player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, 1.0f);
@@ -151,7 +151,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 player.closeInventory();
                 player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 1.0f, -4.0f);
                 player.sendMessage(ChatColor.RED + "The Dwarven Mines are not available yet!");

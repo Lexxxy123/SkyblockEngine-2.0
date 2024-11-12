@@ -51,8 +51,8 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e) {
-        final Player player = e.getPlayer();
+    public void onOpen(GUIOpenEvent e2) {
+        final Player player = e2.getPlayer();
         final User user = User.getUser(player.getUniqueId());
         final boolean bin = user.isAuctionCreationBIN();
         this.set(GUIClickableItem.createGUIOpenerItem(GUIType.AUCTION_HOUSE, player, ChatColor.GREEN + "Go Back", 49, Material.ARROW, ChatColor.GRAY + "To Auction House"));
@@ -60,7 +60,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 if (user.getAuctionEscrow().getItem() == null) {
                     return;
                 }
@@ -95,7 +95,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 if (escrow.getItem() == null) {
                     return;
                 }
@@ -140,10 +140,10 @@ extends GUI {
 
             @Override
             public GUI onQueryFinish(String query) {
-                long l;
+                long l2;
                 try {
-                    l = Long.parseLong(query);
-                    if (l <= 0L) {
+                    l2 = Long.parseLong(query);
+                    if (l2 <= 0L) {
                         player.sendMessage(ChatColor.RED + "Could not read this number!");
                         return null;
                     }
@@ -151,12 +151,12 @@ extends GUI {
                     player.sendMessage(ChatColor.RED + "Could not read this number!");
                     return null;
                 }
-                user.getAuctionEscrow().setStarter(l);
+                user.getAuctionEscrow().setStarter(l2);
                 return new CreateAuctionGUI();
             }
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
             }
 
             @Override
@@ -190,7 +190,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 new AuctionDurationGUI().open(player);
             }
 
@@ -221,7 +221,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 user.setAuctionCreationBIN(!user.isAuctionCreationBIN());
                 new CreateAuctionGUI().open(player);
             }
@@ -242,8 +242,8 @@ extends GUI {
     }
 
     @Override
-    public void onBottomClick(InventoryClickEvent e) {
-        ItemStack current = e.getCurrentItem();
+    public void onBottomClick(InventoryClickEvent e2) {
+        ItemStack current = e2.getCurrentItem();
         if (current == null) {
             return;
         }
@@ -257,14 +257,14 @@ extends GUI {
         if (item == null) {
             item = SItem.convert(current);
         }
-        e.setCancelled(true);
-        Player player = (Player)e.getWhoClicked();
+        e2.setCancelled(true);
+        Player player = (Player)e2.getWhoClicked();
         User user = User.getUser(player.getUniqueId());
         if (user.getAuctionEscrow().getItem() != null) {
             return;
         }
         user.getAuctionEscrow().setItem(item);
-        player.getInventory().setItem(e.getSlot(), new ItemStack(Material.AIR));
+        player.getInventory().setItem(e2.getSlot(), new ItemStack(Material.AIR));
         new CreateAuctionGUI().open(player);
     }
 }

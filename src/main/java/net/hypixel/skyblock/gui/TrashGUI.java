@@ -31,10 +31,10 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
-                GUIType.TRASH.getGUI().open((Player)e.getWhoClicked());
-                e.getWhoClicked().sendMessage(ChatColor.YELLOW + "All your items inside the Trash Bin have been wiped!");
-                ((Player)e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.ANVIL_USE, 1.0f, 2.0f);
+            public void run(InventoryClickEvent e2) {
+                GUIType.TRASH.getGUI().open((Player)e2.getWhoClicked());
+                e2.getWhoClicked().sendMessage(ChatColor.YELLOW + "All your items inside the Trash Bin have been wiped!");
+                ((Player)e2.getWhoClicked()).playSound(e2.getWhoClicked().getLocation(), Sound.ANVIL_USE, 1.0f, 2.0f);
             }
 
             @Override
@@ -50,7 +50,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
             }
 
             @Override

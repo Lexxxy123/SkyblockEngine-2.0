@@ -88,10 +88,10 @@ extends Pet {
                 }
 
                 @Override
-                public void onHurt(EntityDamageByEntityEvent e, Entity damager) {
-                    Entity en = e.getEntity();
-                    Vector v = new Vector(0, 0, 0);
-                    SUtil.delay(() -> en.setVelocity(v), 0L);
+                public void onHurt(EntityDamageByEntityEvent e2, Entity damager) {
+                    Entity en = e2.getEntity();
+                    Vector v2 = new Vector(0, 0, 0);
+                    SUtil.delay(() -> en.setVelocity(v2), 0L);
                 }
             });
             abilities.add(new PetAbility(){
@@ -175,9 +175,9 @@ extends Pet {
     }
 
     @Override
-    public void particleBelowA(Player p, Location l) {
-        p.spigot().playEffect(l, Effect.COLOURED_DUST, 0, 1, 0.92156863f, 0.8980392f, 0.20392157f, 1.0f, 0, 64);
-        p.spigot().playEffect(l, Effect.COLOURED_DUST, 0, 1, 0.9882353f, 0.7294118f, 0.011764706f, 1.0f, 0, 64);
+    public void particleBelowA(Player p2, Location l2) {
+        p2.spigot().playEffect(l2, Effect.COLOURED_DUST, 0, 1, 0.92156863f, 0.8980392f, 0.20392157f, 1.0f, 0, 64);
+        p2.spigot().playEffect(l2, Effect.COLOURED_DUST, 0, 1, 0.9882353f, 0.7294118f, 0.011764706f, 1.0f, 0, 64);
     }
 }
 

@@ -66,8 +66,8 @@ public enum ReforgeType {
     public Reforge getReforge() {
         try {
             return this.clazz.newInstance();
-        } catch (IllegalAccessException | InstantiationException e) {
-            e.printStackTrace();
+        } catch (IllegalAccessException | InstantiationException e2) {
+            e2.printStackTrace();
             return null;
         }
     }

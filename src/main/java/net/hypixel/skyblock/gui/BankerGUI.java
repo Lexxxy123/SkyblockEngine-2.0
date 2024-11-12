@@ -29,9 +29,9 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e) {
-        final Player player = e.getPlayer();
-        final User user = User.getUser(e.getPlayer().getUniqueId());
+    public void onOpen(GUIOpenEvent e2) {
+        final Player player = e2.getPlayer();
+        final User user = User.getUser(e2.getPlayer().getUniqueId());
         this.fill(BLACK_STAINED_GLASS_PANE);
         this.set(GUIClickableItem.getCloseItem(31));
         this.set(new GUIClickableItem(){
@@ -42,7 +42,7 @@ extends GUI {
             }
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 GUIType.BANKER_DEPOSIT.getGUI().open(player);
             }
 
@@ -59,7 +59,7 @@ extends GUI {
             }
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 GUIType.BANKER_WITHDRAWAL.getGUI().open(player);
             }
 

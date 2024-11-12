@@ -106,10 +106,10 @@ Ability {
         boolean count1 = false;
         List inRange = player.getNearbyEntities(12.0, 12.0, 12.0);
         final ArrayList<Entity> filteredList = new ArrayList<Entity>();
-        for (Entity e : inRange) {
-            if (!(e instanceof Damageable) || e == player || e instanceof ArmorStand || e instanceof Player || e.hasMetadata("NPC") || e.hasMetadata("GiantSword")) continue;
+        for (Entity e2 : inRange) {
+            if (!(e2 instanceof Damageable) || e2 == player || e2 instanceof ArmorStand || e2 instanceof Player || e2.hasMetadata("NPC") || e2.hasMetadata("GiantSword")) continue;
             if (filteredList.size() >= 5 || filteredList.size() < 0) break;
-            filteredList.add(e);
+            filteredList.add(e2);
         }
         if (inRange.size() != 0) {
             new BukkitRunnable(){
@@ -121,14 +121,14 @@ Ability {
                             player.teleport(((Entity)filteredList.get(this.run)).getLocation().add(((Entity)filteredList.get(this.run)).getLocation().getDirection().multiply(-1)));
                             player.playSound(player.getLocation(), Sound.ENDERMAN_TELEPORT, 3.0f, 1.0f);
                             User user = User.getUser(player.getUniqueId());
-                            Entity e = (Entity)filteredList.get(this.run);
-                            Object[] atp = Sputnik.calculateDamage(player, player, sItem.getStack(), (LivingEntity)e, false);
+                            Entity e2 = (Entity)filteredList.get(this.run);
+                            Object[] atp = Sputnik.calculateDamage(player, player, sItem.getStack(), (LivingEntity)e2, false);
                             double finalDamage1 = ((Float)atp[0]).floatValue();
-                            PlayerListener.spawnDamageInd(e, ((Float)atp[2]).floatValue(), (Boolean)atp[1]);
-                            FerocityCalculation.activeFerocityTimes(player, (LivingEntity)e, (int)finalDamage1, (Boolean)atp[1]);
-                            user.damageEntity((Damageable)e, finalDamage1);
-                            for (Player p : player.getWorld().getPlayers()) {
-                                ((CraftPlayer)p).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)player).getHandle(), 0));
+                            PlayerListener.spawnDamageInd(e2, ((Float)atp[2]).floatValue(), (Boolean)atp[1]);
+                            FerocityCalculation.activeFerocityTimes(player, (LivingEntity)e2, (int)finalDamage1, (Boolean)atp[1]);
+                            user.damageEntity((Damageable)e2, finalDamage1);
+                            for (Player p2 : player.getWorld().getPlayers()) {
+                                ((CraftPlayer)p2).getHandle().playerConnection.sendPacket((Packet)new PacketPlayOutAnimation((net.minecraft.server.v1_8_R3.Entity)((CraftLivingEntity)player).getHandle(), 0));
                             }
                         }
                         ++this.run;

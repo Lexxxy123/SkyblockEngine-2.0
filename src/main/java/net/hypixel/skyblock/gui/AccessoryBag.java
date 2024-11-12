@@ -57,22 +57,22 @@ extends GUI {
         super("Accessory Bag", size);
         this.page = page;
         this.maxSlot = maxSlot;
-        for (int i = 0; i < size; ++i) {
-            if (i < maxSlot) continue;
-            this.set(i, BLACK_STAINED_GLASS_PANE);
+        for (int i2 = 0; i2 < size; ++i2) {
+            if (i2 < maxSlot) continue;
+            this.set(i2, BLACK_STAINED_GLASS_PANE);
         }
         this.closePos = closePos;
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e) {
-        this.inventory = e.getInventory();
-        this.player = e.getPlayer();
+    public void onOpen(GUIOpenEvent e2) {
+        this.inventory = e2.getInventory();
+        this.player = e2.getPlayer();
         this.loadPage();
     }
 
     @Override
-    public void onClose(InventoryCloseEvent e) {
+    public void onClose(InventoryCloseEvent e2) {
         this.savePage();
         ItemListener.updateStatistics(this.player);
     }
@@ -97,9 +97,9 @@ extends GUI {
         }
         Config file = new Config(home, user.getUuid() + "_accessory-bag.yml");
         ArrayList<ItemStack> items = new ArrayList<ItemStack>();
-        for (int i = 0; i < this.inventory.getSize(); ++i) {
-            if (i > this.maxSlot || i == this.closePos || i == this.closePos - 1 || i == this.closePos + 1) continue;
-            items.add(this.inventory.getItem(i));
+        for (int i2 = 0; i2 < this.inventory.getSize(); ++i2) {
+            if (i2 > this.maxSlot || i2 == this.closePos || i2 == this.closePos - 1 || i2 == this.closePos + 1) continue;
+            items.add(this.inventory.getItem(i2));
         }
         file.set("bag.page." + SUtil.numToStr[this.page], BukkitSerializeClass.itemStackArrayToBase64(items.toArray(new ItemStack[0])));
         file.save();
@@ -136,8 +136,8 @@ extends GUI {
         List<ItemStack> items = null;
         try {
             items = Arrays.asList(BukkitSerializeClass.itemStackArrayFromBase64(file.getString("bag.page." + SUtil.numToStr[page])));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (IOException e2) {
+            throw new RuntimeException(e2);
         }
         if (items == null || items.isEmpty()) {
             return null;
@@ -161,8 +161,8 @@ extends GUI {
         List<ItemStack> items = null;
         try {
             items = Arrays.asList(BukkitSerializeClass.itemStackArrayFromBase64(file.getString("bag.page." + SUtil.numToStr[this.page])));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (IOException e2) {
+            throw new RuntimeException(e2);
         }
         try {
             List<ItemStack> finalItems = items;
@@ -171,7 +171,7 @@ extends GUI {
                 this.set(new GUIClickableItem(){
 
                     @Override
-                    public void run(InventoryClickEvent e) {
+                    public void run(InventoryClickEvent e2) {
                         AccessoryBag.this.update(AccessoryBag.this.inventory);
                     }
 
@@ -191,15 +191,15 @@ extends GUI {
                     }
                 });
             });
-        } catch (ArrayIndexOutOfBoundsException e) {
-            SLog.info(e);
+        } catch (ArrayIndexOutOfBoundsException e3) {
+            SLog.info(e3);
         }
         this.set(GUIClickableItem.getCloseItem(this.closePos));
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
-                e.getWhoClicked().closeInventory();
+            public void run(InventoryClickEvent e2) {
+                e2.getWhoClicked().closeInventory();
                 SUtil.delay(() -> new AccessoryReforges().open(AccessoryBag.this.player), 5L);
             }
 
@@ -216,8 +216,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
-                Player player = (Player)e.getWhoClicked();
+            public void run(InventoryClickEvent e2) {
+                Player player = (Player)e2.getWhoClicked();
                 List<SItem> accessories = PlayerUtils.getAccessories(player);
                 if (accessories == null) {
                     player.sendMessage(SUtil.color("&cYour accessory bag is empty!"));
@@ -250,9 +250,9 @@ extends GUI {
     }
 
     @Override
-    public void onBottomClick(InventoryClickEvent e) {
+    public void onBottomClick(InventoryClickEvent e2) {
         List<ItemStack> accessories;
-        ItemStack selected = e.getCurrentItem();
+        ItemStack selected = e2.getCurrentItem();
         if (selected == null) {
             return;
         }
@@ -264,7 +264,7 @@ extends GUI {
             item = SItem.convert(selected);
         }
         if (!SUtil.getItemType(item.getType()).equals((Object)GenericItemType.ACCESSORY)) {
-            e.setCancelled(true);
+            e2.setCancelled(true);
             this.player.sendMessage(SUtil.color("&cYou cannot put this item in the accessory bag!"));
             this.player.playSound(this.player.getLocation(), Sound.VILLAGER_NO, 10.0f, 1.0f);
         }
@@ -273,11 +273,11 @@ extends GUI {
                 if (stack == null || stack.getType().equals((Object)Material.AIR)) continue;
                 SItem accessory = SItem.find(stack);
                 if (item.getType().equals((Object)accessory.getType())) {
-                    e.setCancelled(true);
+                    e2.setCancelled(true);
                     this.player.sendMessage(SUtil.color("&cAn accessory of this type is already in the bag!"));
                     this.player.playSound(this.player.getLocation(), Sound.VILLAGER_NO, 10.0f, 1.0f);
                 }
-                PlayerInventory inv = e.getWhoClicked().getInventory();
+                PlayerInventory inv = e2.getWhoClicked().getInventory();
                 inv.remove(item.getStack());
                 this.inventory.addItem(new ItemStack[]{item.getStack()});
             }

@@ -14,6 +14,7 @@ import net.hypixel.skyblock.SkyBlock;
 import net.hypixel.skyblock.command.CommandParameters;
 import net.hypixel.skyblock.command.CommandSource;
 import net.hypixel.skyblock.command.SCommand;
+import net.hypixel.skyblock.config.Config;
 import net.hypixel.skyblock.features.ranks.PlayerRank;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -22,6 +23,8 @@ import org.bukkit.entity.Player;
 @CommandParameters(description="unmute player", aliases="unmute", permission=PlayerRank.HELPER)
 public class Unmute
 extends SCommand {
+    public static Config config = SkyBlock.getInstance().config;
+
     @Override
     public void run(CommandSource sender, String[] args) {
         if (args.length >= 1) {

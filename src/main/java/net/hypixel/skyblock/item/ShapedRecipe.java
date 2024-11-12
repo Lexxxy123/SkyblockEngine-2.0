@@ -58,26 +58,26 @@ extends Recipe<ShapedRecipe> {
         return new ArrayList<MaterialQuantifiable>(this.ingredientMap.values());
     }
 
-    public ShapedRecipe set(char k, MaterialQuantifiable material, boolean isVanilla) {
-        this.ingredientMap.put(Character.valueOf(k), material.clone());
+    public ShapedRecipe set(char k2, MaterialQuantifiable material, boolean isVanilla) {
+        this.ingredientMap.put(Character.valueOf(k2), material.clone());
         this.isVanilla = isVanilla;
         return this;
     }
 
-    public ShapedRecipe set(char k, SMaterial material, int amount) {
-        return this.set(k, new MaterialQuantifiable(material, amount), false);
+    public ShapedRecipe set(char k2, SMaterial material, int amount) {
+        return this.set(k2, new MaterialQuantifiable(material, amount), false);
     }
 
-    public ShapedRecipe set(char k, SMaterial material, int amount, boolean isVanilla) {
-        return this.set(k, new MaterialQuantifiable(material, amount), isVanilla);
+    public ShapedRecipe set(char k2, SMaterial material, int amount, boolean isVanilla) {
+        return this.set(k2, new MaterialQuantifiable(material, amount), isVanilla);
     }
 
     public boolean isVanilla() {
         return this.isVanilla;
     }
 
-    public ShapedRecipe set(char k, SMaterial material) {
-        return this.set(k, new MaterialQuantifiable(material), false);
+    public ShapedRecipe set(char k2, SMaterial material) {
+        return this.set(k2, new MaterialQuantifiable(material), false);
     }
 
     public MaterialQuantifiable[][] toMQ2DArray() {
@@ -86,10 +86,10 @@ extends Recipe<ShapedRecipe> {
         String l2 = SUtil.pad(SUtil.getOrDefault(this.shape, 1, "   "), 3);
         String l3 = SUtil.pad(SUtil.getOrDefault(this.shape, 2, "   "), 3);
         String[] ls = new String[]{l1, l2, l3};
-        for (int i = 0; i < ls.length; ++i) {
-            String[] lps = ls[i].split("");
-            for (int j = 0; j < lps.length; ++j) {
-                materials[i][j] = this.ingredientMap.getOrDefault(Character.valueOf(lps[j].charAt(0)), new MaterialQuantifiable(SMaterial.AIR, 1));
+        for (int i2 = 0; i2 < ls.length; ++i2) {
+            String[] lps = ls[i2].split("");
+            for (int j2 = 0; j2 < lps.length; ++j2) {
+                materials[i2][j2] = this.ingredientMap.getOrDefault(Character.valueOf(lps[j2].charAt(0)), new MaterialQuantifiable(SMaterial.AIR, 1));
             }
         }
         return materials;
@@ -129,13 +129,13 @@ extends Recipe<ShapedRecipe> {
     private static MaterialQuantifiable[] segment(MaterialQuantifiable[] materials) {
         int firstNonAir = -1;
         int lastNonAir = -1;
-        for (int i = 0; i < materials.length; ++i) {
-            MaterialQuantifiable material = materials[i];
+        for (int i2 = 0; i2 < materials.length; ++i2) {
+            MaterialQuantifiable material = materials[i2];
             if (-1 == firstNonAir && SMaterial.AIR != material.getMaterial()) {
-                firstNonAir = i;
+                firstNonAir = i2;
             }
             if (SMaterial.AIR == material.getMaterial()) continue;
-            lastNonAir = i;
+            lastNonAir = i2;
         }
         if (-1 == firstNonAir || -1 == lastNonAir) {
             return new MaterialQuantifiable[0];
@@ -149,10 +149,10 @@ extends Recipe<ShapedRecipe> {
         }
         boolean found = true;
         try {
-            for (int i = 0; i < grid.length; ++i) {
-                for (int j = 0; j < grid[i].length; ++j) {
-                    MaterialQuantifiable m1 = grid[i][j];
-                    MaterialQuantifiable m2 = recipeGrid[i][j];
+            for (int i2 = 0; i2 < grid.length; ++i2) {
+                for (int j2 = 0; j2 < grid[i2].length; ++j2) {
+                    MaterialQuantifiable m1 = grid[i2][j2];
+                    MaterialQuantifiable m2 = recipeGrid[i2][j2];
                     List<SMaterial> exchangeables = Recipe.getExchangeablesOf(m2.getMaterial());
                     if (usesExchangeables && null != exchangeables && exchangeables.contains((Object)m1.getMaterial()) && m1.getAmount() >= m2.getAmount() || m1.getMaterial() == m2.getMaterial() && m1.getAmount() >= m2.getAmount()) continue;
                     found = false;
@@ -174,9 +174,9 @@ extends Recipe<ShapedRecipe> {
             return false;
         }
         boolean found = true;
-        for (int i = 0; i < grid1d.length; ++i) {
-            MaterialQuantifiable m1 = grid1d[i];
-            MaterialQuantifiable m2 = recipeGrid1d[i];
+        for (int i2 = 0; i2 < grid1d.length; ++i2) {
+            MaterialQuantifiable m1 = grid1d[i2];
+            MaterialQuantifiable m2 = recipeGrid1d[i2];
             List<SMaterial> exchangeables = Recipe.getExchangeablesOf(m2.getMaterial());
             if (usesExchangeables && null != exchangeables && exchangeables.contains((Object)m1.getMaterial()) && m1.getAmount() >= m2.getAmount() || m1.getMaterial() == m2.getMaterial() && m1.getAmount() >= m2.getAmount()) continue;
             found = false;

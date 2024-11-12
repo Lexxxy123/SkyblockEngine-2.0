@@ -37,20 +37,20 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e) {
-        int t;
+    public void onOpen(GUIOpenEvent e2) {
+        int t2;
         this.fill(BLACK_STAINED_GLASS_PANE);
-        Player player = e.getPlayer();
+        Player player = e2.getPlayer();
         User user = User.getUser(player.getUniqueId());
         int amount = user.getCollection(this.collection);
         int tier = this.collection.getTier(amount);
         this.set(4, SUtil.getStack(ChatColor.YELLOW + this.collection.getName() + " " + SUtil.toRomanNumeral(tier), this.collection.getMaterial().getCraftMaterial(), this.collection.getData(), 1, ChatColor.GRAY + "View all your " + this.collection.getName() + " Collection", ChatColor.GRAY + "progress and rewards!", " ", ChatColor.GRAY + "Total Collected: " + ChatColor.YELLOW + SUtil.commaify(amount)));
         this.set(GUIClickableItem.getCloseItem(49));
         this.set(GUIClickableItem.createGUIOpenerItem(new CategoryCollectionGUI(this.collection.getCategory()), player, ChatColor.GREEN + "Go Back", 48, Material.ARROW, (short)0, ChatColor.GRAY + "To " + this.collection.getCategory().getName() + " Collection"));
-        int i = 0;
+        int i2 = 0;
         int slot = 18;
-        while (i < this.collection.getRewards().size() && (t = i + 1) != 28) {
-            ItemCollectionRewards rewards = this.collection.getRewards().get(i);
+        while (i2 < this.collection.getRewards().size() && (t2 = i2 + 1) != 28) {
+            ItemCollectionRewards rewards = this.collection.getRewards().get(i2);
             if (rewards != null) {
                 final int finalSlot = slot;
                 ChatColor color = ChatColor.RED;
@@ -59,7 +59,7 @@ extends GUI {
                     color = ChatColor.GREEN;
                     data = 5;
                 }
-                if (tier + 1 == t) {
+                if (tier + 1 == t2) {
                     color = ChatColor.YELLOW;
                     data = 4;
                 }
@@ -77,7 +77,7 @@ extends GUI {
                 this.set(new GUIClickableItem(){
 
                     @Override
-                    public void run(InventoryClickEvent e) {
+                    public void run(InventoryClickEvent e2) {
                     }
 
                     @Override
@@ -87,11 +87,11 @@ extends GUI {
 
                     @Override
                     public ItemStack getItem() {
-                        return SUtil.getStack(finalColor + ItemCollectionGUI.this.collection.getName() + " " + SUtil.toRomanNumeral(t), Material.STAINED_GLASS_PANE, finalData, t, lore);
+                        return SUtil.getStack(finalColor + ItemCollectionGUI.this.collection.getName() + " " + SUtil.toRomanNumeral(t2), Material.STAINED_GLASS_PANE, finalData, t2, lore);
                     }
                 });
             }
-            ++i;
+            ++i2;
             ++slot;
         }
     }

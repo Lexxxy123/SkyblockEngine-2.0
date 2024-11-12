@@ -28,11 +28,6 @@ extends BaseEnderman {
     }
 
     @Override
-    public int mobLevel() {
-        return 2500;
-    }
-
-    @Override
     public double getXPDropped() {
         return 400.0;
     }

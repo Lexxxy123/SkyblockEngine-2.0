@@ -51,28 +51,28 @@ implements DungeonsSkill {
 
     @Override
     public List<String> getPassive() {
-        ArrayList<String> t = new ArrayList<String>();
-        t.add("Protective Barrier" + ChatColor.RED + " Soon!");
-        t.add("Taunt");
-        t.add("Diversion");
-        t.add("Defensive Stance");
-        return t;
+        ArrayList<String> t2 = new ArrayList<String>();
+        t2.add("Protective Barrier" + ChatColor.RED + " Soon!");
+        t2.add("Taunt");
+        t2.add("Diversion");
+        t2.add("Defensive Stance");
+        return t2;
     }
 
     @Override
     public List<String> getOrb() {
-        ArrayList<String> t = new ArrayList<String>();
-        t.add("Seismic Wave");
-        t.add("Castle of Stone");
-        return t;
+        ArrayList<String> t2 = new ArrayList<String>();
+        t2.add("Seismic Wave");
+        t2.add("Castle of Stone");
+        return t2;
     }
 
     @Override
     public List<String> getGhost() {
-        ArrayList<String> t = new ArrayList<String>();
-        t.add("Stun Potion");
-        t.add("Absorption Potion");
-        return t;
+        ArrayList<String> t2 = new ArrayList<String>();
+        t2.add("Stun Potion");
+        t2.add("Absorption Potion");
+        return t2;
     }
 }
 

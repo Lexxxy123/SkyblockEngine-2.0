@@ -28,14 +28,14 @@ public class RayTracing {
     }
 
     public boolean isOnLine(Vector position) {
-        double t = (position.getX() - this.origin.getX()) / this.direction.getX();
-        return (double)position.getBlockY() == this.origin.getY() + t * this.direction.getY() && (double)position.getBlockZ() == this.origin.getZ() + t * this.direction.getZ();
+        double t2 = (position.getX() - this.origin.getX()) / this.direction.getX();
+        return (double)position.getBlockY() == this.origin.getY() + t2 * this.direction.getY() && (double)position.getBlockZ() == this.origin.getZ() + t2 * this.direction.getZ();
     }
 
     public ArrayList<Vector> traverse(double blocksAway, double accuracy) {
         ArrayList<Vector> positions = new ArrayList<Vector>();
-        for (double d = 0.0; d <= blocksAway; d += accuracy) {
-            positions.add(this.getPostion(d));
+        for (double d2 = 0.0; d2 <= blocksAway; d2 += accuracy) {
+            positions.add(this.getPostion(d2));
         }
         return positions;
     }

@@ -101,16 +101,16 @@ EntityStatistics {
         return 0.0;
     }
 
-    public GlobalBossBar setBar(org.bukkit.World w) {
-        GlobalBossBar bb = new GlobalBossBar(ChatColor.RED + this.getEntityName(), w);
-        for (Player p : w.getPlayers()) {
-            bb.addPlayer(p);
+    public GlobalBossBar setBar(org.bukkit.World w2) {
+        GlobalBossBar bb2 = new GlobalBossBar(ChatColor.RED + this.getEntityName(), w2);
+        for (Player p2 : w2.getPlayers()) {
+            bb2.addPlayer(p2);
         }
-        return bb;
+        return bb2;
     }
 
-    public void updateBar(float percent, GlobalBossBar bb) {
-        bb.setProgress(percent);
+    public void updateBar(float percent, GlobalBossBar bb2) {
+        bb2.setProgress(percent);
     }
 
     @Override
@@ -141,25 +141,25 @@ EntityStatistics {
 
     @Override
     public void onSpawn(final LivingEntity entity, final SEntity sEntity) {
-        final GlobalBossBar bb = this.setBar(entity.getWorld());
+        final GlobalBossBar bb2 = this.setBar(entity.getWorld());
         new BukkitRunnable(){
 
             public void run() {
                 if (entity.isDead()) {
-                    Dragon.this.updateBar(1.0E-4f, bb);
+                    Dragon.this.updateBar(1.0E-4f, bb2);
                     SUtil.delay(() -> {
                         ArrayList<Player> plist = new ArrayList<Player>();
-                        for (Player p : bb2.players) {
-                            plist.add(p);
+                        for (Player p2 : bb22.players) {
+                            plist.add(p2);
                         }
-                        plist.forEach(pl -> bb.removePlayer((Player)pl));
-                        bb.setProgress(0.0);
-                        bb.cancel();
+                        plist.forEach(pl -> bb2.removePlayer((Player)pl));
+                        bb2.setProgress(0.0);
+                        bb2.cancel();
                     }, 400L);
                     this.cancel();
                     return;
                 }
-                Dragon.this.updateBar((float)(entity.getHealth() / entity.getMaxHealth()), bb);
+                Dragon.this.updateBar((float)(entity.getHealth() / entity.getMaxHealth()), bb2);
             }
         }.runTaskTimerAsynchronously((Plugin)SkyBlock.getPlugin(), 0L, 1L);
         new BukkitRunnable(){
@@ -172,8 +172,8 @@ EntityStatistics {
                 switch (SUtil.random(0, 1)) {
                     case 0: {
                         Dragon.this.frozen = true;
-                        for (int i = 1; 4 >= i; ++i) {
-                            SUtil.lightningLater(entity.getLocation(), true, 10 * i);
+                        for (int i2 = 1; 4 >= i2; ++i2) {
+                            SUtil.lightningLater(entity.getLocation(), true, 10 * i2);
                         }
                         new BukkitRunnable(){
 
@@ -181,18 +181,18 @@ EntityStatistics {
                                 if (entity.isDead()) {
                                     return;
                                 }
-                                for (org.bukkit.entity.Entity e : entity.getNearbyEntities(200.0, 200.0, 200.0)) {
-                                    e.getWorld().strikeLightningEffect(e.getLocation());
-                                    double r = SUtil.random((Double)Dragon.this.damageDegree.getMinimum(), (Double)Dragon.this.damageDegree.getMaximum());
-                                    if (!(e instanceof LivingEntity)) continue;
-                                    LivingEntity le = (LivingEntity)e;
-                                    int damage = (int)(le.getMaxHealth() * r);
+                                for (org.bukkit.entity.Entity e2 : entity.getNearbyEntities(200.0, 200.0, 200.0)) {
+                                    e2.getWorld().strikeLightningEffect(e2.getLocation());
+                                    double r2 = SUtil.random((Double)Dragon.this.damageDegree.getMinimum(), (Double)Dragon.this.damageDegree.getMaximum());
+                                    if (!(e2 instanceof LivingEntity)) continue;
+                                    LivingEntity le = (LivingEntity)e2;
+                                    int damage = (int)(le.getMaxHealth() * r2);
                                     if (le instanceof Player) {
                                         User.getUser(le.getUniqueId()).damage(damage, EntityDamageEvent.DamageCause.ENTITY_ATTACK, (org.bukkit.entity.Entity)entity);
                                     } else {
                                         le.damage((double)damage);
                                     }
-                                    e.sendMessage(ChatColor.DARK_PURPLE + "\u262c " + ChatColor.RED + Dragon.this.getEntityName() + ChatColor.LIGHT_PURPLE + " used " + ChatColor.YELLOW + "Lightning Strike" + ChatColor.LIGHT_PURPLE + " on you for " + ChatColor.RED + damage + " damage.");
+                                    e2.sendMessage(ChatColor.DARK_PURPLE + "\u262c " + ChatColor.RED + Dragon.this.getEntityName() + ChatColor.LIGHT_PURPLE + " used " + ChatColor.YELLOW + "Lightning Strike" + ChatColor.LIGHT_PURPLE + " on you for " + ChatColor.RED + damage + " damage.");
                                 }
                                 Dragon.this.frozen = false;
                             }
@@ -202,16 +202,16 @@ EntityStatistics {
                     case 1: {
                         Dragon.this.frozen = true;
                         org.bukkit.entity.Entity near = null;
-                        for (org.bukkit.entity.Entity n : entity.getNearbyEntities(50.0, 50.0, 50.0)) {
-                            if (!(n instanceof Player)) continue;
-                            near = n;
+                        for (org.bukkit.entity.Entity n2 : entity.getNearbyEntities(50.0, 50.0, 50.0)) {
+                            if (!(n2 instanceof Player)) continue;
+                            near = n2;
                         }
                         final org.bukkit.entity.Entity finalNear = near;
                         if (null != finalNear) {
                             SUtil.runIntervalForTicks(() -> {
                                 LivingEntity val$entity = entity;
                                 if (!entity.isDead()) {
-                                    for (int j = 0; 15 > j; ++j) {
+                                    for (int j2 = 0; 15 > j2; ++j2) {
                                         entity.getWorld().spigot().playEffect(entity.getEyeLocation().subtract(0.0, 8.0, 0.0).add(entity.getLocation().getDirection().multiply(-8.0)).add(SUtil.random(-0.5, 0.5), SUtil.random(-0.5, 0.5), SUtil.random(-0.5, 0.5)), Effect.FLAME, 0, 1, 0.0f, 0.0f, 0.0f, 0.0f, 1, 50);
                                     }
                                 }
@@ -281,10 +281,10 @@ EntityStatistics {
         if (null != name) {
             message.append("            ").append(ChatColor.GREEN).append(name).append(ChatColor.GRAY).append(" dealt the final blow.\n \n");
         }
-        for (int i = 0; i < Math.min(3, damageDealt.size()); ++i) {
+        for (int i2 = 0; i2 < Math.min(3, damageDealt.size()); ++i2) {
             message.append("\n");
-            Map.Entry d = (Map.Entry)damageDealt.get(i);
-            place = i + 1;
+            Map.Entry d2 = (Map.Entry)damageDealt.get(i2);
+            place = i2 + 1;
             switch (place) {
                 case 1: {
                     message.append("        ").append(ChatColor.YELLOW);
@@ -312,17 +312,17 @@ EntityStatistics {
                     message.append("rd");
                 }
             }
-            message.append(" Damager").append(ChatColor.RESET).append(ChatColor.GRAY).append(" - ").append(ChatColor.GREEN).append(Bukkit.getOfflinePlayer((UUID)((UUID)d.getKey())).getName()).append(ChatColor.GRAY).append(" - ").append(ChatColor.YELLOW).append(SUtil.commaify(((Double)d.getValue()).intValue()));
+            message.append(" Damager").append(ChatColor.RESET).append(ChatColor.GRAY).append(" - ").append(ChatColor.GREEN).append(Bukkit.getOfflinePlayer((UUID)((UUID)d2.getKey())).getName()).append(ChatColor.GRAY).append(" - ").append(ChatColor.YELLOW).append(SUtil.commaify(((Double)d2.getValue()).intValue()));
         }
         message.append("\n \n").append("         ").append(ChatColor.RESET).append(ChatColor.YELLOW).append("Your Damage: ").append("%s").append(ChatColor.RESET).append("\n").append("             ").append(ChatColor.YELLOW).append("Runecrafting Experience: ").append(ChatColor.LIGHT_PURPLE).append("N/A").append(ChatColor.RESET).append("\n \n");
         message.append(ChatColor.GREEN).append(ChatColor.BOLD).append("\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac\u25ac");
         for (Player player : Bukkit.getOnlinePlayers()) {
             place = -1;
             int damage = 0;
-            for (int j = 0; j < damageDealt.size(); ++j) {
-                Map.Entry d2 = (Map.Entry)damageDealt.get(j);
+            for (int j2 = 0; j2 < damageDealt.size(); ++j2) {
+                Map.Entry d2 = (Map.Entry)damageDealt.get(j2);
                 if (!((UUID)d2.getKey()).equals(player.getUniqueId())) continue;
-                place = j + 1;
+                place = j2 + 1;
                 damage = ((Double)d2.getValue()).intValue();
             }
             if (!player.getWorld().getName().equals("world")) continue;
@@ -331,30 +331,30 @@ EntityStatistics {
         new BukkitRunnable(){
 
             public void run() {
-                for (int i = 0; i < damageDealt.size(); ++i) {
-                    Map.Entry d = (Map.Entry)damageDealt.get(i);
-                    Player player = Bukkit.getPlayer((UUID)((UUID)d.getKey()));
+                for (int i2 = 0; i2 < damageDealt.size(); ++i2) {
+                    Map.Entry d2 = (Map.Entry)damageDealt.get(i2);
+                    Player player = Bukkit.getPlayer((UUID)((UUID)d2.getKey()));
                     if (null == player) continue;
                     int weight = 0;
                     if (eyes.containsKey(player.getUniqueId())) {
                         weight += Math.min(400, ((List)eyes.get(player.getUniqueId())).size() * 100);
                     }
-                    if (0 == i) {
+                    if (0 == i2) {
                         weight += 300;
                     }
-                    if (1 == i) {
+                    if (1 == i2) {
                         weight += 250;
                     }
-                    if (2 == i) {
+                    if (2 == i2) {
                         weight += 200;
                     }
-                    if (3 <= i && 6 >= i) {
+                    if (3 <= i2 && 6 >= i2) {
                         weight += 125;
                     }
-                    if (7 <= i && 14 >= i) {
+                    if (7 <= i2 && 14 >= i2) {
                         weight += 100;
                     }
-                    if (15 <= i) {
+                    if (15 <= i2) {
                         weight += 75;
                     }
                     ArrayList possibleMajorDrops = new ArrayList();
@@ -422,15 +422,15 @@ EntityStatistics {
     }
 
     @Override
-    public void onAttack(EntityDamageByEntityEvent e) {
-        int d = SUtil.random(354, 902);
-        if (e.getEntity() instanceof Player) {
-            User.getUser(e.getEntity().getUniqueId()).damage(d, e.getCause(), e.getDamager());
-        } else if (e.getEntity() instanceof LivingEntity) {
-            ((LivingEntity)e.getEntity()).damage((double)d);
+    public void onAttack(EntityDamageByEntityEvent e2) {
+        int d2 = SUtil.random(354, 902);
+        if (e2.getEntity() instanceof Player) {
+            User.getUser(e2.getEntity().getUniqueId()).damage(d2, e2.getCause(), e2.getDamager());
+        } else if (e2.getEntity() instanceof LivingEntity) {
+            ((LivingEntity)e2.getEntity()).damage((double)d2);
         }
-        e.getEntity().setVelocity(e.getEntity().getVelocity().multiply(8.0));
-        e.getEntity().sendMessage(ChatColor.DARK_PURPLE + "\u262c " + ChatColor.RED + this.getEntityName() + ChatColor.LIGHT_PURPLE + " used " + ChatColor.YELLOW + "Rush" + ChatColor.LIGHT_PURPLE + " on you for " + ChatColor.RED + d + " damage.");
+        e2.getEntity().setVelocity(e2.getEntity().getVelocity().multiply(8.0));
+        e2.getEntity().sendMessage(ChatColor.DARK_PURPLE + "\u262c " + ChatColor.RED + this.getEntityName() + ChatColor.LIGHT_PURPLE + " used " + ChatColor.YELLOW + "Rush" + ChatColor.LIGHT_PURPLE + " on you for " + ChatColor.RED + d2 + " damage.");
     }
 
     public double getSpeedModifier() {

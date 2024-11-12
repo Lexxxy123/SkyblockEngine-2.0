@@ -35,9 +35,9 @@ extends SCommand {
         if (0 == args.length) {
             StringBuilder builder = new StringBuilder("Spawners:");
             List<EntitySpawner> spawners = EntitySpawner.getSpawners();
-            for (int i = 0; i < spawners.size(); ++i) {
-                EntitySpawner spawner = spawners.get(i);
-                builder.append("\n ").append(i + 1).append(": ").append(SUtil.prettify(spawner.getLocation())).append(" (").append(spawner.getType().name()).append(")");
+            for (int i2 = 0; i2 < spawners.size(); ++i2) {
+                EntitySpawner spawner = spawners.get(i2);
+                builder.append("\n ").append(i2 + 1).append(": ").append(SUtil.prettify(spawner.getLocation())).append(" (").append(spawner.getType().name()).append(")");
             }
             this.send(builder.toString());
             return;

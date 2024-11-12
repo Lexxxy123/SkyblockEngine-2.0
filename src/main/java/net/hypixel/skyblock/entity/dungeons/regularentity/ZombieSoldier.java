@@ -95,7 +95,7 @@ extends BaseZombie {
     }
 
     @Override
-    public void onAttack(EntityDamageByEntityEvent e) {
+    public void onAttack(EntityDamageByEntityEvent e2) {
     }
 
     @Override

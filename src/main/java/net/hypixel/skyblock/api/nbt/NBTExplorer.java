@@ -16,13 +16,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class NBTExplorer {
-    public static JSONObject NBTSaver(org.bukkit.inventory.ItemStack i) {
+    public static JSONObject NBTSaver(org.bukkit.inventory.ItemStack i2) {
         JSONObject jo = new JSONObject();
-        ItemStack stack = CraftItemStack.asNMSCopy((org.bukkit.inventory.ItemStack)i);
+        ItemStack stack = CraftItemStack.asNMSCopy((org.bukkit.inventory.ItemStack)i2);
         NBTTagCompound compound = stack.getTag();
         String finalnbt = "";
         StringBuilder sb = new StringBuilder();
-        int c = 34;
+        int c2 = 34;
         if (compound != null) {
             try {
                 for (String key : compound.c()) {

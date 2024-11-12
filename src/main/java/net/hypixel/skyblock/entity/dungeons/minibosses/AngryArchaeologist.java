@@ -143,7 +143,7 @@ extends BaseZombie {
                     this.cancel();
                     return;
                 }
-                for (int i = 0; 20 > i; ++i) {
+                for (int i2 = 0; 20 > i2; ++i2) {
                     entity.getWorld().spigot().playEffect(entity.getLocation().clone().add(0.0, 0.25, 0.0), Effect.MAGIC_CRIT, 0, 1, (float)SUtil.random(-0.5, 0.5), (float)SUtil.random(0.0, 0.6), (float)SUtil.random(-0.5, 0.5), 0.0f, 1, 20);
                 }
             }
@@ -183,9 +183,9 @@ extends BaseZombie {
                 if (AngryArchaeologist.this.isSplashing) {
                     entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 35, 6));
                     entity.getEquipment().setItemInHand(AngryArchaeologist.getPot());
-                    Location h = entity.getLocation();
-                    h.setPitch(90.0f);
-                    entity.teleport(h);
+                    Location h2 = entity.getLocation();
+                    h2.setPitch(90.0f);
+                    entity.teleport(h2);
                     AngryArchaeologist.sendHeadRotation((org.bukkit.entity.Entity)entity, entity.getLocation().getYaw(), 90.0f);
                 }
             }
@@ -202,9 +202,9 @@ extends BaseZombie {
                     AngryArchaeologist.this.SplashCooldown = true;
                     entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 35, 6));
                     AngryArchaeologist.this.isBowing = false;
-                    Location h = entity.getLocation();
-                    h.setPitch(90.0f);
-                    entity.teleport(h);
+                    Location h2 = entity.getLocation();
+                    h2.setPitch(90.0f);
+                    entity.teleport(h2);
                     SUtil.delay(() -> AngryArchaeologist.this.isSplashing = true, 5L);
                     entity.getEquipment().setItemInHand(AngryArchaeologist.getPot());
                     Location loc = entity.getEyeLocation();
@@ -247,9 +247,9 @@ extends BaseZombie {
                             entity.getEquipment().setItemInHand(new ItemStack(Material.AIR));
                             AngryArchaeologist.this.isSplashing = false;
                             AngryArchaeologist.sendHeadRotation((org.bukkit.entity.Entity)entity, entity.getLocation().getYaw(), perv);
-                            Location h = entity.getLocation();
-                            h.setPitch(perv);
-                            entity.teleport(h);
+                            Location h2 = entity.getLocation();
+                            h2.setPitch(perv);
+                            entity.teleport(h2);
                             SUtil.delay(() -> {
                                 LivingEntity val$entity = entity;
                                 if (!AngryArchaeologist.this.isBowing) {
@@ -333,9 +333,9 @@ extends BaseZombie {
                                         return;
                                     }
                                     Location location = entity.getEyeLocation().add(entity.getEyeLocation().getDirection().toLocation(entity.getWorld()));
-                                    Location l = location.clone();
-                                    l.setYaw(location.getYaw());
-                                    Arrow arr = entity.getWorld().spawnArrow(l, l.getDirection(), (float)this.bowPower, 1.6f);
+                                    Location l2 = location.clone();
+                                    l2.setYaw(location.getYaw());
+                                    Arrow arr = entity.getWorld().spawnArrow(l2, l2.getDirection(), (float)this.bowPower, 1.6f);
                                     arr.setShooter((ProjectileSource)entity);
                                     if (!this.crit) {
                                         arr.setCritical(1 == SUtil.random(0, 1));
@@ -394,9 +394,9 @@ extends BaseZombie {
                             motY += (double)((float)(this.nms.getEffect(MobEffectList.JUMP).getAmplifier() + 1) * 0.2f);
                         }
                         if (this.nms.isSprinting()) {
-                            float f = this.nms.yaw * 0.01745329f;
-                            motX -= (double)(MathHelper.sin((float)f) * 0.9f);
-                            motZ += (double)(MathHelper.cos((float)f) * 0.9f);
+                            float f2 = this.nms.yaw * 0.01745329f;
+                            motX -= (double)(MathHelper.sin((float)f2) * 0.9f);
+                            motZ += (double)(MathHelper.cos((float)f2) * 0.9f);
                         }
                         entity.setVelocity(new Vector(motX, motY, motZ));
                     }
@@ -429,10 +429,10 @@ extends BaseZombie {
     }
 
     @Override
-    public void onDamage(SEntity sEntity, org.bukkit.entity.Entity damager, EntityDamageByEntityEvent e, AtomicDouble damage) {
+    public void onDamage(SEntity sEntity, org.bukkit.entity.Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
         LivingEntity en = sEntity.getEntity();
-        Vector v = new Vector(0, 0, 0);
-        SUtil.delay(() -> AngryArchaeologist.lambda$onDamage$0((org.bukkit.entity.Entity)en, v), 1L);
+        Vector v2 = new Vector(0, 0, 0);
+        SUtil.delay(() -> AngryArchaeologist.lambda$onDamage$0((org.bukkit.entity.Entity)en, v2), 1L);
     }
 
     @Override
@@ -465,9 +465,9 @@ extends BaseZombie {
         return 0.35;
     }
 
-    public void playPar(Location l) {
+    public void playPar(Location l2) {
         ConeEffect Effect2 = new ConeEffect(SkyBlock.effectManager);
-        Effect2.setLocation(l.clone().add(l.getDirection().normalize().multiply(-0.25)).add(0.0, -0.1, 0.0));
+        Effect2.setLocation(l2.clone().add(l2.getDirection().normalize().multiply(-0.25)).add(0.0, -0.1, 0.0));
         Effect2.particle = ParticleEffect.FLAME;
         Effect2.angularVelocity = 0.39269908169872414;
         Effect2.lengthGrow = 0.025f;
@@ -507,15 +507,15 @@ extends BaseZombie {
         return item;
     }
 
-    public static void sendHeadRotation(org.bukkit.entity.Entity e, float yaw, float pitch) {
-        EntityZombie pl = ((CraftZombie)e).getHandle();
-        pl.setLocation(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), yaw, pitch);
+    public static void sendHeadRotation(org.bukkit.entity.Entity e2, float yaw, float pitch) {
+        EntityZombie pl = ((CraftZombie)e2).getHandle();
+        pl.setLocation(e2.getLocation().getX(), e2.getLocation().getY(), e2.getLocation().getZ(), yaw, pitch);
         PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport((Entity)pl);
-        Sputnik.sendPacket(e.getWorld(), (Packet)packet);
+        Sputnik.sendPacket(e2.getWorld(), (Packet)packet);
     }
 
-    private static /* synthetic */ void lambda$onDamage$0(org.bukkit.entity.Entity en, Vector v) {
-        en.setVelocity(v);
+    private static /* synthetic */ void lambda$onDamage$0(org.bukkit.entity.Entity en, Vector v2) {
+        en.setVelocity(v2);
     }
 }
 

@@ -27,7 +27,7 @@ implements EntityStatistics,
 EntityFunction {
     @Override
     public String getEntityName() {
-        return "Miner Skeleton";
+        return "Skeleton";
     }
 
     @Override
@@ -38,11 +38,6 @@ EntityFunction {
     @Override
     public double getDamageDealt() {
         return 190.0;
-    }
-
-    @Override
-    public int mobLevel() {
-        return 20;
     }
 
     @Override

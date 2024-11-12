@@ -34,14 +34,14 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e) {
+    public void onOpen(GUIOpenEvent e2) {
         this.fill(BLACK_STAINED_GLASS_PANE);
-        final Player player = e.getPlayer();
+        final Player player = e2.getPlayer();
         this.set(GUIClickableItem.createGUIOpenerItem(GUIType.SLAYER, player, ChatColor.GREEN + "Go Back", 49, Material.ARROW, ChatColor.GRAY + "To Slayer"));
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 new SlayerConfirmGUI(SlayerBossType.SVEN_PACKMASTER_I, () -> {
                     Player val$player = player;
                     User.getUser(player.getUniqueId()).startSlayerQuest(SlayerBossType.SVEN_PACKMASTER_I);
@@ -61,7 +61,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 new SlayerConfirmGUI(SlayerBossType.SVEN_PACKMASTER_II, () -> {
                     Player val$player = player;
                     User.getUser(player.getUniqueId()).startSlayerQuest(SlayerBossType.SVEN_PACKMASTER_II);
@@ -81,7 +81,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 new SlayerConfirmGUI(SlayerBossType.SVEN_PACKMASTER_III, () -> {
                     Player val$player = player;
                     User.getUser(player.getUniqueId()).startSlayerQuest(SlayerBossType.SVEN_PACKMASTER_III);
@@ -101,7 +101,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 new SlayerConfirmGUI(SlayerBossType.SVEN_PACKMASTER_IV, () -> {
                     Player val$player = player;
                     User.getUser(player.getUniqueId()).startSlayerQuest(SlayerBossType.SVEN_PACKMASTER_IV);
@@ -131,7 +131,7 @@ extends GUI {
             }
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
             }
         });
         this.set(new GUIClickableItem(){
@@ -147,7 +147,7 @@ extends GUI {
             }
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
             }
         });
         this.set(new GUIClickableItem(){
@@ -163,7 +163,7 @@ extends GUI {
             }
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
             }
         });
         this.set(new GUIClickableItem(){
@@ -179,7 +179,7 @@ extends GUI {
             }
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
             }
         });
     }

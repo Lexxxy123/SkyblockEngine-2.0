@@ -21,7 +21,7 @@ public class DiamondZombie
 extends BaseZombie {
     @Override
     public String getEntityName() {
-        return "Miner Zombie";
+        return "Zombie";
     }
 
     @Override
@@ -32,11 +32,6 @@ extends BaseZombie {
     @Override
     public double getDamageDealt() {
         return 200.0;
-    }
-
-    @Override
-    public int mobLevel() {
-        return 15;
     }
 
     @Override

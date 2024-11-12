@@ -20,7 +20,7 @@ implements SlimeStatistics,
 EntityFunction {
     @Override
     public String getEntityName() {
-        return "Emerald Slime";
+        return "Slime";
     }
 
     @Override
@@ -34,21 +34,16 @@ EntityFunction {
     }
 
     @Override
-    public int mobLevel() {
-        return 15;
-    }
-
-    @Override
     public int getSize() {
         return 10;
     }
 
     @Override
-    public void onAttack(final EntityDamageByEntityEvent e) {
+    public void onAttack(final EntityDamageByEntityEvent e2) {
         new BukkitRunnable(){
 
             public void run() {
-                e.getEntity().setVelocity(e.getEntity().getVelocity().clone().setY(1.5));
+                e2.getEntity().setVelocity(e2.getEntity().getVelocity().clone().setY(1.5));
             }
         }.runTaskLater((Plugin)SkyBlock.getPlugin(), 1L);
     }

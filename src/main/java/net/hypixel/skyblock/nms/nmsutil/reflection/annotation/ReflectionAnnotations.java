@@ -46,8 +46,8 @@ public class ReflectionAnnotations {
                     throw new IllegalArgumentException("@Class names cannot be empty");
                 }
                 names = nameList.toArray(new String[nameList.size()]);
-                for (int i = 0; i < names.length; ++i) {
-                    names[i] = names[i].replace("{nms}", "net.minecraft.server." + Minecraft.VERSION.name()).replace("{obc}", "org.bukkit.craftbukkit." + Minecraft.VERSION.name());
+                for (int i2 = 0; i2 < names.length; ++i2) {
+                    names[i2] = names[i2].replace("{nms}", "net.minecraft.server." + Minecraft.VERSION.name()).replace("{obc}", "org.bukkit.craftbukkit." + Minecraft.VERSION.name());
                 }
                 try {
                     if (ClassWrapper.class.isAssignableFrom(field.getType())) {
@@ -60,9 +60,9 @@ public class ReflectionAnnotations {
                     }
                     field.set(toLoad, classResolver.resolve(names));
                     continue;
-                } catch (ReflectiveOperationException e) {
+                } catch (ReflectiveOperationException e2) {
                     if (classAnnotation.ignoreExceptions()) continue;
-                    this.throwReflectionException("@Class", field, toLoad, e);
+                    this.throwReflectionException("@Class", field, toLoad, e2);
                     return;
                 }
             }
@@ -84,9 +84,9 @@ public class ReflectionAnnotations {
                     }
                     field.set(toLoad, fieldResolver.resolve(names));
                     continue;
-                } catch (ReflectiveOperationException e) {
+                } catch (ReflectiveOperationException e3) {
                     if (fieldAnnotation.ignoreExceptions()) continue;
-                    this.throwReflectionException("@Field", field, toLoad, e);
+                    this.throwReflectionException("@Field", field, toLoad, e3);
                     return;
                 }
             }
@@ -97,8 +97,8 @@ public class ReflectionAnnotations {
             }
             names = nameList.toArray(new String[nameList.size()]);
             boolean isSignature = names[0].contains(" ");
-            for (String s : names) {
-                if (s.contains(" ") == isSignature) continue;
+            for (String s2 : names) {
+                if (s2.contains(" ") == isSignature) continue;
                 throw new IllegalArgumentException("Inconsistent method names: Cannot have mixed signatures/names");
             }
             try {
@@ -139,21 +139,21 @@ public class ReflectionAnnotations {
                 if (versions.length > names.length) {
                     throw new RuntimeException("versions array cannot have more elements than the names (" + clazz + ")");
                 }
-                for (int i = 0; i < versions.length; ++i) {
-                    if (Minecraft.VERSION == versions[i]) {
-                        list.add(names[i]);
+                for (int i2 = 0; i2 < versions.length; ++i2) {
+                    if (Minecraft.VERSION == versions[i2]) {
+                        list.add(names[i2]);
                         continue;
                     }
-                    if (names[i].startsWith(">") && Minecraft.VERSION.newerThan(versions[i])) {
-                        list.add(names[i].substring(1));
+                    if (names[i2].startsWith(">") && Minecraft.VERSION.newerThan(versions[i2])) {
+                        list.add(names[i2].substring(1));
                         continue;
                     }
-                    if (!names[i].startsWith("<") || !Minecraft.VERSION.olderThan(versions[i])) continue;
-                    list.add(names[i].substring(1));
+                    if (!names[i2].startsWith("<") || !Minecraft.VERSION.olderThan(versions[i2])) continue;
+                    list.add(names[i2].substring(1));
                 }
             }
-        } catch (ReflectiveOperationException e) {
-            throw new RuntimeException(e);
+        } catch (ReflectiveOperationException e2) {
+            throw new RuntimeException(e2);
         }
         return list;
     }
@@ -173,8 +173,8 @@ public class ReflectionAnnotations {
                 return ((java.lang.Class)field.get(toLoad)).getName();
             }
             return className;
-        } catch (ReflectiveOperationException e) {
-            throw new RuntimeException(e);
+        } catch (ReflectiveOperationException e2) {
+            throw new RuntimeException(e2);
         }
     }
 

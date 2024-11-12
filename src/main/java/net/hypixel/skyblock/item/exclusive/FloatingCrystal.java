@@ -32,11 +32,11 @@ MaterialFunction {
     }
 
     @Override
-    public void onInteraction(PlayerInteractEvent e) {
-        if (e.getAction() == Action.LEFT_CLICK_AIR || e.getAction() == Action.LEFT_CLICK_BLOCK) {
+    public void onInteraction(PlayerInteractEvent e2) {
+        if (e2.getAction() == Action.LEFT_CLICK_AIR || e2.getAction() == Action.LEFT_CLICK_BLOCK) {
             return;
         }
-        Player player = e.getPlayer();
+        Player player = e2.getPlayer();
         SEntity sEntity = new SEntity(player.getLocation().clone().add(player.getLocation().getDirection().multiply(1.5)), this.getCrystalType(), new Object[0]);
     }
 

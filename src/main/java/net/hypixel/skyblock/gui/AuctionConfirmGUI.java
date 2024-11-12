@@ -31,9 +31,9 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e) {
-        final Player player = e.getPlayer();
-        final User user = User.getUser(e.getPlayer().getUniqueId());
+    public void onOpen(GUIOpenEvent e2) {
+        final Player player = e2.getPlayer();
+        final User user = User.getUser(e2.getPlayer().getUniqueId());
         final AuctionEscrow escrow = user.getAuctionEscrow();
         if (escrow == null) {
             return;
@@ -41,7 +41,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 AuctionItem item = AuctionItem.createAuction(escrow.getItem(), escrow.getStarter(), System.currentTimeMillis() + escrow.getDuration(), user.getUuid(), user.isAuctionCreationBIN());
                 user.subCoins(escrow.getCreationFee(user.isAuctionCreationBIN()));
                 user.setAuctionEscrow(new AuctionEscrow());
@@ -62,8 +62,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
-                e.getWhoClicked().closeInventory();
+            public void run(InventoryClickEvent e2) {
+                e2.getWhoClicked().closeInventory();
             }
 
             @Override

@@ -41,8 +41,8 @@ public abstract class PacketAbstract {
     public void writeField(String field, Object value) {
         try {
             this.fieldResolver.resolve(field).set(this.getPacket(), value);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (Exception e2) {
+            throw new RuntimeException(e2);
         }
     }
 
@@ -57,8 +57,8 @@ public abstract class PacketAbstract {
     public void write(int index, Object value) {
         try {
             this.fieldResolver.resolveIndex(index).set(this.getPacket(), value);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (Exception e2) {
+            throw new RuntimeException(e2);
         }
     }
 
@@ -73,8 +73,8 @@ public abstract class PacketAbstract {
     public Object getPacketValue(String field) {
         try {
             return this.fieldResolver.resolve(field).get(this.getPacket());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (Exception e2) {
+            throw new RuntimeException(e2);
         }
     }
 
@@ -89,16 +89,16 @@ public abstract class PacketAbstract {
     public Object read(int index) {
         try {
             return this.fieldResolver.resolveIndex(index).get(this.getPacket());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (Exception e2) {
+            throw new RuntimeException(e2);
         }
     }
 
     public Object getPacketValueSilent(int index) {
         try {
             return this.fieldResolver.resolveIndex(index).get(this.getPacket());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (Exception e2) {
+            throw new RuntimeException(e2);
         }
     }
 
@@ -106,8 +106,8 @@ public abstract class PacketAbstract {
         return this.fieldResolver;
     }
 
-    public void setCancelled(boolean b) {
-        this.cancellable.setCancelled(b);
+    public void setCancelled(boolean b2) {
+        this.cancellable.setCancelled(b2);
     }
 
     public boolean isCancelled() {
@@ -146,9 +146,9 @@ public abstract class PacketAbstract {
     }
 
     public Player getPlayerInvolved() {
-        Collection q = Bukkit.getOnlinePlayers();
-        ArrayList t = new ArrayList(q);
-        return (Player)t.get(0);
+        Collection q2 = Bukkit.getOnlinePlayers();
+        ArrayList t2 = new ArrayList(q2);
+        return (Player)t2.get(0);
     }
 
     public String getPacketName() {

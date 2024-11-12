@@ -33,21 +33,21 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e) {
-        if (e.getPlayer().getItemInHand() == null) {
-            e.getPlayer().sendMessage(ChatColor.RED + "Please hold a item!");
-            e.getPlayer().closeInventory();
+    public void onOpen(GUIOpenEvent e2) {
+        if (e2.getPlayer().getItemInHand() == null) {
+            e2.getPlayer().sendMessage(ChatColor.RED + "Please hold a item!");
+            e2.getPlayer().closeInventory();
             return;
         }
         this.border(BLACK_STAINED_GLASS_PANE);
-        final Player player = e.getPlayer();
+        final Player player = e2.getPlayer();
         this.set(GUIClickableItem.getCloseItem(40));
         User user = User.getUser(player.getUniqueId());
         final EditableItem editableItem = new EditableItem(SItem.find(player.getItemInHand()));
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 GUIType.REFORGE_ANVIL.getGUI().open(player);
             }
 
@@ -64,7 +64,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 player.sendMessage(ChatColor.RED + "/enc <enchant type> <level>");
             }
 
@@ -81,7 +81,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 editableItem.addStar(1);
             }
 
@@ -98,7 +98,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 GUIType.DUNGEON_CRAFTING.getGUI().open(player);
             }
 
@@ -115,7 +115,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 editableItem.recom(true);
             }
 
@@ -132,7 +132,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
             }
 
             @Override
@@ -148,7 +148,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 if (editableItem.getHandle().getHPBs() == 20) {
                     player.sendMessage(Sputnik.trans("&cYou have already reached the Maximum limit!"));
                 }

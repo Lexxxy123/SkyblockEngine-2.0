@@ -47,26 +47,26 @@ implements DungeonsSkill {
 
     @Override
     public List<String> getPassive() {
-        ArrayList<String> t = new ArrayList<String>();
-        t.add("Mage Staff");
-        t.add("Efficent Spells");
-        return t;
+        ArrayList<String> t2 = new ArrayList<String>();
+        t2.add("Mage Staff");
+        t2.add("Efficent Spells");
+        return t2;
     }
 
     @Override
     public List<String> getOrb() {
-        ArrayList<String> t = new ArrayList<String>();
-        t.add("Guided Sheep");
-        t.add("Thunderstorm");
-        return t;
+        ArrayList<String> t2 = new ArrayList<String>();
+        t2.add("Guided Sheep");
+        t2.add("Thunderstorm");
+        return t2;
     }
 
     @Override
     public List<String> getGhost() {
-        ArrayList<String> t = new ArrayList<String>();
-        t.add("Pop-up Wall");
-        t.add("Fireball");
-        return t;
+        ArrayList<String> t2 = new ArrayList<String>();
+        t2.add("Pop-up Wall");
+        t2.add("Fireball");
+        return t2;
     }
 }
 

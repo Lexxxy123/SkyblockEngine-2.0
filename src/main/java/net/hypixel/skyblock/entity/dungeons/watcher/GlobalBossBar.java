@@ -49,30 +49,30 @@ extends BukkitRunnable {
     public List<Player> players = new ArrayList<Player>();
     private final World w;
 
-    public GlobalBossBar(String title, World w) {
+    public GlobalBossBar(String title, World w2) {
         this.title = title;
-        this.w = w;
+        this.w = w2;
         this.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 1L);
     }
 
-    public void addPlayer(Player p) {
-        this.players.add(p);
-        EntityWither wither = new EntityWither((net.minecraft.server.v1_8_R3.World)((CraftWorld)p.getWorld()).getHandle());
-        Location l = this.getWitherLocation(p.getLocation());
+    public void addPlayer(Player p2) {
+        this.players.add(p2);
+        EntityWither wither = new EntityWither((net.minecraft.server.v1_8_R3.World)((CraftWorld)p2.getWorld()).getHandle());
+        Location l2 = this.getWitherLocation(p2.getLocation());
         wither.setCustomName(this.title);
         wither.setInvisible(true);
         wither.r(877);
-        wither.setLocation(l.getX(), l.getY(), l.getZ(), 0.0f, 0.0f);
+        wither.setLocation(l2.getX(), l2.getY(), l2.getZ(), 0.0f, 0.0f);
         PacketPlayOutSpawnEntityLiving packet = new PacketPlayOutSpawnEntityLiving((EntityLiving)wither);
-        ((CraftPlayer)p).getHandle().playerConnection.sendPacket((Packet)packet);
-        this.withers.put(p, wither);
+        ((CraftPlayer)p2).getHandle().playerConnection.sendPacket((Packet)packet);
+        this.withers.put(p2, wither);
     }
 
-    public void removePlayer(Player p) {
-        this.players.remove(p);
-        EntityWither wither = this.withers.remove(p);
+    public void removePlayer(Player p2) {
+        this.players.remove(p2);
+        EntityWither wither = this.withers.remove(p2);
         PacketPlayOutEntityDestroy packet = new PacketPlayOutEntityDestroy(new int[]{wither.getId()});
-        ((CraftPlayer)p).getHandle().playerConnection.sendPacket((Packet)packet);
+        ((CraftPlayer)p2).getHandle().playerConnection.sendPacket((Packet)packet);
     }
 
     public void setTitle(String title) {
@@ -94,24 +94,24 @@ extends BukkitRunnable {
         }
     }
 
-    public Location getWitherLocation(Location l) {
-        return l.add(l.getDirection().multiply(20)).add(0.0, 1.5, 0.0);
+    public Location getWitherLocation(Location l2) {
+        return l2.add(l2.getDirection().multiply(20)).add(0.0, 1.5, 0.0);
     }
 
     public void run() {
         for (Map.Entry<Player, EntityWither> en : this.withers.entrySet()) {
             EntityWither wither = en.getValue();
-            Location l = this.getWitherLocation(en.getKey().getLocation());
-            wither.setLocation(l.getX(), l.getY(), l.getZ(), 0.0f, 0.0f);
+            Location l2 = this.getWitherLocation(en.getKey().getLocation());
+            wither.setLocation(l2.getX(), l2.getY(), l2.getZ(), 0.0f, 0.0f);
             PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport((Entity)wither);
             ((CraftPlayer)en.getKey()).getHandle().playerConnection.sendPacket((Packet)packet);
         }
-        for (Player p : this.w.getPlayers()) {
-            if (!this.players.contains(p)) {
-                this.addPlayer(p);
+        for (Player p2 : this.w.getPlayers()) {
+            if (!this.players.contains(p2)) {
+                this.addPlayer(p2);
             }
-            if (p.getWorld() == this.w && p.isOnline()) continue;
-            this.removePlayer(p);
+            if (p2.getWorld() == this.w && p2.isOnline()) continue;
+            this.removePlayer(p2);
         }
     }
 }

@@ -49,33 +49,33 @@ extends SCommand {
         if (type == null) {
             throw new CommandFailException(ChatColor.RED + "Invalid enchantment type!");
         }
-        int i = Integer.parseInt(args[1]);
-        if (i <= 0) {
+        int i2 = Integer.parseInt(args[1]);
+        if (i2 <= 0) {
             this.send(ChatColor.RED + "Are you serious? If you want to remove enchantments, use /re");
             return;
         }
-        if (i > 10000000) {
+        if (i2 > 10000000) {
             this.send(ChatColor.RED + "Too high enchantment level.");
             return;
         }
-        if (i > 50 && type == EnchantmentType.CHIMERA) {
+        if (i2 > 50 && type == EnchantmentType.CHIMERA) {
             this.send(ChatColor.RED + "Too high enchantment level.");
             return;
         }
-        if (i > 100 && type == EnchantmentType.VICIOUS) {
+        if (i2 > 100 && type == EnchantmentType.VICIOUS) {
             this.send(ChatColor.RED + "Too high enchantment level.");
             return;
         }
-        if (i > 100 && type == EnchantmentType.LUCKINESS) {
+        if (i2 > 100 && type == EnchantmentType.LUCKINESS) {
             this.send(ChatColor.RED + "Too high enchantment level.");
             return;
         }
-        if (i > 10 && type == EnchantmentType.LEGION) {
+        if (i2 > 10 && type == EnchantmentType.LEGION) {
             this.send(ChatColor.RED + "Too high enchantment level.");
             return;
         }
-        sItem.addEnchantment(type, i);
-        this.send(ChatColor.GREEN + "Your " + sItem.getType().getDisplayName(sItem.getVariant()) + " now has " + type.getName() + " " + i + " on it.");
+        sItem.addEnchantment(type, i2);
+        this.send(ChatColor.GREEN + "Your " + sItem.getType().getDisplayName(sItem.getVariant()) + " now has " + type.getName() + " " + i2 + " on it.");
     }
 }
 

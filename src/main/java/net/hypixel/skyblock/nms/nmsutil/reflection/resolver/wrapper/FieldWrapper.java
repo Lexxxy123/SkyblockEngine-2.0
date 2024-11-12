@@ -26,15 +26,15 @@ extends WrapperAbstract {
     public R get(Object object) {
         try {
             return (R)this.field.get(object);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (Exception e2) {
+            throw new RuntimeException(e2);
         }
     }
 
     public R getSilent(Object object) {
         try {
             return (R)this.field.get(object);
-        } catch (Exception e) {
+        } catch (Exception e2) {
             return null;
         }
     }
@@ -42,8 +42,8 @@ extends WrapperAbstract {
     public void set(Object object, R value) {
         try {
             this.field.set(object, value);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (Exception e2) {
+            throw new RuntimeException(e2);
         }
     }
 

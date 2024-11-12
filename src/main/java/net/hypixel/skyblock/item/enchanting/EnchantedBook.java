@@ -4,7 +4,6 @@
 package net.hypixel.skyblock.item.enchanting;
 
 import net.hypixel.skyblock.features.enchantment.Enchantment;
-import net.hypixel.skyblock.features.enchantment.EnchantmentType;
 import net.hypixel.skyblock.item.Enchantable;
 import net.hypixel.skyblock.item.GenericItemType;
 import net.hypixel.skyblock.item.MaterialFunction;
@@ -13,7 +12,6 @@ import net.hypixel.skyblock.item.MaterialStatistics;
 import net.hypixel.skyblock.item.Rarity;
 import net.hypixel.skyblock.item.SItem;
 import net.hypixel.skyblock.item.SMaterial;
-import net.hypixel.skyblock.item.ShapedRecipe;
 
 public class EnchantedBook
 implements MaterialStatistics,
@@ -85,23 +83,6 @@ Enchantable {
                 instance.setRarity(Rarity.SUPREME, false);
             }
         }
-    }
-
-    @Override
-    public void load() {
-        SItem sitem = SItem.of(SMaterial.ENCHANTED_BOOK);
-        sitem.addEnchantment(EnchantmentType.ONE_FOR_ALL, 1);
-        ShapedRecipe recipe = new ShapedRecipe(sitem);
-        recipe.shape("123", "456", "789");
-        recipe.set('1', SMaterial.HIDDEN_DIMOON_FRAG, 8);
-        recipe.set('2', SMaterial.HIDDEN_DIMOON_FRAG, 8);
-        recipe.set('3', SMaterial.HIDDEN_DIMOON_FRAG, 8);
-        recipe.set('4', SMaterial.HIDDEN_DIMOON_FRAG, 8);
-        recipe.set('5', SMaterial.HOT_POTATO_BOOK, 1);
-        recipe.set('6', SMaterial.HIDDEN_DIMOON_FRAG, 8);
-        recipe.set('7', SMaterial.HIDDEN_DIMOON_FRAG, 8);
-        recipe.set('8', SMaterial.HIDDEN_DIMOON_FRAG, 8);
-        recipe.set('9', SMaterial.HIDDEN_DIMOON_FRAG, 8);
     }
 }
 

@@ -42,9 +42,9 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e) {
+    public void onOpen(GUIOpenEvent e2) {
         this.fill(BLACK_STAINED_GLASS_PANE);
-        final Player player = e.getPlayer();
+        final Player player = e2.getPlayer();
         final User user = User.getUser(player.getUniqueId());
         PlayerStatistics statistics = PlayerUtils.STATISTICS_CACHE.get(player.getUniqueId());
         this.set(GUIClickableItem.getCloseItem(31));
@@ -52,9 +52,9 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 player.playSound(player.getLocation(), Sound.NOTE_STICKS, 1.0f, 1.0f);
-                GUIType.CATACOMBS_BOSS.getGUI().open((Player)e.getWhoClicked());
+                GUIType.CATACOMBS_BOSS.getGUI().open((Player)e2.getWhoClicked());
             }
 
             @Override
@@ -76,9 +76,9 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 player.playSound(player.getLocation(), Sound.NOTE_STICKS, 1.0f, 1.0f);
-                GUIType.BOSS_COLLECTION.getGUI().open((Player)e.getWhoClicked());
+                GUIType.BOSS_COLLECTION.getGUI().open((Player)e2.getWhoClicked());
             }
 
             @Override
@@ -94,12 +94,12 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 CombatSkill skill = CombatSkill.INSTANCE;
                 double xp = skill != null ? user.getSkillXP(skill) : 0.0;
                 int level = skill != null ? Skill.getLevel(xp, ((Skill)skill).hasSixtyLevels()) : 0;
                 player.playSound(player.getLocation(), Sound.NOTE_STICKS, 1.0f, 1.0f);
-                e.getWhoClicked().closeInventory();
+                e2.getWhoClicked().closeInventory();
                 if (level < 5 && !player.isOp()) {
                     player.sendMessage(ChatColor.RED + "You need at least Combat Level V to join a boss room!");
                     return;
@@ -138,7 +138,7 @@ extends GUI {
                 boolean isEnough = false;
                 CombatSkill skill = CombatSkill.INSTANCE;
                 double xp = skill != null ? user.getSkillXP(skill) : 0.0;
-                int n = level = skill != null ? Skill.getLevel(xp, ((Skill)skill).hasSixtyLevels()) : 0;
+                int n2 = level = skill != null ? Skill.getLevel(xp, ((Skill)skill).hasSixtyLevels()) : 0;
                 if (level >= 5 || player.isOp()) {
                     isEnough = true;
                 }

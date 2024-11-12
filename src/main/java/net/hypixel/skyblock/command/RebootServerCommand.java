@@ -57,8 +57,8 @@ extends SCommand {
             Bukkit.dispatchCommand((CommandSender)Bukkit.getConsoleSender(), (String)"ptitle3");
             reasonraw = "Unknown Reason!";
         }
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            p.playSound(p.getLocation(), Sound.LEVEL_UP, 1.0f, 0.0f);
+        for (Player p2 : Bukkit.getOnlinePlayers()) {
+            p2.playSound(p2.getLocation(), Sound.LEVEL_UP, 1.0f, 0.0f);
         }
         final String reason = reasonraw;
         Bukkit.broadcastMessage((String)Sputnik.trans("&c[Important] &eThe server will restart soon: &b" + reason));
@@ -86,13 +86,13 @@ extends SCommand {
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 20L, 20L);
     }
 
-    public static boolean isPrimeNumber(int n) {
-        if (2 > n) {
+    public static boolean isPrimeNumber(int n2) {
+        if (2 > n2) {
             return false;
         }
-        int squareRoot = (int)Math.sqrt(n);
-        for (int i = 2; i <= squareRoot; ++i) {
-            if (0 != n % i) continue;
+        int squareRoot = (int)Math.sqrt(n2);
+        for (int i2 = 2; i2 <= squareRoot; ++i2) {
+            if (0 != n2 % i2) continue;
             return false;
         }
         return true;

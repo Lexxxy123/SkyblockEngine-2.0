@@ -49,19 +49,14 @@ EntityFunction {
     }
 
     @Override
-    public int mobLevel() {
-        return 9;
-    }
-
-    @Override
     public double getXPDropped() {
         return 4.0;
     }
 
     @Override
-    public void onTarget(SEntity sEntity, EntityTargetLivingEntityEvent e) {
-        final LivingEntity entity = (LivingEntity)e.getEntity();
-        LivingEntity found = e.getTarget();
+    public void onTarget(SEntity sEntity, EntityTargetLivingEntityEvent e2) {
+        final LivingEntity entity = (LivingEntity)e2.getEntity();
+        LivingEntity found = e2.getTarget();
         new BukkitRunnable((Entity)found, sEntity){
             final /* synthetic */ Entity val$found;
             final /* synthetic */ SEntity val$sEntity;
@@ -80,7 +75,7 @@ EntityFunction {
                     this.cancel();
                     return;
                 }
-                for (int i = 0; i < 3; ++i) {
+                for (int i2 = 0; i2 < 3; ++i2) {
                     new BukkitRunnable((Entity)target){
                         final /* synthetic */ Entity val$target;
                         {
@@ -96,7 +91,7 @@ EntityFunction {
                             fireball.setMetadata("magma", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)val$sEntity));
                             fireball.setDirection(this.val$target.getLocation().getDirection().multiply(-1.0).normalize());
                         }
-                    }.runTaskLater((Plugin)SkyBlock.getPlugin(), (long)((i + 1) * 10));
+                    }.runTaskLater((Plugin)SkyBlock.getPlugin(), (long)((i2 + 1) * 10));
                 }
             }
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 60L, 100L);

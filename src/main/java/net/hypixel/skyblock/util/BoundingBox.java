@@ -38,9 +38,9 @@ public class BoundingBox {
         this.max = new Vector((double)block.getX() + blockNative.C(), (double)block.getY() + blockNative.E(), (double)block.getZ() + blockNative.G());
     }
 
-    BoundingBox(AxisAlignedBB bb) {
-        this.min = new Vector(bb.a, bb.b, bb.c);
-        this.max = new Vector(bb.d, bb.e, bb.f);
+    BoundingBox(AxisAlignedBB bb2) {
+        this.min = new Vector(bb2.a, bb2.b, bb2.c);
+        this.max = new Vector(bb2.d, bb2.e, bb2.f);
     }
 
     public Vector midPoint() {

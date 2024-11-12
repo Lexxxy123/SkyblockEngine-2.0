@@ -45,7 +45,7 @@ extends SCommand {
         if (args.length == 4) {
             times = Integer.parseInt(args[3]);
         }
-        for (int i = 0; i < times; ++i) {
+        for (int i2 = 0; i2 < times; ++i2) {
             player.playSound(player.getLocation(), sound, volume, pitch);
         }
         player.sendMessage(ChatColor.GRAY + "Played " + sound.name() + ".");

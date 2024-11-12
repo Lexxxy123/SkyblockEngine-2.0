@@ -41,9 +41,9 @@ implements Sequence {
         }
     }
 
-    public void play(Player p) {
+    public void play(Player p2) {
         for (DelayedSound sound : this.sounds) {
-            sound.play(p);
+            sound.play(p2);
         }
     }
 

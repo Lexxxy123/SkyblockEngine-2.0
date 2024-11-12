@@ -82,9 +82,9 @@ extends SCommand {
                     return;
                 }
                 SItem book2 = SItem.of(SMaterial.ENCHANTED_BOOK);
-                for (Enchantment e : sitem.getEnchantments()) {
-                    book2.addEnchantment(e.getType(), sitem.getEnchantment(e.getType()).getLevel());
-                    sitem.removeEnchantment(e.getType());
+                for (Enchantment e2 : sitem.getEnchantments()) {
+                    book2.addEnchantment(e2.getType(), sitem.getEnchantment(e2.getType()).getLevel());
+                    sitem.removeEnchantment(e2.getType());
                 }
                 player.setItemInHand(sitem.getStack());
                 Sputnik.smartGiveItem(book2.getStack(), player);

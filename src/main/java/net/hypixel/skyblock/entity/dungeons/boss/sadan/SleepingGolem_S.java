@@ -46,9 +46,9 @@ extends BaseZombie {
     @Override
     public void onSpawn(LivingEntity entity, SEntity sEntity) {
         ((CraftZombie)entity).setBaby(false);
-        Location l = entity.getLocation().clone();
-        l.setPitch(45.0f);
-        entity.teleport(l);
+        Location l2 = entity.getLocation().clone();
+        l2.setPitch(45.0f);
+        entity.teleport(l2);
         EntityManager.noAI((Entity)entity);
         Sputnik.applyPacketGolem((Entity)entity);
         EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 0);

@@ -31,9 +31,9 @@ public class Assert {
         }
     }
 
-    public static <T extends Throwable> void notNull(Object object, T e) throws T {
+    public static <T extends Throwable> void notNull(Object object, T e2) throws T {
         if (object == null) {
-            throw e;
+            throw e2;
         }
     }
 
@@ -84,8 +84,8 @@ public class Assert {
 
     public static void allNotNull(String message, Object ... objects) {
         Assert.notNull((Object)objects, "objects should not be null!");
-        for (Object o : objects) {
-            Assert.notNull(o, message);
+        for (Object o2 : objects) {
+            Assert.notNull(o2, message);
         }
     }
 

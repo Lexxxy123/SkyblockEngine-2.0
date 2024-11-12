@@ -2,8 +2,11 @@
  * Decompiled with CFR 0.153-SNAPSHOT (d6f6758-dirty).
  * 
  * Could not load the following classes:
+ *  org.bukkit.Bukkit
  *  org.bukkit.ChatColor
  *  org.bukkit.Material
+ *  org.bukkit.entity.Player
+ *  org.bukkit.event.Event
  *  org.bukkit.event.inventory.InventoryClickEvent
  *  org.bukkit.inventory.Inventory
  *  org.bukkit.inventory.InventoryView
@@ -17,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import net.hypixel.skyblock.SkyBlock;
+import net.hypixel.skyblock.event.SkyBlockCraftEvent;
 import net.hypixel.skyblock.gui.BlockBasedGUI;
 import net.hypixel.skyblock.gui.GUI;
 import net.hypixel.skyblock.gui.GUIClickableItem;
@@ -29,8 +33,11 @@ import net.hypixel.skyblock.item.ShapedRecipe;
 import net.hypixel.skyblock.item.ShapelessRecipe;
 import net.hypixel.skyblock.user.User;
 import net.hypixel.skyblock.util.SUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
@@ -54,14 +61,14 @@ implements BlockBasedGUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 MaterialQuantifiable material;
                 int ind;
                 ItemStack stack;
                 Recipe<?> recipe;
-                boolean shift = e.isShiftClick();
-                Inventory inventory = e.getClickedInventory();
-                if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.BARRIER || e.getCurrentItem().getType() == Material.AIR) {
+                boolean shift = e2.isShiftClick();
+                Inventory inventory = e2.getClickedInventory();
+                if (e2.getCurrentItem() == null || e2.getCurrentItem().getType() == Material.BARRIER || e2.getCurrentItem().getType() == Material.AIR) {
                     return;
                 }
                 ItemStack result = inventory.getItem(24);
@@ -71,20 +78,20 @@ implements BlockBasedGUI {
                 SItem item = SItem.find(result);
                 item.setAmount(result.getAmount());
                 if (!shift) {
-                    if (e.getCursor() != null && e.getCursor().getType() != Material.AIR) {
-                        SItem cursor = SItem.find(e.getCursor());
+                    if (e2.getCursor() != null && e2.getCursor().getType() != Material.AIR) {
+                        SItem cursor = SItem.find(e2.getCursor());
                         if (cursor == null) {
-                            cursor = SItem.convert(e.getCursor());
+                            cursor = SItem.convert(e2.getCursor());
                         }
                         if (!item.equals(cursor)) {
                             return;
                         }
-                        if (e.getCursor().getAmount() + result.getAmount() > 64) {
+                        if (e2.getCursor().getAmount() + result.getAmount() > 64) {
                             return;
                         }
-                        e.getCursor().setAmount(e.getCursor().getAmount() + result.getAmount());
+                        e2.getCursor().setAmount(e2.getCursor().getAmount() + result.getAmount());
                     } else {
-                        e.getWhoClicked().setItemOnCursor(result);
+                        e2.getWhoClicked().setItemOnCursor(result);
                     }
                 }
                 if ((recipe = Recipe.parseRecipe(CraftingTableGUI.this.getCurrentRecipe(inventory))) == null) {
@@ -102,9 +109,9 @@ implements BlockBasedGUI {
                         ind = CraftingTableGUI.indexOf(recipe, materials, MaterialQuantifiable.of(stack));
                         if (ind == -1) continue;
                         material = (MaterialQuantifiable)materials.get(ind);
-                        int m = stack.getAmount() / material.getAmount();
-                        if (m >= max) continue;
-                        max = m;
+                        int m2 = stack.getAmount() / material.getAmount();
+                        if (m2 >= max) continue;
+                        max = m2;
                     }
                 }
                 for (int slot : CRAFT_SLOTS) {
@@ -125,11 +132,13 @@ implements BlockBasedGUI {
                     stack.setAmount(remaining);
                 }
                 if (shift) {
-                    HashMap hashMap = e.getWhoClicked().getInventory().addItem(new ItemStack[]{SUtil.setStackAmount(result, result.getAmount() * max)});
+                    HashMap hashMap = e2.getWhoClicked().getInventory().addItem(new ItemStack[]{SUtil.setStackAmount(result, result.getAmount() * max)});
                     for (ItemStack stack2 : hashMap.values()) {
-                        e.getWhoClicked().getWorld().dropItem(e.getWhoClicked().getLocation(), stack2).setVelocity(e.getWhoClicked().getLocation().getDirection());
+                        e2.getWhoClicked().getWorld().dropItem(e2.getWhoClicked().getLocation(), stack2).setVelocity(e2.getWhoClicked().getLocation().getDirection());
                     }
                 }
+                SkyBlockCraftEvent skyBlockCraftEvent = new SkyBlockCraftEvent(recipe, (Player)e2.getWhoClicked());
+                Bukkit.getPluginManager().callEvent((Event)skyBlockCraftEvent);
                 CraftingTableGUI.this.update(inventory);
             }
 
@@ -152,13 +161,13 @@ implements BlockBasedGUI {
     }
 
     @Override
-    public void onOpen(final GUIOpenEvent e) {
+    public void onOpen(final GUIOpenEvent e2) {
         new BukkitRunnable(){
 
             public void run() {
-                final GUI gui = e.getOpened();
-                GUI current = GUI.GUI_MAP.get(e.getPlayer().getUniqueId());
-                InventoryView view = e.getPlayer().getOpenInventory();
+                final GUI gui = e2.getOpened();
+                GUI current = GUI.GUI_MAP.get(e2.getPlayer().getUniqueId());
+                InventoryView view = e2.getPlayer().getOpenInventory();
                 if (!(current instanceof CraftingTableGUI) || view == null) {
                     this.cancel();
                     return;
@@ -174,7 +183,7 @@ implements BlockBasedGUI {
                             SUtil.border(inventory, gui, SUtil.createColoredStainedGlassPane((short)14, ChatColor.RESET + " "), 50, 53, true, false);
                             return;
                         }
-                        if (!recipe.isUnlockedForPlayer(User.getUser(e.getPlayer().getUniqueId())) && !CraftingTableGUI.this.isVanilla(recipe)) {
+                        if (!recipe.isUnlockedForPlayer(User.getUser(e2.getPlayer().getUniqueId())) && !CraftingTableGUI.this.isVanilla(recipe)) {
                             inventory.setItem(24, LOCKED_RECIPE_ITEM);
                             return;
                         }
@@ -195,21 +204,21 @@ implements BlockBasedGUI {
 
     private ItemStack[] getCurrentRecipe(Inventory inventory) {
         ItemStack[] stacks = new ItemStack[9];
-        for (int i = 0; i < CRAFT_SLOTS.length; ++i) {
-            stacks[i] = inventory.getItem(CRAFT_SLOTS[i]);
+        for (int i2 = 0; i2 < CRAFT_SLOTS.length; ++i2) {
+            stacks[i2] = inventory.getItem(CRAFT_SLOTS[i2]);
         }
         return stacks;
     }
 
     private static int indexOf(Recipe<?> recipe, List<MaterialQuantifiable> ingredients, MaterialQuantifiable search) {
         List<SMaterial> exchangeables = Recipe.getExchangeablesOf(search.getMaterial());
-        for (int i = 0; i < ingredients.size(); ++i) {
-            MaterialQuantifiable ingredient = ingredients.get(i);
+        for (int i2 = 0; i2 < ingredients.size(); ++i2) {
+            MaterialQuantifiable ingredient = ingredients.get(i2);
             if (recipe.isUseExchangeables() && exchangeables != null && exchangeables.contains((Object)ingredient.getMaterial()) && search.getAmount() >= ingredient.getAmount()) {
-                return i;
+                return i2;
             }
             if (ingredient.getMaterial() != search.getMaterial() || search.getAmount() < ingredient.getAmount()) continue;
-            return i;
+            return i2;
         }
         return -1;
     }

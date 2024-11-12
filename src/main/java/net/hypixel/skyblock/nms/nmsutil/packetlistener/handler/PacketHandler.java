@@ -35,8 +35,8 @@ public abstract class PacketHandler {
     private Plugin plugin;
 
     public static boolean addHandler(PacketHandler handler) {
-        boolean b = handlers.contains(handler);
-        if (!b) {
+        boolean b2 = handlers.contains(handler);
+        if (!b2) {
             PacketOptions options;
             try {
                 options = handler.getClass().getMethod("onSend", SentPacket.class).getAnnotation(PacketOptions.class);
@@ -51,8 +51,8 @@ public abstract class PacketHandler {
                         handler.forceServerSend = true;
                     }
                 }
-            } catch (Exception e) {
-                throw new RuntimeException("Failed to register handler (onSend)", e);
+            } catch (Exception e2) {
+                throw new RuntimeException("Failed to register handler (onSend)", e2);
             }
             try {
                 options = handler.getClass().getMethod("onReceive", ReceivedPacket.class).getAnnotation(PacketOptions.class);
@@ -67,12 +67,12 @@ public abstract class PacketHandler {
                         handler.forceServerReceive = true;
                     }
                 }
-            } catch (Exception e) {
-                throw new RuntimeException("Failed to register handler (onReceive)", e);
+            } catch (Exception e3) {
+                throw new RuntimeException("Failed to register handler (onReceive)", e3);
             }
         }
         handlers.add(handler);
-        return !b;
+        return !b2;
     }
 
     public static boolean removeHandler(PacketHandler handler) {
@@ -84,9 +84,9 @@ public abstract class PacketHandler {
             try {
                 if (handler.hasSendOptions && (handler.forcePlayerSend ? !packet.hasPlayer() : handler.forceServerSend && !packet.hasChannel())) continue;
                 handler.onSend(packet);
-            } catch (Exception e) {
-                System.err.println("[GodSpunky Protocol Injector] An exception occured while trying to execute 'onSend'" + (handler.plugin != null ? " in plugin " + handler.plugin.getName() : "") + ": " + e.getMessage());
-                e.printStackTrace(System.err);
+            } catch (Exception e2) {
+                System.err.println("[GodSpunky Protocol Injector] An exception occured while trying to execute 'onSend'" + (handler.plugin != null ? " in plugin " + handler.plugin.getName() : "") + ": " + e2.getMessage());
+                e2.printStackTrace(System.err);
             }
         }
     }
@@ -96,9 +96,9 @@ public abstract class PacketHandler {
             try {
                 if (handler.hasReceiveOptions && (handler.forcePlayerReceive ? !packet.hasPlayer() : handler.forceServerReceive && !packet.hasChannel())) continue;
                 handler.onReceive(packet);
-            } catch (Exception e) {
-                System.err.println("[GodSpunky Protocol Injector] An exception occured while trying to execute 'onReceive'" + (handler.plugin != null ? " in plugin " + handler.plugin.getName() : "") + ": " + e.getMessage());
-                e.printStackTrace(System.err);
+            } catch (Exception e2) {
+                System.err.println("[GodSpunky Protocol Injector] An exception occured while trying to execute 'onReceive'" + (handler.plugin != null ? " in plugin " + handler.plugin.getName() : "") + ": " + e2.getMessage());
+                e2.printStackTrace(System.err);
             }
         }
     }
@@ -159,24 +159,24 @@ public abstract class PacketHandler {
         if (plugin == null) {
             return handlers;
         }
-        for (PacketHandler h : PacketHandler.getHandlers()) {
-            if (!plugin.equals(h.getPlugin())) continue;
-            handlers.add(h);
+        for (PacketHandler h2 : PacketHandler.getHandlers()) {
+            if (!plugin.equals(h2.getPlugin())) continue;
+            handlers.add(h2);
         }
         return handlers;
     }
 
-    public void sendPacket(Player p, Object packet) {
-        if (p == null || packet == null) {
+    public void sendPacket(Player p2, Object packet) {
+        if (p2 == null || packet == null) {
             throw new NullPointerException();
         }
         try {
-            Object handle = Minecraft.getHandle(p);
+            Object handle = Minecraft.getHandle(p2);
             Object connection = EntityPlayerFieldResolver.resolve("playerConnection").get(handle);
             PlayerConnectionMethodResolver.resolve("sendPacket").invoke(connection, packet);
-        } catch (Exception e) {
-            System.err.println("[SkyBlock Protocol Injector] Exception while sending " + packet + " to " + p);
-            e.printStackTrace();
+        } catch (Exception e2) {
+            System.err.println("[SkyBlock Protocol Injector] Exception while sending " + packet + " to " + p2);
+            e2.printStackTrace();
         }
     }
 
@@ -185,9 +185,9 @@ public abstract class PacketHandler {
             return obj;
         }
         Object clone = obj.getClass().newInstance();
-        for (Field f : obj.getClass().getDeclaredFields()) {
-            f = AccessUtil.setAccessible(f);
-            f.set(clone, f.get(obj));
+        for (Field f2 : obj.getClass().getDeclaredFields()) {
+            f2 = AccessUtil.setAccessible(f2);
+            f2.set(clone, f2.get(obj));
         }
         return clone;
     }

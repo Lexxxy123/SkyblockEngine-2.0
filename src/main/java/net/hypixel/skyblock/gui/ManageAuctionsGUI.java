@@ -47,8 +47,8 @@ extends GUI {
     }
 
     @Override
-    public void onOpen(GUIOpenEvent e) {
-        final Player player = e.getPlayer();
+    public void onOpen(GUIOpenEvent e2) {
+        final Player player = e2.getPlayer();
         User user = User.getUser(player.getUniqueId());
         Stream stream = user.getAuctions().stream();
         switch (this.sort) {
@@ -97,7 +97,7 @@ extends GUI {
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e) {
+                public void run(InventoryClickEvent e2) {
                     for (AuctionItem item : items) {
                         if (!item.isExpired()) continue;
                         item.claim(player);
@@ -127,8 +127,8 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
-                if (e.isRightClick()) {
+            public void run(InventoryClickEvent e2) {
+                if (e2.isRightClick()) {
                     new ManageAuctionsGUI(ManageAuctionsGUI.this.sort.previous()).open(player);
                 } else {
                     new ManageAuctionsGUI(ManageAuctionsGUI.this.sort.next()).open(player);
@@ -143,12 +143,12 @@ extends GUI {
             @Override
             public ItemStack getItem() {
                 ArrayList<String> lore = new ArrayList<String>(Collections.singletonList(" "));
-                for (Sort s : Sort.values()) {
-                    if (ManageAuctionsGUI.this.sort == s) {
-                        lore.add(ChatColor.AQUA + "\u25b6 " + s.getDisplay());
+                for (Sort s2 : Sort.values()) {
+                    if (ManageAuctionsGUI.this.sort == s2) {
+                        lore.add(ChatColor.AQUA + "\u25b6 " + s2.getDisplay());
                         continue;
                     }
-                    lore.add(ChatColor.GRAY + s.getDisplay());
+                    lore.add(ChatColor.GRAY + s2.getDisplay());
                 }
                 lore.add(" ");
                 lore.add(ChatColor.AQUA + "Right-Click to go backwards!");
@@ -159,7 +159,7 @@ extends GUI {
         this.set(new GUIClickableItem(){
 
             @Override
-            public void run(InventoryClickEvent e) {
+            public void run(InventoryClickEvent e2) {
                 if (items.size() >= 7) {
                     player.sendMessage(ChatColor.RED + "You cannot create any more auctions!");
                     return;
@@ -177,14 +177,14 @@ extends GUI {
                 return SUtil.getStack(ChatColor.GREEN + "Create Auction", Material.GOLD_BARDING, (short)0, 1, ChatColor.GRAY + "Set your own items on", ChatColor.GRAY + "auction for other players", ChatColor.GRAY + "to purchase.", " ", ChatColor.YELLOW + "Click to become rich!");
             }
         });
-        for (int i = 0; i < items.size(); ++i) {
+        for (int i3 = 0; i3 < items.size(); ++i3) {
             AuctionItem item;
-            item = (AuctionItem)items.get(i);
-            final int slot = INTERIOR[i];
+            item = (AuctionItem)items.get(i3);
+            final int slot = INTERIOR[i3];
             this.set(new GUIClickableItem(){
 
                 @Override
-                public void run(InventoryClickEvent e) {
+                public void run(InventoryClickEvent e2) {
                     new AuctionViewGUI(item, ManageAuctionsGUI.this).open(player);
                 }
 

@@ -51,12 +51,12 @@ public class RarityValue<T> {
         return new RarityValue<Double>(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
     }
 
-    public static RarityValue<Integer> singleInteger(Integer i) {
-        return new RarityValue<Integer>(i, i, i, i, i, i);
+    public static RarityValue<Integer> singleInteger(Integer i2) {
+        return new RarityValue<Integer>(i2, i2, i2, i2, i2, i2);
     }
 
-    public static RarityValue<Double> singleDouble(Double d) {
-        return new RarityValue<Double>(d, d, d, d, d, d);
+    public static RarityValue<Double> singleDouble(Double d2) {
+        return new RarityValue<Double>(d2, d2, d2, d2, d2, d2);
     }
 
     public T getCommon() {

@@ -91,13 +91,13 @@ extends BaseZombie {
 
     @Override
     public void onSpawn(final LivingEntity entity, SEntity sEntity) {
-        HeadsOnWall h = new HeadsOnWall(EnumWatcherType.SKULL);
-        PlayerDisguise p = Sputnik.applyPacketNPC((Entity)entity, h.value, h.signature, true);
+        HeadsOnWall h2 = new HeadsOnWall(EnumWatcherType.SKULL);
+        PlayerDisguise p2 = Sputnik.applyPacketNPC((Entity)entity, h2.value, h2.signature, true);
         EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 99);
         entity.setMetadata("SlayerBoss", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
         entity.setMetadata("LD", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
         entity.setMetadata("WATCHER_E", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
-        p.setReplaceSounds(false);
+        p2.setReplaceSounds(false);
         new BukkitRunnable(){
 
             public void run() {
@@ -138,14 +138,14 @@ extends BaseZombie {
     }
 
     @Override
-    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e, AtomicDouble damage) {
+    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
         LivingEntity en = sEntity.getEntity();
-        Vector v = new Vector(0, 0, 0);
-        SUtil.delay(() -> WatcherSkull.lambda$onDamage$0((Entity)en, v), 1L);
+        Vector v2 = new Vector(0, 0, 0);
+        SUtil.delay(() -> WatcherSkull.lambda$onDamage$0((Entity)en, v2), 1L);
     }
 
     @Override
-    public void onAttack(EntityDamageByEntityEvent e) {
+    public void onAttack(EntityDamageByEntityEvent e2) {
     }
 
     @Override
@@ -182,24 +182,24 @@ extends BaseZombie {
         return 540;
     }
 
-    public void throwThickAssBone(final Entity e) {
-        final Vector throwVec = e.getLocation().add(e.getLocation().getDirection().multiply(10)).toVector().subtract(e.getLocation().toVector()).normalize().multiply(1.2);
-        Location throwLoc = e.getLocation().add(0.0, 0.5, 0.0);
-        final ArmorStand armorStand1 = (ArmorStand)e.getWorld().spawnEntity(throwLoc, EntityType.ARMOR_STAND);
+    public void throwThickAssBone(final Entity e2) {
+        final Vector throwVec = e2.getLocation().add(e2.getLocation().getDirection().multiply(10)).toVector().subtract(e2.getLocation().toVector()).normalize().multiply(1.2);
+        Location throwLoc = e2.getLocation().add(0.0, 0.5, 0.0);
+        final ArmorStand armorStand1 = (ArmorStand)e2.getWorld().spawnEntity(throwLoc, EntityType.ARMOR_STAND);
         armorStand1.getEquipment().setItemInHand(SItem.of(SMaterial.BONE).getStack());
         armorStand1.setGravity(false);
         armorStand1.setVisible(false);
         armorStand1.setMarker(true);
-        final Vector teleportTo = e.getLocation().getDirection().normalize().multiply(1);
+        final Vector teleportTo = e2.getLocation().getDirection().normalize().multiply(1);
         final Vector[] previousVector = new Vector[]{throwVec};
         new BukkitRunnable(){
             private int run = -1;
 
             public void run() {
-                boolean bl;
+                boolean bl2;
                 int angle;
                 Vector newVector;
-                int i = 0;
+                int i2 = 0;
                 int ran = 0;
                 int num = 90;
                 Object loc = null;
@@ -208,7 +208,7 @@ extends BaseZombie {
                     this.cancel();
                     return;
                 }
-                for (int j = 0; j < 20; ++j) {
+                for (int j2 = 0; j2 < 20; ++j2) {
                     armorStand1.getWorld().spigot().playEffect(armorStand1.getLocation().clone().add(0.0, 1.75, 0.0), Effect.CRIT, 0, 1, (float)SUtil.random(-0.5, 0.5), (float)SUtil.random(0.0, 0.5), (float)SUtil.random(-0.5, 0.5), 0.0f, 1, 20);
                 }
                 Location locof = armorStand1.getLocation();
@@ -222,31 +222,31 @@ extends BaseZombie {
                 armorStand1.setRightArmPose(new EulerAngle(xPos + 0.7, 0.0, 0.0));
                 previousVector[0] = newVector = new Vector(throwVec.getX(), previousVector[0].getY() - 0.03, throwVec.getZ());
                 armorStand1.setVelocity(newVector);
-                if (i < 13) {
-                    angle = i * 20 + 90;
-                    bl = false;
+                if (i2 < 13) {
+                    angle = i2 * 20 + 90;
+                    bl2 = false;
                 } else {
-                    angle = i * 20 - 90;
-                    bl = true;
+                    angle = i2 * 20 - 90;
+                    bl2 = true;
                 }
                 if (locof.getBlock().getType() != Material.AIR && locof.getBlock().getType() != Material.WATER) {
                     armorStand1.remove();
                     this.cancel();
                     return;
                 }
-                if (i % 2 == 0 && i < 13) {
+                if (i2 % 2 == 0 && i2 < 13) {
                     armorStand1.teleport(armorStand1.getLocation().add(teleportTo).multiply(1.0));
                     armorStand1.teleport(armorStand1.getLocation().add(teleportTo).multiply(1.0));
-                } else if (i % 2 == 0) {
+                } else if (i2 % 2 == 0) {
                     armorStand1.teleport(armorStand1.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                     armorStand1.teleport(armorStand1.getLocation().subtract(loc.getDirection().normalize().multiply(1)));
                 }
                 for (Entity en : armorStand1.getNearbyEntities(1.0, 1.0, 1.0)) {
                     if (!(en instanceof Player)) continue;
-                    Player p = (Player)en;
-                    p.getWorld().playSound(p.getLocation(), Sound.ITEM_BREAK, 1.0f, 1.0f);
-                    User.getUser(p.getUniqueId()).damage(p.getMaxHealth() * 10.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, e);
-                    p.damage(1.0E-5);
+                    Player p2 = (Player)en;
+                    p2.getWorld().playSound(p2.getLocation(), Sound.ITEM_BREAK, 1.0f, 1.0f);
+                    User.getUser(p2.getUniqueId()).damage(p2.getMaxHealth() * 10.0 / 100.0, EntityDamageEvent.DamageCause.ENTITY_ATTACK, e2);
+                    p2.damage(1.0E-5);
                     armorStand1.remove();
                     this.cancel();
                     break;
@@ -259,8 +259,8 @@ extends BaseZombie {
         }.runTaskTimer((Plugin)SkyBlock.getPlugin(), 0L, 2L);
     }
 
-    private static /* synthetic */ void lambda$onDamage$0(Entity en, Vector v) {
-        en.setVelocity(v);
+    private static /* synthetic */ void lambda$onDamage$0(Entity en, Vector v2) {
+        en.setVelocity(v2);
     }
 }
 

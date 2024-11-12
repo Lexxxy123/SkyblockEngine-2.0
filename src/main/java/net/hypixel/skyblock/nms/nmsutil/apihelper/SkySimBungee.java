@@ -31,14 +31,14 @@ public class SkySimBungee {
         return new SkySimBungee("BungeeCord");
     }
 
-    public void sendData(Player p, String subchannel, String args) {
+    public void sendData(Player p2, String subchannel, String args) {
         Player sender = null;
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF(subchannel);
         if (args != null) {
             out.writeUTF(args);
         }
-        if ((sender = p == null ? (Player)Iterables.getFirst(Bukkit.getOnlinePlayers(), null) : p) != null) {
+        if ((sender = p2 == null ? (Player)Iterables.getFirst(Bukkit.getOnlinePlayers(), null) : p2) != null) {
             sender.sendPluginMessage((Plugin)SkyBlock.getPlugin(), this.channel, out.toByteArray());
         } else {
             SLog.warn("Player object mustn't be null!");

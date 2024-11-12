@@ -53,7 +53,7 @@ extends BaseZombie {
     @Override
     public void onSpawn(LivingEntity entity, SEntity sEntity) {
         entity.teleport(new Location(entity.getWorld(), 191.5, 54.0, 266.5, 180.0f, 0.0f));
-        Location l = entity.getLocation();
+        Location l2 = entity.getLocation();
         Sputnik.applyPacketGiant((Entity)entity);
         EntityManager.noAI((Entity)entity);
         EntityManager.noHit((Entity)entity);
@@ -61,8 +61,8 @@ extends BaseZombie {
         entity.setMetadata("NoAffect", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
         EntityManager.shutTheFuckUp((Entity)entity);
         EntityManager.DEFENSE_PERCENTAGE.put((Entity)entity, 100);
-        l.setYaw(180.0f);
-        entity.teleport(l);
+        l2.setYaw(180.0f);
+        entity.teleport(l2);
         entity.setMetadata("notDisplay", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
         entity.setMetadata("dummy_r", (MetadataValue)new FixedMetadataValue((Plugin)SkyBlock.getPlugin(), (Object)true));
     }
@@ -72,26 +72,26 @@ extends BaseZombie {
         return new SEntityEquipment(SUtil.enchant(new ItemStack(Material.DIAMOND_SWORD)), SadanDummy_Idle.b(0x522C2C, Material.LEATHER_HELMET), SadanDummy_Idle.b(14751108, Material.LEATHER_CHESTPLATE), SadanDummy_Idle.c(Material.DIAMOND_LEGGINGS), SadanDummy_Idle.b(8991025, Material.LEATHER_BOOTS));
     }
 
-    public void laser(LivingEntity e) {
+    public void laser(LivingEntity e2) {
         int[] array_colors = new int[]{12100772, 12089721, 12080726, 0xBA3A3A, 12194322};
-        SUtil.delay(() -> e.getEquipment().setHelmet(SadanDummy_Idle.buildColorStack(array_colors[4])), 270L);
-        SUtil.delay(() -> e.getEquipment().setHelmet(SadanDummy_Idle.buildColorStack(array_colors[3])), 290L);
-        SUtil.delay(() -> e.getEquipment().setHelmet(SadanDummy_Idle.buildColorStack(array_colors[2])), 310L);
-        SUtil.delay(() -> e.getEquipment().setHelmet(SadanDummy_Idle.buildColorStack(array_colors[1])), 330L);
-        SUtil.delay(() -> e.getEquipment().setHelmet(SadanDummy_Idle.buildColorStack(array_colors[0])), 350L);
-        SUtil.delay(() -> e.getEquipment().setHelmet(SadanDummy_Idle.b(15249075, Material.LEATHER_HELMET)), 370L);
+        SUtil.delay(() -> e2.getEquipment().setHelmet(SadanDummy_Idle.buildColorStack(array_colors[4])), 270L);
+        SUtil.delay(() -> e2.getEquipment().setHelmet(SadanDummy_Idle.buildColorStack(array_colors[3])), 290L);
+        SUtil.delay(() -> e2.getEquipment().setHelmet(SadanDummy_Idle.buildColorStack(array_colors[2])), 310L);
+        SUtil.delay(() -> e2.getEquipment().setHelmet(SadanDummy_Idle.buildColorStack(array_colors[1])), 330L);
+        SUtil.delay(() -> e2.getEquipment().setHelmet(SadanDummy_Idle.buildColorStack(array_colors[0])), 350L);
+        SUtil.delay(() -> e2.getEquipment().setHelmet(SadanDummy_Idle.b(15249075, Material.LEATHER_HELMET)), 370L);
     }
 
-    public static void t(LivingEntity e) {
-        SUtil.delay(() -> e.teleport(new Location(e.getWorld(), 191.0, 54.0, 266.0)), 1L);
-        SUtil.delay(() -> e.teleport(new Location(e.getWorld(), 191.0, 56.0, 266.0)), 20L);
-        SUtil.delay(() -> e.teleport(new Location(e.getWorld(), 191.0, 58.0, 266.0)), 40L);
-        SUtil.delay(() -> e.teleport(new Location(e.getWorld(), 191.0, 60.0, 266.0)), 60L);
-        SUtil.delay(() -> e.teleport(new Location(e.getWorld(), 191.0, 62.0, 266.0)), 80L);
-        SUtil.delay(() -> e.teleport(new Location(e.getWorld(), 191.0, 64.0, 266.0)), 100L);
-        SUtil.delay(() -> e.teleport(new Location(e.getWorld(), 191.0, 66.0, 266.0)), 120L);
-        SUtil.delay(() -> e.teleport(new Location(e.getWorld(), 191.0, 68.0, 266.0)), 140L);
-        SUtil.delay(() -> e.teleport(new Location(e.getWorld(), 191.0, 69.0, 266.0)), 160L);
+    public static void t(LivingEntity e2) {
+        SUtil.delay(() -> e2.teleport(new Location(e2.getWorld(), 191.0, 54.0, 266.0)), 1L);
+        SUtil.delay(() -> e2.teleport(new Location(e2.getWorld(), 191.0, 56.0, 266.0)), 20L);
+        SUtil.delay(() -> e2.teleport(new Location(e2.getWorld(), 191.0, 58.0, 266.0)), 40L);
+        SUtil.delay(() -> e2.teleport(new Location(e2.getWorld(), 191.0, 60.0, 266.0)), 60L);
+        SUtil.delay(() -> e2.teleport(new Location(e2.getWorld(), 191.0, 62.0, 266.0)), 80L);
+        SUtil.delay(() -> e2.teleport(new Location(e2.getWorld(), 191.0, 64.0, 266.0)), 100L);
+        SUtil.delay(() -> e2.teleport(new Location(e2.getWorld(), 191.0, 66.0, 266.0)), 120L);
+        SUtil.delay(() -> e2.teleport(new Location(e2.getWorld(), 191.0, 68.0, 266.0)), 140L);
+        SUtil.delay(() -> e2.teleport(new Location(e2.getWorld(), 191.0, 69.0, 266.0)), 160L);
     }
 
     @Override
@@ -127,16 +127,16 @@ extends BaseZombie {
         return stack;
     }
 
-    public static ItemStack b(int hexcolor, Material m) {
-        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB((int)hexcolor));
+    public static ItemStack b(int hexcolor, Material m2) {
+        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m2), Color.fromRGB((int)hexcolor));
         ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
         return stack;
     }
 
-    public static ItemStack c(Material m) {
-        ItemStack stack = new ItemStack(m);
+    public static ItemStack c(Material m2) {
+        ItemStack stack = new ItemStack(m2);
         ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);

@@ -8,28 +8,28 @@ package net.hypixel.skyblock.npc.hub;
 
 import net.hypixel.skyblock.gui.GUIType;
 import net.hypixel.skyblock.npc.impl.NPCParameters;
-import net.hypixel.skyblock.npc.impl.SkyblockNPC;
+import net.hypixel.skyblock.npc.impl.SkyBlockNPC;
 import net.hypixel.skyblock.npc.impl.enums.NPCType;
 import org.bukkit.entity.Player;
 
 public class NPCBlackSmith
-extends SkyblockNPC {
+extends SkyBlockNPC {
     public NPCBlackSmith() {
         super(new NPCParameters(){
 
             @Override
+            public String id() {
+                return "BLACKSMITH";
+            }
+
+            @Override
             public String name() {
-                return "blacksmith";
+                return "&fBlacksmith";
             }
 
             @Override
             public NPCType type() {
                 return NPCType.VILLAGER;
-            }
-
-            @Override
-            public String[] holograms() {
-                return new String[]{"&fBlacksmith", "&e&lCLICK"};
             }
 
             @Override
@@ -53,7 +53,7 @@ extends SkyblockNPC {
             }
 
             @Override
-            public void onInteract(Player player, SkyblockNPC npc) {
+            public void onInteract(Player player, SkyBlockNPC npc) {
                 GUIType.REFORGE_ANVIL.getGUI().open(player);
             }
         });

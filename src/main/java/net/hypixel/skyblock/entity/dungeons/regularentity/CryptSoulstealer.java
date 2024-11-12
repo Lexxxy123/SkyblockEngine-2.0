@@ -100,8 +100,8 @@ implements NPCMobs {
         return 1000000.0;
     }
 
-    public static ItemStack b(int hexcolor, Material m) {
-        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m), Color.fromRGB((int)hexcolor));
+    public static ItemStack b(int hexcolor, Material m2) {
+        ItemStack stack = SUtil.applyColorToLeatherArmor(new ItemStack(m2), Color.fromRGB((int)hexcolor));
         ItemMeta itemMeta = stack.getItemMeta();
         itemMeta.spigot().setUnbreakable(true);
         stack.setItemMeta(itemMeta);
@@ -233,7 +233,7 @@ implements NPCMobs {
     }
 
     @Override
-    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e, AtomicDouble damage) {
+    public void onDamage(SEntity sEntity, Entity damager, EntityDamageByEntityEvent e2, AtomicDouble damage) {
     }
 
     @Override
@@ -246,17 +246,17 @@ implements NPCMobs {
         return 0.2;
     }
 
-    public void throwSkull(LivingEntity e, PlayerDisguise pl) {
-        WitherSkull skull = (WitherSkull)e.launchProjectile(WitherSkull.class);
-        skull.setShooter((ProjectileSource)e);
-        e.getWorld().playSound(e.getLocation(), Sound.WITHER_SHOOT, 1.0f, 1.0f);
+    public void throwSkull(LivingEntity e2, PlayerDisguise pl) {
+        WitherSkull skull = (WitherSkull)e2.launchProjectile(WitherSkull.class);
+        skull.setShooter((ProjectileSource)e2);
+        e2.getWorld().playSound(e2.getLocation(), Sound.WITHER_SHOOT, 1.0f, 1.0f);
     }
 
-    public static void sendHeadRotation(Entity e, float yaw, float pitch) {
-        EntityZombie pl = ((CraftZombie)e).getHandle();
-        pl.setLocation(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), yaw, pitch);
+    public static void sendHeadRotation(Entity e2, float yaw, float pitch) {
+        EntityZombie pl = ((CraftZombie)e2).getHandle();
+        pl.setLocation(e2.getLocation().getX(), e2.getLocation().getY(), e2.getLocation().getZ(), yaw, pitch);
         PacketPlayOutEntityTeleport packet = new PacketPlayOutEntityTeleport((net.minecraft.server.v1_8_R3.Entity)pl);
-        Sputnik.sendPacket(e.getWorld(), (Packet)packet);
+        Sputnik.sendPacket(e2.getWorld(), (Packet)packet);
     }
 }
 
